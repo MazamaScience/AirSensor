@@ -1,3 +1,6 @@
+################################################################################
+# Initial section from: https://github.com/github/gitignore/blob/master/R.gitignore
+
 # History files
 .Rhistory
 .Rapp.history
@@ -34,3 +37,11 @@ vignettes/*.pdf
 
 # Shiny token, see https://shiny.rstudio.com/articles/shinyapps.html
 rsconnect/
+.Rproj.user
+
+################################################################################
+# Additional Mazama Science items
+
+# OS X stuff
+.DS_Store
+

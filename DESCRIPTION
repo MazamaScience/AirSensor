@@ -1,0 +1,47 @@
+Type: Package
+Package: MazamaPurpleAir
+Version: 0.1.0
+Title: Utilities to Process and Display PM2.5 data from Purple Air
+Authors@R: c(
+    person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
+    person("Tate", "Brasel", email="tatebrasel6@gmail.com", role=c("aut")),
+    person("Ruby", "Fore", email="ruby.a.fore@gmail.com", role=c("aut")),
+    person("Helen", "Miller", email="helen@ohana.org", role=c("aut"))
+    )
+Author: Jonathan Callahan [aut, cre],
+    Tate Brasel [aut],
+    Helen Miller [aut]
+Maintainer: Jonathan Callahan <jonathan.s.callahan@gmail.com>
+Depends:
+    R (>= 3.1.0),
+    dplyr,
+    MazamaCoreUtils,
+    PWFSLSmoke (>= 1.0.33)
+Imports:
+    futile.logger,
+    httr,
+    jsonlite,
+    leaflet,
+    lubridate,
+    MazamaSpatialUtils,
+    openair,
+    purrr,
+    RColorBrewer,
+    readr,
+    rlang,
+    seismicRoll,
+    sp,
+    stringr,
+    tidyr,
+    utils,
+    magrittr
+Suggests:
+    knitr,
+    testthat
+Description: Utilities to process and display PM2.5 data from Purple Air.
+License: GPL-3
+VignetteBuilder: knitr
+Repository: CRAN
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.0
