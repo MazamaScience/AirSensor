@@ -11,7 +11,9 @@ initializeMazamaSpatialUtils(spatialDataDir = "~/Data/Spatial",
 \item{spatialDataDir}{directory where spatial datasets are created}
 
 \item{stateCodeDataset}{MazamaSpatialUtils dataset returning ISO 3166-2 
-alpha-2 stateCodes}
+alpha-2 stateCodes
+
+# TODO:: this is the incorrect explanation for what logLevel is.}
 
 \item{logLevel}{directory where spatial datasets are created}
 }

@@ -18,6 +18,8 @@
 #' @param spatialDataDir directory where spatial datasets are created
 #' @param stateCodeDataset MazamaSpatialUtils dataset returning ISO 3166-2 
 #' alpha-2 stateCodes
+#' 
+#' # TODO:: this is the incorrect explanation for what logLevel is. 
 #' @param logLevel directory where spatial datasets are created
 
 initializeMazamaSpatialUtils <- function(spatialDataDir = '~/Data/Spatial',
