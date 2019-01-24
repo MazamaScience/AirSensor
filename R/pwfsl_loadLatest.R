@@ -17,7 +17,8 @@
 #' 
 #' @inheritParams PWFSLSmoke::monitor_loadLatest
 #' 
-#' @return List with \code{meta} and \code{data} elements
+#' @return List with \code{meta} and \code{data} elements, a \emph{ws_monitor}
+#' object. 
 #' 
 #' @examples
 #' \dontrun{

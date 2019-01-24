@@ -27,6 +27,10 @@ Convenience function that wraps:
   MazamaSpatialUtils::loadSpatialData('NaturalEarthAdm1')
 }
 
+This function should be run before using \code{pas_load()}, as \code{pas_load()}
+uses the spatial data loaded by \code{initializeMazamaSpatialUtils()} to enhance 
+raw synoptic data via \code{enhanceSynopticData()}.
+
 If file logging is desired, these commands should be run individually with
 output log files specified as arguments to \code{logger.setup()} from the
 \pkg{MazamaCoreUtils} package.

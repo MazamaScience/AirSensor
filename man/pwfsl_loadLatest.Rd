@@ -7,7 +7,8 @@
 pwfsl_loadLatest()
 }
 \value{
-List with \code{meta} and \code{data} elements
+List with \code{meta} and \code{data} elements, a \emph{ws_monitor}
+object.
 }
 \description{
 Loads recent PM2.5 monitoring data from the US Forest Service

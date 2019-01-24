@@ -24,7 +24,7 @@ Enhanced dataframe of synoptic Purple Air data.
 }
 \description{
 Download, parse and enhance synoptic data from PurpleAir and
-return the results as auseful tibble with class \code{pa_synoptic}.
+return the results as a useful tibble with class \code{pa_synoptic}.
 
 Steps include:
 
