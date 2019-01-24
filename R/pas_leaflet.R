@@ -70,30 +70,36 @@ pas_leaflet <- function(pas,
   suppressWarnings({
     
     if ( stringr::str_detect(param, "^pm25") ) { # PM2.5
-      colorFunc <- leaflet::colorBin(AQI$colors, bins = AQI$breaks_24, na.color = "#bbbbbb")
+      colorFunc <- leaflet::colorBin(PWFSLSmoke::AQI$colors, 
+                                     bins = PWFSLSmoke::AQI$breaks_24, 
+                                     na.color = "#bbbbbb")
       cols <- colorFunc(pas[[param]])
-      colors <- AQI$colors
-      labels <- AQI$names
+      colors <- PWFSLSmoke::AQI$colors
+      labels <- PWFSLSmoke::AQI$names
       legendTitle <- 'AQI Level'
       value <- round(pas[[param]], 1)
       unit <- '\U00B5g/m3'
     } else if ( param == "temperature" ) {       # Temperature
-      colorFunc <- leaflet::colorNumeric("RdYlBu", domain = c(-50,130), na.color = "#bbbbbb", reverse=TRUE)
+      colorFunc <- leaflet::colorNumeric("RdYlBu", domain = c(-50,130), 
+                                         na.color = "#bbbbbb", reverse=TRUE)
       cols <- colorFunc(pas[[param]])
       breaks <- seq(-20,120,length.out=15)
       levels <- seq(-15,115,length.out=14)
-      colors <- leaflet::colorBin("RdYlBu", domain=range(breaks), bins=breaks, reverse=TRUE)(levels)
+      colors <- leaflet::colorBin("RdYlBu", domain=range(breaks), 
+                                  bins=breaks, reverse=TRUE)(levels)
       labels <- c('<-10','-10-0','0-10','10-20','10-20','20-30','30-40','40-50',
                   '50-60','70-80','80-90','90-100','100-110','>110')
       legendTitle <- 'Temp in \U2109'
       value <- round(pas[[param]], 0)
       unit <- '\U2109'
     } else if ( param == "humidity" ) {          # Humidity
-      colorFunc <- leaflet::colorNumeric("BrBG", domain = c(0,100), na.color = "#bbbbbb", reverse=FALSE)
+      colorFunc <- leaflet::colorNumeric("BrBG", domain = c(0,100), 
+                                         na.color = "#bbbbbb", reverse=FALSE)
       cols <- colorFunc(pas[[param]])
       breaks <- seq(0,100,length.out=11)
       levels <- seq(5,95,length.out=10)
-      colors <- leaflet::colorBin("BrBG", domain=range(breaks), bins=breaks, reverse=FALSE)(levels)
+      colors <- leaflet::colorBin("BrBG", domain=range(breaks), 
+                                  bins=breaks, reverse=FALSE)(levels)
       labels <- c('<10%','10-20%','20-30%','30-40%','40-50%','50-60%','60-70%','70-80%','80-90%','>90%')
       value <- round(pas[[param]], 0)
       legendTitle <- 'Relative Humidity'
@@ -108,7 +114,8 @@ pas_leaflet <- function(pas,
       oranges <- rev(RColorBrewer::brewer.pal(9,'Oranges'))
       purples <- rev(RColorBrewer::brewer.pal(9,'Purples'))
       colors <- c(oranges[4:1],purples[3:7])
-      colorFunc <- leaflet::colorBin(colors, domain = domain, bins = bins, na.color = "#bbbbbb")
+      colorFunc <- leaflet::colorBin(colors, domain = domain, 
+                                     bins = bins, na.color = "#bbbbbb")
       cols <- colorFunc(pas[[param]])
       labels <- c('<100 m','100-200 m','200-500 m','0.5-1 km','1-2 km','2-3 km','3-4 km','4-5 km','5:10 km')
       legendTitle <- param
@@ -118,7 +125,8 @@ pas_leaflet <- function(pas,
       bins <- c(0, .5, .75, .9, 1)
       domain <- c(0,1)
       colors <- c("#ffffd4","#fed98e","#fe9929","#cc4c02")
-      colorFunc <- leaflet::colorBin(colors, domain = domain, bins = bins, na.color = "#bbbbbb")
+      colorFunc <- leaflet::colorBin(colors, domain = domain, 
+                                     bins = bins, na.color = "#bbbbbb")
       cols <- colorFunc(pas[[param]])
       labels <- c('0-.5', '.5-.75', '.75-.9', '.9-1')
       legendTitle <- "R2"

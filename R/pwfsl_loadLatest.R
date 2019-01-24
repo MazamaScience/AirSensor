@@ -1,5 +1,4 @@
 #' @export
-#' @importFrom PWFSLSmoke monitor_loadLatest
 #' 
 #' @title Get PWFSLSmoke Monitoring Data
 #' 

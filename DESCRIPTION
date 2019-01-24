@@ -15,25 +15,18 @@ Maintainer: Jonathan Callahan <jonathan.s.callahan@gmail.com>
 Depends:
     R (>= 3.1.0),
     dplyr,
-    MazamaCoreUtils,
-    PWFSLSmoke (>= 1.0.33)
+    MazamaCoreUtils
 Imports:
-    futile.logger,
     httr,
     jsonlite,
     leaflet,
     lubridate,
     MazamaSpatialUtils,
-    openair,
-    purrr,
+    PWFSLSmoke (>= 1.0.33),
     RColorBrewer,
-    readr,
     rlang,
-    seismicRoll,
     sp,
     stringr,
-    tidyr,
-    utils,
     magrittr
 Suggests:
     knitr,
