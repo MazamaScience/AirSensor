@@ -9,3 +9,9 @@ Initial functions to download and map Purple Air synoptic data.
 * pas_load.R -- download/parse/enhance synoptic data
 * pwfsl_load.R -- download PWFSL monitoring data
 
+# MazamaPurpleAir 0.1.1
+
+*Added parameter validation to pas_leaflet.R
+*Added test-pas_leaflet.R file
+
+

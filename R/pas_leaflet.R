@@ -57,6 +57,24 @@ pas_leaflet <- function(pas,
                         maptype = "terrain",
                         outsideOnly = TRUE) {
   
+  # ----- Validate parameters -------------------------------------------------
+  
+  if ( class(pas)[[1]] != "pa_synoptic" ) 
+    stop(paste0("First argument is not of class 'pa_synoptic'."))
+
+  if ( nrow(pas) ==0 || ncol(pas) == 0 )
+    stop(paste0("One or both dimensions of the pa_synoptic object has length 0."))
+  
+  if ( !(param %in% c('pm25_current', 'pm25_10min', 'pm25_30min', 'pm25_1hr',
+                    'pm25_6hr', 'pm25_1day', 'pm25_1week')) ) 
+    stop(paste0('param value is invalid. See documentation to see valid options'))
+  
+  if ( !is.logical(outsideOnly) )
+    stop(paste0('outsideOnly parameter should be TRUE/FALSE'))
+  
+  if ( !is.numeric(radius) )
+    stop(paste0('radius parameter is non-numeric'))
+  
   
   # ----- outsideOnly subsetting ----------------------------------------------
   
