@@ -22,7 +22,7 @@
 #' \enumerate{
 #' \item{"roadmap"}{ -- "OpenStreetMap"}
 #' \item{"satellite"}{ -- "Esri.WorldImagery"}
-#' \item{"terrain"}{ -- Esri.WorldTopoMap"}
+#' \item{"terrain"}{ -- "Esri.WorldTopoMap"}
 #' \item{"toner"}{ -- "Stamen.Toner"}
 #' }
 #'
@@ -59,10 +59,18 @@ pas_leaflet <- function(pas,
   
   # ----- Validate parameters -------------------------------------------------
   
-  if ( class(pas)[[1]] != "pa_synoptic" ) 
-    stop(paste0("First argument is not of class 'pa_synoptic'."))
+  # RUBY:  The dplyr::filter function used in the example removes the
+  # RUBY: 'pas_synoptic' class so this test has to go. Not sure right now how
+  # RUBY:  to get around that unless we provide our own 'filter' function that
+  # RUBY:  adds it back. But that would mean duplicating lots of dplyr
+  # RUBY:  functionality.
+  # RUBY: 
+  # RUBY:  For now, we'll just change this check to test for "data.frame".
 
-  if ( nrow(pas) ==0 || ncol(pas) == 0 )
+  if ( class(pas)[[1]] != "data.frame" ) 
+    stop(paste0("First argument is not of class 'data.frame'."))
+
+  if ( nrow(pas) == 0 || ncol(pas) == 0 )
     stop(paste0("One or both dimensions of the pa_synoptic object has length 0."))
   
   if ( !(param %in% c('pm25_current', 'pm25_10min', 'pm25_30min', 'pm25_1hr',

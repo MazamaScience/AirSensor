@@ -46,7 +46,7 @@ names. Current mappings include:
 \enumerate{
 \item{"roadmap"}{ -- "OpenStreetMap"}
 \item{"satellite"}{ -- "Esri.WorldImagery"}
-\item{"terrain"}{ -- ""Esri.WorldTopoMap"}
+\item{"terrain"}{ -- "Esri.WorldTopoMap"}
 \item{"toner"}{ -- "Stamen.Toner"}
 }
 
