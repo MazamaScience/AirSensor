@@ -46,6 +46,13 @@
 enhanceSynopticData <- function(pas_raw,
                                 countryCodes = c('US'),
                                 includePWFSL = TRUE) {
+  # ----- Validate Parameters --------------------------------------------------
+  
+  if ( !('data.frame' %in% class(pas_raw)))
+    stop ('pas_raw parameter is not a dataframe')
+  
+  if ( !is.logical(includePWFSL) )
+    stop ( 'includePWFSL parameter is not a logical value')
   
   logger.debug("----- enhanceSynopticData() -----")
   
