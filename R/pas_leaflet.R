@@ -35,7 +35,7 @@
 #' @param param Value to plot -- defautls to \code{get('pm25_1hr')}.
 #' @param radius Radius (pixels) of monitor circles.
 #' @param opacity Opacity of monitor circles.
-#' @param maptype Optional name of leaflet ProviderTiles to use, e.g. \code{terrain}.
+#' @param maptype Optional name of leaflet ProviderTiles to use, e.g. \code{terrain}. 
 #' @param outsideOnly Logical specifying subsetting for monitors marked as 'outside'.
 #' 
 #' @return A leaflet "plot" object which, if not assigned, is rendered in 
@@ -67,7 +67,7 @@ pas_leaflet <- function(pas,
   # RUBY: 
   # RUBY:  For now, we'll just change this check to test for "data.frame".
 
-  if ( class(pas)[[1]] != "data.frame" ) 
+  if ( !("data.frame" %in% class(pas)) ) 
     stop(paste0("First argument is not of class 'data.frame'."))
 
   if ( nrow(pas) == 0 || ncol(pas) == 0 )
