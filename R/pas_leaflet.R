@@ -31,7 +31,7 @@
 #' \url{https://leaflet-extras.github.io/leaflet-providers/} for a list of 
 #' "provider tiles" to use as the background map.
 #' 
-#' @param pas Dnhanced dataframe of PurpleAir synoptic data.
+#' @param pas Enhanced dataframe of PurpleAir synoptic data.
 #' @param param Value to plot -- defautls to \code{get('pm25_1hr')}.
 #' @param radius Radius (pixels) of monitor circles.
 #' @param opacity Opacity of monitor circles.
@@ -223,7 +223,7 @@ pas_leaflet <- function(pas,
   # Convert locations to SpatialPointsDataFrame
   pas <- pas[!is.na(pas$latitude),]
   SPDF <- sp::SpatialPointsDataFrame(coords=cbind(pas$longitude,pas$latitude),
-                                     data=pas)
+                                     data=as.data.frame(pas))
   
   # Convert maptype to a character string that addProviderTiles can read
   if ( missing(maptype) || maptype == 'terrain') {

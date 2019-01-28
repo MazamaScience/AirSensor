@@ -25,6 +25,10 @@
 
 downloadParseSynopticData <- function(baseUrl='https://www.purpleair.com/json') {
 
+  #---- Validate parameters ----------------------------------------------------
+  if ( !(stringr::str_detect(baseUrl, 'www.purpleair.com')) )
+    stop("URL provided is not a link to www.purpleair.com")
+  
   logger.debug("----- downloadParseSynopticData() -----")
 
   # Strip off any final '/'
