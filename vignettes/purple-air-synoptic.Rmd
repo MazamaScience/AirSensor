@@ -1,7 +1,7 @@
 ---
 title: "Introduction to working with synoptic Purple Air data using MazamaPurpleAir"
 author: "Ruby Fore"
-date: "1/30/2019"
+date: "2019-1-30"
 output: html_document
 ---
 
@@ -43,6 +43,19 @@ The first thirteen look pretty good, but 23-29 (v, v1, *etc*) are not human-read
 
 # The enhanceSynopticData() function
 
+To see what the `enhanceSynopticData()` function does, we will apply it to the `pas_raw` data set and take another look at what `names()` returns. 
+
+```{r names-enhanced}
+initializeMazamaSpatialUtils()
+pas_enhanced <- enhanceSynopticData(pas_raw)
+names(pas_enhanced)
+```
+ 
+The column numbers aren't identical, but the 'v's have been renamed to 'pm25...'. In addition, the final five columns are new. 
+
+# Spatial Metadata 
+
+These five columns all encode spatial metadata, information about the location of each sensor beyond the raw latitude and longitude coordinates that is in human-informative format. `enhanceSynopticData` uses the **MazamaSpatialUtils** package and each sensor's latitude and longitude to add columns with relevant and interesting information including the ISO 3166-1 alpha-2 country codes, and the ISO 3166-2 alpha-2 state codes and timezone. Even more interesting, it also supplies the distance to the nearest PWFLS monitor and that monitor's ID.  
 
 
 
