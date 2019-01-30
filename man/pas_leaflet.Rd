@@ -8,7 +8,7 @@ pas_leaflet(pas, param = "pm25_1hr", radius = 10, opacity = 0.8,
   maptype = "terrain", outsideOnly = TRUE)
 }
 \arguments{
-\item{pas}{Dnhanced dataframe of PurpleAir synoptic data.}
+\item{pas}{Enhanced dataframe of PurpleAir synoptic data.}
 
 \item{param}{Value to plot -- defautls to \code{get('pm25_1hr')}.}
 

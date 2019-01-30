@@ -17,6 +17,7 @@ Depends:
     dplyr,
     MazamaCoreUtils
 Imports:
+    countrycode,
     httr,
     jsonlite,
     leaflet,

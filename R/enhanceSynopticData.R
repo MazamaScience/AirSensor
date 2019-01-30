@@ -46,13 +46,19 @@
 enhanceSynopticData <- function(pas_raw,
                                 countryCodes = c('US'),
                                 includePWFSL = TRUE) {
+  
   # ----- Validate Parameters --------------------------------------------------
   
-  if ( !('data.frame' %in% class(pas_raw)))
-    stop ('pas_raw parameter is not a dataframe')
+  if ( !('data.frame' %in% class(pas_raw)) )
+    stop("parameter 'pas_raw' parameter is not a dataframe")
+  
+  # Guarantee uppercase codes
+  countryCodes <- toupper(countryCodes)
+  if ( any(!(countryCodes %in% countrycode::codelist$iso2c)) ) 
+    stop("parameter 'countryCodes' has values that are not recognized as ISO-2 country codes")
   
   if ( !is.logical(includePWFSL) )
-    stop ( 'includePWFSL parameter is not a logical value')
+    stop("parameter 'includePWFSL' is not a logical value")
   
   logger.debug("----- enhanceSynopticData() -----")
   
