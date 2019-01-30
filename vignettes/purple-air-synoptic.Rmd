@@ -1,0 +1,51 @@
+---
+title: "Introduction to working with synoptic Purple Air data using MazamaPurpleAir"
+author: "Ruby Fore"
+date: "1/30/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.width=7, fig.height=5)
+```
+
+
+## 'Spatially enhanced metadata' - looking inside `pas_load`
+
+The function `pas_load` does its job by calling two other functions in the **MazamaPurpleAir** package: `enhanceSynopticData` and `downloadParseSynopticData`. To better understand the `pa_synoptic` object returned by `pas_load`, a closer look at these two functions is merited. 
+
+First, a quick definition of synoptic. Synoptic means 'relating to or displaying conditions (as of the atmosphere or weather) as they exist simultaneously over a broad area'. It is aptly used here as the counterpoint to timeseries data - synoptic data is from all sensors at one timepoint, timeseries data is from one sensor over multiple timepoints. 
+
+# The downloadParseSynopticData() function
+
+As suggested by its name, `downloadParseSynopticData()` acquires and digests data from the entire Purple Air network, (**question: over what time frame?**) and formats it into an R `data.frame` from the original JSON. Let's examine a  dataset that is the raw data downloaded using `downloadParseSynopticData` alone, not in the `pas_load` function.   
+
+The first step is loading the **MazamaPurpleAir** package. You can then either use a built in dataset, `pas_raw`, or download your data from the site yourself. The `pas_raw` data set was created by an identical command to the one below under "code to download new data".  
+
+```{r loading-packages-and-data, message=FALSE, warnings='suppress'}
+# loading required package
+library(MazamaPurpleAir)
+
+# using pre-loaded data
+data("pas_raw")
+
+# code to download new data 
+# pas_raw <- downloadParseSynopticData()
+```
+
+Let's look at the column/variable names in this dataset. 
+```{r names}
+names(pas_raw)
+```
+ 
+ 
+The first thirteen look pretty good, but 23-29 (v, v1, *etc*) are not human-readable. It would be nice to have a descriptive name for these columns. This is one enhancement accomplished by `enhanceSynopticData`.
+
+# The enhanceSynopticData() function
+
+
+
+
+
+## using dplyr to filter based on different criteria
+## creating interactive maps with pas_leaflet()
