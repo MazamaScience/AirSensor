@@ -10,13 +10,13 @@ knitr::opts_chunk$set(fig.width=7, fig.height=5)
 ```
 
 
-## 'Spatially enhanced metadata' - looking inside `pas_load`
+# 'Spatially enhanced metadata' - looking inside `pas_load`
 
 The function `pas_load` does its job by calling two other functions in the **MazamaPurpleAir** package: `enhanceSynopticData` and `downloadParseSynopticData`. To better understand the `pa_synoptic` object returned by `pas_load`, a closer look at these two functions is merited. 
 
 First, a quick definition of synoptic. Synoptic means 'relating to or displaying conditions (as of the atmosphere or weather) as they exist simultaneously over a broad area'. It is aptly used here as the counterpoint to timeseries data - synoptic data is from all sensors at one timepoint, timeseries data is from one sensor over multiple timepoints. 
 
-# The downloadParseSynopticData() function
+## The `downloadParseSynopticData()` function
 
 As suggested by its name, `downloadParseSynopticData()` acquires and digests data from the entire Purple Air network, (**question: over what time frame?**) and formats it into an R `data.frame` from the original JSON. Let's examine a  dataset that is the raw data downloaded using `downloadParseSynopticData` alone, not in the `pas_load` function.   
 
@@ -25,6 +25,7 @@ The first step is loading the **MazamaPurpleAir** package. You can then either u
 ```{r loading-packages-and-data, message=FALSE, warnings='suppress'}
 # loading required package
 library(MazamaPurpleAir)
+library(MazamaSpatialUtils)
 
 # using pre-loaded data
 data("pas_raw")
@@ -41,7 +42,7 @@ names(pas_raw)
  
 The first thirteen look pretty good, but 23-29 (v, v1, *etc*) are not human-readable. It would be nice to have a descriptive name for these columns. This is one enhancement accomplished by `enhanceSynopticData`.
 
-# The enhanceSynopticData() function
+## The enhanceSynopticData() function
 
 To see what the `enhanceSynopticData()` function does, we will apply it to the `pas_raw` data set and take another look at what `names()` returns. 
 
@@ -51,11 +52,13 @@ pas_enhanced <- enhanceSynopticData(pas_raw)
 names(pas_enhanced)
 ```
  
-The column numbers aren't identical, but the 'v's have been renamed to 'pm25...'. In addition, the final five columns are new. 
+The column numbers aren't identical, but the 'v's have been renamed to 'pm25...'. In addition, columns [31] to [35], `countryCode`, `stateCode`, `timezone`, `pwfsl_closestDistance` and `pwfsl_closestMonitorID` are all new. 
 
-# Spatial Metadata 
+## Spatial Metadata 
 
-These five columns all encode spatial metadata, information about the location of each sensor beyond the raw latitude and longitude coordinates that is in human-informative format. `enhanceSynopticData` uses the **MazamaSpatialUtils** package and each sensor's latitude and longitude to add columns with relevant and interesting information including the ISO 3166-1 alpha-2 country codes, and the ISO 3166-2 alpha-2 state codes and timezone. Even more interesting, it also supplies the distance to the nearest PWFLS monitor and that monitor's ID.  
+These new columns encode spatial metadata, information about the location of each sensor beyond the raw latitude and longitude coordinates that is much more human readable than raw coordinates. `enhanceSynopticData` uses the **MazamaSpatialUtils** package and each sensor's latitude and longitude to add columns with relevant and interesting information, including the ISO 3166-1 alpha-2 country codes, and the ISO 3166-2 alpha-2 state codes and timezone. It also supplies the distance to the nearest PWFSL monitor and that monitor's unique ID code.  
+
+This additional data allows for easy subsetting by any of newly added categories. 
 
 
 
