@@ -54,10 +54,22 @@ pas_load <- function(baseUrl='https://www.purpleair.com/json',
 
   # Validate parameters --------------------------------------------------------
   
+  # Guarantee uppercase codes
+  countryCodes <- toupper(countryCodes)
+  if ( any(!(countryCodes %in% countrycode::codelist$iso2c)) ) 
+    stop("parameter 'countryCodes' has values that are not recognized as ISO-2 country codes")
+  
+  # Gaurantee includePWFSL is a logial value
+  if ( !is.logical(includePWFSL) )
+    stop("parameter 'includePWFSL' is not a logical value")
+   
+  # Guarantee lookbackDays at least 1
+  if ( lookbackDays < 1 )
+    stop("parameter 'lookbackDays' is less than one")
 
   # Load data ------------------------------------------------------------------
   
-  # Download, parse and enhance synoptc data
+  # Download, parse and enhance synoptic data
   pas_raw <- downloadParseSynopticData(baseUrl)
   pas <- enhanceSynopticData(pas_raw, countryCodes, includePWFSL)
   
