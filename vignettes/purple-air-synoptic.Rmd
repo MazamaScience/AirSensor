@@ -3,6 +3,10 @@ title: "Introduction to working with synoptic Purple Air data using MazamaPurple
 author: "Ruby Fore"
 date: "2019-1-30"
 output: html_document
+vignette: >
+  %\VignetteIndexEntry{purple-air-synoptic}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
 ---
 
 ```{r setup, include=FALSE}
