@@ -15,3 +15,8 @@ Initial functions to download and map Purple Air synoptic data.
 *Added test-pas_leaflet.R file
 
 
+# MazamaPurpleAir 0.1.2
+
+*Added documentation file for package datasets
+*Changed header of vignette so that it is built properly
+

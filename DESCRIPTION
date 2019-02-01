@@ -1,6 +1,6 @@
 Type: Package
 Package: MazamaPurpleAir
-Version: 0.1.1
+Version: 0.1.2
 Title: Utilities to Process and Display PM2.5 data from Purple Air
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
@@ -22,7 +22,7 @@ Imports:
     jsonlite,
     leaflet,
     lubridate,
-    MazamaSpatialUtils,
+    MazamaSpatialUtils (>= 0.6.0),
     PWFSLSmoke (>= 1.0.33),
     RColorBrewer,
     rlang,
