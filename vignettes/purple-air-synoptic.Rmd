@@ -60,12 +60,22 @@ The column numbers aren't identical, but the 'v's have been renamed to 'pm25...'
 
 ## Spatial Metadata 
 
-These new columns encode spatial metadata, information about the location of each sensor beyond the raw latitude and longitude coordinates that is much more human readable than raw coordinates. `enhanceSynopticData` uses the **MazamaSpatialUtils** package and each sensor's latitude and longitude to add columns with relevant and interesting information, including the ISO 3166-1 alpha-2 country codes, and the ISO 3166-2 alpha-2 state codes and timezone. It also supplies the distance to the nearest PWFSL monitor and that monitor's unique ID code.  
+`enhanceSynopticData` uses the **MazamaSpatialUtils** package and each sensor's latitude and longitude to add columns with relevant and interesting information, including the ISO 3166-1 alpha-2 country codes, and the ISO 3166-2 alpha-2 state codes and timezone. It also supplies the distance to the nearest PWFSL monitor and that monitor's unique ID code.  
 
 This additional data allows for easy subsetting by any of newly added categories. 
 
+## creating interactive maps with pas_leaflet()
+Before we subset our data, lets take a quick peek at what all of the data looks like. The **MazamaPurpleAir** package contains built-in mapping tools that making mapping downloaded data very easy.  
+```{r interactive-mapping}
+pas_leaflet(pas_enhanced)
+```
 
+`pas_leaflet` creates an interactive map, presented in the Viewer pane in RStudio, of all the Purple Air sensors in the dataset. Each dot represents a sensor, and they are automatically colored based on air quality cut-offs published by the EPA. (for further reading, check out https://airnow.gov/index.cfm?action=aqibasics.aqi)
 
+The default settings for `pas_load()` or `downloadParseSynopticData()` download Purple Air sensor data for the entire U.S., which is perhaps more than we would like to visualize in one map. This is where the spatially enhanced metadata allows for interesting subsetting and analysis. 
 
 ## using dplyr to filter based on different criteria
-## creating interactive maps with pas_leaflet()
+One of the columns of our enhanced data set is called `pwfsl_closestDistance`. This column is the minimum distance to a PWFSL monitor. We could look at 
+```{r subsetting}
+
+```
