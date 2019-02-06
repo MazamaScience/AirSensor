@@ -1,8 +1,10 @@
 ---
-title: "Introduction to working with synoptic Purple Air data using MazamaPurpleAir"
+title: "Working with Synoptic Data from Purple Air"
 author: "Ruby Fore"
 date: "2019-1-30"
-output: html_document
+output:
+  html_document:
+    toc: TRUE
 vignette: >
   %\VignetteIndexEntry{purple-air-synoptic}
   %\VignetteEngine{knitr::rmarkdown}
@@ -13,6 +15,35 @@ vignette: >
 knitr::opts_chunk$set(fig.width=7, fig.height=5)
 ```
 
+# Background
+
+JON: For Jon to write.
+
+# Obtaining synoptic data from Puple Air
+
+What is synoptic data
+
+## raw data from Purple Air
+
+functions to get it
+what does it look like
+...
+
+## "spatially enhanced metadata"
+
+what do we mean by this
+how will we do it -- MazamaSpatialUtils
+functions to enhnance
+what columns are added
+what will we eventually be able to do with them
+
+# working with a "spatiallly enhanced" *pas* object
+
+tour of functionality
+
+----
+Original below here
+----
 
 # 'Spatially enhanced metadata' - looking inside `pas_load`
 The function `pas_load` does its job by calling two other functions in the **MazamaPurpleAir** package: `enhanceSynopticData` and `downloadParseSynopticData`. To better understand the `pa_synoptic` object returned by `pas_load`, a closer look at these two functions is merited. 
@@ -26,8 +57,8 @@ The first step is loading the **MazamaPurpleAir** package. You can then either u
 
 ```{r loading-packages-and-data, message=FALSE, warnings='suppress'}
 # loading required package
-library(MazamaPurpleAir)
 library(MazamaSpatialUtils)
+library(MazamaPurpleAir)
 
 # using pre-loaded data
 data("pas_raw")

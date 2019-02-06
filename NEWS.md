@@ -1,3 +1,9 @@
+# MazamaPurpleAir 0.1.2
+
+* added parameter validation and testing for all existing functions
+* adding `data/` directory with sample `pas` object
+* added `vignettes/purple-air-synoptic.Rmd`
+
 # MazamaPurpleAir 0.1.0
 
 Initial functions to download and map Purple Air synoptic data.
@@ -13,7 +19,6 @@ Initial functions to download and map Purple Air synoptic data.
 
 *Added parameter validation to pas_leaflet.R
 *Added test-pas_leaflet.R file
-
 
 # MazamaPurpleAir 0.1.2
 

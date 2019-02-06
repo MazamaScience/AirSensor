@@ -33,3 +33,10 @@ pas_leaflet(WestCoastPas)
 ## ----histogram-----------------------------------------------------------
 hist(WestCoastPas$pwfsl_closestDistance)
 
+## ----subsetting-2--------------------------------------------------------
+# subset 
+WestCoastPas <- WestCoastPas %>%
+  filter(pwfsl_closestDistance <= 1609)
+# and plot 
+pas_leaflet(WestCoastPas)
+
