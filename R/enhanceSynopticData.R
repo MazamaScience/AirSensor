@@ -164,7 +164,7 @@ enhanceSynopticData <- function(pas_raw,
     
     pas$pwfsl_closestDistance <- as.numeric(NA)
     pas$pwfsl_closestMonitorID <- as.character(NA)
-    for ( i in 1:seq_len(nrow(pas)) ) {
+    for ( i in seq_len(nrow(pas)) ) {
       distances <- sort(PWFSLSmoke::monitor_distance(pwfsl, pas$longitude[i], pas$latitude[i])) * 1000 # meters
       pas$pwfsl_closestDistance[i] <- as.numeric(distances[1])
       pas$pwfsl_closestMonitorID[i] <- names(distances[1])
