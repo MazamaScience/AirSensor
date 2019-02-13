@@ -11,7 +11,7 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, message=FALSE}
 knitr::opts_chunk$set(fig.width=7, fig.height=5)
 ```
 
@@ -23,7 +23,44 @@ JON: For Jon to write.
 
 What is synoptic data
 
+Synoptic means 'relating to or displaying conditions (as of the atmosphere or weather) as they exist simultaneously over a broad area'. Synoptic PurpleAir data is from all (or multiple) PurpleAir sensors at one point in time, and is contrasted with timeseries data, which is from a single sensor over multiple timepoints. 
+
 ## raw data from Purple Air
+
+In the **MazamaPurpleAir** package the primary function to download synoptic data is `pas_load()`. This function downloads data in JSON format from https://www.purpleair.com/json, replaces variable names with human readable ones, formats data to make things easy in R, and adds columns with geographic information (spatial metadata) for each sensor. 
+
+`pas_load()` is a wrapper for two other functions in **MazamaPurpleAir** -  `downloadParseSynopticData()`, which performs the data acquisition step, and `enhanceSynopticData()`, which performs the data tidying and addition of the spatial metadata. 
+
+
+Let's take a look at what `pas_load()` returns by examining a pre-loaded dataset in the *MazamaPurpleAir* package, or by downloading your own. 
+
+```{r pas_objects, message=FALSE}
+# loading MazamaPurpleAir 
+library(MazamaPurpleAir)
+# and MazamaSpatialUtils
+library(MazamaSpatialUtils)
+
+# Loading package data
+data("pas")
+
+# Code to download new data
+# pas <- pas_load()
+```
+
+Now we can look at the class, dimensions and column names of the object named `pas`. 
+
+```{r examining_pas}
+class(pas)
+dim(pas)
+```
+
+Note that in addition to being a `data.frame` and `tibble`, pas is a `pa_synoptic` object. 
+
+We can also examine the column names, which are delivered by `pas_load()` as neat and easy-to-read names. 
+
+```{r column_names}
+colnames(pas)
+```
 
 functions to get it
 what does it look like
@@ -37,79 +74,27 @@ functions to enhnance
 what columns are added
 what will we eventually be able to do with them
 
-# working with a "spatiallly enhanced" *pas* object
+Metadata is data that gives information about other data. When working with PurpleAir data, we think of the sensor readings of air quality as the primary data of interest, and data about the sensors themselves as metadata. The raw data contains sensors' names, ID numbers as well as latitude and longitude coordinates of the sensors' locations. 
+
+Latitude and longitude coordinates are extremely useful pieces of information, and great for mapping, but they are hard to interpret for the average human. However, using the **MazamaSpatialUtils** package, coordinate information can be used to add a new column classifying each Purple Air sensor by state, country and timezone. This is performed by the `enhanceSynopticData()` function. 
+
+In addition to spatial information regarding administrative boundaries and time, the `enhanceSynopticData()` function adds two columns entitled `pwfsl_closestDistance` and `pwfsl_closestMonitorID`. 
+
+All of these columns are now options for subsetting the data, using functionality imported from **dply** and **magrittr**
+
+# working with a "spatially enhanced" *pas* object
 
 tour of functionality
 
-----
-Original below here
-----
 
-# 'Spatially enhanced metadata' - looking inside `pas_load`
-The function `pas_load` does its job by calling two other functions in the **MazamaPurpleAir** package: `enhanceSynopticData` and `downloadParseSynopticData`. To better understand the `pa_synoptic` object returned by `pas_load`, a closer look at these two functions is merited. 
-
-First, a quick definition of synoptic. Synoptic means 'relating to or displaying conditions (as of the atmosphere or weather) as they exist simultaneously over a broad area'. It is aptly used here as the counterpoint to timeseries data - synoptic data is from all sensors at one timepoint, timeseries data is from one sensor over multiple timepoints. 
-
-## The `downloadParseSynopticData()` function
-As suggested by its name, `downloadParseSynopticData()` acquires and digests data from the entire Purple Air network, (**question: over what time frame?**) and formats it into an R `data.frame` from the original JSON. Let's examine a  dataset that is the raw data downloaded using `downloadParseSynopticData` alone, not in the `pas_load` function.   
-
-The first step is loading the **MazamaPurpleAir** package. You can then either use a built in dataset, `pas_raw`, or download your data from the site yourself. The `pas_raw` data set was created by an identical command to the one below under "code to download new data".  
-
-```{r loading-packages-and-data, message=FALSE, warnings='suppress'}
-# loading required package
-library(MazamaSpatialUtils)
-library(MazamaPurpleAir)
-
-# using pre-loaded data
-data("pas_raw")
-
-# code to download new data 
-# pas_raw <- downloadParseSynopticData()
-```
-
-Let's look at the column/variable names in this dataset. 
-```{r names}
-names(pas_raw)
-```
- 
- 
-The first thirteen look pretty good, but 23-29 (v, v1, *etc*) are not human-readable. It would be nice to have a descriptive name for these columns. This is one enhancement accomplished by `enhanceSynopticData`.
-
-## The enhanceSynopticData() function
-To see what the `enhanceSynopticData()` function does, we will apply it to the `pas_raw` data set and take another look at what `names()` returns. 
-
-```{r names-enhanced}
-initializeMazamaSpatialUtils()
-pas_enhanced <- enhanceSynopticData(pas_raw)
-names(pas_enhanced)
-```
- 
-The column numbers aren't identical, but the 'v's have been renamed to 'pm25...'. In addition, columns [31] to [35], `countryCode`, `stateCode`, `timezone`, `pwfsl_closestDistance` and `pwfsl_closestMonitorID` are all new. 
-
-## Spatial Metadata 
-`enhanceSynopticData` uses the **MazamaSpatialUtils** package and each sensor's latitude and longitude to add columns with relevant and interesting information, including the ISO 3166-1 alpha-2 country codes, and the ISO 3166-2 alpha-2 state codes and timezone. It also supplies the distance to the nearest PWFSL monitor and that monitor's unique ID code.  
-
-This additional data allows for easy subsetting by any of newly added categories. 
-
-## Mapping
-Before we subset our data, lets take a quick peek at what all of the data looks like. The **MazamaPurpleAir** package contains built-in mapping tools that making mapping downloaded data very easy.  
-```{r interactive-mapping}
-pas_leaflet(pas_enhanced)
-```
-
-`pas_leaflet` creates an interactive map, presented in the Viewer pane in RStudio, of all the Purple Air sensors in the dataset. Each dot represents a sensor, and they are automatically colored based on air quality cut-offs published by the EPA. (for further reading, check out https://airnow.gov/index.cfm?action=aqibasics.aqi)
-
-The default settings for `pas_load()` or `downloadParseSynopticData()` download Purple Air sensor data for the entire U.S., which is perhaps more than we would like to visualize in one map. This is where the spatially enhanced metadata allows for interesting subsetting and analysis. 
-
-## Subsetting using `%>%` and `filter()`
-The **MazamaPurpleAir** package incorporates functionality from **dplyr** and **magrittr** to make data analysis easier and the corresponding code more readable. The functions imported are the piping function from **magrittr** (`%>%`) and `filter()` from **dplyr**. Together, these make subsetting data much more logical. 
+The **MazamaPurpleAir** package incorporates functionality from **dplyr** and **magrittr** to make data analysis easier and the corresponding code more readable. The functions imported are the piping function from **magrittr** (`%>%`) and `filter()` from **dplyr**. 
 
 Lets demonstrate this functionality by looking at only West Coast sensors, i.e. sensors with a state code of WA, OR, or CA. 
 
 
 ```{r subsetting}
 # subsetting using piping and filter() from magrittr and dplyr, respecively
-WestCoastPas <- pas_enhanced %>%
+WestCoastPas <- pas %>%
   filter(stateCode %in% c('OR', 'WA', 'CA'))
 # And plotting to check what the result is 
 pas_leaflet(WestCoastPas)
@@ -138,6 +123,7 @@ pas_leaflet(WestCoastPas)
 In the new plot, we can start to see some clumps of Purple Air sensors in cities, especially San Francisco and Sacramento, as well as Eugene, OR. 
 
 To work more with Purple Air and PWFSL data together, check out the vignettes for the **PWFSLSmoke** package as well as the **MazamaPurpleAir** time series data vignette. 
+
 
 
 
