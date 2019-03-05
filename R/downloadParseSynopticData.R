@@ -1,22 +1,14 @@
 #' @export
-#' @import MazamaCoreUtils
-#' 
 #' @title Download synoptic data from Purple Air
-#' 
+#' @param baseUrl Base URL for synoptic data.
+#' @return Dataframe of synoptic PurpleAir data.
 #' @description Download and parse synoptic data from the Purple Air network
 #' of particulate monitors.
 #'
 #' The synoptic data provides a view of the entire Purple Air network and
 #' includes both metadata and recent PM2.5 averages for each deployed monitor.
-#' 
-#' @param baseUrl Base URL for synoptic data.
-#' 
-#' @return Dataframe of synoptic PurpleAir data.
-#' 
 #' @references \href{https://www.purpleair.com/json}{json formatted Purple Air data}
-#' 
 #' @seealso \link{enhanceSynopticData}
-#' 
 #' @examples
 #' \dontrun{
 #' initializeMazamaSpatialUtils()
@@ -24,10 +16,6 @@
 #' }
 
 downloadParseSynopticData <- function(baseUrl='https://www.purpleair.com/json') {
-
-  #---- Validate parameters ----------------------------------------------------
-
-  # No validation required.  
 
   logger.debug("----- downloadParseSynopticData() -----")
 
@@ -60,7 +48,7 @@ downloadParseSynopticData <- function(baseUrl='https://www.purpleair.com/json') 
     }
 
     logger.error("Web service failed to respond: %s", webserviceUrl)
-    logger.error(err_msg)
+    logger.error(err_message)
     stop(err_msg, call.=TRUE)
     
   }
