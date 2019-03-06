@@ -83,7 +83,6 @@ pas_leaflet <- function(pas,
                       'humidity',
                       'pressure', 
                       'temperature', 
-                      'DEVICE_LOCATIONTYPE', 
                       'pwfsl_closestDistance')) ) 
     stop(paste0('param value is invalid. See documentation to see valid options'))
   
@@ -187,16 +186,6 @@ pas_leaflet <- function(pas,
       value <- round(pas[[param]], 0)
       unit <- 'm'
       
-    } else if ( param == 'DEVICE_LOCATIONTYPE' ) { # Location type:indoor/outdoor
-      bins <- c(1,2)
-      domain <- range(bins)
-      colors <- c("#000000", "#eeeeee")
-      colorFunc <- leaflet::colorBin(colors, domain = domain, 
-                                     bins = bins, na.color = "#bbbbbb")
-      cols <- colorFunc(pas[[param]]) #---- FIX, NEEDS INTEGER FROM STRING
-      labels <- c('Inside Monitor', 
-                  'Outside Monitor')
-      legendTitle <- param
     } else if ( param %in% c("r2_a", "r2_b") ) {
       bins <- c(0, .5, .75, .9, 1)
       domain <- c(0,1)
