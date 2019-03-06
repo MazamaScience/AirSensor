@@ -73,8 +73,18 @@ pas_leaflet <- function(pas,
   if ( nrow(pas) == 0 || ncol(pas) == 0 )
     stop(paste0("One or both dimensions of the pa_synoptic object has length 0."))
   
-  if ( !(param %in% c('pm25_current', 'pm25_10min', 'pm25_30min', 'pm25_1hr',
-                    'pm25_6hr', 'pm25_1day', 'pm25_1week')) ) 
+  if ( !(param %in% c('pm25_current', 
+                      'pm25_10min', 
+                      'pm25_30min', 
+                      'pm25_1hr',
+                      'pm25_6hr', 
+                      'pm25_1day', 
+                      'pm25_1week', 
+                      'humidity',
+                      'pressure', 
+                      'temperature', 
+                      'DEVICE_LOCATIONTYPE', 
+                      'pwfsl_closestDistance')) ) 
     stop(paste0('param value is invalid. See documentation to see valid options'))
   
   if ( !is.logical(outsideOnly) )
@@ -113,8 +123,20 @@ pas_leaflet <- function(pas,
       levels <- seq(-15,115,length.out=14)
       colors <- leaflet::colorBin("RdYlBu", domain=range(breaks), 
                                   bins=breaks, reverse=TRUE)(levels)
-      labels <- c('<-10','-10-0','0-10','10-20','10-20','20-30','30-40','40-50',
-                  '50-60','70-80','80-90','90-100','100-110','>110')
+      labels <- c('<-10',
+                  '-10-0',
+                  '0-10',
+                  '10-20',
+                  '10-20',
+                  '20-30',
+                  '30-40',
+                  '40-50',
+                  '50-60',
+                  '70-80',
+                  '80-90',
+                  '90-100',
+                  '100-110',
+                  '>110')
       legendTitle <- 'Temp in \U2109'
       value <- round(pas[[param]], 0)
       unit <- '\U2109'
@@ -126,7 +148,16 @@ pas_leaflet <- function(pas,
       levels <- seq(5,95,length.out=10)
       colors <- leaflet::colorBin("BrBG", domain=range(breaks), 
                                   bins=breaks, reverse=FALSE)(levels)
-      labels <- c('<10%','10-20%','20-30%','30-40%','40-50%','50-60%','60-70%','70-80%','80-90%','>90%')
+      labels <- c('<10%',
+                  '10-20%',
+                  '20-30%',
+                  '30-40%',
+                  '40-50%',
+                  '50-60%',
+                  '60-70%',
+                  '70-80%',
+                  '80-90%',
+                  '>90%')
       value <- round(pas[[param]], 0)
       legendTitle <- 'Relative Humidity'
       unit <- '%'
@@ -143,10 +174,29 @@ pas_leaflet <- function(pas,
       colorFunc <- leaflet::colorBin(colors, domain = domain, 
                                      bins = bins, na.color = "#bbbbbb")
       cols <- colorFunc(pas[[param]])
-      labels <- c('<100 m','100-200 m','200-500 m','0.5-1 km','1-2 km','2-3 km','3-4 km','4-5 km','5:10 km')
+      labels <- c('<100 m',
+                  '100-200 m',
+                  '200-500 m',
+                  '0.5-1 km',
+                  '1-2 km',
+                  '2-3 km',
+                  '3-4 km',
+                  '4-5 km',
+                  '5:10 km')
       legendTitle <- param
       value <- round(pas[[param]], 0)
       unit <- 'm'
+      
+    } else if ( param == 'DEVICE_LOCATIONTYPE' ) { # Location type:indoor/outdoor
+      bins <- c(1,2)
+      domain <- range(bins)
+      colors <- c("#000000", "#eeeeee")
+      colorFunc <- leaflet::colorBin(colors, domain = domain, 
+                                     bins = bins, na.color = "#bbbbbb")
+      cols <- colorFunc(pas[[param]]) #---- FIX, NEEDS INTEGER FROM STRING
+      labels <- c('Inside Monitor', 
+                  'Outside Monitor')
+      legendTitle <- param
     } else if ( param %in% c("r2_a", "r2_b") ) {
       bins <- c(0, .5, .75, .9, 1)
       domain <- c(0,1)
@@ -159,7 +209,16 @@ pas_leaflet <- function(pas,
       value <- round(pas[[param]], 2)
       unit <- ''
     } else if ( param %in% c("slope_a", "slope_b") ) {
-      colors <- c("#7f3b08", "#b35806","#e08214","#fdb863","#fee0b6","#d8daeb","#b2abd2","#8073ac","#542788","#2d004b")
+      colors <- c("#7f3b08", 
+                  "#b35806",
+                  "#e08214",
+                  "#fdb863",
+                  "#fee0b6",
+                  "#d8daeb",
+                  "#b2abd2",
+                  "#8073ac",
+                  "#542788",
+                  "#2d004b")
       colorFunc <- leaflet::colorBin(colors, domain = range(pas[[param]]), bins = 10, na.color = "#bbbbbb")
       cols <- colorFunc(pas[[param]])
       breaks <- seq(domain[1],domain[2],length.out=11)
