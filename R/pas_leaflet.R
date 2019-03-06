@@ -249,7 +249,8 @@ pas_leaflet <- function(pas,
       "temperature = ", round(pas$temperature, 0), " F<br/>",
       "humidity = ", round(pas$humidity, 0), "%<br/>",
       "pm25_1hr = ", round(pas$pm25_1hr, 1), " \U00B5g/m3<br/>",
-      "pm25_1day = ", round(pas$pm25_1day, 1), " \U00B5g/m3<br/>"
+      "pm25_1day = ", round(pas$pm25_1day, 1), " \U00B5g/m3<br/>",
+      "location_type = ", pas$DEVICE_LOCATIONTYPE, "<br/"
     )
     
   })
