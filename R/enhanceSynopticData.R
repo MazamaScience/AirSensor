@@ -169,7 +169,7 @@ enhanceSynopticData <- function(pas_raw,
                                                 pas$longitude[i],
                                                 pas$latitude[i])
       minDistIndex <- which.min(distances)
-      pas$pwfsl_closestDistance[i] <- distances[minDistIndex]
+      pas$pwfsl_closestDistance[i] <- distances[minDistIndex] * 1000 # To meters
       pas$pwfsl_closestMonitorID[i] <- names(distances[minDistIndex])
       
     }
