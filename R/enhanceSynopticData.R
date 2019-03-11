@@ -159,15 +159,19 @@ enhanceSynopticData <- function(pas_raw,
   # ----- Find nearby PWFSL monitors -------------------------------------------
   
   if ( includePWFSL ) {
-    
-    pwfsl <- PWFSLSmoke::loadLatest()
+    if ( !exists('pwfsl') ) (pwfsl <- PWFSLSmoke::loadLatest())
     
     pas$pwfsl_closestDistance <- as.numeric(NA)
     pas$pwfsl_closestMonitorID <- as.character(NA)
+    
     for ( i in seq_len(nrow(pas)) ) {
-      distances <- sort(PWFSLSmoke::monitor_distance(pwfsl, pas$longitude[i], pas$latitude[i])) * 1000 # meters
-      pas$pwfsl_closestDistance[i] <- as.numeric(distances[1])
-      pas$pwfsl_closestMonitorID[i] <- names(distances[1])
+      distances <- PWFSLSmoke::monitor_distance(pwfsl,
+                                                pas$longitude[i],
+                                                pas$latitude[i])
+      minDistIndex <- which.min(distances)
+      pas$pwfsl_closestDistance[i] <- distances[minDistIndex]
+      pas$pwfsl_closestMonitorID[i] <- names(distances[minDistIndex])
+      
     }
     
   }
