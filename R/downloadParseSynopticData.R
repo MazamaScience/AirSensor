@@ -30,7 +30,7 @@ downloadParseSynopticData <- function(baseUrl='https://www.purpleair.com/json') 
   
   # Handle the response
   status_code <- httr::status_code(r)
-  content <- httr::content(r, as="text") # don't interpret the JSON -- use fromJSON() below
+  content <- httr::content(r, as="text", encoding="UTF-8") # don't interpret the JSON -- use fromJSON() below
 
   if ( httr::http_error(r) ) {  # web service failed to respond
     
