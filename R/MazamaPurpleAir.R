@@ -3,8 +3,10 @@
 #' Purple Air Sensor data returned by pas_load, with human readable column names. 
 #' 
 #' @import MazamaCoreUtils
-#' @format a dataframe (also a pas_synoptic object) with 500 randomly sampled
-#'  observations of 35 variables. 
+#' @format 
+#' @description A randomly sampled dataframe from enhanced Purple Air Sensor 
+#' data returned by pas_load(). A sample dataframe (also a pas_synoptic object) 
+#' with 500 randomly sampled observations of 35 variables. 
 #' 
 #'
 #'
@@ -12,10 +14,10 @@
 
 #' Synoptic Purple Air Sensor data, pre-enhancement"
 #' 
-#' Purple Air Sensor data returned by downloadParseSynopticData(), with some 
-#' human un-readable column names. 
+#' @description  A randomly sampled dataframe Purple Air Sensor data returned 
+#' by downloadParseSynopticData(), with some human un-readable column names. 
 #' @import MazamaCoreUtils
-#' @format A dataframe with 11663 observations of 32 variables. 
+#' @format A dataframe with 500 sampled observations of 32 variables. 
 #' 
 #' @source https://www.purpleair.com/json
 "raw_pas_sample"
