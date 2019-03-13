@@ -41,7 +41,7 @@ library(MazamaPurpleAir)
 library(MazamaSpatialUtils)
 
 # Loading package data
-data("pas")
+data("pas_load_sample")
 
 # Code to download new data
 # pas <- pas_load()
@@ -50,8 +50,8 @@ data("pas")
 Now we can look at the class, dimensions and column names of the object named `pas`. 
 
 ```{r examining_pas}
-class(pas)
-dim(pas)
+class(pas_load_sample)
+dim(pas_load_sample)
 ```
 
 Note that in addition to being a `data.frame` and `tibble`, pas is a `pa_synoptic` object. 
@@ -59,7 +59,7 @@ Note that in addition to being a `data.frame` and `tibble`, pas is a `pa_synopti
 We can also examine the column names, which are delivered by `pas_load()` as neat and easy-to-read names. 
 
 ```{r column_names}
-colnames(pas)
+colnames(pas_load_sample)
 ```
 
 functions to get it
@@ -94,7 +94,7 @@ Lets demonstrate this functionality by looking at only West Coast sensors, i.e. 
 
 ```{r subsetting}
 # subsetting using piping and filter() from magrittr and dplyr, respecively
-WestCoastPas <- pas %>%
+WestCoastPas <- pas_load_sample %>%
   filter(stateCode %in% c('OR', 'WA', 'CA'))
 # And plotting to check what the result is 
 pas_leaflet(WestCoastPas)
@@ -110,12 +110,12 @@ hist(WestCoastPas$pwfsl_closestDistance)
 
 The units for `pwfsl_closestDistance` are meters, so some of these Purple Air sensors are extremely far away from the nearest PWFSL monitor. This is one great thing about the Purple Air data - there is much greater measurement density. But 20,000 meters is about 12 miles, and atmospheric conditions can vary a lot across twelve miles!
 
-Let's take a look at sensors that are within a mile, or approximately 1600 meters, by subsetting the data again. 
+Let's take a look at sensors that are within a mile, or approximately 16000 meters, by subsetting the data again. 
 
 ```{r subsetting-2}
 # subset 
 WestCoastPas <- WestCoastPas %>%
-  filter(pwfsl_closestDistance <= 1609)
+  filter(pwfsl_closestDistance <= 16009)
 # and plot 
 pas_leaflet(WestCoastPas)
 ```
