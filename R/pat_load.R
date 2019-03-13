@@ -10,7 +10,6 @@
 #' @description Timeseries data doe specific PurpleAie sensor are retrieved from the Thingspeak API.
 #'
 #' @seealso \link{downloadParseTimeseriesData}
-#' @seealso \link{createPATimeseriesObject}
 #' @examples
 #' \dontrun{
 #' initializeMazamaSpatialUtils()
