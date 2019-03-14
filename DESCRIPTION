@@ -1,15 +1,17 @@
 Type: Package
 Package: MazamaPurpleAir
-Version: 0.1.2
+Version: 0.1.3
 Title: Utilities to Process and Display PM2.5 data from Purple Air
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
     person("Tate", "Brasel", email="tatebrasel6@gmail.com", role=c("aut")),
     person("Ruby", "Fore", email="ruby.a.fore@gmail.com", role=c("aut")),
+    person("Hans", "Martin", email="hansmrtn@gmail.com", role=c("aut")), 
     person("Helen", "Miller", email="helen@ohana.org", role=c("aut"))
     )
 Author: Jonathan Callahan [aut, cre],
     Tate Brasel [aut],
+    Hans Martin [aut],
     Helen Miller [aut]
 Maintainer: Jonathan Callahan <jonathan.s.callahan@gmail.com>
 Depends:
