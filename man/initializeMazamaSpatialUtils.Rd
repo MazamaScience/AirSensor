@@ -2,7 +2,7 @@
 % Please edit documentation in R/initializeMazamaSpatialUtils.R
 \name{initializeMazamaSpatialUtils}
 \alias{initializeMazamaSpatialUtils}
-\title{Initialize Mazama Spatial Utils}
+\title{Initialize MazamaSpatialUtils package}
 \usage{
 initializeMazamaSpatialUtils(spatialDataDir = "~/Data/Spatial",
   stateCodeDataset = "NaturalEarthAdm1", logLevel = WARN)
@@ -11,11 +11,9 @@ initializeMazamaSpatialUtils(spatialDataDir = "~/Data/Spatial",
 \item{spatialDataDir}{directory where spatial datasets are created}
 
 \item{stateCodeDataset}{MazamaSpatialUtils dataset returning ISO 3166-2 
-alpha-2 stateCodes
+alpha-2 stateCodes}
 
-# TODO:: this is the incorrect explanation for what logLevel is.}
-
-\item{logLevel}{directory where spatial datasets are created}
+\item{logLevel}{logging level used}
 }
 \description{
 Convenience function that wraps:
@@ -27,9 +25,10 @@ Convenience function that wraps:
   MazamaSpatialUtils::loadSpatialData('NaturalEarthAdm1')
 }
 
-This function should be run before using \code{pas_load()}, as \code{pas_load()}
-uses the spatial data loaded by \code{initializeMazamaSpatialUtils()} to enhance 
-raw synoptic data via \code{enhanceSynopticData()}.
+This function should be run before using \code{pas_load()}, as 
+\code{pas_load()} uses the spatial data loaded by 
+\code{initializeMazamaSpatialUtils()} to enhance  raw synoptic data via 
+\code{enhanceSynopticData()}.
 
 If file logging is desired, these commands should be run individually with
 output log files specified as arguments to \code{logger.setup()} from the

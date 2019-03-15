@@ -1,4 +1,5 @@
 #' @export
+#' @importFrom MazamaCoreUtils logger.debug
 #' 
 #' @title Enhance synoptic data from Purple Air
 #' 
@@ -20,12 +21,15 @@
 #'
 #' 4) Add distance and monitorID for the two closest PWFSL monitors
 #'
-#' Subsetting by country may be performed by specifying the \code{countryCodes} argument.
+#' Subsetting by country may be performed by specifying the \code{countryCodes} 
+#' argument.
 #'
-#' Setting \code{outsideOnly = TRUE} will return only those records marked as 'outside'.
+#' Setting \code{outsideOnly = TRUE} will return only those records marked as 
+#' 'outside'.
 #' @note For data obtained on July 28, 2018 this will result in removal of all 
 #' 'B' channels, even those whose parent 'A' channel is marked as 'outside'. 
-#' This is useful if you want a quick, synoptic view of the network, e.g. for a map.
+#' This is useful if you want a quick, synoptic view of the network, e.g. for a 
+#' map.
 #' 
 #' @param pas_raw Dataframe returned by \code{downloadParseSynopticData()}.
 #' @param countryCodes ISO country codes used to subset the data.
@@ -43,9 +47,11 @@
 #' pas <- enhanceSynopticData(pas_raw)
 #' }
 
-enhanceSynopticData <- function(pas_raw,
-                                countryCodes = c('US'),
-                                includePWFSL = TRUE) {
+enhanceSynopticData <- function(
+  pas_raw = NULL,
+  countryCodes = c('US'),
+  includePWFSL = TRUE
+) {
   
   # ----- Validate Parameters --------------------------------------------------
   
@@ -79,17 +85,19 @@ enhanceSynopticData <- function(pas_raw,
   # [31] "lastModified"                     "timeSinceModified"
   
   # Rename some things based on the information in the document "Using Purple Air Data"
-  newNames <- c("ID", "parentID", "label",
-                "DEVICE_LOCATIONTYPE", "THINGSPEAK_PRIMARY_ID", "THINGSPEAK_PRIMARY_ID_READ_KEY",
-                "THINGSPEAK_SECONDARY_ID", "THINGSPEAK_SECONDARY_ID_READ_KEY", "latitude",
-                "longitude", "pm25", "lastSeenDate",
-                "unused_State", "sensorType" , "flag_hidden",
-                "flag_highValue" , "isOwner", "flag_attenuation_hardware",
-                "temperature", "humidity", "pressure",
-                "age", "pm25_current", "pm25_10min",
-                "pm25_30min", "pm25_1hr", "pm25_6hr",
-                "pm25_1day", "pm25_1week", "unused_pm",
-                "statsLastModifiedDate", "statsLastModifiedInterval")
+  newNames <- c(
+    "ID", "parentID", "label",
+    "DEVICE_LOCATIONTYPE", "THINGSPEAK_PRIMARY_ID", "THINGSPEAK_PRIMARY_ID_READ_KEY",
+    "THINGSPEAK_SECONDARY_ID", "THINGSPEAK_SECONDARY_ID_READ_KEY", "latitude",
+    "longitude", "pm25", "lastSeenDate",
+    "unused_State", "sensorType" , "flag_hidden",
+    "flag_highValue" , "isOwner", "flag_attenuation_hardware",
+    "temperature", "humidity", "pressure",
+    "age", "pm25_current", "pm25_10min",
+    "pm25_30min", "pm25_1hr", "pm25_6hr",
+    "pm25_1day", "pm25_1week", "unused_pm",
+    "statsLastModifiedDate", "statsLastModifiedInterval"
+  )
   
   names(pas) <- newNames
   pas$unused_State <- NULL

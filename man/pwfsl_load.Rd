@@ -2,7 +2,7 @@
 % Please edit documentation in R/pwfsl_load.R
 \name{pwfsl_load}
 \alias{pwfsl_load}
-\title{Get PWFSLSmoke Monitoring Data}
+\title{Get PWFSLSmoke monitoring data}
 \usage{
 pwfsl_load()
 }
@@ -12,10 +12,11 @@ object.
 }
 \description{
 Loads recent PM2.5 monitoring data from the US Forest Service
-Pacific Wildland Fire Sciences Lab. This function performs the same data loading 
-step as \code{pwfsl_loadLatest()}, but has a shorter name for consistency with other
-data loading functions in the \code{MazamaPurpleAir} package. By default,
-this function loads data from all 50 states for the past 10 days. 
+Pacific Wildland Fire Sciences Lab. This function performs the same data 
+loading step as \code{pwfsl_loadLatest()}, but has a shorter name for 
+consistency with other data loading functions in the \code{MazamaPurpleAir} 
+package. By default, this function loads data from all 50 states for the past 
+10 days. 
 
 This function is a wrapper around \code{PWFSLSmoke::monitor_loadLatest}.
 

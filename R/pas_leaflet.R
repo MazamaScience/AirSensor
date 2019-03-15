@@ -50,14 +50,16 @@
 #' pas_leaflet(mvcaa, param="pm25_1hr")
 #' }
 
-pas_leaflet <- function(pas,
-                        param = "pm25_1hr",
-                        radius = 10,
-                        opacity = 0.8,
-                        maptype = "terrain",
-                        outsideOnly = TRUE) {
+pas_leaflet <- function(
+  pas = NULL,
+  param = "pm25_1hr",
+  radius = 10,
+  opacity = 0.8,
+  maptype = "terrain",
+  outsideOnly = TRUE
+) {
   
-  # ----- Validate parameters -------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
   
   # RUBY:  The dplyr::filter function used in the example removes the
   # RUBY: 'pas_synoptic' class so this test has to go. Not sure right now how
@@ -66,10 +68,10 @@ pas_leaflet <- function(pas,
   # RUBY:  functionality.
   # RUBY: 
   # RUBY:  For now, we'll just change this check to test for "data.frame".
-
+  
   if ( !("data.frame" %in% class(pas)) ) 
     stop(paste0("First argument is not of class 'data.frame'."))
-
+  
   if ( nrow(pas) == 0 || ncol(pas) == 0 )
     stop(paste0("One or both dimensions of the pa_synoptic object has length 0."))
   
@@ -93,13 +95,13 @@ pas_leaflet <- function(pas,
     stop(paste0('radius parameter is non-numeric'))
   
   
-  # ----- outsideOnly subsetting ----------------------------------------------
+  # ----- outsideOnly subsetting -----------------------------------------------
   
   if ( outsideOnly ) {
     pas <- subset(pas, pas$DEVICE_LOCATIONTYPE == 'outside')
   }
   
-  # ----- Figure out names for a legend and colors for each point -------------
+  # ----- Figure out names for a legend and colors for each point --------------
   
   # Ignore warnings from RColorBrewer as leaflet::colorBin does the right thing
   suppressWarnings({
@@ -208,7 +210,10 @@ pas_leaflet <- function(pas,
                   "#8073ac",
                   "#542788",
                   "#2d004b")
-      colorFunc <- leaflet::colorBin(colors, domain = range(pas[[param]]), bins = 10, na.color = "#bbbbbb")
+      colorFunc <- leaflet::colorBin(colors, 
+                                     domain = range(pas[[param]]), 
+                                     bins = 10, 
+                                     na.color = "#bbbbbb")
       cols <- colorFunc(pas[[param]])
       breaks <- seq(domain[1],domain[2],length.out=11)
       offset <- diff(breaks)[1] / 2
@@ -219,7 +224,10 @@ pas_leaflet <- function(pas,
       unit <- ''
     } else {                                    # Other
       domain <- range(pas[[param]], na.rm=TRUE)
-      colorFunc <- leaflet::colorNumeric("Purples", domain = domain, na.color = "#bbbbbb", reverse=FALSE)
+      colorFunc <- leaflet::colorNumeric("Purples", 
+                                         domain = domain, 
+                                         na.color = "#bbbbbb", 
+                                         reverse=FALSE)
       cols <- colorFunc(pas[[param]])
       breaks <- seq(domain[1],domain[2],length.out=6)
       offset <- diff(breaks)[1] / 2

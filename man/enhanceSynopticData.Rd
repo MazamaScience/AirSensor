@@ -4,7 +4,7 @@
 \alias{enhanceSynopticData}
 \title{Enhance synoptic data from Purple Air}
 \usage{
-enhanceSynopticData(pas_raw, countryCodes = c("US"),
+enhanceSynopticData(pas_raw = NULL, countryCodes = c("US"),
   includePWFSL = TRUE)
 }
 \arguments{
@@ -37,14 +37,17 @@ Steps include:
 
 4) Add distance and monitorID for the two closest PWFSL monitors
 
-Subsetting by country may be performed by specifying the \code{countryCodes} argument.
+Subsetting by country may be performed by specifying the \code{countryCodes} 
+argument.
 
-Setting \code{outsideOnly = TRUE} will return only those records marked as 'outside'.
+Setting \code{outsideOnly = TRUE} will return only those records marked as 
+'outside'.
 }
 \note{
 For data obtained on July 28, 2018 this will result in removal of all 
 'B' channels, even those whose parent 'A' channel is marked as 'outside'. 
-This is useful if you want a quick, synoptic view of the network, e.g. for a map.
+This is useful if you want a quick, synoptic view of the network, e.g. for a 
+map.
 }
 \examples{
 \dontrun{

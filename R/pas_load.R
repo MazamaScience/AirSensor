@@ -45,13 +45,15 @@
 #' pas <- pas_load()
 #' }
 
-pas_load <- function(baseUrl='https://www.purpleair.com/json',
-                     countryCodes = c('US'),
-                     includePWFSL = TRUE,
-                     lookbackDays = 1) {
+pas_load <- function(
+  baseUrl = 'https://www.purpleair.com/json',
+  countryCodes = c('US'),
+  includePWFSL = TRUE,
+  lookbackDays = 1
+) {
   
   logger.debug("----- pas_load() -----")
-
+  
   # Validate parameters --------------------------------------------------------
   
   # Guarantee uppercase codes
@@ -62,11 +64,11 @@ pas_load <- function(baseUrl='https://www.purpleair.com/json',
   # Gaurantee includePWFSL is a logial value
   if ( !is.logical(includePWFSL) )
     stop("parameter 'includePWFSL' is not a logical value")
-   
+  
   # Guarantee lookbackDays at least 1
   if ( lookbackDays < 1 )
     stop("parameter 'lookbackDays' is less than one")
-
+  
   # Load data ------------------------------------------------------------------
   
   # Download, parse and enhance synoptic data
@@ -77,7 +79,7 @@ pas_load <- function(baseUrl='https://www.purpleair.com/json',
   # Filter for age
   starttime <- lubridate::now("UTC") - lubridate::ddays(lookbackDays)
   pas <- dplyr::filter(pas, .data$lastSeenDate >= starttime)
-
+  
   # Add a class name
   class(pas) <- c('pa_synoptic', class(pas))
   

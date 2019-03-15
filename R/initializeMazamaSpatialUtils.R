@@ -1,6 +1,7 @@
 #' @export
+#' @importFrom MazamaCoreUtils logger.setup logger.setLevel WARN
 #' 
-#' @title Initialize Mazama Spatial Utils
+#' @title Initialize MazamaSpatialUtils package
 #' 
 #' @description Convenience function that wraps:
 #' 
@@ -11,9 +12,10 @@
 #'   MazamaSpatialUtils::loadSpatialData('NaturalEarthAdm1')
 #' }
 #' 
-#' This function should be run before using \code{pas_load()}, as \code{pas_load()}
-#' uses the spatial data loaded by \code{initializeMazamaSpatialUtils()} to enhance 
-#' raw synoptic data via \code{enhanceSynopticData()}.
+#' This function should be run before using \code{pas_load()}, as 
+#' \code{pas_load()} uses the spatial data loaded by 
+#' \code{initializeMazamaSpatialUtils()} to enhance  raw synoptic data via 
+#' \code{enhanceSynopticData()}.
 #' 
 #' If file logging is desired, these commands should be run individually with
 #' output log files specified as arguments to \code{logger.setup()} from the
@@ -23,8 +25,7 @@
 #' @param stateCodeDataset MazamaSpatialUtils dataset returning ISO 3166-2 
 #' alpha-2 stateCodes
 #' 
-#' # TODO:: this is the incorrect explanation for what logLevel is. 
-#' @param logLevel directory where spatial datasets are created
+#' @param logLevel logging level used
 
 initializeMazamaSpatialUtils <- function(spatialDataDir = '~/Data/Spatial',
                                          stateCodeDataset = 'NaturalEarthAdm1',

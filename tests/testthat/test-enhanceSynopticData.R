@@ -2,7 +2,7 @@ context("test-enhanceSynopticData")
 
 test_that("input validation works", {
   # Load package internal, test 'pas' object
-  data("pas_load_sample")
+  data("example_pas")
   
   # Catch errors first
   expect_error(enhanceSynopticData(c(1:4)))

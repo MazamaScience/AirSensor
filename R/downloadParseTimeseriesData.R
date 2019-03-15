@@ -1,5 +1,10 @@
 #' @export
-#' @title Download Purple Air Timeseries Data
+#' 
+#' @importFrom MazamaCoreUtils logger.debug logger.error
+#' @importFrom rlang .data
+#' 
+#' @title Download Purple Air timeseries data
+#' 
 #' @param pas Purple Air 'enhanced' synoptic data
 #' @param name Purple Air 'label'
 #' @param id Purple Air 'ID'
@@ -10,20 +15,26 @@
 #' @description Timeseries data from a specific PurpleAir can be retrieved from the Thingspeak API .
 #'
 
-downloadParseTimeseriesData <- function(pas = NULL,
-                                        name = NULL,
-                                        id = NULL,
-                                        startdate = NULL,
-                                        enddate = NULL,
-                                        baseURL = "https://api.thingspeak.com/channels/") {
-
+downloadParseTimeseriesData <- function(
+  pas = NULL,
+  name = NULL,
+  id = NULL,
+  startdate = NULL,
+  enddate = NULL,
+  baseURL = "https://api.thingspeak.com/channels/"
+) {
+  
   # Default to the most recent week of data
   if ( is.null(startdate) || is.null(enddate) ) {
     enddate <- lubridate::floor_date(lubridate::now('UTC'), unit='minute') 
     startdate <- lubridate::floor_date(enddate - lubridate::ddays(7)) 
   } else {
-    startdate <- lubridate::parse_date_time(startdate, c("ymd","ymd_H","ymd_HM","ymd_HMS"), tz="UTC")
-    enddate <- lubridate::parse_date_time(enddate, c("ymd","ymd_H","ymd_HM","ymd_HMS"), tz="UTC")
+    startdate <- lubridate::parse_date_time(startdate, 
+                                            c("ymd","ymd_H","ymd_HM","ymd_HMS"), 
+                                            tz="UTC")
+    enddate <- lubridate::parse_date_time(enddate, 
+                                          c("ymd","ymd_H","ymd_HM","ymd_HMS"), 
+                                          tz="UTC")
   } 
   
   startString <- strftime(startdate, "%Y-%m-%dT%H:%M:%S", tz="UTC")
@@ -31,91 +42,123 @@ downloadParseTimeseriesData <- function(pas = NULL,
   
   # Prefer to use the monitor's name over it's ID
   if ( !is.null(name) ) {
-    requested_meta <- dplyr::filter(pas, label == name)
+    requested_meta <- dplyr::filter(pas, .data$label == name)
   } else if ( !is.null(id) ) {
-    requested_meta <- dplyr::filter(pas, ID == id)
+    requested_meta <- dplyr::filter(pas, .data$ID == id)
   }
   
   # Determine which channel was given and access the other channel from it
   if ( is.na(requested_meta$parentID) ) {
     A_meta <- requested_meta
-    B_meta <- dplyr::filter(pas, parentID == A_meta$ID)
+    B_meta <- dplyr::filter(pas, .data$parentID == A_meta$ID)
   } else {
     B_meta <- requested_meta
-    A_meta <- dplyr::filter(pas, ID == B_meta$parentID)
+    A_meta <- dplyr::filter(pas, .data$ID == B_meta$parentID)
   }
   
   # Combine channel A and B monitor metadata
   meta <- dplyr::bind_rows(A_meta, B_meta)
   
   # Generate Thingspeak request URLs
-  A_url <- paste0(baseURL, A_meta$THINGSPEAK_PRIMARY_ID, "/feeds.json?api_key=", A_meta$THINGSPEAK_PRIMARY_ID_READ_KEY, "&start=", startString, "&end=", endString)
-  B_url <- paste0(baseURL, B_meta$THINGSPEAK_PRIMARY_ID, "/feeds.json?api_key=", B_meta$THINGSPEAK_PRIMARY_ID_READ_KEY, "&start=", startString, "&end=", endString)
+  A_url <- paste0(baseURL, 
+                  A_meta$THINGSPEAK_PRIMARY_ID, 
+                  "/feeds.json?api_key=", 
+                  A_meta$THINGSPEAK_PRIMARY_ID_READ_KEY, 
+                  "&start=", startString, 
+                  "&end=", 
+                  endString)
+  B_url <- paste0(baseURL, 
+                  B_meta$THINGSPEAK_PRIMARY_ID, 
+                  "/feeds.json?api_key=", 
+                  B_meta$THINGSPEAK_PRIMARY_ID_READ_KEY, 
+                  "&start=", startString, 
+                  "&end=", 
+                  endString)
   
-  # Request A channel data from Thingspeak ------------------------------------
+  # ----- Request A channel data from Thingspeak -------------------------------
   
   webserviceUrl <- A_url
   
-  # NOTE:  using Hadley Wickham style: https://github.com/hadley/httr/blob/master/vignettes/quickstart.Rmd
+  # NOTE:  using Hadley Wickham style: 
+  # NOTE:  https://github.com/hadley/httr/blob/master/vignettes/quickstart.Rmd
   r <- httr::GET(webserviceUrl)
   
   # Handle the response
   status_code <- httr::status_code(r)
-  content <- httr::content(r, as="text") # don't interpret the JSON -- use fromJSON() below
+  content <- httr::content(r, as="text") # don't interpret the JSON
   
   if ( httr::http_error(r) ) {  # web service failed to respond
     
     # https://digitalocean.com/community/tutorials/how-to-troubleshoot-common-http-error-codes
     if ( httr::status_code(r) == 500 ) {
-      err_msg <- paste0("web service error 500: Internal Server Error from ", webserviceUrl)
+      err_msg <- paste0("web service error 500: Internal Server Error from ", 
+                        webserviceUrl)
     } else if ( httr::status_code(r) == 502 ) {
-      err_msg <- paste0("web service error 502: Bad Gateway from ", webserviceUrl)
+      err_msg <- paste0("web service error 502: Bad Gateway from ", 
+                        webserviceUrl)
     } else if ( httr::status_code(r) == 503 ) {
-      err_msg <- paste0("web service error 503: Service Unavailable from ", webserviceUrl)
+      err_msg <- paste0("web service error 503: Service Unavailable from ", 
+                        webserviceUrl)
     } else if ( httr::status_code(r) == 504 ) {
-      err_msg <- paste0("web service error 504: Gateway Timeout from ", webserviceUrl)
+      err_msg <- paste0("web service error 504: Gateway Timeout from ", 
+                        webserviceUrl)
     } else {
-      err_msg <- paste0('web service error ', httr::status_code(r), " from ", webserviceUrl)
+      err_msg <- paste0('web service error ', httr::status_code(r), " from ", 
+                        webserviceUrl)
     }
     
     stop(err_msg, call.=TRUE)
     
   }
   
-  A_list <- jsonlite::fromJSON(content, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplifyMatrix = TRUE, flatten = FALSE)
+  A_list <- jsonlite::fromJSON(content, 
+                               simplifyVector = TRUE, 
+                               simplifyDataFrame = TRUE, 
+                               simplifyMatrix = TRUE, 
+                               flatten = FALSE)
   A_data <- A_list$feeds
   
   # Request B channel data from Thingspeak ------------------------------------
   
   webserviceUrl <- B_url
   
-  # NOTE:  using Hadley Wickham style: https://github.com/hadley/httr/blob/master/vignettes/quickstart.Rmd
+  # NOTE:  using Hadley Wickham style: 
+  # NOTE:  https://github.com/hadley/httr/blob/master/vignettes/quickstart.Rmd
   r <- httr::GET(webserviceUrl)
   
   # Handle the response
   status_code <- httr::status_code(r)
-  content <- httr::content(r, as="text") # don't interpret the JSON -- use fromJSON() below
+  content <- httr::content(r, as="text") # don't interpret the JSONw
   
   if ( httr::http_error(r) ) {  # web service failed to respond
     
     # https://digitalocean.com/community/tutorials/how-to-troubleshoot-common-http-error-codes
     if ( httr::status_code(r) == 500 ) {
-      err_msg <- paste0("web service error 500: Internal Server Error from ", webserviceUrl)
+      err_msg <- paste0("web service error 500: Internal Server Error from ", 
+                        webserviceUrl)
     } else if ( httr::status_code(r) == 502 ) {
-      err_msg <- paste0("web service error 502: Bad Gateway from ", webserviceUrl)
+      err_msg <- paste0("web service error 502: Bad Gateway from ", 
+                        webserviceUrl)
     } else if ( httr::status_code(r) == 503 ) {
-      err_msg <- paste0("web service error 503: Service Unavailable from ", webserviceUrl)
+      err_msg <- paste0("web service error 503: Service Unavailable from ", 
+                        webserviceUrl)
     } else if ( httr::status_code(r) == 504 ) {
-      err_msg <- paste0("web service error 504: Gateway Timeout from ", webserviceUrl)
+      err_msg <- paste0("web service error 504: Gateway Timeout from ", 
+                        webserviceUrl)
     } else {
-      err_msg <- paste0('web service error ', httr::status_code(r), " from ", webserviceUrl)
+      err_msg <- paste0('web service error ', httr::status_code(r), " from ", 
+                        webserviceUrl)
     }
     
     stop(err_msg, call.=TRUE)
     
   }
   
-  B_list <- jsonlite::fromJSON(content, simplifyVector = TRUE, simplifyDataFrame = TRUE, simplifyMatrix = TRUE, flatten = FALSE)
+  B_list <- jsonlite::fromJSON(content, 
+                               simplifyVector = TRUE, 
+                               simplifyDataFrame = TRUE, 
+                               simplifyMatrix = TRUE, 
+                               flatten = FALSE)
   B_data <- B_list$feeds
   
   # Sanity check for data
@@ -126,36 +169,39 @@ downloadParseTimeseriesData <- function(pas = NULL,
   } else if ( length(B_data) == 0 ) {
     stop('No data returned for B channel for the requested time period.')
   }
-    
+  
   # Rename columns
-  names(A_data) <- c("datetime", "entry_id", "pm1_atm", "pm2.5_atm", "pm10_atm", "uptime", "rssi", "temperature", "humidity", "pm2.5_cf1")
-  names(B_data) <- c("datetime", "entry_id", "pm1_atm", "pm2.5_atm", "pm10_atm", "memory", "adc0", "unused1", "unused2", "pm2.5_cf1")
-
+  names(A_data) <- c("datetime", "entry_id", "pm1_atm", "pm2.5_atm", "pm10_atm", 
+                     "uptime", "rssi", "temperature", "humidity", "pm2.5_cf1")
+  names(B_data) <- c("datetime", "entry_id", "pm1_atm", "pm2.5_atm", "pm10_atm", 
+                     "memory", "adc0", "unused1", "unused2", "pm2.5_cf1")
+  
   # Add channel identifier
   A_data$channel <- "A"
   B_data$channel <- "B"
   
   # Drop unused columns
-  B_data <- dplyr::select(B_data, -unused1, -unused2)
+  B_data <- dplyr::select(B_data, -.data$unused1, -.data$unused2)
   
   # Combine data from both channels
-  data <- dplyr::bind_rows(A_data, B_data) %>%
-    dplyr::arrange(datetime)
-
+  data <- 
+    dplyr::bind_rows(A_data, B_data) %>%
+    dplyr::arrange(.data$datetime)
+  
   # NOTE:  > names(data)
   # NOTE:  [1] "datetime"    "entry_id"    "pm1_atm"     "pm2.5_atm"   "pm10_atm"    "uptime"      "rssi"       
   # NOTE:  [8] "temperature" "humidity"    "pm2.5_cf1"   "channel"     "memory"      "adc0"       
   
   numeric_columns <- c("pm1_atm", "pm2.5_atm", "pm10_atm", "uptime", "rssi",
                        "temperature", "humidity", "pm2.5_cf1", "memory", "adc0")
-
+  
   # Convert to proper types
   data$datetime <- lubridate::ymd_hms(data$datetime)
   data$entry_id <- as.character(data$entry_id)
   for ( name in numeric_columns ) {
     data[[name]] <- as.numeric(data[[name]])
   }
-
+  
   # Round values to reflect resolution as specified in https://www.purpleair.com/sensors
   
   # NOTE:  Rounding breaks outlier detection
@@ -169,9 +215,9 @@ downloadParseTimeseriesData <- function(pas = NULL,
   
   # Combine meta and data dataframes into a list
   pat <- list(meta = meta, data = data)
-
+  
   return(pat)
-
+  
 }
 
 ###############################################################################
@@ -186,5 +232,5 @@ if ( FALSE ) {
   pat_raw <- downloadParseTimeseriesData(pas, name)
   pat <- createPATimeseriesObject(pat_raw)
   
-
+  
 }

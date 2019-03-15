@@ -1,6 +1,10 @@
 #' @export
+#' 
+#' @importFrom MazamaCoreUtils logger.debug logger.error
+#' 
 #' @title Download synoptic data from Purple Air
-#' @param baseUrl Base URL for synoptic data.
+#' 
+#' @param baseUrl base URL for synoptic data
 #' @return Dataframe of synoptic PurpleAir data.
 #' @description Download and parse synoptic data from the Purple Air network
 #' of particulate monitors.
@@ -15,7 +19,9 @@
 #' pas_raw <- downloadParseSynopticData()
 #' }
 
-downloadParseSynopticData <- function(baseUrl='https://www.purpleair.com/json') {
+downloadParseSynopticData <- function(
+  baseUrl = 'https://www.purpleair.com/json'
+) {
 
   logger.debug("----- downloadParseSynopticData() -----")
 
@@ -25,30 +31,38 @@ downloadParseSynopticData <- function(baseUrl='https://www.purpleair.com/json') 
   # Placeholder in case things get more complicated
   webserviceUrl <- baseUrl
 
-  # NOTE:  using Hadley Wickham style: https://github.com/hadley/httr/blob/master/vignettes/quickstart.Rmd
+  # NOTE:  using Hadley Wickham style: 
+  # NOTE:  https://github.com/hadley/httr/blob/master/vignettes/quickstart.Rmd
   r <- httr::GET(webserviceUrl)
   
   # Handle the response
   status_code <- httr::status_code(r)
-  content <- httr::content(r, as="text", encoding="UTF-8") # don't interpret the JSON -- use fromJSON() below
+  content <- httr::content(r, as="text", encoding="UTF-8") # don't interpret
 
   if ( httr::http_error(r) ) {  # web service failed to respond
     
+    # TODO:  Find a package with  web servivce status codes
+    
     # https://digitalocean.com/community/tutorials/how-to-troubleshoot-common-http-error-codes
     if ( httr::status_code(r) == 500 ) {
-      err_msg <- paste0("web service error 500: Internal Server Error from ", webserviceUrl)
+      err_msg <- paste0("web service error 500: Internal Server Error from ",
+                        webserviceUrl)
     } else if ( httr::status_code(r) == 502 ) {
-      err_msg <- paste0("web service error 502: Bad Gateway from ", webserviceUrl)
+      err_msg <- paste0("web service error 502: Bad Gateway from ", 
+                        webserviceUrl)
     } else if ( httr::status_code(r) == 503 ) {
-      err_msg <- paste0("web service error 503: Service Unavailable from ", webserviceUrl)
+      err_msg <- paste0("web service error 503: Service Unavailable from ", 
+                        webserviceUrl)
     } else if ( httr::status_code(r) == 504 ) {
-      err_msg <- paste0("web service error 504: Gateway Timeout from ", webserviceUrl)
+      err_msg <- paste0("web service error 504: Gateway Timeout from ", 
+                        webserviceUrl)
     } else {
-      err_msg <- paste0('web service error ', httr::status_code(r), " from ", webserviceUrl)
+      err_msg <- paste0('web service error ', httr::status_code(r), " from ", 
+                        webserviceUrl)
     }
 
     logger.error("Web service failed to respond: %s", webserviceUrl)
-    logger.error(err_message)
+    logger.error(err_msg)
     stop(err_msg, call.=TRUE)
     
   }
@@ -68,9 +82,10 @@ downloadParseSynopticData <- function(baseUrl='https://www.purpleair.com/json') 
   # Pull out the dataframe of results
   resultsDF <- PAList$results
 
-  # ----- BEGIN convert results$Stats -----------------------------------------
+  # ----- BEGIN convert results$Stats ------------------------------------------
 
-  # NOTE:  Stats for current, 10 min, 30 min, 1 hr, 6 hr, 1 day, 1 week are stored in df$Stats
+  # NOTE:  Stats for current, 10 min, 30 min, 1 hr, 6 hr, 1 day, 1 week are 
+  # NOTE:  stored in df$Stats
 
   # NOTE:  Some Stats are NA and we need to fill in a blank stats array for those
   emptyStatsList <- list(
@@ -112,7 +127,7 @@ downloadParseSynopticData <- function(baseUrl='https://www.purpleair.com/json') 
   missingMask <- statsTbl <= -999
   statsTbl[missingMask] <- as.numeric(NA)
 
-  # ----- END convert results$Stats -------------------------------------------
+  # ----- END convert results$Stats --------------------------------------------
 
   # Now create a new dataframe using the important columsn from results and stats
 

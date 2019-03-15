@@ -7,7 +7,7 @@
 downloadParseSynopticData(baseUrl = "https://www.purpleair.com/json")
 }
 \arguments{
-\item{baseUrl}{Base URL for synoptic data.}
+\item{baseUrl}{base URL for synoptic data}
 }
 \value{
 Dataframe of synoptic PurpleAir data.

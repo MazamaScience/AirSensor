@@ -4,6 +4,10 @@
 
 # Ignore various yaml files associated with package building packages
 ^\.lintr$
+^\.travis\.yml$
+^_pkgdown\.yml$
+^pkgdown/
+^docs$
 
 # Ignore LICENSE file which is included for display on Github
 ^LICENSE$
