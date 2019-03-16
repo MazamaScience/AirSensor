@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • MazamaPurpleAir</title>
+<title>Data access and analysis functions for Purple Air sensor data — MazamaPurpleAir • MazamaPurpleAir</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,7 +30,22 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Data access and analysis functions for Purple Air sensor data — MazamaPurpleAir" />
+
+<meta property="og:description" content="This package contains code to access current synoptic data from
+Purple Air as well as time series data for individual sensors from Thing
+Speak.
+Functions for downloading and enhancing sensor data return one of two types
+of object:
+pas -- PurpleAirSynoptic dataframe of uniformly named properties
+pat -- PurpleAirTimeseries lost of dataframes containg
+sensor metadata and data
+" />
+
+<meta property="og:description" content="Analysis and visualization functions provide basic functionality for working
+with Purple Air sensor data and comparing it with national monitoring data
+retrieved with the PWFSLSmoke package." />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -47,7 +62,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -109,108 +124,39 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Data access and analysis functions for Purple Air sensor data</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/MazamaPurpleAir/blob/master/R/MazamaPurpleAir.R'><code>R/MazamaPurpleAir.R</code></a></small>
+    <div class="hidden name"><code>MazamaPurpleAir.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    
+    <p>This package contains code to access current synoptic data from
+Purple Air as well as time series data for individual sensors from Thing
+Speak.</p>
+<p>Functions for downloading and enhancing sensor data return one of two types
+of object:</p><ul>
+<li><p><code>pas</code> -- PurpleAirSynoptic dataframe of uniformly named properties</p></li>
+<li><p><code>pat</code> -- PurpleAirTimeseries lost of dataframes containg
+sensor metadata and data</p></li>
+</ul>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <p>Analysis and visualization functions provide basic functionality for working
+with Purple Air sensor data and comparing it with national monitoring data
+retrieved with the <span class="pkg">PWFSLSmoke</span> package.</p>
+    
+    </div>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
         
-        <td>
-          <p><code><a href="MazamaPurpleAir.html">MazamaPurpleAir</a></code> </p>
-        </td>
-        <td><p>Data access and analysis functions for Purple Air sensor data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="downloadParseSynopticData.html">downloadParseSynopticData()</a></code> </p>
-        </td>
-        <td><p>Download synoptic data from Purple Air</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="downloadParseTimeseriesData.html">downloadParseTimeseriesData()</a></code> </p>
-        </td>
-        <td><p>Download Purple Air timeseries data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="enhanceSynopticData.html">enhanceSynopticData()</a></code> </p>
-        </td>
-        <td><p>Enhance synoptic data from Purple Air</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="example_pas.html">example_pas</a></code> </p>
-        </td>
-        <td><p>Example Purple Air Synoptic dataset</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="example_raw_pas.html">example_raw_pas</a></code> </p>
-        </td>
-        <td><p>Example raw Purple Air Synoptic dataset</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="initializeMazamaSpatialUtils.html">initializeMazamaSpatialUtils()</a></code> </p>
-        </td>
-        <td><p>Initialize MazamaSpatialUtils package</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="pas_leaflet.html">pas_leaflet()</a></code> </p>
-        </td>
-        <td><p>Leaflet interactive map of Purple Air sensors</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="pas_load.html">pas_load()</a></code> </p>
-        </td>
-        <td><p>Get latest Purple Air synoptic data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="pat_load.html">pat_load()</a></code> </p>
-        </td>
-        <td><p>Get Purple Air timeseries data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="pwfsl_load.html">pwfsl_load()</a></code> </p>
-        </td>
-        <td><p>Get PWFSLSmoke monitoring data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="pwfsl_loadLatest.html">pwfsl_loadLatest()</a></code> </p>
-        </td>
-        <td><p>Get PWFSLSmoke monitoring data</p></td>
-      </tr>
-    </tbody>
-    </table>
+
   </div>
-
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
-    </ul>
+                </ul>
+
   </div>
 </div>
 
