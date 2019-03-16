@@ -5,11 +5,17 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Utilities to Process and Display PM2.5 data from Purple Air • MazamaPurpleAir</title>
+<title>Home • MazamaPurpleAir</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="Utilities to Process and Display PM2.5 data from Purple Air">
+<script src="pkgdown.js"></script><meta property="og:title" content="Home">
 <meta property="og:description" content="Utilities to process and display PM2.5 data from Purple Air.">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -82,7 +88,32 @@
 <div id="mazamapurpleair" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#mazamapurpleair" class="anchor"></a>MazamaPurpleAir</h1></div>
-<p>R package to process and display PM2.5 data from PurpleAir</p>
+<p><code>Utilities to process and display PM2.5 data from PurpleAir</code></p>
+<div id="background" class="section level2">
+<h2 class="hasAnchor">
+<a href="#background" class="anchor"></a>Background</h2>
+</div>
+<div id="installation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h2>
+<p>This package is designed to be used with <a href="https://cran.r-project.org">R</a> (&gt;= 3.3) and <a href="https://www.rstudio.com">RStudio</a> so make sure you have those installed first.</p>
+<p>Users will want to install the <strong>devtools</strong> package to have access to the latest version of the package from Github.</p>
+<p>The following packages should be installed by typing the following at the RStudio console:</p>
+<pre><code><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages"># Note that vignettes require knitr and rmarkdown
+install.packages('knitr')
+install.packages('rmarkdown')
+install.packages('MazamaSpatialUtils')
+devtools::install_github('MazamaScience/MazamaPurpleAir', build_vignettes=TRUE)</a></code></pre>
+<p>Any work with spatial data, <em>e.g.</em> assigning countries, states and timezones, will require installation of required spatial datasets. To get these datasets you should type the following at the RStudio console:</p>
+<pre><code><a href="https://www.rdocumentation.org/packages/base/topics/library">library(MazamaSpatialUtils)
+dir.create('~/Data/Spatial', recursive=TRUE)
+setSpatialDataDir('~/Data/Spatial')
+installSpatialData()</a></code></pre>
+</div>
+<div id="examples" class="section level2">
+<h2 class="hasAnchor">
+<a href="#examples" class="anchor"></a>Examples</h2>
+</div>
 </div>
   </div>
 
