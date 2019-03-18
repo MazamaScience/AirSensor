@@ -17,6 +17,15 @@
 #' \item{"pm25_1week"}
 #' }
 #' 
+#' Auxillary \code{param} arguments can be usd to display various Purple Air 
+#' sensor data. Currently supported \code{param} arguments include:
+#' \itemize{
+#' \item{"humidity"}
+#' \item{"pressure"}
+#' \item{"temperature"}
+#' \item{"pwfsl_closestDistance"}
+#' } 
+#' 
 #' @details The \code{maptype} argument is mapped onto leaflet "ProviderTile" 
 #' names. Current mappings include:
 #' \enumerate{
