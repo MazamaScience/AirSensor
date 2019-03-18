@@ -1,0 +1,82 @@
+---
+title: "An Introduction to PurpleAir Synoptic Data"
+author: "Mazama Science"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Maps and Timeseries Plots}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE, message=FALSE}
+knitr::opts_chunk$set(fig.width=7, fig.height=5)
+
+library(MazamaCoreUtils)
+library(MazamaPurpleAir)
+# NOTE: Use example PAS data for vignettes to avoid long wait-times
+data("example_pas")
+pas <- example_pas
+```
+
+_Synoptic data_ provides a synopsis - a comprehensive and nearly instantaneous 
+picture of the state of the atmosphere. This vignette demonstrates an example 
+workflow for exploring air quality synoptic data using the MazamaPurpleAir 
+R package and data captured by [PurpleAir](https://www.purpleair.com/) air 
+quality monitors.
+
+### Loading PurpleAir Data
+PurpleAir sensor readings are uploaded to the cloud every 80 seconds or so 
+where they are stored for download and display on the PurpleAir website. In 
+order to capture and download the latest synoptic dataset, begin by importing 
+the required Mazama Science packages and load the PurpleAir Synoptic ("`pas`") 
+data.   
+
+```{r, eval=FALSE}
+library(MazamaCoreUtils)
+library(MazamaPurpleAir)
+pas <- pas_load()
+```
+
+The `pas_load` is a wrapper function that will: 
+
+1. Download a raw dataset of the entire PurpleAir network that includes both 
+metadata and recent PM2.5 averages for each deployed monitor across the globe. 
+See `downloadParseSynopticData()` for more info.
+
+2. Enhance the raw dataset by doing some really cool stuff. 
+See `enhanceSynopticData()` for more info.
+
+### PurpleAir Synoptic Data
+The `pas` dataset contains 35 columns, and each row corresponds to different 
+PurpleAir monitors. For the scope of this example we will focus on the columns
+labeled `stateCode`, `pm25_*`, `humidity`, `pressure`, `temperature`, and 
+`pwfsl_closestDistance`. 
+
+The `pm25_*` column is short-hand for all the columns containing PM2.5 data. 
+The extended names are fairly obvious; the `pm25_current` column contains data for 
+the most recent air data, `pm25_10min` contains a 10-minute average of PM2.5 
+data, and so on. 
+
+```{r}
+pas %>% 
+  select(starts_with("pm25_")) %>% 
+  head()
+``` 
+
+### Mapping `pas` data
+
+```{r leaflet}
+
+pas %>% 
+  filter(stateCode == 'CA') %>% 
+  filter(pm25_1hr >= 20.0) %>% 
+  pas_leaflet()
+
+```
+
+
+
+
+
+
