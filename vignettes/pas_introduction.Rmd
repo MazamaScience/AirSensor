@@ -14,6 +14,7 @@ knitr::opts_chunk$set(fig.width=7, fig.height=5)
 
 library(MazamaCoreUtils)
 library(MazamaPurpleAir)
+library(tidyverse)
 # NOTE: Use example PAS data for vignettes to avoid long wait-times
 data("example_pas")
 pas <- example_pas
@@ -44,8 +45,10 @@ The `pas_load` is a wrapper function that will:
 metadata and recent PM2.5 averages for each deployed monitor across the globe. 
 See `downloadParseSynopticData()` for more info.
 
-2. Enhance the raw dataset by doing some really cool stuff. 
-See `enhanceSynopticData()` for more info.
+2. Enhance the raw dataset by replacing variables with more consistent and 
+human readable names, adds spatial metadata for each monitor, and lists the 
+nearest official air monitor. For a more indepth explaination, see 
+`enhanceSynopticData()`.
 
 ### PurpleAir Synoptic Data
 The `pas` dataset contains 35 columns, and each row corresponds to different 
@@ -61,22 +64,84 @@ data, and so on.
 ```{r}
 pas %>% 
   select(starts_with("pm25_")) %>% 
-  head()
+  head(5)
 ``` 
 
-### Mapping `pas` data
+### Mapping `pas` PM2.5 data
 
-```{r leaflet}
+To visually explore a region, we can use our `pas` data with the `pas_leaflet()`
+function to plot an interactive JavaScript [leaflet](https://leafletjs.com/) map.
+By default, `pas_leaflet()` will map the coordinates of each PurpleAir monitor 
+and the hourly PM2.5 data. Clicking on a monitor will show monitor metadata.
 
+```{r}
 pas %>% 
-  filter(stateCode == 'CA') %>% 
-  filter(pm25_1hr >= 20.0) %>% 
   pas_leaflet()
-
 ```
 
+If we want to narrow our selection, for example to California, and look at which 
+locations have a moderate to unhealthy 6-hour average air quality rating we can 
+create a script like:
 
+```{r CAleaflet}
+pas %>% 
+  filter(stateCode == 'CA') %>% 
+  filter(pm25_6hr >= 25.0) %>% 
+  pas_leaflet(param = "pm25_6hr")
+```
 
+This code pipes our `pas` data into `dplyr::filter()` where we can set our 
+selection criteria. A `stateCode` is the ISO 3166-2 state name abbriviation, 
+hence we limit our filter to only accept `stateCode == 'CA'`. The `pm25_6hr` 
+selection, as mentioned above, selects the 6-hour average and restricts the 
+monitors to those whose PM2.5 6-hour average is above 25.0. Be sure to include 
+the `"pm25_6hr"` paramter in `pas_leaflet()`.  
 
+### Mapping `pas` auxillary data
+
+We can also explore and utilize other PurpleAir monitor data. Check the 
+`pas_leaflet()` documentation for all supported parameters.
+
+Here is an example of humidity data captured from PurpleAir monitors across the 
+state of California.
+```{r}
+pas %>% 
+  filter(stateCode == "CA") %>% 
+  pas_leaflet(param = "humidity")
+```
+
+### Exploring PurpleAir data
+
+Perhaps we can find out which states have the highest _percentage_ of PurpleAir 
+monitors that are reporting >20 PM2.5 weekly average. 
+
+```{r, warning=FALSE}
+stateWt <- pas %>% 
+  count(stateCode, sort = TRUE)
+
+df <- pas %>%
+  select(stateCode, pm25_1week) %>% 
+  filter(pm25_1week > 20.0) %>%
+  count(stateCode, sort = TRUE, name = "TotalMonitors") %>%
+  mutate("badAirPercent" = TotalMonitors / stateWt$n[stateWt$stateCode == stateCode]) %>% 
+  mutate(stateCode = fct_reorder(stateCode, badAirPercent)) %>%
+  head(15)
+```
+
+From our `df` data frame, we can use `ggplot2` to visualize our results. 
+
+```{r, warning=FALSE}
+df %>% 
+  ggplot(aes(x = stateCode, y = badAirPercent)) + coord_flip() + 
+  geom_col(aes(fill = stateCode)) + 
+  scale_y_continuous(labels = scales::percent) + 
+  labs(x = "State", y = "Percent of PA monitors above 20 PM2.5") + 
+  theme(legend.position = "none")
+```
+
+As you can see, the MazamaPurpleAir package combined with data provided by 
+PurpleAir offers a powerful system for regional air-quality assesment. 
+
+- _Mazama Science_
 
 
