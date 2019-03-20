@@ -1,3 +1,8 @@
+# MazamaPurpleAir 0.1.4.1
+
+* added PurpleAir timeseries functionality
+* updated PurpleAir synoptic vignette
+
 # MazamaPurpleAir 0.1.4
 
 * improved, more consistent documentation
