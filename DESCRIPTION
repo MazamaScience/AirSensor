@@ -1,6 +1,6 @@
 Type: Package
 Package: MazamaPurpleAir
-Version: 0.1.4
+Version: 0.1.4.1
 Title: Utilities to Process and Display PM2.5 data from Purple Air
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
