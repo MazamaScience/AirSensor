@@ -22,7 +22,7 @@
 #' \dontrun{
 #' initializeMazamaSpatialUtils()
 #' pas <- pas_load()
-#' pat_raw <- downloadParseTimeseriesData(pas, name = 'North Bend Weather', startdate = 20181908)
+#' pat_raw <- downloadParseTimeseriesData(pas, name ='North Bend Weather', startdate = 20181908)
 #' nb_pat <- createPATimeseriesObject(pat_raw)
 #' }
 
@@ -32,10 +32,19 @@ createPATimeseriesObject <- function(pat_raw = NULL) {
   
   meta <- pat_raw$meta %>%
     dplyr::filter(is.na(parentID)) %>%
-    dplyr::select(ID, label, sensorType,
-                  DEVICE_LOCATIONTYPE, THINGSPEAK_PRIMARY_ID, THINGSPEAK_PRIMARY_ID_READ_KEY,
-                  longitude, latitude, countryCode, stateCode, timezone,
-                  pwfsl_closestDistance, pwfsl_closestMonitorID)
+    dplyr::select(ID, 
+                  label, 
+                  sensorType, 
+                  DEVICE_LOCATIONTYPE, 
+                  THINGSPEAK_PRIMARY_ID, 
+                  THINGSPEAK_PRIMARY_ID_READ_KEY, 
+                  longitude, 
+                  latitude, 
+                  countryCode, 
+                  stateCode, 
+                  timezone, 
+                  pwfsl_closestDistance, 
+                  pwfsl_closestMonitorID)
   
   # ----- simplify data -------------------------------------------------------
   
@@ -49,7 +58,12 @@ createPATimeseriesObject <- function(pat_raw = NULL) {
   # Extract useful columns from channel A data
   A <- pat_raw$data %>%
     dplyr::filter(channel == 'A') %>%
-    dplyr::select(datetime, uptime, rssi, temperature, humidity, pm2.5_cf1) %>%
+    dplyr::select(datetime, 
+                  uptime, 
+                  rssi, 
+                  temperature, 
+                  humidity, 
+                  pm2.5_cf1) %>%
     dplyr::rename(datetime_A = datetime, pm25_A = pm2.5_cf1)
 
   # NOTE:  Expedient conversion to a minute axis with floor_date() 
@@ -60,7 +74,10 @@ createPATimeseriesObject <- function(pat_raw = NULL) {
   # Extract useful columns from channel B data
   B <- pat_raw$data %>%
     dplyr::filter(channel == 'B') %>%
-    dplyr::select(datetime, memory, adc0, pm2.5_cf1) %>%
+    dplyr::select(datetime, 
+                  memory, 
+                  adc0, 
+                  pm2.5_cf1) %>%
     dplyr::rename(datetime_B = datetime, pm25_B = pm2.5_cf1)
   
   # NOTE:  Expedient conversion to a minute axis with floor_date() 
@@ -70,13 +87,23 @@ createPATimeseriesObject <- function(pat_raw = NULL) {
   
   # Combine dataframes 
   data <- dplyr::full_join(A, B, by = 'datetime') %>%
-    dplyr::select(datetime, pm25_A, pm25_B, temperature, humidity, uptime, adc0, rssi, datetime_A, datetime_B) %>%
+    dplyr::select(datetime, 
+                  pm25_A, 
+                  pm25_B, 
+                  temperature, 
+                  humidity,
+                  uptime, 
+                  adc0, 
+                  rssi, 
+                  datetime_A, 
+                  datetime_B) %>%
     dplyr::arrange(datetime)
   
-  # Fillin adc0 and rssi using last observation carry forward so both channels have these (they don't change much)
+  # Fillin adc0 and rssi using last observation carry forward so both 
+  # channels have these (they don't change much)
   data <- tidyr::fill(data, adc0, rssi)
 
-  # ----- Create the Purple Air Timeseries (pat) object -----------------------
+  # ----- Create the Purple Air Timeseries (pat) object ------------------------
   
   # Combine meta and data dataframes into a list
   pat <- list(meta = meta, data = data)
