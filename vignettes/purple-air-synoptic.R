@@ -7,33 +7,33 @@ library(MazamaPurpleAir)
 # and MazamaSpatialUtils
 library(MazamaSpatialUtils)
 
-# Loading package data
+# Load package data
 data("example_pas")
 
 # Code to download new data
 # pas <- pas_load()
 
 ## ----examining_pas-------------------------------------------------------
-#class(pas_load_sample)
-#dim(pas_load_sample)
+class(example_pas)
+dim(example_pas)
 
 ## ----column_names--------------------------------------------------------
-#colnames(pas_load_sample)
+colnames(example_pas)
 
 ## ----subsetting----------------------------------------------------------
 # subsetting using piping and filter() from magrittr and dplyr, respecively
-#WestCoastPas <- pas_load_sample %>%
-#  filter(stateCode %in% c('OR', 'WA', 'CA'))
-## And plotting to check what the result is 
-#pas_leaflet(WestCoastPas)
+WestCoast_pas <- example_pas %>%
+  filter(stateCode %in% c('OR', 'WA', 'CA'))
+# And plotting to check what the result is 
+pas_leaflet(WestCoast_pas)
 
 ## ----histogram-----------------------------------------------------------
-#hist(WestCoastPas$pwfsl_closestDistance)
+hist(WestCoast_pas$pwfsl_closestDistance, n=50)
 
 ## ----subsetting-2--------------------------------------------------------
 # subset 
-#WestCoastPas <- WestCoastPas %>%
-#  filter(pwfsl_closestDistance <= 16009)
-## and plot 
-#pas_leaflet(WestCoastPas)
+WestCoast_pas <- WestCoast_pas %>%
+  filter(pwfsl_closestDistance <= 16009)
+# and plot 
+pas_leaflet(WestCoast_pas)
 

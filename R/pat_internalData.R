@@ -1,21 +1,28 @@
 #' @export
 #' @import graphics
-#' @title Return a Linear Model Fitting Channel A and BCompare All Variables in a Purple Air Timeseries Object
+#' 
+#' @title Compare All Variables in a Purple Air Timeseries Object
+#' 
+#' @description Creates a multi-panel comparing all variables in the \code{pat} 
+#' object. If any variables have no valid data, they are omitted from the plot.
+#' 
+#' A tibble is returned containing only the requested variables and omitting any
+#' that have no valid data.
+#' 
 #' @param pat Purple Air Timeseries "pat" object from \code{createPATimeseriesObject()}
 #' @param use_adc0 logical specifying whether include the \code{adc0} parameter
 #' @param use_rssi logical specifying whether include the \code{rssi} parameter
 #' @param showPlot logical specifying whether to generate internal data plots
-#' @return Tibble portion of the \code{pat} object, subset
-#' @description Creates a multi-panel comparing all variables in the \code{pat} object.
-#' If any variables have no valid data, they are omitted from the plot.
 #' 
-#' A tibble is returned containing only the requested variables and omitting any
-#' that have no valid data.
+#' @return Tibble portion of the \code{pat} object, subset.
 
-pat_internalData <- function(pat,
-                             use_adc0 = FALSE,
-                             use_rssi = TRUE,
-                             showPlot = TRUE) {
+pat_internalData <- function(
+  pat,
+  use_adc0 = FALSE,
+  use_rssi = TRUE,
+  showPlot = TRUE
+) {
+  
   
   # For easier access
   meta <- pat$meta
@@ -45,5 +52,6 @@ pat_internalData <- function(pat,
   }
   
   return(invisible(data))
+  
 }
 

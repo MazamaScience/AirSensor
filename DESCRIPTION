@@ -1,11 +1,10 @@
 Type: Package
 Package: MazamaPurpleAir
-Version: 0.1.4.1
+Version: 0.1.5
 Title: Utilities to Process and Display PM2.5 data from Purple Air
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
     person("Tate", "Brasel", email="tatebrasel6@gmail.com", role=c("aut")),
-    person("Ruby", "Fore", email="ruby.a.fore@gmail.com", role=c("aut")),
     person("Hans", "Martin", email="hansmrtn@gmail.com", role=c("aut")), 
     person("Helen", "Miller", email="helen@ohana.org", role=c("aut"))
     )
@@ -20,6 +19,7 @@ Depends:
     MazamaCoreUtils
 Imports:
     countrycode,
+    ggplot2,
     httr,
     jsonlite,
     leaflet,
@@ -28,8 +28,10 @@ Imports:
     PWFSLSmoke (>= 1.0.33),
     RColorBrewer,
     rlang,
+    scales,
     sp,
     stringr,
+    tidyr,
     magrittr
 Suggests:
     knitr,

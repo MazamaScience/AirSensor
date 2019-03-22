@@ -27,9 +27,11 @@
 #' 
 #' @param logLevel logging level used
 
-initializeMazamaSpatialUtils <- function(spatialDataDir = '~/Data/Spatial',
-                                         stateCodeDataset = 'NaturalEarthAdm1',
-                                         logLevel = WARN) {
+initializeMazamaSpatialUtils <- function(
+  spatialDataDir = '~/Data/Spatial',
+  stateCodeDataset = 'NaturalEarthAdm1',
+  logLevel = WARN
+) {
   
   logger.setup()
   logger.setLevel(logLevel)

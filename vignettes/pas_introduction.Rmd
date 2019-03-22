@@ -14,7 +14,9 @@ knitr::opts_chunk$set(fig.width=7, fig.height=5)
 
 library(MazamaCoreUtils)
 library(MazamaPurpleAir)
-library(tidyverse)
+library(dplyr)
+library(ggplot2)
+
 # NOTE: Use example PAS data for vignettes to avoid long wait-times
 data("example_pas")
 pas <- example_pas
@@ -24,7 +26,7 @@ _Synoptic data_ provides a synopsis - a comprehensive and nearly instantaneous
 picture of the state of the atmosphere. This vignette demonstrates an example 
 workflow for exploring air quality synoptic data using the MazamaPurpleAir 
 R package and data captured by [PurpleAir](https://www.purpleair.com/) air 
-quality monitors.
+quality sensors.
 
 ### Loading PurpleAir Data
 PurpleAir sensor readings are uploaded to the cloud every 80 seconds or so 
@@ -42,17 +44,17 @@ pas <- pas_load()
 The `pas_load` is a wrapper function that will: 
 
 1. Download a raw dataset of the entire PurpleAir network that includes both 
-metadata and recent PM2.5 averages for each deployed monitor across the globe. 
+metadata and recent PM2.5 averages for each deployed sensor across the globe. 
 See `downloadParseSynopticData()` for more info.
 
 2. Enhance the raw dataset by replacing variables with more consistent and 
-human readable names, adds spatial metadata for each monitor, and lists the 
-nearest official air monitor. For a more indepth explaination, see 
+human readable names, adds spatial metadata for each sensor, and lists the 
+nearest official air quality monitor. For a more indepth explaination, see 
 `enhanceSynopticData()`.
 
 ### PurpleAir Synoptic Data
 The `pas` dataset contains 35 columns, and each row corresponds to different 
-PurpleAir monitors. For the scope of this example we will focus on the columns
+PurpleAir sensors. For the scope of this example we will focus on the columns
 labeled `stateCode`, `pm25_*`, `humidity`, `pressure`, `temperature`, and 
 `pwfsl_closestDistance`. 
 
@@ -71,8 +73,8 @@ pas %>%
 
 To visually explore a region, we can use our `pas` data with the `pas_leaflet()`
 function to plot an interactive JavaScript [leaflet](https://leafletjs.com/) map.
-By default, `pas_leaflet()` will map the coordinates of each PurpleAir monitor 
-and the hourly PM2.5 data. Clicking on a monitor will show monitor metadata.
+By default, `pas_leaflet()` will map the coordinates of each PurpleAir sensor 
+and the hourly PM2.5 data. Clicking on a sensor will show sensor metadata.
 
 ```{r}
 pas %>% 
@@ -94,15 +96,15 @@ This code pipes our `pas` data into `dplyr::filter()` where we can set our
 selection criteria. A `stateCode` is the ISO 3166-2 state name abbriviation, 
 hence we limit our filter to only accept `stateCode == 'CA'`. The `pm25_6hr` 
 selection, as mentioned above, selects the 6-hour average and restricts the 
-monitors to those whose PM2.5 6-hour average is above 25.0. Be sure to include 
+sensors to those whose PM2.5 6-hour average is above 25.0. Be sure to include 
 the `"pm25_6hr"` paramter in `pas_leaflet()`.  
 
 ### Mapping `pas` auxillary data
 
-We can also explore and utilize other PurpleAir monitor data. Check the 
+We can also explore and utilize other PurpleAir sensor data. Check the 
 `pas_leaflet()` documentation for all supported parameters.
 
-Here is an example of humidity data captured from PurpleAir monitors across the 
+Here is an example of humidity data captured from PurpleAir sensors across the 
 state of California.
 ```{r}
 pas %>% 
@@ -113,35 +115,43 @@ pas %>%
 ### Exploring PurpleAir data
 
 Perhaps we can find out which states have the highest _percentage_ of PurpleAir 
-monitors that are reporting >20 PM2.5 weekly average. 
+sensors that are reporting a weekly average of >20 PM2.5. 
 
 ```{r, warning=FALSE}
-stateWt <- pas %>% 
-  count(stateCode, sort = TRUE)
+sensorCount <- 
+  pas %>% 
+  count(stateCode, name="sensorCount", sort = TRUE)
 
-df <- pas %>%
+gt20Count <- 
+  pas %>%
   select(stateCode, pm25_1week) %>% 
   filter(pm25_1week > 20.0) %>%
-  count(stateCode, sort = TRUE, name = "TotalMonitors") %>%
-  mutate("badAirPercent" = TotalMonitors / stateWt$n[stateWt$stateCode == stateCode]) %>% 
-  mutate(stateCode = fct_reorder(stateCode, badAirPercent)) %>%
-  head(15)
+  count(stateCode, sort = TRUE, name = "gt20Count")
+
+df <-
+  left_join(gt20Count, sensorCount, by = "stateCode") %>%
+  mutate(gt20Fraction = gt20Count / sensorCount) %>%
+  arrange(desc(gt20Fraction)) %>%
+  top_n(15)
 ```
 
 From our `df` data frame, we can use `ggplot2` to visualize our results. 
 
 ```{r, warning=FALSE}
 df %>% 
-  ggplot(aes(x = stateCode, y = badAirPercent)) + coord_flip() + 
-  geom_col(aes(fill = stateCode)) + 
+  ggplot(aes(x = reorder(stateCode, gt20Fraction), y = gt20Fraction)) + 
+  coord_flip() + 
+  geom_col(aes(fill = gt20Fraction)) + 
   scale_y_continuous(labels = scales::percent) + 
-  labs(x = "State", y = "Percent of PA monitors above 20 PM2.5") + 
+  labs(x = "State", y = "Percent of PA sensors above 20 PM2.5") + 
   theme(legend.position = "none")
 ```
 
 As you can see, the MazamaPurpleAir package combined with data provided by 
 PurpleAir offers a powerful system for regional air-quality assesment. 
 
-- _Mazama Science_
+----
+
+_Mazama Science_
 
 

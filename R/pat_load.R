@@ -1,5 +1,10 @@
 #' @export
+#' 
 #' @title Get Purple Air timeseries data
+#' 
+#' @description Timeseries data doe specific PurpleAie sensor are retrieved from 
+#' the Thingspeak API.
+#'
 #' @param pas Purple Air 'enhanced' synoptic data
 #' @param name Purple Air 'label'
 #' @param id Purple Air 'ID'
@@ -7,10 +12,9 @@
 #' @param enddate desired end datetime (ISO 8601)
 #' @param baseURL Base URL for Thingspeak API
 #' @return List with \code{meta} and \code{data} elements
-#' @description Timeseries data doe specific PurpleAie sensor are retrieved from 
-#' the Thingspeak API.
-#'
+#' 
 #' @seealso \link{downloadParseTimeseriesData}
+#' 
 #' @examples
 #' \dontrun{
 #' initializeMazamaSpatialUtils()

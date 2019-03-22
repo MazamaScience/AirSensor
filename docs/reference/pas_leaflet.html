@@ -51,6 +51,14 @@ values from one of:
 &quot;pm25_1day&quot;
 &quot;pm25_1week&quot;
 " />
+
+<meta property="og:description" content="Auxillary param arguments can be usd to display various Purple Air 
+sensor data. Currently supported param arguments include:
+&quot;humidity&quot;
+&quot;pressure&quot;
+&quot;temperature&quot;
+&quot;pwfsl_closestDistance&quot;
+" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -81,7 +89,7 @@ values from one of:
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MazamaPurpleAir</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
       </span>
     </div>
 
@@ -103,6 +111,9 @@ values from one of:
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
+    </li>
     <li>
       <a href="../articles/purple-air-synoptic.html">Working with Synoptic Data from Purple Air</a>
     </li>
@@ -150,6 +161,14 @@ values from one of:</p><ul>
 <li><p>"pm25_6hr"</p></li>
 <li><p>"pm25_1day"</p></li>
 <li><p>"pm25_1week"</p></li>
+</ul>
+
+    <p>Auxillary <code>param</code> arguments can be usd to display various Purple Air 
+sensor data. Currently supported <code>param</code> arguments include:</p><ul>
+<li><p>"humidity"</p></li>
+<li><p>"pressure"</p></li>
+<li><p>"temperature"</p></li>
+<li><p>"pwfsl_closestDistance"</p></li>
 </ul>
     
     </div>
@@ -211,7 +230,7 @@ underlying map tile if available. See
 <span class='co'># Methow Valley Clean Air Ambassador</span>
 <span class='fu'><a href='initializeMazamaSpatialUtils.html'>initializeMazamaSpatialUtils</a></span>()
 <span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pas_load.html'>pas_load</a></span>()
-<span class='no'>mvcaa</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter</a></span>(<span class='no'>pas</span>, <span class='kw pkg'>stringr</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/stringr/topics/str_detect'>str_detect</a></span>(<span class='no'>pas</span>$<span class='no'>label</span>, <span class='st'>'^MV Clean Air'</span>))
+<span class='no'>mvcaa</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter</a></span>(<span class='no'>pas</span>, <span class='kw pkg'>stringr</span><span class='kw ns'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_detect.html'>str_detect</a></span>(<span class='no'>pas</span>$<span class='no'>label</span>, <span class='st'>'^MV Clean Air'</span>))
 <span class='fu'>pas_leaflet</span>(<span class='no'>mvcaa</span>, <span class='kw'>param</span><span class='kw'>=</span><span class='st'>"pm25_1hr"</span>)
 <span class='co'># }</span></pre>
   </div>
@@ -232,7 +251,7 @@ underlying map tile if available. See
 
       <footer>
       <div class="copyright">
-  <p>Developed by Jonathan Callahan, Tate Brasel, Ruby Fore, Hans Martin, Helen Miller.</p>
+  <p>Developed by Jonathan Callahan, Tate Brasel, Hans Martin, Helen Miller.</p>
 </div>
 
 <div class="pkgdown">
