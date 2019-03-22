@@ -1,0 +1,57 @@
+---
+title: "An Introduction to PurpleAir Timeseries Data"
+author: "Mazama Science"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Maps and Timeseries Plots}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE, message=FALSE}
+knitr::opts_chunk$set(fig.width=7, fig.height=5)
+library(MazamaCoreUtils)
+library(MazamaPurpleAir)
+library(dplyr)
+library(ggplot2)
+# NOTE: Use example PAS and PAT data for vignettes to avoid long wait-times
+data("example_pas")
+data("example_pat")
+pas <- example_pas
+pat <- example_pat
+```
+
+
+_Timeseries_ data provides
+
+
+https://www.usnews.com/news/healthiest-communities/articles/2018-08-19/air-quality-to-worsen-in-northwest-as-smoke-returns
+
+
+
+```{r, eval = FALSE}
+library(MazamaPurpleAir)
+library(MazamaCoreUtils)
+pas <- pas_load()
+pat <- pat_load(pas, "Seattle", startdate = 20180701, enddate = 20180901)
+```
+
+
+```{r july}
+
+julyAir <- 
+
+```
+
+
+```{r}
+
+data("example_pat")
+
+df <- tibble(datetime = example_pat$data$datetime, pm25 = example_pat$data$pm25_A)
+ggdf <-  ggplot(data = df,  aes(x = datetime, y = pm25 )) + geom_line() 
+
+ggdf
+```
+
