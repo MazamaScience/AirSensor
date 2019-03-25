@@ -22,13 +22,23 @@ pas <- example_pas
 pat <- example_pat
 ```
 
+_Timeseries_ data provides a minute-by-minute database structure for transforming 
+and analyzing [PurpleAir](https://www.purpleair.com/) sensor data.
+This vignette demonstrates an example analysis of an individual monitor located
+in Seattle, Washington over a two-month duration in which the Pacific Northwest 
+experienced [hazardous air-quality conditions](https://www.usnews.com/news/healthiest-communities/articles/2018-08-19/air-quality-to-worsen-in-northwest-as-smoke-returns) caused by wildfires in British Columbia, Canada. 
 
-_Timeseries_ data provides
+**Note:** It is highly recommended that you read `vignettes/pas_introduction.Rmd`
+before beginning this tutorial.
 
-
-https://www.usnews.com/news/healthiest-communities/articles/2018-08-19/air-quality-to-worsen-in-northwest-as-smoke-returns
-
-
+### Loading PurpleAir Timeseries data
+PurpleAir sensor readings are uploaded to the cloud every 80 seconds or so 
+where they are stored for download and display on the PurpleAir website. After
+every interval, the synoptic data is refreshed and the outdated synoptic data is 
+then stored in a [ThingSpeak](https://thingspeak.com) database. In order to 
+access the ThingSpeak channel API we must first load the synoptic dataset, which 
+provides access tokens for each PurpleAir sensor -- accessed by the monitor of 
+interests label. 
 
 ```{r, eval = FALSE}
 library(MazamaPurpleAir)
@@ -38,20 +48,36 @@ pat <- pat_load(pas, "Seattle", startdate = 20180701, enddate = 20180901)
 ```
 
 
-```{r july}
-
-julyAir <- 
-
-```
-
+### PurpleAir Timeseries Data 
+Let's begin by exploring the attributes of the dataframe returned by the 
+`pat_load` function. 
 
 ```{r}
-
-data("example_pat")
-
-df <- tibble(datetime = example_pat$data$datetime, pm25 = example_pat$data$pm25_A)
-ggdf <-  ggplot(data = df,  aes(x = datetime, y = pm25 )) + geom_line() 
-
-ggdf
+pat %>%
+  attributes()
 ```
 
+```{r}
+pat$meta %>% 
+  names()
+```
+
+```{r}
+pat$data %>% 
+  names()
+```
+
+```{r}
+### TEST HAMPEL DETECTION!
+
+x <- c(1,2,32,4,1,4,7,3,4,5,6,73,4,6,8,4,3,1,1,2,3,56,3,2,4)
+
+hampel <- function(x, win = 6, sigma = 2) { 
+  index <- x[1:(win+1)]
+  ifelse( index >= sigma*sd(index), TRUE, FALSE )
+  }
+```
+
+
+
+### Exploring Timeseries Data
