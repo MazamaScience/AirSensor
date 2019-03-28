@@ -1,10 +1,10 @@
 ---
-title: "An Introduction to PurpleAir Timeseries Data"
+title: "An Introduction to PurpleAir Time Series Data"
 author: "Mazama Science"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Maps and Timeseries Plots}
+  %\VignetteIndexEntry{Maps and Time series Plots}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -22,23 +22,23 @@ pas <- example_pas
 pat <- example_pat
 ```
 
-_Timeseries_ data provides a minute-by-minute database structure for transforming 
+_Time series_ data provides a minute-by-minute database structure for transforming 
 and analyzing [PurpleAir](https://www.purpleair.com/) sensor data.
 This vignette demonstrates an example analysis of an individual monitor located
 in Seattle, Washington over a two-month duration in which the Pacific Northwest 
 experienced [hazardous air-quality conditions](https://www.usnews.com/news/healthiest-communities/articles/2018-08-19/air-quality-to-worsen-in-northwest-as-smoke-returns) caused by wildfires in British Columbia, Canada. 
 
-**Note:** It is highly recommended that you read `vignettes/pas_introduction.Rmd`
+**Disclaimer:** It is highly recommended that you read `vignettes/pas_introduction.Rmd`
 before beginning this tutorial.
 
-### Loading PurpleAir Timeseries data
+### Loading PurpleAir Time Series data
 PurpleAir sensor readings are uploaded to the cloud every 80 seconds or so 
 where they are stored for download and display on the PurpleAir website. After
 every interval, the synoptic data is refreshed and the outdated synoptic data is 
 then stored in a [ThingSpeak](https://thingspeak.com) database. In order to 
-access the ThingSpeak channel API we must first load the synoptic dataset, which 
-provides access tokens for each PurpleAir sensor -- accessed by the monitor of 
-interests label. 
+access the ThingSpeak channel API we must first load the synoptic database, 
+which provides access tokens for each PurpleAir sensor -- accessed by the 
+monitor of interests label. -- UNCLEAR
 
 ```{r, eval = FALSE}
 library(MazamaPurpleAir)
@@ -47,43 +47,36 @@ pas <- pas_load()
 pat <- pat_load(pas, "Seattle", startdate = 20180701, enddate = 20180901)
 ```
 
+Notice when passing our synoptic dataframe "`pas`" to `pat_load`, we also supply
+a unique identification label and date-interval. In this case, our 
+monitor-of-interest (MOI) is a sensor named "Seattle" and our dates-of-interest
+(DOI) is 2018-07-01 to 2018-09-01. 
 
-### PurpleAir Timeseries Data 
+**Note:** You must provide a label to `pat_load` in 
+order to supply ThingSpeak with the necessary metadata to access the sensors 
+database. A DOI on the other hand is optional; by default not providing 
+`pat_load` with a start and end date will return exactly 1-week of time series 
+data.
+
+### PurpleAir Time Series Data
 Let's begin by exploring the attributes of the dataframe returned by the 
 `pat_load` function. 
 
-
 ```{r}
 pat %>%
-  attributes()
-```
-
-```{r}
-pat$meta %>% 
   names()
 ```
 
-```{r}
-pat$data %>% 
-  names()
-```
+`pat` contains _two_ tables, `meta` and `data`. 
+
+By convention `meta` contains metadata of the selected PurpleAir sensor -- 
+this includes non-time series data such as location information, labels, etc. 
+The time series `data` contains time-interval PurpleAir sensor readings of 
+PM2.5, temperature, humidity, and other pertinent sensor information.
 
 ```{r}
-### TEST HAMPEL DETECTION!
 
-x <- c(1,2,32,4,1,4,7,3,4,5,6,73,4,6,8,4,3,1,1,2,3,56,3,2,4)
-
-hampel <- function(x, win = 3) { 
-  for ( i in 1:(length(x)-win) ){ 
-    index <- x[i:(i+win)]
-    med <- median(index)
-    MAD <- mad(index)
-    test <- ifelse(abs(x - med) >= 5.2*MAD, TRUE, FALSE)
-  }
-  return(test)
-  }
 ```
 
 
-
-### Exploring Timeseries Data
+### Exploring Time Series Data
