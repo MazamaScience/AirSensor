@@ -70,14 +70,6 @@ pas_leaflet <- function(
   
   # ----- Validate parameters --------------------------------------------------
   
-  # RUBY:  The dplyr::filter function used in the example removes the
-  # RUBY: 'pas_synoptic' class so this test has to go. Not sure right now how
-  # RUBY:  to get around that unless we provide our own 'filter' function that
-  # RUBY:  adds it back. But that would mean duplicating lots of dplyr
-  # RUBY:  functionality.
-  # RUBY: 
-  # RUBY:  For now, we'll just change this check to test for "data.frame".
-  
   if ( !("data.frame" %in% class(pas)) ) 
     stop(paste0("First argument is not of class 'data.frame'."))
   

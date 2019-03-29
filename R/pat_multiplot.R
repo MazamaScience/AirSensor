@@ -3,7 +3,7 @@
 #' @title Display multiple plots on one page
 #' @param ... ggplot objects 
 #' @param pat Purple Air Timeseries "pat" object from \code{createPATimeseriesObject()}
-#' @param plottype A quick-reference plot types: "all","pm25", "humidity", etc. 
+#' @param plottype Quick-reference plot types: "all", "aux", "pm25"
 #' @param cols Number of columns in the plot layout
 #' @description # A plotting function that uses ggplot2 to display multiple 
 #' ggplot objects in a single pane. Can either be passed individual ggplot 
@@ -12,27 +12,33 @@
 #' Typical usage would be to supply \code{pat} and use the \code{plottype} 
 #' argument to quickly display preformatted plots. 
 #' \itemize{
-#' \item{"all": display humidity, temperature, pm25_A, pm25_B}
-#' \item{"pm25": display PM2.5 from Channel A and Channel B}
-#' \item{"aux": display auxillary PurpleAir sensors (i.e. humidity, temperature)}
+#' \item{"all": humidity, temperature, pm25_A, pm25_B}
+#' \item{"aux": auxillary data (humidity, temperature)}
+#' \item{"pm25": PM2.5 from Channel A and Channel B}
 #' } 
 #' @note Additional documentation of the multiplot algorithm is available at 
 #' cookbook-r.com.
 
-pat_multiplot <- function(..., pat=NULL, plottype=NULL, cols=NULL) {
+pat_multiplot <- function(
+  ..., 
+  pat = NULL, 
+  plottype = NULL, 
+  cols = NULL
+) {
   
-  options(warn=-1)
+  options(warn = -1)
   
   # A very useful multiplot Function -------------------------------------------
+  
   # The R-cookbook
-  gg_multiplot <- function(..., plotlist=NULL, cols=1, layout=NULL) {
+  gg_multiplot <- function(..., plotlist = NULL, cols = 1, layout = NULL) {
     plots <- c(list(...), plotlist)
-    numPlots = length(plots)
+    numPlots <- length(plots)
     if ( is.null(layout) ) {
       layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
                        ncol = cols, nrow = ceiling(numPlots/cols))
     }
-    if ( numPlots==1 ) {
+    if ( numPlots == 1 ) {
       print(plots[[1]])
     } else {
       grid::grid.newpage()
@@ -45,6 +51,7 @@ pat_multiplot <- function(..., pat=NULL, plottype=NULL, cols=NULL) {
       }
     }
   }
+  
   # ----------------------------------------------------------------------------
   
   if ( !is.null(pat) && !is.null(plottype) ) { 

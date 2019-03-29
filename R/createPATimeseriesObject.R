@@ -55,8 +55,9 @@ createPATimeseriesObject <- function(
   # NOTE:  a 'meta' dataframe and a 'data' dataframe:
   # NOTE:  
   # NOTE:  > names(pat_raw$data)
-  # NOTE:  [1] "datetime"  "entry_id"  "pm1_atm"   "pm2.5_atm" "pm10_atm"  "uptime"    "rssi"     
-  # NOTE:  [8] "temp"      "humidity"  "pm2.5_cf1" "channel"   "memory"    "adc0"     
+  # NOTE:   [1] "datetime"  "entry_id"  "pm1_atm"   "pm2.5_atm" "pm10_atm"    
+  # NOTE:   [6] "uptime"    "rssi"      "temp"      "humidity"  "pm2.5_cf1"
+  # NOTE:  [11] "channel"   "memory"    "adc0"     
   
   # Extract useful columns from channel A data
   A <- 

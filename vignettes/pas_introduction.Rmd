@@ -12,7 +12,6 @@ vignette: >
 ```{r setup, include=FALSE, message=FALSE}
 knitr::opts_chunk$set(fig.width=7, fig.height=5)
 
-library(MazamaCoreUtils)
 library(MazamaPurpleAir)
 library(dplyr)
 library(ggplot2)
@@ -36,12 +35,14 @@ the required Mazama Science packages and load the PurpleAir Synoptic ("`pas`")
 data.   
 
 ```{r, eval=FALSE}
-library(MazamaCoreUtils)
 library(MazamaPurpleAir)
+library(dplyr)
+library(ggplot2)
+
 pas <- pas_load()
 ```
 
-The `pas_load` is a wrapper function that will: 
+The `pas_load()` function is a wrapper function that will: 
 
 1. Download a raw dataset of the entire PurpleAir network that includes both 
 metadata and recent PM2.5 averages for each deployed sensor across the globe. 
@@ -72,7 +73,7 @@ pas %>%
 ### Mapping `pas` PM2.5 data
 
 To visually explore a region, we can use our `pas` data with the `pas_leaflet()`
-function to plot an interactive JavaScript [leaflet](https://leafletjs.com/) map.
+function to plot an interactive [leaflet](https://leafletjs.com/) map.
 By default, `pas_leaflet()` will map the coordinates of each PurpleAir sensor 
 and the hourly PM2.5 data. Clicking on a sensor will show sensor metadata.
 
@@ -114,8 +115,11 @@ pas %>%
 
 ### Exploring PurpleAir data
 
-Perhaps we can find out which states have the highest _percentage_ of PurpleAir 
-sensors that are reporting a weekly average of >20 PM2.5. 
+Because the `pas` object is a dataframe, we can use functionality from the 
+**dplyr** package to manipulate the data.
+
+Below, we show how to find out which states have the highest _percentage_ of 
+PurpleAir sensors that are reporting a weekly average of >20 μg/m3. 
 
 ```{r, warning=FALSE}
 sensorCount <- 
@@ -143,7 +147,7 @@ df %>%
   coord_flip() + 
   geom_col(aes(fill = gt20Fraction)) + 
   scale_y_continuous(labels = scales::percent) + 
-  labs(x = "State", y = "Percent of PA sensors above 20 PM2.5") + 
+  labs(x = "State", y = "Percent of PA sensors above 20 \u00B5g/m3") + 
   theme(legend.position = "none")
 ```
 

@@ -24,14 +24,14 @@ pat_load(pas = NULL, name = NULL, id = NULL, startdate = NULL,
 List with \code{meta} and \code{data} elements
 }
 \description{
-Timeseries data doe specific PurpleAie sensor are retrieved from 
-the Thingspeak API.
+Retrieve and parse timeseries data from the Thingspeak API for 
+specific PurpleAir sensors.
 }
 \examples{
 \dontrun{
 initializeMazamaSpatialUtils()
 pas <- pas_load()
-weaverville <- pat_load(pas, 'CARB_SMOKE_NCUAQMD_WEAVERVILLE_70')
+pat <- pat_load(pas, "Seattle", startdate = 20180701, enddate = 20180901)
 }
 }
 \seealso{

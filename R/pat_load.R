@@ -27,12 +27,8 @@ pat_load <- function(
   baseURL = "https://api.thingspeak.com/channels/"
 ) {
   
-  # TODO:
-  
-  # # Download, parse and restructure timeseries data
-  # 
-  # # Only one week of data can be loaded at a time. if over one week has been 
-  # # requested, loop over weeks to download all of it
+  # Only one week of data can be loaded at a time. If over one week has been
+  # requested, loop over weeks to download all of it
   if ( !is.null(startdate) && !is.null(enddate) ) {
     sd <- PWFSLSmoke::parseDatetime(startdate)
     ed <- PWFSLSmoke::parseDatetime(enddate)

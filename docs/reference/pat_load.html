@@ -39,8 +39,8 @@
 
 <meta property="og:title" content="Get Purple Air timeseries data — pat_load" />
 
-<meta property="og:description" content="Timeseries data doe specific PurpleAie sensor are retrieved from 
-the Thingspeak API." />
+<meta property="og:description" content="Retrieve and parse timeseries data from the Thingspeak API for 
+specific PurpleAir sensors." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -71,7 +71,7 @@ the Thingspeak API." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MazamaPurpleAir</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.6</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@ the Thingspeak API." />
       <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
     </li>
     <li>
-      <a href="../articles/purple-air-synoptic.html">Working with Synoptic Data from Purple Air</a>
+      <a href="../articles/pat_introduction.html">An Introduction to PurpleAir Time Series Data</a>
     </li>
   </ul>
 </li>
@@ -132,8 +132,8 @@ the Thingspeak API." />
 
     <div class="ref-description">
     
-    <p>Timeseries data doe specific PurpleAie sensor are retrieved from 
-the Thingspeak API.</p>
+    <p>Retrieve and parse timeseries data from the Thingspeak API for 
+specific PurpleAir sensors.</p>
     
     </div>
 
@@ -182,7 +182,7 @@ the Thingspeak API.</p>
     <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='fu'><a href='initializeMazamaSpatialUtils.html'>initializeMazamaSpatialUtils</a></span>()
 <span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pas_load.html'>pas_load</a></span>()
-<span class='no'>weaverville</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_load</span>(<span class='no'>pas</span>, <span class='st'>'CARB_SMOKE_NCUAQMD_WEAVERVILLE_70'</span>)
+<span class='no'>pat</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_load</span>(<span class='no'>pas</span>, <span class='st'>"Seattle"</span>, <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fl'>20180701</span>, <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='fl'>20180901</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
