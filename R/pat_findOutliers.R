@@ -1,5 +1,6 @@
 #' @export
 #' @import graphics
+#' @importFrom rlang .data
 #' @title Detect and Fix Timeseries Outliers
 #' @param pat Purple Air Timeseries "pat" object from \code{createPATimeseriesObject()}
 #' @param n integer window size
@@ -40,11 +41,11 @@ pat_findOutliers <- function(pat,
   # NOTE:  so that we can dplyr::left_join() them together at the end.
   
   A_data <- 
-    filter(pat$data, !is.na(pm25_A)) %>% 
-    select( -pm25_B, -datetime_B)
+    filter(pat$data, !is.na(.data$pm25_A)) %>% 
+    select( -.data$pm25_B, -.data$datetime_B)
   B_data <- 
-    filter(pat$data, !is.na(pm25_B)) %>% 
-    select(datetime, pm25_B, datetime_B)
+    filter(pat$data, !is.na(.data$pm25_B)) %>% 
+    select(.data$datetime, .data$pm25_B, .data$datetime_B)
   
   # Find outliers 
   A_outlierIndices <- 
@@ -125,15 +126,15 @@ pat_findOutliers <- function(pat,
   
   # Combine dataframes 
   data <- dplyr::full_join(A_data, B_data, by = 'datetime') %>%
-    dplyr::select(datetime, pm25_A, pm25_B, temperature, 
-                  humidity, uptime, adc0, rssi, 
-                  datetime_A, datetime_B) %>%
-    dplyr::arrange(datetime)
+    dplyr::select(.data$datetime, .data$pm25_A, .data$pm25_B, .data$temperature, 
+                  .data$humidity, .data$uptime, .data$adc0, .data$rssi, 
+                  .data$datetime_A, .data$datetime_B) %>%
+    dplyr::arrange(.data$datetime)
   
   # ----- Create the Purple Air Timeseries (pat) object -----------------------
   
   # Combine meta and data dataframes into a list
-  pat <- list(meta = pat$meta, data = data)
+  pat <- list(meta = pat$meta, data = .data$data)
   class(pat) <- c("pa_timeseries", class(pat))
   
   return(invisible(pat))
