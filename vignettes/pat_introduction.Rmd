@@ -72,11 +72,17 @@ pat %>%
 By convention `meta` contains metadata of the selected PurpleAir sensor -- 
 this includes non-time series data such as location information, labels, etc. 
 The time series `data` contains time-interval PurpleAir sensor readings of 
-PM2.5, temperature, humidity, and other pertinent sensor information.
+PM2.5, temperature, humidity, and other pertinent sensor data. 
 
+We can quickly display the raw time series data using `pat_multiplot`
 ```{r}
-
+pat_multiplot(pat = pat, plottype = "pm25")
 ```
-
+```{r}
+pat_multiplot(pat = pat, plottype = "aux")
+```
+```{r}
+pat_multiplot(pat = pat, plottype = "all")
+```
 
 ### Exploring Time Series Data
