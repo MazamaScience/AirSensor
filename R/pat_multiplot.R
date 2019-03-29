@@ -20,7 +20,9 @@
 #' cookbook-r.com.
 
 pat_multiplot <- function(..., pat=NULL, plottype=NULL, cols=NULL) {
-
+  
+  options(warn=-1)
+  
   # A very useful multiplot Function -------------------------------------------
   # The R-cookbook
   gg_multiplot <- function(..., plotlist=NULL, cols=1, layout=NULL) {
@@ -84,5 +86,7 @@ pat_multiplot <- function(..., pat=NULL, plottype=NULL, cols=NULL) {
   if ( length(list(...)) != 0 ) {
     gg_multiplot(plotlist = list(...))
   }
-
+  
+  options(warn=0)
+  
 }
