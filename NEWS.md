@@ -1,3 +1,9 @@
+# MazamaPurpleAir 0.1.6.0
+
+* added multiplotting tools
+* added outlier detection
+* added pat_internalData
+
 # MazamaPurpleAir 0.1.4.1
 
 * added PurpleAir timeseries functionality
