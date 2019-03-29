@@ -58,20 +58,20 @@ pat_multiplot <- function(..., pat=NULL, plottype=NULL, cols=NULL) {
     
     channelA <- 
       df %>% 
-      ggplot2::ggplot(aes(x = datetime, y = pm25A)) + 
-      ggplot2::geom_line()
+      ggplot2::ggplot(ggplot2::aes(x = .data$datetime, y = .data$pm25A)) + 
+      ggplot2::geom_point()
     channelB <-   
       df %>% 
-      ggplot2::ggplot(aes(x = datetime, y = pm25B)) + 
-      ggplot2::geom_line()
+      ggplot2::ggplot(ggplot2::aes(x = .data$datetime, y = .data$pm25B)) + 
+      ggplot2::geom_point()
     temperature <-   
       df %>% 
-      ggplot2::ggplot(aes(x = datetime, y = temp)) + 
-      ggplot2::geom_line()
+      ggplot2::ggplot(ggplot2::aes(x = .data$datetime, y = .data$temp)) + 
+      ggplot2::geom_point()
     humidity <-   
       df %>% 
-      ggplot2::ggplot(aes(x = datetime, y = humidity)) + 
-      ggplot2::geom_line()
+      ggplot2::ggplot(ggplot2::aes(x = .data$datetime, y = .data$humidity)) + 
+      ggplot2::geom_point()
     
     if ( plottype == "pm25" ) {
       gg_multiplot(channelA, channelB)
