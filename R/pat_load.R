@@ -7,15 +7,15 @@
 #' @param enddate desired end datetime (ISO 8601)
 #' @param baseURL Base URL for Thingspeak API
 #' @return List with \code{meta} and \code{data} elements
-#' @description Timeseries data doe specific PurpleAie sensor are retrieved from 
-#' the Thingspeak API.
+#' @description Retrieve and parse timeseries data from the Thingspeak API for 
+#' specific PurpleAir sensors.
 #'
 #' @seealso \link{downloadParseTimeseriesData}
 #' @examples
 #' \dontrun{
 #' initializeMazamaSpatialUtils()
 #' pas <- pas_load()
-#' weaverville <- pat_load(pas, 'CARB_SMOKE_NCUAQMD_WEAVERVILLE_70')
+#' pat <- pat_load(pas, "Seattle", startdate = 20180701, enddate = 20180901)
 #' }
 
 pat_load <- function(
@@ -50,7 +50,7 @@ pat_load <- function(
                                          dateSeq[1],
                                          dateSeq[2],
                                          baseURL)
-  if (length(dateSeq) > 2) {
+  if ( length(dateSeq) > 2 ) {
     for ( i in 2:(length(dateSeq) - 1) ) {
       new_pat_raw <- downloadParseTimeseriesData(pas, 
                                                  name,
