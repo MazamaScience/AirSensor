@@ -18,7 +18,7 @@
 #' 
 #' @seealso \link{downloadParseTimeseriesData}
 #' 
-#' @example 
+#' @examples 
 #' \dontrun{
 #' initializeMazamaSpatialUtils()
 #' pas <- pas_load()

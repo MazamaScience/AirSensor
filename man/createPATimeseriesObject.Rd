@@ -24,6 +24,14 @@ In the process, the following columns of data are omitted:
 \item{\code{pm10_atm}}
 }
 }
+\examples{
+\dontrun{
+initializeMazamaSpatialUtils()
+pas <- pas_load()
+pat_raw <- downloadParseTimeseriesData(pas, name ='North Bend Weather', startdate = 20181908)
+nb_pat <- createPATimeseriesObject(pat_raw)
+}
+}
 \seealso{
 \link{downloadParseTimeseriesData}
 }
