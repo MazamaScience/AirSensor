@@ -12,5 +12,8 @@
 # Ignore LICENSE file which is included for display on Github
 ^LICENSE$
 
+# Ignore docker related files
+^docker/
+
 # Ignore all directories beginning with "local"
 ^local*
