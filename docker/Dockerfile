@@ -10,15 +10,19 @@ RUN apt-get update \
   && rm -rf /tmp/downloaded_packages/ /tmp/*.rds \
   ## Install R packages from CRAN
   && install2.r --error -r "https://cran.rstudio.com" \
-    PWFSLSmoke
+    PWFSLSmoke \
+    seismicRoll
 
 # Install from Github for the latest updates
 RUN installGithub.r \
     mazamascience/pwfslsmoke
 
 #######################################################################
-# For MazamaPurpleAir
+# For MazamaPurpleAir (while the Github repo is private)
 
-# Install from local .tar.gz file
-RUN R CMD CMD INSTALL MazamaPurpleAir.tar.gz
+WORKDIR /
+
+COPY MazamaPurpleAir_0.1.6.tar.gz /
+
+RUN R CMD INSTALL MazamaPurpleAir_0.1.6.tar.gz
 

@@ -1,8 +1,10 @@
 ## Create the Docker Image ##
 
-A quick refresher on docker commands is available at the [docker cheatsheet](https://github.com/wsargent/docker-cheat-sheet).
+A quick refresher on docker commands is available at the 
+[docker cheatsheet](https://github.com/wsargent/docker-cheat-sheet).
 
-A docker image with all required prerequisites can be built with the `Makefile` in this directory:
+A docker image with all required prerequisites can be built with the `Makefile` 
+in this directory:
 
 ```
 make production_build
@@ -12,48 +14,70 @@ You should then be able to see something like the following:
 
 ```
 $ docker images
-REPOSITORY                     TAG                 IMAGE ID            CREATED             SIZE
-mazamascience/pwfslsmoke       latest              f4945f0c24e6        4 minutes ago       1.75GB
-mazamascience/pwfslsmoke       1.1.20              f4945f0c24e6        4 minutes ago       1.75GB
+REPOSITORY                          TAG         IMAGE ID            CREATED             SIZE
+...
+mazamascience/mazamapurpleair       0.1.6       796ae3ba57e5        14 minutes ago      2.62GB
+mazamascience/mazamapurpleair       latest      796ae3ba57e5        14 minutes ago      2.62GB
 ...
 ```
 
-> It is best practice to create versioned images and tag the most recent one with "latest".
+> It is best practice to create versioned images and tag the most recent one 
+with "latest".
 
-Spatial data required by the **MazamaSpatialUtils** package already exists in the docker image in `/home/mazama/data/Spatial`.
-
+Spatial data required by the **MazamaSpatialUtils** package already exists in 
+the docker image in `/home/mazama/data/Spatial`.
 
 ## Test the Docker Image ##
 
-Having built the docker image we can now test it. The following output was obtained on May 08, 2018:
+Having built the docker image we can now test it. The following output was 
+obtained use the provided `example_pas` synoptic dataset:
 
 ```
-docker run -ti mazamascience/pwfslsmoke R --vanilla
+docker run --rm -ti mazamascience/mazamapurpleair R --vanilla
 ...
-library(PWFSLSmoke)
-wa <- airnow_loadLatest() %>%
-  monitor_subset(tateCodes='WA')
-maxValues <- sort(apply(wa$data[,-1], 2, max, na.rm=TRUE), decreasing=TRUE)[1:6]
-ids <- names(maxValues)
-df <- wa$meta[ids,c('siteName','countyName')]
-df$max_pm25 <- maxValues
-print(df)
-                                  siteName countyName max_pm25
-530650002_01       Wellpinit-Spokane Tribe    Stevens    125.0
-530330030_01         Seattle-10th & Weller       King     28.0
-530639999_01 Airway Heights-West 12th (US)    Spokane     26.0
-530470010_01           Winthrop-Chewuch Rd   Okanogan     25.8
-530331011_01            Seattle-South Park       King     25.5
-530330057_01              Seattle-Duwamish       King     25.1
-```
+library(MazamaPurpleAir)
 
+data(example_pas)
+pas <- example_pas
+
+names(pas)
+
+ [1] "ID"                               "parentID"                        
+ [3] "label"                            "DEVICE_LOCATIONTYPE"             
+ [5] "THINGSPEAK_PRIMARY_ID"            "THINGSPEAK_PRIMARY_ID_READ_KEY"  
+ [7] "THINGSPEAK_SECONDARY_ID"          "THINGSPEAK_SECONDARY_ID_READ_KEY"
+ [9] "latitude"                         "longitude"                       
+[11] "pm25"                             "lastSeenDate"                    
+[13] "sensorType"                       "flag_hidden"                     
+[15] "flag_highValue"                   "isOwner"                         
+[17] "flag_attenuation_hardware"        "temperature"                     
+[19] "humidity"                         "pressure"                        
+[21] "age"                              "pm25_current"                    
+[23] "pm25_10min"                       "pm25_30min"                      
+[25] "pm25_1hr"                         "pm25_6hr"                        
+[27] "pm25_1day"                        "pm25_1week"                      
+[29] "statsLastModifiedDate"            "statsLastModifiedInterval"       
+[31] "countryCode"                      "stateCode"                       
+[33] "timezone"                         "pwfsl_closestDistance"           
+[35] "pwfsl_closestMonitorID"          
+
+pas %>% 
+  filter(stateCode == 'CA') %>% 
+  filter(pwfsl_closestDistance < 100) %>% 
+  pull(pwfsl_closestDistance) %>% 
+  round() %>% 
+  table()
+
+ 1  2  4  6  7 10 11 12 13 15 16 18 19 21 38 40 41 46 47 53 57 58 60 73 74 
+ 2  8  2  6  6  2  2  2  4  4  2  2  4  4  4  4  2  2  4  4  2  2  2  4  2 
+```
 
 ## Publish the Docker Image ##
 
 ```
 docker login
 ...
-docker push mazamascience/pwfslsmoke:1.1.20
+docker push mazamascience/mazamapurpleair:0.1.6
 ```
 
 
@@ -62,6 +86,6 @@ docker push mazamascience/pwfslsmoke:1.1.20
 A recent image can also be obtained from DockerHub with:
 
 ```
-docker pull mazamascience/pwfslsmoke:1.1.20
+docker pull mazamascience/mazamapurple:0.1.6
 ```
 
