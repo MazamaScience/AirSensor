@@ -1,3 +1,8 @@
+# MazamaPurpleAir 0.1.7.0
+
+* include docker image
+* added subdating feature
+
 # MazamaPurpleAir 0.1.6.0
 
 * added multiplotting tools
