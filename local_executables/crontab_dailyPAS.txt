@@ -1,0 +1,17 @@
+################################################################################
+#                                                                              #
+# 2019-04-01                                                                   #
+# Example crontab                                                              #
+#                                                                              #
+# Note that arguments to the  ~_exec script will be run inside the docker      #
+# container and refer to the absolute path of directories in that container.   #
+# The '-v' command mounts host machine directories to container directories.   #
+#                                                                              #
+# Note that /home/mazama is found inside the docker image.                     #
+################################################################################
+
+# ----- Create a "synoptic" file early each morning ----------------------------
+
+00 04 * * *    docker run --rm -v /Users/jonathan/Projects/MazamaScience/MazamaPurpleAir/local_executables:/app -w /app sensor-data-ingest-v1 /app/createDailyPAS_exec.R --outputDir=/app --logDir=/app
+
+
