@@ -1,9 +1,9 @@
 #' @export
 #' @import graphics
 #' @title Display multiple plots on one page
-#' @param ... ggplot objects 
 #' @param pat Purple Air Timeseries "pat" object from \code{createPATimeseriesObject()}
 #' @param plottype Quick-reference plot types: "all", "aux", "pm25"
+#' @param plotlist a list() of any number of ggplot objects to plot on a single pane
 #' @param cols Number of columns in the plot layout
 #' @description # A plotting function that uses ggplot2 to display multiple 
 #' ggplot objects in a single pane. Can either be passed individual ggplot 
@@ -22,8 +22,8 @@
 pat_multiplot <- function(
   pat = NULL, 
   plottype = NULL, 
-  cols = NULL, 
-  plotlist = NULL
+  plotlist = NULL,
+  cols = NULL
 ) {
   
   options(warn = -1)
