@@ -8,7 +8,6 @@
 #' @description # A plotting function that uses ggplot2 to display multiple 
 #' ggplot objects in a single pane. Can either be passed individual ggplot 
 #' objects or a pat object and a plot type. 
-#' 
 #' Typical usage would be to supply \code{pat} and use the \code{plottype} 
 #' argument to quickly display preformatted plots. 
 #' \itemize{
