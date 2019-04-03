@@ -98,7 +98,7 @@ pat_findOutliers <- function(pat,
       ggplot2::ggplot(ggplot2::aes(x = .data$datetime, y = .data$pm25_A)) + 
       ggplot2::geom_point(shape=18, alpha = 1/10) + 
       ggplot2::ggtitle(expression("Channel A PM"[2.5])) + 
-      ggplot2::xlab("Date") + ggplot2::ylab("\u03bc g / m\u00b3") + 
+      ggplot2::xlab("Date") + ggplot2::ylab("\u03bcg / m\u00b3") + 
       A_outliers
   
     channelB <- 
@@ -107,10 +107,10 @@ pat_findOutliers <- function(pat,
       ggplot2::ggplot(ggplot2::aes(x = .data$datetime, y = .data$pm25_B)) + 
       ggplot2::geom_point(shape = 18, alpha = 1/10) + 
       ggplot2::ggtitle(expression("Channel B PM"[2.5])) + 
-      ggplot2::xlab("Date") + ggplot2::ylab("\u03bc g / m\u00b3") + 
+      ggplot2::xlab("Date") + ggplot2::ylab("\u03bcg / m\u00b3") + 
       B_outliers
 
-    pat_multiplot(channelA, channelB)
+    pat_multiplot(plotlist=list(channelA, channelB))
     
   }
   
