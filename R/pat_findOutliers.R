@@ -129,7 +129,7 @@ pat_findOutliers <- function(pat,
   # ----- Create the Purple Air Timeseries (pat) object -----------------------
   
   # Combine meta and data dataframes into a list
-  pat <- list(meta = pat$meta, data = .data$data)
+  pat <- list(meta = pat$meta, data = data)
   class(pat) <- c("pa_timeseries", class(pat))
   
   return(invisible(pat))
