@@ -23,7 +23,7 @@ pat_multiplot <- function(
   pat = NULL, 
   plottype = NULL, 
   cols = NULL, 
-  ...
+  plotlist = NULL
 ) {
   
   options(warn = -1)
@@ -98,8 +98,8 @@ pat_multiplot <- function(
     
   }
   
-  if ( length(list(...)) != 0 ) {
-    gg_multiplot(plotlist = list(...))
+  if ( length(plotlist) != 0 ) {
+    gg_multiplot(plotlist = plotlist)
   }
   
   options(warn=0)
