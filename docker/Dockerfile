@@ -1,4 +1,5 @@
 FROM mazamascience/spatialutils:0.6.1
+MAINTAINER "Jonathan Callahan" jonathan@mazamascience.com
 
 #######################################################################
 # For PWFSLSmoke
