@@ -78,44 +78,39 @@ pat_findOutliers <- function(pat,
   
   if ( showPlot ) {
     
-    # Plot the data in two separate plots
-    layout(matrix(seq(2)))
+    A_outliers <- A_data[A_outlierIndices,] %>%       
+      ggplot2::geom_point(mapping = ggplot2::aes(x = .data$datetime, 
+                                                 y = .data$pm25_A), 
+                          shape = 8, 
+                          size = 1, 
+                          color = "red")
     
-    plot(A_data$datetime, A_data$pm25_A, col='transparent',
-         xlab = 'Date', ylab = "PM 2.5 (\U00B5g/m3)",
-         las=1)
+    B_outliers <- B_data[B_outlierIndices,] %>% 
+      ggplot2::geom_point(mapping = ggplot2::aes(x = .data$datetime, 
+                                                 y = .data$pm25_B), 
+                          shape = 8, 
+                          size = 1, 
+                          color = "red")
     
-    title('channel A outliers')
-    mtext(pat$meta$label, 3, 0)
-    
-    points(A_data$datetime[A_outlierIndices], A_data$pm25_A[A_outlierIndices],
-           pch=16, cex=1.0, col='gray70') 
-    
-    points(A_data$datetime[A_outlierIndices], A_data$pm25_A[A_outlierIndices],
-           pch=1, cex=1.0, col='red')
-    
-    points(A_data$datetime, A_fixed,
-           pch=16, cex=0.5, col='black')
-    
-    # ---------------------------------
-    
-    plot(B_data$datetime, B_data$pm25_B, col='transparent',
-         xlab = 'Date', ylab = "PM 2.5 (\U00B5g/m3)",
-         las=1)
-    
-    title('channel B outliers')
-    mtext(pat$meta$label, 3, 0)
-    
-    points(B_data$datetime[B_outlierIndices], B_data$pm25_B[B_outlierIndices],
-           pch=16, cex=1.0, col='gray70') 
-    
-    points(B_data$datetime[B_outlierIndices], B_data$pm25_B[B_outlierIndices],
-           pch=1, cex=1.0, col='red')
-    
-    points(B_data$datetime, B_fixed,
-           pch=16, cex=0.5, col='black')
-    
-    layout(1)
+    channelA <- 
+      A_data %>%
+      tibble(datetime = A_data$datetime, pm25_A = A_data$pm25_A) %>% 
+      ggplot2::ggplot(ggplot2::aes(x = .data$datetime, y = .data$pm25_A)) + 
+      ggplot2::geom_point(shape=18, alpha = 1/10) + 
+      ggplot2::ggtitle(expression("Channel A PM"[2.5])) + 
+      ggplot2::xlab("Date") + ggplot2::ylab("\u03bcg / m\u00b3") + 
+      A_outliers
+  
+    channelB <- 
+      B_data %>%
+      tibble(datetime = B_data$datetime, pm25_B = B_data$pm25_B) %>% 
+      ggplot2::ggplot(ggplot2::aes(x = .data$datetime, y = .data$pm25_B)) + 
+      ggplot2::geom_point(shape = 18, alpha = 1/10) + 
+      ggplot2::ggtitle(expression("Channel B PM"[2.5])) + 
+      ggplot2::xlab("Date") + ggplot2::ylab("\u03bcg / m\u00b3") + 
+      B_outliers
+
+    pat_multiplot(plotlist=list(channelA, channelB))
     
   }
   
@@ -134,7 +129,7 @@ pat_findOutliers <- function(pat,
   # ----- Create the Purple Air Timeseries (pat) object -----------------------
   
   # Combine meta and data dataframes into a list
-  pat <- list(meta = pat$meta, data = .data$data)
+  pat <- list(meta = pat$meta, data = data)
   class(pat) <- c("pa_timeseries", class(pat))
   
   return(invisible(pat))
