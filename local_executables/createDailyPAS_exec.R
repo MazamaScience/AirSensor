@@ -18,9 +18,9 @@ library(optparse)      # to parse command line flags
 
 # The following packages are attached here so they show up in the sessionInfo
 suppressPackageStartupMessages({
+  library(MazamaCoreUtils)
   library(MazamaSpatialUtils)
   library(MazamaPurpleAir)
-  library(MazamaCoreUtils)
 })
 
 # Set up OptionParser
@@ -61,9 +61,9 @@ if ( !dir.exists(opt$logDir) ) stop(paste0("logDir not found:  ",opt$logDir))
 if ( !dir.exists(opt$spatialDataDir) ) stop(paste0("spatialDataDir not found:  ",opt$spatialDataDir))
 
 # Assign log file names
-debugLog <- file.path(opt$logDir, paste('createDailyPAS_DEBUG.log', sep='_'))
-infoLog  <- file.path(opt$logDir, paste('createDailyPAS_INFO.log', sep='_'))
-errorLog <- file.path(opt$logDir, paste('createDailyPAS_ERROR.log', sep='_'))
+debugLog <- file.path(opt$logDir, 'createDailyPAS_DEBUG.log')
+infoLog  <- file.path(opt$logDir, 'createDailyPAS_INFO.log')
+errorLog <- file.path(opt$logDir, 'createDailyPAS_ERROR.log')
 
 # Set up logging
 logger.setup(debugLog=debugLog, infoLog=infoLog, errorLog=errorLog)
@@ -74,7 +74,7 @@ options(warn=-1) # -1=ignore, 0=save/print, 1=print, 2=error
 # Set up MazamaSpatialUtils
 initializeMazamaSpatialUtils(opt$spatialDataDir)
 
-logger.info('Running createDailyPAS_exec.R version %s',VERSION)
+logger.debug('Running createDailyPAS_exec.R version %s',VERSION)
 sessionString <- paste(capture.output(sessionInfo()), collapse='\n')
 logger.debug('R session:\n\n%s\n', sessionString)
 
@@ -82,11 +82,13 @@ logger.debug('R session:\n\n%s\n', sessionString)
 
 result <- try({
   
-  pas <- pas_load()
-  
   datestamp <- strftime(lubridate::now('America/Los_Angeles'), "%Y%m%d")
   filename <- paste0("pas_", datestamp, ".rda")
   filepath <- file.path(opt$outputDir, filename)
+  
+  logger.info('Obtaining "pas" data for %s', datestamp)
+  pas <- pas_load()
+  
   logger.info('Writing "pas" data to %s', filename)
   save(list="pas", file=filepath)  
   

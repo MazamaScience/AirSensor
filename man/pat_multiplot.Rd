@@ -4,14 +4,15 @@
 \alias{pat_multiplot}
 \title{Display multiple plots on one page}
 \usage{
-pat_multiplot(..., pat = NULL, plottype = NULL, cols = NULL)
+pat_multiplot(pat = NULL, plottype = NULL, plotlist = NULL,
+  cols = NULL)
 }
 \arguments{
-\item{...}{ggplot objects}
-
 \item{pat}{Purple Air Timeseries "pat" object from \code{createPATimeseriesObject()}}
 
 \item{plottype}{Quick-reference plot types: "all", "aux", "pm25"}
+
+\item{plotlist}{a list() of any number of ggplot objects to plot on a single pane}
 
 \item{cols}{Number of columns in the plot layout}
 }
@@ -19,7 +20,6 @@ pat_multiplot(..., pat = NULL, plottype = NULL, cols = NULL)
 # A plotting function that uses ggplot2 to display multiple 
 ggplot objects in a single pane. Can either be passed individual ggplot 
 objects or a pat object and a plot type. 
-
 Typical usage would be to supply \code{pat} and use the \code{plottype} 
 argument to quickly display preformatted plots. 
 \itemize{

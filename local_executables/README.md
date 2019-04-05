@@ -1,7 +1,7 @@
 # Sensor Data Ingest
 
 Scripts in this repository do all the work of converting raw data from Purple
-Air sensors into .RData files ready for use with the **MazamaPurpleAir** R 
+Air sensors into .rda files ready for use with the **MazamaPurpleAir** R 
 package
 
 The `purpleair_createDailyPAS_exec.R script designed to be run shortly after 
@@ -32,7 +32,7 @@ Now for the gory details.
 ## Processing Logs ##
 
 As each script is run, either at the command line or from a cron job, it will 
-generate logging output in the output directory along with the final `.RData` 
+generate logging output in the output directory along with the final `.rda` 
 file. Log files should contain the name of the processing script. Four 
 different levels of logging are provided:
 

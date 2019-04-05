@@ -1,5 +1,8 @@
 #' @export
+#' @import MazamaCoreUtils
+#' 
 #' @title Get Purple Air timeseries data
+#' 
 #' @param pas Purple Air 'enhanced' synoptic data
 #' @param name Purple Air 'label'
 #' @param id Purple Air 'ID'

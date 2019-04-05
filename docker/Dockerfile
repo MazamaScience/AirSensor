@@ -1,4 +1,4 @@
-FROM mazamascience/spatialutils:0.6.1
+FROM mazamascience/pwfslsmoke:1.2.2
 MAINTAINER "Jonathan Callahan" jonathan@mazamascience.com
 
 #######################################################################
@@ -11,19 +11,15 @@ RUN apt-get update \
   && rm -rf /tmp/downloaded_packages/ /tmp/*.rds \
   ## Install R packages from CRAN
   && install2.r --error -r "https://cran.rstudio.com" \
-    PWFSLSmoke \
+    optparse \
     seismicRoll
-
-# Install from Github for the latest updates
-RUN installGithub.r \
-    mazamascience/pwfslsmoke
 
 #######################################################################
 # For MazamaPurpleAir (while the Github repo is private)
 
 WORKDIR /
 
-COPY MazamaPurpleAir_0.1.6.tar.gz /
+COPY MazamaPurpleAir_0.1.7.tar.gz /
 
-RUN R CMD INSTALL MazamaPurpleAir_0.1.6.tar.gz
+RUN R CMD INSTALL MazamaPurpleAir_0.1.7.tar.gz
 

@@ -12,6 +12,6 @@
 
 # ----- Create a "synoptic" file early each morning ----------------------------
 
-00 04 * * *    docker run --rm -v /Users/jonathan/Projects/MazamaScience/MazamaPurpleAir/local_executables:/app -w /app sensor-data-ingest-v1 /app/createDailyPAS_exec.R --outputDir=/app --logDir=/app
+00 04 * * *    docker run --rm -v /Users/jonathan/Projects/MazamaScience/MazamaPurpleAir/local_executables:/app -w /app mazamascience/mazamapurpleair /app/createDailyPAS_exec.R --outputDir=/app --logDir=/app
 
 

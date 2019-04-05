@@ -1,4 +1,5 @@
 #' @export
+#' @import MazamaCoreUtils
 #' 
 #' @title Get PWFSLSmoke monitoring data
 #' 

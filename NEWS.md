@@ -1,15 +1,19 @@
-# MazamaPurpleAir 0.1.7.0
+# MazamaPurpleAir 0.1.8
+
+* simplified docker image usage
+
+# MazamaPurpleAir 0.1.7
 
 * include docker image
 * added subdating feature
 
-# MazamaPurpleAir 0.1.6.0
+# MazamaPurpleAir 0.1.6
 
 * added multiplotting tools
 * added outlier detection
 * added pat_internalData
 
-# MazamaPurpleAir 0.1.4.1
+# MazamaPurpleAir 0.1.5
 
 * added PurpleAir timeseries functionality
 * updated PurpleAir synoptic vignette
