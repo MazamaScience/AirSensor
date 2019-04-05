@@ -88,7 +88,7 @@ result <- try({
   filepath <- file.path(opt$outputDir, filename)
   
   logger.info('Obtaining "pas" data for %s', datestamp)
-  pas <- pas_load()
+  pas <- pas_loadLatest()
   
   logger.info('Writing "pas" data to %s', filename)
   save(list="pas", file=filepath)  

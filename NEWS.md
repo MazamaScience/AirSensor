@@ -1,5 +1,8 @@
 # MazamaPurpleAir 0.1.8
 
+* `pas_load()` function now downloads pre-generated `pas` objects
+* a new `pas_loadLatest()` function downloads raw synoptic data from Purple
+Air and generates a `pas` object
 * simplified docker image usage
 
 # MazamaPurpleAir 0.1.7

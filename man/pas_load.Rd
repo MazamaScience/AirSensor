@@ -2,56 +2,44 @@
 % Please edit documentation in R/pas_load.R
 \name{pas_load}
 \alias{pas_load}
-\title{Get latest Purple Air synoptic data}
+\title{Load Purple Air synoptic data}
 \usage{
-pas_load(baseUrl = "https://www.purpleair.com/json",
-  countryCodes = c("US"), includePWFSL = TRUE, lookbackDays = 1)
+pas_load(datestamp = strftime(lubridate::today("America/Los_Angeles"),
+  "\%Y\%m\%d"),
+  baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/pas/2019")
 }
 \arguments{
+\item{datestamp}{A date string in ymd order.}
+
 \item{baseUrl}{Base URL for synoptic data.}
-
-\item{countryCodes}{ISO country codes used to subset the data.}
-
-\item{includePWFSL}{Logical specifying whether to calculate distances from 
-PWFSL monitors.}
-
-\item{lookbackDays}{Number of days to "look back" for valid data. Data are
-filtered to only include sensors with data more recent than 
-\code{lookbackDays} ago.}
 }
 \value{
 Enhanced dataframe of synoptic Purple Air data.
 }
 \description{
-Download, parse and enhance synoptic data from PurpleAir and
-return the results as a useful tibble with class \code{pa_synoptic}.
+A pre-generated \code{pa_synoptic} dataframe will be loaded for
+the given date. These files are generated each day at 4am California time
+and provide a record of all currently installed Purple Air sensors for the
+day of interest.
 
-Steps include:
+The \code{datestamp} can be anything that is understood by \code{lubrdiate::ymd()}
+including either of the following recommended formats:
 
-1) Download and parse synoptic data
-
-2) Replace variable with more consistent, more human readable names.
-
-3) Add spatial metadata for each monitor including:
 \itemize{
-  \item{timezone -- olson timezone}
-  \item{countryCode -- ISO 3166-1 alpha-2}
-  \item{stateCode -- ISO 3166-2 alpha-2}
+\item{\code{"YYYYmmdd"}}
+\item{\code{"YYYY-mm-dd"}}
 }
 
-4) Convert data types from character to \code{POSIXct} and \code{numeric}.
-
-5) Add distance and monitorID for the closest PWFSL monitor
-
-Subsetting by country may be performed by specifying the \code{countryCodes}
-argument.
+By default, today's date is used.
 }
 \examples{
 \dontrun{
-initializeMazamaSpatialUtils()
 pas <- pas_load()
+pas \%>\% 
+  filter(stateCode == "CA") \%>\%
+  pas_leaflet()
 }
 }
 \seealso{
-\link{downloadParseSynopticData}
+\link{pas_loadLatest}
 }

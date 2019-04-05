@@ -3,86 +3,79 @@
 #' @importFrom dplyr filter
 #' @import MazamaCoreUtils
 #' 
-#' @title Get latest Purple Air synoptic data
+#' @title Load Purple Air synoptic data
 #' 
-#' @description Download, parse and enhance synoptic data from PurpleAir and
-#' return the results as a useful tibble with class \code{pa_synoptic}.
-#'
-#' Steps include:
+#' @description A pre-generated \code{pa_synoptic} dataframe will be loaded for
+#' the given date. These files are generated each day at 4am California time
+#' and provide a record of all currently installed Purple Air sensors for the
+#' day of interest.
 #' 
-#' 1) Download and parse synoptic data
-#'
-#' 2) Replace variable with more consistent, more human readable names.
-#'
-#' 3) Add spatial metadata for each monitor including:
+#' The \code{datestamp} can be anything that is understood by \code{lubrdiate::ymd()}
+#' including either of the following recommended formats:
+#' 
 #' \itemize{
-#'   \item{timezone -- olson timezone}
-#'   \item{countryCode -- ISO 3166-1 alpha-2}
-#'   \item{stateCode -- ISO 3166-2 alpha-2}
+#' \item{\code{"YYYYmmdd"}}
+#' \item{\code{"YYYY-mm-dd"}}
 #' }
+#' 
+#' By default, today's date is used.
 #'
-#' 4) Convert data types from character to \code{POSIXct} and \code{numeric}.
-#'
-#' 5) Add distance and monitorID for the closest PWFSL monitor
-#'
-#' Subsetting by country may be performed by specifying the \code{countryCodes}
-#' argument.
-#'
+#' @param datestamp A date string in ymd order.
 #' @param baseUrl Base URL for synoptic data.
-#' @param countryCodes ISO country codes used to subset the data.
-#' @param includePWFSL Logical specifying whether to calculate distances from 
-#' PWFSL monitors.
-#' @param lookbackDays Number of days to "look back" for valid data. Data are
-#' filtered to only include sensors with data more recent than 
-#' \code{lookbackDays} ago.
 #' 
 #' @return Enhanced dataframe of synoptic Purple Air data.
 #' 
-#' @seealso \link{downloadParseSynopticData}
+#' @seealso \link{pas_loadLatest}
 #' 
 #' @examples
 #' \dontrun{
-#' initializeMazamaSpatialUtils()
 #' pas <- pas_load()
+#' pas %>% 
+#'   filter(stateCode == "CA") %>%
+#'   pas_leaflet()
 #' }
 
 pas_load <- function(
-  baseUrl = 'https://www.purpleair.com/json',
-  countryCodes = c('US'),
-  includePWFSL = TRUE,
-  lookbackDays = 1
+  datestamp = strftime(lubridate::today("America/Los_Angeles"), "%Y%m%d"),
+  baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/pas/2019"
 ) {
   
   logger.debug("----- pas_load() -----")
   
   # Validate parameters --------------------------------------------------------
   
-  # Guarantee uppercase codes
-  countryCodes <- toupper(countryCodes)
-  if ( any(!(countryCodes %in% countrycode::codelist$iso2c)) ) 
-    stop("parameter 'countryCodes' has values that are not recognized as ISO-2 country codes")
+  date <- lubridate::ymd(datestamp)
   
-  # Gaurantee includePWFSL is a logial value
-  if ( !is.logical(includePWFSL) )
-    stop("parameter 'includePWFSL' is not a logical value")
+  if ( datestamp < "20190404" ) 
+    stop("No data is available prior to April 5, 2019.")
+
+  # Allow datestamp to be one day past today to handle timezone differences
+  tomorrow <- lubridate::today("America/Los_Angeles") + lubridate::ddays(1)
+  if ( datestamp > strftime(tomorrow, "%Y%m%d") )
+    stop("No data is available for future dates.")
   
-  # Guarantee lookbackDays at least 1
-  if ( lookbackDays < 1 )
-    stop("parameter 'lookbackDays' is less than one")
+  # Load data from URL ---------------------------------------------------------
   
-  # Load data ------------------------------------------------------------------
+  filename <- paste0("pas_", datestamp, ".rda")
+  filepath <- paste0(baseUrl, '/', filename)
+  # Define a 'connection' object so we can close it no matter what happens
+  conn <- url(filepath)
+  result <- try({
+    suppressWarnings(ws_monitor <- get(load(conn)))
+  }, silent=TRUE )
+  close(conn)
+    
+  # NOTE:  We used suppressWarnings() above so that we can have a more
+  # NOTE:  uniform error response for the large variety of reasons that
+  # NOTE:  loading might fail.
   
-  # Download, parse and enhance synoptic data
-  pas_raw <- downloadParseSynopticData(baseUrl)
-  pas <- enhanceSynopticData(pas_raw, countryCodes, includePWFSL)
-  
-  
-  # Filter for age
-  starttime <- lubridate::now("UTC") - lubridate::ddays(lookbackDays)
-  pas <- dplyr::filter(pas, .data$lastSeenDate >= starttime)
-  
-  # Add a class name
-  class(pas) <- c('pa_synoptic', class(pas))
+  if ( "try-error" %in% class(result) ) {
+    # TODO:  Restore logging when we stop generating "futile.logger" errors
+    # TODO:  when logging has not been initialized.
+    # # Log the error if logging is enabled. Fail silently otherwise.
+    # try({ logger.error("%s", geterrmessage()) }, silent = TRUE)
+    stop(paste0("Data file could not be loaded: ", filepath), call.=FALSE)
+  }
   
   return(pas)
   
