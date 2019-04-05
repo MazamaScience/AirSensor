@@ -18,6 +18,7 @@ library(optparse)      # to parse command line flags
 
 # The following packages are attached here so they show up in the sessionInfo
 suppressPackageStartupMessages({
+  library(futile.logger)
   library(MazamaCoreUtils)
   library(MazamaSpatialUtils)
   library(MazamaPurpleAir)

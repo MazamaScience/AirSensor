@@ -19,7 +19,7 @@ RUN apt-get update \
 
 WORKDIR /
 
-COPY MazamaPurpleAir_0.1.7.tar.gz /
+COPY MazamaPurpleAir_0.1.8.tar.gz /
 
-RUN R CMD INSTALL MazamaPurpleAir_0.1.7.tar.gz
+RUN R CMD INSTALL MazamaPurpleAir_0.1.8.tar.gz
 
