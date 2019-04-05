@@ -1,5 +1,9 @@
 # MazamaPurpleAir 0.1.8
 
+* `pat_subdate()` has been renamed to `pat_filterDate()` and defaults to 
+the `America/Los_Angeles` timezone
+* improved handling of date ranges in `pat_load()` -- all requests are assumed
+to be in the sensor's local timezone
 * `pas_load()` function now downloads pre-generated `pas` objects
 * a new `pas_loadLatest()` function downloads raw synoptic data from Purple
 Air and generates a `pas` object

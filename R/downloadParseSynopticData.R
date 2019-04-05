@@ -1,5 +1,4 @@
 #' @export
-#' 
 #' @importFrom MazamaCoreUtils logger.debug logger.error
 #' 
 #' @title Download synoptic data from Purple Air

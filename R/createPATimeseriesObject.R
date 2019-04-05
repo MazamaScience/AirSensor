@@ -1,8 +1,13 @@
 #' @export
+#' @importFrom rlang .data
 #' @import dplyr
-#' @title Create a Purple Air Timeseries Object
+#' 
+#' @title Create a Purple Air Timeseries object
+#' 
 #' @param pat_raw raw Purple Air timeseries data from \code{downloadParseTimeseriesData()}
+#' 
 #' @return List with original \code{meta} and restructured \code{data} elements
+#' 
 #' @description The 'data' dataframe is converted from 'long format' with temporal
 #' resolution of seconds to 'wide format' with temporal resolution in minutes.
 #' In the process, the following columns of data are omitted:
@@ -11,8 +16,6 @@
 #' \item{\code{pm2.5_atm}}
 #' \item{\code{pm10_atm}}
 #' }
-#' @importFrom rlang .data
-#' @import dplyr
 #' 
 #' @return "pa_timeseries" list of time series PurpleAir data
 #' 
@@ -30,7 +33,7 @@ createPATimeseriesObject <- function(
   pat_raw = NULL
 ) {
   
-  # ----- simplify meta -------------------------------------------------------
+  # ----- Simplify meta --------------------------------------------------------
   
   meta <- 
     pat_raw$meta %>%
@@ -49,7 +52,7 @@ createPATimeseriesObject <- function(
                   .data$pwfsl_closestDistance, 
                   .data$pwfsl_closestMonitorID)
   
-  # ----- simplify data -------------------------------------------------------
+  # ----- Simplify data --------------------------------------------------------
   
   # NOTE:  The incoming pat_raw has the following structure with 
   # NOTE:  a 'meta' dataframe and a 'data' dataframe:

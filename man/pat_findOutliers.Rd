@@ -2,7 +2,7 @@
 % Please edit documentation in R/pat_findOutliers.R
 \name{pat_findOutliers}
 \alias{pat_findOutliers}
-\title{Detect and Fix Timeseries Outliers}
+\title{Detect and Fix Timeseries outliers}
 \usage{
 pat_findOutliers(pat, n = 11, thresholdMin = 6,
   replaceOutliers = FALSE, showPlot = TRUE)

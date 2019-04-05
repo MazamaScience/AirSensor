@@ -2,7 +2,7 @@
 % Please edit documentation in R/createPATimeseriesObject.R
 \name{createPATimeseriesObject}
 \alias{createPATimeseriesObject}
-\title{Create a Purple Air Timeseries Object}
+\title{Create a Purple Air Timeseries object}
 \usage{
 createPATimeseriesObject(pat_raw = NULL)
 }

@@ -1,13 +1,17 @@
 #' @export
-#' @import graphics
 #' @importFrom rlang .data
-#' @title Detect and Fix Timeseries Outliers
+#' @import graphics
+#' 
+#' @title Detect and Fix Timeseries outliers
+#' 
 #' @param pat Purple Air Timeseries "pat" object from \code{createPATimeseriesObject()}
 #' @param n integer window size
 #' @param thresholdMin threshold value for outlier detection
 #' @param replaceOutliers logical specifying whether replace outlier with the window median value
 #' @param showPlot logical specifying whether to generate outlier detection plots
+#' 
 #' @return \code{pat} timeseries object with outliers replaced by median values.
+#' 
 #' @description Outlier detection using a Median Average Deviation "Hampel" filter.
 #' 
 #' The \code{thresholdMin} level is similar to a sigma value for normally distributed data.
@@ -24,13 +28,15 @@
 #' @note Additional documentation on the algorithm is available in 
 #' \code{seismicRoll::findOutliers()}.
 
-pat_findOutliers <- function(pat,
-                             n = 11,
-                             thresholdMin = 6,
-                             replaceOutliers = FALSE,
-                             showPlot = TRUE) {
+pat_findOutliers <- function(
+  pat,
+  n = 11,
+  thresholdMin = 6,
+  replaceOutliers = FALSE,
+  showPlot = TRUE
+) {
   
-  # ----- Prepare separate A/B subsets ----------------------------------------
+  # ----- Prepare separate A/B subsets -----------------------------------------
   
   # NOTE:  Outlier detection doesn't work when there are lots of missing values.
   # NOTE:  The 'pat' object combines data from both channels which are on separate
@@ -74,7 +80,7 @@ pat_findOutliers <- function(pat,
     B_fixed[B_outlierIndices] <- NA
   }
   
-  # ----- Plot the data -------------------------------------------------------
+  # ----- Plot the data --------------------------------------------------------
   
   if ( showPlot ) {
     
@@ -100,7 +106,7 @@ pat_findOutliers <- function(pat,
       ggplot2::ggtitle(expression("Channel A PM"[2.5])) + 
       ggplot2::xlab("Date") + ggplot2::ylab("\u03bcg / m\u00b3") + 
       A_outliers
-  
+    
     channelB <- 
       B_data %>%
       tibble(datetime = B_data$datetime, pm25_B = B_data$pm25_B) %>% 
@@ -109,12 +115,12 @@ pat_findOutliers <- function(pat,
       ggplot2::ggtitle(expression("Channel B PM"[2.5])) + 
       ggplot2::xlab("Date") + ggplot2::ylab("\u03bcg / m\u00b3") + 
       B_outliers
-
+    
     pat_multiplot(plotlist=list(channelA, channelB))
     
   }
   
-  # ----- Create a fixed 'pat' object -----------------------------------------
+  # ----- Create a fixed 'pat' object ------------------------------------------
   
   A_data$pm25_A <- A_fixed
   B_data$pm25_B <- B_fixed
@@ -126,7 +132,7 @@ pat_findOutliers <- function(pat,
                   .data$datetime_A, .data$datetime_B) %>%
     dplyr::arrange(.data$datetime)
   
-  # ----- Create the Purple Air Timeseries (pat) object -----------------------
+  # ----- Create the Purple Air Timeseries (pat) object ------------------------
   
   # Combine meta and data dataframes into a list
   pat <- list(meta = pat$meta, data = data)

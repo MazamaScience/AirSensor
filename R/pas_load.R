@@ -1,7 +1,7 @@
 #' @export
 #' @importFrom rlang .data
 #' @importFrom dplyr filter
-#' @import MazamaCoreUtils
+#' @importFrom MazamaCoreUtils logger.debug logger.error
 #' 
 #' @title Load Purple Air synoptic data
 #' 
@@ -61,7 +61,7 @@ pas_load <- function(
   # Define a 'connection' object so we can close it no matter what happens
   conn <- url(filepath)
   result <- try({
-    suppressWarnings(ws_monitor <- get(load(conn)))
+    suppressWarnings(pas <- get(load(conn)))
   }, silent=TRUE )
   close(conn)
     
@@ -77,6 +77,6 @@ pas_load <- function(
     stop(paste0("Data file could not be loaded: ", filepath), call.=FALSE)
   }
   
-  return(pas)
+  return(invisible(pas))
   
 }

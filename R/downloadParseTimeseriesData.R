@@ -1,7 +1,7 @@
 #' @export
 #' 
-#' @importFrom MazamaCoreUtils logger.debug logger.error
 #' @importFrom rlang .data
+#' @importFrom MazamaCoreUtils logger.debug logger.error
 #' 
 #' @title Download Purple Air timeseries data
 #' 
@@ -87,6 +87,8 @@ downloadParseTimeseriesData <- function(
   status_code <- httr::status_code(r)
   content <- httr::content(r, as="text") # don't interpret the JSON
   
+  # TODO:  Handle "no data" response by generating an empty "pat" object
+  
   if ( httr::http_error(r) ) {  # web service failed to respond
     
     # https://digitalocean.com/community/tutorials/how-to-troubleshoot-common-http-error-codes
@@ -125,6 +127,8 @@ downloadParseTimeseriesData <- function(
   # NOTE:  using Hadley Wickham style: 
   # NOTE:  https://github.com/hadley/httr/blob/master/vignettes/quickstart.Rmd
   r <- httr::GET(webserviceUrl)
+  
+  # TODO:  Handle "no data" response by generating an empty "pat" object
   
   # Handle the response
   status_code <- httr::status_code(r)
@@ -219,6 +223,10 @@ downloadParseTimeseriesData <- function(
   return(pat)
   
 }
+
+# TODO:  Probably have an internal function to create an empty "pat" object.
+# TODO:  This can then be returned immediately whenever a "no data" response
+# TODO:  is detected when requesting data.
 
 ###############################################################################
 # FOR TESTING

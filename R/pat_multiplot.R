@@ -1,10 +1,14 @@
 #' @export
+#' @importFrom rlang .data
 #' @import graphics
+#' 
 #' @title Display multiple plots on one page
+#' 
 #' @param pat Purple Air Timeseries "pat" object from \code{createPATimeseriesObject()}
 #' @param plottype Quick-reference plot types: "all", "aux", "pm25"
 #' @param plotlist a list() of any number of ggplot objects to plot on a single pane
 #' @param cols Number of columns in the plot layout
+#' 
 #' @description # A plotting function that uses ggplot2 to display multiple 
 #' ggplot objects in a single pane. Can either be passed individual ggplot 
 #' objects or a pat object and a plot type. 
@@ -15,6 +19,7 @@
 #' \item{"aux": auxillary data (humidity, temperature)}
 #' \item{"pm25": PM2.5 from Channel A and Channel B}
 #' } 
+#' 
 #' @note Additional documentation of the multiplot algorithm is available at 
 #' cookbook-r.com.
 

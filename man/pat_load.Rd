@@ -27,6 +27,10 @@ List with \code{meta} and \code{data} elements
 Retrieve and parse timeseries data from the Thingspeak API for 
 specific PurpleAir sensors.
 }
+\note{
+Dates are interpreted to be in the local timzone for the sensor of 
+interest.
+}
 \examples{
 \dontrun{
 initializeMazamaSpatialUtils()

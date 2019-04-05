@@ -96,13 +96,13 @@ pat %>%
 
 Our `pat` dataframe spans two months. While this provides a great overview of
 PM2.5, it is unwieldy to analyze if we are only interested in anomolous air 
-quality. We can use `pat_subdate` to subset our `pat` dates. In this case, we'll
+quality. We can use `pat_filterDate` to subset our `pat` dates. In this case, we'll
 reduce our DOI to 01 August 2018 - 01 September 2018.
 
 ```{r augustPlot}
 pat_august <- 
   pat %>% 
-  pat_subdate(sd = 20180801, ed = 20180901)
+  pat_filterDate(startdate = 20180801, enddate = 20180901)
 
 pat_august %>%
   pat_multiplot(plottype = "pm25")
@@ -122,12 +122,12 @@ pat_august_filtered <-
 
 Now that we have a filtered dataset we can begin looking into smaller datasets.
 14 August 2018 appears to be the initial PM2.5 event. We can view a single day 
-using `pat_subdate` and `pat_multiplot`. 
+using `pat_filterDate` and `pat_multiplot`. 
 
 ```{r}
 august_14 <- 
   pat_august %>% 
-  pat_subdate(sd = 20180814, days = 1)
+  pat_filterDate(startdate = 20180814, days = 1)
 
 august_14 %>% 
   pat_multiplot(plottype = "all")

@@ -1,7 +1,7 @@
 #' @export
 #' @import graphics
 #' 
-#' @title Compare All Variables in a Purple Air Timeseries Object
+#' @title Compare all variables in a Purple Air Timeseries object
 #' 
 #' @description Creates a multi-panel comparing all variables in the \code{pat} 
 #' object. If any variables have no valid data, they are omitted from the plot.
@@ -22,7 +22,6 @@ pat_internalData <- function(
   use_rssi = TRUE,
   showPlot = TRUE
 ) {
-  
   
   # For easier access
   meta <- pat$meta

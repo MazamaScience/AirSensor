@@ -2,7 +2,7 @@
 % Please edit documentation in R/pat_internalData.R
 \name{pat_internalData}
 \alias{pat_internalData}
-\title{Compare All Variables in a Purple Air Timeseries Object}
+\title{Compare all variables in a Purple Air Timeseries object}
 \usage{
 pat_internalData(pat, use_adc0 = FALSE, use_rssi = TRUE,
   showPlot = TRUE)
