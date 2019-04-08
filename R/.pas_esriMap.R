@@ -69,14 +69,26 @@ pas_esriMap <- function(
     mapRaster <- PWFSLSmoke::esriMap_getMap(
       centerLon, 
       centerLat, 
-      width = 640, 
-      height = 640,
+      width = 800, 
+      height = 800,
       zoom = zoom, 
       maptype = maptype, 
       crs = sp::CRS("+init=epsg:4326") )
   }
-
-  img <- PWFSLSmoke::esriMap_plotOnStaticMap(mapRaster)
-  graphics::points(pas$longitude, pas$latitude )
-  # NOTE: THIS WILL BE IMPLEMENTED IN GGPLOT
+  
+  ggRasterPlot <- 
+    RStoolbox::ggRGB(mapRaster, r=1, g=2, b=3, maxpixels = 2e+06) + 
+    ggplot2::geom_point( ggplot2::aes(x = pas$longitude, 
+                                     y = pas$latitude, 
+                                     color = pas$pm25_current), 
+      shape = 18, 
+      size = 4, 
+      alpha = 0.9 ) + 
+    ggplot2::scale_color_gradient(high="#e16941", low="#4169e1") +
+    ggplot2::labs(color = "PM2.5") +
+    ggplot2::coord_fixed(ratio = 4/3) +
+    ggplot2::theme_void() 
+  
+  return(ggRasterPlot)
+  
 }
