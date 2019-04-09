@@ -2,6 +2,7 @@
 
 * added generalized multiplot function `multi_ggplot()`
 * include static mapping functionality with `pas_esriMap()`
+* added `pat_filterData` 
 
 # MazamaPurpleAir 0.1.8
 
