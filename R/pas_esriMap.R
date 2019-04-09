@@ -41,7 +41,6 @@ pas_esriMap <- function(
   mapRaster=NULL, 
   zoom=NULL,
   showMap=FALSE,
-  color="current",
   ...) {
   
   if( nrow(pas) == 0 ) {
