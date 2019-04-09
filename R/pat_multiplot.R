@@ -32,32 +32,6 @@ pat_multiplot <- function(
   
   options(warn = -1)
   
-  # A very useful multiplot Function -------------------------------------------
-  
-  # The R-cookbook
-  gg_multiplot <- function(..., plotlist = NULL, cols = 1, layout = NULL) {
-    plots <- c(list(...), plotlist)
-    numPlots <- length(plots)
-    if ( is.null(layout) ) {
-      layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
-                       ncol = cols, nrow = ceiling(numPlots/cols))
-    }
-    if ( numPlots == 1 ) {
-      print(plots[[1]])
-    } else {
-      grid::grid.newpage()
-      grid::pushViewport(grid::viewport(layout = grid::grid.layout(nrow(layout), 
-                                                                   ncol(layout))) )
-      for ( i in 1:numPlots ) {
-        matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
-        print(plots[[i]], vp = grid::viewport(layout.pos.row = matchidx$row,
-                                              layout.pos.col = matchidx$col))
-      }
-    }
-  }
-  
-  # ----------------------------------------------------------------------------
-  
   if ( !is.null(pat) && !is.null(plottype) ) { 
     
     df <- 
@@ -93,17 +67,20 @@ pat_multiplot <- function(
       ggplot2::xlab("Date") + ggplot2::ylab("RH%")
     
     if ( plottype == "pm25" ) {
-      gg_multiplot(channelA, channelB)
+      multi_ggplot(channelA, channelB, cols = 1)
     } else if ( plottype == "aux" ) { 
-      gg_multiplot(temperature, humidity, cols = 2)
+      multi_ggplot(temperature, humidity, cols = 2)
     } else if ( plottype == "all") { 
-      gg_multiplot(channelA, channelB, humidity, temperature, cols = 2)
+      multi_ggplot(channelA, channelB, humidity, temperature, cols = 2)
     }
     
   }
   
   if ( length(plotlist) != 0 ) {
-    gg_multiplot(plotlist = plotlist)
+    
+    if ( is.null(cols) )( cols = length(plotlist) )
+    
+    multi_ggplot(plotlist = plotlist, cols = cols)
   }
   
   options(warn=0)
