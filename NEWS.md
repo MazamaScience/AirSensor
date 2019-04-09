@@ -1,3 +1,8 @@
+# MazamaPurpleAir 0.1.9
+
+* added generalized multiplot function `multi_ggplot()`
+* include static mapping functionality with `pas_esriMap()`
+
 # MazamaPurpleAir 0.1.8
 
 * `pat_subdate()` has been renamed to `pat_filterDate()` and defaults to 
