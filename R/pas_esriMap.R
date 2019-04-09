@@ -41,6 +41,7 @@ pas_esriMap <- function(
   mapRaster=NULL, 
   zoom=NULL,
   showMap=FALSE,
+  color="current",
   ...) {
   
   if( nrow(pas) == 0 ) {
@@ -64,7 +65,7 @@ pas_esriMap <- function(
       diff(range(pas$latitude, na.rm = TRUE)) )
     
     zoom <- (0.02974 * log10(maxRange) + 0.1355)**(-1)
-    }
+  }
   
   # ----- Generate RGB Raster --------------------------------------------------
   
