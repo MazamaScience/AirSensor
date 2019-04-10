@@ -80,19 +80,24 @@ pas_esriMap <- function(
   }
   
   #----- Generate ggobject with mapRaster --------------------------------------
-  
+  colorFunc <- leaflet::colorBin( PWFSLSmoke::AQI$colors, 
+                                  bins = PWFSLSmoke::AQI$breaks_24, 
+                                  na.color = "#bbbbbb" )
+  colors <- PWFSLSmoke::AQI$colors
+  labels <- PWFSLSmoke::AQI$names
   ggRasterPlot <- 
     RStoolbox::ggRGB(mapRaster, r=1, g=2, b=3, maxpixels = 2e+06) + 
-    ggplot2::geom_point( ggplot2::aes(x = pas$longitude, 
+    ggplot2::geom_point(ggplot2::aes( x = pas$longitude, 
                                       y = pas$latitude, 
-                                      color = pas$pm25_current), 
-      shape = 18, 
-      size = 4, 
-      alpha = 0.5 ) + 
-    ggplot2::scale_color_gradient(high="#e16941", low="#4169e1") +
-    ggplot2::labs(color = "PM2.5") +
+                                      color = colorFunc(pas$pm25_1hr) ),
+                        shape = 15, 
+                        size = 2., 
+                        alpha = 0.75) + 
+    ggplot2::scale_color_manual( name = "AQI", 
+                                 values = c(colors, "#bbbbbb"), 
+                                 labels = c(labels, "Missing") ) +
     ggplot2::coord_fixed(ratio = 4/3) +
-    ggplot2::theme_void() 
+    ggplot2::theme_void()
   
   if ( showMap )( show(ggRasterPlot) )
   
