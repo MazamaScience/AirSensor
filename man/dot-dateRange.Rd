@@ -4,7 +4,7 @@
 \alias{.dateRange}
 \title{Create a POSIXct date range}
 \usage{
-.dateRange(startdate = NULL, enddate = NULL, lookbackdays = 7,
+.dateRange(startdate = NULL, enddate = NULL, days = 7,
   timezone = "UTC", unit = "sec")
 }
 \arguments{
@@ -12,7 +12,7 @@
 
 \item{enddate}{desired end datetime (ISO 8601)}
 
-\item{lookbackdays}{number of days of data to include}
+\item{days}{number of days of data to include}
 
 \item{timezone}{Olson timezone used to interpret dates}
 

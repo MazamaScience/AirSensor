@@ -2,7 +2,7 @@
 #' 
 #' @param startdate desired start datetime (ISO 8601)
 #' @param enddate desired end datetime (ISO 8601)
-#' @param lookbackdays number of days of data to include
+#' @param days number of days of data to include
 #' @param timezone Olson timezone used to interpret dates
 #' @param unit units used to determine enddates final timestep
 #' 
@@ -26,7 +26,7 @@
 .dateRange <- function(
   startdate = NULL, 
   enddate = NULL, 
-  lookbackdays = 7, 
+  days = 7, 
   timezone = "UTC",
   unit = "sec"
 ) {
@@ -58,34 +58,34 @@
     
   } else if ( is.null(startdate) && !is.null(enddate) ) {
     
-    # Missing startdate:  use (enddate - lookbackdays), enddate
+    # Missing startdate:  use (enddate - days), enddate
     endtime <- enddate %>%
       lubridate::parse_date_time(orders = orders, tz = timezone) %>%
       lubridate::floor_date(unit = "day") + 
       lubridate::dseconds(daySecs)
     starttime <- endtime %>%
       lubridate::floor_date(unit = "day") - 
-      lubridate::ddays(lookbackdays)
+      lubridate::ddays(days)
     
   } else if ( !is.null(startdate) && is.null(enddate) ) {
     
-    # Missing enddate:  use startdate, (startdate + lookbackdays)
+    # Missing enddate:  use startdate, (startdate + days)
     starttime <- startdate %>%
       lubridate::parse_date_time(orders = orders, tz = timezone) %>%
       lubridate::floor_date(unit = "day")
     endtime <-  starttime %>%
       lubridate::floor_date(unit = "day") + 
       lubridate::dseconds(daySecs) + 
-      lubridate::ddays(lookbackdays)
+      lubridate::ddays(days)
     
   } else {
     
-    # Both missing:  use (now - lookbackdays), now
+    # Both missing:  use (now - days), now
     endtime <-  lubridate::now(timezone) %>%
       lubridate::floor_date(unit = "day" )
     starttime <- endtime %>%
       lubridate::floor_date(unit = "day") - 
-      lubridate::ddays(lookbackdays)
+      lubridate::ddays(days)
     
   }
   
