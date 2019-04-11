@@ -35,7 +35,7 @@ obtained use the provided `example_pas` synoptic dataset:
 ```
 docker run --rm -ti mazamascience/mazamapurpleair R --vanilla
 ...
-library(MazamaPurpleAir)
+library(AirSensor)
 
 data(example_pas)
 pas <- example_pas

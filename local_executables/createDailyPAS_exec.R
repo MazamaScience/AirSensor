@@ -21,7 +21,7 @@ suppressPackageStartupMessages({
   library(futile.logger)
   library(MazamaCoreUtils)
   library(MazamaSpatialUtils)
-  library(MazamaPurpleAir)
+  library(AirSensor)
 })
 
 # Set up OptionParser

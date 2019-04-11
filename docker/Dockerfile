@@ -15,11 +15,11 @@ RUN apt-get update \
     seismicRoll
 
 #######################################################################
-# For MazamaPurpleAir (while the Github repo is private)
+# For AirSensor (while the Github repo is private)
 
 WORKDIR /
 
-COPY MazamaPurpleAir_0.1.8.tar.gz /
+COPY AirSensor_0.1.8.tar.gz /
 
-RUN R CMD INSTALL MazamaPurpleAir_0.1.8.tar.gz
+RUN R CMD INSTALL AirSensor_0.1.8.tar.gz
 

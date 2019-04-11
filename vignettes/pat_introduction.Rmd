@@ -12,7 +12,7 @@ vignette: >
 ```{r setup, include=FALSE, message=FALSE}
 knitr::opts_chunk$set(fig.width=8, fig.height=6)
 library(MazamaCoreUtils)
-library(MazamaPurpleAir)
+library(AirSensor)
 library(dplyr)
 library(ggplot2)
 # NOTE: Use example PAS and PAT data for vignettes to avoid long wait-times
@@ -41,7 +41,7 @@ which provides access tokens for each PurpleAir sensor -- accessed by the
 monitor of interests label. 
 
 ```{r, eval = FALSE}
-library(MazamaPurpleAir)
+library(AirSensor)
 library(MazamaCoreUtils)
 pas <- pas_load()
 pat <- pat_load(pas, "Seattle", startdate = 20180701, enddate = 20180901)

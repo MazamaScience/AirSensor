@@ -4,7 +4,7 @@
 library(MazamaCoreUtils)
 library(MazamaSpatialUtils)
 library(PWFSLSmoke)
-library(MazamaPurpleAir)
+library(AirSensor)
 
 initializeMazamaSpatialUtils()
 

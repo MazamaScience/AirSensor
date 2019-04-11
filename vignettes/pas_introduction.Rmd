@@ -12,7 +12,7 @@ vignette: >
 ```{r setup, include=FALSE, message=FALSE}
 knitr::opts_chunk$set(fig.width=7, fig.height=5)
 
-library(MazamaPurpleAir)
+library(AirSensor)
 library(dplyr)
 library(ggplot2)
 
@@ -23,7 +23,7 @@ pas <- example_pas
 
 _Synoptic data_ provides a synopsis - a comprehensive and nearly instantaneous 
 picture of the state of the atmosphere. This vignette demonstrates an example 
-workflow for exploring air quality synoptic data using the MazamaPurpleAir 
+workflow for exploring air quality synoptic data using the AirSensor 
 R package and data captured by [PurpleAir](https://www.purpleair.com/) air 
 quality sensors.
 
@@ -35,7 +35,7 @@ the required Mazama Science packages and load the PurpleAir Synoptic ("`pas`")
 data.   
 
 ```{r, eval=FALSE}
-library(MazamaPurpleAir)
+library(AirSensor)
 library(dplyr)
 library(ggplot2)
 
@@ -151,7 +151,7 @@ df %>%
   theme(legend.position = "none")
 ```
 
-As you can see, the MazamaPurpleAir package combined with data provided by 
+As you can see, the AirSensor package combined with data provided by 
 PurpleAir offers a powerful system for regional air-quality assesment. 
 
 ----

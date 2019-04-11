@@ -1,4 +1,4 @@
 library(testthat)
-library(MazamaPurpleAir)
+library(AirSensor)
 
-test_check("MazamaPurpleAir")
+test_check("AirSensor")

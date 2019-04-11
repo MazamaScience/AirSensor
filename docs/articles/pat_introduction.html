@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>An Introduction to PurpleAir Time Series Data • MazamaPurpleAir</title>
+<title>An Introduction to PurpleAir Time Series Data • AirSensor</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -35,7 +35,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">MazamaPurpleAir</a>
+        <a class="navbar-link" href="../index.html">AirSensor</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.8</span>
       </span>
     </div>
@@ -72,7 +72,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/MazamaScience/MazamaPurpleAir">
+  <a href="https://github.com/MazamaScience/AirSensor">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -94,7 +94,7 @@
             
             <h4 class="date">2019-04-04</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/MazamaScience/MazamaPurpleAir/blob/master/vignettes/pat_introduction.Rmd"><code>vignettes/pat_introduction.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/MazamaScience/AirSensor/blob/master/vignettes/pat_introduction.Rmd"><code>vignettes/pat_introduction.Rmd</code></a></small>
       <div class="hidden name"><code>pat_introduction.Rmd</code></div>
 
     </div>
@@ -107,7 +107,7 @@
 <h3 class="hasAnchor">
 <a href="#loading-purpleair-time-series-data" class="anchor"></a>Loading PurpleAir Time Series data</h3>
 <p>PurpleAir sensor readings are uploaded to the cloud every 80 seconds or so where they are stored for download and display on the PurpleAir website. After every interval, the synoptic data is refreshed and the outdated synoptic data is then stored in a <a href="https://thingspeak.com">ThingSpeak</a> database. In order to access the ThingSpeak channel API we must first load the synoptic database, which provides access tokens for each PurpleAir sensor – accessed by the monitor of interests label.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(MazamaPurpleAir)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(AirSensor)
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(MazamaCoreUtils)
 pas &lt;-<span class="st"> </span><span class="kw"><a href="../reference/pas_load.html">pas_load</a></span>()
 pat &lt;-<span class="st"> </span><span class="kw"><a href="../reference/pat_load.html">pat_load</a></span>(pas, <span class="st">"Seattle"</span>, <span class="dt">startdate =</span> <span class="dv">20180701</span>, <span class="dt">enddate =</span> <span class="dv">20180901</span>)</code></pre></div>

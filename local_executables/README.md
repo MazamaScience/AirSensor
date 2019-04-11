@@ -1,7 +1,7 @@
 # Sensor Data Ingest
 
 Scripts in this repository do all the work of converting raw data from Purple
-Air sensors into .rda files ready for use with the **MazamaPurpleAir** R 
+Air sensors into .rda files ready for use with the **AirSensor** R 
 package
 
 The `purpleair_createDailyPAS_exec.R script designed to be run shortly after 

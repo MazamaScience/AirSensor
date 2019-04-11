@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>An Introduction to PurpleAir Synoptic Data • MazamaPurpleAir</title>
+<title>An Introduction to PurpleAir Synoptic Data • AirSensor</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -35,7 +35,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">MazamaPurpleAir</a>
+        <a class="navbar-link" href="../index.html">AirSensor</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.8</span>
       </span>
     </div>
@@ -72,7 +72,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/MazamaScience/MazamaPurpleAir">
+  <a href="https://github.com/MazamaScience/AirSensor">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -97,19 +97,19 @@
             
             <h4 class="date">2019-04-04</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/MazamaScience/MazamaPurpleAir/blob/master/vignettes/pas_introduction.Rmd"><code>vignettes/pas_introduction.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/MazamaScience/AirSensor/blob/master/vignettes/pas_introduction.Rmd"><code>vignettes/pas_introduction.Rmd</code></a></small>
       <div class="hidden name"><code>pas_introduction.Rmd</code></div>
 
     </div>
 
     
     
-<p><em>Synoptic data</em> provides a synopsis - a comprehensive and nearly instantaneous picture of the state of the atmosphere. This vignette demonstrates an example workflow for exploring air quality synoptic data using the MazamaPurpleAir R package and data captured by <a href="https://www.purpleair.com/">PurpleAir</a> air quality sensors.</p>
+<p><em>Synoptic data</em> provides a synopsis - a comprehensive and nearly instantaneous picture of the state of the atmosphere. This vignette demonstrates an example workflow for exploring air quality synoptic data using the AirSensor R package and data captured by <a href="https://www.purpleair.com/">PurpleAir</a> air quality sensors.</p>
 <div id="loading-purpleair-data" class="section level3">
 <h3 class="hasAnchor">
 <a href="#loading-purpleair-data" class="anchor"></a>Loading PurpleAir Data</h3>
 <p>PurpleAir sensor readings are uploaded to the cloud every 80 seconds or so where they are stored for download and display on the PurpleAir website. In order to capture and download the latest synoptic dataset, begin by importing the required Mazama Science packages and load the PurpleAir Synoptic (“<code>pas</code>”) data.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(MazamaPurpleAir)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(AirSensor)
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)
 
@@ -193,7 +193,7 @@ df &lt;-
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="st">"State"</span>, <span class="dt">y =</span> <span class="st">"Percent of PA sensors above 20 \u00B5g/m3"</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/theme">theme</a></span>(<span class="dt">legend.position =</span> <span class="st">"none"</span>)</code></pre></div>
 <p><img src="pas_introduction_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
-<p>As you can see, the MazamaPurpleAir package combined with data provided by PurpleAir offers a powerful system for regional air-quality assesment.</p>
+<p>As you can see, the AirSensor package combined with data provided by PurpleAir offers a powerful system for regional air-quality assesment.</p>
 <hr>
 <p><em>Mazama Science</em></p>
 </div>

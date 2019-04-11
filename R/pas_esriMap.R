@@ -1,16 +1,22 @@
 #' @keywords pa_synoptic
+#' 
 #' @export
+#' 
 #' @title Create an ESRI Map of ws_monitor Object
+#' 
 #' @param pas \emph{pa_synoptic} object
 #' @param centerLon map center longitude
 #' @param centerLat map center latitude
 #' @param zoom map zoom level
+#' @param maptype map type
 #' @param mapRaster optional RGB Raster* object returned from
 #' @param showMap option to show the ggplot if true
-#' @return Plots a map loaded from arcGIS REST with points for each monitor
+#'   
+#' @return Plots a map loaded from arcGIS REST with points for each monitor.
+#' 
 #' @description Creates an ESRI map of a \emph{pa_synoptic} object.
 #'
-#' #' Available \code{maptypes} include:
+#' #' Available \code{maptype} options include:
 #' \itemize{
 #' \item{natGeo}
 #' \item{worldStreetMap}
@@ -40,11 +46,11 @@ pas_esriMap <- function(
   maptype="worldStreetMap",
   mapRaster=NULL, 
   zoom=NULL,
-  showMap=FALSE,
-  ...) {
+  showMap=FALSE
+) {
   
   if( nrow(pas) == 0 ) {
-    stop("Empty pa_synoptic")
+    stop("Required parameter 'pas' is empty.")
   }
   
   # ----- Determine coordinate centeroid ---------------------------------------
@@ -99,7 +105,7 @@ pas_esriMap <- function(
     ggplot2::coord_fixed(ratio = 4/3) +
     ggplot2::theme_void()
   
-  if ( showMap )( show(ggRasterPlot) )
+  if ( showMap )( print(ggRasterPlot) )
   
   return(ggRasterPlot)
   

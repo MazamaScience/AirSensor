@@ -6,7 +6,7 @@
 #' @description Loads recent PM2.5 monitoring data from the US Forest Service
 #' Pacific Wildland Fire Sciences Lab. This function performs the same data 
 #' loading step as \code{pwfsl_loadLatest()}, but has a shorter name for 
-#' consistency with other data loading functions in the \code{MazamaPurpleAir} 
+#' consistency with other data loading functions in the \code{AirSensor} 
 #' package. By default, this function loads data from all 50 states for the past 
 #' 10 days. 
 #'

@@ -1,10 +1,10 @@
-# MazamaPurpleAir 0.1.9
+# AirSensor 0.1.9
 
 * added generalized multiplot function `multi_ggplot()`
 * include static mapping functionality with `pas_esriMap()`
 * added `pat_filterData` 
 
-# MazamaPurpleAir 0.1.8
+# AirSensor 0.1.8
 
 * `pat_subdate()` has been renamed to `pat_filterDate()` and defaults to 
 the `America/Los_Angeles` timezone
@@ -15,44 +15,44 @@ to be in the sensor's local timezone
 Air and generates a `pas` object
 * simplified docker image usage
 
-# MazamaPurpleAir 0.1.7
+# AirSensor 0.1.7
 
 * include docker image
 * added subdating feature
 
-# MazamaPurpleAir 0.1.6
+# AirSensor 0.1.6
 
 * added multiplotting tools
 * added outlier detection
 * added pat_internalData
 
-# MazamaPurpleAir 0.1.5
+# AirSensor 0.1.5
 
 * added PurpleAir timeseries functionality
 * updated PurpleAir synoptic vignette
 
-# MazamaPurpleAir 0.1.4
+# AirSensor 0.1.4
 
 * improved, more consistent documentation
 * renamed example datasets to `example_pas` and `example_raw_pas`
 
-# MazamaPurpleAir 0.1.3
+# AirSensor 0.1.3
 
 * added documentation file for package datasets
 * changed header of vignette so that it is built properly
 
-# MazamaPurpleAir 0.1.2
+# AirSensor 0.1.2
 
 * added parameter validation and testing for all existing functions
 * adding `data/` directory with sample `pas` object
 * added `vignettes/purple-air-synoptic.Rmd`
 
-# MazamaPurpleAir 0.1.1
+# AirSensor 0.1.1
 
 * added parameter validation to pas_leaflet.R
 * added test-pas_leaflet.R file
 
-# MazamaPurpleAir 0.1.0
+# AirSensor 0.1.0
 
 Initial functions to download and map Purple Air synoptic data.
 

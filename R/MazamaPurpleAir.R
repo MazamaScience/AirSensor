@@ -1,5 +1,5 @@
 #' @docType package
-#' @name MazamaPurpleAir
+#' @name AirSensor
 #' @title Data access and analysis functions for Purple Air sensor data
 #' @description This package contains code to access current synoptic data from
 #' Purple Air as well as time series data for individual sensors from Thing

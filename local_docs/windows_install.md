@@ -9,7 +9,7 @@ Tested on an ASUS laptop running Windows 10.0.
 ### Development version
 
 The following list of software must be installed in order to begin using the 
-development version of the **MazamaPurpleAir** R package.
+development version of the **AirSensor** R package.
 
 * git
 * git Fork (recommended git client)
@@ -24,19 +24,19 @@ development version of the **MazamaPurpleAir** R package.
 ### Released version
 
 The following list of software must be installed in order to begin using the 
-publicly released **MazamaPurpleAir** R package.
+publicly released **AirSensor** R package.
 
 * R >= 3.5.3
 * RStudio >= 1.1.456
 * R package **MazamaSpatialUtils** and associated data
 * R package **PWFSLSmoke**
-* R package **MazamaPurpleAir**
+* R package **AirSensor**
 
 ## Software Installation Instructions
 
 ### git
 
-Git is used to interact with the **MazamaPurpleAir** code repository on Git Hub.
+Git is used to interact with the **AirSensor** code repository on Git Hub.
 
 https://git-scm.com
 
@@ -99,7 +99,7 @@ Install the recommended RTools (*currently RTools35*)
 
 ### RStudio
 
-GUI for R. The **MazamaPurpleAir** package is designed to be run in RStudio.
+GUI for R. The **AirSensor** package is designed to be run in RStudio.
 
 https://www.rstudio.com/products/rstudio/download
 
@@ -159,7 +159,7 @@ devtools::install_github("MazamaScience/PWFSLSmoke")
 If you look in the lower right pane and click on the "Packages" tab you should
 see the PWFSLSmoke package at version 1.1.27 or higher.
 
-### MazamaPurpleAir
+### AirSensor
 
 Core functionality for working with Purple Air sensor data.  This package is in 
 a private repository and cannot be installed with **devtools**. We first need
@@ -169,9 +169,9 @@ to clone the source code using Fork.
 
 Open up Fork and choose "File > Clone...".
 
-* Repository Url -- https://github.com/MazamaScience/MazamaPurpleAir.git
+* Repository Url -- https://github.com/MazamaScience/AirSensor.git
 * Parent Folder -- `C:\Users\<YOUR NAME>\Projects`
-* Name -- MazamaPurpleAir
+* Name -- AirSensor
 
 Click on "Clone". This will take a few moments.
 
@@ -187,7 +187,7 @@ type:
 
 ```
 getwd()
-[1] "C:/Users/<YOU NAME>/Projects/MazamaPurpleAir"
+[1] "C:/Users/<YOU NAME>/Projects/AirSensor"
 ```
 
 (Note that R always uses the unix style '/' and converts to windows style '\\' 
@@ -199,7 +199,7 @@ This should cause the following to be displayed in the R console:
 ```
 Restarting R session...
 
-> library(MazamaPurpleAir)
+> library(AirSensor)
 Loading required package: dplyr
 
 ...
@@ -211,7 +211,7 @@ the following:
 ```
 library(MazamaSpatialUtils)
 library(PWFSLSmoke)
-library(MazamaPurpleAir)
+library(AirSensor)
 
 intializeMazamaSpatialUtils()
 

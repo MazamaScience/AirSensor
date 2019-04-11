@@ -1,7 +1,7 @@
 Type: Package
-Package: MazamaPurpleAir
+Package: AirSensor
 Version: 0.2.0
-Title: Utilities to Process and Display PM2.5 data from Purple Air
+Title: Utilities to Process and Display PM2.5 data from Air Quality Sensors
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
     person("Tate", "Brasel", email="tatebrasel6@gmail.com", role=c("aut")),
@@ -38,10 +38,11 @@ Imports:
 Suggests:
     knitr,
     testthat
-Description: Utilities to process and display PM2.5 data from Purple Air.
+Description: Utilities to process and display PM2.5 data from air quality sensors.
+    Initial focus is on sensors produced by Purple Air.
 License: GPL-3
-URL: https://github.com/MazamaScience/MazamaPurpleAir 
-BugReports: https://github.com/MazamaScience/MazamaPurpleAir/issues
+URL: https://github.com/MazamaScience/AirSensor 
+BugReports: https://github.com/MazamaScience/AirSensor/issues
 VignetteBuilder: knitr
 Repository: CRAN
 Encoding: UTF-8

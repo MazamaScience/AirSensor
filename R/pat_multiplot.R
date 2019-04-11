@@ -15,9 +15,9 @@
 #' Typical usage would be to supply \code{pat} and use the \code{plottype} 
 #' argument to quickly display preformatted plots. 
 #' \itemize{
-#' \item{"all": humidity, temperature, pm25_A, pm25_B}
-#' \item{"aux": auxillary data (humidity, temperature)}
+#' \item{"all": pm25_A, pm25_B, temperature, humidity}
 #' \item{"pm25": PM2.5 from Channel A and Channel B}
+#' \item{"aux": auxillary data (temperature, humidity)}
 #' } 
 #' 
 #' @note Additional documentation of the multiplot algorithm is available at 
@@ -25,7 +25,7 @@
 
 pat_multiplot <- function(
   pat = NULL, 
-  plottype = NULL, 
+  plottype = "all", 
   plotlist = NULL,
   cols = NULL
 ) {
@@ -69,9 +69,9 @@ pat_multiplot <- function(
     if ( plottype == "pm25" ) {
       multi_ggplot(channelA, channelB, cols = 1)
     } else if ( plottype == "aux" ) { 
-      multi_ggplot(temperature, humidity, cols = 2)
+      multi_ggplot(temperature, humidity, cols = 1)
     } else if ( plottype == "all") { 
-      multi_ggplot(channelA, channelB, humidity, temperature, cols = 2)
+      multi_ggplot(channelA, humidity, channelB, temperature, cols = 2)
     }
     
   }

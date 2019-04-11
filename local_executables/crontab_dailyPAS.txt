@@ -13,8 +13,8 @@
 # ----- Create a "synoptic" file early each morning ----------------------------
 
 # Desktop
-00 04 * * *    docker run --rm -v /Users/jonathan/Projects/MazamaScience/MazamaPurpleAir/local_executables:/app -w /app mazamascience/mazamapurpleair /app/createDailyPAS_exec.R --outputDir=/app --logDir=/app
+00 04 * * *    docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/mazamapurpleair /app/createDailyPAS_exec.R --outputDir=/app --logDir=/app
 
 # joule
-00 04 * * *    docker run --rm -v /home/jonc/Projects/MazamaScience/MazamaPurpleAir/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pas/2019:/data -w /app mazamascience/mazamapurpleair /app/createDailyPAS_exec.R --outputDir=/data --logDir=/data
+00 04 * * *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pas/2019:/data -w /app mazamascience/mazamapurpleair /app/createDailyPAS_exec.R --outputDir=/data --logDir=/data
 
