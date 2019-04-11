@@ -4,12 +4,12 @@
 
 # This script is desgined to be run daily as a cron job.
 
-# 1 2 3 4 5 /Users/jonathan/Projects/PWFSL/mazamascience/mazamapurpleair/createDailyPAS_exec.R --outputDir=/Users/jonathan/Data/AirNow/RData --logDir=/Users/jonathan/Data/AirNow/RData
+# 1 2 3 4 5 /Users/jonathan/Projects/PWFSL/mazamascience/airsensor/createDailyPAS_exec.R --outputDir=/Users/jonathan/Data/AirNow/RData --logDir=/Users/jonathan/Data/AirNow/RData
 
 # You can test things by firing up the docker image interactively with bash and 
 # then Running R and testing this script a few lines at a time:
 #
-# docker run --rm -v /home/monitoring/Projects/mazamascience/mazamapurpleair:/monitoring/v4 -v /data/monitoring:/monitoring/v4/data -w /monitoring/v4 -ti mazamascience/mazamapurpleair bash
+# docker run --rm -v /home/monitoring/Projects/mazamascience/airsensor:/monitoring/v4 -v /data/monitoring:/monitoring/v4/data -w /monitoring/v4 -ti mazamascience/airsensor bash
 
 VERSION = "0.1.0" #  --- . --- . first pass
 

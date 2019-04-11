@@ -5,5 +5,5 @@
 production_build:
 	cd ..; R CMD build .
 	mv ../AirSensor_0.1.8.tar.gz .
-	docker build --no-cache -t mazamascience/mazamapurpleair:0.1.8 -t mazamascience/mazamapurpleair:latest .
+	docker build --no-cache -t mazamascience/airsensor:0.1.8 -t mazamascience/airsensor:latest .
 

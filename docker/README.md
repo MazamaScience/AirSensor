@@ -16,8 +16,8 @@ You should then be able to see something like the following:
 $ docker images
 REPOSITORY                          TAG         IMAGE ID            CREATED             SIZE
 ...
-mazamascience/mazamapurpleair       0.1.7       796ae3ba57e5        14 minutes ago      2.62GB
-mazamascience/mazamapurpleair       latest      796ae3ba57e5        14 minutes ago      2.62GB
+mazamascience/airsensor       0.1.7       796ae3ba57e5        14 minutes ago      2.62GB
+mazamascience/airsensor       latest      796ae3ba57e5        14 minutes ago      2.62GB
 ...
 ```
 
@@ -33,7 +33,7 @@ Having built the docker image we can now test it. The following output was
 obtained use the provided `example_pas` synoptic dataset:
 
 ```
-docker run --rm -ti mazamascience/mazamapurpleair R --vanilla
+docker run --rm -ti mazamascience/airsensor R --vanilla
 ...
 library(AirSensor)
 
@@ -77,7 +77,7 @@ pas %>%
 ```
 docker login
 ...
-docker push mazamascience/mazamapurpleair:0.1.7
+docker push mazamascience/airsensor:0.1.7
 ```
 
 
