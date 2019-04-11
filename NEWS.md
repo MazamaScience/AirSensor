@@ -5,6 +5,8 @@
 * renamed `pat_outliers()` to `pat_outliers()` with improved functionality
 * new utility functions `pat_isPat()`, `pat_isEmpty()`, `pat_extractMeta()`,
 `pat_extractData()`
+* added `pas_filter()` to filter toolbox
+* fixed binning of `pas_esriMap()`
 
 # AirSensor 0.1.9
 
