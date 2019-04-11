@@ -5,6 +5,7 @@
 * renamed `pat_outliers()` to `pat_outliers()` with improved functionality
 * new utility functions `pat_isPat()`, `pat_isEmpty()`, `pat_extractMeta()`,
 `pat_extractData()`
+* first pass at `pat_internalFit()` function
 
 # AirSensor 0.1.9
 
