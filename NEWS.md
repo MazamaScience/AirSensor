@@ -1,3 +1,9 @@
+# AirSensor 0.2.0
+
+* renamed package to *AirSensor*
+* renamed `pat_internalData()` to `pat_scatterplot()` with improved functionality
+* renamed `pat_outliers()` to `pat_outliers()` with improved functionality
+
 # AirSensor 0.1.9
 
 * added generalized multiplot function `multi_ggplot()`

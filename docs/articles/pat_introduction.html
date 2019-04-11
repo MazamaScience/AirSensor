@@ -143,10 +143,10 @@ pat &lt;-<span class="st"> </span><span class="kw"><a href="../reference/pat_loa
 pat_august <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(<span class="dt">plottype =</span> <span class="st">"pm25"</span>)</code></pre></div>
 <p><img src="pat_introduction_files/figure-html/augustPlot-1.png" width="768"></p>
-<p>Our reduced dataframe <code>pat_august</code> may be a smaller time interval but intermintent sensor errors still likely exist. In order to identify and remove PM2.5 outliers we can use <code>pat_findOutliers</code>. We’d also like to display the outliers to compare. Each outlier will be marked with a red “*“. We can assign the filtered dataframe a name for future use.</p>
+<p>Our reduced dataframe <code>pat_august</code> may be a smaller time interval but intermintent sensor errors still likely exist. In order to identify and remove PM2.5 outliers we can use <code>pat_outliers</code>. We’d also like to display the outliers to compare. Each outlier will be marked with a red “*“. We can assign the filtered dataframe a name for future use.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pat_august_filtered &lt;-<span class="st"> </span>
 <span class="st">  </span>pat_august <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/pat_findOutliers.html">pat_findOutliers</a></span>(<span class="dt">replaceOutliers =</span> <span class="ot">TRUE</span>, <span class="dt">showPlot =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<span class="st">  </span><span class="kw"><a href="../reference/pat_outliers.html">pat_outliers</a></span>(<span class="dt">replace =</span> <span class="ot">TRUE</span>, <span class="dt">showPlot =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><img src="pat_introduction_files/figure-html/outlierPlot-1.png" width="768"></p>
 <p>Now that we have a filtered dataset we can begin looking into smaller datasets. 14 August 2018 appears to be the initial PM2.5 event. We can view a single day using <code>pat_subdate</code> and <code>pat_multiplot</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">august_<span class="dv">14</span> &lt;-<span class="st"> </span>

@@ -2,38 +2,67 @@
 #' @importFrom rlang .data
 #' @import graphics
 #' 
-#' @title Detect and Fix Timeseries outliers
+#' @title Detect and replace timeseries outliers
 #' 
-#' @param pat Purple Air Timeseries "pat" object from \code{createPATimeseriesObject()}
+#' @param pat Purple Air Timeseries "pat" object
 #' @param n integer window size
 #' @param thresholdMin threshold value for outlier detection
-#' @param replaceOutliers logical specifying whether replace outlier with the window median value
-#' @param showPlot logical specifying whether to generate outlier detection plots
+#' @param replace logical specifying whether replace outliers with the window 
+#' median value
+#' @param showPlot logical specifying whether to generate outlier detection 
+#' plots
+#' @param data_shape symbol to use for data points
+#' @param data_size size of data points
+#' @param data_color color of data points
+#' @param data_alpha opacity of data points
+#' @param outlier_shape symbol to use for outlier points
+#' @param outlier_size size of outlier points
+#' @param outlier_color color of outlier points
+#' @param outlier_alpha opacity of outlier points
 #' 
 #' @return \code{pat} timeseries object with outliers replaced by median values.
 #' 
-#' @description Outlier detection using a Median Average Deviation "Hampel" filter.
+#' @description Outlier detection using a Median Average Deviation "Hampel" 
+#' filter. This function applies a rolling Hampel filter to find those points
+#' that are very far out in the tails of the distribution of values within the
+#' window.
 #' 
-#' The \code{thresholdMin} level is similar to a sigma value for normally distributed data.
-#' Hampel filter values above 6 indicate a data value that is extremely unlikely to
-#' be part of a normal distribution (~ 1/500 million) and therefore very likely to
-#' be an outlier. By choosing a relatively large value for thresholdMin we make it
-#' less likely that we will generate false positives.
+#' The \code{thresholdMin} level is similar to a sigma value for normally 
+#' distributed data. The default threshold setting \code{thresholdMin = 8} 
+#' identifies points that are extremely unlikely to be part of a normal 
+#' distribution and therefore very likely to be an outlier. By choosing a 
+#' relatively large value for `thresholdMin`` we make it less likely that we 
+#' will generate false positives.
 #' 
-#' Specifying \code{replaceOutliers = TRUE} allows you to perform smoothing by 
-#' replacing outliers with the window median value. Using this technique, you can
-#' create an highly smoothed, artificial dataset by setting \code{thresholdMin = 1}
-#' or lower (but always above zero).
+#' The default setting of the window size \code{n = 23} means that 23 samples
+#' from a single channel are used to determine the distribution of values for
+#' which a median is calculated. Each Purple Air channel makes a measurement
+#' approximately every 80 seconds so the temporal window is 23 * 80 sec or
+#' approximately 30 minutes. This seems like a reasonable period of time over
+#' which to evaluate PM2.5 measurements.
+#' 
+#' Specifying \code{replace = TRUE} allows you to perform smoothing by 
+#' replacing outliers with the window median value. Using this technique, you 
+#' can create an highly smoothed, artificial dataset by setting 
+#' \code{thresholdMin = 1} or lower (but always above zero).
 #' 
 #' @note Additional documentation on the algorithm is available in 
 #' \code{seismicRoll::findOutliers()}.
 
-pat_findOutliers <- function(
+pat_outliers <- function(
   pat,
-  n = 11,
-  thresholdMin = 6,
-  replaceOutliers = FALSE,
-  showPlot = TRUE
+  n = 23,
+  thresholdMin = 8,
+  replace = FALSE,
+  showPlot = TRUE,
+  data_shape = 18, 
+  data_size = 1, 
+  data_color = "black",
+  data_alpha = 0.1,
+  outlier_shape = 8, 
+  outlier_size = 1, 
+  outlier_color = "red",
+  outlier_alpha = 1.0
 ) {
   
   # ----- Prepare separate A/B subsets -----------------------------------------
@@ -65,7 +94,7 @@ pat_findOutliers <- function(
   
   # Create median-fixed replacement values
   A_fixed <- A_data$pm25_A
-  if ( replaceOutliers ) {
+  if ( replace ) {
     A_fixed[A_outlierIndices] <- 
       seismicRoll::roll_median(A_data$pm25_A, n)[A_outlierIndices]
   } else {
@@ -73,7 +102,7 @@ pat_findOutliers <- function(
   }
   
   B_fixed <- B_data$pm25_B
-  if ( replaceOutliers ) {
+  if ( replace ) {
     B_fixed[B_outlierIndices] <- 
       seismicRoll::roll_median(B_data$pm25_B, n)[B_outlierIndices]
   } else {
@@ -84,25 +113,34 @@ pat_findOutliers <- function(
   
   if ( showPlot ) {
     
+    # Use the same y limits for both plots
+    ylim <- range(c(A_data$pm25_A, B_data$pm25_B), na.rm = TRUE)
+      
     A_outliers <- A_data[A_outlierIndices,] %>%       
       ggplot2::geom_point(mapping = ggplot2::aes(x = .data$datetime, 
                                                  y = .data$pm25_A), 
-                          shape = 8, 
-                          size = 1, 
-                          color = "red")
+                          shape = outlier_shape, 
+                          size = outlier_size, 
+                          color = outlier_color,
+                          alpha = outlier_alpha)
     
     B_outliers <- B_data[B_outlierIndices,] %>% 
       ggplot2::geom_point(mapping = ggplot2::aes(x = .data$datetime, 
                                                  y = .data$pm25_B), 
-                          shape = 8, 
-                          size = 1, 
-                          color = "red")
+                          shape = outlier_shape, 
+                          size = outlier_size, 
+                          color = outlier_color,
+                          alpha = outlier_alpha)
     
     channelA <- 
       A_data %>%
       tibble(datetime = A_data$datetime, pm25_A = A_data$pm25_A) %>% 
       ggplot2::ggplot(ggplot2::aes(x = .data$datetime, y = .data$pm25_A)) + 
-      ggplot2::geom_point(shape=18, alpha = 1/10) + 
+      ggplot2::geom_point(shape = data_shape,
+                          size = data_size,
+                          color = data_color,
+                          alpha = data_alpha) + 
+      ggplot2::ylim(ylim) +
       ggplot2::ggtitle(expression("Channel A PM"[2.5])) + 
       ggplot2::xlab("Date") + ggplot2::ylab("\u03bcg / m\u00b3") + 
       A_outliers
@@ -111,7 +149,11 @@ pat_findOutliers <- function(
       B_data %>%
       tibble(datetime = B_data$datetime, pm25_B = B_data$pm25_B) %>% 
       ggplot2::ggplot(ggplot2::aes(x = .data$datetime, y = .data$pm25_B)) + 
-      ggplot2::geom_point(shape = 18, alpha = 1/10) + 
+      ggplot2::geom_point(shape = data_shape,
+                          size = data_size,
+                          color = data_color,
+                          alpha = data_alpha) + 
+      ggplot2::ylim(ylim) +
       ggplot2::ggtitle(expression("Channel B PM"[2.5])) + 
       ggplot2::xlab("Date") + ggplot2::ylab("\u03bcg / m\u00b3") + 
       B_outliers

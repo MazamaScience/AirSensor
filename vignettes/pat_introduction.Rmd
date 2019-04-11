@@ -110,14 +110,14 @@ pat_august %>%
 
 Our reduced dataframe `pat_august` may be a smaller time interval but 
 intermintent sensor errors still likely exist. In order to identify and remove 
-PM2.5 outliers we can use `pat_findOutliers`. We'd also like to display the
+PM2.5 outliers we can use `pat_outliers()`. We'd also like to display the
 outliers to compare. Each outlier will be marked with a red "*". We can assign the
 filtered dataframe a name for future use.
 
 ```{r outlierPlot}
 pat_august_filtered <- 
   pat_august %>%
-  pat_findOutliers(replaceOutliers = TRUE, showPlot = TRUE)
+  pat_outliers(replace = TRUE, showPlot = TRUE)
 ```
 
 Now that we have a filtered dataset we can begin looking into smaller datasets.

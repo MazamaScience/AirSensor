@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Detect and Fix Timeseries Outliers — pat_findOutliers • AirSensor</title>
+<title>Detect and Fix Timeseries Outliers — pat_outliers • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,7 +37,7 @@
 
 
 
-<meta property="og:title" content="Detect and Fix Timeseries Outliers — pat_findOutliers" />
+<meta property="og:title" content="Detect and Fix Timeseries Outliers — pat_outliers" />
 
 <meta property="og:description" content="Outlier detection using a Median Average Deviation &quot;Hampel&quot; filter.
 The thresholdMin level is similar to a sigma value for normally distributed data.
@@ -45,7 +45,7 @@ Hampel filter values above 6 indicate a data value that is extremely unlikely to
 be part of a normal distribution (~ 1/500 million) and therefore very likely to
 be an outlier. By choosing a relatively large value for thresholdMin we make it
 less likely that we will generate false positives.
-Specifying replaceOutliers = TRUE allows you to perform smoothing by 
+Specifying replace = TRUE allows you to perform smoothing by 
 replacing outliers with the window median value. Using this technique, you can
 create an highly smoothed, artificial dataset by setting thresholdMin = 1
 or lower (but always above zero)." />
@@ -134,8 +134,8 @@ or lower (but always above zero)." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Detect and Fix Timeseries Outliers</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_findOutliers.R'><code>R/pat_findOutliers.R</code></a></small>
-    <div class="hidden name"><code>pat_findOutliers.Rd</code></div>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_outliers.R'><code>R/pat_outliers.R</code></a></small>
+    <div class="hidden name"><code>pat_outliers.Rd</code></div>
     </div>
 
     <div class="ref-description">
@@ -146,15 +146,15 @@ Hampel filter values above 6 indicate a data value that is extremely unlikely to
 be part of a normal distribution (~ 1/500 million) and therefore very likely to
 be an outlier. By choosing a relatively large value for thresholdMin we make it
 less likely that we will generate false positives.</p>
-<p>Specifying <code>replaceOutliers = TRUE</code> allows you to perform smoothing by 
+<p>Specifying <code>replace = TRUE</code> allows you to perform smoothing by 
 replacing outliers with the window median value. Using this technique, you can
 create an highly smoothed, artificial dataset by setting <code>thresholdMin = 1</code>
 or lower (but always above zero).</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pat_findOutliers</span>(<span class='no'>pat</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>11</span>, <span class='kw'>thresholdMin</span> <span class='kw'>=</span> <span class='fl'>6</span>,
-  <span class='kw'>replaceOutliers</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>showPlot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>pat_outliers</span>(<span class='no'>pat</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>11</span>, <span class='kw'>thresholdMin</span> <span class='kw'>=</span> <span class='fl'>6</span>,
+  <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>showPlot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -172,7 +172,7 @@ or lower (but always above zero).</p>
       <td><p>threshold value for outlier detection</p></td>
     </tr>
     <tr>
-      <th>replaceOutliers</th>
+      <th>replace</th>
       <td><p>logical specifying whether replace outlier with the window median value</p></td>
     </tr>
     <tr>

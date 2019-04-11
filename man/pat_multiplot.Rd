@@ -4,7 +4,7 @@
 \alias{pat_multiplot}
 \title{Display multiple plots on one page}
 \usage{
-pat_multiplot(pat = NULL, plottype = NULL, plotlist = NULL,
+pat_multiplot(pat = NULL, plottype = "all", plotlist = NULL,
   cols = NULL)
 }
 \arguments{
@@ -23,9 +23,9 @@ objects or a pat object and a plot type.
 Typical usage would be to supply \code{pat} and use the \code{plottype} 
 argument to quickly display preformatted plots. 
 \itemize{
-\item{"all": humidity, temperature, pm25_A, pm25_B}
-\item{"aux": auxillary data (humidity, temperature)}
+\item{"all": pm25_A, pm25_B, temperature, humidity}
 \item{"pm25": PM2.5 from Channel A and Channel B}
+\item{"aux": auxillary data (temperature, humidity)}
 }
 }
 \note{
