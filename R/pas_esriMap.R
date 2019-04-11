@@ -40,7 +40,7 @@
 #' @seealso \code{\link{esriMap_plotOnStaticMap}}
 
 pas_esriMap <- function(
-  pas, 
+  pas,
   centerLon = NULL,
   centerLat = NULL,
   maptype = "worldStreetMap",
@@ -89,19 +89,25 @@ pas_esriMap <- function(
   colorFunc <- leaflet::colorBin( PWFSLSmoke::AQI$colors, 
                                   bins = PWFSLSmoke::AQI$breaks_24, 
                                   na.color = "#bbbbbb" )
-  colors <- PWFSLSmoke::AQI$colors
-  labels <- PWFSLSmoke::AQI$names
+  
+  AQI_color <- c(PWFSLSmoke::AQI$colors, "#bbbbbb")
+  AQI_label <- c(PWFSLSmoke::AQI$names, "Missing")
+  
+  colors <- colorFunc(pas$pm25_1hr)
   ggRasterPlot <- 
-    RStoolbox::ggRGB(mapRaster, r = 1, g = 2, b = 3, maxpixels = 2e+06) + 
-    ggplot2::geom_point(ggplot2::aes( x = pas$longitude, 
-                                      y = pas$latitude, 
-                                      color = colorFunc(pas$pm25_1hr) ),
-                        shape = 15, 
-                        size = 2., 
-                        alpha = 0.75) + 
-    ggplot2::scale_color_manual( name = "AQI", 
-                                 values = c(colors, "#bbbbbb"), 
-                                 labels = c(labels, "Missing") ) +
+    RStoolbox::ggRGB(mapRaster, r = 1, g = 2, b = 3, maxpixels = 5e+06) + 
+    ggplot2::geom_point(
+      ggplot2::aes( 
+        x = pas$longitude, 
+        y = pas$latitude, 
+        color = colors),
+      shape = 15, 
+      size = 2.0, 
+      alpha = 0.9 ) + 
+    ggplot2::scale_color_identity("AQI", 
+                                  labels = AQI_label, 
+                                  breaks = AQI_color,
+                                  guide = "legend") +
     ggplot2::coord_fixed(ratio = 4/3) +
     ggplot2::theme_void()
   

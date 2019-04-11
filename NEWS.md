@@ -6,6 +6,8 @@
 * new utility functions `pat_isPat()`, `pat_isEmpty()`, `pat_extractMeta()`,
 `pat_extractData()`
 * first pass at `pat_internalFit()` function
+* added `pas_filter()` to filter toolbox
+* fixed binning of `pas_esriMap()`
 
 # AirSensor 0.1.9
 
