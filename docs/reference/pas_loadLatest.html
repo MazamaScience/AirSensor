@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get PWFSLSmoke monitoring data — pwfsl_loadLatest • AirSensor</title>
+<title>Get latest Purple Air synoptic data — pas_loadLatest • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,17 +37,23 @@
 
 
 
-<meta property="og:title" content="Get PWFSLSmoke monitoring data — pwfsl_loadLatest" />
+<meta property="og:title" content="Get latest Purple Air synoptic data — pas_loadLatest" />
 
-<meta property="og:description" content="Loads recent PM2.5 monitoring data from the US Forest Service
-Pacific Wildland Fire Sciences Lab. This function performs the same data 
-loadingstep as pwfsl_load(), but has a longer name for consistency 
-with other data loading functions in the PWFSLSmoke package. By 
-default, this function loads data from all 50 states for the past 10 days.
-This function is a wrapper around PWFSLSmoke::monitor_loadLatest.
-Data for the most recent 45 days can be downloaded using 
-PWFSLSmoke::monitor_loadDaily(). See the PWFSLSmoke package for
-additional data loading functions." />
+<meta property="og:description" content="Download, parse and enhance synoptic data from PurpleAir and
+return the results as a useful tibble with class pa_synoptic.
+Steps include:
+1) Download and parse synoptic data
+2) Replace variable with more consistent, more human readable names.
+3) Add spatial metadata for each monitor including:
+timezone -- olson timezone
+countryCode -- ISO 3166-1 alpha-2
+stateCode -- ISO 3166-2 alpha-2
+" />
+
+<meta property="og:description" content="4) Convert data types from character to POSIXct and numeric.
+5) Add distance and monitorID for the closest PWFSL monitor
+Subsetting by country may be performed by specifying the countryCodes
+argument." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -132,43 +138,81 @@ additional data loading functions." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get PWFSLSmoke monitoring data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pwfsl_loadLatest.R'><code>R/pwfsl_loadLatest.R</code></a></small>
-    <div class="hidden name"><code>pwfsl_loadLatest.Rd</code></div>
+    <h1>Get latest Purple Air synoptic data</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pas_loadLatest.R'><code>R/pas_loadLatest.R</code></a></small>
+    <div class="hidden name"><code>pas_loadLatest.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Loads recent PM2.5 monitoring data from the US Forest Service
-Pacific Wildland Fire Sciences Lab. This function performs the same data 
-loadingstep as <code><a href='pwfsl_load.html'>pwfsl_load()</a></code>, but has a longer name for consistency 
-with other data loading functions in the <code>PWFSLSmoke</code> package. By 
-default, this function loads data from all 50 states for the past 10 days.</p>
-<p>This function is a wrapper around <code><a href='https://www.rdocumentation.org/packages/PWFSLSmoke/topics/monitor_loadLatest'>PWFSLSmoke::monitor_loadLatest</a></code>.</p>
-<p>Data for the most recent 45 days can be downloaded using 
-<code><a href='https://www.rdocumentation.org/packages/PWFSLSmoke/topics/monitor_loadDaily'>PWFSLSmoke::monitor_loadDaily()</a></code>. See the <code>PWFSLSmoke package</code> for
-additional data loading functions.</p>
+    <p>Download, parse and enhance synoptic data from PurpleAir and
+return the results as a useful tibble with class <code>pa_synoptic</code>.</p>
+<p>Steps include:</p>
+<p>1) Download and parse synoptic data</p>
+<p>2) Replace variable with more consistent, more human readable names.</p>
+<p>3) Add spatial metadata for each monitor including:</p><ul>
+<li><p>timezone -- olson timezone</p></li>
+<li><p>countryCode -- ISO 3166-1 alpha-2</p></li>
+<li><p>stateCode -- ISO 3166-2 alpha-2</p></li>
+</ul>
+
+    <p>4) Convert data types from character to <code>POSIXct</code> and <code>numeric</code>.</p>
+<p>5) Add distance and monitorID for the closest PWFSL monitor</p>
+<p>Subsetting by country may be performed by specifying the <code>countryCodes</code>
+argument.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pwfsl_loadLatest</span>()</pre>
-        
+    <pre class="usage"><span class='fu'>pas_loadLatest</span>(<span class='kw'>baseUrl</span> <span class='kw'>=</span> <span class='st'>"https://www.purpleair.com/json"</span>,
+  <span class='kw'>countryCodes</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"US"</span>), <span class='kw'>includePWFSL</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>lookbackDays</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>baseUrl</th>
+      <td><p>Base URL for synoptic data.</p></td>
+    </tr>
+    <tr>
+      <th>countryCodes</th>
+      <td><p>ISO country codes used to subset the data.</p></td>
+    </tr>
+    <tr>
+      <th>includePWFSL</th>
+      <td><p>Logical specifying whether to calculate distances from 
+PWFSL monitors.</p></td>
+    </tr>
+    <tr>
+      <th>lookbackDays</th>
+      <td><p>Number of days to "look back" for valid data. Data are
+filtered to only include sensors with data more recent than 
+<code>lookbackDays</code> ago.</p></td>
+    </tr>
+    </table>
+    
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>List with <code>meta</code> and <code>data</code> elements, a <em>ws_monitor</em>
-object.</p>
+    <p>Enhanced dataframe of synoptic Purple Air data.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='downloadParseSynopticData.html'>downloadParseSynopticData</a></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>pwfsl</span> <span class='kw'>&lt;-</span> <span class='fu'>pwfsl_loadLatest</span>()
+<span class='fu'><a href='initializeMazamaSpatialUtils.html'>initializeMazamaSpatialUtils</a></span>()
+<span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='fu'>pas_loadLatest</span>()
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

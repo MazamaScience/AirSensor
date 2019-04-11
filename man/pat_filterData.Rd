@@ -23,7 +23,7 @@ evaluates to NA are dropped.
 }
 \examples{
 \dontrun{
-hazardousAir <- pat_filterData(pat, pm25_A > 50, pm25_B > 50) 
+unhealthy <- pat_filterData(pat, pm25_A > 55.5, pm25_B > 55.5) 
 }
 }
 \seealso{

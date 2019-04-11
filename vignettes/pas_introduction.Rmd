@@ -119,7 +119,7 @@ Because the `pas` object is a dataframe, we can use functionality from the
 **dplyr** package to manipulate the data.
 
 Below, we show how to find out which states have the highest _percentage_ of 
-PurpleAir sensors that are reporting a weekly average of >20 μg/m3. 
+PurpleAir sensors that are reporting a weekly average of >20 ug/m3. 
 
 ```{r, warning=FALSE}
 sensorCount <- 

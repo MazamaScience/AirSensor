@@ -4,27 +4,60 @@
 \alias{pat_multiplot}
 \title{Display multiple plots on one page}
 \usage{
-pat_multiplot(pat = NULL, plottype = "all", plotlist = NULL,
-  cols = NULL)
+pat_multiplot(pat = NULL, plottype = "all", plotList = NULL,
+  columns = NULL, a_size = 1, a_shape = 18, a_color = rgb(0.9,
+  0.25, 0.2), b_size = 1, b_shape = 18, b_color = rgb(0.2, 0.25,
+  0.9), t_size = 1, t_shape = 18, t_color = "black", h_size = 1,
+  h_shape = 18, h_color = "black", alpha = 0.2)
 }
 \arguments{
 \item{pat}{Purple Air Timeseries "pat" object from \code{createPATimeseriesObject()}}
 
 \item{plottype}{Quick-reference plot types: "all", "aux", "pm25"}
 
-\item{plotlist}{a list() of any number of ggplot objects to plot on a single pane}
+\item{plotList}{a list() of any number of ggplot objects to plot on a single pane}
 
-\item{cols}{Number of columns in the plot layout}
+\item{columns}{Number of columns in the plot layout. Use \code{NULL} for defaults.}
+
+\item{a_size}{size of pm25_A points}
+
+\item{a_shape}{symbol to use for pm25_A points}
+
+\item{a_color}{color of pm25_A points}
+
+\item{b_size}{size of pm25_B points}
+
+\item{b_shape}{symbol to use for pm25_B points}
+
+\item{b_color}{color of pm25_B points}
+
+\item{t_size}{size of temperature points}
+
+\item{t_shape}{symbol to use for temperature points}
+
+\item{t_color}{color of temperature points}
+
+\item{h_size}{size of humidity points}
+
+\item{h_shape}{symbol to use for humidity points}
+
+\item{h_color}{color of humidity points}
+
+\item{alpha}{opacity of points}
+}
+\value{
+Returns a ggplot object.
 }
 \description{
-# A plotting function that uses ggplot2 to display multiple 
+A plotting function that uses ggplot2 to display multiple 
 ggplot objects in a single pane. Can either be passed individual ggplot 
-objects or a pat object and a plot type. 
+objects OR a pat object and a plot type. 
 Typical usage would be to supply \code{pat} and use the \code{plottype} 
 argument to quickly display preformatted plots. 
 \itemize{
 \item{"all": pm25_A, pm25_B, temperature, humidity}
 \item{"pm25": PM2.5 from Channel A and Channel B}
+\item{"pm25_over": PM2.5 from Channel A and Channel B in the same plot}
 \item{"aux": auxillary data (temperature, humidity)}
 }
 }

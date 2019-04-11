@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get Purple Air timeseries data — pat_load • AirSensor</title>
+<title>Detect and replace timeseries outliers — pat_outliers • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,10 +37,28 @@
 
 
 
-<meta property="og:title" content="Get Purple Air timeseries data — pat_load" />
+<meta property="og:title" content="Detect and replace timeseries outliers — pat_outliers" />
 
-<meta property="og:description" content="Retrieve and parse timeseries data from the Thingspeak API for 
-specific PurpleAir sensors." />
+<meta property="og:description" content="Outlier detection using a Median Average Deviation &quot;Hampel&quot; 
+filter. This function applies a rolling Hampel filter to find those points
+that are very far out in the tails of the distribution of values within the
+window.
+The thresholdMin level is similar to a sigma value for normally 
+distributed data. The default threshold setting thresholdMin = 8 
+identifies points that are extremely unlikely to be part of a normal 
+distribution and therefore very likely to be an outlier. By choosing a 
+relatively large value for `thresholdMin`` we make it less likely that we 
+will generate false positives.
+The default setting of the window size n = 23 means that 23 samples
+from a single channel are used to determine the distribution of values for
+which a median is calculated. Each Purple Air channel makes a measurement
+approximately every 80 seconds so the temporal window is 23 * 80 sec or
+approximately 30 minutes. This seems like a reasonable period of time over
+which to evaluate PM2.5 measurements.
+Specifying replace = TRUE allows you to perform smoothing by 
+replacing outliers with the window median value. Using this technique, you 
+can create an highly smoothed, artificial dataset by setting 
+thresholdMin = 1 or lower (but always above zero)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -125,70 +143,110 @@ specific PurpleAir sensors." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get Purple Air timeseries data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_load.R'><code>R/pat_load.R</code></a></small>
-    <div class="hidden name"><code>pat_load.Rd</code></div>
+    <h1>Detect and replace timeseries outliers</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_outliers.R'><code>R/pat_outliers.R</code></a></small>
+    <div class="hidden name"><code>pat_outliers.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Retrieve and parse timeseries data from the Thingspeak API for 
-specific PurpleAir sensors.</p>
+    <p>Outlier detection using a Median Average Deviation "Hampel" 
+filter. This function applies a rolling Hampel filter to find those points
+that are very far out in the tails of the distribution of values within the
+window.</p>
+<p>The <code>thresholdMin</code> level is similar to a sigma value for normally 
+distributed data. The default threshold setting <code>thresholdMin = 8</code> 
+identifies points that are extremely unlikely to be part of a normal 
+distribution and therefore very likely to be an outlier. By choosing a 
+relatively large value for `thresholdMin`` we make it less likely that we 
+will generate false positives.</p>
+<p>The default setting of the window size <code>n = 23</code> means that 23 samples
+from a single channel are used to determine the distribution of values for
+which a median is calculated. Each Purple Air channel makes a measurement
+approximately every 80 seconds so the temporal window is 23 * 80 sec or
+approximately 30 minutes. This seems like a reasonable period of time over
+which to evaluate PM2.5 measurements.</p>
+<p>Specifying <code>replace = TRUE</code> allows you to perform smoothing by 
+replacing outliers with the window median value. Using this technique, you 
+can create an highly smoothed, artificial dataset by setting 
+<code>thresholdMin = 1</code> or lower (but always above zero).</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pat_load</span>(<span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>baseURL</span> <span class='kw'>=</span> <span class='st'>"https://api.thingspeak.com/channels/"</span>)</pre>
+    <pre class="usage"><span class='fu'>pat_outliers</span>(<span class='no'>pat</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>23</span>, <span class='kw'>thresholdMin</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>showPlot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>data_shape</span> <span class='kw'>=</span> <span class='fl'>18</span>, <span class='kw'>data_size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>data_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>data_alpha</span> <span class='kw'>=</span> <span class='fl'>0.1</span>, <span class='kw'>outlier_shape</span> <span class='kw'>=</span> <span class='fl'>8</span>,
+  <span class='kw'>outlier_size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>outlier_color</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>outlier_alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pas</th>
-      <td><p>Purple Air 'enhanced' synoptic data</p></td>
+      <th>pat</th>
+      <td><p>Purple Air Timeseries "pat" object</p></td>
     </tr>
     <tr>
-      <th>name</th>
-      <td><p>Purple Air 'label'</p></td>
+      <th>n</th>
+      <td><p>integer window size</p></td>
     </tr>
     <tr>
-      <th>id</th>
-      <td><p>Purple Air 'ID'</p></td>
+      <th>thresholdMin</th>
+      <td><p>threshold value for outlier detection</p></td>
     </tr>
     <tr>
-      <th>startdate</th>
-      <td><p>desired start datetime (ISO 8601)</p></td>
+      <th>replace</th>
+      <td><p>logical specifying whether replace outliers with the window 
+median value</p></td>
     </tr>
     <tr>
-      <th>enddate</th>
-      <td><p>desired end datetime (ISO 8601)</p></td>
+      <th>showPlot</th>
+      <td><p>logical specifying whether to generate outlier detection 
+plots</p></td>
     </tr>
     <tr>
-      <th>baseURL</th>
-      <td><p>Base URL for Thingspeak API</p></td>
+      <th>data_shape</th>
+      <td><p>symbol to use for data points</p></td>
+    </tr>
+    <tr>
+      <th>data_size</th>
+      <td><p>size of data points</p></td>
+    </tr>
+    <tr>
+      <th>data_color</th>
+      <td><p>color of data points</p></td>
+    </tr>
+    <tr>
+      <th>data_alpha</th>
+      <td><p>opacity of data points</p></td>
+    </tr>
+    <tr>
+      <th>outlier_shape</th>
+      <td><p>symbol to use for outlier points</p></td>
+    </tr>
+    <tr>
+      <th>outlier_size</th>
+      <td><p>size of outlier points</p></td>
+    </tr>
+    <tr>
+      <th>outlier_color</th>
+      <td><p>color of outlier points</p></td>
+    </tr>
+    <tr>
+      <th>outlier_alpha</th>
+      <td><p>opacity of outlier points</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>List with <code>meta</code> and <code>data</code> elements</p>
+    <p><code>pat</code> timeseries object with outliers replaced by median values.</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>Dates are interpreted to be in the local timzone for the sensor of 
-interest.</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><a href='downloadParseTimeseriesData.html'>downloadParseTimeseriesData</a></p></div>
+    <p>Additional documentation on the algorithm is available in 
+<code><a href='https://www.rdocumentation.org/packages/seismicRoll/topics/findOutliers'>seismicRoll::findOutliers()</a></code>.</p>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'><a href='initializeMazamaSpatialUtils.html'>initializeMazamaSpatialUtils</a></span>()
-<span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pas_load.html'>pas_load</a></span>()
-<span class='no'>pat</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_load</span>(<span class='no'>pas</span>, <span class='st'>"Seattle"</span>, <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fl'>20180701</span>, <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='fl'>20180901</span>)
-<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -198,11 +256,7 @@ interest.</p>
       <li><a href="#value">Value</a></li>
 
       <li><a href="#note">Note</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>

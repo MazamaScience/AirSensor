@@ -39,14 +39,15 @@
 
 <meta property="og:title" content="Display multiple plots on one page — pat_multiplot" />
 
-<meta property="og:description" content="# A plotting function that uses ggplot2 to display multiple 
+<meta property="og:description" content="A plotting function that uses ggplot2 to display multiple 
 ggplot objects in a single pane. Can either be passed individual ggplot 
-objects or a pat object and a plot type. 
+objects OR a pat object and a plot type. 
 Typical usage would be to supply pat and use the plottype 
 argument to quickly display preformatted plots.
-&quot;all&quot;: humidity, temperature, pm25_A, pm25_B
-&quot;aux&quot;: auxillary data (humidity, temperature)
+&quot;all&quot;: pm25_A, pm25_B, temperature, humidity
 &quot;pm25&quot;: PM2.5 from Channel A and Channel B
+&quot;pm25_over&quot;: PM2.5 from Channel A and Channel B in the same plot
+&quot;aux&quot;: auxillary data (temperature, humidity)
 " />
 <meta name="twitter:card" content="summary" />
 
@@ -78,7 +79,7 @@ argument to quickly display preformatted plots.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -139,20 +140,24 @@ argument to quickly display preformatted plots.
 
     <div class="ref-description">
     
-    <p># A plotting function that uses ggplot2 to display multiple 
+    <p>A plotting function that uses ggplot2 to display multiple 
 ggplot objects in a single pane. Can either be passed individual ggplot 
-objects or a pat object and a plot type. 
+objects OR a pat object and a plot type. 
 Typical usage would be to supply <code>pat</code> and use the <code>plottype</code> 
 argument to quickly display preformatted plots.</p><ul>
-<li><p>"all": humidity, temperature, pm25_A, pm25_B</p></li>
-<li><p>"aux": auxillary data (humidity, temperature)</p></li>
+<li><p>"all": pm25_A, pm25_B, temperature, humidity</p></li>
 <li><p>"pm25": PM2.5 from Channel A and Channel B</p></li>
+<li><p>"pm25_over": PM2.5 from Channel A and Channel B in the same plot</p></li>
+<li><p>"aux": auxillary data (temperature, humidity)</p></li>
 </ul>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pat_multiplot</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>plottype</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>plotlist</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>cols</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>pat_multiplot</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>plottype</span> <span class='kw'>=</span> <span class='st'>"all"</span>, <span class='kw'>plotList</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>columns</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>a_size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>a_shape</span> <span class='kw'>=</span> <span class='fl'>18</span>, <span class='kw'>a_color</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/grDevices/topics/rgb'>rgb</a></span>(<span class='fl'>0.9</span>,
+  <span class='fl'>0.25</span>, <span class='fl'>0.2</span>), <span class='kw'>b_size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>b_shape</span> <span class='kw'>=</span> <span class='fl'>18</span>, <span class='kw'>b_color</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/grDevices/topics/rgb'>rgb</a></span>(<span class='fl'>0.2</span>, <span class='fl'>0.25</span>,
+  <span class='fl'>0.9</span>), <span class='kw'>t_size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>t_shape</span> <span class='kw'>=</span> <span class='fl'>18</span>, <span class='kw'>t_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>h_size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>h_shape</span> <span class='kw'>=</span> <span class='fl'>18</span>, <span class='kw'>h_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.2</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -166,14 +171,70 @@ argument to quickly display preformatted plots.</p><ul>
       <td><p>Quick-reference plot types: "all", "aux", "pm25"</p></td>
     </tr>
     <tr>
-      <th>plotlist</th>
+      <th>plotList</th>
       <td><p>a list() of any number of ggplot objects to plot on a single pane</p></td>
     </tr>
     <tr>
-      <th>cols</th>
-      <td><p>Number of columns in the plot layout</p></td>
+      <th>columns</th>
+      <td><p>Number of columns in the plot layout. Use <code>NULL</code> for defaults.</p></td>
+    </tr>
+    <tr>
+      <th>a_size</th>
+      <td><p>size of pm25_A points</p></td>
+    </tr>
+    <tr>
+      <th>a_shape</th>
+      <td><p>symbol to use for pm25_A points</p></td>
+    </tr>
+    <tr>
+      <th>a_color</th>
+      <td><p>color of pm25_A points</p></td>
+    </tr>
+    <tr>
+      <th>b_size</th>
+      <td><p>size of pm25_B points</p></td>
+    </tr>
+    <tr>
+      <th>b_shape</th>
+      <td><p>symbol to use for pm25_B points</p></td>
+    </tr>
+    <tr>
+      <th>b_color</th>
+      <td><p>color of pm25_B points</p></td>
+    </tr>
+    <tr>
+      <th>t_size</th>
+      <td><p>size of temperature points</p></td>
+    </tr>
+    <tr>
+      <th>t_shape</th>
+      <td><p>symbol to use for temperature points</p></td>
+    </tr>
+    <tr>
+      <th>t_color</th>
+      <td><p>color of temperature points</p></td>
+    </tr>
+    <tr>
+      <th>h_size</th>
+      <td><p>size of humidity points</p></td>
+    </tr>
+    <tr>
+      <th>h_shape</th>
+      <td><p>symbol to use for humidity points</p></td>
+    </tr>
+    <tr>
+      <th>h_color</th>
+      <td><p>color of humidity points</p></td>
+    </tr>
+    <tr>
+      <th>alpha</th>
+      <td><p>opacity of points</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Returns a ggplot object.</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
@@ -187,6 +248,8 @@ cookbook-r.com.</p>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#value">Value</a></li>
+
       <li><a href="#note">Note</a></li>
           </ul>
 

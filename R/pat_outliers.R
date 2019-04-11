@@ -158,7 +158,7 @@ pat_outliers <- function(
       ggplot2::xlab("Date") + ggplot2::ylab("\u03bcg / m\u00b3") + 
       B_outliers
     
-    pat_multiplot(plotlist=list(channelA, channelB))
+    pat_multiplot(plotList = list(channelA, channelB))
     
   }
   

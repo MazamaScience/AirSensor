@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -92,7 +92,7 @@
       <h1>An Introduction to PurpleAir Time Series Data</h1>
                         <h4 class="author">Mazama Science</h4>
             
-            <h4 class="date">2019-04-04</h4>
+            <h4 class="date">2019-04-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/MazamaScience/AirSensor/blob/master/vignettes/pat_introduction.Rmd"><code>vignettes/pat_introduction.Rmd</code></a></small>
       <div class="hidden name"><code>pat_introduction.Rmd</code></div>
@@ -135,23 +135,23 @@ pat &lt;-<span class="st"> </span><span class="kw"><a href="../reference/pat_loa
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pat <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(<span class="dt">plottype =</span> <span class="st">"pm25"</span>)</code></pre></div>
 <p><img src="pat_introduction_files/figure-html/pm25Plot-1.png" width="768"></p>
-<p>Our <code>pat</code> dataframe spans two months. While this provides a great overview of PM2.5, it is unwieldy to analyze if we are only interested in anomolous air quality. We can use <code>pat_subdate</code> to subset our <code>pat</code> dates. In this case, we’ll reduce our DOI to 01 August 2018 - 01 September 2018.</p>
+<p>Our <code>pat</code> dataframe spans two months. While this provides a great overview of PM2.5, it is unwieldy to analyze if we are only interested in anomolous air quality. We can use <code>pat_filterDate</code> to subset our <code>pat</code> dates. In this case, we’ll reduce our DOI to 01 August 2018 - 01 September 2018.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pat_august &lt;-<span class="st"> </span>
 <span class="st">  </span>pat <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="../reference/pat_subdate.html">pat_subdate</a></span>(<span class="dt">sd =</span> <span class="dv">20180801</span>, <span class="dt">ed =</span> <span class="dv">20180901</span>)
+<span class="st">  </span><span class="kw"><a href="../reference/pat_filterDate.html">pat_filterDate</a></span>(<span class="dt">startdate =</span> <span class="dv">20180801</span>, <span class="dt">enddate =</span> <span class="dv">20180901</span>)
 
 pat_august <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(<span class="dt">plottype =</span> <span class="st">"pm25"</span>)</code></pre></div>
 <p><img src="pat_introduction_files/figure-html/augustPlot-1.png" width="768"></p>
-<p>Our reduced dataframe <code>pat_august</code> may be a smaller time interval but intermintent sensor errors still likely exist. In order to identify and remove PM2.5 outliers we can use <code>pat_outliers</code>. We’d also like to display the outliers to compare. Each outlier will be marked with a red “*“. We can assign the filtered dataframe a name for future use.</p>
+<p>Our reduced dataframe <code>pat_august</code> may be a smaller time interval but intermintent sensor errors still likely exist. In order to identify and remove PM2.5 outliers we can use <code><a href="../reference/pat_outliers.html">pat_outliers()</a></code>. We’d also like to display the outliers to compare. Each outlier will be marked with a red “*“. We can assign the filtered dataframe a name for future use.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pat_august_filtered &lt;-<span class="st"> </span>
 <span class="st">  </span>pat_august <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/pat_outliers.html">pat_outliers</a></span>(<span class="dt">replace =</span> <span class="ot">TRUE</span>, <span class="dt">showPlot =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><img src="pat_introduction_files/figure-html/outlierPlot-1.png" width="768"></p>
-<p>Now that we have a filtered dataset we can begin looking into smaller datasets. 14 August 2018 appears to be the initial PM2.5 event. We can view a single day using <code>pat_subdate</code> and <code>pat_multiplot</code>.</p>
+<p>Now that we have a filtered dataset we can begin looking into smaller datasets. 14 August 2018 appears to be the initial PM2.5 event. We can view a single day using <code>pat_filterDate</code> and <code>pat_multiplot</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">august_<span class="dv">14</span> &lt;-<span class="st"> </span>
 <span class="st">  </span>pat_august <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="../reference/pat_subdate.html">pat_subdate</a></span>(<span class="dt">sd =</span> <span class="dv">20180814</span>, <span class="dt">days =</span> <span class="dv">1</span>)
+<span class="st">  </span><span class="kw"><a href="../reference/pat_filterDate.html">pat_filterDate</a></span>(<span class="dt">startdate =</span> <span class="dv">20180814</span>, <span class="dt">days =</span> <span class="dv">1</span>)
 
 august_<span class="dv">14</span> <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(<span class="dt">plottype =</span> <span class="st">"all"</span>)</code></pre></div>

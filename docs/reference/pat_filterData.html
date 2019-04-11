@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get PWFSLSmoke monitoring data — pwfsl_loadLatest • AirSensor</title>
+<title>General purpose PurpleAir time series filter — pat_filterData • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,17 +37,11 @@
 
 
 
-<meta property="og:title" content="Get PWFSLSmoke monitoring data — pwfsl_loadLatest" />
+<meta property="og:title" content="General purpose PurpleAir time series filter — pat_filterData" />
 
-<meta property="og:description" content="Loads recent PM2.5 monitoring data from the US Forest Service
-Pacific Wildland Fire Sciences Lab. This function performs the same data 
-loadingstep as pwfsl_load(), but has a longer name for consistency 
-with other data loading functions in the PWFSLSmoke package. By 
-default, this function loads data from all 50 states for the past 10 days.
-This function is a wrapper around PWFSLSmoke::monitor_loadLatest.
-Data for the most recent 45 days can be downloaded using 
-PWFSLSmoke::monitor_loadDaily(). See the PWFSLSmoke package for
-additional data loading functions." />
+<meta property="og:description" content="A generalized data filter for pa_timeseries (`pat`) objects to 
+choose rows/cases where conditions are true. Rows where the condition 
+evaluates to NA are dropped." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -132,43 +126,58 @@ additional data loading functions." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get PWFSLSmoke monitoring data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pwfsl_loadLatest.R'><code>R/pwfsl_loadLatest.R</code></a></small>
-    <div class="hidden name"><code>pwfsl_loadLatest.Rd</code></div>
+    <h1>General purpose PurpleAir time series filter</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_filterData.R'><code>R/pat_filterData.R</code></a></small>
+    <div class="hidden name"><code>pat_filterData.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Loads recent PM2.5 monitoring data from the US Forest Service
-Pacific Wildland Fire Sciences Lab. This function performs the same data 
-loadingstep as <code><a href='pwfsl_load.html'>pwfsl_load()</a></code>, but has a longer name for consistency 
-with other data loading functions in the <code>PWFSLSmoke</code> package. By 
-default, this function loads data from all 50 states for the past 10 days.</p>
-<p>This function is a wrapper around <code><a href='https://www.rdocumentation.org/packages/PWFSLSmoke/topics/monitor_loadLatest'>PWFSLSmoke::monitor_loadLatest</a></code>.</p>
-<p>Data for the most recent 45 days can be downloaded using 
-<code><a href='https://www.rdocumentation.org/packages/PWFSLSmoke/topics/monitor_loadDaily'>PWFSLSmoke::monitor_loadDaily()</a></code>. See the <code>PWFSLSmoke package</code> for
-additional data loading functions.</p>
+    <p>A generalized data filter for pa_timeseries (`pat`) objects to 
+choose rows/cases where conditions are true. Rows where the condition 
+evaluates to NA are dropped.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pwfsl_loadLatest</span>()</pre>
-        
+    <pre class="usage"><span class='fu'>pat_filterData</span>(<span class='no'>pat</span>, <span class='no'>...</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>pat</th>
+      <td><p>a pa_timeseries dataframe</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Logical predicates defined in terms of the variables in the 
+`pat$data`. Multiple conditions are combined with &amp; or seperated by a comma. 
+Only rows where the condition evaluates to TRUE are kept.</p></td>
+    </tr>
+    </table>
+    
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>List with <code>meta</code> and <code>data</code> elements, a <em>ws_monitor</em>
-object.</p>
+    <p>a pa_timeseries object</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='pat_filterDate.html'>pat_filterDate</a></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>pwfsl</span> <span class='kw'>&lt;-</span> <span class='fu'>pwfsl_loadLatest</span>()
+<span class='no'>unhealthy</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_filterData</span>(<span class='no'>pat</span>, <span class='no'>pm25_A</span> <span class='kw'>&gt;</span> <span class='fl'>55.5</span>, <span class='no'>pm25_B</span> <span class='kw'>&gt;</span> <span class='fl'>55.5</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

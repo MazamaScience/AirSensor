@@ -3,7 +3,7 @@
 #' @import graphics
 #' @title Display multiple plots on one page
 #' @param ... any number of ggobjects to be plotted
-#' @param plotlist a list() of any number of ggplot objects to plot on a single pane
+#' @param plotList a list() of any number of ggplot objects to plot on a single pane
 #' @param cols Number of columns in the plot layout
 #' @param layout A matrix specifying the layout. If present, 'cols' is ignored.
 #' 
@@ -13,9 +13,9 @@
 #' @note Additional documentation of the multiplot algorithm is available at 
 #' cookbook-r.com.
 
-multi_ggplot <- function(..., plotlist = NULL, cols = 1, layout = NULL) {
+multi_ggplot <- function(..., plotList = NULL, cols = 1, layout = NULL) {
   
-  plots <- c(list(...), plotlist)
+  plots <- c(list(...), plotList)
   numPlots <- length(plots)
   
   if ( is.null(layout) ) {
@@ -37,4 +37,7 @@ multi_ggplot <- function(..., plotlist = NULL, cols = 1, layout = NULL) {
                                             layout.pos.col = matchidx$col))
     }
   }
+  
+  # TODO:  Does multi_ggplot() return anything?
+  
 }

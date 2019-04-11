@@ -46,11 +46,11 @@ pat_filterDate <- function(
   # Get the start end end times ------------------------------------------------
   
   if ( !is.null(days) ) {
-    days = days
+    days <- days
   } else if ( !is.null(weeks) ) {
-    days = weeks * 7
+    days <- weeks * 7
   } else {
-    days = 7 # default
+    days <- 7 # default
   }
   
   tlim <- .dateRange(startdate, enddate, days, timezone = timezone)

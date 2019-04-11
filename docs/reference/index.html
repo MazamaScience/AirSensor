@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -150,7 +150,13 @@
         <td>
           <p><code><a href="createPATimeseriesObject.html">createPATimeseriesObject()</a></code> </p>
         </td>
-        <td><p>Create a Purple Air Timeseries Object</p></td>
+        <td><p>Create a Purple Air Timeseries object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="dot-dateRange.html">.dateRange()</a></code> </p>
+        </td>
+        <td><p>Create a POSIXct date range</p></td>
       </tr><tr>
         
         <td>
@@ -196,6 +202,18 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="multi_ggplot.html">multi_ggplot()</a></code> </p>
+        </td>
+        <td><p>Display multiple plots on one page</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="pas_esriMap.html">pas_esriMap()</a></code> </p>
+        </td>
+        <td><p>Create an ESRI Map of ws_monitor Object</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="pas_leaflet.html">pas_leaflet()</a></code> </p>
         </td>
         <td><p>Leaflet interactive map of Purple Air sensors</p></td>
@@ -204,19 +222,43 @@
         <td>
           <p><code><a href="pas_load.html">pas_load()</a></code> </p>
         </td>
+        <td><p>Load Purple Air synoptic data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="pas_loadLatest.html">pas_loadLatest()</a></code> </p>
+        </td>
         <td><p>Get latest Purple Air synoptic data</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="pat_outliers.html">pat_outliers()</a></code> </p>
+          <p><code><a href="pat_extractDataFrame.html">pat_extractData()</a></code> <code><a href="pat_extractDataFrame.html">pat_extractMeta()</a></code> </p>
         </td>
-        <td><p>Detect and Fix Timeseries Outliers</p></td>
+        <td><p>Extract dataframes from <em>pat</em> objects</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="pat_internalData.html">pat_internalData()</a></code> </p>
+          <p><code><a href="pat_filterData.html">pat_filterData()</a></code> </p>
         </td>
-        <td><p>Compare All Variables in a Purple Air Timeseries Object</p></td>
+        <td><p>General purpose PurpleAir time series filter</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="pat_filterDate.html">pat_filterDate()</a></code> </p>
+        </td>
+        <td><p>Subset PurpleAir time series intervals</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="pat_isEmpty.html">pat_isEmpty()</a></code> </p>
+        </td>
+        <td><p>Test for an empty <em>pat</em> object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="pat_isPat.html">pat_isPat()</a></code> </p>
+        </td>
+        <td><p>Test for correct structure in a <em>pat</em> object</p></td>
       </tr><tr>
         
         <td>
@@ -232,9 +274,15 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="pat_subdate.html">pat_subdate()</a></code> </p>
+          <p><code><a href="pat_outliers.html">pat_outliers()</a></code> </p>
         </td>
-        <td><p>Subset PurpleAir time series intervals</p></td>
+        <td><p>Detect and replace timeseries outliers</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="pat_scatterplot.html">pat_scatterplot()</a></code> </p>
+        </td>
+        <td><p>Compare all variables in a Purple Air Timeseries object</p></td>
       </tr><tr>
         
         <td>

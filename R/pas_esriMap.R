@@ -41,15 +41,15 @@
 
 pas_esriMap <- function(
   pas, 
-  centerLon=NULL,
-  centerLat=NULL,
-  maptype="worldStreetMap",
-  mapRaster=NULL, 
-  zoom=NULL,
-  showMap=FALSE
+  centerLon = NULL,
+  centerLat = NULL,
+  maptype = "worldStreetMap",
+  mapRaster = NULL, 
+  zoom = NULL,
+  showMap = FALSE
 ) {
   
-  if( nrow(pas) == 0 ) {
+  if ( nrow(pas) == 0 ) {
     stop("Required parameter 'pas' is empty.")
   }
   
@@ -92,7 +92,7 @@ pas_esriMap <- function(
   colors <- PWFSLSmoke::AQI$colors
   labels <- PWFSLSmoke::AQI$names
   ggRasterPlot <- 
-    RStoolbox::ggRGB(mapRaster, r=1, g=2, b=3, maxpixels = 2e+06) + 
+    RStoolbox::ggRGB(mapRaster, r = 1, g = 2, b = 3, maxpixels = 2e+06) + 
     ggplot2::geom_point(ggplot2::aes( x = pas$longitude, 
                                       y = pas$latitude, 
                                       color = colorFunc(pas$pm25_1hr) ),

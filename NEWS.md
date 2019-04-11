@@ -3,6 +3,8 @@
 * renamed package to *AirSensor*
 * renamed `pat_internalData()` to `pat_scatterplot()` with improved functionality
 * renamed `pat_outliers()` to `pat_outliers()` with improved functionality
+* new utility functions `pat_isPat()`, `pat_isEmpty()`, `pat_extractMeta()`,
+`pat_extractData()`
 
 # AirSensor 0.1.9
 

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get PWFSLSmoke monitoring data — pwfsl_loadLatest • AirSensor</title>
+<title>Create a POSIXct date range — .dateRange • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,17 +37,17 @@
 
 
 
-<meta property="og:title" content="Get PWFSLSmoke monitoring data — pwfsl_loadLatest" />
+<meta property="og:title" content="Create a POSIXct date range — .dateRange" />
 
-<meta property="og:description" content="Loads recent PM2.5 monitoring data from the US Forest Service
-Pacific Wildland Fire Sciences Lab. This function performs the same data 
-loadingstep as pwfsl_load(), but has a longer name for consistency 
-with other data loading functions in the PWFSLSmoke package. By 
-default, this function loads data from all 50 states for the past 10 days.
-This function is a wrapper around PWFSLSmoke::monitor_loadLatest.
-Data for the most recent 45 days can be downloaded using 
-PWFSLSmoke::monitor_loadDaily(). See the PWFSLSmoke package for
-additional data loading functions." />
+<meta property="og:description" content="Uses incoming parameters to return a pair of POSIXct
+times in the proper order. This function always rounds to day boundaries.
+Dates can be anything that is understood by 
+lubrdiate::parse_date_time() including either of the following 
+recommended formats:
+
+&quot;YYYYmmdd&quot;
+&quot;YYYY-mm-dd&quot;
+" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -132,46 +132,73 @@ additional data loading functions." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get PWFSLSmoke monitoring data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pwfsl_loadLatest.R'><code>R/pwfsl_loadLatest.R</code></a></small>
-    <div class="hidden name"><code>pwfsl_loadLatest.Rd</code></div>
+    <h1>Create a POSIXct date range</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/utils-temporalRange.R'><code>R/utils-temporalRange.R</code></a></small>
+    <div class="hidden name"><code>dot-dateRange.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Loads recent PM2.5 monitoring data from the US Forest Service
-Pacific Wildland Fire Sciences Lab. This function performs the same data 
-loadingstep as <code><a href='pwfsl_load.html'>pwfsl_load()</a></code>, but has a longer name for consistency 
-with other data loading functions in the <code>PWFSLSmoke</code> package. By 
-default, this function loads data from all 50 states for the past 10 days.</p>
-<p>This function is a wrapper around <code><a href='https://www.rdocumentation.org/packages/PWFSLSmoke/topics/monitor_loadLatest'>PWFSLSmoke::monitor_loadLatest</a></code>.</p>
-<p>Data for the most recent 45 days can be downloaded using 
-<code><a href='https://www.rdocumentation.org/packages/PWFSLSmoke/topics/monitor_loadDaily'>PWFSLSmoke::monitor_loadDaily()</a></code>. See the <code>PWFSLSmoke package</code> for
-additional data loading functions.</p>
+    <p>Uses incoming parameters to return a pair of <code>POSIXct</code>
+times in the proper order. This function always rounds to day boundaries.</p>
+<p>Dates can be anything that is understood by 
+<code>lubrdiate::parse_date_time()</code> including either of the following 
+recommended formats:</p>
+<ul>
+<li><p><code>"YYYYmmdd"</code></p></li>
+<li><p><code>"YYYY-mm-dd"</code></p></li>
+</ul>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pwfsl_loadLatest</span>()</pre>
-        
+    <pre class="usage"><span class='fu'>.dateRange</span>(<span class='kw'>startdate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>days</span> <span class='kw'>=</span> <span class='fl'>7</span>,
+  <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='st'>"UTC"</span>, <span class='kw'>unit</span> <span class='kw'>=</span> <span class='st'>"sec"</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>startdate</th>
+      <td><p>desired start datetime (ISO 8601)</p></td>
+    </tr>
+    <tr>
+      <th>enddate</th>
+      <td><p>desired end datetime (ISO 8601)</p></td>
+    </tr>
+    <tr>
+      <th>days</th>
+      <td><p>number of days of data to include</p></td>
+    </tr>
+    <tr>
+      <th>timezone</th>
+      <td><p>Olson timezone used to interpret dates</p></td>
+    </tr>
+    <tr>
+      <th>unit</th>
+      <td><p>units used to determine enddates final timestep</p></td>
+    </tr>
+    </table>
+    
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>List with <code>meta</code> and <code>data</code> elements, a <em>ws_monitor</em>
-object.</p>
+    <p>A vector of two <code>POSIXct</code>s.</p>
+    
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>The ending <code>POSIXct</code> will end one <code>unit</code> before the specified
+<code>enddate</code>.</p>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>pwfsl</span> <span class='kw'>&lt;-</span> <span class='fu'>pwfsl_loadLatest</span>()
-<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+
+      <li><a href="#note">Note</a></li>
+          </ul>
 
   </div>
 </div>
