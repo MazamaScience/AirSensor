@@ -8,13 +8,28 @@ pat_scatterplot(pat, parameters = c("datetime", "pm25_A", "pm25_B",
   "temperature", "humidity"))
 }
 \arguments{
-\item{pat}{Purple Air Timeseries "pat" object}
+\item{pat}{Purple Air Timeseries \emph{pat} object}
 
 \item{parameters}{vector of parameters to include}
 }
 \value{
-Tibble portion of the \code{pat} object, subset.
+Tibble portion of the \emph{pat} object, subset.
 }
 \description{
-Compare all variables in a Purple Air Timeseries object
+Creates a multi-panel scatterplot comparing all variables in the
+\emph{pat} object. If any variables have no valid data, they are omitted from
+the plot.
+
+The list of available parameters include:
+
+\itemize{
+\item{\code{datetime} -- measurement time}
+\item{\code{pm25_A} -- A channel PM2.5 (ug/m3)}
+\item{\code{pm25_A} -- A channel PM2.5 (ug/m3)}
+\item{\code{temperature} -- temperature (F)}
+\item{\code{humidity} -- humidity (\%)}
+\item{\code{uptime} -- seconds since last reset}
+\item{\code{acd0} -- analog input voltage}
+\item{\code{rssi} -- wifi signal strength (dBm)}
+}
 }

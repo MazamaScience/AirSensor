@@ -1,3 +1,9 @@
+# AirSensor 0.2.1
+
+* minor documentation cleanup
+* added graphical options to `pas_exriMap()`
+* added `local_examples/example_02_pas-filtering.R`
+
 # AirSensor 0.2.0
 
 * renamed package to *AirSensor*

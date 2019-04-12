@@ -83,7 +83,7 @@ pat_isEmpty <- function(pat) {
 #' @description
 #' These functions are convenient wrappers for extracting the dataframes that
 #' comprise a \emph{pat} object. These functions are designed to be useful when
-#' manipulating data in a pipeline chain using \code{%>%}.
+#' manipulating data in a pipeline chain using \code{\%>\%}.
 #'
 #' Below is a table showing equivalent operations for each function.
 #'

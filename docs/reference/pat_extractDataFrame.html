@@ -39,7 +39,23 @@
 
 <meta property="og:title" content="Extract dataframes from <em>pat</em> objects — pat_extractDataFrame" />
 
-<meta property="og:description" content="Extract dataframes from pat objects" />
+<meta property="og:description" content="These functions are convenient wrappers for extracting the dataframes that
+comprise a pat object. These functions are designed to be useful when
+manipulating data in a pipeline chain using %&amp;gt;%.
+Below is a table showing equivalent operations for each function.
+
+
+Function
+Equivalent Operation
+
+pat_extractData(pat)
+
+pat[[&quot;data&quot;]]
+
+pat_extractMeta(pat)
+pat[[&quot;meta&quot;]]
+
+" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -70,7 +86,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -131,7 +147,23 @@
 
     <div class="ref-description">
     
-    <p>Extract dataframes from <em>pat</em> objects</p>
+    <p>These functions are convenient wrappers for extracting the dataframes that
+comprise a <em>pat</em> object. These functions are designed to be useful when
+manipulating data in a pipeline chain using <code>%&gt;%</code>.</p>
+<p>Below is a table showing equivalent operations for each function.</p>
+<table class='table'>
+<tr><td></td><td></td></tr>
+<tr><td><strong>Function</strong></td><td></td></tr>
+<tr><td></td><td><strong>Equivalent Operation</strong></td></tr>
+<tr><td></td><td></td></tr>
+<tr><td></td><td><code>pat_extractData(pat)</code></td></tr>
+<tr><td></td><td></td></tr>
+<tr><td><code>pat[["data"]]</code></td><td></td></tr>
+<tr><td></td><td></td></tr>
+<tr><td><code>pat_extractMeta(pat)</code></td><td></td></tr>
+<tr><td></td><td><code>pat[["meta"]]</code></td></tr>
+<tr><td></td><td></td></tr>
+</table>
     
     </div>
 

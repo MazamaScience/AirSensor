@@ -5,10 +5,10 @@
 #' 
 #' @param pas a pa_synoptic dataframe
 #' @param ... Logical predicates defined in terms of the variables in the 
-#' `pas`. Multiple conditions are combined with & or seperated by a comma. 
+#' \code{pas}. Multiple conditions are combined with & or seperated by a comma. 
 #' Only rows where the condition evaluates to TRUE are kept.
 #' 
-#' @descripton A generalized data filter for pa_synoptic (`pas`) objects to 
+#' @description A generalized data filter for pa_synoptic \emph{pas} objects to 
 #' choose rows/cases where conditions are true. Rows where the condition 
 #' evaluates to NA are dropped.
 #' 

@@ -6,7 +6,7 @@
 \usage{
 pas_esriMap(pas, centerLon = NULL, centerLat = NULL,
   maptype = "worldStreetMap", mapRaster = NULL, zoom = NULL,
-  showMap = FALSE)
+  showMap = FALSE, shape = 15, size = 2, alpha = 0.9)
 }
 \arguments{
 \item{pas}{\emph{pa_synoptic} object}
@@ -22,6 +22,12 @@ pas_esriMap(pas, centerLon = NULL, centerLat = NULL,
 \item{zoom}{map zoom level}
 
 \item{showMap}{option to show the ggplot if true}
+
+\item{shape}{symbol to use for points}
+
+\item{size}{size of points}
+
+\item{alpha}{opacity of points}
 }
 \value{
 Plots a map loaded from arcGIS REST with points for each monitor.

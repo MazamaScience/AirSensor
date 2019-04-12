@@ -39,7 +39,20 @@
 
 <meta property="og:title" content="Compare all variables in a Purple Air Timeseries object — pat_scatterplot" />
 
-<meta property="og:description" content="Compare all variables in a Purple Air Timeseries object" />
+<meta property="og:description" content="Creates a multi-panel scatterplot comparing all variables in the
+pat object. If any variables have no valid data, they are omitted from
+the plot.
+The list of available parameters include:
+
+datetime -- measurement time
+pm25_A -- A channel PM2.5 (ug/m3)
+pm25_A -- A channel PM2.5 (ug/m3)
+temperature -- temperature (F)
+humidity -- humidity (%)
+uptime -- seconds since last reset
+acd0 -- analog input voltage
+rssi -- wifi signal strength (dBm)
+" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -70,7 +83,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -131,7 +144,20 @@
 
     <div class="ref-description">
     
-    <p>Compare all variables in a Purple Air Timeseries object</p>
+    <p>Creates a multi-panel scatterplot comparing all variables in the
+<em>pat</em> object. If any variables have no valid data, they are omitted from
+the plot.</p>
+<p>The list of available parameters include:</p>
+<ul>
+<li><p><code>datetime</code> -- measurement time</p></li>
+<li><p><code>pm25_A</code> -- A channel PM2.5 (ug/m3)</p></li>
+<li><p><code>pm25_A</code> -- A channel PM2.5 (ug/m3)</p></li>
+<li><p><code>temperature</code> -- temperature (F)</p></li>
+<li><p><code>humidity</code> -- humidity (%)</p></li>
+<li><p><code>uptime</code> -- seconds since last reset</p></li>
+<li><p><code>acd0</code> -- analog input voltage</p></li>
+<li><p><code>rssi</code> -- wifi signal strength (dBm)</p></li>
+</ul>
     
     </div>
 
@@ -143,7 +169,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pat</th>
-      <td><p>Purple Air Timeseries "pat" object</p></td>
+      <td><p>Purple Air Timeseries <em>pat</em> object</p></td>
     </tr>
     <tr>
       <th>parameters</th>
@@ -153,7 +179,7 @@
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Tibble portion of the <code>pat</code> object, subset.</p>
+    <p>Tibble portion of the <em>pat</em> object, subset.</p>
     
 
   </div>

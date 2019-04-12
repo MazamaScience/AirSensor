@@ -11,6 +11,9 @@
 #' @param maptype map type
 #' @param mapRaster optional RGB Raster* object returned from
 #' @param showMap option to show the ggplot if true
+#' @param shape symbol to use for points
+#' @param size size of points
+#' @param alpha opacity of points
 #'   
 #' @return Plots a map loaded from arcGIS REST with points for each monitor.
 #' 
@@ -46,7 +49,10 @@ pas_esriMap <- function(
   maptype = "worldStreetMap",
   mapRaster = NULL, 
   zoom = NULL,
-  showMap = FALSE
+  showMap = FALSE,
+  shape = 15, 
+  size = 2.0, 
+  alpha = 0.9
 ) {
   
   if ( nrow(pas) == 0 ) {
@@ -101,9 +107,9 @@ pas_esriMap <- function(
         x = pas$longitude, 
         y = pas$latitude, 
         color = colors),
-      shape = 15, 
-      size = 2.0, 
-      alpha = 0.9 ) + 
+      shape = shape, 
+      size = size, 
+      alpha = alpha) + 
     ggplot2::scale_color_identity("AQI", 
                                   labels = AQI_label, 
                                   breaks = AQI_color,
@@ -113,6 +119,6 @@ pas_esriMap <- function(
   
   if ( showMap )( print(ggRasterPlot) )
   
-  return(ggRasterPlot)
+  return(invisible(ggRasterPlot))
   
 }

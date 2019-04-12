@@ -17,5 +17,15 @@ pat_extractMeta(pat)
 A dataframe from the given \emph{pat} object
 }
 \description{
-Extract dataframes from \emph{pat} objects
+These functions are convenient wrappers for extracting the dataframes that
+comprise a \emph{pat} object. These functions are designed to be useful when
+manipulating data in a pipeline chain using \code{\%>\%}.
+
+Below is a table showing equivalent operations for each function.
+
+\tabular{ll}{
+  \strong{Function} \tab \strong{Equivalent Operation}\cr
+  \code{pat_extractData(pat)} \tab \code{pat[["data"]]}\cr
+  \code{pat_extractMeta(pat)} \tab \code{pat[["meta"]]}
+}
 }
