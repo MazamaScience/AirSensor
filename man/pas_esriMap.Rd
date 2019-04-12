@@ -2,11 +2,11 @@
 % Please edit documentation in R/pas_esriMap.R
 \name{pas_esriMap}
 \alias{pas_esriMap}
-\title{Create an ESRI Map of ws_monitor Object}
+\title{ESRI static map of Purple Air sensors}
 \usage{
 pas_esriMap(pas, centerLon = NULL, centerLat = NULL,
-  maptype = "worldStreetMap", mapRaster = NULL, zoom = NULL,
-  showMap = FALSE, shape = 15, size = 2, alpha = 0.9)
+  maptype = "worldStreetMap", mapRaster = NULL, width = 800,
+  height = 800, zoom = NULL, shape = 15, size = 4, alpha = 0.8)
 }
 \arguments{
 \item{pas}{\emph{pa_synoptic} object}
@@ -17,11 +17,13 @@ pas_esriMap(pas, centerLon = NULL, centerLat = NULL,
 
 \item{maptype}{map type}
 
-\item{mapRaster}{optional RGB Raster* object returned from}
+\item{mapRaster}{optional RGB Raster object to be used as the map layer}
+
+\item{width}{width of image in pixels}
+
+\item{height}{height of image in pixels}
 
 \item{zoom}{map zoom level}
-
-\item{showMap}{option to show the ggplot if true}
 
 \item{shape}{symbol to use for points}
 
@@ -53,9 +55,8 @@ appropriate values will be calcualted using data from the
 }
 \examples{
 \dontrun{
-pas <- pas_load()
-CA <- pas \%>\% filter(stateCode == "CA")
-pas_esriMap(CA, showMap=TRUE)
+ca <- pas_load() \%>\% filter(stateCode == "CA")
+pas_esriMap(ca)
 }
 }
 \seealso{

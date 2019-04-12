@@ -1,18 +1,20 @@
 #' @export
 #' @importFrom rlang .data
 #' 
-#' @title General purpose PurpleAir time series filter
+#' @title General purpose filtering for \emph{pat} objects
 #' 
-#' @param pat a pa_timeseries dataframe
-#' @param ... Logical predicates defined in terms of the variables in the 
-#' `pat$data`. Multiple conditions are combined with & or seperated by a comma. 
-#' Only rows where the condition evaluates to TRUE are kept.
+#' @param pat \emph{pa_timeseries} dataframe
+#' @param ... logical predicates defined in terms of the variables in the 
+#' \code{pat$data}.
 #' 
-#' @description A generalized data filter for pa_timeseries (`pat`) objects to 
-#' choose rows/cases where conditions are true. Rows where the condition 
-#' evaluates to NA are dropped.
+#' @description A generalized data filter for \emph{pat} objects to 
+#' choose rows/cases where conditions are true.  Multiple conditions are 
+#' combined with \code{&} or seperated by a comma. Only rows where the condition 
+#' evaluates to TRUE are kept.Rows where the condition evaluates to \code{NA}
+#' aredropped.
 #' 
-#' @return a pa_timeseries object
+#' @return A subset of the incoming \code{pat}.
+#' 
 #' @seealso \link{pat_filterDate}
 #' @examples
 #' \dontrun{

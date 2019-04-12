@@ -35,7 +35,7 @@ pat_internalFit <- function(
   if ( !pat_isPat(pat) )
     stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")
   
-  if ( !pat_isEmpty(pat) )
+  if ( pat_isEmpty(pat) )
     stop("Parameter 'pat' has no data.")
   
   if ( !is.null(weights) && !is.numeric(weights) ) {

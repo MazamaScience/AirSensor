@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create an ESRI Map of ws_monitor Object — pas_esriMap • AirSensor</title>
+<title>ESRI static map of Purple Air sensors — pas_esriMap • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,7 +37,7 @@
 
 
 
-<meta property="og:title" content="Create an ESRI Map of ws_monitor Object — pas_esriMap" />
+<meta property="og:title" content="ESRI static map of Purple Air sensors — pas_esriMap" />
 
 <meta property="og:description" content="Creates an ESRI map of a pa_synoptic object.
 #' Available maptype options include:
@@ -137,7 +137,7 @@ pa_synoptic dataframe." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create an ESRI Map of ws_monitor Object</h1>
+    <h1>ESRI static map of Purple Air sensors</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pas_esriMap.R'><code>R/pas_esriMap.R</code></a></small>
     <div class="hidden name"><code>pas_esriMap.Rd</code></div>
     </div>
@@ -162,8 +162,8 @@ appropriate values will be calcualted using data from the
     </div>
 
     <pre class="usage"><span class='fu'>pas_esriMap</span>(<span class='no'>pas</span>, <span class='kw'>centerLon</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>centerLat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>maptype</span> <span class='kw'>=</span> <span class='st'>"worldStreetMap"</span>, <span class='kw'>mapRaster</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>zoom</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>showMap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.9</span>)</pre>
+  <span class='kw'>maptype</span> <span class='kw'>=</span> <span class='st'>"worldStreetMap"</span>, <span class='kw'>mapRaster</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>800</span>,
+  <span class='kw'>height</span> <span class='kw'>=</span> <span class='fl'>800</span>, <span class='kw'>zoom</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -186,15 +186,19 @@ appropriate values will be calcualted using data from the
     </tr>
     <tr>
       <th>mapRaster</th>
-      <td><p>optional RGB Raster* object returned from</p></td>
+      <td><p>optional RGB Raster object to be used as the map layer</p></td>
+    </tr>
+    <tr>
+      <th>width</th>
+      <td><p>width of image in pixels</p></td>
+    </tr>
+    <tr>
+      <th>height</th>
+      <td><p>height of image in pixels</p></td>
     </tr>
     <tr>
       <th>zoom</th>
       <td><p>map zoom level</p></td>
-    </tr>
-    <tr>
-      <th>showMap</th>
-      <td><p>option to show the ggplot if true</p></td>
     </tr>
     <tr>
       <th>shape</th>
@@ -221,9 +225,8 @@ appropriate values will be calcualted using data from the
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pas_load.html'>pas_load</a></span>()
-<span class='no'>CA</span> <span class='kw'>&lt;-</span> <span class='no'>pas</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter</a></span>(<span class='no'>stateCode</span> <span class='kw'>==</span> <span class='st'>"CA"</span>)
-<span class='fu'>pas_esriMap</span>(<span class='no'>CA</span>, <span class='kw'>showMap</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
+<span class='no'>ca</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pas_load.html'>pas_load</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter</a></span>(<span class='no'>stateCode</span> <span class='kw'>==</span> <span class='st'>"CA"</span>)
+<span class='fu'>pas_esriMap</span>(<span class='no'>ca</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

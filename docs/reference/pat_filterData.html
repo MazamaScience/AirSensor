@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>General purpose PurpleAir time series filter — pat_filterData • AirSensor</title>
+<title>General purpose filtering for <em>pat</em> objects — pat_filterData • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,11 +37,13 @@
 
 
 
-<meta property="og:title" content="General purpose PurpleAir time series filter — pat_filterData" />
+<meta property="og:title" content="General purpose filtering for <em>pat</em> objects — pat_filterData" />
 
-<meta property="og:description" content="A generalized data filter for pa_timeseries (`pat`) objects to 
-choose rows/cases where conditions are true. Rows where the condition 
-evaluates to NA are dropped." />
+<meta property="og:description" content="A generalized data filter for pat objects to 
+choose rows/cases where conditions are true.  Multiple conditions are 
+combined with &amp;amp; or seperated by a comma. Only rows where the condition 
+evaluates to TRUE are kept.Rows where the condition evaluates to NA
+aredropped." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -126,16 +128,18 @@ evaluates to NA are dropped." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>General purpose PurpleAir time series filter</h1>
+    <h1>General purpose filtering for <em>pat</em> objects</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_filterData.R'><code>R/pat_filterData.R</code></a></small>
     <div class="hidden name"><code>pat_filterData.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>A generalized data filter for pa_timeseries (`pat`) objects to 
-choose rows/cases where conditions are true. Rows where the condition 
-evaluates to NA are dropped.</p>
+    <p>A generalized data filter for <em>pat</em> objects to 
+choose rows/cases where conditions are true.  Multiple conditions are 
+combined with <code>&amp;</code> or seperated by a comma. Only rows where the condition 
+evaluates to TRUE are kept.Rows where the condition evaluates to <code>NA</code>
+aredropped.</p>
     
     </div>
 
@@ -146,19 +150,18 @@ evaluates to NA are dropped.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pat</th>
-      <td><p>a pa_timeseries dataframe</p></td>
+      <td><p><em>pa_timeseries</em> dataframe</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Logical predicates defined in terms of the variables in the 
-`pat$data`. Multiple conditions are combined with &amp; or seperated by a comma. 
-Only rows where the condition evaluates to TRUE are kept.</p></td>
+      <td><p>logical predicates defined in terms of the variables in the 
+<code>pat$data</code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a pa_timeseries object</p>
+    <p>A subset of the incoming <code>pat</code>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 

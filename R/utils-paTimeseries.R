@@ -15,7 +15,7 @@
 #'   \item{sensorType -- Purple Air sensor type}
 #'   \item{longitude -- decimal degrees E}
 #'   \item{latitude -- decimal degrees N}
-#'   \item{timezone -- olson timezone}
+#'   \item{timezone -- Olson timezone}
 #'   \item{countryCode -- ISO 3166-1 alpha-2}
 #'   \item{stateCode -- ISO 3166-2 alpha-2}
 #'   \item{pwfsl_closestDistance -- distance in meters from an official monitor}

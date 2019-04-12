@@ -1,9 +1,9 @@
 #' @export
 #' @importFrom rlang .data
 #' 
-#' @title Subset PurpleAir time series intervals
+#' @title Date filtering for \emph{pat} objects
 #' 
-#' @param pat Purple Air Timeseries "pat" object from \code{createPATimeseriesObject()}
+#' @param pat Purple Air Timeseries \emph{pat} object
 #' @param startdate desired start datetime (ISO 8601)
 #' @param enddate desired end datetime (ISO 8601)
 #' @param days Number of days to include in the filterDate interval
@@ -20,7 +20,7 @@
 #' \item{\code{"YYYY-mm-dd"}}
 #' }
 #' 
-#' @return A subset of the original \emph{pat} object.
+#' @return A subset of the incoming \code{pat}.
 #' 
 
 pat_filterDate <- function(
@@ -30,7 +30,7 @@ pat_filterDate <- function(
   days = NULL, 
   weeks = NULL,
   timezone = "America/Los_Angeles"
-  ) {
+) {
   
   # Validate parameters --------------------------------------------------------
   
@@ -42,7 +42,7 @@ pat_filterDate <- function(
   
   if ( is.null(startdate) && !is.null(enddate) )
     stop("At least one of 'startdate' or 'enddate' must be specified")
-
+  
   # Get the start end end times ------------------------------------------------
   
   if ( !is.null(days) ) {
@@ -63,7 +63,7 @@ pat_filterDate <- function(
     filter(.data$datetime <= tlim[2])
   
   pat$data <- data
-
+  
   return(pat)
   
 }

@@ -2,15 +2,16 @@
 #' 
 #' @export
 #' 
-#' @title Create an ESRI Map of ws_monitor Object
+#' @title ESRI static map of Purple Air sensors
 #' 
 #' @param pas \emph{pa_synoptic} object
 #' @param centerLon map center longitude
 #' @param centerLat map center latitude
-#' @param zoom map zoom level
 #' @param maptype map type
-#' @param mapRaster optional RGB Raster* object returned from
-#' @param showMap option to show the ggplot if true
+#' @param mapRaster optional RGB Raster object to be used as the map layer
+#' @param width width of image in pixels
+#' @param height height of image in pixels
+#' @param zoom map zoom level
 #' @param shape symbol to use for points
 #' @param size size of points
 #' @param alpha opacity of points
@@ -36,9 +37,8 @@
 #' \code{pa_synoptic} dataframe.
 #' @examples
 #' \dontrun{
-#' pas <- pas_load()
-#' CA <- pas %>% filter(stateCode == "CA")
-#' pas_esriMap(CA, showMap=TRUE)
+#' ca <- pas_load() %>% filter(stateCode == "CA")
+#' pas_esriMap(ca)
 #' }
 #' @seealso \code{\link{esriMap_plotOnStaticMap}}
 
@@ -48,11 +48,12 @@ pas_esriMap <- function(
   centerLat = NULL,
   maptype = "worldStreetMap",
   mapRaster = NULL, 
+  width = 800,
+  height = 800,
   zoom = NULL,
-  showMap = FALSE,
   shape = 15, 
-  size = 2.0, 
-  alpha = 0.9
+  size = 4.0, 
+  alpha = 0.8
 ) {
   
   if ( nrow(pas) == 0 ) {
@@ -62,10 +63,12 @@ pas_esriMap <- function(
   # ----- Determine coordinate centeroid ---------------------------------------
   
   if ( is.null(centerLon) ) {
-    centerLon <- base::mean(pas$longitude)
+    xlim <- range(pas$longitude, na.rm = TRUE)
+    centerLon <- xlim[1] + 0.5 * diff(xlim)
   }
   if ( is.null(centerLat) ) {
-    centerLat <- base::mean(pas$latitude)
+    ylim <- range(pas$latitude, na.rm = TRUE)
+    centerLat <- ylim[1] + 0.5 * diff(ylim)
   }
   
   # ----- Determine map zoom ---------------------------------------------------
@@ -73,9 +76,35 @@ pas_esriMap <- function(
   if ( is.null(zoom) ) { 
     maxRange <- max(
       diff(range(pas$longitude, na.rm = TRUE)),
-      diff(range(pas$latitude, na.rm = TRUE)) )
+      diff(range(pas$latitude, na.rm = TRUE)) 
+    )
     
-    zoom <- (0.02974 * log10(maxRange) + 0.1355)**(-1)
+    if ( maxRange > 50 ) {
+      zoom <- 4
+    } else if ( maxRange > 20 ) {
+      zoom <- 5
+    } else if ( maxRange > 10 ) {
+      zoom <- 6
+    } else if ( maxRange > 5 ) {
+      zoom <- 7
+    } else if ( maxRange > 2 ) {
+      zoom <- 8
+    } else if ( maxRange > 1 ) {
+      zoom <- 9
+    } else if ( maxRange > 0.5 ) {
+      zoom <- 10
+    } else if ( maxRange > 0.2 ) {
+      zoom <- 11
+    } else if ( maxRange > 0.1 ) {
+      zoom <- 12
+    } else if ( maxRange > 0.05 ) {
+      zoom <- 13
+    } else {
+      zoom <- 14
+    }
+    
+  } else {
+    zoom <- round(zoom)
   }
   
   # ----- Generate RGB Raster --------------------------------------------------
@@ -84,8 +113,8 @@ pas_esriMap <- function(
     mapRaster <- PWFSLSmoke::esriMap_getMap(
       centerLon, 
       centerLat, 
-      width = 800, 
-      height = 800,
+      width = width, 
+      height = height,
       zoom = zoom, 
       maptype = maptype, 
       crs = sp::CRS("+init=epsg:4326") )
@@ -100,25 +129,29 @@ pas_esriMap <- function(
   AQI_label <- c(PWFSLSmoke::AQI$names, "Missing")
   
   colors <- colorFunc(pas$pm25_1hr)
-  ggRasterPlot <- 
-    RStoolbox::ggRGB(mapRaster, r = 1, g = 2, b = 3, maxpixels = 5e+06) + 
-    ggplot2::geom_point(
-      ggplot2::aes( 
-        x = pas$longitude, 
-        y = pas$latitude, 
-        color = colors),
-      shape = shape, 
-      size = size, 
-      alpha = alpha) + 
-    ggplot2::scale_color_identity("AQI", 
-                                  labels = AQI_label, 
-                                  breaks = AQI_color,
-                                  guide = "legend") +
-    ggplot2::coord_fixed(ratio = 4/3) +
-    ggplot2::theme_void()
   
-  if ( showMap )( print(ggRasterPlot) )
+  # Suppress "Coordinate system already present." message
+  suppressMessages({
+    
+    ggRasterPlot <- 
+      RStoolbox::ggRGB(mapRaster, r = 1, g = 2, b = 3, maxpixels = 5e+06) + 
+      ggplot2::geom_point(
+        ggplot2::aes( 
+          x = pas$longitude, 
+          y = pas$latitude, 
+          color = colors),
+        shape = shape, 
+        size = size, 
+        alpha = alpha) + 
+      ggplot2::scale_color_identity("AQI", 
+                                    labels = AQI_label, 
+                                    breaks = AQI_color,
+                                    guide = "legend") +
+      ggplot2::coord_fixed(ratio = 4/3) +   # TODO:  comment on purpose
+      ggplot2::theme_void()
+    
+  })
   
-  return(invisible(ggRasterPlot))
+  return(ggRasterPlot)
   
 }

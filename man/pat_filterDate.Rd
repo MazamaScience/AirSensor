@@ -2,13 +2,13 @@
 % Please edit documentation in R/pat_filterDate.R
 \name{pat_filterDate}
 \alias{pat_filterDate}
-\title{Subset PurpleAir time series intervals}
+\title{Date filtering for \emph{pat} objects}
 \usage{
 pat_filterDate(pat = NULL, startdate = NULL, enddate = NULL,
   days = NULL, weeks = NULL, timezone = "America/Los_Angeles")
 }
 \arguments{
-\item{pat}{Purple Air Timeseries "pat" object from \code{createPATimeseriesObject()}}
+\item{pat}{Purple Air Timeseries \emph{pat} object}
 
 \item{startdate}{desired start datetime (ISO 8601)}
 
@@ -21,7 +21,7 @@ pat_filterDate(pat = NULL, startdate = NULL, enddate = NULL,
 \item{timezone}{Olson timezone used to interpret dates}
 }
 \value{
-A subset of the original \emph{pat} object.
+A subset of the incoming \code{pat}.
 }
 \description{
 Subsets a Purple Air Timeseries object by date. 

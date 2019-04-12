@@ -1,8 +1,11 @@
-# Filter for Seal Beach data
+# Filtering a "pas" object
 
 # required libraries
 library(AirSensor)
-library(stringr)             # for string manipulation
+library(stringr)             # for string matching
+
+# Load this morning's synoptic data
+pas <- pas_load()
 
 # Filter for sensors in California
 ca <-
@@ -42,5 +45,17 @@ scsb <-
 
 pas_leaflet(scsb)
 
+# Let's use a regular expression to find all SCAQMD sensors
+scaqmd <-
+  ca %>% pas_filter(str_detect(label, "^[Ss][Cc].._"))
 
-  
+pas_leaflet(scaqmd)
+
+# Now for some static maps.
+
+pas_esriMap(scaqmd)
+
+pas_esriMap(scsb)
+
+
+

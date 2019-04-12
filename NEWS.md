@@ -1,8 +1,10 @@
 # AirSensor 0.2.1
 
 * minor documentation cleanup
-* added graphical options to `pas_exriMap()`
+* graphical options and other improvements for `pas_esriMap()`
 * added `local_examples/example_02_pas-filtering.R`
+* added `pas_filterArea()`
+* new utility functions `pas_isPas()`, `pas_isEmpty()`
 
 # AirSensor 0.2.0
 
