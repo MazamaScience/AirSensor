@@ -50,7 +50,19 @@ pat_scatterplot <- function(
                   ") have all missing data and are not shown."))
   }
   
-  plot(data, pch = '.')
+  scatterPlot <- 
+    GGally::ggpairs( data,
+                     mapping = ggplot2::aes(alpha=0.15),
+                     lower = list(
+                       continuous = GGally::wrap(
+                         "points", alpha = 0.3, size=0.5, shape=15)),
+                     diag = list(
+                       continuous = GGally::wrap(
+                         "densityDiag", alpha = 0.5, size=0.5)), 
+                     upper = list(continuous = "cor") ) + 
+    ggplot2::theme_bw()
+  
+  return(scatterPlot)
   
 }
 
