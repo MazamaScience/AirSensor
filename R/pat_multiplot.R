@@ -45,7 +45,7 @@ pat_multiplot <- function(
   plotList = NULL,
   columns = NULL,
   a_size = 1,
-  a_shape = 18,
+  a_shape = 15,
   a_color = rgb(0.9, 0.25, 0.2),
   b_size = 1,
   b_shape = 18,
@@ -56,7 +56,7 @@ pat_multiplot <- function(
   h_size = 1,
   h_shape = 18,
   h_color = "black",
-  alpha = 0.2
+  alpha = 0.25
 ) {
   
 
@@ -116,16 +116,16 @@ pat_multiplot <- function(
     channelAB <- 
       tbl %>% 
       ggplot2::ggplot(ggplot2::aes(x = .data$datetime, y = .data$pm25_A)) + 
-      ggplot2::geom_point(size = a_size, 
+      ggplot2::geom_point(data = .data$pm25_A,
+                          size = a_size, 
                           shape = a_shape,
                           color = a_color,
+                          alpha = alpha) +
+      ggplot2::geom_point(data = .data$pm25_B,
+                          size = b_size, 
+                          shape = b_shape,
+                          color = b_color,
                           alpha = alpha) + 
-      # TODO:  Figure out how to plot both channels on a single plot
-      # ggplot2::aes(data = tbl, x = datetime, y = pm25_B) + 
-      # ggplot2::geom_point(size = b_size, 
-      #                     shape = b_shape,
-      #                     color = b_color,
-      #                     alpha = alpha) + 
       ggplot2::ylim(ylim) +
       ggplot2::ggtitle(expression("Channel A/B PM"[2.5])) + 
       ggplot2::xlab(year) + ggplot2::ylab("\u03bcg / m\u00b3") 
