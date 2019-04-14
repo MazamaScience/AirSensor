@@ -6,7 +6,7 @@
 \usage{
 pat_outliers(pat, n = 23, thresholdMin = 8, replace = FALSE,
   showPlot = TRUE, data_shape = 18, data_size = 1,
-  data_color = "black", data_alpha = 0.1, outlier_shape = 8,
+  data_color = "black", data_alpha = 0.5, outlier_shape = 8,
   outlier_size = 1, outlier_color = "red", outlier_alpha = 1)
 }
 \arguments{

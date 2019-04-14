@@ -7,7 +7,7 @@
 #' 
 #' @return \code{TRUE} if \code{pas} has the correct structure, \code{FALSE} otherwise.
 #' 
-#' @description The \code{pas} is checked for the 'pas' class name
+#' @description The \code{pas} is checked for the "pas" class name
 #' and presence of core metadata columns:
 #' \itemize{
 #'   \item{ID -- Purple Air ID}
@@ -21,7 +21,7 @@
 #'   \item{pm25_1hr -- hourly PM2.5}
 #'   \item{pm25_1day -- daily PM2.5}
 #'   \item{temperature -- deg F}
-#'   \item{humidity -- %}
+#'   \item{humidity -- \%}
 #'   \item{pressure -- mb}
 #'   \item{pwfsl_closestDistance -- distance in meters from an official monitor}
 #'   \item{pwfsl_closestMonitorID -- identifer for the nearest official monitor}
