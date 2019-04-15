@@ -24,8 +24,9 @@
 #' subset <- pat_sample(pat, sampleSize=1000, setSeed=1234)
 #' }
 #' 
-# TODO:Finish implementing weighted values. PM2.5 values should be uniformly 
-#      weighted, and outliers should have a greater weight. 
+# TODO: Finish implementing weighted values. PM2.5 values should be uniformly 
+#       weighted, and outliers should have a greater weight. 
+# TODO: Remove duplicates! Even if the probability is slim
 
 pat_sample <- function(
   pat, 
