@@ -5,12 +5,21 @@
 \title{Compare all variables in a Purple Air Timeseries object}
 \usage{
 pat_scatterplot(pat, parameters = c("datetime", "pm25_A", "pm25_B",
-  "temperature", "humidity"))
+  "temperature", "humidity"), size = 0.5, shape = 15,
+  color = "black", alpha = 0.25)
 }
 \arguments{
 \item{pat}{Purple Air Timeseries \emph{pat} object}
 
 \item{parameters}{vector of parameters to include}
+
+\item{size}{size of points}
+
+\item{shape}{symbol to use for points}
+
+\item{color}{color of points}
+
+\item{alpha}{opacity of points}
 }
 \value{
 Tibble portion of the \emph{pat} object, subset.

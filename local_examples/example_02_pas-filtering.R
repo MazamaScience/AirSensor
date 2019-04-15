@@ -33,15 +33,14 @@ scsb <-
 pas_leaflet(scsb, maptype = "satellite")
 
 # Or use Seal Beach coordinates to find sensors in a rectangle
-sb_north <- 33.78
-sb_south <- 33.75
-sb_west <- -118.10
-sb_east <- -118.07
+n <- 33.78
+s <- 33.75
+w <- -118.10
+e <- -118.07
 
 scsb <-
   ca %>%
-  pas_filter(longitude > sb_west & longitude < sb_east) %>%
-  pas_filter(latitude > sb_south & latitude < sb_north)
+  pas_filterArea(w, e, s, n)
 
 pas_leaflet(scsb)
 

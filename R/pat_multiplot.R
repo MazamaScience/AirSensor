@@ -48,15 +48,15 @@ pat_multiplot <- function(
   a_shape = 15,
   a_color = rgb(0.9, 0.25, 0.2),
   b_size = 1,
-  b_shape = 18,
+  b_shape = 15,
   b_color = rgb(0.2, 0.25, 0.9),
   t_size = 1,
-  t_shape = 18,
+  t_shape = 15,
   t_color = "black",
   h_size = 1,
-  h_shape = 18,
+  h_shape = 15,
   h_color = "black",
-  alpha = 0.25
+  alpha = 0.5
 ) {
   
 
@@ -82,7 +82,7 @@ pat_multiplot <- function(
 
     # Create a tibble
     tbl <- 
-      dplyr::tibble(datetime = pat$data$datetime,
+      dplyr::tibble(datetime = lubridate::with_tz(pat$data$datetime, timezone),
                     pm25_A = pat$data$pm25_A, 
                     pm25_B = pat$data$pm25_B, 
                     humidity = pat$data$humidity, 
@@ -115,17 +115,17 @@ pat_multiplot <- function(
     
     channelAB <- 
       tbl %>% 
-      ggplot2::ggplot(ggplot2::aes(x = .data$datetime, y = .data$pm25_A)) + 
-      ggplot2::geom_point(data = .data$pm25_A,
-                          size = a_size, 
+      ggplot2::ggplot() +
+      ggplot2::geom_point(ggplot2::aes(x = .data$datetime, y = .data$pm25_A),
+                          size = a_size,
                           shape = a_shape,
                           color = a_color,
                           alpha = alpha) +
-      ggplot2::geom_point(data = .data$pm25_B,
-                          size = b_size, 
+      ggplot2::geom_point(ggplot2::aes(x = .data$datetime, y = .data$pm25_B),
+                          size = b_size,
                           shape = b_shape,
                           color = b_color,
-                          alpha = alpha) + 
+                          alpha = alpha) +
       ggplot2::ylim(ylim) +
       ggplot2::ggtitle(expression("Channel A/B PM"[2.5])) + 
       ggplot2::xlab(year) + ggplot2::ylab("\u03bcg / m\u00b3") 

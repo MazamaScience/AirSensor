@@ -62,10 +62,10 @@
     endtime <- enddate %>%
       lubridate::parse_date_time(orders = orders, tz = timezone) %>%
       lubridate::floor_date(unit = "day") + 
-      lubridate::dseconds(daySecs)
+      lubridate::dseconds(daySecs)               # end of day
     starttime <- endtime %>%
-      lubridate::floor_date(unit = "day") - 
-      lubridate::ddays(days)
+      lubridate::floor_date(unit = "day") -      # beginning of day
+      lubridate::ddays(days-1)                   # any extra days
     
   } else if ( !is.null(startdate) && is.null(enddate) ) {
     
@@ -75,8 +75,8 @@
       lubridate::floor_date(unit = "day")
     endtime <-  starttime %>%
       lubridate::floor_date(unit = "day") + 
-      lubridate::dseconds(daySecs) + 
-      lubridate::ddays(days)
+      lubridate::dseconds(daySecs) +             # end of day
+      lubridate::ddays(days-1)                   # any extra days
     
   } else {
     

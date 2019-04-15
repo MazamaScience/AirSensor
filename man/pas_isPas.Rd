@@ -13,6 +13,27 @@ pas_isPas(pas)
 \code{TRUE} if \code{pas} has the correct structure, \code{FALSE} otherwise.
 }
 \description{
-Test for correct structure in a \emph{pas} object
+The \code{pas} is checked for the "pas" class name
+and presence of core metadata columns:
+\itemize{
+  \item{ID -- Purple Air ID}
+  \item{label -- location label}
+  \item{sensorType -- Purple Air sensor type}
+  \item{longitude -- decimal degrees E}
+  \item{latitude -- decimal degrees N}
+  \item{timezone -- Olson timezone}
+  \item{countryCode -- ISO 3166-1 alpha-2}
+  \item{stateCode -- ISO 3166-2 alpha-2}
+  \item{pm25_1hr -- hourly PM2.5}
+  \item{pm25_1day -- daily PM2.5}
+  \item{temperature -- deg F}
+  \item{humidity -- \%}
+  \item{pressure -- mb}
+  \item{pwfsl_closestDistance -- distance in meters from an official monitor}
+  \item{pwfsl_closestMonitorID -- identifer for the nearest official monitor}
+}
+
+The "pwfsl", official, monitors are obtained from the USFS AirFire site 
+using the \pkg{PWFSLSmoke} R package.
 }
 \keyword{pas}

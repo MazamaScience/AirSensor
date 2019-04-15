@@ -5,10 +5,10 @@
 \title{Display multiple plots on one page}
 \usage{
 pat_multiplot(pat = NULL, plottype = "all", plotList = NULL,
-  columns = NULL, a_size = 1, a_shape = 18, a_color = rgb(0.9,
-  0.25, 0.2), b_size = 1, b_shape = 18, b_color = rgb(0.2, 0.25,
-  0.9), t_size = 1, t_shape = 18, t_color = "black", h_size = 1,
-  h_shape = 18, h_color = "black", alpha = 0.2)
+  columns = NULL, a_size = 1, a_shape = 15, a_color = rgb(0.9,
+  0.25, 0.2), b_size = 1, b_shape = 15, b_color = rgb(0.2, 0.25,
+  0.9), t_size = 1, t_shape = 15, t_color = "black", h_size = 1,
+  h_shape = 15, h_color = "black", alpha = 0.5)
 }
 \arguments{
 \item{pat}{Purple Air Timeseries "pat" object from \code{createPATimeseriesObject()}}

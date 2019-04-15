@@ -1,3 +1,9 @@
+# AirSensor 0.2.2
+
+* `pat_multiplot()` time axis now in sensor local time
+* `pat_multiplot()` has a new `pm25_over` plottype
+* much improved `pat_scatterplot()`
+
 # AirSensor 0.2.1
 
 * minor documentation cleanup

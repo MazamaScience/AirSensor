@@ -22,13 +22,21 @@
 #' 
 #' @param pat Purple Air Timeseries \emph{pat} object
 #' @param parameters vector of parameters to include
+#' @param shape symbol to use for points
+#' @param size size of points
+#' @param color color of points
+#' @param alpha opacity of points
 #' 
 #' @return Tibble portion of the \emph{pat} object, subset.
 #' 
 
 pat_scatterplot <- function(
   pat,
-  parameters = c('datetime', 'pm25_A', 'pm25_B', 'temperature', 'humidity')
+  parameters = c('datetime', 'pm25_A', 'pm25_B', 'temperature', 'humidity'),
+  size = 0.5,
+  shape = 15,
+  color = "black",
+  alpha = 0.25
 ) {
   
   # For easier access
@@ -55,10 +63,14 @@ pat_scatterplot <- function(
                      mapping = ggplot2::aes(alpha=0.15),
                      lower = list(
                        continuous = GGally::wrap(
-                         "points", alpha = 0.3, size=0.5, shape=15)),
+                         "points", 
+                         size = size, 
+                         shape = shape,
+                         color = color,
+                         alpha = alpha)),
                      diag = list(
                        continuous = GGally::wrap(
-                         "densityDiag", alpha = 0.5, size=0.5)), 
+                         "densityDiag")), 
                      upper = list(continuous = "cor") ) + 
     ggplot2::theme_bw()
   
