@@ -2,6 +2,7 @@
 #' @export
 #' @title Create Interactive Time Series Plot
 #' @param pat Purple Air Timeseries "pat" object from \code{createPATimeseriesObject()}
+#' @param plottype Quick-reference plot types: "pm25", "humidity", "temperature"
 #' @param title title text
 #' @param xlab optional title for the x axis
 #' @param ylab optional title for the y axis
@@ -21,9 +22,10 @@
 #' }
 
 pat_dygraph <- function(pat,
+                        plottype = NULL,
                         title = NULL,
                         xlab = NULL,
-                        ylab = "PM2.5 Concentration",
+                        ylab = NULL,
                         tlim = NULL,
                         rollPeriod = 1,
                         showLegend = TRUE) {
@@ -52,30 +54,57 @@ pat_dygraph <- function(pat,
   # Access time
   datetime <- pat$data$datetime
   
-  # Create an xts from all data columns except the first which is 'datetime'
-  timeseriesData <- xts::xts(pat$data$pm25_B, datetime, tzone = tzone)
   
-  # Add siteNames
-  # Sanity check for existence of siteName column
-  
-  if ( is.null(pat$meta$label) ) {
-    pat$meta$label <- "N/A"
-  }
-  # Sanity check for existence of names
-  siteNames <- ifelse(is.na(pat$meta$label),
-                      names(pat$data)[-1], pat$meta$label)
-  names(timeseriesData) <- siteNames
+  if ( is.null(title) )( title <- pat$meta$label )
   
   show <- ifelse(showLegend, "always", "never")
   
-  # TODO: Get multiple PurpleAir sensors to plot, possibly by passing a list of
-  #       pat objects. Currently only one can be plotted at a time. 
-  
   # Create dygraph
-  dygraphs::dygraph(timeseriesData, main = title, xlab = xlab, ylab = ylab) %>%
-    dygraphs::dyOptions(useDataTimezone = TRUE) %>% # Always show local time
-    dygraphs::dyLegend(show = show, width = 250, labelsSeparateLines = TRUE) %>%
-    dygraphs::dyRangeSelector(dateWindow = dateWindow) %>%
-    dygraphs::dyRoller(rollPeriod = rollPeriod)
+  # TODO: Use custom options provided by user and custom colors (R&B for pm25)
   
+  makeGraph <- function(timeseriesMatrix) {
+    
+    dygraphs::dygraph(timeseriesMatrix, main = title, xlab = xlab, ylab = ylab) %>%
+      dygraphs::dyOptions(useDataTimezone = TRUE) %>% # Always show local time
+      dygraphs::dyLegend(show = show, width = 250, labelsSeparateLines = TRUE) %>%
+      dygraphs::dyRangeSelector(dateWindow = dateWindow) %>%
+      dygraphs::dyRoller(rollPeriod = rollPeriod)
+    
+  }
+  
+  
+  # Create an xts from all data columns except the first which is 'datetime'
+  if ( is.null(plottype) || plottype == "pm25" ) { 
+    
+    channelA <- xts::xts(x=pat$data$pm25_A, order.by=datetime, tzone = tzone)
+    channelB <- xts::xts(x=pat$data$pm25_B, order.by=datetime, tzone = tzone)
+    timeseriesMatrix <- cbind(channelA, channelB)
+    names(timeseriesMatrix) <- c("Channel A", "Channel B")
+    
+    if ( is.null(ylab) )( ylab <- "\u03bcg / m\u00b3" )
+    
+    makeGraph(timeseriesMatrix)
+    
+  } else if ( plottype == "humidity" ) {
+    
+    humidity <- xts::xts(x=pat$data$humidity, order.by=datetime, tzone = tzone)
+    timeseriesMatrix <- cbind(humidity)
+    names(timeseriesMatrix) <- c(paste0(pat$meta$label, "-Humidity"))
+    
+    if ( is.null(ylab) )( ylab <- "RH%")
+    
+    makeGraph(timeseriesMatrix)
+    
+  } else if ( plottype == "temperature" || plottype == "temp" ) {
+    
+    temperature <- xts::xts(x=pat$data$temperature, order.by=datetime, tzone = tzone)
+    timeseriesMatrix <- cbind(temperature)
+    names(timeseriesMatrix) <- c(paste0(pat$meta$label, "-Temperature"))
+    
+    if ( is.null(ylab) )( ylab <- "\u00b0F")
+    
+    makeGraph(timeseriesMatrix)
+    
+  }
+
 }
