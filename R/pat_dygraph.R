@@ -12,7 +12,7 @@
 #' @param showLegend logical to toggle display of the legend
 #' @param colors string vector of colors to be used for plotting
 #' @description This function creates interactive graphs that will be displayed
-#'   in RStudio's 'Viewer' tab.
+#' in RStudio's 'Viewer' tab.
 #' @return Initiates the interactive dygraph plot in RStudio's 'Viewer' tab.
 #' @examples
 #' \dontrun{
@@ -39,7 +39,7 @@ pat_dygraph <- function(pat,
   
   # Convert tlim to POSIXct
   if ( !is.null(tlim) ) {
-    dateWindow <- parseDatetime(tlim)
+    dateWindow <- PWFSLSmoke::parseDatetime(tlim)
   } else {
     dateWindow <- NULL
   }

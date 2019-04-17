@@ -7,7 +7,7 @@
 #' @param pat Purple Air Timeseries "pat" object
 #' @param sampleSize a non-negative integer giving the number of rows to choose.
 #' @param sampleFraction the fraction of rows to choose.
-#' @param weights a vector of probability weights for obtaining the elements of the
+#' @param weight a vector of probability weights for obtaining the elements of the
 #' vector being sampled.
 #' @param setSeed an integer that sets random numbver generation. Can be used to 
 #' reproduce sampling.
