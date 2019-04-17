@@ -1,3 +1,8 @@
+# AirSensor 0.2.3
+
+* `pat_sample()` included to sample `pat` datasets
+* `pat_dygraphs()` included to plot JavaScript based "dygraphs"
+
 # AirSensor 0.2.2
 
 * `pat_multiplot()` time axis now in sensor local time
