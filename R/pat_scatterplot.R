@@ -33,11 +33,28 @@
 pat_scatterplot <- function(
   pat,
   parameters = c('datetime', 'pm25_A', 'pm25_B', 'temperature', 'humidity'),
+  sampleSize = 1000,
   size = 0.5,
   shape = 15,
   color = "black",
   alpha = 0.25
-) {
+  ) {
+  
+  # ----- Reduce large datasets by sampling ------------------------------------
+  
+  if ( !is.null(sampleSize) ) { 
+    
+    if ( sampleSize > 1 ) {
+      pat <- 
+        pat %>% 
+        pat_sample(sampleSize = sampleSize)
+    } else {
+      pat <- 
+        pat %>% 
+        pat_sample(sampleFrac = sampleSize)
+    }
+    
+  }
   
   # For easier access
   meta <- pat$meta

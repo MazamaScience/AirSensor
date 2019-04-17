@@ -6,6 +6,7 @@
 #' 
 #' @param pat Purple Air Timeseries "pat" object from \code{createPATimeseriesObject()}
 #' @param plottype Quick-reference plot types: "all", "aux", "pm25"
+#' @param sampleSize Either an integer or fraction to determine sample size
 #' @param plotList a list() of any number of ggplot objects to plot on a single pane
 #' @param columns Number of columns in the plot layout. Use \code{NULL} for defaults.
 #' @param a_shape symbol to use for pm25_A points
@@ -42,6 +43,7 @@
 pat_multiplot <- function(
   pat = NULL, 
   plottype = "all", 
+  sampleSize = 1000,
   plotList = NULL,
   columns = NULL,
   a_size = 1,
@@ -57,15 +59,30 @@ pat_multiplot <- function(
   h_shape = 15,
   h_color = "black",
   alpha = 0.5
-) {
+  ) {
   
-
   options(warn = -1)
   
   # ----- Validate parameters --------------------------------------------------
   
   if ( is.null(pat) && is.null(plotList) ) 
     stop("Either 'pat' or 'plotList' must be defined.")
+  
+  # ----- Reduce large datasets by sampling ------------------------------------
+  
+  if ( !is.null(sampleSize) ) { 
+    
+    if ( sampleSize > 1 ) {
+      pat <- 
+        pat %>% 
+        pat_sample(sampleSize = sampleSize)
+    } else {
+      pat <- 
+        pat %>% 
+        pat_sample(sampleFrac = sampleSize)
+    }
+    
+  }
   
   # ----- Create plots ---------------------------------------------------------
   

@@ -3,6 +3,7 @@
 #' @title Create Interactive Time Series Plot
 #' @param pat Purple Air Timeseries "pat" object from \code{createPATimeseriesObject()}
 #' @param plottype Quick-reference plot types: "pm25", "humidity", "temperature"
+#' @param sampleSize Either an integer or fraction to determine sample size
 #' @param title title text
 #' @param xlab optional title for the x axis
 #' @param ylab optional title for the y axis
@@ -24,6 +25,7 @@
 
 pat_dygraph <- function(pat,
                         plottype = NULL,
+                        sampleSize = 1000,
                         title = NULL,
                         xlab = NULL,
                         ylab = NULL,
@@ -35,6 +37,22 @@ pat_dygraph <- function(pat,
   # Sanity check
   if ( is.null(pat) ) {
     stop("Error: must provide pat object")
+  }
+  
+  # ----- Reduce large datasets by sampling ------------------------------------
+  
+  if ( !is.null(sampleSize) ) { 
+    
+    if ( sampleSize > 1 ) {
+      pat <- 
+        pat %>% 
+        pat_sample(sampleSize = sampleSize)
+    } else {
+      pat <- 
+        pat %>% 
+        pat_sample(sampleFrac = sampleSize)
+    }
+    
   }
   
   # Convert tlim to POSIXct
