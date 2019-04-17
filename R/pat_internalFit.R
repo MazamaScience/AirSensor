@@ -28,7 +28,7 @@ pat_internalFit <- function(
   subset = NULL,
   weights = NULL,
   showPlot = TRUE
-) {
+  ) {
   
   # Validate parameters -----------------------------------------------------
   
@@ -53,35 +53,30 @@ pat_internalFit <- function(
   intercept <- as.numeric(model$coefficients[1])
   r_squared <- summary(model)$r.squared
   
-  if ( showPlot ) {
+  # Label for linear fit
+  equationLabel <- 
+    ggplot2::annotate(
+      geom = "text", 
+      x = 150, 
+      y = c(50, 40, 30), 
+      label = c(paste0("Slope = ", round(slope, digits = 2)),
+                paste0("Intercept = ", round(intercept, digits = 1)),
+                paste0("R\U00B2 = ", round(r_squared, digits = 3))) )
+  
+  if ( showPlot ) { 
     
-    # Draw correlation plot between the PurpleAir monitor's A and B channel 
-    # PM 2.5 readings
+    plot <- 
+      pat$data %>% 
+      ggplot2::ggplot(ggplot2::aes(x = .data$pm25_A, y = .data$pm25_B)) + 
+      ggplot2::geom_point(shape = 18, color = "purple", alpha = 1/2) + 
+      ggplot2::geom_smooth(method = "lm", alpha = 1/2) + 
+      ggplot2::labs(title = "Channel A vs. Channel B", 
+                    x = "Channel B PM 2.5 (\U00B5g/m3)", 
+                    y = "Channel A PM 2.5 (\U00B5g/m3)" ) + 
+      ggplot2::theme_bw() + 
+      equationLabel
     
-    par(pty = "s") # to make it square
-    
-    point_color <- rgb(red = 0.7, green = 0.25, blue = 0.7, alpha = 0.5)
-    
-    pm25_max <- max(c(data$pm25_A, data$pm25_B), na.rm = TRUE)
-    
-    plot(data$pm25_A ~ data$pm25_B, las = 1,
-         xlim = c(0, pm25_max), ylim = c(0, pm25_max),
-         pch = 18, cex = 1.75, col = point_color,
-         xlab = "Channel B PM 2.5 (\U00B5g/m3)", ylab = "Channel A PM 2.5 (\U00B5g/m3)")
-    
-    title("Channel A/B Data Consistency")
-    mtext(pat$meta$label, 3, 0)
-    
-    grid(nx = NULL, ny = NULL, col = "gray")
-    
-    abline(model)
-    
-    legend(x = "topleft", cex = 0.8,
-           legend = c(paste0("slope = ", round(slope, digits = 2)),
-                      paste0("intercept = ", round(intercept, digits = 1)),
-                      paste0("R\U00B2 = ", round(r_squared, digits = 3))))
-    
-    par(pty = "m")
+    print(plot)
     
   }
   
