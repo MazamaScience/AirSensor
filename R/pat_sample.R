@@ -24,9 +24,6 @@
 #' subset <- pat_sample(pat, sampleSize=1000, setSeed=1234)
 #' }
 #' 
-# TODO: Finish implementing weighted values. PM2.5 values should be uniformly 
-#       weighted, and outliers should have a greater weight. 
-# TODO: Remove duplicates! Even if the probability is slim
 
 pat_sample <- function(
   pat, 
@@ -43,33 +40,38 @@ pat_sample <- function(
   
   # ----- Detect Outliers ------------------------------------------------------
   
-  outliers <- 
-    pat %>% 
-    pat_outliers(n = 11, thresholdMin = 4, showPlot = FALSE)
+  outlierIndex_A <-
+    pat$data$pm25_A %>%
+    seismicRoll::findOutliers(n = 11, thresholdMin = 4)
+  
+  outlierIndex_B <- 
+    pat$data$pm25_B %>% 
+    seismicRoll::findOutliers(n = 11, thresholdMin = 4)
+  
+  outlierIndex_AB <- 
+    c(outlierIndex_A, outlierIndex_B)
+  
+  outlierData <- pat$data[outlierIndex_AB,]
   
   if ( !is.null(setSeed) )( set.seed(setSeed) )
   
+  # ----- Remove outlier data -> Sample data -> Reinsert outlier data -> Sort
+  
   if ( !is.null(sampleSize) && is.null(sampleFraction) ) {
     
-    sampled_outliers <- 
-      outliers$data %>%
-      dplyr::sample_n(size=sampleSize, replace=FALSE, weight=weight)
-    
     pat$data <- 
-      dplyr::bind_rows(sampled_outliers, pat$data) %>% 
-      arrange(.data$datetime) %>%
-      dplyr::sample_n(size=sampleSize, replace=FALSE, weight=weight)
+      pat$data[-outlierIndex_AB,] %>% 
+      dplyr::sample_n(size=sampleSize, replace=FALSE, weight=weight) %>% 
+      dplyr::bind_rows(outlierData) %>% 
+      dplyr::arrange(.data$datetime)
       
   } else if ( is.null(sampleSize) && !is.null(sampleFraction) ) {
     
-    sampled_outliers <- 
-      outliers$data %>%
-      dplyr::sample_frac(size=sampleFraction, replace=FALSE, weight=weight)
-    
     pat$data <- 
-      dplyr::bind_rows(sampled_outliers, pat$data) %>% 
-      arrange(.data$datetime) %>%
-      dplyr::sample_frac(size=sampleFraction, replace=FALSE, weight=weight)
+      pat$data[-outlierIndex_AB,] %>% 
+      dplyr::sample_frac(size=sampleFraction, replace=FALSE, weight=weight) %>% 
+      dplyr::bind_rows(outlierData) %>% 
+      dplyr::arrange(.data$datetime)
   
   } else {
     
