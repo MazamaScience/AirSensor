@@ -65,7 +65,8 @@ pat_internalFit <- function(
   
   if ( showPlot ) { 
     
-    plot <- 
+    # LH Linear regression plot
+    lm_plot <- 
       pat$data %>% 
       ggplot2::ggplot(ggplot2::aes(x = .data$pm25_A, y = .data$pm25_B)) + 
       ggplot2::geom_point(shape = 18, color = "purple", alpha = 1/2) + 
@@ -75,6 +76,15 @@ pat_internalFit <- function(
                     y = "Channel A PM 2.5 (\U00B5g/m3)" ) + 
       ggplot2::theme_bw() + 
       equationLabel
+    
+    # RH pm25_over plot
+    # TODO: Fix printing on ggmultiplot
+    pm25_plot <- invisible(pat_multiplot(pat = pat, plottype = "pm25_over", 
+                                         sampleSize = NULL) )
+    
+    plot <- pat_multiplot(plotList = list(lm_plot, pm25_plot), 
+                          sampleSize = NULL, 
+                          columns = 2 )
     
     print(plot)
     
