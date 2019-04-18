@@ -50,7 +50,7 @@ pm25_A -- A channel PM2.5 (ug/m3)
 temperature -- temperature (F)
 humidity -- humidity (%)
 uptime -- seconds since last reset
-acd0 -- analog input voltage
+adc0 -- analog input voltage
 rssi -- wifi signal strength (dBm)
 " />
 <meta name="twitter:card" content="summary" />
@@ -83,7 +83,7 @@ rssi -- wifi signal strength (dBm)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4</span>
       </span>
     </div>
 
@@ -155,14 +155,15 @@ the plot.</p>
 <li><p><code>temperature</code> -- temperature (F)</p></li>
 <li><p><code>humidity</code> -- humidity (%)</p></li>
 <li><p><code>uptime</code> -- seconds since last reset</p></li>
-<li><p><code>acd0</code> -- analog input voltage</p></li>
+<li><p><code>adc0</code> -- analog input voltage</p></li>
 <li><p><code>rssi</code> -- wifi signal strength (dBm)</p></li>
 </ul>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pat_scatterplot</span>(<span class='no'>pat</span>, <span class='kw'>parameters</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"datetime"</span>, <span class='st'>"pm25_A"</span>, <span class='st'>"pm25_B"</span>,
-  <span class='st'>"temperature"</span>, <span class='st'>"humidity"</span>))</pre>
+    <pre class="usage"><span class='fu'>pat_scatterplot</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>parameters</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"datetime"</span>, <span class='st'>"pm25_A"</span>,
+  <span class='st'>"pm25_B"</span>, <span class='st'>"temperature"</span>, <span class='st'>"humidity"</span>), <span class='kw'>sampleSize</span> <span class='kw'>=</span> <span class='fl'>5000</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.25</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -174,6 +175,26 @@ the plot.</p>
     <tr>
       <th>parameters</th>
       <td><p>vector of parameters to include</p></td>
+    </tr>
+    <tr>
+      <th>sampleSize</th>
+      <td><p>Either an integer or fraction to determine sample size</p></td>
+    </tr>
+    <tr>
+      <th>size</th>
+      <td><p>size of points</p></td>
+    </tr>
+    <tr>
+      <th>shape</th>
+      <td><p>symbol to use for points</p></td>
+    </tr>
+    <tr>
+      <th>color</th>
+      <td><p>color of points</p></td>
+    </tr>
+    <tr>
+      <th>alpha</th>
+      <td><p>opacity of points</p></td>
     </tr>
     </table>
     

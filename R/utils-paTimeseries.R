@@ -26,11 +26,12 @@
 #' using the \pkg{PWFSLSmoke} R package.
 #' 
 #' @examples
-#' pat_isEmpty(example_pat)
+#' pat_isPat(example_pat)
 #'
-pat_isPat <- function(pat) {
+pat_isPat <- function(pat = NULL) {
   
   # Test a variety of things that could go wrong
+  if ( is.null(pat) ) return(FALSE)
   if ( !"pa_timeseries" %in% class(pat) ) return(FALSE)
   
   if ( !"meta" %in% names(pat) ) return(FALSE)

@@ -50,7 +50,7 @@
 #' \code{seismicRoll::findOutliers()}.
 
 pat_outliers <- function(
-  pat,
+  pat = NULL,
   n = 23,
   thresholdMin = 8,
   replace = FALSE,
@@ -64,6 +64,14 @@ pat_outliers <- function(
   outlier_color = "red",
   outlier_alpha = 1.0
 ) {
+  
+  # ----- Validate parameters --------------------------------------------------
+  
+  if ( !pat_isPat(pat) )
+    stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")
+  
+  if ( pat_isEmpty(pat) )
+    stop("Parameter 'pat' has no data.")
   
   # ----- Prepare separate A/B subsets -----------------------------------------
   
@@ -115,6 +123,7 @@ pat_outliers <- function(
     
     # Use the same y limits for both plots
     ylim <- range(c(A_data$pm25_A, B_data$pm25_B), na.rm = TRUE)
+    ylim[1] <- min(0, ylim[1]) # always zero unless ylim[1] is neg (possible???)
       
     A_outliers <- A_data[A_outlierIndices,] %>%       
       ggplot2::geom_point(mapping = ggplot2::aes(x = .data$datetime, 
@@ -158,7 +167,7 @@ pat_outliers <- function(
       ggplot2::xlab("Date") + ggplot2::ylab("\u03bcg / m\u00b3") + 
       B_outliers
     
-    pat_multiplot(plotList = list(channelA, channelB))
+    pat_multiplot(plotList = list(channelA, channelB)) # No sampling will occur
     
   }
   

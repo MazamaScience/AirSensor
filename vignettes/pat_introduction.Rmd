@@ -16,10 +16,8 @@ library(AirSensor)
 library(dplyr)
 library(ggplot2)
 # NOTE: Use example PAS and PAT data for vignettes to avoid long wait-times
-data("example_pas")
-data("example_pat")
-pas <- example_pas
-pat <- example_pat
+pas <- AirSensor::example_pas
+pat <- AirSensor::example_pat
 ```
 
 _Time series_ data provides a minute-by-minute database structure for transforming 
@@ -40,27 +38,27 @@ access the ThingSpeak channel API we must first load the synoptic database,
 which provides access tokens for each PurpleAir sensor -- accessed by the 
 monitor of interests label. 
 
-```{r, eval = FALSE}
-library(AirSensor)
+```
 library(MazamaCoreUtils)
+library(AirSensor)
 pas <- pas_load()
 pat <- pat_load(pas, "Seattle", startdate = 20180701, enddate = 20180901)
 ```
 
-Notice when passing our synoptic dataframe "`pas`" to `pat_load`, we also supply
+Notice when passing our synoptic dataframe "`pas`" to `pat_load()`, we also supply
 a unique identification label and date-interval. In this case, our 
 monitor-of-interest (MOI) is a sensor named "Seattle" and our dates-of-interest
 (DOI) is 2018-07-01 to 2018-09-01. 
 
-**Note:** You must provide a label to `pat_load` in 
+**Note:** You must provide a label to `pat_load()` in 
 order to supply ThingSpeak with the necessary metadata to access the sensors 
 database. A DOI on the other hand is optional; by default not providing 
-`pat_load` with a start and end date will return exactly 1-week of time series 
+`pat_load()` with a start and end date will return exactly 1-week of time series 
 data.
 
 ### PurpleAir Time Series Data
 Let's begin by exploring the attributes of the dataframe returned by the 
-`pat_load` function. 
+`pat_load()` function. 
 
 ```{r names}
 pat %>%
@@ -75,7 +73,7 @@ The time series `data` contains time-interval PurpleAir sensor readings of
 PM2.5, temperature, humidity, and other pertinent sensor data. 
 
 We'll start by plotting PurpleAir's raw sensor data. We can quickly display the 
-time series data by using `pat_multiplot` and passing in our raw `pat` and desired 
+time series data by using `pat_multiplot()` and passing in our raw `pat` and desired 
 plot type ("`all`" sensor data). 
 
 ```{r allPlot}
@@ -87,7 +85,7 @@ pat %>%
 
 From the overview plot above, we can gain a general picture of what local 
 `"Seattle"` atmospheric conditions are like. To take a closer look at PM2.5, we 
-can pass a more specific parameter into `pat_multiplot`. 
+can pass a more specific parameter into `pat_multiplot()`. 
 
 ```{r pm25Plot}
 pat %>%
@@ -96,7 +94,7 @@ pat %>%
 
 Our `pat` dataframe spans two months. While this provides a great overview of
 PM2.5, it is unwieldy to analyze if we are only interested in anomolous air 
-quality. We can use `pat_filterDate` to subset our `pat` dates. In this case, we'll
+quality. We can use `pat_filterDate()` to subset our `pat` dates. In this case, we'll
 reduce our DOI to 01 August 2018 - 01 September 2018.
 
 ```{r augustPlot}
@@ -122,7 +120,7 @@ pat_august_filtered <-
 
 Now that we have a filtered dataset we can begin looking into smaller datasets.
 14 August 2018 appears to be the initial PM2.5 event. We can view a single day 
-using `pat_filterDate` and `pat_multiplot`. 
+using `pat_filterDate()` and `pat_multiplot()`. 
 
 ```{r}
 august_14 <- 

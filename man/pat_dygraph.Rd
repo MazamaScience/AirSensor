@@ -2,16 +2,18 @@
 % Please edit documentation in R/pat_dygraph.R
 \name{pat_dygraph}
 \alias{pat_dygraph}
-\title{Create Interactive Time Series Plot}
+\title{Interactive time series plot}
 \usage{
-pat_dygraph(pat, plottype = NULL, title = NULL, xlab = NULL,
-  ylab = NULL, tlim = NULL, rollPeriod = 1, showLegend = TRUE,
-  colors = NULL)
+pat_dygraph(pat = NULL, parameter = NULL, sampleSize = 5000,
+  title = NULL, xlab = NULL, ylab = NULL, tlim = NULL,
+  rollPeriod = 1, showLegend = TRUE, colors = NULL)
 }
 \arguments{
 \item{pat}{Purple Air Timeseries "pat" object from \code{createPATimeseriesObject()}}
 
-\item{plottype}{Quick-reference plot types: "pm25", "humidity", "temperature"}
+\item{parameter}{Data to display: "pm25", "humidity", "temperature"}
+
+\item{sampleSize}{Either an integer or fraction to determine sample size}
 
 \item{title}{title text}
 
@@ -34,6 +36,14 @@ Initiates the interactive dygraph plot in RStudio's 'Viewer' tab.
 \description{
 This function creates interactive graphs that will be displayed
 in RStudio's 'Viewer' tab.
+
+The list of available parameters include:
+
+\itemize{
+\item{\code{pm25} -- A and B channel PM2.5 (ug/m3)}
+\item{\code{temperature} -- temperature (F)}
+\item{\code{humidity} -- humidity (\%)}
+}
 }
 \examples{
 \dontrun{

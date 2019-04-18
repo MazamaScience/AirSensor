@@ -17,7 +17,7 @@ pas_leaflet(scaqmd)
 
 # Let's get time series data for a sensor in Nipomo
 
-pat <- pat_load(pas, "pat",
+pat <- pat_load(pas, "SCNP_14",
                 startdate = "2019-03-01",
                 enddate = "2019-04-15")
 

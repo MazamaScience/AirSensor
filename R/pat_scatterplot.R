@@ -16,12 +16,13 @@
 #' \item{\code{temperature} -- temperature (F)}
 #' \item{\code{humidity} -- humidity (\%)}
 #' \item{\code{uptime} -- seconds since last reset}
-#' \item{\code{acd0} -- analog input voltage}
+#' \item{\code{adc0} -- analog input voltage}
 #' \item{\code{rssi} -- wifi signal strength (dBm)}
 #' }
 #' 
 #' @param pat Purple Air Timeseries \emph{pat} object
 #' @param parameters vector of parameters to include
+#' @param sampleSize Either an integer or fraction to determine sample size
 #' @param shape symbol to use for points
 #' @param size size of points
 #' @param color color of points
@@ -31,14 +32,22 @@
 #' 
 
 pat_scatterplot <- function(
-  pat,
+  pat = NULL,
   parameters = c('datetime', 'pm25_A', 'pm25_B', 'temperature', 'humidity'),
-  sampleSize = 1000,
+  sampleSize = 5000,
   size = 0.5,
   shape = 15,
   color = "black",
   alpha = 0.25
-  ) {
+) {
+  
+  # Validate parameters -----------------------------------------------------
+  
+  if ( !pat_isPat(pat) )
+    stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")
+  
+  if ( pat_isEmpty(pat) )
+    stop("Parameter 'pat' has no data.")
   
   # ----- Reduce large datasets by sampling ------------------------------------
   
@@ -47,11 +56,11 @@ pat_scatterplot <- function(
     if ( sampleSize > 1 ) {
       pat <- 
         pat %>% 
-        pat_sample(sampleSize = sampleSize)
+        pat_sample(sampleSize = sampleSize, forGraphics = TRUE)
     } else {
       pat <- 
         pat %>% 
-        pat_sample(sampleFrac = sampleSize)
+        pat_sample(sampleFraction = sampleSize, forGraphics = TRUE)
     }
     
   }

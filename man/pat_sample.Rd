@@ -4,8 +4,8 @@
 \alias{pat_sample}
 \title{Sample PurpleAir time series data}
 \usage{
-pat_sample(pat, sampleSize = NULL, sampleFraction = NULL,
-  weight = NULL, setSeed = NULL)
+pat_sample(pat = NULL, sampleSize = NULL, sampleFraction = NULL,
+  weight = NULL, setSeed = NULL, forGraphics = FALSE)
 }
 \arguments{
 \item{pat}{Purple Air Timeseries "pat" object}
@@ -19,6 +19,10 @@ vector being sampled.}
 
 \item{setSeed}{an integer that sets random numbver generation. Can be used to 
 reproduce sampling.}
+
+\item{forGraphics}{logical specifying a graphics focused sampling algorithm
+(see Details)
+'}
 }
 \value{
 \code{pat} timeseries object - subset.
@@ -26,7 +30,28 @@ reproduce sampling.}
 \description{
 A sampling function that accepts PurpleAir timeseries dataframes
 and reduces them by randomly selecting distinct rows of the users choosen 
-size.
+size. 
+
+If both `sampleSize` and `sampleFraction` are unspecified,
+ `sampleSize = 5000` will be used.
+}
+\details{
+When `forGraphics = FALSE`, random sampling is used to provide a
+statistically relevant subsample of the data.
+
+When `forGraphics = TRUE`, a customized sampling algorithm is used that
+attempts to create subsets for use in plotting that create plots that are
+visually identical to plots using all data. This is accomplished by
+preserving outliers and only sampling data in regions where overplotting
+is expected.
+
+The process is as follows:
+\enumerate{
+\item{find outliers using `seismicRoll::findOutliers()`}
+\item{create a subset consisting of only outliers}
+\item{sample the remaining data}
+\item{merge the outliers and sampled data}
+}
 }
 \examples{
 \dontrun{

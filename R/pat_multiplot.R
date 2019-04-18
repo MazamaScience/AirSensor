@@ -9,17 +9,17 @@
 #' @param sampleSize Either an integer or fraction to determine sample size
 #' @param plotList a list() of any number of ggplot objects to plot on a single pane
 #' @param columns Number of columns in the plot layout. Use \code{NULL} for defaults.
-#' @param a_shape symbol to use for pm25_A points
 #' @param a_size size of pm25_A points
+#' @param a_shape symbol to use for pm25_A points
 #' @param a_color color of pm25_A points
-#' @param b_shape symbol to use for pm25_B points
 #' @param b_size size of pm25_B points
+#' @param b_shape symbol to use for pm25_B points
 #' @param b_color color of pm25_B points
-#' @param t_shape symbol to use for temperature points
 #' @param t_size size of temperature points
+#' @param t_shape symbol to use for temperature points
 #' @param t_color color of temperature points
-#' @param h_shape symbol to use for humidity points
 #' @param h_size size of humidity points
+#' @param h_shape symbol to use for humidity points
 #' @param h_color color of humidity points
 #' @param alpha opacity of points
 #' 
@@ -43,7 +43,7 @@
 pat_multiplot <- function(
   pat = NULL, 
   plottype = "all", 
-  sampleSize = 1000,
+  sampleSize = 5000,
   plotList = NULL,
   columns = NULL,
   a_size = 1,
@@ -68,18 +68,26 @@ pat_multiplot <- function(
   if ( is.null(pat) && is.null(plotList) ) 
     stop("Either 'pat' or 'plotList' must be defined.")
   
+  if ( !is.null(pat) ) {
+    if ( !pat_isPat(pat) )
+      stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")
+    
+    if ( pat_isEmpty(pat) )
+      stop("Parameter 'pat' has no data.")
+  }
+  
   # ----- Reduce large datasets by sampling ------------------------------------
   
-  if ( !is.null(sampleSize) ) { 
+  if ( !is.null(pat) && !is.null(sampleSize) ) { 
     
     if ( sampleSize > 1 ) {
       pat <- 
         pat %>% 
-        pat_sample(sampleSize = sampleSize)
+        pat_sample(sampleSize = sampleSize, forGraphics = TRUE)
     } else {
       pat <- 
         pat %>% 
-        pat_sample(sampleFrac = sampleSize)
+        pat_sample(sampleFraction = sampleSize, forGraphics = TRUE)
     }
     
   }

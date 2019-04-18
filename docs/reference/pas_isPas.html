@@ -39,7 +39,27 @@
 
 <meta property="og:title" content="Test for correct structure in a <em>pas</em> object — pas_isPas" />
 
-<meta property="og:description" content="Test for correct structure in a pas object" />
+<meta property="og:description" content="The pas is checked for the &quot;pas&quot; class name
+and presence of core metadata columns:
+ID -- Purple Air ID
+label -- location label
+sensorType -- Purple Air sensor type
+longitude -- decimal degrees E
+latitude -- decimal degrees N
+timezone -- Olson timezone
+countryCode -- ISO 3166-1 alpha-2
+stateCode -- ISO 3166-2 alpha-2
+pm25_1hr -- hourly PM2.5
+pm25_1day -- daily PM2.5
+temperature -- deg F
+humidity -- %
+pressure -- mb
+pwfsl_closestDistance -- distance in meters from an official monitor
+pwfsl_closestMonitorID -- identifer for the nearest official monitor
+" />
+
+<meta property="og:description" content="The &quot;pwfsl&quot;, official, monitors are obtained from the USFS AirFire site 
+using the PWFSLSmoke R package." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -70,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4</span>
       </span>
     </div>
 
@@ -131,7 +151,27 @@
 
     <div class="ref-description">
     
-    <p>Test for correct structure in a <em>pas</em> object</p>
+    <p>The <code>pas</code> is checked for the "pas" class name
+and presence of core metadata columns:</p><ul>
+<li><p>ID -- Purple Air ID</p></li>
+<li><p>label -- location label</p></li>
+<li><p>sensorType -- Purple Air sensor type</p></li>
+<li><p>longitude -- decimal degrees E</p></li>
+<li><p>latitude -- decimal degrees N</p></li>
+<li><p>timezone -- Olson timezone</p></li>
+<li><p>countryCode -- ISO 3166-1 alpha-2</p></li>
+<li><p>stateCode -- ISO 3166-2 alpha-2</p></li>
+<li><p>pm25_1hr -- hourly PM2.5</p></li>
+<li><p>pm25_1day -- daily PM2.5</p></li>
+<li><p>temperature -- deg F</p></li>
+<li><p>humidity -- %</p></li>
+<li><p>pressure -- mb</p></li>
+<li><p>pwfsl_closestDistance -- distance in meters from an official monitor</p></li>
+<li><p>pwfsl_closestMonitorID -- identifer for the nearest official monitor</p></li>
+</ul>
+
+    <p>The "pwfsl", official, monitors are obtained from the USFS AirFire site 
+using the <span class="pkg">PWFSLSmoke</span> R package.</p>
     
     </div>
 

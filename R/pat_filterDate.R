@@ -34,16 +34,16 @@ pat_filterDate <- function(
   
   # Validate parameters --------------------------------------------------------
   
-  if ( is.null(pat) )
-    stop("Required parameter 'pat' is missing.")
+  if ( !pat_isPat(pat) )
+    stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")
   
-  if ( nrow(pat$data) == 0 )
-    stop("'pat' object has no data")
+  if ( pat_isEmpty(pat) )
+    stop("Parameter 'pat' has no data.")
   
   if ( is.null(startdate) && !is.null(enddate) )
     stop("At least one of 'startdate' or 'enddate' must be specified")
   
-  # Get the start end end times ------------------------------------------------
+  # Get the start and end times ------------------------------------------------
   
   if ( !is.null(days) ) {
     days <- days

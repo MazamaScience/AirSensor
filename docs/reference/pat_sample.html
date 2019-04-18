@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Test for an empty <em>pas</em> object — pas_isEmpty • AirSensor</title>
+<title>Sample PurpleAir time series data — pat_sample • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,10 +37,13 @@
 
 
 
-<meta property="og:title" content="Test for an empty <em>pas</em> object — pas_isEmpty" />
+<meta property="og:title" content="Sample PurpleAir time series data — pat_sample" />
 
-<meta property="og:description" content="Convenience function for nrow(pas) == 0.
-This makes for more readable code in functions that need to test for this." />
+<meta property="og:description" content="A sampling function that accepts PurpleAir timeseries dataframes
+and reduces them by randomly selecting distinct rows of the users choosen 
+size.
+If both `sampleSize` and `sampleFraction` are unspecified,
+ `sampleSize = 5000` will be used." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -125,34 +128,84 @@ This makes for more readable code in functions that need to test for this." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Test for an empty <em>pas</em> object</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/utils-paSynoptic.R'><code>R/utils-paSynoptic.R</code></a></small>
-    <div class="hidden name"><code>pas_isEmpty.Rd</code></div>
+    <h1>Sample PurpleAir time series data</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_sample.R'><code>R/pat_sample.R</code></a></small>
+    <div class="hidden name"><code>pat_sample.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Convenience function for <code>nrow(pas) == 0</code>.
-This makes for more readable code in functions that need to test for this.</p>
+    <p>A sampling function that accepts PurpleAir timeseries dataframes
+and reduces them by randomly selecting distinct rows of the users choosen 
+size.</p>
+<p>If both `sampleSize` and `sampleFraction` are unspecified,
+ `sampleSize = 5000` will be used.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pas_isEmpty</span>(<span class='no'>pas</span>)</pre>
+    <pre class="usage"><span class='fu'>pat_sample</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sampleSize</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sampleFraction</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>weight</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>setSeed</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>forGraphics</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pas</th>
-      <td><p><em>pas</em> object</p></td>
+      <th>pat</th>
+      <td><p>Purple Air Timeseries "pat" object</p></td>
+    </tr>
+    <tr>
+      <th>sampleSize</th>
+      <td><p>a non-negative integer giving the number of rows to choose.</p></td>
+    </tr>
+    <tr>
+      <th>sampleFraction</th>
+      <td><p>the fraction of rows to choose.</p></td>
+    </tr>
+    <tr>
+      <th>weight</th>
+      <td><p>a vector of probability weights for obtaining the elements of the
+vector being sampled.</p></td>
+    </tr>
+    <tr>
+      <th>setSeed</th>
+      <td><p>an integer that sets random numbver generation. Can be used to 
+reproduce sampling.</p></td>
+    </tr>
+    <tr>
+      <th>forGraphics</th>
+      <td><p>logical specifying a graphics focused sampling algorithm
+(see Details)
+'</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>TRUE</code> if no data exist in <code>pas</code>, <code>FALSE</code> otherwise.</p>
+    <p><code>pat</code> timeseries object - subset.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>When `forGraphics = FALSE`, random sampling is used to provide a
+statistically relevant subsample of the data.</p>
+<p>When `forGraphics = TRUE`, a customized sampling algorithm is used that
+attempts to create subsets for use in plotting that create plots that are
+visually identical to plots using all data. This is accomplished by
+preserving outliers and only sampling data in regions where overplotting
+is expected.</p>
+<p>The process is as follows:</p><ol>
+<li><p>find outliers using `seismicRoll::findOutliers()`</p></li>
+<li><p>create a subset consisting of only outliers</p></li>
+<li><p>sample the remaining data</p></li>
+<li><p>merge the outliers and sampled data</p></li>
+</ol>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='no'>pat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pat_load.html'>pat_load</a></span>()
+<span class='no'>subset</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_sample</span>(<span class='no'>pat</span>, <span class='kw'>sampleSize</span><span class='kw'>=</span><span class='fl'>1000</span>, <span class='kw'>setSeed</span><span class='kw'>=</span><span class='fl'>1234</span>)
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -160,7 +213,11 @@ This makes for more readable code in functions that need to test for this.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-          </ul>
+
+      <li><a href="#details">Details</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

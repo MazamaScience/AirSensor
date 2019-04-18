@@ -2,9 +2,11 @@
 % Please edit documentation in R/pat_internalFit.R
 \name{pat_internalFit}
 \alias{pat_internalFit}
-\title{Return a linear model gitting channel A and B}
+\title{Linear model fitting of channel A and B data}
 \usage{
-pat_internalFit(pat, subset = NULL, weights = NULL, showPlot = TRUE)
+pat_internalFit(pat = NULL, subset = NULL, weights = NULL,
+  showPlot = TRUE, size = 1, shape = 15, color = "purple",
+  alpha = 0.25, xylim = NULL)
 }
 \arguments{
 \item{pat}{Purple Air Timeseries "pat" object}
@@ -18,9 +20,21 @@ weighted least squares is used with weights weights (that is, minimizing
 sum(w*e^2)); otherwise ordinary least squares is used.}
 
 \item{showPlot}{logical specifying whether to generate a model fit plot}
+
+\item{size}{size of points}
+
+\item{shape}{symbol to use for points}
+
+\item{color}{color of points}
+
+\item{alpha}{opacity of points}
+
+\item{xylim}{vector of (lo,hi) limits used as limits on the correlation plot 
+axes -- useful for zooming in}
 }
 \value{
-A linear model, fitting the `pat` B channel readings to A channel readings.
+A linear model, fitting the `pat` B channel readings to A channel 
+readings.
 }
 \description{
 Uses a liner model to fit data from channel B to data from 

@@ -21,7 +21,20 @@
 #' unhealthy <- pat_filterData(pat, pm25_A > 55.5, pm25_B > 55.5) 
 #' }
 
-pat_filterData <- function(pat, ...) {
+pat_filterData <- function(
+  pat = NULL, 
+  ...
+) {
+  
+  # ----- Validate parameters --------------------------------------------------
+  
+  if ( !pat_isPat(pat) )
+    stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")
+  
+  if ( pat_isEmpty(pat) )
+    stop("Parameter 'pat' has no data.")
+  
+  # ----- Filter data ----------------------------------------------------------
   
   pat$data <- 
     dplyr::filter(pat$data,...)

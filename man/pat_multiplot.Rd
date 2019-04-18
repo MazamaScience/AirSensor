@@ -4,16 +4,19 @@
 \alias{pat_multiplot}
 \title{Display multiple plots on one page}
 \usage{
-pat_multiplot(pat = NULL, plottype = "all", plotList = NULL,
-  columns = NULL, a_size = 1, a_shape = 15, a_color = rgb(0.9,
-  0.25, 0.2), b_size = 1, b_shape = 15, b_color = rgb(0.2, 0.25,
-  0.9), t_size = 1, t_shape = 15, t_color = "black", h_size = 1,
-  h_shape = 15, h_color = "black", alpha = 0.5)
+pat_multiplot(pat = NULL, plottype = "all", sampleSize = 5000,
+  plotList = NULL, columns = NULL, a_size = 1, a_shape = 15,
+  a_color = rgb(0.9, 0.25, 0.2), b_size = 1, b_shape = 15,
+  b_color = rgb(0.2, 0.25, 0.9), t_size = 1, t_shape = 15,
+  t_color = "black", h_size = 1, h_shape = 15, h_color = "black",
+  alpha = 0.5)
 }
 \arguments{
 \item{pat}{Purple Air Timeseries "pat" object from \code{createPATimeseriesObject()}}
 
 \item{plottype}{Quick-reference plot types: "all", "aux", "pm25"}
+
+\item{sampleSize}{Either an integer or fraction to determine sample size}
 
 \item{plotList}{a list() of any number of ggplot objects to plot on a single pane}
 

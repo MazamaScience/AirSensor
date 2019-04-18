@@ -36,7 +36,7 @@ pat_load <- function(
   
   logger.debug("----- pat_load() -----")
   
-  # Validate parameters --------------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
   
   if ( is.null(pas) )
     stop("Required parameter 'pas' is missing.")
@@ -47,7 +47,7 @@ pat_load <- function(
   if ( !name %in% pas$label )
     stop(paste0("'", name, "' is not found in the 'pas' object"))
   
-  # Determine date sequence ----------------------------------------------------
+  # ----- Determine date sequence ----------------------------------------------
   
   # Only one week of data can be loaded at a time. If over one week has been
   # requested, loop over weeks to download all of it
@@ -64,11 +64,11 @@ pat_load <- function(
   dateSeq <- seq(dateRange[1], dateRange[2], by = lubridate::ddays(7))
   
   # Tack on the final data if needed
-  if (dateRange[2] > utils::tail(dateSeq, 1)){
+  if ( dateRange[2] > utils::tail(dateSeq, 1) ) {
     dateSeq <- c(dateSeq, dateRange[2])
   }
   
-  # Load data from URL ---------------------------------------------------------
+  # ----- Load data from URL ---------------------------------------------------
   
   pat_raw <- downloadParseTimeseriesData(pas,
                                          name,

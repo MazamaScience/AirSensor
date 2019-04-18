@@ -1,3 +1,9 @@
+# AirSensor 0.2.4
+
+* uniform parameter validation in all `pat~` functions
+* improved defaults for `pat_sample()` function
+* minor improvements to `pat~` plot functions
+
 # AirSensor 0.2.3
 
 * `pat_sample()` included to sample `pat` datasets

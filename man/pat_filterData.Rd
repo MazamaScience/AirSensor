@@ -4,7 +4,7 @@
 \alias{pat_filterData}
 \title{General purpose filtering for \emph{pat} objects}
 \usage{
-pat_filterData(pat, ...)
+pat_filterData(pat = NULL, ...)
 }
 \arguments{
 \item{pat}{\emph{pa_timeseries} dataframe}

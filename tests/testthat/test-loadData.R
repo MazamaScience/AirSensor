@@ -7,6 +7,8 @@ test_that("baseUrl Input validation works", {
 })
 
 test_that("pwfsl loads correct class", {
+  skip_on_cran()
+  skip_on_travis()
   expect_true(is(pwfsl_load(), "ws_monitor"))
   expect_true(is(pwfsl_loadLatest(), "ws_monitor"))
 })

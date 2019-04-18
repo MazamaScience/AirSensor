@@ -1,8 +1,10 @@
 #' @keywords pa_timeseries
 #' @export
-#' @title Create Interactive Time Series Plot
+#' 
+#' @title Interactive time series plot
+#' 
 #' @param pat Purple Air Timeseries "pat" object from \code{createPATimeseriesObject()}
-#' @param plottype Quick-reference plot types: "pm25", "humidity", "temperature"
+#' @param parameter Data to display: "pm25", "humidity", "temperature"
 #' @param sampleSize Either an integer or fraction to determine sample size
 #' @param title title text
 #' @param xlab optional title for the x axis
@@ -12,9 +14,20 @@
 #' @param rollPeriod rolling mean to be applied to the data
 #' @param showLegend logical to toggle display of the legend
 #' @param colors string vector of colors to be used for plotting
+#' 
 #' @description This function creates interactive graphs that will be displayed
 #' in RStudio's 'Viewer' tab.
+#' 
+#' The list of available parameters include:
+#' 
+#' \itemize{
+#' \item{\code{pm25} -- A and B channel PM2.5 (ug/m3)}
+##' \item{\code{temperature} -- temperature (F)}
+#' \item{\code{humidity} -- humidity (\%)}
+#' }
+#' 
 #' @return Initiates the interactive dygraph plot in RStudio's 'Viewer' tab.
+#' 
 #' @examples
 #' \dontrun{
 #' pas <- example_pas
@@ -23,21 +36,26 @@
 #' pat_dygraph(pat = subset_nb, xlab = "2018", rollPeriod = 7)
 #' }
 
-pat_dygraph <- function(pat,
-                        plottype = NULL,
-                        sampleSize = 1000,
-                        title = NULL,
-                        xlab = NULL,
-                        ylab = NULL,
-                        tlim = NULL,
-                        rollPeriod = 1,
-                        showLegend = TRUE,
-                        colors = NULL) {
+pat_dygraph <- function(
+  pat = NULL,
+  parameter = NULL,
+  sampleSize = 5000,
+  title = NULL,
+  xlab = NULL,
+  ylab = NULL,
+  tlim = NULL,
+  rollPeriod = 1,
+  showLegend = TRUE,
+  colors = NULL
+) {
   
-  # Sanity check
-  if ( is.null(pat) ) {
-    stop("Error: must provide pat object")
-  }
+  # Validate parameters --------------------------------------------------------
+  
+  if ( !pat_isPat(pat) )
+    stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")
+  
+  if ( pat_isEmpty(pat) )
+    stop("Parameter 'pat' has no data.")
   
   # ----- Reduce large datasets by sampling ------------------------------------
   
@@ -50,7 +68,7 @@ pat_dygraph <- function(pat,
     } else {
       pat <- 
         pat %>% 
-        pat_sample(sampleFrac = sampleSize)
+        pat_sample(sampleFraction = sampleSize)
     }
     
   }
@@ -102,7 +120,7 @@ pat_dygraph <- function(pat,
   
   # Create an xts from all data columns except the first which is 'datetime'
   
-  if ( is.null(plottype) || tolower(plottype) == "pm25" ) { 
+  if ( is.null(parameter) || tolower(parameter) == "pm25" ) { 
     
     channelA <- xts::xts(x = pm25_A, order.by = datetime, tzone = tzone)
     channelB <- xts::xts(x = pm25_B, order.by = datetime, tzone = tzone)
@@ -112,7 +130,7 @@ pat_dygraph <- function(pat,
     if ( is.null(ylab) )( ylab <- "\u03bcg / m\u00b3" )
     if ( is.null(colors) )( colors <- c("red", "blue")  )
     
-  } else if ( tolower(plottype) == "humidity" ) {
+  } else if ( tolower(parameter) == "humidity" ) {
     
     humidityData <- xts::xts(x = humidity, order.by = datetime, tzone = tzone)
     timeseriesMatrix <- cbind(humidityData)
@@ -120,7 +138,7 @@ pat_dygraph <- function(pat,
     
     if ( is.null(ylab) )( ylab <- "RH%")
     
-  } else if ( tolower(plottype) == "temperature" || tolower(plottype) == "temp" ) {
+  } else if ( tolower(parameter) == "temperature" || tolower(parameter) == "temp" ) {
     
     temperatureData <- xts::xts(x = temperature, order.by = datetime, tzone = tzone)
     timeseriesMatrix <- cbind(temperatureData)
@@ -130,7 +148,7 @@ pat_dygraph <- function(pat,
     
   } else {
     
-    stop("Error: invalid plottype parameter")  
+    stop("Required parameter 'parameter' is not recognized")  
     
   }
   

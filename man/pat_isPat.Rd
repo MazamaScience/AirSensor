@@ -4,7 +4,7 @@
 \alias{pat_isPat}
 \title{Test for correct structure in a \emph{pat} object}
 \usage{
-pat_isPat(pat)
+pat_isPat(pat = NULL)
 }
 \arguments{
 \item{pat}{\emph{pat} object}
@@ -32,7 +32,7 @@ The "pwfsl", official, monitors are obtained from the USFS AirFire site
 using the \pkg{PWFSLSmoke} R package.
 }
 \examples{
-pat_isEmpty(example_pat)
+pat_isPat(example_pat)
 
 }
 \keyword{pat}

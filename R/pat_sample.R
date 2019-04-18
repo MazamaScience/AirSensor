@@ -11,12 +11,34 @@
 #' vector being sampled.
 #' @param setSeed an integer that sets random numbver generation. Can be used to 
 #' reproduce sampling.
-
+#' @param forGraphics logical specifying a graphics focused sampling algorithm
+#' (see Details)
+#''
 #' @return \code{pat} timeseries object - subset.
 #' 
 #' @description A sampling function that accepts PurpleAir timeseries dataframes
 #' and reduces them by randomly selecting distinct rows of the users choosen 
 #' size. 
+#' 
+#' If both `sampleSize` and `sampleFraction` are unspecified,
+#'  `sampleSize = 5000` will be used.
+#' 
+#' @details When `forGraphics = FALSE`, random sampling is used to provide a
+#' statistically relevant subsample of the data.
+#' 
+#' When `forGraphics = TRUE`, a customized sampling algorithm is used that
+#' attempts to create subsets for use in plotting that create plots that are
+#' visually identical to plots using all data. This is accomplished by
+#' preserving outliers and only sampling data in regions where overplotting
+#' is expected.
+#' 
+#' The process is as follows:
+#' \enumerate{
+#' \item{find outliers using `seismicRoll::findOutliers()`}
+#' \item{create a subset consisting of only outliers}
+#' \item{sample the remaining data}
+#' \item{merge the outliers and sampled data}
+#' }
 #' 
 #' @examples 
 #' \dontrun{
@@ -26,34 +48,53 @@
 #' 
 
 pat_sample <- function(
-  pat, 
-  sampleSize=NULL, 
-  sampleFraction=NULL, 
-  weight=NULL, 
-  setSeed=NULL
-  ) {
+  pat = NULL,
+  sampleSize = NULL, 
+  sampleFraction = NULL, 
+  weight = NULL, 
+  setSeed = NULL,
+  forGraphics = FALSE
+) {
   
-  # ----- Validate parameters --------------------------------------------------
+  # Validate parameters --------------------------------------------------------
   
-  if ( is.null(pat) ) 
-    stop("'pat' must be defined.")
+  if ( !pat_isPat(pat) )
+    stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")
+  
+  if ( pat_isEmpty(pat) )
+    stop("Parameter 'pat' has no data.")
+  
+  if ( is.null(sampleSize) && is.null(sampleFraction) )
+    sampleSize <- 5000
+  
+  if ( sampleSize > nrow(pat$data) ) 
+    return(pat)
   
   # ----- Detect Outliers ------------------------------------------------------
-  
-  outlierIndex_A <-
-    pat$data$pm25_A %>%
-    seismicRoll::findOutliers(n = 11, thresholdMin = 4)
-  
-  outlierIndex_B <- 
-    pat$data$pm25_B %>% 
-    seismicRoll::findOutliers(n = 11, thresholdMin = 4)
-  
-  outlierIndex_AB <- 
-    c(outlierIndex_A, outlierIndex_B)
+
+  if ( forGraphics == TRUE ) {
+    
+    outlierIndex_A <-
+      pat$data$pm25_A %>%
+      seismicRoll::findOutliers(n = 11, thresholdMin = 4)
+    
+    outlierIndex_B <- 
+      pat$data$pm25_B %>% 
+      seismicRoll::findOutliers(n = 11, thresholdMin = 4)
+    
+    outlierIndex_AB <- 
+      c(outlierIndex_A, outlierIndex_B)
+    
+  } else { # forGraphics == FALSE
+    
+    # Cheap hack to avoid rewriting too much code
+    outlierIndex_AB <- 1
+    
+  }
   
   outlierData <- pat$data[outlierIndex_AB,]
   
-  if ( !is.null(setSeed) )( set.seed(setSeed) )
+  if ( !is.null(setSeed) ) set.seed(setSeed)
   
   # ----- Remove outlier data -> Sample data -> Reinsert outlier data -> Sort
   

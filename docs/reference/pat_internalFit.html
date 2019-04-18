@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Return a linear model gitting channel A and B — pat_internalFit • AirSensor</title>
+<title>Linear model fitting of channel A and B data — pat_internalFit • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,7 +37,7 @@
 
 
 
-<meta property="og:title" content="Return a linear model gitting channel A and B — pat_internalFit" />
+<meta property="og:title" content="Linear model fitting of channel A and B data — pat_internalFit" />
 
 <meta property="og:description" content="Uses a liner model to fit data from channel B to data from 
 channel A.
@@ -72,7 +72,7 @@ A diagnostic plot is produced if `showPlot = TRUE`." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4</span>
       </span>
     </div>
 
@@ -126,7 +126,7 @@ A diagnostic plot is produced if `showPlot = TRUE`." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Return a linear model gitting channel A and B</h1>
+    <h1>Linear model fitting of channel A and B data</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_internalFit.R'><code>R/pat_internalFit.R</code></a></small>
     <div class="hidden name"><code>pat_internalFit.Rd</code></div>
     </div>
@@ -139,7 +139,9 @@ channel A.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pat_internalFit</span>(<span class='no'>pat</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>showPlot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>pat_internalFit</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>showPlot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"purple"</span>,
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>xylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -164,11 +166,33 @@ sum(w*e^2)); otherwise ordinary least squares is used.</p></td>
       <th>showPlot</th>
       <td><p>logical specifying whether to generate a model fit plot</p></td>
     </tr>
+    <tr>
+      <th>size</th>
+      <td><p>size of points</p></td>
+    </tr>
+    <tr>
+      <th>shape</th>
+      <td><p>symbol to use for points</p></td>
+    </tr>
+    <tr>
+      <th>color</th>
+      <td><p>color of points</p></td>
+    </tr>
+    <tr>
+      <th>alpha</th>
+      <td><p>opacity of points</p></td>
+    </tr>
+    <tr>
+      <th>xylim</th>
+      <td><p>vector of (lo,hi) limits used as limits on the correlation plot 
+axes -- useful for zooming in</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A linear model, fitting the `pat` B channel readings to A channel readings.</p>
+    <p>A linear model, fitting the `pat` B channel readings to A channel 
+readings.</p>
     
 
   </div>
