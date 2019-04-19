@@ -1,12 +1,8 @@
 ---
 title: "An Introduction to PurpleAir Synoptic Data"
 author: "Mazama Science"
-date: "`r Sys.Date()`"
+date: "2019-04-19"
 output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Maps and Timeseries Plots}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE, message=FALSE}

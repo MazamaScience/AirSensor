@@ -1,16 +1,12 @@
 ---
 title: "An Introduction to PurpleAir Time Series Data"
 author: "Mazama Science"
-date: "`r Sys.Date()`"
+date: "2019-04-19"
 output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Maps and Time series Plots}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE, message=FALSE}
-knitr::opts_chunk$set(fig.width=8, fig.height=6)
+knitr::opts_chunk$set(fig.width=7, fig.height=5)
 library(MazamaCoreUtils)
 library(AirSensor)
 library(dplyr)
