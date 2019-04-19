@@ -4,36 +4,24 @@
 #' @title Time averages for PrupleAir time series
 #' 
 #' @param pat Purple Air Timeseries "pat" object from \code{createPATimeseriesObject()}
-#' @param parameter Data to display: "pm25", "humidity", "temperature"
-#' @param sampleSize Either an integer or fraction to determine sample size
-#' @param title title text
-#' @param xlab optional title for the x axis
-#' @param ylab optional title for the y axis
-#' @param tlim optional vector with start and end times (integer or character
-#'   representing YYYYMMDD[HH])
-#' @param rollPeriod rolling mean to be applied to the data
-#' @param showLegend logical to toggle display of the legend
-#' @param colors string vector of colors to be used for plotting
-#' 
+#' @param param Data to display: "pm25", "humidity", "temperature"
+#' @param avg.time The time period to average to. Can be "sec", "min", "hour", 
+#' "day", "DSTday", "week", "month", "quarter" or "year". For much increased 
+#' flexibility a number can precede these options followed by a space (i.e. "2 days")
+#' @param stat The statistic to apply when aggregating the data; default is the 
+#' mean. Can be one of "mean", "max", "min", "median", "frequency", "sd", "percentile".
+#' @param show.plot Boolean option to show time averaged plot
+#' @param plot.type The type of plot to display. Can be "point", "boxplot", "ribbon".
+#' @param ... optional ggplot2 parameters for plotting, such as color, size, shape, etc.
+#'   
 #' @description Function to flexibly aggregate or expand data frames by different
-##' time periods, calculating vector-averaged ---
-#' 
-#' The list of available parameters include:
-#' 
-#' \itemize{
-#' \item{\code{pm25} -- A and B channel PM2.5 (ug/m3)}
-##' \item{\code{temperature} -- temperature (F)}
-#' \item{\code{humidity} -- humidity (\%)}
-#' }
+#' time periods, calculating vector-averages for a PurpleAir time series object. 
 #' 
 #' @return Something
 #' 
 #' @examples
 #' \dontrun{
-#' pas <- example_pas
-#' nb <- pat_load(pas, "North Bend Weather", startdate = 20180801, enddate = 20180901)
-#' subset_nb <- pat_sample(pat=nb, sampleSize = 1000, setSeed = 1)
-#' pat_dygraph(pat = subset_nb, xlab = "2018", rollPeriod = 7)
+#' 
 #' }
 
 pat_timeAverage <- function(
@@ -92,7 +80,7 @@ pat_timeAverage <- function(
     
     } else if ( tolower(plot.type) == "boxplot" ) {
     
-      print("no")
+      print(plot + ggplot2::geom_boxplot())
     
     }
     
@@ -122,7 +110,7 @@ pat_timeAverage <- function(
       timeAverage(pm25, stat = stat, avg.time = avg.time)
     
     if ( show.plot ) 
-      plot_timeAverage(avg_pm25, plot.type = "point", ylab = "PM2.5", ...)
+      plot_timeAverage(avg_pm25, plot.type = plot.type, ylab = "PM2.5", ...)
     
     return(avg_pm25)
     
@@ -137,6 +125,9 @@ pat_timeAverage <- function(
     avg_temp <- 
       timeAverage(temperature, stat = stat, avg.time = avg.time)
     
+    if ( show.plot ) 
+      plot_timeAverage(avg_temp, plot.type = plot.type, ylab = "Temperature", ...)
+    
     return(avg_temp)
   
   } else if ( tolower(param) == "humidity" ) { 
@@ -150,7 +141,8 @@ pat_timeAverage <- function(
     avg_humidity <- 
       timeAverage(humidity, stat = stat, avg.time = avg.time)
     
-    if ( show.plot ) ( plot_timeAverage(avg_humidity) )
+    if ( show.plot ) 
+      plot_timeAverage(avg_humidity, plot.type = plot.type, ylab = "Humidity", ...)
     
     return(avg_humidity)
     
