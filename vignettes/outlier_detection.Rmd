@@ -1,8 +1,12 @@
 ---
-title: "Outlier Detection with Hampel Filters"
+title: "Outlier Detection with the Hampel Filter"
 author: Mazama Science
 date: "2019-04-19"
 output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Outlier Detection with the Hampel Filter}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE, message=FALSE}

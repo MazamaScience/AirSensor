@@ -77,8 +77,8 @@ pat_internalFit <- function(
   equationLabel <- 
     ggplot2::annotate(
       geom = "text", 
-      x = 0.75 * dataMax,
-      y = c(0.4, 0.3, 0.2) * dataMax, 
+      x = 0.75 * xylim[2],
+      y = c(0.4, 0.3, 0.2) * xylim[2], 
       label = c(paste0("Slope = ", round(slope, digits = 2)),
                 paste0("Intercept = ", round(intercept, digits = 1)),
                 paste0("R\U00B2 = ", round(r_squared, digits = 3))) )
