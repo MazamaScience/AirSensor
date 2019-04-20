@@ -3,35 +3,45 @@
 #' @importFrom rlang .data
 #' @title Time averages for PrupleAir time series
 #' 
-#' @param pat Purple Air Timeseries "pat" object from \code{createPATimeseriesObject()}
-#' @param param Data to display: "pm25", "humidity", "temperature"
-#' @param avg.time The time period to average to. Can be "sec", "min", "hour", 
-#' "day", "DSTday", "week", "month", "quarter" or "year". For much increased 
-#' flexibility a number can precede these options followed by a space (i.e. "2 days")
-#' @param statistic The statistic to apply when aggregating the data; default is the 
-#' mean. Can be one of "mean", "max", "min", "median", "frequency", "sd", "percentile".
-#' @param showPlot Boolean option to show time averaged plot
-#' @param plottype The type of plot to display. Can be "point", "boxplot", "ribbon".
-#' @param ... optional ggplot2 parameters for plotting, such as color, size, shape, etc.
-#'   
-#' @description Function to flexibly aggregate or expand data frames by different
-#' time periods, calculating vector-averages for a PurpleAir time series object. 
+#' @param pat PurpleAir Timeseries "pat" object from \code{pat_load()}
+#' @param parameter Data to display: "pm25", "humidity", "temperature"
+#' @param period The time period to average to. Can be "sec", "min", "hour", 
+#' "day", "DSTday", "week", "month", "quarter" or "year". A number can also
+#'  precede these options followed by a space (i.e. "2 days" or "37 min").
+#' @param stats The statistic to apply when aggregating the data; default is the 
+#' mean. Can be one of "mean", "max", "min", "median", "frequency", 
+#' "sd", "percentile".
+#' @param dataThreshold A % of the data capture threshold. A value of 0 means 
+#' that all data will be used in a particular period regardless of the number of
+#' values avaliable. Conversely, a value of 100 means that all data will need to 
+#' be present to proceed, else it is recorded as NA. 
+#' @param fill When time series are expanded data are ‘padded out’ with NA. To 
+#' ‘pad-out’ the additional data with the first row in each original time 
+#' interval, choose fill = TRUE.
 #' 
-#' @return Something
+#' @description Function to flexibly aggregate or expand data frames by 
+#' different time periods, calculating vector-averages for a PurpleAir time 
+#' series object. \code{pat_timeAverage()} should be useful in many 
+#' circumstances where it is necessary to work with different time average data. 
+#' 
+#' @return Returns a dataframe with a date in class POSIXct.
 #' 
 #' @examples
 #' \dontrun{
-#' 
+#' pat_timeAverage(pat, "pm25_A", "1 hour")
+#' }
+#' \dontrun{
+#' pat %>%
+#'   pat_timeAverage("humidity", "12 hour", stats = "max")
 #' }
 
 pat_timeAverage <- function(
   pat = NULL, 
-  parameter = NULL,
-  avg.time = NULL, 
-  statistic = NULL, 
-  showPlot = TRUE, 
-  plottype = NULL, 
-  ...
+  parameter = "pm25_A",
+  period = "10 min", 
+  stats = "mean", 
+  dataThreshold = 0,
+  fill = FALSE
 ) { 
   
   # ----- Validate parameters --------------------------------------------------
@@ -40,112 +50,78 @@ pat_timeAverage <- function(
     stop("parameter 'pat' is not a valid 'pa_timeseries' object.")
   
   if ( pat_isEmpty(pat) )
-    stop("parameter 'pat' has no data.")
+    stop("parameter 'pat' has no data.") 
   
-  # ----- Time Average Fucntion ------------------------------------------------
+  # ----- Check case -----------------------------------------------------------
   
-  timeAverage <- function(df, avg.time, statistic) { 
-    
-    foo <- 
-      df %>% 
+  tolower(parameter) -> parameter
+  tolower(period) -> period
+  tolower(stats) -> stats
+ 
+  # ----- Wrapped Time Average Function ----------------------------------------
+   
+  timeAverage <- function(df, period, dataThreshold, stats, fill) {
+    avg <- 
+      df %>%
       openair::timeAverage(
-         avg.time = avg.time, 
-         data.thresh = 0,
-         statistic = statistic, 
-         type = "default", 
-         percentile = NA,
-         start.date = NA, 
-         end.date = NA, 
-         interval = NA, 
-         vector.ws = FALSE,
-         fill = FALSE
+        avg.time = period, 
+        data.thresh = dataThreshold, 
+        statistic = stats, 
+        fill = fill ) 
+    return(avg)
+      
+  }
+  
+  # ----- Handle Channels A,B seperately, otherwise -> generic function --------
+  
+  if ( parameter == "pm25_a"  ) {
+    
+    pm25_A <-
+      pat$data %>%
+      select(.data$datetime_A, .data$pm25_A) %>%
+      rename(date = .data$datetime_A, pm25 = .data$pm25_A) %>%
+      filter(!is.na(.data$pm25)) %>%
+      timeAverage(
+        period = period, 
+        stats = stats, 
+        fill = fill, 
+        dataThreshold = dataThreshold
         )
     
-    return(foo)
-    
-  }
+    return(pm25_A)
   
-  # ----- Plot function --------------------------------------------------------
-  
-  plot_timeAverage <- function(avg_, plottype = NULL, title = NULL, ylab = NULL, ...) { 
+  } else if ( parameter == "pm25_b" ) {
     
-    plot <- 
-      avg_ %>% 
-      ggplot2::ggplot(ggplot2::aes(x = .data$date, y = avg_[[2]])) + 
-      ggplot2::labs(title = title, x = "Date", y = ylab) 
+    pm25_B <-
+      pat$data %>%
+      select(.data$datetime_B, .data$pm25_B) %>%
+      rename(date = .data$datetime_B, pm25 = .data$pm25_B) %>%
+      filter(!is.na(.data$pm25)) %>% 
+      timeAverage(
+        period = period, 
+        stats = stats, 
+        fill = fill, 
+        dataThreshold = dataThreshold
+        ) 
     
-    if ( tolower(plottype) == "point" ) {
+    return(pm25_B)
+    
+  } else { 
+    
+    df <- 
+      pat$data %>% 
+      select(.data$datetime, .data[[parameter]]) %>% 
+      rename(date = .data$datetime) %>% 
+      filter(!is.na(parameter)) %>%
+      timeAverage(
+        period = period, 
+        stats = stats, 
+        fill = fill, 
+        dataThreshold = dataThreshold
+      ) 
+    
+    return(df)
       
-      print(plot + ggplot2::geom_point(...))
-    
-    } else if ( tolower(plottype) == "boxplot" ) {
-    
-      print(plot + ggplot2::geom_boxplot())
-    
-    }
-    
-  }
-  
-  # ----- Prepare Data ---------------------------------------------------------
-  
-  if ( tolower(parameter) == "pm25" ) {
-    
-    pm25_A <- 
-      pat$data %>%       
-      select(datetime_A, pm25_A) %>% 
-      rename(date = datetime_A, pm25 = pm25_A) %>% 
-      filter(!is.na(pm25))
-    
-    pm25_B <- 
-      pat$data %>% 
-      select(datetime_B, pm25_B) %>% 
-      rename(date = datetime_B, pm25 = pm25_B) %>% 
-      filter(!is.na(pm25))
-    
-    pm25 <- 
-      bind_rows(pm25_A, pm25_B) %>% 
-      arrange(date)
-    
-    avg_pm25 <- 
-      timeAverage(pm25, statistic = statistic, avg.time = avg.time)
-    
-    if ( showPlot ) 
-      plot_timeAverage(avg_pm25, plottype = plottype, ylab = "PM2.5", ...)
-    
-    return(avg_pm25)
-    
-  } else if ( tolower(parameter) == "temperature" || tolower(parameter) == "temp") {
-     
-    temperature <- 
-      pat$data %>% 
-      select(datetime, temperature) %>% 
-      rename(date = datetime) %>%
-      filter(!is.na(temperature))
-    
-    avg_temp <- 
-      timeAverage(temperature, statistic = statistic, avg.time = avg.time)
-    
-    if ( showPlot ) 
-      plot_timeAverage(avg_temp, plottype = plottype, ylab = "Temperature", ...)
-    
-    return(avg_temp)
-  
-  } else if ( tolower(parameter) == "humidity" ) { 
-    
-    humidity <- 
-      pat$data %>% 
-      select(datetime, humidity) %>% 
-      rename(date = datetime) %>%
-      filter(!is.na(humidity))
-    
-    avg_humidity <- 
-      timeAverage(humidity, statistic = statistic, avg.time = avg.time)
-    
-    if ( showPlot ) 
-      plot_timeAverage(avg_humidity, plottype = plottype, ylab = "Humidity", ...)
-    
-    return(avg_humidity)
-    
   }
 
 }
