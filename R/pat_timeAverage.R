@@ -4,10 +4,11 @@
 #' @title Time averages for PrupleAir time series
 #' 
 #' @param pat PurpleAir Timeseries "pat" object from \code{pat_load()}
-#' @param parameter Data to display: "pm25", "humidity", "temperature"
+#' @param parameter The variable of timeseries data to aggergate, such as
+#' "pm25_B", "temperature", etc.
 #' @param period The time period to average to. Can be "sec", "min", "hour", 
 #' "day", "DSTday", "week", "month", "quarter" or "year". A number can also
-#'  precede these options followed by a space (i.e. "2 days" or "37 min").
+#'  precede these options followed by a space (i.e. "2 day" or "37 min").
 #' @param stats The statistic to apply when aggregating the data; default is the 
 #' mean. Can be one of "mean", "max", "min", "median", "frequency", 
 #' "sd", "percentile".
@@ -20,19 +21,22 @@
 #' interval, choose fill = TRUE.
 #' 
 #' @description Function to flexibly aggregate or expand data frames by 
-#' different time periods, calculating vector-averages for a PurpleAir time 
-#' series object. \code{pat_timeAverage()} should be useful in many 
+#' different time periods and calculating vector-averages for a PurpleAir time 
+#' series object. This function should be useful in many 
 #' circumstances where it is necessary to work with different time average data. 
 #' 
 #' @return Returns a dataframe with a date in class POSIXct.
 #' 
 #' @examples
 #' \dontrun{
+#' # Hourly average of Channel A PM2.5 density measurement
 #' pat_timeAverage(pat, "pm25_A", "1 hour")
 #' }
+#' 
 #' \dontrun{
+#' # Maximum weekly temperature
 #' pat %>%
-#'   pat_timeAverage("humidity", "12 hour", stats = "max")
+#'   pat_timeAverage("temperature", "1 week", stats = "max")
 #' }
 
 pat_timeAverage <- function(
