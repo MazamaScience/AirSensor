@@ -8,10 +8,10 @@
 #' @param avg.time The time period to average to. Can be "sec", "min", "hour", 
 #' "day", "DSTday", "week", "month", "quarter" or "year". For much increased 
 #' flexibility a number can precede these options followed by a space (i.e. "2 days")
-#' @param stat The statistic to apply when aggregating the data; default is the 
+#' @param statistic The statistic to apply when aggregating the data; default is the 
 #' mean. Can be one of "mean", "max", "min", "median", "frequency", "sd", "percentile".
-#' @param show.plot Boolean option to show time averaged plot
-#' @param plot.type The type of plot to display. Can be "point", "boxplot", "ribbon".
+#' @param showPlot Boolean option to show time averaged plot
+#' @param plottype The type of plot to display. Can be "point", "boxplot", "ribbon".
 #' @param ... optional ggplot2 parameters for plotting, such as color, size, shape, etc.
 #'   
 #' @description Function to flexibly aggregate or expand data frames by different
@@ -26,21 +26,21 @@
 
 pat_timeAverage <- function(
   pat = NULL, 
-  param = NULL,
+  parameter = NULL,
   avg.time = NULL, 
-  stat = NULL, 
-  show.plot = TRUE, 
-  plot.type = NULL, 
+  statistic = NULL, 
+  showPlot = TRUE, 
+  plottype = NULL, 
   ...
 ) { 
   
   # ----- Validate parameters --------------------------------------------------
   
   if ( !pat_isPat(pat) )
-    stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")
+    stop("parameter 'pat' is not a valid 'pa_timeseries' object.")
   
   if ( pat_isEmpty(pat) )
-    stop("Parameter 'pat' has no data.")
+    stop("parameter 'pat' has no data.")
   
   # ----- Time Average Fucntion ------------------------------------------------
   
@@ -51,7 +51,7 @@ pat_timeAverage <- function(
       openair::timeAverage(
          avg.time = avg.time, 
          data.thresh = 0,
-         statistic = stat, 
+         statistic = statistic, 
          type = "default", 
          percentile = NA,
          start.date = NA, 
@@ -67,18 +67,18 @@ pat_timeAverage <- function(
   
   # ----- Plot function --------------------------------------------------------
   
-  plot_timeAverage <- function(avg_, plot.type = NULL, title = NULL, ylab = NULL, ...) { 
+  plot_timeAverage <- function(avg_, plottype = NULL, title = NULL, ylab = NULL, ...) { 
     
     plot <- 
       avg_ %>% 
       ggplot2::ggplot(ggplot2::aes(x = .data$date, y = avg_[[2]])) + 
       ggplot2::labs(title = title, x = "Date", y = ylab) 
     
-    if ( tolower(plot.type) == "point" ) {
+    if ( tolower(plottype) == "point" ) {
       
       print(plot + ggplot2::geom_point(...))
     
-    } else if ( tolower(plot.type) == "boxplot" ) {
+    } else if ( tolower(plottype) == "boxplot" ) {
     
       print(plot + ggplot2::geom_boxplot())
     
@@ -88,7 +88,7 @@ pat_timeAverage <- function(
   
   # ----- Prepare Data ---------------------------------------------------------
   
-  if ( tolower(param) == "pm25" ) {
+  if ( tolower(parameter) == "pm25" ) {
     
     pm25_A <- 
       pat$data %>%       
@@ -107,14 +107,14 @@ pat_timeAverage <- function(
       arrange(date)
     
     avg_pm25 <- 
-      timeAverage(pm25, stat = stat, avg.time = avg.time)
+      timeAverage(pm25, statistic = statistic, avg.time = avg.time)
     
-    if ( show.plot ) 
-      plot_timeAverage(avg_pm25, plot.type = plot.type, ylab = "PM2.5", ...)
+    if ( showPlot ) 
+      plot_timeAverage(avg_pm25, plottype = plottype, ylab = "PM2.5", ...)
     
     return(avg_pm25)
     
-  } else if ( tolower(param) == "temperature" || tolower(param) == "temp") {
+  } else if ( tolower(parameter) == "temperature" || tolower(parameter) == "temp") {
      
     temperature <- 
       pat$data %>% 
@@ -123,14 +123,14 @@ pat_timeAverage <- function(
       filter(!is.na(temperature))
     
     avg_temp <- 
-      timeAverage(temperature, stat = stat, avg.time = avg.time)
+      timeAverage(temperature, statistic = statistic, avg.time = avg.time)
     
-    if ( show.plot ) 
-      plot_timeAverage(avg_temp, plot.type = plot.type, ylab = "Temperature", ...)
+    if ( showPlot ) 
+      plot_timeAverage(avg_temp, plottype = plottype, ylab = "Temperature", ...)
     
     return(avg_temp)
   
-  } else if ( tolower(param) == "humidity" ) { 
+  } else if ( tolower(parameter) == "humidity" ) { 
     
     humidity <- 
       pat$data %>% 
@@ -139,10 +139,10 @@ pat_timeAverage <- function(
       filter(!is.na(humidity))
     
     avg_humidity <- 
-      timeAverage(humidity, stat = stat, avg.time = avg.time)
+      timeAverage(humidity, statistic = statistic, avg.time = avg.time)
     
-    if ( show.plot ) 
-      plot_timeAverage(avg_humidity, plot.type = plot.type, ylab = "Humidity", ...)
+    if ( showPlot ) 
+      plot_timeAverage(avg_humidity, plottype = plottype, ylab = "Humidity", ...)
     
     return(avg_humidity)
     
