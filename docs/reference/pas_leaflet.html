@@ -41,7 +41,7 @@
 
 <meta property="og:description" content="This function creates interactive maps that will be displayed in 
 RStudio's 'Viewer' tab.
-Typical usage would be to use the param argument to display pm25 
+Typical usage would be to use the parameter argument to display pm25 
 values from one of:
 &quot;pm25_current&quot;
 &quot;pm25_10min&quot;
@@ -52,8 +52,8 @@ values from one of:
 &quot;pm25_1week&quot;
 " />
 
-<meta property="og:description" content="Auxillary param arguments can be usd to display various Purple Air 
-sensor data. Currently supported param arguments include:
+<meta property="og:description" content="Auxillary parameter arguments can be usd to display various Purple Air 
+sensor data. Currently supported parameter arguments include:
 &quot;humidity&quot;
 &quot;pressure&quot;
 &quot;temperature&quot;
@@ -89,7 +89,7 @@ sensor data. Currently supported param arguments include:
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
       </span>
     </div>
 
@@ -155,7 +155,7 @@ sensor data. Currently supported param arguments include:
     
     <p>This function creates interactive maps that will be displayed in 
 RStudio's 'Viewer' tab.</p>
-<p>Typical usage would be to use the <code>param</code> argument to display pm25 
+<p>Typical usage would be to use the <code>parameter</code> argument to display pm25 
 values from one of:</p><ul>
 <li><p>"pm25_current"</p></li>
 <li><p>"pm25_10min"</p></li>
@@ -166,8 +166,8 @@ values from one of:</p><ul>
 <li><p>"pm25_1week"</p></li>
 </ul>
 
-    <p>Auxillary <code>param</code> arguments can be usd to display various Purple Air 
-sensor data. Currently supported <code>param</code> arguments include:</p><ul>
+    <p>Auxillary <code>parameter</code> arguments can be usd to display various Purple Air 
+sensor data. Currently supported <code>parameter</code> arguments include:</p><ul>
 <li><p>"humidity"</p></li>
 <li><p>"pressure"</p></li>
 <li><p>"temperature"</p></li>
@@ -176,7 +176,7 @@ sensor data. Currently supported <code>param</code> arguments include:</p><ul>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pas_leaflet</span>(<span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>param</span> <span class='kw'>=</span> <span class='st'>"pm25_1hr"</span>, <span class='kw'>radius</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+    <pre class="usage"><span class='fu'>pas_leaflet</span>(<span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>"pm25_1hr"</span>, <span class='kw'>radius</span> <span class='kw'>=</span> <span class='fl'>10</span>,
   <span class='kw'>opacity</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='kw'>maptype</span> <span class='kw'>=</span> <span class='st'>"terrain"</span>, <span class='kw'>outsideOnly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -187,7 +187,7 @@ sensor data. Currently supported <code>param</code> arguments include:</p><ul>
       <td><p>Enhanced dataframe of PurpleAir synoptic data.</p></td>
     </tr>
     <tr>
-      <th>param</th>
+      <th>parameter</th>
       <td><p>Value to plot -- defautls to <code><a href='https://www.rdocumentation.org/packages/base/topics/get'>get('pm25_1hr')</a></code>.</p></td>
     </tr>
     <tr>
@@ -234,7 +234,7 @@ underlying map tile if available. See
 <span class='fu'><a href='initializeMazamaSpatialUtils.html'>initializeMazamaSpatialUtils</a></span>()
 <span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pas_load.html'>pas_load</a></span>()
 <span class='no'>mvcaa</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter</a></span>(<span class='no'>pas</span>, <span class='kw pkg'>stringr</span><span class='kw ns'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_detect.html'>str_detect</a></span>(<span class='no'>pas</span>$<span class='no'>label</span>, <span class='st'>'^MV Clean Air'</span>))
-<span class='fu'>pas_leaflet</span>(<span class='no'>mvcaa</span>, <span class='kw'>param</span><span class='kw'>=</span><span class='st'>"pm25_1hr"</span>)
+<span class='fu'>pas_leaflet</span>(<span class='no'>mvcaa</span>, <span class='kw'>parameter</span><span class='kw'>=</span><span class='st'>"pm25_1hr"</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
