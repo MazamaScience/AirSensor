@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Sample PurpleAir time series data — pat_sample • AirSensor</title>
+<title>Time averages for PrupleAir time series — pat_timeAverage • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,13 +37,12 @@
 
 
 
-<meta property="og:title" content="Sample PurpleAir time series data — pat_sample" />
+<meta property="og:title" content="Time averages for PrupleAir time series — pat_timeAverage" />
 
-<meta property="og:description" content="A sampling function that accepts PurpleAir timeseries dataframes
-and reduces them by randomly selecting distinct rows of the users choosen 
-size.
-If both `sampleSize` and `sampleFraction` are unspecified,
- `sampleSize = 5000` will be used." />
+<meta property="og:description" content="Function to flexibly aggregate or expand data frames by 
+different time periods and calculating vector-averages for a PurpleAir time 
+series object. This function should be useful in many 
+circumstances where it is necessary to work with different time average data." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -131,84 +130,77 @@ If both `sampleSize` and `sampleFraction` are unspecified,
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Sample PurpleAir time series data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_sample.R'><code>R/pat_sample.R</code></a></small>
-    <div class="hidden name"><code>pat_sample.Rd</code></div>
+    <h1>Time averages for PrupleAir time series</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_timeAverage.R'><code>R/pat_timeAverage.R</code></a></small>
+    <div class="hidden name"><code>pat_timeAverage.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>A sampling function that accepts PurpleAir timeseries dataframes
-and reduces them by randomly selecting distinct rows of the users choosen 
-size.</p>
-<p>If both `sampleSize` and `sampleFraction` are unspecified,
- `sampleSize = 5000` will be used.</p>
+    <p>Function to flexibly aggregate or expand data frames by 
+different time periods and calculating vector-averages for a PurpleAir time 
+series object. This function should be useful in many 
+circumstances where it is necessary to work with different time average data.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pat_sample</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sampleSize</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sampleFraction</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>weight</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>setSeed</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>forGraphics</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>pat_timeAverage</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>"pm25_A"</span>, <span class='kw'>period</span> <span class='kw'>=</span> <span class='st'>"10 min"</span>,
+  <span class='kw'>stats</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='kw'>dataThreshold</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pat</th>
-      <td><p>Purple Air Timeseries "pat" object</p></td>
+      <td><p>PurpleAir Timeseries "pat" object from <code><a href='pat_load.html'>pat_load()</a></code></p></td>
     </tr>
     <tr>
-      <th>sampleSize</th>
-      <td><p>a non-negative integer giving the number of rows to choose.</p></td>
+      <th>parameter</th>
+      <td><p>The variable of timeseries data to aggergate, such as
+"pm25_B", "temperature", etc.</p></td>
     </tr>
     <tr>
-      <th>sampleFraction</th>
-      <td><p>the fraction of rows to choose.</p></td>
+      <th>period</th>
+      <td><p>The time period to average to. Can be "sec", "min", "hour", 
+"day", "DSTday", "week", "month", "quarter" or "year". A number can also
+ precede these options followed by a space (i.e. "2 day" or "37 min").</p></td>
     </tr>
     <tr>
-      <th>weight</th>
-      <td><p>a vector of probability weights for obtaining the elements of the
-vector being sampled.</p></td>
+      <th>stats</th>
+      <td><p>The statistic to apply when aggregating the data; default is the 
+mean. Can be one of "mean", "max", "min", "median", "frequency", 
+"sd", "percentile".</p></td>
     </tr>
     <tr>
-      <th>setSeed</th>
-      <td><p>an integer that sets random numbver generation. Can be used to 
-reproduce sampling.</p></td>
+      <th>dataThreshold</th>
+      <td><p>A <!-- % of the data capture threshold. A value of 0 means  -->
+that all data will be used in a particular period regardless of the number of
+values avaliable. Conversely, a value of 100 means that all data will need to 
+be present to proceed, else it is recorded as NA.</p></td>
     </tr>
     <tr>
-      <th>forGraphics</th>
-      <td><p>logical specifying a graphics focused sampling algorithm
-(see Details)
-'</p></td>
+      <th>fill</th>
+      <td><p>When time series are expanded data are ‘padded out’ with NA. To 
+‘pad-out’ the additional data with the first row in each original time 
+interval, choose fill = TRUE.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>pat</code> timeseries object - subset.</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>When `forGraphics = FALSE`, random sampling is used to provide a
-statistically relevant subsample of the data.</p>
-<p>When `forGraphics = TRUE`, a customized sampling algorithm is used that
-attempts to create subsets for use in plotting that create plots that are
-visually identical to plots using all data. This is accomplished by
-preserving outliers and only sampling data in regions where overplotting
-is expected.</p>
-<p>The process is as follows:</p><ol>
-<li><p>find outliers using `seismicRoll::findOutliers()`</p></li>
-<li><p>create a subset consisting of only outliers</p></li>
-<li><p>sample the remaining data</p></li>
-<li><p>merge the outliers and sampled data</p></li>
-</ol>
+    <p>Returns a dataframe with a date in class POSIXct.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>pat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pat_load.html'>pat_load</a></span>()
-<span class='no'>subset</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_sample</span>(<span class='no'>pat</span>, <span class='kw'>sampleSize</span><span class='kw'>=</span><span class='fl'>1000</span>, <span class='kw'>setSeed</span><span class='kw'>=</span><span class='fl'>1234</span>)
+<span class='co'># Hourly average of Channel A PM2.5 density measurement</span>
+<span class='fu'>pat_timeAverage</span>(<span class='no'>pat</span>, <span class='st'>"pm25_A"</span>, <span class='st'>"1 hour"</span>)
 <span class='co'># }</span><div class='input'>
-</div></pre>
+</div><span class='co'># NOT RUN {</span>
+<span class='co'># Maximum weekly temperature</span>
+<span class='no'>pat</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>pat_timeAverage</span>(<span class='st'>"temperature"</span>, <span class='st'>"1 week"</span>, <span class='kw'>stats</span> <span class='kw'>=</span> <span class='st'>"max"</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -216,8 +208,6 @@ is expected.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

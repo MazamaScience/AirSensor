@@ -15,13 +15,13 @@ ca <-
   filter(stateCode == 'CA')
 
 # Look at different parameters
-pas_leaflet(ca, param = "pm25_1hr")
+pas_leaflet(ca, parameter = "pm25_1hr")
 
-pas_leaflet(ca, param = "temperature")
+pas_leaflet(ca, parameter = "temperature")
 
-pas_leaflet(ca, param = "humidity")
+pas_leaflet(ca, parameter = "humidity")
 
-pas_leaflet(ca, param = "pwfsl_closestDistance", maptype = "satellite")
+pas_leaflet(ca, parameter = "pwfsl_closestDistance", maptype = "satellite")
 
 
 

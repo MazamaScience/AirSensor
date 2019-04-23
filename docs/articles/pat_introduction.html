@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
       </span>
     </div>
 
@@ -59,6 +59,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
+    </li>
+    <li>
       <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
     </li>
     <li>
@@ -92,7 +95,7 @@
       <h1>An Introduction to PurpleAir Time Series Data</h1>
                         <h4 class="author">Mazama Science</h4>
             
-            <h4 class="date">2019-04-18</h4>
+            <h4 class="date">2019-04-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/MazamaScience/AirSensor/blob/master/vignettes/pat_introduction.Rmd"><code>vignettes/pat_introduction.Rmd</code></a></small>
       <div class="hidden name"><code>pat_introduction.Rmd</code></div>
@@ -126,7 +129,7 @@ pat &lt;- pat_load(pas, "Seattle", startdate = 20180701, enddate = 20180901)</a>
 <p>We’ll start by plotting PurpleAir’s raw sensor data. We can quickly display the time series data by using <code><a href="../reference/pat_multiplot.html">pat_multiplot()</a></code> and passing in our raw <code>pat</code> and desired plot type (“<code>all</code>” sensor data).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pat <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(<span class="dt">plottype =</span> <span class="st">"all"</span>)</code></pre></div>
-<p><img src="pat_introduction_files/figure-html/allPlot-1.png" width="768"></p>
+<p><img src="pat_introduction_files/figure-html/allPlot-1.png" width="672"></p>
 </div>
 <div id="exploring-time-series-data" class="section level3">
 <h3 class="hasAnchor">
@@ -134,7 +137,7 @@ pat &lt;- pat_load(pas, "Seattle", startdate = 20180701, enddate = 20180901)</a>
 <p>From the overview plot above, we can gain a general picture of what local <code>"Seattle"</code> atmospheric conditions are like. To take a closer look at PM2.5, we can pass a more specific parameter into <code><a href="../reference/pat_multiplot.html">pat_multiplot()</a></code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pat <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(<span class="dt">plottype =</span> <span class="st">"pm25"</span>)</code></pre></div>
-<p><img src="pat_introduction_files/figure-html/pm25Plot-1.png" width="768"></p>
+<p><img src="pat_introduction_files/figure-html/pm25Plot-1.png" width="672"></p>
 <p>Our <code>pat</code> dataframe spans two months. While this provides a great overview of PM2.5, it is unwieldy to analyze if we are only interested in anomolous air quality. We can use <code><a href="../reference/pat_filterDate.html">pat_filterDate()</a></code> to subset our <code>pat</code> dates. In this case, we’ll reduce our DOI to 01 August 2018 - 01 September 2018.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pat_august &lt;-<span class="st"> </span>
 <span class="st">  </span>pat <span class="op">%&gt;%</span><span class="st"> </span>
@@ -142,12 +145,12 @@ pat &lt;- pat_load(pas, "Seattle", startdate = 20180701, enddate = 20180901)</a>
 
 pat_august <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(<span class="dt">plottype =</span> <span class="st">"pm25"</span>)</code></pre></div>
-<p><img src="pat_introduction_files/figure-html/augustPlot-1.png" width="768"></p>
+<p><img src="pat_introduction_files/figure-html/augustPlot-1.png" width="672"></p>
 <p>Our reduced dataframe <code>pat_august</code> may be a smaller time interval but intermintent sensor errors still likely exist. In order to identify and remove PM2.5 outliers we can use <code><a href="../reference/pat_outliers.html">pat_outliers()</a></code>. We’d also like to display the outliers to compare. Each outlier will be marked with a red “*“. We can assign the filtered dataframe a name for future use.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pat_august_filtered &lt;-<span class="st"> </span>
 <span class="st">  </span>pat_august <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/pat_outliers.html">pat_outliers</a></span>(<span class="dt">replace =</span> <span class="ot">TRUE</span>, <span class="dt">showPlot =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="pat_introduction_files/figure-html/outlierPlot-1.png" width="768"></p>
+<p><img src="pat_introduction_files/figure-html/outlierPlot-1.png" width="672"></p>
 <p>Now that we have a filtered dataset we can begin looking into smaller datasets. 14 August 2018 appears to be the initial PM2.5 event. We can view a single day using <code><a href="../reference/pat_filterDate.html">pat_filterDate()</a></code> and <code><a href="../reference/pat_multiplot.html">pat_multiplot()</a></code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">august_<span class="dv">14</span> &lt;-<span class="st"> </span>
 <span class="st">  </span>pat_august <span class="op">%&gt;%</span><span class="st"> </span>
@@ -155,7 +158,7 @@ pat_august <span class="op">%&gt;%</span>
 
 august_<span class="dv">14</span> <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(<span class="dt">plottype =</span> <span class="st">"all"</span>)</code></pre></div>
-<p><img src="pat_introduction_files/figure-html/unnamed-chunk-1-1.png" width="768"></p>
+<p><img src="pat_introduction_files/figure-html/unnamed-chunk-1-1.png" width="672"></p>
 <p>At this resolution we can see our PurpleAir Channel A &amp; B data align closely. We can also confirm see that humidity and temperature have an inverse relationship!</p>
 <p>This tutorials is in no way meant to be exhaustive – rather, it is to provide a brief overview of what time series data is, and how it can be used as insightful tool. PurpleAir time series datasets can be large and intimidating. But with a few simple functions we can view PurpleAir sensors with ease. See our other articles to explore deeper PurpleAir functionality.</p>
 <p><em>Mazama Science</em></p>
