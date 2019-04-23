@@ -27,11 +27,8 @@ Imports:
     lubridate,
     MazamaCoreUtils,
     MazamaSpatialUtils (>= 0.6.1),
-<<<<<<< HEAD
     plyr,
-=======
     openair,
->>>>>>> 64ae4a4834fcba879a69387e2ee8ee095f938635
     PWFSLSmoke (>= 1.0.33),
     RColorBrewer,
     rlang,

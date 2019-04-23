@@ -1,14 +1,13 @@
-<<<<<<< HEAD
 # AirSensor 0.2.5 
 
 * added `createASTimeseriesObject()` 
-=======
+
 # AirSensor 0.2.5
 
 * changed parameter name from `param` to `parameter` in `pas_leaflet()`
 * changed `pat_sample()` outlier detection window size to `n = 23` to match
 `pat_outliers()`
->>>>>>> 64ae4a4834fcba879a69387e2ee8ee095f938635
+
 
 # AirSensor 0.2.4
 
