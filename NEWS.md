@@ -1,3 +1,7 @@
+# AirSensor 0.2.5 
+
+* added `createASTimeseriesObject()` 
+
 # AirSensor 0.2.4
 
 * uniform parameter validation in all `pat~` functions
