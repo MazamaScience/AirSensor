@@ -90,7 +90,7 @@ create a script like:
 pas %>% 
   filter(stateCode == 'CA') %>% 
   filter(pm25_6hr >= 25.0) %>% 
-  pas_leaflet(param = "pm25_6hr")
+  pas_leaflet(parameter = "pm25_6hr")
 ```
 
 This code pipes our `pas` data into `dplyr::filter()` where we can set our 
@@ -110,7 +110,7 @@ state of California.
 ```{r}
 pas %>% 
   filter(stateCode == "CA") %>% 
-  pas_leaflet(param = "humidity")
+  pas_leaflet(parameter = "humidity")
 ```
 
 ### Exploring PurpleAir data

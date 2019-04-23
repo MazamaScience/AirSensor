@@ -4,13 +4,13 @@
 \alias{pas_leaflet}
 \title{Leaflet interactive map of Purple Air sensors}
 \usage{
-pas_leaflet(pas = NULL, param = "pm25_1hr", radius = 10,
+pas_leaflet(pas = NULL, parameter = "pm25_1hr", radius = 10,
   opacity = 0.8, maptype = "terrain", outsideOnly = TRUE)
 }
 \arguments{
 \item{pas}{Enhanced dataframe of PurpleAir synoptic data.}
 
-\item{param}{Value to plot -- defautls to \code{get('pm25_1hr')}.}
+\item{parameter}{Value to plot -- defautls to \code{get('pm25_1hr')}.}
 
 \item{radius}{Radius (pixels) of monitor circles.}
 
@@ -28,7 +28,7 @@ Rstudio's 'Viewer' tab.
 This function creates interactive maps that will be displayed in 
 RStudio's 'Viewer' tab.
 
-Typical usage would be to use the \code{param} argument to display pm25 
+Typical usage would be to use the \code{parameter} argument to display pm25 
 values from one of:
 \itemize{
 \item{"pm25_current"}
@@ -40,8 +40,8 @@ values from one of:
 \item{"pm25_1week"}
 }
 
-Auxillary \code{param} arguments can be usd to display various Purple Air 
-sensor data. Currently supported \code{param} arguments include:
+Auxillary \code{parameter} arguments can be usd to display various Purple Air 
+sensor data. Currently supported \code{parameter} arguments include:
 \itemize{
 \item{"humidity"}
 \item{"pressure"}
@@ -70,6 +70,6 @@ underlying map tile if available. See
 initializeMazamaSpatialUtils()
 pas <- pas_load()
 mvcaa <- filter(pas, stringr::str_detect(pas$label, '^MV Clean Air'))
-pas_leaflet(mvcaa, param="pm25_1hr")
+pas_leaflet(mvcaa, parameter="pm25_1hr")
 }
 }

@@ -5,7 +5,7 @@
 #' @description This function creates interactive maps that will be displayed in 
 #' RStudio's 'Viewer' tab.
 #'
-#' Typical usage would be to use the \code{param} argument to display pm25 
+#' Typical usage would be to use the \code{parameter} argument to display pm25 
 #' values from one of:
 #' \itemize{
 #' \item{"pm25_current"}
@@ -17,8 +17,8 @@
 #' \item{"pm25_1week"}
 #' }
 #' 
-#' Auxillary \code{param} arguments can be usd to display various Purple Air 
-#' sensor data. Currently supported \code{param} arguments include:
+#' Auxillary \code{parameter} arguments can be usd to display various Purple Air 
+#' sensor data. Currently supported \code{parameter} arguments include:
 #' \itemize{
 #' \item{"humidity"}
 #' \item{"pressure"}
@@ -41,7 +41,7 @@
 #' "provider tiles" to use as the background map.
 #' 
 #' @param pas Enhanced dataframe of PurpleAir synoptic data.
-#' @param param Value to plot -- defautls to \code{get('pm25_1hr')}.
+#' @param parameter Value to plot -- defautls to \code{get('pm25_1hr')}.
 #' @param radius Radius (pixels) of monitor circles.
 #' @param opacity Opacity of monitor circles.
 #' @param maptype Optional name of leaflet ProviderTiles to use, e.g. \code{terrain}. 
@@ -56,12 +56,12 @@
 #' initializeMazamaSpatialUtils()
 #' pas <- pas_load()
 #' mvcaa <- filter(pas, stringr::str_detect(pas$label, '^MV Clean Air'))
-#' pas_leaflet(mvcaa, param="pm25_1hr")
+#' pas_leaflet(mvcaa, parameter="pm25_1hr")
 #' }
 
 pas_leaflet <- function(
   pas = NULL,
-  param = "pm25_1hr",
+  parameter = "pm25_1hr",
   radius = 10,
   opacity = 0.8,
   maptype = "terrain",
@@ -76,18 +76,18 @@ pas_leaflet <- function(
   if ( nrow(pas) == 0 || ncol(pas) == 0 )
     stop(paste0("One or both dimensions of the pa_synoptic object has length 0."))
   
-  if ( !(param %in% c('pm25_current', 
-                      'pm25_10min', 
-                      'pm25_30min', 
-                      'pm25_1hr',
-                      'pm25_6hr', 
-                      'pm25_1day', 
-                      'pm25_1week', 
-                      'humidity',
-                      'pressure', 
-                      'temperature', 
-                      'pwfsl_closestDistance')) ) 
-    stop(paste0('param value is invalid. See documentation to see valid options'))
+  if ( !(parameter %in% c('pm25_current', 
+                          'pm25_10min', 
+                          'pm25_30min', 
+                          'pm25_1hr',
+                          'pm25_6hr', 
+                          'pm25_1day', 
+                          'pm25_1week', 
+                          'humidity',
+                          'pressure', 
+                          'temperature', 
+                          'pwfsl_closestDistance')) ) 
+    stop("Required parameter 'parameter' is invalid.")
   
   if ( !is.logical(outsideOnly) )
     stop(paste0('outsideOnly parameter should be TRUE/FALSE'))
@@ -107,20 +107,20 @@ pas_leaflet <- function(
   # Ignore warnings from RColorBrewer as leaflet::colorBin does the right thing
   suppressWarnings({
     
-    if ( stringr::str_detect(param, "^pm25") ) { # PM2.5
+    if ( stringr::str_detect(parameter, "^pm25") ) { # PM2.5
       colorFunc <- leaflet::colorBin(PWFSLSmoke::AQI$colors, 
                                      bins = PWFSLSmoke::AQI$breaks_24, 
                                      na.color = "#bbbbbb")
-      cols <- colorFunc(pas[[param]])
+      cols <- colorFunc(pas[[parameter]])
       colors <- PWFSLSmoke::AQI$colors
       labels <- PWFSLSmoke::AQI$names
       legendTitle <- 'AQI Level'
-      value <- round(pas[[param]], 1)
+      value <- round(pas[[parameter]], 1)
       unit <- '\U00B5g/m3'
-    } else if ( param == "temperature" ) {       # Temperature
+    } else if ( parameter == "temperature" ) {       # Temperature
       colorFunc <- leaflet::colorNumeric("RdYlBu", domain = c(-50,130), 
                                          na.color = "#bbbbbb", reverse=TRUE)
-      cols <- colorFunc(pas[[param]])
+      cols <- colorFunc(pas[[parameter]])
       breaks <- seq(-20,120,length.out=15)
       levels <- seq(-15,115,length.out=14)
       colors <- leaflet::colorBin("RdYlBu", domain=range(breaks), 
@@ -140,12 +140,12 @@ pas_leaflet <- function(
                   '100-110',
                   '>110')
       legendTitle <- 'Temp in \U2109'
-      value <- round(pas[[param]], 0)
+      value <- round(pas[[parameter]], 0)
       unit <- '\U2109'
-    } else if ( param == "humidity" ) {          # Humidity
+    } else if ( parameter == "humidity" ) {          # Humidity
       colorFunc <- leaflet::colorNumeric("BrBG", domain = c(0,100), 
                                          na.color = "#bbbbbb", reverse=FALSE)
-      cols <- colorFunc(pas[[param]])
+      cols <- colorFunc(pas[[parameter]])
       breaks <- seq(0,100,length.out=11)
       levels <- seq(5,95,length.out=10)
       colors <- leaflet::colorBin("BrBG", domain=range(breaks), 
@@ -160,12 +160,12 @@ pas_leaflet <- function(
                   '70-80%',
                   '80-90%',
                   '>90%')
-      value <- round(pas[[param]], 0)
+      value <- round(pas[[parameter]], 0)
       legendTitle <- 'Relative Humidity'
       unit <- '%'
-    } else if ( stringr::str_detect(param, "[dD]istance$") ) { # Distance
+    } else if ( stringr::str_detect(parameter, "[dD]istance$") ) { # Distance
       # NOTE:  dplyr::arrange_at() works with names of variables but desc() doesn't
-      pas$inverse_distance <- 1 / pas[[param]]
+      pas$inverse_distance <- 1 / pas[[parameter]]
       pas <- dplyr::arrange_at(pas, 'inverse_distance') # low values 'last'
       # NOTE:  Use definied palette and bins
       bins <- c(0,100,200,500,1000,2000,3000,4000,5000,10000)
@@ -175,7 +175,7 @@ pas_leaflet <- function(
       colors <- c(oranges[4:1],purples[3:7])
       colorFunc <- leaflet::colorBin(colors, domain = domain, 
                                      bins = bins, na.color = "#bbbbbb")
-      cols <- colorFunc(pas[[param]])
+      cols <- colorFunc(pas[[parameter]])
       labels <- c('<100 m',
                   '100-200 m',
                   '200-500 m',
@@ -185,22 +185,22 @@ pas_leaflet <- function(
                   '3-4 km',
                   '4-5 km',
                   '5:10 km')
-      legendTitle <- param
-      value <- round(pas[[param]], 0)
+      legendTitle <- parameter
+      value <- round(pas[[parameter]], 0)
       unit <- 'm'
       
-    } else if ( param %in% c("r2_a", "r2_b") ) {
+    } else if ( parameter %in% c("r2_a", "r2_b") ) {
       bins <- c(0, .5, .75, .9, 1)
       domain <- c(0,1)
       colors <- c("#ffffd4","#fed98e","#fe9929","#cc4c02")
       colorFunc <- leaflet::colorBin(colors, domain = domain, 
                                      bins = bins, na.color = "#bbbbbb")
-      cols <- colorFunc(pas[[param]])
+      cols <- colorFunc(pas[[parameter]])
       labels <- c('0-.5', '.5-.75', '.75-.9', '.9-1')
       legendTitle <- "R2"
-      value <- round(pas[[param]], 2)
+      value <- round(pas[[parameter]], 2)
       unit <- ''
-    } else if ( param %in% c("slope_a", "slope_b") ) {
+    } else if ( parameter %in% c("slope_a", "slope_b") ) {
       colors <- c("#7f3b08", 
                   "#b35806",
                   "#e08214",
@@ -212,38 +212,38 @@ pas_leaflet <- function(
                   "#542788",
                   "#2d004b")
       colorFunc <- leaflet::colorBin(colors, 
-                                     domain = range(pas[[param]]), 
+                                     domain = range(pas[[parameter]]), 
                                      bins = 10, 
                                      na.color = "#bbbbbb")
-      cols <- colorFunc(pas[[param]])
+      cols <- colorFunc(pas[[parameter]])
       breaks <- seq(domain[1],domain[2],length.out=11)
       offset <- diff(breaks)[1] / 2
       levels <- signif(seq(breaks[1]+offset, breaks[11]-offset,length.out=10), digits=2)
       labels <- as.character(levels)
       legendTitle <- "Scale Factor"
-      value <- round(pas[[param]], 2)
+      value <- round(pas[[parameter]], 2)
       unit <- ''
     } else {                                    # Other
-      domain <- range(pas[[param]], na.rm=TRUE)
+      domain <- range(pas[[parameter]], na.rm=TRUE)
       colorFunc <- leaflet::colorNumeric("Purples", 
                                          domain = domain, 
                                          na.color = "#bbbbbb", 
                                          reverse=FALSE)
-      cols <- colorFunc(pas[[param]])
+      cols <- colorFunc(pas[[parameter]])
       breaks <- seq(domain[1],domain[2],length.out=6)
       offset <- diff(breaks)[1] / 2
       levels <- signif(seq(breaks[1]+offset, breaks[6]-offset,length.out=5), digits=4)
       colors <- leaflet::colorBin("Purples", domain=range(breaks), bins=breaks, reverse=FALSE)(levels)
       labels <- as.character(levels)
-      value <- signif(pas[[param]], 4)
-      legendTitle <- param
+      value <- signif(pas[[parameter]], 4)
+      legendTitle <- parameter
       unit <- ''
     }
     
     # Create popupText
     pas$popupText <- paste0(
       "<b>", pas$label, "</b><br/>",
-      "<b>", param, " = ", value, " ", unit, "</b><br/>",
+      "<b>", parameter, " = ", value, " ", unit, "</b><br/>",
       "temperature = ", round(pas$temperature, 0), " F<br/>",
       "humidity = ", round(pas$humidity, 0), "%<br/>",
       "pm25_1hr = ", round(pas$pm25_1hr, 1), " \U00B5g/m3<br/>",

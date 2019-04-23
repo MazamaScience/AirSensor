@@ -1,3 +1,9 @@
+# AirSensor 0.2.5
+
+* changed parameter name from `param` to `parameter` in `pas_leaflet()`
+* changed `pat_sample()` outlier detection window size to `n = 23` to match
+`pat_outliers()`
+
 # AirSensor 0.2.4
 
 * uniform parameter validation in all `pat~` functions
