@@ -1,6 +1,5 @@
 #' @export
 #' @importFrom rlang .data
-#' @import dplyr
 #' 
 #' @title Create a AirSensor Timeseries object
 #' 
