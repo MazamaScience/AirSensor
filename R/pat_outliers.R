@@ -124,47 +124,70 @@ pat_outliers <- function(
     # Use the same y limits for both plots
     ylim <- range(c(A_data$pm25_A, B_data$pm25_B), na.rm = TRUE)
     ylim[1] <- min(0, ylim[1]) # always zero unless ylim[1] is neg (possible???)
-      
+    
     A_outliers <- A_data[A_outlierIndices,] %>%       
-      ggplot2::geom_point(mapping = ggplot2::aes(x = .data$datetime, 
-                                                 y = .data$pm25_A), 
-                          shape = outlier_shape, 
-                          size = outlier_size, 
-                          color = outlier_color,
-                          alpha = outlier_alpha)
+      ggplot2::geom_point(
+        mapping = ggplot2::aes(x = .data$datetime, y = .data$pm25_A), 
+        shape = outlier_shape, 
+        size = outlier_size, 
+        color = outlier_color,
+        alpha = outlier_alpha
+      )
     
     B_outliers <- B_data[B_outlierIndices,] %>% 
-      ggplot2::geom_point(mapping = ggplot2::aes(x = .data$datetime, 
-                                                 y = .data$pm25_B), 
-                          shape = outlier_shape, 
-                          size = outlier_size, 
-                          color = outlier_color,
-                          alpha = outlier_alpha)
+      ggplot2::geom_point(
+        mapping = ggplot2::aes(x = .data$datetime, 
+                               y = .data$pm25_B), 
+        shape = outlier_shape, 
+        size = outlier_size, 
+        color = outlier_color,
+        alpha = outlier_alpha
+      )
     
     channelA <- 
       A_data %>%
       tibble(datetime = A_data$datetime, pm25_A = A_data$pm25_A) %>% 
       ggplot2::ggplot(ggplot2::aes(x = .data$datetime, y = .data$pm25_A)) + 
-      ggplot2::geom_point(shape = data_shape,
-                          size = data_size,
-                          color = data_color,
-                          alpha = data_alpha) + 
+      ggplot2::geom_point(
+        shape = data_shape,
+        size = data_size,
+        color = data_color,
+        alpha = data_alpha
+      ) + 
       ggplot2::ylim(ylim) +
-      ggplot2::ggtitle(expression("Channel A PM"[2.5])) + 
-      ggplot2::xlab("Date") + ggplot2::ylab("\u03bcg / m\u00b3") + 
+      ggplot2::labs(
+        x = "Date", 
+        y = "\u03bcg / m\u00b3", 
+        title = expression("Channel A PM"[2.5]), 
+        subtitle = pat$meta$label
+      ) + 
+      ggplot2::theme(
+        plot.title = ggplot2::element_text(size = 11),
+        plot.subtitle = ggplot2::element_text(size = 8),
+      ) + 
       A_outliers
     
     channelB <- 
       B_data %>%
       tibble(datetime = B_data$datetime, pm25_B = B_data$pm25_B) %>% 
       ggplot2::ggplot(ggplot2::aes(x = .data$datetime, y = .data$pm25_B)) + 
-      ggplot2::geom_point(shape = data_shape,
-                          size = data_size,
-                          color = data_color,
-                          alpha = data_alpha) + 
+      ggplot2::geom_point(
+        shape = data_shape,
+        size = data_size,
+        color = data_color,
+        alpha = data_alpha
+      ) + 
       ggplot2::ylim(ylim) +
-      ggplot2::ggtitle(expression("Channel B PM"[2.5])) + 
-      ggplot2::xlab("Date") + ggplot2::ylab("\u03bcg / m\u00b3") + 
+      ggplot2::labs(
+        x = "Date", 
+        y = "\u03bcg / m\u00b3", 
+        title = expression("Channel B PM"[2.5]), 
+        subtitle = pat$meta$label
+      ) + 
+      ggplot2::theme(
+        plot.title = ggplot2::element_text(size = 11),
+        plot.subtitle = ggplot2::element_text(size = 8),
+      ) + 
       B_outliers
     
     pat_multiplot(plotList = list(channelA, channelB)) # No sampling will occur
@@ -178,9 +201,14 @@ pat_outliers <- function(
   
   # Combine dataframes 
   data <- dplyr::full_join(A_data, B_data, by = 'datetime') %>%
-    dplyr::select(.data$datetime, .data$pm25_A, .data$pm25_B, .data$temperature, 
-                  .data$humidity, .data$uptime, .data$adc0, .data$rssi, 
-                  .data$datetime_A, .data$datetime_B) %>%
+    dplyr::select(
+      .data$datetime, 
+      .data$pm25_A, 
+      .data$pm25_B, 
+      .data$temperature, 
+      .data$humidity, .data$uptime, .data$adc0, .data$rssi, 
+      .data$datetime_A, .data$datetime_B
+    ) %>%
     dplyr::arrange(.data$datetime)
   
   # ----- Create the Purple Air Timeseries (pat) object ------------------------
