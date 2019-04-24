@@ -4,11 +4,14 @@
 #' 
 #' @title Display multiple plots on one page
 #' 
-#' @param pat Purple Air Timeseries "pat" object from \code{createPATimeseriesObject()}
+#' @param pat Purple Air Timeseries "pat" object from 
+#' \code{createPATimeseriesObject()}
 #' @param plottype Quick-reference plot types: "all", "aux", "pm25"
-#' @param sampleSize Either an integer or fraction to determine sample size
-#' @param plotList a list() of any number of ggplot objects to plot on a single pane
-#' @param columns Number of columns in the plot layout. Use \code{NULL} for defaults.
+#' @param sampleSize Either an integer or fraction to determine sample size.
+#' @param plotList a \code{list()} of any number of ggplot objects to plot on a 
+#' single pane.
+#' @param columns Number of columns in the plot layout. Use \code{NULL} for 
+#' defaults.
 #' @param a_size size of pm25_A points
 #' @param a_shape symbol to use for pm25_A points
 #' @param a_color color of pm25_A points
@@ -59,7 +62,7 @@ pat_multiplot <- function(
   h_shape = 15,
   h_color = "black",
   alpha = 0.5
-  ) {
+) {
   
   options(warn = -1)
   
@@ -104,14 +107,16 @@ pat_multiplot <- function(
     # Labels
     timezone <- pat$meta$timezone[1]
     year <- strftime(pat$data$datetime[1], "%Y", tz=timezone)
-
+    
     # Create a tibble
     tbl <- 
-      dplyr::tibble(datetime = lubridate::with_tz(pat$data$datetime, timezone),
-                    pm25_A = pat$data$pm25_A, 
-                    pm25_B = pat$data$pm25_B, 
-                    humidity = pat$data$humidity, 
-                    temp = pat$data$temperature)
+      dplyr::tibble(
+        datetime = lubridate::with_tz(pat$data$datetime, timezone),
+        pm25_A = pat$data$pm25_A, 
+        pm25_B = pat$data$pm25_B, 
+        humidity = pat$data$humidity, 
+        temp = pat$data$temperature
+      )
     
     # Use the same y limits for both plots
     ylim <- range(c(tbl$pm25_A, tbl$pm25_B), na.rm = TRUE)
@@ -119,61 +124,113 @@ pat_multiplot <- function(
     channelA <- 
       tbl %>% 
       ggplot2::ggplot(ggplot2::aes(x = .data$datetime, y = .data$pm25_A)) + 
-      ggplot2::geom_point(size = a_size, 
-                          shape = a_shape,
-                          color = a_color,
-                          alpha = alpha) + 
+      ggplot2::geom_point(
+        size = a_size, 
+        shape = a_shape,
+        color = a_color,
+        alpha = alpha
+      ) + 
       ggplot2::ylim(ylim) +
-      ggplot2::ggtitle(expression("Channel A PM"[2.5])) + 
-      ggplot2::xlab(year) + ggplot2::ylab("\u03bcg / m\u00b3") 
+      ggplot2::labs(
+        x = year, 
+        y = "\u03bcg / m\u00b3", 
+        title = expression("Channel A PM"[2.5]), 
+        subtitle = pat$meta$label
+      ) + 
+      ggplot2::theme(
+        plot.title = ggplot2::element_text(size = 11),
+        plot.subtitle = ggplot2::element_text(size = 8),
+      )
     
     channelB <-   
       tbl %>% 
       ggplot2::ggplot(ggplot2::aes(x = .data$datetime, y = .data$pm25_B)) + 
-      ggplot2::geom_point(size = b_size, 
-                          shape = b_shape,
-                          color = b_color,
-                          alpha = alpha) + 
+      ggplot2::geom_point(
+        size = b_size, 
+        shape = b_shape,
+        color = b_color,
+        alpha = alpha
+      ) + 
       ggplot2::ylim(ylim) +
-      ggplot2::ggtitle(expression("Channel B PM"[2.5])) + 
-      ggplot2::xlab(year) + ggplot2::ylab("\u03bcg / m\u00b3") 
+      ggplot2::labs(
+        x = year, 
+        y = "\u03bcg / m\u00b3", 
+        title = expression("Channel B PM"[2.5]), 
+        subtitle = pat$meta$label
+      ) + 
+      ggplot2::theme(
+        plot.title = ggplot2::element_text(size = 11),
+        plot.subtitle = ggplot2::element_text(size = 8),
+      )
     
     channelAB <- 
       tbl %>% 
       ggplot2::ggplot() +
-      ggplot2::geom_point(ggplot2::aes(x = .data$datetime, y = .data$pm25_A),
-                          size = a_size,
-                          shape = a_shape,
-                          color = a_color,
-                          alpha = alpha) +
-      ggplot2::geom_point(ggplot2::aes(x = .data$datetime, y = .data$pm25_B),
-                          size = b_size,
-                          shape = b_shape,
-                          color = b_color,
-                          alpha = alpha) +
+      ggplot2::geom_point(
+        ggplot2::aes(x = .data$datetime, y = .data$pm25_A),
+        size = a_size,
+        shape = a_shape,
+        color = a_color,
+        alpha = alpha
+      ) +
+      ggplot2::geom_point(
+        ggplot2::aes(x = .data$datetime, y = .data$pm25_B),
+        size = b_size,
+        shape = b_shape,
+        color = b_color,
+        alpha = alpha
+      ) +
       ggplot2::ylim(ylim) +
-      ggplot2::ggtitle(expression("Channel A/B PM"[2.5])) + 
-      ggplot2::xlab(year) + ggplot2::ylab("\u03bcg / m\u00b3") 
+      ggplot2::labs(
+        x = year, 
+        y = "\u03bcg / m\u00b3", 
+        title = expression("Channel A/B PM"[2.5]), 
+        subtitle = pat$meta$label
+      ) + 
+      ggplot2::theme(
+        plot.title = ggplot2::element_text(size = 11),
+        plot.subtitle = ggplot2::element_text(size = 8),
+      )
     
     temperature <-   
       tbl %>% 
       ggplot2::ggplot(ggplot2::aes(x = .data$datetime, y = .data$temp)) + 
-      ggplot2::geom_point(size = t_size, 
-                          shape = t_shape,
-                          color = t_color,
-                          alpha = alpha) + 
-      ggplot2::ggtitle("Temperature") + 
-      ggplot2::xlab(year) + ggplot2::ylab("\u00b0F")
+      ggplot2::geom_point(
+        size = t_size, 
+        shape = t_shape,
+        color = t_color,
+        alpha = alpha
+      ) + 
+      ggplot2::labs(
+        x = year, 
+        y = "\u00b0F", 
+        title = expression("Temperature"), 
+        subtitle = pat$meta$label
+      ) + 
+      ggplot2::theme(
+        plot.title = ggplot2::element_text(size = 11),
+        plot.subtitle = ggplot2::element_text(size = 8),
+      )
     
     humidity <-   
       tbl %>% 
       ggplot2::ggplot(ggplot2::aes(x = .data$datetime, y = .data$humidity)) + 
-      ggplot2::geom_point(size = h_size, 
-                          shape = h_shape,
-                          color = h_color,
-                          alpha = alpha) + 
-      ggplot2::ggtitle("Humidity") + 
-      ggplot2::xlab(year) + ggplot2::ylab("%")
+      ggplot2::geom_point(
+        size = h_size, 
+        shape = h_shape,
+        color = h_color,
+        alpha = alpha
+      ) + 
+      ggplot2::labs(
+        x = year, 
+        y = "RH%", 
+        title = expression("Humidity"), 
+        subtitle = pat$meta$label
+      ) + 
+      ggplot2::theme(
+        plot.title = ggplot2::element_text(size = 12),
+        plot.subtitle = ggplot2::element_text(size = 8),
+      )
     
     # Assemble multi_ggplot
     if ( plottype == "pm25" ) {
@@ -197,11 +254,38 @@ pat_multiplot <- function(
       
       # Get ordering right
       if ( columns == 1 ) {
-        gg <- multi_ggplot(channelA, channelB, humidity, temperature, cols = columns)
+        
+        gg <- 
+          multi_ggplot(
+            channelA, 
+            channelB, 
+            humidity, 
+            temperature, 
+            cols = columns
+          )
+        
       } else if ( columns == 2 ) {
-        gg <- multi_ggplot(channelA, humidity, channelB, temperature, cols = columns)
+        
+        gg <- 
+          multi_ggplot(
+            channelA, 
+            humidity, 
+            channelB,
+            temperature, 
+            cols = columns
+          )
+        
       } else {
-        gg <- multi_ggplot(channelA, channelB, humidity, temperature, cols = columns)
+        
+        gg <- 
+          multi_ggplot(
+            channelA, 
+            channelB, 
+            humidity, 
+            temperature, 
+            cols = columns
+          )
+        
       }
       
     }

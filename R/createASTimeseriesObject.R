@@ -64,9 +64,9 @@ createASTimeseriesObject <- function(
     
     df <- 
       pat$data %>% 
-      select(.data$datetime, .data[[parameter]]) %>% 
-      rename(date = .data$datetime) %>% 
-      filter(!is.na(parameter))
+      dplyr::select(.data$datetime, .data[[parameter]]) %>% 
+      dplyr::rename(date = .data$datetime) %>% 
+      dplyr::filter(!is.na(parameter))
     
     return(df)
     
