@@ -6,7 +6,8 @@
 \usage{
 pas_esriMap(pas, centerLon = NULL, centerLat = NULL,
   maptype = "worldStreetMap", mapRaster = NULL, width = 800,
-  height = 800, zoom = NULL, shape = 15, size = 4, alpha = 0.8)
+  height = 800, zoom = NULL, shape = 15, size = 4, alpha = 0.8,
+  theme = "Purples", scaleMin = 0, scaleMax = 150)
 }
 \arguments{
 \item{pas}{\emph{pa_synoptic} object}
@@ -30,6 +31,12 @@ pas_esriMap(pas, centerLon = NULL, centerLat = NULL,
 \item{size}{size of points}
 
 \item{alpha}{opacity of points}
+
+\item{theme}{base color or palette to be used.}
+
+\item{scaleMin}{default is 0, minimum value to set scale for color gradient}
+
+\item{scaleMax}{default is 150, maximum value to set scale for color gradient}
 }
 \value{
 Plots a map loaded from arcGIS REST with points for each monitor.
@@ -37,7 +44,7 @@ Plots a map loaded from arcGIS REST with points for each monitor.
 \description{
 Creates an ESRI map of a \emph{pa_synoptic} object.
 
-#' Available \code{maptype} options include:
+Available \code{maptype} options include:
 \itemize{
 \item{natGeo}
 \item{worldStreetMap}
@@ -46,8 +53,20 @@ Creates an ESRI map of a \emph{pa_synoptic} object.
 \item{deLorme}
 }
 
+Available \code{theme} options include sequential and diverging palettes:
+
+The sequential palettes names are
+ 
+\code{"Blues" "BuGn" "BuPu" "GnBu" "Greens" "Greys" "Oranges" "OrRd" "PuBu" 
+"PuBuGn" "PuRd" "Purples" "RdPu" "Reds" "YlGn" "YlGnBu" "YlOrBr" "YlOrRd"}
+
+The diverging palettes are 
+
+\code{"BrBG" "PiYG" "PRGn" "PuOr" "RdBu" "RdGy" "RdYlBu" "RdYlGn" "Spectral"}
+
+
 Additional base maps are found at:
-\url{http://resources.arcgis.com/en/help/arcgis-rest-api/index.html#/Basemaps/02r3000001mt000000/}
+\url{https://developers.arcgis.com/}
 
 If \code{centerLon}, \code{centerMap} or \code{zoom} are not specified,
 appropriate values will be calcualted using data from the
@@ -58,6 +77,12 @@ appropriate values will be calcualted using data from the
 ca <- pas_load() \%>\% filter(stateCode == "CA")
 pas_esriMap(ca)
 }
+\dontrun{
+pas \%>\%
+  pas_filter(stateCode == "CA" & pm25 > 75) \%>\%
+  pas_esriMap(theme = "Purples", scaleMax = 250)
+}
+
 }
 \seealso{
 \code{\link{esriMap_plotOnStaticMap}}

@@ -1,4 +1,4 @@
-# AirSensor 0.2.5 
+# AirSensor 0.2.6 
 
 * added `createASTimeseriesObject()` 
 

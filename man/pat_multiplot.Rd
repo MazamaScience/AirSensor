@@ -12,15 +12,18 @@ pat_multiplot(pat = NULL, plottype = "all", sampleSize = 5000,
   alpha = 0.5)
 }
 \arguments{
-\item{pat}{Purple Air Timeseries "pat" object from \code{createPATimeseriesObject()}}
+\item{pat}{Purple Air Timeseries "pat" object from 
+\code{createPATimeseriesObject()}}
 
 \item{plottype}{Quick-reference plot types: "all", "aux", "pm25"}
 
-\item{sampleSize}{Either an integer or fraction to determine sample size}
+\item{sampleSize}{Either an integer or fraction to determine sample size.}
 
-\item{plotList}{a list() of any number of ggplot objects to plot on a single pane}
+\item{plotList}{a \code{list()} of any number of ggplot objects to plot on a 
+single pane.}
 
-\item{columns}{Number of columns in the plot layout. Use \code{NULL} for defaults.}
+\item{columns}{Number of columns in the plot layout. Use \code{NULL} for 
+defaults.}
 
 \item{a_size}{size of pm25_A points}
 

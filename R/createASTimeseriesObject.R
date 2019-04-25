@@ -18,7 +18,7 @@
 #' 
 #' @return "as_timeseries" list of aggregated time series PurpleAir data
 #' 
-#' @seealso \link{pat_timeAverage()}
+#' @seealso \link{pat_timeAverage}
 #' 
 #' @examples 
 #' \dontrun{
@@ -85,7 +85,7 @@ createASTimeseriesObject <- function(
   pm25_df <- 
     pat %>% 
     make_df(parameter = "pm25_A") %>% 
-    dplyr::rename(pm25 = pm25_A)
+    dplyr::rename(pm25 = .data$pm25_A)
   
   # ----- Columns for mean data (or any custom param) --------------------------
   
@@ -106,34 +106,34 @@ createASTimeseriesObject <- function(
   humidity_sd <-
     humidity_df %>% 
     timeAverage(period = period, stats = "sd", ...) %>% 
-    dplyr::rename(humidity_sd = humidity)
+    dplyr::rename(humidity_sd = .data$humidity)
   
   temperature_sd <-
     temperature_df %>% 
     timeAverage(period = period, stats = "sd", ...) %>% 
-    dplyr::rename(temperature_sd = temperature)
+    dplyr::rename(temperature_sd = .data$temperature)
   
   pm25_sd <-
     pm25_df %>% 
     timeAverage(period = period, stats = "sd", ...) %>% 
-    dplyr::rename(pm25_sd = pm25)
+    dplyr::rename(pm25_sd = .data$pm25)
   
   # ----- Columns for freq count -----------------------------------------------
   
   humidity_ct <- 
     humidity_df %>% 
     timeAverage(period = period, stats = "frequency", ...) %>% 
-    dplyr::rename(humidity_ct = humidity)
+    dplyr::rename(humidity_ct = .data$humidity)
   
   temperature_ct <- 
     temperature_df %>% 
     timeAverage(period = period, stats = "frequency", ...) %>% 
-    dplyr::rename(temperature_ct = temperature)
+    dplyr::rename(temperature_ct = .data$temperature)
   
   pm25_ct <- 
     pm25_df %>% 
     timeAverage(period = period, stats = "frequency", ...) %>% 
-    dplyr::rename(pm25_ct = pm25)
+    dplyr::rename(pm25_ct = .data$pm25)
   
   # ----- Columns for QC -------------------------------------------------------
   # NOTE: TEMP FILL WITH NA
@@ -142,17 +142,17 @@ createASTimeseriesObject <- function(
   humidity_qc <- 
     humidity_df %>% 
     timeAverage(period = period, dataThreshold = 100) %>% 
-    dplyr::rename(humidity_qc = humidity)
+    dplyr::rename(humidity_qc = .data$humidity)
   
   temperature_qc <- 
     temperature_df %>% 
     timeAverage(period = period, dataThreshold = 100) %>% 
-    dplyr::rename(temperature_qc = temperature) 
+    dplyr::rename(temperature_qc = .data$temperature) 
   
   pm25_qc <-
     pm25_df %>% 
     timeAverage(period = period, dataThreshold = 100) %>% 
-    dplyr::rename(pm25_qc = pm25)
+    dplyr::rename(pm25_qc = .data$pm25)
   
   # ----- Create as_timeseries object  -----------------------------------------
   
