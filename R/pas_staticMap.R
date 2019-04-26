@@ -5,7 +5,8 @@
 #' @title Static map of Purple Air sensors
 #' 
 #' @param pas \emph{pa_synoptic} object
-#' @param theme base color or palette to be used. 
+#' @param parameter Value to plot, e.g. \code{pm25_1hr}.
+#' @param palette base color or palette to be used. 
 #' @param mapTheme default is "terrain", see description for additional options
 #' @param mapShape default is "square", can also be "natural"
 #' @param direction legend color direction
@@ -15,16 +16,23 @@
 #' @param size size of points
 #' @param alpha opacity of points
 #' @param bbuff bounding box buffer, default is 0.1
-#' @param zoom map zoom level
+#' @param zoomAdjust adjustment to map zoom level (-1:3)
 #' @param ... additional options: the legend can disabled \code{guide = FALSE}
 #'   
 #' @return ggplot object 
 #' 
 #' @description Creates a static map of a \emph{pa_synoptic} object.
 #' 
+#' Users can create a map using any numeric data column within the
+#' \emph{pa_synoptic} object:
 #' 
-#' Available \code{theme} options include an \code{"AQI"} color palette, 
-#' Additional sequential and diverging palettes are avaliable as well.
+#' \code{"pm25" "temperature" "humidity" "pressure" 
+#'  "pm25_current" "pm25_10min" "pm25_30min" "pm25_1hr" "pm25_6hr" 
+#'  "pm25_1day" "pm25_1week" "pwfsl_closestDistance"}
+#' 
+#' Available \code{palette} options include an \code{"AQI"} color palette, 
+#' as well as a suite of sequential and diverging palettes from the 
+#' \pkg{RColorBrewer} R package.
 #' 
 #' The sequential palettes names are
 #'  
@@ -35,27 +43,20 @@
 #' 
 #' \code{"BrBG" "PiYG" "PRGn" "PuOr" "RdBu" "RdGy" "RdYlBu" "RdYlGn" "Spectral"}
 #' 
-#'
-#' 
 #' Additional map tile info found at:
 #' \url{http://maps.stamen.com/}
 #'
 #' @examples
 #' \dontrun{
-#' wa <- pas_load() %>% filter(stateCode == "WA")
-#' pas_staticMap(wa, theme = "Spectral", direction = -1)
-#' }
-#' \dontrun{
-#' pas %>%
-#'   pas_filter(stateCode == "CA" & pm25 > 75) %>%
-#'   pas_esriMap(theme = "Purples", maxScale = 250)
+#' LA_basin <- pas_load() %>% pas_filterArea(-118.5, -117.5, 33.5, 34.5)
+#' pas_staticMap(LA_basin, palette = "AQI", zoomAdjust = 1)
 #' }
 #' 
 
 pas_staticMap <- function(
   pas, 
-  param = "pm25",
-  theme = "Purples", 
+  parameter = "pm25_1hr",
+  palette = "Purples", 
   mapTheme = "terrain",
   mapShape = "sq",
   direction = 1,
@@ -65,9 +66,11 @@ pas_staticMap <- function(
   size = 2.0, 
   alpha = 0.8, 
   bbuff = 0.1, 
-  zoom = 8, 
+  zoomAdjust = 0, 
   ...
 ) {
+  
+  # ----- Validate Parameters --------------------------------------------------
   
   if ( pas_isEmpty(pas) ) {
     stop("Required parameter 'pas' is empty.")
@@ -75,7 +78,7 @@ pas_staticMap <- function(
   
   # ----- Color Scale Theme ----------------------------------------------------
   
-  if ( tolower(theme) == "aqi" ) { 
+  if ( tolower(palette) == "aqi" ) { 
     
     colorFunc <- 
       leaflet::colorBin( 
@@ -87,7 +90,7 @@ pas_staticMap <- function(
     AQI_color <- c(PWFSLSmoke::AQI$colors, "grey50")
     AQI_label <- c(PWFSLSmoke::AQI$names, "Missing")
     
-    sensorColor <- colorFunc(pas[[param]])
+    sensorColor <- colorFunc(pas[[parameter]])
     
     colorPalette <- 
       ggplot2::scale_color_identity(
@@ -99,11 +102,11 @@ pas_staticMap <- function(
     
   } else { 
     
-    if ( param == "pm25" ) {
+    if ( parameter == "pm25" ) {
       name <- "\u03bcg / m\u00b3"
-    } else if ( param == "temperature") { 
+    } else if ( parameter == "temperature") { 
       name <- "\u00b0F"
-    } else if ( param == "humidity" ) { 
+    } else if ( parameter == "humidity" ) { 
       name <- "RH%"
     } else { 
       name <- ""
@@ -112,14 +115,14 @@ pas_staticMap <- function(
       grDevices::colorRampPalette(
         RColorBrewer::brewer.pal(
           n = 8, 
-          name = theme
+          name = palette
         )
       )
     
     colors <- colorBrew(8)
     if ( direction == -1 ) ( rev(colors) -> colors )
     
-    sensorColor <- pas[[param]]
+    sensorColor <- pas[[parameter]]
     
     colorPalette <- 
       ggplot2::scale_color_gradientn(
@@ -181,6 +184,39 @@ pas_staticMap <- function(
       )
     
   } 
+  
+  # ----- Determine map zoom ---------------------------------------------------
+  
+  maxRange <- max(
+    diff(range(pas$longitude, na.rm = TRUE)),
+    diff(range(pas$latitude, na.rm = TRUE)) 
+  )
+  
+  if ( maxRange > 50 ) {
+    zoom <- 3
+  } else if ( maxRange > 20 ) {
+    zoom <- 4
+  } else if ( maxRange > 10 ) {
+    zoom <- 5
+  } else if ( maxRange > 5 ) {
+    zoom <- 6
+  } else if ( maxRange > 2 ) {
+    zoom <- 7
+  } else if ( maxRange > 1 ) {
+    zoom <- 8
+  } else if ( maxRange > 0.5 ) {
+    zoom <- 9
+  } else if ( maxRange > 0.2 ) {
+    zoom <- 10
+  } else if ( maxRange > 0.1 ) {
+    zoom <- 11
+  } else if ( maxRange > 0.05 ) {
+    zoom <- 12
+  } else {
+    zoom <- 13
+  }
+  
+  zoom <- zoom + zoomAdjust
   
   # ---- PA Sensor Points ------------------------------------------------------
   

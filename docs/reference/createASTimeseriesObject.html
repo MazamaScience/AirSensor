@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Interactive time series plot — pat_dygraph • AirSensor</title>
+<title>Create a AirSensor Timeseries object — createASTimeseriesObject • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,16 +37,12 @@
 
 
 
-<meta property="og:title" content="Interactive time series plot — pat_dygraph" />
+<meta property="og:title" content="Create a AirSensor Timeseries object — createASTimeseriesObject" />
 
-<meta property="og:description" content="This function creates interactive graphs that will be displayed
-in RStudio's 'Viewer' tab.
-The list of available parameters include:
-
-pm25 -- A and B channel PM2.5 (ug/m3)
-temperature -- temperature (F)
-humidity -- humidity (%)
-" />
+<meta property="og:description" content="Aggregates a PurpleAir timeseries object along the datetime
+axis to produce a new dataframe with 13 columns of period-aggregated
+timeseries data: averages, standard deviations, measurement frequency, and 
+qualitity control." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -134,85 +130,57 @@ humidity -- humidity (%)
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Interactive time series plot</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_dygraph.R'><code>R/pat_dygraph.R</code></a></small>
-    <div class="hidden name"><code>pat_dygraph.Rd</code></div>
+    <h1>Create a AirSensor Timeseries object</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/createASTimeseriesObject.R'><code>R/createASTimeseriesObject.R</code></a></small>
+    <div class="hidden name"><code>createASTimeseriesObject.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This function creates interactive graphs that will be displayed
-in RStudio's 'Viewer' tab.</p>
-<p>The list of available parameters include:</p>
-<ul>
-<li><p><code>pm25</code> -- A and B channel PM2.5 (ug/m3)</p></li>
-<li><p><code>temperature</code> -- temperature (F)</p></li>
-<li><p><code>humidity</code> -- humidity (%)</p></li>
-</ul>
+    <p>Aggregates a PurpleAir timeseries object along the datetime
+axis to produce a new dataframe with 13 columns of period-aggregated
+timeseries data: averages, standard deviations, measurement frequency, and 
+qualitity control.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pat_dygraph</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sampleSize</span> <span class='kw'>=</span> <span class='fl'>5000</span>,
-  <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>rollPeriod</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>showLegend</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>colors</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>createASTimeseriesObject</span>(<span class='no'>pat</span>, <span class='kw'>period</span> <span class='kw'>=</span> <span class='st'>"1 hour"</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pat</th>
-      <td><p>Purple Air Timeseries "pat" object from <code><a href='createPATimeseriesObject.html'>createPATimeseriesObject()</a></code></p></td>
+      <td><p>Purple Air timeseries data from <code><a href='createPATimeseriesObject.html'>createPATimeseriesObject()</a></code></p></td>
     </tr>
     <tr>
-      <th>parameter</th>
-      <td><p>Data to display: "pm25", "humidity", "temperature"</p></td>
+      <th>period</th>
+      <td><p>The time period to average to. Can be "sec", "min", "hour", 
+"day", "DSTday", "week", "month", or "year". A number can also
+precede these options followed by a space (i.e. "2 day" or "37 min").</p></td>
     </tr>
     <tr>
-      <th>sampleSize</th>
-      <td><p>Either an integer or fraction to determine sample size</p></td>
-    </tr>
-    <tr>
-      <th>title</th>
-      <td><p>title text</p></td>
-    </tr>
-    <tr>
-      <th>xlab</th>
-      <td><p>optional title for the x axis</p></td>
-    </tr>
-    <tr>
-      <th>ylab</th>
-      <td><p>optional title for the y axis</p></td>
-    </tr>
-    <tr>
-      <th>tlim</th>
-      <td><p>optional vector with start and end times (integer or character
-representing YYYYMMDD[HH])</p></td>
-    </tr>
-    <tr>
-      <th>rollPeriod</th>
-      <td><p>rolling mean to be applied to the data</p></td>
-    </tr>
-    <tr>
-      <th>showLegend</th>
-      <td><p>logical to toggle display of the legend</p></td>
-    </tr>
-    <tr>
-      <th>colors</th>
-      <td><p>string vector of colors to be used for plotting</p></td>
+      <th>...</th>
+      <td><p>Extra parameters to fine tune time-averaging function</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Initiates the interactive dygraph plot in RStudio's 'Viewer' tab.</p>
+    <p>List with original <code>meta</code> and restructured <code>data</code> elements</p>
+<p>"as_timeseries" list of aggregated time series PurpleAir data</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='pat_timeAverage.html'>pat_timeAverage</a></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='no'>example_pas</span>
-<span class='no'>nb</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pat_load.html'>pat_load</a></span>(<span class='no'>pas</span>, <span class='st'>"North Bend Weather"</span>, <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fl'>20180801</span>, <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='fl'>20180901</span>)
-<span class='no'>subset_nb</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pat_sample.html'>pat_sample</a></span>(<span class='kw'>pat</span><span class='kw'>=</span><span class='no'>nb</span>, <span class='kw'>sampleSize</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>setSeed</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-<span class='fu'>pat_dygraph</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='no'>subset_nb</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"2018"</span>, <span class='kw'>rollPeriod</span> <span class='kw'>=</span> <span class='fl'>7</span>)
+<span class='no'>pat</span> <span class='kw'>&lt;-</span>
+  <span class='kw pkg'>AirSensor</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/AirSensor/topics/example_pat'>example_pat</a></span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='pat_filterDate.html'>pat_filterDate</a></span>(<span class='fl'>20180701</span>, <span class='fl'>20180901</span>)
+<span class='no'>ast</span> <span class='kw'>&lt;-</span> <span class='fu'>createASTimeseriesObject</span>(<span class='no'>pat</span>, <span class='st'>"1 hour"</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -221,6 +189,8 @@ representing YYYYMMDD[HH])</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

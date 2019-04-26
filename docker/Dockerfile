@@ -19,7 +19,7 @@ RUN apt-get update \
 
 WORKDIR /
 
-COPY AirSensor_0.1.8.tar.gz /
+COPY AirSensor_0.2.6.tar.gz /
 
-RUN R CMD INSTALL AirSensor_0.1.8.tar.gz
+RUN R CMD INSTALL AirSensor_0.2.6.tar.gz
 

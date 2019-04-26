@@ -52,9 +52,9 @@ pas_leaflet(scaqmd)
 
 # Now for some static maps.
 
-pas_esriMap(scaqmd)
+pas_staticMap(scaqmd)
 
-pas_esriMap(scsb)
+pas_staticMap(scsb, palette = "AQI", size = 4, zoomAdjust = 2)
 
 
 

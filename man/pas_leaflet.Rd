@@ -10,7 +10,7 @@ pas_leaflet(pas = NULL, parameter = "pm25_1hr", radius = 10,
 \arguments{
 \item{pas}{Enhanced dataframe of PurpleAir synoptic data.}
 
-\item{parameter}{Value to plot -- defautls to \code{get('pm25_1hr')}.}
+\item{parameter}{Value to plot, e.g. \code{pm25_1hr}.}
 
 \item{radius}{Radius (pixels) of monitor circles.}
 

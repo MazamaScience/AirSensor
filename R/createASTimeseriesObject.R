@@ -22,15 +22,22 @@
 #' 
 #' @examples 
 #' \dontrun{
-#' pat <- pat_load(pas, "Seattle", startdate = 20180701, enddate = 20180901)
-#' seattle_AirSensor <- createASTimeseriesObject(pat, "2.5 hours")
+#' pat <- 
+#'   AirSensor::example_pat %>%
+#'   pat_filterDate(20180701, 20180901)
+#' ast <- createASTimeseriesObject(pat, "1 hour")
 #' }
 
 createASTimeseriesObject <- function(
   pat, 
-  period = "15 min", 
+  period = "1 hour", 
   ...
 ) {
+  
+  # ----- Validate Parameters --------------------------------------------------
+  
+  # Avoid opaque error message from openair when a user types "minute(s)"
+  period <- stringr::str_replace(period, "ute?", "")
   
   # ----- Wrapped Time Average Function ----------------------------------------
   

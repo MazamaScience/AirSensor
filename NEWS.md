@@ -1,6 +1,11 @@
 # AirSensor 0.2.6 
 
-* added `createASTimeseriesObject()` 
+* added `example_pat_failure` dataset
+* added `createASTimeseriesObject()`
+* improved labeling in all plots
+* new `pas_staticMap()` function with customizable base maps and color schemes
+* removed `pas_esriMap()` because the ESRI map service we were using started
+requiring tokens on April 25, 2019
 
 # AirSensor 0.2.5
 

@@ -41,7 +41,7 @@
 #' "provider tiles" to use as the background map.
 #' 
 #' @param pas Enhanced dataframe of PurpleAir synoptic data.
-#' @param parameter Value to plot -- defautls to \code{get('pm25_1hr')}.
+#' @param parameter Value to plot, e.g. \code{pm25_1hr}.
 #' @param radius Radius (pixels) of monitor circles.
 #' @param opacity Opacity of monitor circles.
 #' @param maptype Optional name of leaflet ProviderTiles to use, e.g. \code{terrain}. 
