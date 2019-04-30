@@ -16,7 +16,12 @@
 #' @return An object that consists of a label and color dataframe, and
 #' calculated color values from PurpleAir sensors
 
-pas_palette <- function(pas, pal) {
+pas_palette <- function(
+  pas,
+  pal,
+  param = NULL,
+  ...
+  ) {
   
   options(warn = -1)
   
@@ -26,8 +31,8 @@ pas_palette <- function(pas, pal) {
       leaflet::colorNumeric(
         "BrBG", 
         domain = c(0,100), 
-        na.color = "grey50", 
-        reverse=FALSE 
+        na.color = "grey50",
+        ...
       )
     
     breaks <- seq(0,100,length.out=11)
@@ -38,7 +43,7 @@ pas_palette <- function(pas, pal) {
         "BrBG", 
         domain=range(breaks), 
         bins=breaks, 
-        reverse=FALSE)(levels)
+        ...)(levels)
     
     labels <- 
       c(
@@ -63,7 +68,7 @@ pas_palette <- function(pas, pal) {
         "RdYlBu", 
         domain = c(-50,130), 
         na.color = "grey50", 
-        reverse=FALSE
+        ...
       )
     
     breaks <- seq(-20,120,length.out=15)
@@ -74,7 +79,7 @@ pas_palette <- function(pas, pal) {
         "RdYlBu", 
         domain=range(breaks), 
         bins=breaks, 
-        reverse=FALSE)(levels)
+         ...)(levels)
     
     labels <- 
       c(
@@ -143,7 +148,35 @@ pas_palette <- function(pas, pal) {
       
       sensorColor <- colorFunc(pas$pwfsl_closestDistance)
       
+  } else { # GENERIC COLOR FUNC
+  
+    colorFunc <- 
+      leaflet::colorNumeric(
+        palette = pal, 
+        domain = c(0,200), 
+        na.color = "grey50", 
+        ... 
+      )
+    
+    breaks <- seq(0,200,length.out=7)
+    levels <- seq(5,195,length.out=6)
+    
+    colorBreaks <- 
+      leaflet::colorBin(
+        palette = pal, 
+        domain=range(breaks), 
+        bins=breaks, 
+        ...)(levels)
+    
+    labels <- PWFSLSmoke::AQI$names
+    
+    if ( is.null(param) )( stop("Must provide a parameter."))
+    
+    sensorColor <- colorFunc(pas[[param]])
+    
   }
+  
+  # ----- Return color palette -------------------------------------------------
   
   options(warn = 0)
   
