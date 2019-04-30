@@ -62,6 +62,7 @@
 pas_leaflet <- function(
   pas = NULL,
   parameter = "pm25_1hr",
+  palette = NULL,
   radius = 10,
   opacity = 0.8,
   maptype = "terrain",
@@ -107,91 +108,95 @@ pas_leaflet <- function(
   # Ignore warnings from RColorBrewer as leaflet::colorBin does the right thing
   suppressWarnings({
     
-    if ( stringr::str_detect(parameter, "^pm25") ) { # PM2.5
+    if ( stringr::str_detect(tolower(parameter), "^pm25") ) { # AQI
+
+     if ( tolower(palette) == "aqi" || is.null(palette) ) {
+       
+       colorPalette <- pas_palette(pas, "aqi")
+       cols <- colorPalette$colors
+       
+       colors <- colorPalette$key[,2]
+       labels <- colorPalette$key[,1]
+       legendTitle <- 'AQI'
+       value <- round(pas$pm25_1hr, 1)
+       unit <- '\U00B5g/m3'
+    
+     } else { # Other Palettes
+        
+       colorPalette <- pas_palette(
+         pas, 
+         param = parameter, 
+         pal = palette, 
+         reverse=TRUE
+         )
+       
+       cols <- colorPalette$colors
+       
+       colors <- colorPalette$key[,2]
+       labels <- c(
+         "0-12", 
+         "12-35", 
+         "35-55", 
+         "55-150", 
+         "150-250", 
+         ">250"
+         )
+       
+       legendTitle <- '\U00B5g/m^3'
+       value <- round(pas[[parameter]], 2)
+       unit <- '\U00B5g/m3'
+       }
       
-      colorFunc <- leaflet::colorBin(PWFSLSmoke::AQI$colors, 
-                                     bins = PWFSLSmoke::AQI$breaks_24, 
-                                     na.color = "#bbbbbb")
-      cols <- colorFunc(pas[[parameter]])
-      colors <- PWFSLSmoke::AQI$colors
-      labels <- PWFSLSmoke::AQI$names
-      legendTitle <- 'AQI Level'
-      value <- round(pas[[parameter]], 1)
-      unit <- '\U00B5g/m3'
+
       
     } else if ( parameter == "temperature" ) {       # Temperature
       
-      colorFunc <- leaflet::colorNumeric("RdYlBu", domain = c(-50,130), 
-                                         na.color = "#bbbbbb", reverse=TRUE)
-      cols <- colorFunc(pas[[parameter]])
-      breaks <- seq(-20,120,length.out=15)
-      levels <- seq(-15,115,length.out=14)
-      colors <- leaflet::colorBin("RdYlBu", domain=range(breaks), 
-                                  bins=breaks, reverse=TRUE)(levels)
-      labels <- c('<-10',
-                  '-10-0',
-                  '0-10',
-                  '10-20',
-                  '10-20',
-                  '20-30',
-                  '30-40',
-                  '40-50',
-                  '50-60',
-                  '70-80',
-                  '80-90',
-                  '90-100',
-                  '100-110',
-                  '>110')
+      colorPalette <- 
+        pas_palette(
+          pas, 
+          "temperature", 
+          reverse = TRUE
+        )
+      
+      cols <- colorPalette$colors
+      labels <- colorPalette$key[,1]
+      colors <- colorPalette$key[,2]
+      
       legendTitle <- 'Temp in \U2109'
       value <- round(pas[[parameter]], 0)
       unit <- '\U2109'
       
     } else if ( parameter == "humidity" ) {          # Humidity
       
-      colorFunc <- leaflet::colorNumeric("BrBG", domain = c(0,100), 
-                                         na.color = "#bbbbbb", reverse=FALSE)
-      cols <- colorFunc(pas[[parameter]])
-      breaks <- seq(0,100,length.out=11)
-      levels <- seq(5,95,length.out=10)
-      colors <- leaflet::colorBin("BrBG", domain=range(breaks), 
-                                  bins=breaks, reverse=FALSE)(levels)
-      labels <- c('<10%',
-                  '10-20%',
-                  '20-30%',
-                  '30-40%',
-                  '40-50%',
-                  '50-60%',
-                  '60-70%',
-                  '70-80%',
-                  '80-90%',
-                  '>90%')
+      colorPalette <- 
+        pas_palette(
+          pas, 
+          "humidity", 
+          reverse = FALSE
+        )
+      
+      cols <- colorPalette$colors
+      labels <- colorPalette$key[,1]
+      colors <- colorPalette$key[,2]
+      
       value <- round(pas[[parameter]], 0)
       legendTitle <- 'Relative Humidity'
       unit <- '%'
       
     } else if ( stringr::str_detect(parameter, "[dD]istance$") ) { # Distance
       
-      # NOTE:  dplyr::arrange_at() works with names of variables but desc() doesn't
-      pas$inverse_distance <- 1 / pas[[parameter]]
-      pas <- dplyr::arrange_at(pas, 'inverse_distance') # low values 'last'
-      # NOTE:  Use definied palette and bins
-      bins <- c(0,100,200,500,1000,2000,3000,4000,5000,10000)
-      domain <- range(bins)
-      oranges <- rev(RColorBrewer::brewer.pal(9,'Oranges'))
-      purples <- rev(RColorBrewer::brewer.pal(9,'Purples'))
-      colors <- c(oranges[4:1],purples[3:7])
-      colorFunc <- leaflet::colorBin(colors, domain = domain, 
-                                     bins = bins, na.color = "#bbbbbb")
-      cols <- colorFunc(pas[[parameter]])
-      labels <- c('<100 m',
-                  '100-200 m',
-                  '200-500 m',
-                  '0.5-1 km',
-                  '1-2 km',
-                  '2-3 km',
-                  '3-4 km',
-                  '4-5 km',
-                  '5:10 km')
+      colorPalette <- 
+        pas_palette(
+          pas, 
+          "distance", 
+          reverse = TRUE
+        )
+      
+      cols <- colorPalette$colors
+      labels <- colorPalette$key[,1]
+      colors <- colorPalette$key[,2]
+      
+      
       legendTitle <- parameter
       value <- round(pas[[parameter]], 0)
       unit <- 'm'
