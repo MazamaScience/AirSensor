@@ -108,6 +108,7 @@ pas_leaflet <- function(
   suppressWarnings({
     
     if ( stringr::str_detect(parameter, "^pm25") ) { # PM2.5
+      
       colorFunc <- leaflet::colorBin(PWFSLSmoke::AQI$colors, 
                                      bins = PWFSLSmoke::AQI$breaks_24, 
                                      na.color = "#bbbbbb")
@@ -117,7 +118,9 @@ pas_leaflet <- function(
       legendTitle <- 'AQI Level'
       value <- round(pas[[parameter]], 1)
       unit <- '\U00B5g/m3'
+      
     } else if ( parameter == "temperature" ) {       # Temperature
+      
       colorFunc <- leaflet::colorNumeric("RdYlBu", domain = c(-50,130), 
                                          na.color = "#bbbbbb", reverse=TRUE)
       cols <- colorFunc(pas[[parameter]])
@@ -142,7 +145,9 @@ pas_leaflet <- function(
       legendTitle <- 'Temp in \U2109'
       value <- round(pas[[parameter]], 0)
       unit <- '\U2109'
+      
     } else if ( parameter == "humidity" ) {          # Humidity
+      
       colorFunc <- leaflet::colorNumeric("BrBG", domain = c(0,100), 
                                          na.color = "#bbbbbb", reverse=FALSE)
       cols <- colorFunc(pas[[parameter]])
@@ -163,7 +168,9 @@ pas_leaflet <- function(
       value <- round(pas[[parameter]], 0)
       legendTitle <- 'Relative Humidity'
       unit <- '%'
+      
     } else if ( stringr::str_detect(parameter, "[dD]istance$") ) { # Distance
+      
       # NOTE:  dplyr::arrange_at() works with names of variables but desc() doesn't
       pas$inverse_distance <- 1 / pas[[parameter]]
       pas <- dplyr::arrange_at(pas, 'inverse_distance') # low values 'last'
@@ -190,6 +197,7 @@ pas_leaflet <- function(
       unit <- 'm'
       
     } else if ( parameter %in% c("r2_a", "r2_b") ) {
+      
       bins <- c(0, .5, .75, .9, 1)
       domain <- c(0,1)
       colors <- c("#ffffd4","#fed98e","#fe9929","#cc4c02")
@@ -200,7 +208,9 @@ pas_leaflet <- function(
       legendTitle <- "R2"
       value <- round(pas[[parameter]], 2)
       unit <- ''
+      
     } else if ( parameter %in% c("slope_a", "slope_b") ) {
+      
       colors <- c("#7f3b08", 
                   "#b35806",
                   "#e08214",
@@ -223,7 +233,9 @@ pas_leaflet <- function(
       legendTitle <- "Scale Factor"
       value <- round(pas[[parameter]], 2)
       unit <- ''
+      
     } else {                                    # Other
+      
       domain <- range(pas[[parameter]], na.rm=TRUE)
       colorFunc <- leaflet::colorNumeric("Purples", 
                                          domain = domain, 

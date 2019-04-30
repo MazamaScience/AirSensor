@@ -17,7 +17,8 @@
 #' @param alpha opacity of points
 #' @param bbuff bounding box buffer, default is 0.1
 #' @param zoomAdjust adjustment to map zoom level (-1:3)
-#' @param ... additional options: the legend can disabled \code{guide = FALSE}
+#' @param ... additional options: the legend can disabled \code{guide = FALSE}, 
+#' and renamed with \code{name= "Example name"}. 
 #'   
 #' @return ggplot object 
 #' 
@@ -78,39 +79,81 @@ pas_staticMap <- function(
   
   # ----- Color Scale Theme ----------------------------------------------------
   
-  if ( tolower(palette) == "aqi" ) { 
+  if ( tolower(palette) == "aqi" ) { # AQI COLORS
     
-    colorFunc <- 
-      leaflet::colorBin( 
-        PWFSLSmoke::AQI$colors, 
-        bins = PWFSLSmoke::AQI$breaks_24, 
-        na.color = "grey50" 
-      )
+    options(warn = -1)
     
-    AQI_color <- c(PWFSLSmoke::AQI$colors, "grey50")
-    AQI_label <- c(PWFSLSmoke::AQI$names, "Missing")
+    colorInfo <- pas_palette(pas, palette)
     
-    sensorColor <- colorFunc(pas[[parameter]])
+    colors <- colorInfo$colors
+    breaks <- c(colorInfo$key[,2], "grey50")
+    labels <- c(colorInfo$key[,1], "Missing")
+    sensorColor <- colorInfo$colors
     
     colorPalette <- 
       ggplot2::scale_color_identity(
         "AQI",
-        labels = AQI_label,
-        breaks = AQI_color,
+        labels = labels,
+        breaks = breaks,
+        guide = "legend"
+      )
+
+  } else if ( tolower(palette) == "humidity"  ) { # HUMIDITY 
+    
+    colorInfo <- pas_palette(pas, "humidity")
+    
+    colors <- colorInfo$colors
+    breaks <- c(colorInfo$key[,2], "grey50")
+    labels <- c(colorInfo$key[,1], "Missing")
+    sensorColor <- colorInfo$colors
+    
+    colorPalette <- 
+      ggplot2::scale_color_identity(
+        "Humidity",
+        labels = labels,
+        breaks = breaks,
         guide = "legend"
       )
     
-  } else { 
+  }  else if ( tolower(palette) == "temperature" ) { # TEMPERATURE
     
-    if ( parameter == "pm25" ) {
-      name <- "\u03bcg / m\u00b3"
-    } else if ( parameter == "temperature") { 
-      name <- "\u00b0F"
-    } else if ( parameter == "humidity" ) { 
-      name <- "RH%"
-    } else { 
-      name <- ""
-    }
+    colorInfo <- pas_palette(pas, "temperature")
+    
+    colors <- colorInfo$colors
+    breaks <- c(colorInfo$key[,2], "grey50")
+    labels <- c(colorInfo$key[,1], "Missing")
+    sensorColor <- colorInfo$colors
+    
+    colorPalette <- 
+      ggplot2::scale_color_identity(
+        "Temperature",
+        labels = labels,
+        breaks = breaks,
+        guide = "legend"
+      )
+    
+    options(warn = 0)
+  } else if ( tolower(palette) == "distance" ) { # PWFLS distance
+    
+    colorInfo <- pas_palette(pas, "distance")
+    
+    colors <- colorInfo$colors
+    breaks <- c(colorInfo$key[,2], "grey50")
+    labels <- c(colorInfo$key[,1], "Missing")
+    sensorColor <- colorInfo$colors
+    
+    colorPalette <- 
+      ggplot2::scale_color_identity(
+        "Distance",
+        labels = labels,
+        breaks = breaks,
+        guide = "legend"
+      )
+    
+    options(warn = 0)
+    
+  } else { # OTHER PALETTE HANDLING
+    
     colorBrew <- 
       grDevices::colorRampPalette(
         RColorBrewer::brewer.pal(
@@ -126,9 +169,8 @@ pas_staticMap <- function(
     
     colorPalette <- 
       ggplot2::scale_color_gradientn(
-        name = name,
         colors = colors, 
-        limits = c(minScale,maxScale), 
+        limits = c(minScale, maxScale), 
         oob = scales::squish, 
         na.value = "grey50", 
         ...
@@ -245,6 +287,8 @@ pas_staticMap <- function(
     ggmap::ggmap()
   
   # ----- Construct Static Map -------------------------------------------------
+  
+  # TODO: Find a way to show the complete legend.
   
   staticMap <- 
     stamenMap + 
