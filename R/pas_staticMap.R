@@ -276,7 +276,8 @@ pas_staticMap <- function(
     )
   
   # ----- Construct Stamen Maps ------------------------------------------------
-  
+  suppressMessages({
+    
   stamenMap <- 
     ggmap::get_stamenmap(
       bbox = bbox, 
@@ -285,7 +286,7 @@ pas_staticMap <- function(
       ...
     ) %>% 
     ggmap::ggmap()
-  
+  })
   # ----- Construct Static Map -------------------------------------------------
   
   # TODO: Find a way to show the complete legend.
