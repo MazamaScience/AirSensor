@@ -109,45 +109,45 @@ pas_leaflet <- function(
   suppressWarnings({
     
     if ( stringr::str_detect(tolower(parameter), "^pm25") ) { # AQI
-
-     if ( tolower(palette) == "aqi" || is.null(palette) ) {
-       
-       colorPalette <- pas_palette(pas, "aqi")
-       cols <- colorPalette$colors
-       
-       colors <- colorPalette$key[,2]
-       labels <- colorPalette$key[,1]
-       legendTitle <- 'AQI'
-       value <- round(pas$pm25_1hr, 1)
-       unit <- '\U00B5g/m3'
-    
-     } else { # Other Palettes
-        
-       colorPalette <- pas_palette(
-         pas, 
-         param = parameter, 
-         pal = palette, 
-         reverse=TRUE
-         )
-       
-       cols <- colorPalette$colors
-       
-       colors <- colorPalette$key[,2]
-       labels <- c(
-         "0-12", 
-         "12-35", 
-         "35-55", 
-         "55-150", 
-         "150-250", 
-         ">250"
-         )
-       
-       legendTitle <- '\U00B5g/m^3'
-       value <- round(pas[[parameter]], 2)
-       unit <- '\U00B5g/m3'
-       }
       
-
+      if ( tolower(palette) == "aqi" || is.null(palette) ) {
+        
+        colorPalette <- pas_palette(pas, "aqi")
+        cols <- colorPalette$colors
+        
+        colors <- colorPalette$key[,2]
+        labels <- colorPalette$key[,1]
+        legendTitle <- 'AQI'
+        value <- round(pas$pm25_1hr, 1)
+        unit <- '\U00B5g/m3'
+        
+      } else { # Other Palettes
+        
+        colorPalette <- pas_palette(
+          pas, 
+          param = parameter, 
+          pal = palette, 
+          reverse=TRUE
+        )
+        
+        cols <- colorPalette$colors
+        
+        colors <- colorPalette$key[,2]
+        labels <- c(
+          "0-12", 
+          "12-35", 
+          "35-55", 
+          "55-150", 
+          "150-250", 
+          ">250"
+        )
+        
+        legendTitle <- '\U00B5g/m^3'
+        value <- round(pas[[parameter]], 2)
+        unit <- '\U00B5g/m3'
+      }
+      
+      
       
     } else if ( parameter == "temperature" ) {       # Temperature
       

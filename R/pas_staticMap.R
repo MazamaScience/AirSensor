@@ -97,7 +97,7 @@ pas_staticMap <- function(
         breaks = breaks,
         guide = "legend"
       )
-
+    
   } else if ( tolower(palette) == "humidity"  ) { # HUMIDITY 
     
     colorInfo <- pas_palette(pas, "humidity")
@@ -278,14 +278,14 @@ pas_staticMap <- function(
   # ----- Construct Stamen Maps ------------------------------------------------
   suppressMessages({
     
-  stamenMap <- 
-    ggmap::get_stamenmap(
-      bbox = bbox, 
-      zoom = zoom, 
-      maptype = mapTheme,
-      ...
-    ) %>% 
-    ggmap::ggmap()
+    stamenMap <- 
+      ggmap::get_stamenmap(
+        bbox = bbox, 
+        zoom = zoom, 
+        maptype = mapTheme,
+        ...
+      ) %>% 
+      ggmap::ggmap()
   })
   # ----- Construct Static Map -------------------------------------------------
   

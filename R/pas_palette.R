@@ -21,7 +21,7 @@ pas_palette <- function(
   pal,
   param = NULL,
   ...
-  ) {
+) {
   
   options(warn = -1)
   
@@ -79,7 +79,7 @@ pas_palette <- function(
         "RdYlBu", 
         domain=range(breaks), 
         bins=breaks, 
-         ...)(levels)
+        ...)(levels)
     
     labels <- 
       c(
@@ -117,39 +117,39 @@ pas_palette <- function(
     sensorColor <- colorFunc(pas$pm25_1hr)
     
   } else if ( tolower(pal == "distance") ) { # DISTANCE
-      
-      bins <- c(0,100,200,500,1000,2000,3000,4000,5000,10000)
-      
-      oranges <- rev(RColorBrewer::brewer.pal(9,'Oranges'))
-      purples <- rev(RColorBrewer::brewer.pal(9,'Purples'))
-      
-      colorBreaks <- c(oranges[4:1],purples[3:7])
-      
-      colorFunc <- 
-        leaflet::colorBin(
-          colorBreaks, 
-          domain = range(bins), 
-          bins = bins,
-          na.color = "grey50"
-        )
-      
-      labels <- 
-        c(
-          '<100 m',
-          '100-200 m',
-          '200-500 m',
-          '0.5-1 km',
-          '1-2 km',
-          '2-3 km',
-          '3-4 km',
-          '4-5 km',
-          '5-10 km'
-        )
-      
-      sensorColor <- colorFunc(pas$pwfsl_closestDistance)
-      
+    
+    bins <- c(0,100,200,500,1000,2000,3000,4000,5000,10000)
+    
+    oranges <- rev(RColorBrewer::brewer.pal(9,'Oranges'))
+    purples <- rev(RColorBrewer::brewer.pal(9,'Purples'))
+    
+    colorBreaks <- c(oranges[4:1],purples[3:7])
+    
+    colorFunc <- 
+      leaflet::colorBin(
+        colorBreaks, 
+        domain = range(bins), 
+        bins = bins,
+        na.color = "grey50"
+      )
+    
+    labels <- 
+      c(
+        '<100 m',
+        '100-200 m',
+        '200-500 m',
+        '0.5-1 km',
+        '1-2 km',
+        '2-3 km',
+        '3-4 km',
+        '4-5 km',
+        '5-10 km'
+      )
+    
+    sensorColor <- colorFunc(pas$pwfsl_closestDistance)
+    
   } else { # GENERIC COLOR FUNC
-  
+    
     colorFunc <- 
       leaflet::colorNumeric(
         palette = pal, 
