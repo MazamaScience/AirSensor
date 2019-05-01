@@ -1,3 +1,12 @@
+# AirSensor 0.2.7
+
+* `enhanceSynopticMetadata()` adds the following columns to a `pas` object:
+  - `airDistrict` -- CARB air district
+  - `sensorManufacturer = "Purple Air"`
+  - `targetPollutant = "PM"`
+  - `technologyType = "consumer-grade"`
+  - `communityRegion` -- (where known)
+  
 # AirSensor 0.2.6 
 
 * added `example_pat_failure` dataset

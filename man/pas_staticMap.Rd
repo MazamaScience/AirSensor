@@ -36,7 +36,8 @@ pas_staticMap(pas, parameter = "pm25_1hr", palette = "Purples",
 
 \item{zoomAdjust}{adjustment to map zoom level (-1:3)}
 
-\item{...}{additional options: the legend can disabled \code{guide = FALSE}}
+\item{...}{additional options: the legend can disabled \code{guide = FALSE}, 
+and renamed with \code{name= "Example name"}.}
 }
 \value{
 ggplot object

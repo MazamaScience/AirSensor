@@ -15,11 +15,20 @@
 #'   \item{timezone -- olson timezone}
 #'   \item{countryCode -- ISO 3166-1 alpha-2}
 #'   \item{stateCode -- ISO 3166-2 alpha-2}
+#'   \item{airDistrict -- CARB air districts}
 #' }
 #'
 #' 3) Convert data types from character to \code{POSIXct} and \code{numeric}.
 #'
 #' 4) Add distance and monitorID for the two closest PWFSL monitors
+#' 
+#' 5) Add additional metadata items:
+#' \itemize{
+#' \item{sensorManufacturer = "Purple Air"}
+#' \item{targetPollutant = "PM"}
+#' \item{technologyType = "consumer-grade"}
+#' \item{communityRegion -- (where known)}
+#' }
 #'
 #' Subsetting by country may be performed by specifying the \code{countryCodes} 
 #' argument.
@@ -127,6 +136,34 @@ enhanceSynopticData <- function(
                                                     countryCodes = countryCodes,
                                                     useBuffering = TRUE)
     
+    # CARB Air Districts
+    result <- try({ 
+      MazamaSpatialUtils::loadSpatialData("CA_AirBasins_01") 
+    }, silent = TRUE)
+    
+    if ( "try-error" %in% class(result) ) {
+      
+      logger.warn("Unable to load spatial data `CA_AirBasins_01`.")
+      
+    } else {
+      
+      pas_CA <- pas %>% filter(countryCode == "US" & stateCode == "CA")
+      pas_CA$airDistrict <- 
+        MazamaSpatialUtils::getSpatialData(
+          pas_CA$longitude,
+          pas_CA$latitude,
+          CA_AirBasins_01,
+          useBuffering = TRUE
+        ) %>%
+        pull("name")
+      
+      pas_nonCA <-  pas %>% filter(countryCode != "US" | stateCode != "CA")
+      pas_nonCA$airDistrict <- as.character(NA)
+      
+      pas <- bind_rows(pas_CA, pas_nonCA)
+      
+    }
+    
   })
   
   # ----- Convert times to POSIXct ---------------------------------------------
@@ -152,7 +189,7 @@ enhanceSynopticData <- function(
   
   # ----- Convert to internally standard units ---------------------------------
   
-  pas$statsLastModifiedInterval <- pas$statsLastModifiedInterval / 1000     # seconds
+  pas$statsLastModifiedInterval <- pas$statsLastModifiedInterval / 1000   # seconds
   
   # ----- Round values to reflect resolution as specified in https://www.purpleair.com/sensors
   
@@ -183,6 +220,55 @@ enhanceSynopticData <- function(
     }
     
   }
+
+  # ----- Addditional metadata per SCAQMD request ------------------------------
+  
+  pas$sensorManufacturer <- "Purple Air"
+  pas$targetPollutant <- "PM"
+  pas$technologyType <- "consumer-grade"
+  
+  # ----- Add communityRegion --------------------------------------------------
+  
+  pas$communityRegion <- as.character(NA)
+  label <- tolower(pas$label)
+  
+  # SCAQMD communities
+  # NOTE:  Need to match "sctv_15 (dawson canyon) b"
+  scah_mask <- stringr::str_detect(label, "^scah_[0-9][0-9]( ?.*$)")
+  scan_mask <- stringr::str_detect(label, "^scan_[0-9][0-9]( ?.*$)")
+  scap_mask <- stringr::str_detect(label, "^scap_[0-9][0-9]( ?.*$)")
+  scbb_mask <- stringr::str_detect(label, "^scbb_[0-9][0-9]( ?.*$)")
+  scem_mask <- stringr::str_detect(label, "^scem_[0-9][0-9]( ?.*$)")
+  schs_mask <- stringr::str_detect(label, "^schs_[0-9][0-9]( ?.*$)")
+  sciv_mask <- stringr::str_detect(label, "^sciv_[0-9][0-9]( ?.*$)")
+  scnp_mask <- stringr::str_detect(label, "^scnp_[0-9][0-9]( ?.*$)")
+  scpr_mask <- stringr::str_detect(label, "^scpr_[0-9][0-9]( ?.*$)")
+  scsb_mask <- stringr::str_detect(label, "^scsb_[0-9][0-9]( ?.*$)")
+  scsc_mask <- stringr::str_detect(label, "^scsc_[0-9][0-9]( ?.*$)")
+  scsg_mask <- stringr::str_detect(label, "^scsg_[0-9][0-9]( ?.*$)")
+  scsh_mask <- stringr::str_detect(label, "^scsh_[0-9][0-9]( ?.*$)")
+  scsj_mask <- stringr::str_detect(label, "^scsj_[0-9][0-9]( ?.*$)")
+  sctv_mask <- stringr::str_detect(label, "^sctv_[0-9][0-9]( ?.*$)")
+  scuv_mask <- stringr::str_detect(label, "^scuv_[0-9][0-9]( ?.*$)")
+  
+  pas$communityRegion[scah_mask] <- "SCAH"
+  pas$communityRegion[scan_mask] <- "SCAN"
+  pas$communityRegion[scap_mask] <- "Alhambra/Monterey Park"
+  pas$communityRegion[scbb_mask] <- "Big Bear Lake"
+  pas$communityRegion[scem_mask] <- "El Monte"
+  pas$communityRegion[schs_mask] <- "Sycamore Canyon"   # typo on someone's part
+  pas$communityRegion[sciv_mask] <- "Imperial Valley"
+  pas$communityRegion[scnp_mask] <- "Nipomo"
+  pas$communityRegion[scpr_mask] <- "Paso Robles"
+  pas$communityRegion[scsb_mask] <- "Seal Beach"
+  pas$communityRegion[scsc_mask] <- "Seal Beach"        # typo on someone's part
+  pas$communityRegion[scsg_mask] <- "South Gate"
+  pas$communityRegion[scsh_mask] <- "Sycamore Canyon"
+  pas$communityRegion[scsj_mask] <- "San Jacinto"
+  pas$communityRegion[sctv_mask] <- "Temescal Valley"
+  pas$communityRegion[scuv_mask] <- "SCUV"
+  
+  # ----- Return ---------------------------------------------------------------
   
   # Guarantee the class name still exists
   class(pas) <- c('pa_synoptic', class(pas))

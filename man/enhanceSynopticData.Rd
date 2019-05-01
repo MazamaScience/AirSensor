@@ -31,11 +31,20 @@ Steps include:
   \item{timezone -- olson timezone}
   \item{countryCode -- ISO 3166-1 alpha-2}
   \item{stateCode -- ISO 3166-2 alpha-2}
+  \item{airDistrict -- CARB air districts}
 }
 
 3) Convert data types from character to \code{POSIXct} and \code{numeric}.
 
 4) Add distance and monitorID for the two closest PWFSL monitors
+
+5) Add additional metadata items:
+\itemize{
+\item{sensorManufacturer = "Purple Air"}
+\item{targetPollutant = "PM"}
+\item{technologyType = "consumer-grade"}
+\item{communityRegion -- (where known)}
+}
 
 Subsetting by country may be performed by specifying the \code{countryCodes} 
 argument.

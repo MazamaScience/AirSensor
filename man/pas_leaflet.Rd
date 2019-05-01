@@ -4,8 +4,9 @@
 \alias{pas_leaflet}
 \title{Leaflet interactive map of Purple Air sensors}
 \usage{
-pas_leaflet(pas = NULL, parameter = "pm25_1hr", radius = 10,
-  opacity = 0.8, maptype = "terrain", outsideOnly = TRUE)
+pas_leaflet(pas = NULL, parameter = "pm25_1hr", palette = NULL,
+  radius = 10, opacity = 0.8, maptype = "terrain",
+  outsideOnly = TRUE)
 }
 \arguments{
 \item{pas}{Enhanced dataframe of PurpleAir synoptic data.}
