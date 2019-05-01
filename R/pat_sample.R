@@ -76,10 +76,12 @@ pat_sample <- function(
     
     outlierIndex_A <-
       pat$data$pm25_A %>%
+      filter(!is.na(.data)) %>% 
       seismicRoll::findOutliers(n = 11, thresholdMin = 4)
     
     outlierIndex_B <- 
       pat$data$pm25_B %>% 
+      filter(!is.na(.data)) %>% 
       seismicRoll::findOutliers(n = 11, thresholdMin = 4)
     
     outlierIndex_AB <- 
