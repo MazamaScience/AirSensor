@@ -50,7 +50,7 @@ See `downloadParseSynopticData()` for more info.
 
 2. Enhance the raw dataset by replacing variables with more consistent and 
 human readable names, adds spatial metadata for each sensor, and lists the 
-nearest official air quality monitor. For a more indepth explaination, see 
+nearest official air quality monitor. For a more in depth explanation, see 
 `enhanceSynopticData()`.
 
 ### PurpleAir Synoptic Data
@@ -94,11 +94,11 @@ pas %>%
 ```
 
 This code pipes our `pas` data into `dplyr::filter()` where we can set our 
-selection criteria. A `stateCode` is the ISO 3166-2 state name abbriviation, 
+selection criteria. A `stateCode` is the ISO 3166-2 state name abbreviation, 
 hence we limit our filter to only accept `stateCode == 'CA'`. The `pm25_6hr` 
 selection, as mentioned above, selects the 6-hour average and restricts the 
 sensors to those whose PM2.5 6-hour average is above 25.0. Be sure to include 
-the `"pm25_6hr"` paramter in `pas_leaflet()`.  
+the `"pm25_6hr"` parameter in `pas_leaflet()`.  
 
 ### Mapping `pas` auxillary data
 
@@ -152,7 +152,7 @@ df %>%
 ```
 
 As you can see, the AirSensor package combined with data provided by 
-PurpleAir offers a powerful system for regional air-quality assesment. 
+PurpleAir offers a powerful system for regional air-quality assessment. 
 
 ----
 

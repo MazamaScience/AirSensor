@@ -119,27 +119,27 @@ pas_leaflet <- function(
       
       if ( tolower(paletteName) == "aqi" || is.null(paletteName) ) {
         
-        colorPalette <- pas_palette(pas, "aqi", parameter)
-        cols <- colorPalette$colors
+        colorInfo <- pas_palette(pas, "aqi", parameter)
+        cols <- colorInfo$colors
         
-        colors <- colorPalette$key[,2]
-        labels <- colorPalette$key[,1]
+        colors <- colorInfo$key[,2]
+        labels <- colorInfo$key[,1]
         legendTitle <- 'AQI'
         value <- round(pas$pm25_1hr, 1)
         unit <- '\U00B5g/m3'
         
       } else { # Other Palettes
         
-        colorPalette <- pas_palette(
+        colorInfo <- pas_palette(
           pas, 
           paletteName = paletteName, 
           parameter = parameter, 
           reverse=TRUE
         )
         
-        cols <- colorPalette$colors
+        cols <- colorInfo$colors
         
-        colors <- colorPalette$key[,2]
+        colors <- colorInfo$key[,2]
         labels <- c(
           "0-12", 
           "12-35", 
@@ -158,16 +158,16 @@ pas_leaflet <- function(
       
     } else if ( parameter == "temperature" ) {       # Temperature
       
-      colorPalette <- 
+      colorInfo <- 
         pas_palette(
           pas, 
           "temperature", 
           reverse = TRUE
         )
       
-      cols <- colorPalette$colors
-      labels <- colorPalette$key[,1]
-      colors <- colorPalette$key[,2]
+      cols <- colorInfo$colors
+      labels <- colorInfo$key[,1]
+      colors <- colorInfo$key[,2]
       
       legendTitle <- 'Temp in \U2109'
       value <- round(pas[[parameter]], 0)
@@ -175,16 +175,16 @@ pas_leaflet <- function(
       
     } else if ( parameter == "humidity" ) {          # Humidity
       
-      colorPalette <- 
+      colorInfo <- 
         pas_palette(
           pas, 
           "humidity", 
           reverse = FALSE
         )
       
-      cols <- colorPalette$colors
-      labels <- colorPalette$key[,1]
-      colors <- colorPalette$key[,2]
+      cols <- colorInfo$colors
+      labels <- colorInfo$key[,1]
+      colors <- colorInfo$key[,2]
       
       value <- round(pas[[parameter]], 0)
       legendTitle <- 'Relative Humidity'
@@ -192,16 +192,16 @@ pas_leaflet <- function(
       
     } else if ( stringr::str_detect(parameter, "[dD]istance$") ) { # Distance
       
-      colorPalette <- 
+      colorInfo <- 
         pas_palette(
           pas, 
           "distance", 
           reverse = TRUE
         )
       
-      cols <- colorPalette$colors
-      labels <- colorPalette$key[,1]
-      colors <- colorPalette$key[,2]
+      cols <- colorInfo$colors
+      labels <- colorInfo$key[,1]
+      colors <- colorInfo$key[,2]
       
       
       legendTitle <- parameter

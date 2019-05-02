@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>General purpose filtering for <em>pat</em> objects — pat_filterData • AirSensor</title>
+<title>Color palettes for PurpleAir — pas_palette • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,13 +37,10 @@
 
 
 
-<meta property="og:title" content="General purpose filtering for <em>pat</em> objects — pat_filterData" />
+<meta property="og:title" content="Color palettes for PurpleAir — pas_palette" />
 
-<meta property="og:description" content="A generalized data filter for pat objects to 
-choose rows/cases where conditions are true.  Multiple conditions are 
-combined with &amp;amp; or seperated by a comma. Only rows where the condition 
-evaluates to TRUE are kept.Rows where the condition evaluates to NA
-aredropped." />
+<meta property="og:description" content="Generates color palettes for PurpleAir synoptic data with the 
+intention of having a reproducible functional color generator." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -131,50 +128,53 @@ aredropped." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>General purpose filtering for <em>pat</em> objects</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_filterData.R'><code>R/pat_filterData.R</code></a></small>
-    <div class="hidden name"><code>pat_filterData.Rd</code></div>
+    <h1>Color palettes for PurpleAir</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pas_palette.R'><code>R/pas_palette.R</code></a></small>
+    <div class="hidden name"><code>pas_palette.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>A generalized data filter for <em>pat</em> objects to 
-choose rows/cases where conditions are true.  Multiple conditions are 
-combined with <code>&amp;</code> or seperated by a comma. Only rows where the condition 
-evaluates to TRUE are kept.Rows where the condition evaluates to <code>NA</code>
-aredropped.</p>
+    <p>Generates color palettes for PurpleAir synoptic data with the 
+intention of having a reproducible functional color generator.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pat_filterData</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>pas_palette</span>(<span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>paletteName</span> <span class='kw'>=</span> <span class='st'>"AQI"</span>, <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>"pm25_1hr"</span>,
+  <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pat</th>
-      <td><p><em>pa_timeseries</em> dataframe</p></td>
+      <th>pas</th>
+      <td><p>Enhanced data frame of PurpleAir synoptic data.</p></td>
+    </tr>
+    <tr>
+      <th>paletteName</th>
+      <td><p>A predefined color palette name. Can be of the following:</p><ul>
+<li><p>"AQI"</p></li>
+<li><p>"humidity</p></li>
+<li><p>"temperature</p></li>
+<li><p>"distance"</p></li>
+</ul></td>
+    </tr>
+    <tr>
+      <th>parameter</th>
+      <td><p>Value to generate colors for, e.g. <code>pm25_1hr</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>logical predicates defined in terms of the variables in the 
-<code>pat$data</code>.</p></td>
+      <td><p>Additional arguments passed on to <code>leaflet::color~</code> functions.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A subset of the incoming <code>pat</code>.</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><a href='pat_filterDate.html'>pat_filterDate</a></p></div>
+    <p>An object that consists of a label and color dataframe, and
+calculated color values from PurpleAir sensors</p>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>unhealthy</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_filterData</span>(<span class='no'>pat</span>, <span class='no'>pm25_A</span> <span class='kw'>&gt;</span> <span class='fl'>55.5</span>, <span class='no'>pm25_B</span> <span class='kw'>&gt;</span> <span class='fl'>55.5</span>)
-<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -182,11 +182,7 @@ aredropped.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>

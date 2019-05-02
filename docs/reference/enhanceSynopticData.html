@@ -47,11 +47,19 @@ Steps include:
 timezone -- olson timezone
 countryCode -- ISO 3166-1 alpha-2
 stateCode -- ISO 3166-2 alpha-2
+airDistrict -- CARB air districts
 " />
 
 <meta property="og:description" content="3) Convert data types from character to POSIXct and numeric.
 4) Add distance and monitorID for the two closest PWFSL monitors
-Subsetting by country may be performed by specifying the countryCodes 
+5) Add additional metadata items:
+sensorManufacturer = &quot;Purple Air&quot;
+targetPollutant = &quot;PM&quot;
+technologyType = &quot;consumer-grade&quot;
+communityRegion -- (where known)
+" />
+
+<meta property="og:description" content="Subsetting by country may be performed by specifying the countryCodes 
 argument.
 Setting outsideOnly = TRUE will return only those records marked as 
 'outside'." />
@@ -85,7 +93,7 @@ Setting outsideOnly = TRUE will return only those records marked as
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.7</span>
       </span>
     </div>
 
@@ -157,11 +165,19 @@ useful dataframe.</p>
 <li><p>timezone -- olson timezone</p></li>
 <li><p>countryCode -- ISO 3166-1 alpha-2</p></li>
 <li><p>stateCode -- ISO 3166-2 alpha-2</p></li>
+<li><p>airDistrict -- CARB air districts</p></li>
 </ul>
 
     <p>3) Convert data types from character to <code>POSIXct</code> and <code>numeric</code>.</p>
 <p>4) Add distance and monitorID for the two closest PWFSL monitors</p>
-<p>Subsetting by country may be performed by specifying the <code>countryCodes</code> 
+<p>5) Add additional metadata items:</p><ul>
+<li><p>sensorManufacturer = "Purple Air"</p></li>
+<li><p>targetPollutant = "PM"</p></li>
+<li><p>technologyType = "consumer-grade"</p></li>
+<li><p>communityRegion -- (where known)</p></li>
+</ul>
+
+    <p>Subsetting by country may be performed by specifying the <code>countryCodes</code> 
 argument.</p>
 <p>Setting <code>outsideOnly = TRUE</code> will return only those records marked as 
 'outside'.</p>

@@ -89,7 +89,7 @@ sensor data. Currently supported parameter arguments include:
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.7</span>
       </span>
     </div>
 
@@ -176,8 +176,9 @@ sensor data. Currently supported <code>parameter</code> arguments include:</p><u
     
     </div>
 
-    <pre class="usage"><span class='fu'>pas_leaflet</span>(<span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>"pm25_1hr"</span>, <span class='kw'>radius</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>opacity</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='kw'>maptype</span> <span class='kw'>=</span> <span class='st'>"terrain"</span>, <span class='kw'>outsideOnly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>pas_leaflet</span>(<span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>"pm25_1hr"</span>, <span class='kw'>paletteName</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>radius</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>opacity</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='kw'>maptype</span> <span class='kw'>=</span> <span class='st'>"terrain"</span>,
+  <span class='kw'>outsideOnly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -189,6 +190,15 @@ sensor data. Currently supported <code>parameter</code> arguments include:</p><u
     <tr>
       <th>parameter</th>
       <td><p>Value to plot, e.g. <code>pm25_1hr</code>.</p></td>
+    </tr>
+    <tr>
+      <th>paletteName</th>
+      <td><p>A predefined color palette name. Can be of the following:</p><ul>
+<li><p>"AQI"</p></li>
+<li><p>"humidity</p></li>
+<li><p>"temperature</p></li>
+<li><p>"distance"</p></li>
+</ul></td>
     </tr>
     <tr>
       <th>radius</th>
@@ -233,7 +243,7 @@ underlying map tile if available. See
 <span class='co'># Methow Valley Clean Air Ambassador</span>
 <span class='fu'><a href='initializeMazamaSpatialUtils.html'>initializeMazamaSpatialUtils</a></span>()
 <span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pas_load.html'>pas_load</a></span>()
-<span class='no'>mvcaa</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter</a></span>(<span class='no'>pas</span>, <span class='kw pkg'>stringr</span><span class='kw ns'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_detect.html'>str_detect</a></span>(<span class='no'>pas</span>$<span class='no'>label</span>, <span class='st'>'^MV Clean Air'</span>))
+<span class='no'>mvcaa</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter</a></span>(<span class='no'>pas</span>, <span class='kw pkg'>stringr</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/stringr/topics/str_detect'>str_detect</a></span>(<span class='no'>pas</span>$<span class='no'>label</span>, <span class='st'>'^MV Clean Air'</span>))
 <span class='fu'>pas_leaflet</span>(<span class='no'>mvcaa</span>, <span class='kw'>parameter</span><span class='kw'>=</span><span class='st'>"pm25_1hr"</span>)
 <span class='co'># }</span></pre>
   </div>

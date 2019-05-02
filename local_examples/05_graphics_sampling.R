@@ -1,3 +1,5 @@
+# required libraries
+library(AirSensor)
 
 pat <- example_pat
 

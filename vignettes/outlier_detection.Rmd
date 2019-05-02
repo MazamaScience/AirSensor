@@ -87,7 +87,7 @@ detection:
 
 * `n` -- number of measurements to include in a window
 * `thresholdMin` -- number of std. dev. units above which a measurement is
-considred an outlier
+considered an outlier
 
 The default setting of the window size `n = 23` means that 23 samples
 from a single channel become the population from which the median and standard
@@ -118,7 +118,7 @@ plot(oneDayData$datetime, oneDayData$pm25_A,
 title("A channel PM2.5")
 ```
 
-We definitely have what look to the eye like outliers so let's use the
+We definitely have what looks to the eye like outliers so let's use the
 `seismicRoll::findOutliers()` function to figure out exactly where they are:
 
 ```{r find_outliers}

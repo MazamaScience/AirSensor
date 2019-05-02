@@ -28,7 +28,7 @@ pas_palette <- function(
   
   options(warn = -1)
   
-  # ----- Validate Parameters --------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
 
   validPaletteNames <- c("aqi", "humidity", "temperature", "distance")
   
@@ -37,7 +37,7 @@ pas_palette <- function(
   }
   
   
-  # ----- Generate colorPalette ------------------------------------------------
+  # ----- Create color/legend info ---------------------------------------------
   
   if ( tolower(paletteName) == "humidity" ) { # HUMIDITY
     
@@ -188,12 +188,12 @@ pas_palette <- function(
     
   }
   
-  # ----- Return colorPalette --------------------------------------------------
+  # ----- Return colorInfo -----------------------------------------------------
   
   options(warn = 0)
   
-  colorPalette <- list(key = cbind(labels, colorBreaks),  colors = sensorColor)
+  colorInfo <- list(key = cbind(labels, colorBreaks),  colors = sensorColor)
   
-  return(colorPalette)
+  return(colorInfo)
   
 }

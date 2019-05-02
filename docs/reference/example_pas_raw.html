@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>General purpose filtering for <em>pat</em> objects — pat_filterData • AirSensor</title>
+<title>Example raw Purple Air Synoptic dataset — example_pas_raw • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,13 +37,13 @@
 
 
 
-<meta property="og:title" content="General purpose filtering for <em>pat</em> objects — pat_filterData" />
+<meta property="og:title" content="Example raw Purple Air Synoptic dataset — example_pas_raw" />
 
-<meta property="og:description" content="A generalized data filter for pat objects to 
-choose rows/cases where conditions are true.  Multiple conditions are 
-combined with &amp;amp; or seperated by a comma. Only rows where the condition 
-evaluates to TRUE are kept.Rows where the condition evaluates to NA
-aredropped." />
+<meta property="og:description" content="The example_pas_raw dataset provides a quickly loadable
+version of raw Purple Air synoptic data JSON for practicing and code
+development. This file was downloaded on 2019-03-14.
+This dataset can be converted into a standard pas dataset with:
+pas &amp;lt;- enhanceSynopticData(example_pas_raw)" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -131,62 +131,46 @@ aredropped." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>General purpose filtering for <em>pat</em> objects</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_filterData.R'><code>R/pat_filterData.R</code></a></small>
-    <div class="hidden name"><code>pat_filterData.Rd</code></div>
+    <h1>Example raw Purple Air Synoptic dataset</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/AirSensor.R'><code>R/AirSensor.R</code></a></small>
+    <div class="hidden name"><code>example_pas_raw.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>A generalized data filter for <em>pat</em> objects to 
-choose rows/cases where conditions are true.  Multiple conditions are 
-combined with <code>&amp;</code> or seperated by a comma. Only rows where the condition 
-evaluates to TRUE are kept.Rows where the condition evaluates to <code>NA</code>
-aredropped.</p>
+    <p>The <code>example_pas_raw</code> dataset provides a quickly loadable
+version of raw Purple Air synoptic data JSON for practicing and code
+development. This file was downloaded on 2019-03-14.</p>
+<p>This dataset can be converted into a standard <em>pas</em> dataset with:</p>
+<p><code>pas &lt;- enhanceSynopticData(example_pas_raw)</code></p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pat_filterData</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>pat</th>
-      <td><p><em>pa_timeseries</em> dataframe</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>logical predicates defined in terms of the variables in the 
-<code>pat$data</code>.</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+        
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>A subset of the incoming <code>pat</code>.</p>
+    <p>A tibble with 12657 rows and 32 columns of data.</p>
+    
+    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
+
+    <p>https://www.purpleair.com/json</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='pat_filterDate.html'>pat_filterDate</a></p></div>
+    <div class='dont-index'><p>example_pas</p></div>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>unhealthy</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_filterData</span>(<span class='no'>pat</span>, <span class='no'>pm25_A</span> <span class='kw'>&gt;</span> <span class='fl'>55.5</span>, <span class='no'>pm25_B</span> <span class='kw'>&gt;</span> <span class='fl'>55.5</span>)
-<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#value">Value</a></li>
+      <li><a href="#format">Format</a></li>
+
+      <li><a href="#source">Source</a></li>
 
       <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>

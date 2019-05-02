@@ -11,7 +11,7 @@
 #
 # docker run --rm -v /home/monitoring/Projects/mazamascience/airsensor:/monitoring/v4 -v /data/monitoring:/monitoring/v4/data -w /monitoring/v4 -ti mazamascience/airsensor bash
 
-VERSION = "0.1.0" #  --- . --- . first pass
+VERSION = "0.1.1" #  --- . --- . AirSensor 0.2.7
 
 library(methods)       # always included for Rscripts
 library(optparse)      # to parse command line flags

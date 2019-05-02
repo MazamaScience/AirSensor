@@ -62,7 +62,7 @@ pas_staticMap <- function(
   mapShape = "sq",
   direction = 1,
   minScale = 0,
-  maxScale = 150, 
+  maxScale = 150,
   shape = 15, 
   size = 2.0, 
   alpha = 0.8, 
@@ -71,13 +71,13 @@ pas_staticMap <- function(
   ...
 ) {
   
-  # ----- Validate Parameters --------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
   
   if ( pas_isEmpty(pas) ) {
     stop("Required parameter 'pas' is empty.")
   }
   
-  # ----- Color Scale Theme ----------------------------------------------------
+  # ----- Color scale ----------------------------------------------------------
   
   if ( tolower(palette) == "aqi" ) { # AQI COLORS
     
@@ -90,7 +90,7 @@ pas_staticMap <- function(
     labels <- c(colorInfo$key[,1], "Missing")
     sensorColor <- colorInfo$colors
     
-    colorPalette <- 
+    colorScale <- 
       ggplot2::scale_color_identity(
         "AQI",
         labels = labels,
@@ -107,7 +107,7 @@ pas_staticMap <- function(
     labels <- c(colorInfo$key[,1], "Missing")
     sensorColor <- colorInfo$colors
     
-    colorPalette <- 
+    colorScale <- 
       ggplot2::scale_color_identity(
         "Humidity",
         labels = labels,
@@ -124,7 +124,7 @@ pas_staticMap <- function(
     labels <- c(colorInfo$key[,1], "Missing")
     sensorColor <- colorInfo$colors
     
-    colorPalette <- 
+    colorScale <- 
       ggplot2::scale_color_identity(
         "Temperature",
         labels = labels,
@@ -142,7 +142,7 @@ pas_staticMap <- function(
     labels <- c(colorInfo$key[,1], "Missing")
     sensorColor <- colorInfo$colors
     
-    colorPalette <- 
+    colorScale <- 
       ggplot2::scale_color_identity(
         "Distance",
         labels = labels,
@@ -167,7 +167,7 @@ pas_staticMap <- function(
     
     sensorColor <- pas[[parameter]]
     
-    colorPalette <- 
+    colorScale <- 
       ggplot2::scale_color_gradientn(
         colors = colors, 
         limits = c(minScale, maxScale), 
@@ -178,7 +178,7 @@ pas_staticMap <- function(
     
   }
   
-  # ----- Determine Coordinate Bounding Box ------------------------------------ 
+  # ----- Determine bounding box ----------------------------------------------- 
   
   maxLat <- max(pas$latitude)
   minLat <- min(pas$latitude)
@@ -260,7 +260,7 @@ pas_staticMap <- function(
   
   zoom <- zoom + zoomAdjust
   
-  # ---- PA Sensor Points ------------------------------------------------------
+  # ---- PA sensor points ------------------------------------------------------
   
   paSensors <- 
     ggplot2::geom_point(
@@ -275,7 +275,8 @@ pas_staticMap <- function(
       alpha = alpha
     )
   
-  # ----- Construct Stamen Maps ------------------------------------------------
+  # ----- Construct Stamen basemap ---------------------------------------------
+  
   suppressMessages({
     
     stamenMap <- 
@@ -286,15 +287,17 @@ pas_staticMap <- function(
         ...
       ) %>% 
       ggmap::ggmap()
+    
   })
-  # ----- Construct Static Map -------------------------------------------------
+  
+  # ----- Construct static map -------------------------------------------------
   
   # TODO: Find a way to show the complete legend.
   
   staticMap <- 
     stamenMap + 
     paSensors + 
-    colorPalette + 
+    colorScale + 
     ggplot2::theme_void()
   
   return(staticMap)

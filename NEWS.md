@@ -1,5 +1,7 @@
 # AirSensor 0.2.7
 
+* corrected the algorithm for `pat_sample(forGraphics = TRUE)`
+* consistent support for named palettes in `pas_leaflet()` and `pas_staticMap()`
 * `enhanceSynopticMetadata()` adds the following columns to a `pas` object:
   - `airDistrict` -- CARB air district
   - `sensorManufacturer = "Purple Air"`

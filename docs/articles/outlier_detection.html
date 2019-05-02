@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.7</span>
       </span>
     </div>
 
@@ -142,7 +142,7 @@
 <li>
 <code>n</code> – number of measurements to include in a window</li>
 <li>
-<code>thresholdMin</code> – number of std. dev. units above which a measurement is considred an outlier</li>
+<code>thresholdMin</code> – number of std. dev. units above which a measurement is considered an outlier</li>
 </ul>
 <p>The default setting of the window size <code>n = 23</code> means that 23 samples from a single channel become the population from which the median and standard deviation are calculated. Each Purple Air channel makes a measurement approximately every 80 seconds so the temporal window is 23 * 80 sec or approximately 30 minutes. This seems like a reasonable period of time over which to evaluate PM2.5 measurements. It is long enough to capture significant change making it more likely we will only identify true outliers.</p>
 <p>The default setting for the detection threshold <code>thresholdMin = 8</code> means that the sample at the center of the rolling window must have a value at least 8 standard deviation units away from the window median to be flagged as an outlier.</p>
@@ -157,7 +157,7 @@
      <span class="dt">xlab =</span> <span class="st">"Aug 1, 21018"</span>, <span class="dt">ylab =</span> <span class="st">"ug/m3"</span>, <span class="dt">las =</span> <span class="dv">1</span>)
 <span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/title">title</a></span>(<span class="st">"A channel PM2.5"</span>)</code></pre></div>
 <p><img src="outlier_detection_files/figure-html/visual_inspection-1.png" width="672"></p>
-<p>We definitely have what look to the eye like outliers so let’s use the <code><a href="https://www.rdocumentation.org/packages/seismicRoll/topics/findOutliers">seismicRoll::findOutliers()</a></code> function to figure out exactly where they are:</p>
+<p>We definitely have what looks to the eye like outliers so let’s use the <code><a href="https://www.rdocumentation.org/packages/seismicRoll/topics/findOutliers">seismicRoll::findOutliers()</a></code> function to figure out exactly where they are:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Find the outliers</span>
 seismicRoll<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/seismicRoll/topics/findOutliers">findOutliers</a></span>(oneDayData<span class="op">$</span>pm25_A)</code></pre></div>
 <pre><code>## [1] 872 874</code></pre>
