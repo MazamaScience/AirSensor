@@ -60,7 +60,7 @@ pat_filterDate <- function(
   data <- 
     pat$data %>%
     filter(.data$datetime >= tlim[1]) %>%
-    filter(.data$datetime <= tlim[2])
+    filter(.data$datetime < tlim[2])
   
   pat$data <- data
   

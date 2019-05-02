@@ -1,3 +1,5 @@
+#' @export
+#' 
 #' @title Create a POSIXct date range
 #' 
 #' @param startdate desired start datetime (ISO 8601)
