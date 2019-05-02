@@ -15,6 +15,14 @@ RUN apt-get update \
     optparse \
     seismicRoll
 
+################################################################################
+# For MazamaSpatialUtils
+
+# Add CARB spatial data required by AirSensor
+RUN wget -nv http://mazamascience.com/RData/Spatial/CA_AirBasins_01.RData \
+  -O /home/mazama/data/Spatial/CA_AirBasins_01.RData
+
+
 #######################################################################
 # For AirSensor (while the Github repo is private)
 
