@@ -1,4 +1,4 @@
-FROM mazamascience/pwfslsmoke:1.2.2
+FROM mazamascience/pwfslsmoke:1.2.3
 MAINTAINER "Jonathan Callahan" jonathan@mazamascience.com
 
 #######################################################################
@@ -11,6 +11,7 @@ RUN apt-get update \
   && rm -rf /tmp/downloaded_packages/ /tmp/*.rds \
   ## Install R packages from CRAN
   && install2.r --error -r "https://cran.rstudio.com" \
+    GGally \
     optparse \
     seismicRoll
 
@@ -19,7 +20,7 @@ RUN apt-get update \
 
 WORKDIR /
 
-COPY AirSensor_0.2.6.tar.gz /
+COPY AirSensor_0.2.7.tar.gz /
 
-RUN R CMD INSTALL AirSensor_0.2.6.tar.gz
+RUN R CMD INSTALL AirSensor_0.2.7.tar.gz
 
