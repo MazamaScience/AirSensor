@@ -86,6 +86,6 @@ docker push mazamascience/airsensor:0.2.7
 A recent image can also be obtained from DockerHub with:
 
 ```
-docker pull mazamascience/mazamapurple:0.2.7
+docker pull mazamascience/airsensor:0.2.7
 ```
 
