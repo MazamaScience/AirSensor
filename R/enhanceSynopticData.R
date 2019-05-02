@@ -1,5 +1,6 @@
 #' @export
-#' @importFrom MazamaCoreUtils logger.debug
+#' @importFrom MazamaCoreUtils logger.debug logger.warn
+#' @importFrom rlang .data
 #' 
 #' @title Enhance synoptic data from Purple Air
 #' 
@@ -138,26 +139,32 @@ enhanceSynopticData <- function(
     
     # CARB Air Districts
     result <- try({ 
-      MazamaSpatialUtils::loadSpatialData("CA_AirBasins_01") 
+      CA_AirBasins <- get(MazamaSpatialUtils::loadSpatialData("CA_AirBasins_01"))
     }, silent = TRUE)
     
     if ( "try-error" %in% class(result) ) {
       
-      logger.warn("Unable to load spatial data `CA_AirBasins_01`.")
+      logger.warn("Unable to load spatial data `CA_AirBasins`.")
       
     } else {
       
-      pas_CA <- pas %>% filter(countryCode == "US" & stateCode == "CA")
+      pas_CA <- 
+        pas %>% 
+        filter(.data$countryCode == "US" & .data$stateCode == "CA")
+      
       pas_CA$airDistrict <- 
         MazamaSpatialUtils::getSpatialData(
           pas_CA$longitude,
           pas_CA$latitude,
-          CA_AirBasins_01,
+          CA_AirBasins,
           useBuffering = TRUE
         ) %>%
         pull("name")
       
-      pas_nonCA <-  pas %>% filter(countryCode != "US" | stateCode != "CA")
+      pas_nonCA <-  
+        pas %>% 
+        filter(.data$countryCode != "US" | .data$stateCode != "CA")
+      
       pas_nonCA$airDistrict <- as.character(NA)
       
       pas <- bind_rows(pas_CA, pas_nonCA)

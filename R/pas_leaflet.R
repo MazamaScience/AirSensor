@@ -42,6 +42,13 @@
 #' 
 #' @param pas Enhanced dataframe of PurpleAir synoptic data.
 #' @param parameter Value to plot, e.g. \code{pm25_1hr}.
+#' @param paletteName A predefined color palette name. Can be of the following:
+#' \itemize{
+#' \item{"AQI"}
+#' \item{"humidity}
+#' \item{"temperature}
+#' \item{"distance"}
+#' }
 #' @param radius Radius (pixels) of monitor circles.
 #' @param opacity Opacity of monitor circles.
 #' @param maptype Optional name of leaflet ProviderTiles to use, e.g. \code{terrain}. 
@@ -62,7 +69,7 @@
 pas_leaflet <- function(
   pas = NULL,
   parameter = "pm25_1hr",
-  palette = NULL,
+  paletteName = NULL,
   radius = 10,
   opacity = 0.8,
   maptype = "terrain",
@@ -110,9 +117,9 @@ pas_leaflet <- function(
     
     if ( stringr::str_detect(tolower(parameter), "^pm25") ) { # AQI
       
-      if ( tolower(palette) == "aqi" || is.null(palette) ) {
+      if ( tolower(paletteName) == "aqi" || is.null(paletteName) ) {
         
-        colorPalette <- pas_palette(pas, "aqi")
+        colorPalette <- pas_palette(pas, "aqi", parameter)
         cols <- colorPalette$colors
         
         colors <- colorPalette$key[,2]
@@ -125,8 +132,8 @@ pas_leaflet <- function(
         
         colorPalette <- pas_palette(
           pas, 
-          param = parameter, 
-          pal = palette, 
+          paletteName = paletteName, 
+          parameter = parameter, 
           reverse=TRUE
         )
         

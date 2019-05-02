@@ -6,26 +6,40 @@
 #' intention of having a reproducible functional color generator. 
 #'
 #' @param pas Enhanced data frame of PurpleAir synoptic data.
-#' @param pal A predefined color palette. Can be of the following:
+#' @param paletteName A predefined color palette name. Can be of the following:
 #' \itemize{
 #' \item{"AQI"}
 #' \item{"humidity}
 #' \item{"temperature}
 #' \item{"distance"}
 #' }
+#' @param parameter Value to generate colors for, e.g. \code{pm25_1hr}.
+#' @param ... Additional arguments passed on to \code{leaflet::color~} functions.
+#' 
 #' @return An object that consists of a label and color dataframe, and
 #' calculated color values from PurpleAir sensors
 
 pas_palette <- function(
-  pas,
-  pal,
-  param = NULL,
+  pas = NULL,
+  paletteName = "AQI",
+  parameter = "pm25_1hr",
   ...
 ) {
   
   options(warn = -1)
   
-  if ( pal == "humidity" ) { # HUMIDITY
+  # ----- Validate Parameters --------------------------------------------------
+
+  validPaletteNames <- c("aqi", "humidity", "temperature", "distance")
+  
+  if ( (!tolower(paletteName) %in% validPaletteNames) && is.null(parameter) ) {
+    stop("Parameter 'parameter' is required for generic palette names.")
+  }
+  
+  
+  # ----- Generate colorPalette ------------------------------------------------
+  
+  if ( tolower(paletteName) == "humidity" ) { # HUMIDITY
     
     colorFunc <- 
       leaflet::colorNumeric(
@@ -61,7 +75,7 @@ pas_palette <- function(
     
     sensorColor <- colorFunc(pas$humidity)
     
-  } else if ( pal == "temperature" ) { # TEMPERATURE
+  } else if ( tolower(paletteName) == "temperature" ) { # TEMPERATURE
     
     colorFunc <- 
       leaflet::colorNumeric(
@@ -101,7 +115,7 @@ pas_palette <- function(
     
     sensorColor <- colorFunc(round(pas$temperature))
     
-  } else if ( pal == "aqi" ) { # AQI COLORS
+  } else if ( tolower(paletteName) == "aqi" ) { # AQI COLORS
     
     colorFunc <- 
       leaflet::colorBin(
@@ -116,7 +130,7 @@ pas_palette <- function(
     
     sensorColor <- colorFunc(pas$pm25_1hr)
     
-  } else if ( tolower(pal == "distance") ) { # DISTANCE
+  } else if ( tolower(paletteName) == "distance" ) { # DISTANCE
     
     bins <- c(0,100,200,500,1000,2000,3000,4000,5000,10000)
     
@@ -152,7 +166,7 @@ pas_palette <- function(
     
     colorFunc <- 
       leaflet::colorNumeric(
-        palette = pal, 
+        palette = paletteName, 
         domain = c(0,200), 
         na.color = "grey50", 
         ... 
@@ -163,25 +177,23 @@ pas_palette <- function(
     
     colorBreaks <- 
       leaflet::colorBin(
-        palette = pal, 
+        palette = paletteName, 
         domain=range(breaks), 
         bins=breaks, 
         ...)(levels)
     
     labels <- PWFSLSmoke::AQI$names
     
-    if ( is.null(param) )( stop("Must provide a parameter."))
-    
-    sensorColor <- colorFunc(pas[[param]])
+    sensorColor <- colorFunc(pas[[parameter]])
     
   }
   
-  # ----- Return color palette -------------------------------------------------
+  # ----- Return colorPalette --------------------------------------------------
   
   options(warn = 0)
   
-  palette <- list(key = cbind(labels, colorBreaks),  colors = sensorColor)
+  colorPalette <- list(key = cbind(labels, colorBreaks),  colors = sensorColor)
   
-  return(palette)
+  return(colorPalette)
   
 }

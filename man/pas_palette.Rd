@@ -4,18 +4,23 @@
 \alias{pas_palette}
 \title{Color palettes for PurpleAir}
 \usage{
-pas_palette(pas, pal, param = NULL, ...)
+pas_palette(pas = NULL, paletteName = "AQI", parameter = "pm25_1hr",
+  ...)
 }
 \arguments{
 \item{pas}{Enhanced data frame of PurpleAir synoptic data.}
 
-\item{pal}{A predefined color palette. Can be of the following:
+\item{paletteName}{A predefined color palette name. Can be of the following:
 \itemize{
 \item{"AQI"}
 \item{"humidity}
 \item{"temperature}
 \item{"distance"}
 }}
+
+\item{parameter}{Value to generate colors for, e.g. \code{pm25_1hr}.}
+
+\item{...}{Additional arguments passed on to \code{leaflet::color~} functions.}
 }
 \value{
 An object that consists of a label and color dataframe, and
