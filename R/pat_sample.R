@@ -71,55 +71,118 @@ pat_sample <- function(
     return(pat)
   
   # ----- Detect Outliers ------------------------------------------------------
-
+  
   if ( forGraphics == TRUE ) {
     
-    outlierIndex_A <-
-      pat$data$pm25_A %>%
-      seismicRoll::findOutliers(n = 11, thresholdMin = 4)
+    A_data <- 
+      filter(pat$data, !is.na(.data$pm25_A)) %>% 
+      select( -.data$pm25_B, -.data$datetime_B)
+    
+    B_data <- 
+      filter(pat$data, !is.na(.data$pm25_B)) %>% 
+      select(.data$datetime, .data$pm25_B, .data$datetime_B)
+    
+    # Find outliers 
+    outlierIndex_A <- 
+      seismicRoll::findOutliers(
+        A_data$pm25_A, 
+        n = 23, 
+        thresholdMin = 8
+      )
     
     outlierIndex_B <- 
-      pat$data$pm25_B %>% 
-      seismicRoll::findOutliers(n = 11, thresholdMin = 4)
-    
-    outlierIndex_AB <- 
-      c(outlierIndex_A, outlierIndex_B)
+      seismicRoll::findOutliers(
+        B_data$pm25_B, 
+        n = 23, 
+        thresholdMin = 8
+      )
     
   } else { # forGraphics == FALSE
     
     # Cheap hack to avoid rewriting too much code
-    outlierIndex_AB <- 1
+    outlierIndex_A <- 1
+    outlierIndex_B <- 1
     
   }
   
-  outlierData <- pat$data[outlierIndex_AB,]
+  A_outlierData <- A_data[outlierIndex_A,]
+  B_outlierData <- B_data[outlierIndex_B,]
   
-  if ( !is.null(setSeed) ) set.seed(setSeed)
+  if ( !is.null(setSeed) )( set.seed(setSeed) )
   
-  # ----- Remove outlier data -> Sample data -> Reinsert outlier data -> Sort
+  # ----- Remove outlier data -> Sample data -> Reinsert outlier data ->
   
   if ( !is.null(sampleSize) && is.null(sampleFraction) ) {
     
-    pat$data <- 
-      pat$data[-outlierIndex_AB,] %>% 
-      dplyr::sample_n(size=sampleSize, replace=FALSE, weight=weight) %>% 
-      dplyr::bind_rows(outlierData) %>% 
-      dplyr::arrange(.data$datetime)
-      
+    A_data <- 
+      A_data[-outlierIndex_A,] %>% 
+      dplyr::sample_n(
+        size = (sampleSize - length(outlierIndex_A)+ length(outlierIndex_B)) /2, 
+        replace = FALSE, 
+        weight = weight
+      ) %>% 
+      dplyr::bind_rows(A_outlierData) 
+    
+    B_data <- 
+      B_data[-outlierIndex_B,] %>% 
+      dplyr::sample_n(
+        size = (sampleSize - length(outlierIndex_B)+ length(outlierIndex_A)) /2, 
+        replace = FALSE,
+        weight = weight
+      ) %>% 
+      dplyr::bind_rows(B_outlierData)
+    
   } else if ( is.null(sampleSize) && !is.null(sampleFraction) ) {
     
-    pat$data <- 
-      pat$data[-outlierIndex_AB,] %>% 
-      dplyr::sample_frac(size=sampleFraction, replace=FALSE, weight=weight) %>% 
-      dplyr::bind_rows(outlierData) %>% 
-      dplyr::arrange(.data$datetime)
-  
+    A_data <- 
+      A_data[-outlierIndex_A,] %>% 
+      dplyr::sample_frac(
+        size = sampleFraction/2, 
+        replace = FALSE, 
+        weight = weight 
+      ) %>% 
+      dplyr::bind_rows(A_outlierData)
+    
+    B_data <- 
+      B_data[-outlierIndex_B,] %>% 
+      dplyr::sample_frac(
+        size = sampleFraction/2, 
+        replace = FALSE, 
+        weight = weight) %>% 
+      dplyr::bind_rows(B_outlierData) 
+    
   } else {
     
     stop("Cannot use both fixed number & fractional sampling")
-  
+    
   }
   
-  return (pat)
+  data <- 
+    dplyr::full_join(
+      A_data, 
+      B_data, 
+      by = 'datetime'
+    ) %>%
+    dplyr::select(
+      .data$datetime, 
+      .data$pm25_A, 
+      .data$pm25_B, 
+      .data$temperature, 
+      .data$humidity, 
+      .data$uptime, 
+      .data$adc0, 
+      .data$rssi, 
+      .data$datetime_A, 
+      .data$datetime_B
+    ) %>%
+    dplyr::distinct() %>% 
+    dplyr::arrange(.data$datetime)
   
+  # ----- Create the Purple Air Timeseries (pat) object ------------------------
+  
+  # Combine meta and data dataframes into a list
+  pat <- list(meta = pat$meta, data = data)
+  class(pat) <- c("pa_timeseries", class(pat))
+  
+  return(invisible(pat))
 }
