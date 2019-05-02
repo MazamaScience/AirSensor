@@ -29,28 +29,32 @@ downloadParseTimeseriesData <- function(
     enddate <- lubridate::floor_date(lubridate::now("UTC"), unit = "minute")
     startdate <- lubridate::floor_date(enddate - lubridate::ddays(7))
   } else {
-    startdate <- lubridate::parse_date_time(startdate,
-                                            c("ymd", "ymd_H", "ymd_HM", "ymd_HMS"),
-                                            tz = "UTC"
-    )
-    enddate <- lubridate::parse_date_time(enddate,
-                                          c("ymd", "ymd_H", "ymd_HM", "ymd_HMS"),
-                                          tz = "UTC"
-    )
+    startdate <- 
+      lubridate::parse_date_time(
+        startdate,
+        c("ymd", "ymd_H", "ymd_HM", "ymd_HMS"),
+        tz = "UTC"
+      )
+    enddate <- 
+      lubridate::parse_date_time(
+        enddate,
+        c("ymd", "ymd_H", "ymd_HM", "ymd_HMS"),
+        tz = "UTC"
+      )
   }
   
   startString <- strftime(startdate, "%Y-%m-%dT%H:%M:%S", tz = "UTC")
   endString <- strftime(enddate, "%Y-%m-%dT%H:%M:%S", tz = "UTC")
   
   # Prefer to use the monitor's name over it's ID
-  if ( !is.null(name)) {
+  if ( !is.null(name) ) {
     requested_meta <- dplyr::filter(pas, .data$label == name)
-  } else if ( !is.null(id)) {
+  } else if ( !is.null(id) ) {
     requested_meta <- dplyr::filter(pas, .data$ID == id)
   }
   
   # Determine which channel was given and access the other channel from it
-  if ( is.na(requested_meta$parentID)) {
+  if ( is.na(requested_meta$parentID) ) {
     A_meta <- requested_meta
     B_meta <- dplyr::filter(pas, .data$parentID == A_meta$ID)
   } else {
@@ -62,24 +66,26 @@ downloadParseTimeseriesData <- function(
   meta <- dplyr::bind_rows(A_meta, B_meta)
   
   # Generate Thingspeak request URLs
-  A_url <- paste0(
-    baseURL,
-    A_meta$THINGSPEAK_PRIMARY_ID,
-    "/feeds.json?api_key=",
-    A_meta$THINGSPEAK_PRIMARY_ID_READ_KEY,
-    "&start=", startString,
-    "&end=",
-    endString
-  )
-  B_url <- paste0(
-    baseURL,
-    B_meta$THINGSPEAK_PRIMARY_ID,
-    "/feeds.json?api_key=",
-    B_meta$THINGSPEAK_PRIMARY_ID_READ_KEY,
-    "&start=", startString,
-    "&end=",
-    endString
-  )
+  A_url <- 
+    paste0(
+      baseURL,
+      A_meta$THINGSPEAK_PRIMARY_ID,
+      "/feeds.json?api_key=",
+      A_meta$THINGSPEAK_PRIMARY_ID_READ_KEY,
+      "&start=", startString,
+      "&end=",
+      endString
+    )
+  B_url <-
+    paste0(
+      baseURL,
+      B_meta$THINGSPEAK_PRIMARY_ID,
+      "/feeds.json?api_key=",
+      B_meta$THINGSPEAK_PRIMARY_ID_READ_KEY,
+      "&start=", startString,
+      "&end=",
+      endString
+    )
   
   # ----- Request A channel data from Thingspeak -------------------------------
   
@@ -175,13 +181,14 @@ downloadParseTimeseriesData <- function(
     A_data <- err_data
   } else { # Response successful
     
-    A_list <- jsonlite::fromJSON(
-      content,
-      simplifyVector = TRUE,
-      simplifyDataFrame = TRUE,
-      simplifyMatrix = TRUE,
-      flatten = FALSE
-    )
+    A_list <- 
+      jsonlite::fromJSON(
+        content,
+        simplifyVector = TRUE,
+        simplifyDataFrame = TRUE,
+        simplifyMatrix = TRUE,
+        flatten = FALSE
+      )
     A_data <- A_list$feeds
   }
   
@@ -233,12 +240,14 @@ downloadParseTimeseriesData <- function(
     B_data <- err_data
   } else { # Response successful
     
-    B_list <- jsonlite::fromJSON(content,
-                                 simplifyVector = TRUE,
-                                 simplifyDataFrame = TRUE,
-                                 simplifyMatrix = TRUE,
-                                 flatten = FALSE
-    )
+    B_list <- 
+      jsonlite::fromJSON(
+        content,
+        simplifyVector = TRUE,
+        simplifyDataFrame = TRUE,
+        simplifyMatrix = TRUE,
+        flatten = FALSE
+      )
     B_data <- B_list$feeds
   }
   
