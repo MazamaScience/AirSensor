@@ -192,7 +192,7 @@ downloadParseTimeseriesData <- function(
     A_data <- A_list$feeds
   }
   
-  # Request B channel data from Thingspeak ------------------------------------
+  # ----- Request B channel data from Thingspeak -------------------------------
   
   webserviceUrl <- B_url
   
@@ -320,14 +320,14 @@ downloadParseTimeseriesData <- function(
 # TODO:  This can then be returned immediately whenever a "no data" response
 # TODO:  is detected when requesting data.
 
-###############################################################################
-# FOR TESTING
-###############################################################################
+# ===== DEBUGGING ==============================================================
 
 if ( FALSE ) {
+  
   pas_raw <- downloadParseSynopticData()
   pas <- enhanceSynopticData(pas_raw)
   name <- "MV Clean Air Ambassador @ Winthrop Library"
   pat_raw <- downloadParseTimeseriesData(pas, name)
   pat <- createPATimeseriesObject(pat_raw)
+  
 }

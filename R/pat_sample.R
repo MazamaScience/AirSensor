@@ -97,11 +97,15 @@ pat_sample <- function(
         thresholdMin = 8
       )
     
+    # Can't have an index of zero
+    if ( length(outlierIndex_A) == 0 ) outlierIndex_A <- c(1)
+    if ( length(outlierIndex_B) == 0 ) outlierIndex_B <- c(1)
+    
   } else { # forGraphics == FALSE
     
     # Cheap hack to avoid rewriting too much code
-    outlierIndex_A <- 1
-    outlierIndex_B <- 1
+    outlierIndex_A <- c(1)
+    outlierIndex_B <- c(1)
     
   }
   
@@ -117,7 +121,7 @@ pat_sample <- function(
     A_data <- 
       A_data[-outlierIndex_A,] %>% 
       dplyr::sample_n(
-        size = (sampleSize - length(outlierIndex_A)+ length(outlierIndex_B)) /2, 
+        size = (sampleSize - length(outlierIndex_A) + length(outlierIndex_B)) /2, 
         replace = FALSE, 
         weight = weight
       ) %>% 
@@ -126,7 +130,7 @@ pat_sample <- function(
     B_data <- 
       B_data[-outlierIndex_B,] %>% 
       dplyr::sample_n(
-        size = (sampleSize - length(outlierIndex_B)+ length(outlierIndex_A)) /2, 
+        size = (sampleSize - length(outlierIndex_B) + length(outlierIndex_A)) /2, 
         replace = FALSE,
         weight = weight
       ) %>% 
