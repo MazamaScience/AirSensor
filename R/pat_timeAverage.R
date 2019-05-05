@@ -76,7 +76,7 @@ pat_timeAverage <- function(
       
   }
   
-  # ----- Handle Channels A,B seperately, otherwise -> generic function --------
+  # ----- Handle Channels A,B separately, otherwise -> generic function --------
   
   if ( parameter == "pm25_a"  ) {
     
