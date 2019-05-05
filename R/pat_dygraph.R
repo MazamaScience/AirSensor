@@ -64,11 +64,11 @@ pat_dygraph <- function(
     if ( sampleSize > 1 ) {
       pat <- 
         pat %>% 
-        pat_sample(sampleSize = sampleSize)
+        pat_sample(sampleSize = sampleSize, forGraphics = TRUE)
     } else {
       pat <- 
         pat %>% 
-        pat_sample(sampleFraction = sampleSize)
+        pat_sample(sampleFraction = sampleSize, forGraphics = TRUE)
     }
     
   }
