@@ -51,7 +51,7 @@ pat_join <- function(
   
   # Check that meta matches
   if( length(unique(metaList)) != 1 )
-    stop("`pat` objects mudt be of the same monitor")
+    stop("`pat` objects must be of the same monitor")
   
   meta <- patList[[1]]$meta
   data <- do.call(rbind, dataList)
