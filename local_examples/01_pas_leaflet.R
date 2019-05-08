@@ -7,12 +7,13 @@ library(AirSensor)
 pas <- pas_load()
 
 # -- OR -- create a new "pas" object with the latest Purple Air data 
+# initializeMazamaSpatialUtils()
 # pas <- pas_loadLatest() # this can take 20 sec
 
 # Filter for sensors in California
 ca <-
   pas %>%
-  filter(stateCode == 'CA')
+  pas_filter(stateCode == 'CA')
 
 # Look at different parameters
 pas_leaflet(ca, parameter = "pm25_1hr")

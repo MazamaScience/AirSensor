@@ -30,7 +30,7 @@
 #' ast <- createASTimeseriesObject(pat, "1 hour")
 #' }
 
-pat_createASTimeseriesObject <- function(
+pat_createASTimeseries <- function(
   pat = NULL, 
   period = "1 hour", 
   pm25Source = "AB",

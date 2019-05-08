@@ -45,7 +45,7 @@ pas_palette <- function(
       leaflet::colorNumeric(
         "BrBG", 
         domain = c(0,100), 
-        na.color = "grey50",
+        na.color = "#bbbbbb",
         ...
       )
     
@@ -81,7 +81,7 @@ pas_palette <- function(
       leaflet::colorNumeric(
         "RdYlBu", 
         domain = c(-50,130), 
-        na.color = "grey50", 
+        na.color = "#bbbbbb", 
         ...
       )
     
@@ -121,7 +121,7 @@ pas_palette <- function(
       leaflet::colorBin(
         PWFSLSmoke::AQI$colors, 
         bins = PWFSLSmoke::AQI$breaks_24, 
-        na.color = "grey50"
+        na.color = "#bbbbbb"
       )
     
     colorBreaks <- PWFSLSmoke::AQI$colors
@@ -144,7 +144,7 @@ pas_palette <- function(
         colorBreaks, 
         domain = range(bins), 
         bins = bins,
-        na.color = "grey50"
+        na.color = "#bbbbbb"
       )
     
     labels <- 
@@ -168,7 +168,7 @@ pas_palette <- function(
       leaflet::colorNumeric(
         palette = paletteName, 
         domain = c(0,200), 
-        na.color = "grey50", 
+        na.color = "#bbbbbb", 
         ... 
       )
     

@@ -10,7 +10,7 @@ pas <- pas_load()
 # Filter for sensors in California
 ca <-
   pas %>%
-  filter(stateCode == 'CA')
+  pas_filter(stateCode == 'CA')
 
 # Look for labels of monitors near Seal Beach
 pas_leaflet(ca)

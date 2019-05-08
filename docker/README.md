@@ -16,7 +16,7 @@ You should then be able to see something like the following:
 $ docker images
 REPOSITORY                          TAG         IMAGE ID            CREATED             SIZE
 ...
-mazamascience/airsensor       0.2.7       796ae3ba57e5        14 minutes ago      2.62GB
+mazamascience/airsensor       0.2.8       796ae3ba57e5        14 minutes ago      2.62GB
 mazamascience/airsensor       latest      796ae3ba57e5        14 minutes ago      2.62GB
 ...
 ```
@@ -62,9 +62,9 @@ names(pas)
 [35] "pwfsl_closestMonitorID"          
 
 pas %>% 
-  filter(stateCode == 'CA') %>% 
-  filter(pwfsl_closestDistance < 100) %>% 
-  pull(pwfsl_closestDistance) %>% 
+  pas_filter(stateCode == 'CA') %>% 
+  pas_filter(pwfsl_closestDistance < 100) %>% 
+  dplyr::pull(pwfsl_closestDistance) %>% 
   round() %>% 
   table()
 
@@ -77,7 +77,7 @@ pas %>%
 ```
 docker login
 ...
-docker push mazamascience/airsensor:0.2.7
+docker push mazamascience/airsensor:0.2.8
 ```
 
 
@@ -86,6 +86,6 @@ docker push mazamascience/airsensor:0.2.7
 A recent image can also be obtained from DockerHub with:
 
 ```
-docker pull mazamascience/airsensor:0.2.7
+docker pull mazamascience/airsensor:0.2.8
 ```
 

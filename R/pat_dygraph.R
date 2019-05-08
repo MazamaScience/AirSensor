@@ -38,7 +38,7 @@
 
 pat_dygraph <- function(
   pat = NULL,
-  parameter = NULL,
+  parameter = "pm25",
   sampleSize = 5000,
   title = NULL,
   xlab = NULL,

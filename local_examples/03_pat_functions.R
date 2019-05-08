@@ -54,7 +54,8 @@ plot(model)
 # Looks good. Let's use the interactive plot on a week's worth of data
 pat %>%
   pat_filterDate("2019-03-08","2019-03-14") %>%
-  pat_dygraph(pat)
+  pat_dygraph("pm25")
+
 
 
 
