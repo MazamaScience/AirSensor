@@ -47,7 +47,7 @@ ast_createAirSensor <- function(
   # TODO: Determie what should be in meta
   meta <- 
     ast$meta %>% 
-    dplyr::rename(monitorID = ID) %>%
+    dplyr::rename(monitorID = .data$ID) %>%
     as.data.frame()
   
   meta$elevation <- as.numeric(NA)

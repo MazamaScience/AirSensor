@@ -1,3 +1,13 @@
+# AirSensor 0.2.8
+
+* improvements in `enhanceSynopticData()` now handle changing order of json
+properties and validate locations before adding spatial metadata
+* new `pat_createASTimeseries()` function handles conversion of 
+Purple Air-specific "pat" objects into sensor-generic "ast" objects.
+* new `ast_createAirSensor()` objects converts "ast" objects into a "as" data
+type that is compatible with the "ws_monitor" data type used in the 
+*PWFSLSmoke* package
+
 # AirSensor 0.2.7
 
 * corrected the algorithm for `pat_sample(forGraphics = TRUE)`

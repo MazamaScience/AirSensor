@@ -1,5 +1,5 @@
 #' @export
-#' @importFrom MazamaCoreUtils logger.debug logger.warn
+#' @importFrom MazamaCoreUtils logger.trace logger.debug logger.warn
 #' @importFrom rlang .data
 #' 
 #' @title Enhance synoptic data from Purple Air
@@ -63,6 +63,8 @@ enhanceSynopticData <- function(
   includePWFSL = TRUE
 ) {
   
+  logger.debug("----- enhanceSynopticData() -----")
+  
   # ----- Validate Parameters --------------------------------------------------
   
   if ( !('data.frame' %in% class(pas_raw)) )
@@ -78,9 +80,6 @@ enhanceSynopticData <- function(
   
   logger.debug("----- enhanceSynopticData() -----")
   
-  # Start with pas_raw (but keep it around for comparison while debugging)
-  pas <- pas_raw
-  
   # > names(pas_raw)
   # [1] "ID"                               "ParentID"                         "Label"
   # [4] "DEVICE_LOCATIONTYPE"              "THINGSPEAK_PRIMARY_ID"            "THINGSPEAK_PRIMARY_ID_READ_KEY"
@@ -94,35 +93,79 @@ enhanceSynopticData <- function(
   # [28] "v5"                               "v6"                               "pm"
   # [31] "lastModified"                     "timeSinceModified"
   
-  # Rename some things based on the information in the document "Using Purple Air Data"
-  newNames <- c(
-    "ID", "parentID", "label",
-    "DEVICE_LOCATIONTYPE", "THINGSPEAK_PRIMARY_ID", "THINGSPEAK_PRIMARY_ID_READ_KEY",
-    "THINGSPEAK_SECONDARY_ID", "THINGSPEAK_SECONDARY_ID_READ_KEY", "latitude",
-    "longitude", "pm25", "lastSeenDate",
-    "unused_State", "sensorType" , "flag_hidden",
-    "flag_highValue" , "isOwner", "flag_attenuation_hardware",
-    "temperature", "humidity", "pressure",
-    "age", "pm25_current", "pm25_10min",
-    "pm25_30min", "pm25_1hr", "pm25_6hr",
-    "pm25_1day", "pm25_1week", "unused_pm",
-    "statsLastModifiedDate", "statsLastModifiedInterval"
-  )
+  # NOTE:  On 2019-05-06 the order of columns changed so we can no longer
+  # NOTE:  assume a static column order. Use dplyr::rename to handle this.
   
-  names(pas) <- newNames
-  pas$unused_State <- NULL
-  pas$unused_pm <- NULL
+  # newNames <- c(
+  #   "ID", "parentID", "label",
+  #   "DEVICE_LOCATIONTYPE", "THINGSPEAK_PRIMARY_ID", "THINGSPEAK_PRIMARY_ID_READ_KEY",
+  #   "THINGSPEAK_SECONDARY_ID", "THINGSPEAK_SECONDARY_ID_READ_KEY", "latitude",
+  #   "longitude", "pm25", "lastSeenDate",
+  #   DROPPED, "sensorType" , "flag_hidden",
+  #   "flag_highValue" , "isOwner", "flag_attenuation_hardware",
+  #   "temperature", "humidity", "pressure",
+  #   "age", "pm25_current", "pm25_10min",
+  #   "pm25_30min", "pm25_1hr", "pm25_6hr",
+  #   "pm25_1day", "pm25_1week", DROPPED,
+  #   "statsLastModifiedDate", "statsLastModifiedInterval"
+  # )
+  # 
+  # names(pas) <- newNames
   
-  # ----- Add spatial metadata:  countryCode, stateCode and timezone -----------
+  # Rename some things to have consistent lowerCamelCase and better human names
+  # based on the information in the document "Using Purple Air Data".
+  pas <-
+    pas_raw %>%
+    select(-.data$State, -.data$pm) %>%
+    dplyr::rename(
+      parentID = .data$ParentID,
+      label = .data$Label,
+      latitude = .data$Lat,
+      longitude = .data$Lon,
+      pm25 = .data$PM2_5Value,
+      lastSeenDate = .data$LastSeen,
+      sensorType = .data$Type,
+      flag_hidden = .data$Hidden,
+      flag_highValue = .data$Flag,
+      flag_attenuation_hardware = .data$A_H,
+      temperature = .data$temp_f,
+      age = .data$AGE,
+      pm25_current = .data$v,
+      pm25_10min = .data$v1,
+      pm25_30min = .data$v2,
+      pm25_1hr = .data$v3,
+      pm25_6hr = .data$v4,
+      pm25_1day = .data$v5,
+      pm25_1week = .data$v6,
+      statsLastModifiedDate = .data$lastModified,
+      statsLastModifiedInterval = .data$timeSinceModified
+    )
   
-  # NOTE:  Some setup is involved before you can use MazamaSpatialUtils
+  # ----- Add spatial metadata -------------------------------------------------
+  
+  preValidationRows <- nrow(pas)
+  
+  # First, remove records with invalid locations
+  pas <-
+    pas %>%
+    dplyr::filter( !is.na(.data$longitude) & !is.na(.data$latitude) ) %>%
+    dplyr::filter( .data$longitude >= -180 & .data$longitude <= 180 ) %>%
+    dplyr::filter( .data$latitude >= -90 & .data$latitude <= 90 )
+  
+  badLocationCount <- preValidationRows - nrow(pas)
+  
+  if ( badLocationCount > 0 ) {
+    logger.trace("%d records removed because of invalid location data.", 
+                 badLocationCount)
+  }
   
   # Suppress annoying 'deprecated' messages
   suppressWarnings({
     
     # Assign countryCodes and subset to countries of interest
     pas$countryCode <- MazamaSpatialUtils::getCountryCode(pas$longitude,
-                                                          pas$latitude)
+                                                          pas$latitude,
+                                                          useBuffering = TRUE)
     pas <- subset(pas, pas$countryCode %in% countryCodes)
     
     # Assign stateCodes
@@ -150,7 +193,7 @@ enhanceSynopticData <- function(
       
       pas_CA <- 
         pas %>% 
-        filter(.data$countryCode == "US" & .data$stateCode == "CA")
+        dplyr::filter(.data$countryCode == "US" & .data$stateCode == "CA")
       
       pas_CA$airDistrict <- 
         MazamaSpatialUtils::getSpatialData(

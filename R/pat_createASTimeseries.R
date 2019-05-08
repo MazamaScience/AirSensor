@@ -22,8 +22,6 @@
 #' 
 #' @return "as_timeseries" list of aggregated time series PurpleAir data
 #' 
-#' @seealso \link{pat_timeAverage}
-#' 
 #' @examples 
 #' \dontrun{
 #' pat <- 
@@ -84,35 +82,35 @@ pat_createASTimeseriesObject <- function(
   # Anything outside of 0:100 is aphysical
   humidity_df <-
     pat$data %>% 
-    dplyr::select(datetime_A, humidity) %>% 
-    dplyr::filter(humidity >= 0 & humidity <= 100) %>%
-    dplyr::filter(!is.na(humidity)) %>%
-    dplyr::rename(date = datetime_A) 
+    dplyr::select(.data$datetime_A, .data$humidity) %>% 
+    dplyr::filter(.data$humidity >= 0 & .data$humidity <= 100) %>%
+    dplyr::filter(!is.na(.data$humidity)) %>%
+    dplyr::rename(date = .data$datetime_A) 
   
   # US temperature extremes are -80:134
   #   https://ggweather.com/climate/extremes_us.htm
   temperature_df <-
     pat$data %>% 
-    dplyr::select(datetime_A, temperature) %>% 
-    dplyr::filter(temperature >= -80 & temperature <= 140) %>%
-    dplyr::filter(!is.na(temperature)) %>% 
-    dplyr::rename(date = datetime_A)
+    dplyr::select(.data$datetime_A, .data$temperature) %>% 
+    dplyr::filter(.data$temperature >= -80 & .data$temperature <= 140) %>%
+    dplyr::filter(!is.na(.data$temperature)) %>% 
+    dplyr::rename(date = .data$datetime_A)
     
   # Sensor range is 0:1000
   # TODO:  URL for sensor
   pm25_A_df <-
     pat$data %>% 
-    dplyr::select(datetime_A, pm25_A) %>% 
-    dplyr::filter(pm25_A >= 0 & pm25_A <= 1000) %>%
-    dplyr::filter(!is.na(pm25_A)) %>%
-    dplyr::rename(date = datetime_A, pm25 = pm25_A)
+    dplyr::select(.data$datetime_A, .data$pm25_A) %>% 
+    dplyr::filter(.data$pm25_A >= 0 & .data$pm25_A <= 1000) %>%
+    dplyr::filter(!is.na(.data$pm25_A)) %>%
+    dplyr::rename(date = .data$datetime_A, pm25 = .data$pm25_A)
   
   pm25_B_df <-
     pat$data %>% 
-    dplyr::select(datetime_B, pm25_B) %>% 
-    dplyr::filter(pm25_B >= 0 & pm25_B <= 1000) %>%
-    dplyr::filter(!is.na(pm25_B)) %>%
-    dplyr::rename(date = datetime_B, pm25 = pm25_B)
+    dplyr::select(.data$datetime_B, .data$pm25_B) %>% 
+    dplyr::filter(.data$pm25_B >= 0 & .data$pm25_B <= 1000) %>%
+    dplyr::filter(!is.na(.data$pm25_B)) %>%
+    dplyr::rename(date = .data$datetime_B, pm25 = .data$pm25_B)
   
   if ( pm25Source == "A" ) {
     pm25_df <- pm25_A_df
