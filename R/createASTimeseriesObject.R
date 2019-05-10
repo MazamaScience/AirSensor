@@ -7,7 +7,7 @@
 #' @param period The time period to average to. Can be "sec", "min", "hour", 
 #' "day", "DSTday", "week", "month", or "year". A number can also
 #' precede these options followed by a space (i.e. "2 day" or "37 min").
-#' @param ... Extra parameters to fine tune time-averaging function
+#' @param ... Extra parameters to fine tune \code{pat_aggregate()} function
 #' 
 #' @return List with original \code{meta} and restructured \code{data} elements
 #' 
@@ -36,151 +36,25 @@ createASTimeseriesObject <- function(
   
   # ----- Validate Parameters --------------------------------------------------
   
+  tolower(period) -> period
+  tolower(stats) -> stats
   # Avoid opaque error message from openair when a user types "minute(s)"
   period <- stringr::str_replace(period, "ute?", "")
   
-  # ----- Wrapped Time Average Function ----------------------------------------
+  if ( !pat_isPat(pat) )
+    stop("parameter 'pat' is not a valid 'pa_timeseries' object.")
   
-  timeAverage <- function(
-    df, 
-    period, 
-    dataThreshold = 0, 
-    stats = "mean", 
-    fill = FALSE, 
-    ...
-  ) {
-    
-    avg <- 
-      df %>%
-      openair::timeAverage(
-        avg.time = period, 
-        data.thresh = dataThreshold, 
-        statistic = stats, 
-        fill = fill, 
-        ...
-      ) 
-    
-    return(avg)
-    
-  }
-  
-  # ----- Make a data frame from pat and time average --------------------------
-  
-  make_df <- function(pat, parameter) { 
-    
-    df <- 
-      pat$data %>% 
-      dplyr::select(.data$datetime, .data[[parameter]]) %>% 
-      dplyr::rename(date = .data$datetime) %>% 
-      dplyr::filter(!is.na(parameter))
-    
-    return(df)
-    
-  }
-  
-  # ----- Create Dataframes ----------------------------------------------------
-  
-  humidity_df <- 
-    pat %>% 
-    make_df(parameter = "humidity")
-  
-  temperature_df <- 
-    pat %>% 
-    make_df(parameter = "temperature")
-  
-  # TODO: Temporary - Merging A & B channels. CURRENTLY CHANNEL A 
-  pm25_df <- 
-    pat %>% 
-    make_df(parameter = "pm25_A") %>% 
-    dplyr::rename(pm25 = .data$pm25_A)
-  
-  # ----- Columns for mean data (or any custom param) --------------------------
-  
-  humidity_avg <-
-    humidity_df %>% 
-    timeAverage(period = period, ...)
-  
-  temperature_avg <- 
-    temperature_df %>% 
-    timeAverage(period = period, ...)
-  
-  pm25_avg <- 
-    pm25_df %>% 
-    timeAverage(period = period, ...)
-  
-  # ----- Columns for Standard Deviation ---------------------------------------
-  
-  humidity_sd <-
-    humidity_df %>% 
-    timeAverage(period = period, stats = "sd", ...) %>% 
-    dplyr::rename(humidity_sd = .data$humidity)
-  
-  temperature_sd <-
-    temperature_df %>% 
-    timeAverage(period = period, stats = "sd", ...) %>% 
-    dplyr::rename(temperature_sd = .data$temperature)
-  
-  pm25_sd <-
-    pm25_df %>% 
-    timeAverage(period = period, stats = "sd", ...) %>% 
-    dplyr::rename(pm25_sd = .data$pm25)
-  
-  # ----- Columns for freq count -----------------------------------------------
-  
-  humidity_ct <- 
-    humidity_df %>% 
-    timeAverage(period = period, stats = "frequency", ...) %>% 
-    dplyr::rename(humidity_ct = .data$humidity)
-  
-  temperature_ct <- 
-    temperature_df %>% 
-    timeAverage(period = period, stats = "frequency", ...) %>% 
-    dplyr::rename(temperature_ct = .data$temperature)
-  
-  pm25_ct <- 
-    pm25_df %>% 
-    timeAverage(period = period, stats = "frequency", ...) %>% 
-    dplyr::rename(pm25_ct = .data$pm25)
-  
-  # ----- Columns for QC -------------------------------------------------------
-  # NOTE: TEMP FILL WITH NA
-  # TODO: Determine QC algorithm 
-  
-  humidity_qc <- 
-    humidity_df %>% 
-    timeAverage(period = period, dataThreshold = 100) %>% 
-    dplyr::rename(humidity_qc = .data$humidity)
-  
-  temperature_qc <- 
-    temperature_df %>% 
-    timeAverage(period = period, dataThreshold = 100) %>% 
-    dplyr::rename(temperature_qc = .data$temperature) 
-  
-  pm25_qc <-
-    pm25_df %>% 
-    timeAverage(period = period, dataThreshold = 100) %>% 
-    dplyr::rename(pm25_qc = .data$pm25)
-  
+  if ( pat_isEmpty(pat) )
+    stop("parameter 'pat' has no data.") 
+
   # ----- Create as_timeseries object  -----------------------------------------
   
   data <- 
-    plyr::join_all(
-      list(
-        pm25_avg, 
-        humidity_avg,
-        temperature_avg, 
-        pm25_sd, 
-        humidity_sd, 
-        temperature_sd, 
-        pm25_ct, 
-        humidity_ct, 
-        temperature_ct, 
-        pm25_qc, 
-        humidity_qc, 
-        temperature_qc
-      ), 
-      by = "date", 
-      type = "left"
+    pat_aggregate(
+      pat,
+      period, 
+      quickStats = TRUE, 
+      ...
     )
   
   # TODO: Determie what should be in meta
