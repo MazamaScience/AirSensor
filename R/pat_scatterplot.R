@@ -88,8 +88,8 @@ pat_scatterplot <- function(
     scatterPlot(
       data = data, 
       size = size, 
-      shape = shape, color = 
-        color, 
+      shape = shape, 
+      color = color, 
       alpha = alpha
     ) 
   
