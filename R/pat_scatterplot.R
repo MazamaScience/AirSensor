@@ -78,27 +78,20 @@ pat_scatterplot <- function(
   
   if ( sum(columnIsEmpty) > 0 ) {
     badColumns <- names(which(columnIsEmpty))
-    badString <- paste(badColumns, collapse=", ")
+    badString <- paste(badColumns, collapse = ", ")
     message(paste("Columns: (", 
                   badString, 
                   ") have all missing data and are not shown."))
   }
   
   scatterPlot <- 
-    GGally::ggpairs( data,
-                     mapping = ggplot2::aes(alpha=0.15),
-                     lower = list(
-                       continuous = GGally::wrap(
-                         "points", 
-                         size = size, 
-                         shape = shape,
-                         color = color,
-                         alpha = alpha)),
-                     diag = list(
-                       continuous = GGally::wrap(
-                         "densityDiag")), 
-                     upper = list(continuous = "cor") ) + 
-    ggplot2::theme_bw()
+    scatterPlot(
+      data = data, 
+      size = size, 
+      shape = shape, color = 
+        color, 
+      alpha = alpha
+    ) 
   
   return(scatterPlot)
   
