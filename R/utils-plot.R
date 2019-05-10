@@ -1,4 +1,46 @@
 #' @export
+#' @import graphics
+#' 
+#' @title Matrix scatter plot variables in a data frame
+#' 
+#' @description Creates a multi-panel scatterplot comparing all variables in the
+#' data frame object. If any variables have not valid data, they are omitted 
+#' from the plot.
+#' 
+#' @param data data frame
+#' @param shape symbol to use for points
+#' @param size size of points
+#' @param color color of points
+#' @param alpha opacity of points
+#'
+
+scatterPlot <- function(
+  data, 
+  shape = 18, 
+  size = 1.5, 
+  color = "black", 
+  alpha = 0.5
+) {
+  scatterPlot <- GGally::ggpairs( 
+    data,
+    mapping = ggplot2::aes(alpha = 0.15),
+    lower = list(
+      continuous = GGally::wrap(
+        "points", 
+        size = size, 
+        shape = shape,
+        color = color,
+        alpha = alpha)),
+    diag = list(
+      continuous = GGally::wrap(
+        "densityDiag")), 
+    upper = list(continuous = "cor")
+  ) + ggplot2::theme_bw()
+  
+  return(scatterPlot)
+}
+
+#' @export
 #' @importFrom rlang .data
 #' @import graphics
 #' @title Display multiple plots on one page
@@ -25,7 +67,7 @@ multi_ggplot <- function(..., plotList = NULL, cols = 1, layout = NULL) {
   
   if ( numPlots == 1 ) {
     print(plots[[1]])
-  
+    
   } else {
     grid::grid.newpage()
     grid::pushViewport(
