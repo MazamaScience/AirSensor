@@ -1,6 +1,7 @@
 # Can we compare sensor data with PWFSL monitor data?
 
 # required libraries
+library(PWFSLSmoke)
 library(AirSensor)
 library(dplyr)
 

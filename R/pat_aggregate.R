@@ -1,6 +1,8 @@
 #' @keywords pa_timeseries
 #' @export
 #' @importFrom rlang .data
+#' @importFrom stats aggregate median na.omit quantile sd t.test time
+
 #' @title Time averages for PrupleAir time series
 #' 
 #' @param pat PurpleAir Timeseries "pat" object from \code{pat_load()}
@@ -32,13 +34,13 @@
 #' @examples
 #' \dontrun{
 #' # Hourly mean of Channel A PM2.5 density measurement
-#' pat_timeAverageDiagnostic(pat, "pm25_A", "1 hour")
+#' pat_aggregate(pat, "1 hour")
 #' }
 #' 
 #' \dontrun{
 #' # Maximum weekly temperature
 #' pat %>%
-#'   pat_timeAverageDiagnostic("temperature", "1 week", stats = "max")
+#'   pat_aggregate("temperature", "1 week", stats = "max")
 #' }
 
 pat_aggregate <- function(
@@ -48,8 +50,7 @@ pat_aggregate <- function(
   parameter = NULL,
   dataThreshold = NULL,
   pprobs = NULL,
-  quickStats = FALSE,
-  ...
+  quickStats = FALSE
 ) {
   
   # ----- Validate parameters --------------------------------------------------
@@ -202,38 +203,56 @@ pat_aggregate <- function(
       
       t_score <-  p_value <- df_value <-  list()
       
+      # NOTE:  Handle:
+      # NOTE:    Error in t.test.default(bin$pm25_A[[i]], bin$pm25_B[[i]]) : 
+      # NOTE:    not enough 'x' observations
+      
       for( i in 1:length(bin$datetime) ) { 
-        stats <- 
-          t.test(bin$pm25_A[[i]], bin$pm25_B[[i]])
         
-        t_score[[i]] <- stats$statistic
-        p_value[[i]] <- stats$p.value 
-        df_value[[i]] <- stats$parameter
+        result <- try({
+          stats <- 
+            t.test(bin$pm25_A[[i]], bin$pm25_B[[i]])
+        }, silent = TRUE)
+        
+        if ( "try-error" %in% class(result) ) {
+          
+          t_score[[i]] <- NA
+          p_value[[i]] <- NA 
+          df_value[[i]] <- NA
+          
+        } else {
+          
+          t_score[[i]] <- stats$statistic
+          p_value[[i]] <- stats$p.value 
+          df_value[[i]] <- stats$parameter
+          
+        }
+        
       }
       
-      # Recurssively apply f(x) = x in oder to do hacky convert  
-      t_score <- 
-        rapply(
-          t_score, 
-          f = func 
-        ) 
-      p_value <- 
-        rapply(
-          p_value, 
-          f = func
-        )
-      df_value <- 
-        rapply(
-          df_value, 
-          f = func
-        )
+      # # Recurssively apply f(x) = x in oder to do hacky convert  
+      # t_score <- 
+      #   rapply(
+      #     t_score, 
+      #     f = func 
+      #   ) 
+      # p_value <- 
+      #   rapply(
+      #     p_value, 
+      #     f = func
+      #   )
+      # df_value <- 
+      #   rapply(
+      #     df_value, 
+      #     f = func
+      #   )
       
       df <- 
         dplyr::tibble(
           datetime = bin$datetime, 
-          pm25_t = t_score, 
-          pm25_p = p_value,
-          pm25_df = df_value
+          pm25_t = unlist(t_score), 
+          pm25_p = unlist(p_value),
+          pm25_df = unlist(df_value)
         )
       
       # TODO: Z - Test

@@ -40,7 +40,8 @@ Imports:
     stringr,
     tidyr,
     magrittr,
-    xts
+    xts,
+    zoo
 Suggests:
     knitr,
     testthat
