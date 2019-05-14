@@ -48,7 +48,7 @@ pat_aggregate <- function(
   period = "15 min",
   stats = "mean",
   parameter = NULL,
-  dataThreshold = NULL,
+  dataThreshold = 0,
   pprobs = NULL,
   quickStats = FALSE
 ) {
@@ -122,16 +122,24 @@ pat_aggregate <- function(
     
     options(warn = -1)
     
-    if ( stats == "mean"       ) func <- function(x) mean(x, na.rm = TRUE)
-    if ( stats == "median"     ) func <- function(x) median(x, na.rm = TRUE) 
+    thresh <- function(x) { # handle data thresholding
+      if( sum(is.na(x)) / length(x) >= 1 - dataThreshold ) {
+        return(NA)
+      } else {
+        return(x)
+      }
+    } 
+    
+    if ( stats == "mean"       ) func <- function(x) mean(thresh(x), na.rm = TRUE)
+    if ( stats == "median"     ) func <- function(x) median(thresh(x), na.rm = TRUE) 
     if ( stats == "frequency"  ) func <- function(x) length(na.omit(x))
-    if ( stats == "sd"         ) func <- function(x) sd(x, na.rm = TRUE)
+    if ( stats == "sd"         ) func <- function(x) sd(thresh(x), na.rm = TRUE)
     if ( stats == "sum"        ) func <- function(x) sum(na.omit(x))
     if ( stats == "max"        ) func <- function(x) max(na.omit(x))
     if ( stats == "min"        ) func <- function(x) min(na.omit(x))
-    if ( stats == "tstats" )     func <- function(x) x 
+    if ( stats == "tstats"     ) func <- function(x) x 
     if ( stats == "percentile" ) func <- function(x) quantile(x, 
-                                                              probs = pprobs, 
+                                                              probs = pprobs,
                                                               na.rm = TRUE)
     
     if ( stats != "tstats" ) { # Handle ! test stats
