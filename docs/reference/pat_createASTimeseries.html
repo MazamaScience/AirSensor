@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Load Purple Air synoptic data — pas_load • AirSensor</title>
+<title>Create a AirSensor Timeseries object — pat_createASTimeseries • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,20 +37,10 @@
 
 
 
-<meta property="og:title" content="Load Purple Air synoptic data — pas_load" />
+<meta property="og:title" content="Create a AirSensor Timeseries object — pat_createASTimeseries" />
 
-<meta property="og:description" content="A pre-generated pa_synoptic dataframe will be loaded for
-the given date. These files are generated each day at 4am California time
-and provide a record of all currently installed Purple Air sensors for the
-day of interest.
-The datestamp can be anything that is understood by lubrdiate::ymd()
-including either of the following recommended formats:
-
-&quot;YYYYmmdd&quot;
-&quot;YYYY-mm-dd&quot;
-" />
-
-<meta property="og:description" content="By default, today's date is used." />
+<meta property="og:description" content="Aggregates a PurpleAir timeseries object along the datetime
+axis to produce a new dataframe period-aggregated timeseries data." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -141,60 +131,67 @@ including either of the following recommended formats:
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Load Purple Air synoptic data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pas_load.R'><code>R/pas_load.R</code></a></small>
-    <div class="hidden name"><code>pas_load.Rd</code></div>
+    <h1>Create a AirSensor Timeseries object</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_createASTimeseries.R'><code>R/pat_createASTimeseries.R</code></a></small>
+    <div class="hidden name"><code>pat_createASTimeseries.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>A pre-generated <code>pa_synoptic</code> dataframe will be loaded for
-the given date. These files are generated each day at 4am California time
-and provide a record of all currently installed Purple Air sensors for the
-day of interest.</p>
-<p>The <code>datestamp</code> can be anything that is understood by <code>lubrdiate::ymd()</code>
-including either of the following recommended formats:</p>
-<ul>
-<li><p><code>"YYYYmmdd"</code></p></li>
-<li><p><code>"YYYY-mm-dd"</code></p></li>
-</ul>
-
-    <p>By default, today's date is used.</p>
+    <p>Aggregates a PurpleAir timeseries object along the datetime
+axis to produce a new dataframe period-aggregated timeseries data.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pas_load</span>(<span class='kw'>datestamp</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>strftime</a></span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/today.html'>today</a></span>(<span class='st'>"America/Los_Angeles"</span>),
-  <span class='st'>"%Y%m%d"</span>),
-  <span class='kw'>baseUrl</span> <span class='kw'>=</span> <span class='st'>"http://smoke.mazamascience.com/data/PurpleAir/pas/2019"</span>)</pre>
+    <pre class="usage"><span class='fu'>pat_createASTimeseries</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>period</span> <span class='kw'>=</span> <span class='st'>"1 hour"</span>,
+  <span class='kw'>pm25Source</span> <span class='kw'>=</span> <span class='st'>"AB"</span>, <span class='kw'>qcType</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>removeOutliers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>datestamp</th>
-      <td><p>A date string in ymd order.</p></td>
+      <th>pat</th>
+      <td><p>Purple Air timeseries data from <code><a href='createPATimeseriesObject.html'>createPATimeseriesObject()</a></code></p></td>
     </tr>
     <tr>
-      <th>baseUrl</th>
-      <td><p>Base URL for synoptic data.</p></td>
+      <th>period</th>
+      <td><p>The time period to average to. Can be "sec", "min", "hour", 
+"day". A number can also precede these options followed by a space 
+(i.e. "15 min" or "1 hour").</p></td>
+    </tr>
+    <tr>
+      <th>pm25Source</th>
+      <td><p>Which <code>pat</code> object columns to use when calculating
+the "pm25" column: either <code>A</code>, <code>B</code> or <code>AB</code></p></td>
+    </tr>
+    <tr>
+      <th>qcType</th>
+      <td><p>named quality control method (currently none)</p></td>
+    </tr>
+    <tr>
+      <th>removeOutliers</th>
+      <td><p>logical specifying whether to automatically remove
+outliers using <code><a href='pat_outliers.html'>pat_outliers</a></code> with default parameters.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Extra parameters to fine tune time-averaging function</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Enhanced dataframe of synoptic Purple Air data.</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><a href='pas_loadLatest.html'>pas_loadLatest</a></p></div>
+    <p>List with <code>meta</code> and <code>data</code> elements on a uniform time 
+axis.</p>
+<p>"as_timeseries" list of aggregated time series PurpleAir data</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='fu'>pas_load</span>()
-<span class='no'>pas</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter</a></span>(<span class='no'>stateCode</span> <span class='kw'>==</span> <span class='st'>"CA"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='pas_leaflet.html'>pas_leaflet</a></span>()
+<span class='no'>pat</span> <span class='kw'>&lt;-</span>
+  <span class='kw pkg'>AirSensor</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/AirSensor/topics/example_pat'>example_pat</a></span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='pat_filterDate.html'>pat_filterDate</a></span>(<span class='fl'>20180701</span>, <span class='fl'>20180901</span>)
+<span class='no'>ast</span> <span class='kw'>&lt;-</span> <span class='fu'>createASTimeseriesObject</span>(<span class='no'>pat</span>, <span class='st'>"1 hour"</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -203,8 +200,6 @@ including either of the following recommended formats:</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

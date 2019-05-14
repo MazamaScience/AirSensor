@@ -2,6 +2,8 @@
 
 * `ast_createAirSensor()` converts `ast` objects into "airsensor" objects that
 are compatible with the *PWFSLSmoke* package
+* `initializeMazamaSpatialUtils()` now imports all datasets need to create
+`pas` objects
 * updated `example_pas` data file has additional fields introduced by the 
 0.2.8 version of `enhanceSynopticData()`
 * removed first attempt `pat_timeAverage()` function

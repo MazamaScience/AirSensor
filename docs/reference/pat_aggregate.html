@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Load Purple Air synoptic data — pas_load • AirSensor</title>
+<title>Time averages for PrupleAir time series — pat_aggregate • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,20 +37,12 @@
 
 
 
-<meta property="og:title" content="Load Purple Air synoptic data — pas_load" />
+<meta property="og:title" content="Time averages for PrupleAir time series — pat_aggregate" />
 
-<meta property="og:description" content="A pre-generated pa_synoptic dataframe will be loaded for
-the given date. These files are generated each day at 4am California time
-and provide a record of all currently installed Purple Air sensors for the
-day of interest.
-The datestamp can be anything that is understood by lubrdiate::ymd()
-including either of the following recommended formats:
-
-&quot;YYYYmmdd&quot;
-&quot;YYYY-mm-dd&quot;
-" />
-
-<meta property="og:description" content="By default, today's date is used." />
+<meta property="og:description" content="Function to flexibly aggregate or expand data frames by 
+different time periods and calculating vector-averages for a PurpleAir time 
+series object. This function should be useful in many 
+circumstances where it is necessary to work with different time average data." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -141,60 +133,81 @@ including either of the following recommended formats:
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Load Purple Air synoptic data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pas_load.R'><code>R/pas_load.R</code></a></small>
-    <div class="hidden name"><code>pas_load.Rd</code></div>
+    <h1>Time averages for PrupleAir time series</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_aggregate.R'><code>R/pat_aggregate.R</code></a></small>
+    <div class="hidden name"><code>pat_aggregate.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>A pre-generated <code>pa_synoptic</code> dataframe will be loaded for
-the given date. These files are generated each day at 4am California time
-and provide a record of all currently installed Purple Air sensors for the
-day of interest.</p>
-<p>The <code>datestamp</code> can be anything that is understood by <code>lubrdiate::ymd()</code>
-including either of the following recommended formats:</p>
-<ul>
-<li><p><code>"YYYYmmdd"</code></p></li>
-<li><p><code>"YYYY-mm-dd"</code></p></li>
-</ul>
-
-    <p>By default, today's date is used.</p>
+    <p>Function to flexibly aggregate or expand data frames by 
+different time periods and calculating vector-averages for a PurpleAir time 
+series object. This function should be useful in many 
+circumstances where it is necessary to work with different time average data.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pas_load</span>(<span class='kw'>datestamp</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>strftime</a></span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/today.html'>today</a></span>(<span class='st'>"America/Los_Angeles"</span>),
-  <span class='st'>"%Y%m%d"</span>),
-  <span class='kw'>baseUrl</span> <span class='kw'>=</span> <span class='st'>"http://smoke.mazamascience.com/data/PurpleAir/pas/2019"</span>)</pre>
+    <pre class="usage"><span class='fu'>pat_aggregate</span>(<span class='no'>pat</span>, <span class='kw'>period</span> <span class='kw'>=</span> <span class='st'>"15 min"</span>, <span class='kw'>stats</span> <span class='kw'>=</span> <span class='st'>"mean"</span>,
+  <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dataThreshold</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>pprobs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>quickStats</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>datestamp</th>
-      <td><p>A date string in ymd order.</p></td>
+      <th>pat</th>
+      <td><p>PurpleAir Timeseries "pat" object from <code><a href='pat_load.html'>pat_load()</a></code></p></td>
     </tr>
     <tr>
-      <th>baseUrl</th>
-      <td><p>Base URL for synoptic data.</p></td>
+      <th>period</th>
+      <td><p>The time period to average to. Can be "sec", "min", "hour", 
+"day", "DSTday", "week", "month", "quarter" or "year". A number can also
+ precede these options followed by a space (i.e. "2 day" or "37 min").</p></td>
+    </tr>
+    <tr>
+      <th>stats</th>
+      <td><p>The statistic to apply when aggregating the data; default is the 
+mean. Can be one of "mean", "max", "min", "median", "frequency", 
+"sd", "percentile", "tstats".</p></td>
+    </tr>
+    <tr>
+      <th>parameter</th>
+      <td><p>The variable of timeseries data to aggergate, such as
+"pm25_B", "temperature", etc.</p></td>
+    </tr>
+    <tr>
+      <th>dataThreshold</th>
+      <td><p>A <!-- % of the data capture threshold. A value of 0 means  -->
+that all data will be used in a particular period regardless of the number of
+values avaliable. Conversely, a value of 100 means that all data will need to 
+be present to proceed, else it is recorded as NA.</p></td>
+    </tr>
+    <tr>
+      <th>pprobs</th>
+      <td><p>numeric vector of probabilities with values in [0,1]. Only 
+valid when <code>stats = "percentile"</code></p></td>
+    </tr>
+    <tr>
+      <th>quickStats</th>
+      <td><p>a logical that if <code>TRUE</code> will override <code>stats</code> 
+parameter and return and a data frame of "mean", "sd", and "frequency".</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Enhanced dataframe of synoptic Purple Air data.</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><a href='pas_loadLatest.html'>pas_loadLatest</a></p></div>
+    <p>Returns a dataframe with a date in class POSIXct.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='fu'>pas_load</span>()
-<span class='no'>pas</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter</a></span>(<span class='no'>stateCode</span> <span class='kw'>==</span> <span class='st'>"CA"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='pas_leaflet.html'>pas_leaflet</a></span>()
+<span class='co'># Hourly mean of Channel A PM2.5 density measurement</span>
+<span class='fu'>pat_aggregate</span>(<span class='no'>pat</span>, <span class='st'>"1 hour"</span>)
+<span class='co'># }</span><div class='input'>
+</div><span class='co'># NOT RUN {</span>
+<span class='co'># Maximum weekly temperature</span>
+<span class='no'>pat</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>pat_aggregate</span>(<span class='st'>"temperature"</span>, <span class='st'>"1 week"</span>, <span class='kw'>stats</span> <span class='kw'>=</span> <span class='st'>"max"</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -203,8 +216,6 @@ including either of the following recommended formats:</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

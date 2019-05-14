@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.9</span>
       </span>
     </div>
 
@@ -89,6 +89,9 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/AirSensorOverview.html">AirSensor Package Overview</a>
+    </li>
     <li>
       <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
     </li>
@@ -128,12 +131,26 @@
       <small>Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="airsensor-0-2-9" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-2-9" class="anchor"></a>AirSensor 0.2.9</h1>
+<ul>
+<li>
+<code><a href="../reference/ast_createAirSensor.html">ast_createAirSensor()</a></code> converts <code>ast</code> objects into “airsensor” objects that are compatible with the <em>PWFSLSmoke</em> package</li>
+<li>
+<code><a href="../reference/initializeMazamaSpatialUtils.html">initializeMazamaSpatialUtils()</a></code> now imports all datasets need to create <code>pas</code> objects</li>
+<li>updated <code>example_pas</code> data file has additional fields introduced by the 0.2.8 version of <code><a href="../reference/enhanceSynopticData.html">enhanceSynopticData()</a></code>
+</li>
+<li>removed first attempt <code>pat_timeAverage()</code> function</li>
+<li>new <code><a href="../reference/pat_aggregate.html">pat_aggregate()</a></code> function performs temporal aggregation</li>
+</ul>
+</div>
     <div id="airsensor-0-2-8" class="section level1">
 <h1 class="page-header">
 <a href="#airsensor-0-2-8" class="anchor"></a>AirSensor 0.2.8</h1>
 <ul>
 <li>improvements in <code><a href="../reference/enhanceSynopticData.html">enhanceSynopticData()</a></code> now handle changing order of json properties and validate locations before adding spatial metadata</li>
-<li>new <code>pat_createASTimeseries()</code> function handles conversion of Purple Air-specific “pat” objects into sensor-generic “ast” objects.</li>
+<li>new <code><a href="../reference/pat_createASTimeseries.html">pat_createASTimeseries()</a></code> function handles conversion of Purple Air-specific “pat” objects into sensor-generic “ast” objects.</li>
 <li>new <code><a href="../reference/ast_createAirSensor.html">ast_createAirSensor()</a></code> objects converts “ast” objects into a “as” data type that is compatible with the “ws_monitor” data type used in the <em>PWFSLSmoke</em> package</li>
 </ul>
 </div>
@@ -161,7 +178,7 @@
 <a href="#airsensor-0-2-6" class="anchor"></a>AirSensor 0.2.6</h1>
 <ul>
 <li>added <code>example_pat_failure</code> dataset</li>
-<li>added <code><a href="../reference/createASTimeseriesObject.html">createASTimeseriesObject()</a></code>
+<li>added <code>createASTimeseriesObject()</code>
 </li>
 <li>improved labeling in all plots</li>
 <li>new <code><a href="../reference/pas_staticMap.html">pas_staticMap()</a></code> function with customizable base maps and color schemes</li>
@@ -344,6 +361,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#airsensor-0-2-9">0.2.9</a></li>
         <li><a href="#airsensor-0-2-8">0.2.8</a></li>
         <li><a href="#airsensor-0-2-7">0.2.7</a></li>
         <li><a href="#airsensor-0-2-6">0.2.6</a></li>

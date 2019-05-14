@@ -37,8 +37,8 @@ initializeMazamaSpatialUtils <- function(
   
   logger.setup()
   logger.setLevel(logLevel)
-  data("SimpleCountriesEEZ", package = "MazamaSpatialUtils")
-  data("SimpleTimezones", package = "MazamaSpatialUtils")
+  utils::data("SimpleCountriesEEZ", package = "MazamaSpatialUtils")
+  utils::data("SimpleTimezones", package = "MazamaSpatialUtils")
   MazamaSpatialUtils::setSpatialDataDir(spatialDataDir)
   MazamaSpatialUtils::loadSpatialData(stateCodeDataset)
   

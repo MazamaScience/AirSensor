@@ -43,6 +43,8 @@
 
   logger.setup()
   logger.setLevel(WARN)
+  data(&quot;SimpleCountriesEEZ&quot;, package = &quot;MazamaSpatialUtils&quot;)
+  data(&quot;SimpleTimezones&quot;, package = &quot;MazamaSpatialUtils&quot;)
   MazamaSpatialUtils::setSpatialDataDir('~/Data/Spatial')
   MazamaSpatialUtils::loadSpatialData('NaturalEarthAdm1')
 " />
@@ -84,7 +86,7 @@ MazamaCoreUtils package." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.9</span>
       </span>
     </div>
 
@@ -106,6 +108,9 @@ MazamaCoreUtils package." />
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/AirSensorOverview.html">AirSensor Package Overview</a>
+    </li>
     <li>
       <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
     </li>
@@ -152,6 +157,8 @@ MazamaCoreUtils package." />
 <pre>
   logger.setup()
   logger.setLevel(WARN)
+  data("SimpleCountriesEEZ", package = "MazamaSpatialUtils")
+  data("SimpleTimezones", package = "MazamaSpatialUtils")
   MazamaSpatialUtils::setSpatialDataDir('~/Data/Spatial')
   MazamaSpatialUtils::loadSpatialData('NaturalEarthAdm1')
 </pre>
