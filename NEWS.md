@@ -1,3 +1,12 @@
+# AirSensor 0.2.9
+
+* `ast_createAirSensor()` converts `ast` objects into "airsensor" objects that
+are compatible with the *PWFSLSmoke* package
+* updated `example_pas` data file has additional fields introduced by the 
+0.2.8 version of `enhanceSynopticData()`
+* removed first attempt `pat_timeAverage()` function
+* new `pat_aggregate()` function performs temporal aggregation
+
 # AirSensor 0.2.8
 
 * improvements in `enhanceSynopticData()` now handle changing order of json

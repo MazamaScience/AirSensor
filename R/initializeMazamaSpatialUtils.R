@@ -8,6 +8,8 @@
 #' \preformatted{
 #'   logger.setup()
 #'   logger.setLevel(WARN)
+#'   data("SimpleCountriesEEZ", package = "MazamaSpatialUtils")
+#'   data("SimpleTimezones", package = "MazamaSpatialUtils")
 #'   MazamaSpatialUtils::setSpatialDataDir('~/Data/Spatial')
 #'   MazamaSpatialUtils::loadSpatialData('NaturalEarthAdm1')
 #' }
@@ -35,6 +37,8 @@ initializeMazamaSpatialUtils <- function(
   
   logger.setup()
   logger.setLevel(logLevel)
+  data("SimpleCountriesEEZ", package = "MazamaSpatialUtils")
+  data("SimpleTimezones", package = "MazamaSpatialUtils")
   MazamaSpatialUtils::setSpatialDataDir(spatialDataDir)
   MazamaSpatialUtils::loadSpatialData(stateCodeDataset)
   

@@ -21,6 +21,8 @@ Convenience function that wraps:
 \preformatted{
   logger.setup()
   logger.setLevel(WARN)
+  data("SimpleCountriesEEZ", package = "MazamaSpatialUtils")
+  data("SimpleTimezones", package = "MazamaSpatialUtils")
   MazamaSpatialUtils::setSpatialDataDir('~/Data/Spatial')
   MazamaSpatialUtils::loadSpatialData('NaturalEarthAdm1')
 }

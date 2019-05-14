@@ -47,10 +47,25 @@ ast_createAirSensor <- function(
   # TODO: Determie what should be in meta
   meta <- 
     ast$meta %>% 
-    dplyr::rename(monitorID = .data$ID) %>%
+    dplyr::rename(monitorID = .data$label) %>%
     as.data.frame()
   
+  # Add metadata found in PWFSLSmoke ws_monitor objects
   meta$elevation <- as.numeric(NA)
+  meta$siteName <- meta$label
+  meta$countyName <- as.character(NA)
+  meta$msaName <- as.character(NA)
+  meta$monitorType <- as.character(NA) # TODO -- we know this from the pas
+  meta$siteID <- as.character(NA)
+  meta$instrumentID <- as.character(NA)
+  meta$aqsID <- as.character(NA)
+  meta$pwfslID <- as.character(NA)
+  meta$pwfslDataIngestSource <- as.character(NA)
+  meta$telemetryAggregator <- as.character(NA)
+  meta$telemetryUnitID <- as.character(NA)
+
+  # NOTE:  As of 2019-05-14, the meta dataframe still has rownames
+  rownames(meta) <- colnames(data)[-1]
   
   as_object <- list(meta = meta, data = data)
   class(as_object) <- c("airsensor", "ws_monitor")
