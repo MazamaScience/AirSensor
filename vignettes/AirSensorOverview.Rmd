@@ -1,0 +1,134 @@
+---
+title: "AirSensor Package Overview"
+author: "Mazama Science"
+date: "5/13/2019"
+output: html_document
+---
+
+## PurpleAir Synoptic Functions
+
+### `pas_loadLatest()`
+
+`pas_loadLatest(baseUrl, countryCodes, includePWFSL, lookbackDays)`
+
+> An AirSensor fundemental function to download, parse, and enhance synoptic 
+data from PurpleAir and return the results as a useful tibble with class 
+\code{pa_synoptic}. 
+
+### `pas_load()`
+
+`pas_load(datestamp, baseUrl)`
+
+> Returns a pre-generated PurpleAir synoptic dataframe for all PurpleAir sensors 
+for the day of interest.
+
+
+### `pas_filter()`
+
+`pas_filter(pas, ...)`
+
+> A generalized data filter to choose rows/cases where argument conditions are 
+valid. 
+
+### `pas_filterArea()` 
+
+`pas_filterArea(w, e, s, n)` 
+
+> A filter to choose PurpleAir sensors that are contained inside a geographic 
+bounding box provided by the user. 
+
+### `pas_staticMap()`
+
+`pas_staticMap(pas, parameter, palette, mapTheme, mapShape, direction, minScale, maxScale, shape, size, alpha, bbuff, zoomAdjust, ...)`
+
+> Creates a thematic static map of a `pas` object containing many sensors. Can 
+be used to show various PurpleAir sensor data.
+
+### `pas_leaflet()` 
+
+`pas_leaflet(pas, parameter, paletteName, radius, opacity, maptype, outsideOnly)`
+
+> An interactive JavaScript map that can be used to map many PurpleAir sensors 
+and their synoptic data.
+
+## PurpleAir Timeseries Functions
+
+### `pat_load()` 
+
+`pat_load(pas, name, id, startdate, enddate, baseURL)`
+
+> Retrieve and parse timeseries data from the Thingspeak API for specifically 
+targeted PurpleAir sensors.
+
+### `pat_filterData()`
+
+`pat_filterData(pat, ...)`
+
+> A generalized filter function for PurpleAir time series objects to choose 
+rows/cases whre the argument conditions are valid.
+
+### `pat_filterDate()` 
+
+`pat_filterDate(pat, startdate, enddate, days, weeks, timezone)`
+
+> A date interval filter for PurpleAir time series objects. 
+
+### `pat_sample()`
+
+`pat_sample(pat, sampleSize, sampleFraction, weight, setSeed, forGraphics)`
+
+> A sampling function that reduces the size of large time series objects by 
+randomly selecting distinct rows of the users choosen size. 
+
+### `pat_scatterplot()`
+
+`pat_scatterplot(pat, parameters, sampleSize, size, shape, color, alpha)`
+
+> Creates a scatter matrix plot for comparing all variables in the PurpleAir 
+time series object. A very useful tool to quickly find relationships and sensor characteristics. 
+
+### `pat_outliers()`
+
+`pat_outliers(pat, n, thresholdMin, replace, showPlot, data_shape, data_size, data_color, data_alpha, outlier_shape, outlier_size, outlier_color, outlier_alpha)`
+
+> An outlier detection algorithm (using the hampel method) to quickly parse 
+PurpleAir time series data for flagging likely erronous data. 
+
+### `pat_dygraph()`
+
+`pat_dygraph(pat, parameter, sampleSize, title, xlab, ylab, tlim, rollPeriod, showLegend, colors)` 
+
+> Shows an interactive PurpleAir time series JavaScript graph. The function 
+accepts a number of arguments for various PurpleAir sensor data.
+
+### `pat_aggregate()`
+
+`pat_aggregate(pat, period, stats, parameter, dataThreshold, pprobs, quickStats)`
+
+> An aggregation function for PurpleAir time series data. Can flexibly aggregate 
+data frames by different time periods and calculating various functional 
+aggregation outouts. This function should be useful in many circumstances where 
+it is necessary to work with different time average data.  
+
+### `pat_internalFit()`
+
+`pat_internalFit(pat, subset, weights, showPlot, size, shape, color, alpha, xylim)`
+
+> Uses PurpleAir time series data from both Channel A and B to provide a 
+relationship between both channels and visualize any divergence. 
+
+### `pat_join()`
+
+`pat_join(..., param)`
+
+> A function to creat a union of any number of PurpleAir time series objects 
+along a non-continuous datetime axis. 
+
+### `pat_multiplot()`
+
+`pat_multiplot(pat, plottype, sampleSize, plotList, columns, a_size, a_shape, a_color, b_size, b_shape, b_color, t_size, t_shape, t_color, h_size, h_shape, h_color, alpha)`
+
+>  A plotting function that uses a boiler-plate util function to display 
+multiple PurpleAir time series data in a single pane. Can be very useful for a 
+quick PurpleAir sensor overview.  
+
