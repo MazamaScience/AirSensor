@@ -142,7 +142,8 @@ downloadParseTimeseriesData <- function(
     simplifyDataFrame = TRUE,
     simplifyMatrix = TRUE,
     flatten = FALSE
-  )
+  ) 
+
   err_data <- err_list$feeds
   
   if ( httr::http_error(r) ) { # web service failed to respond
@@ -238,7 +239,9 @@ downloadParseTimeseriesData <- function(
     
     B_list <- err_list
     B_data <- err_data
-  } else { # Response successful
+    
+  } else {
+  # Response successful
     
     B_list <- 
       jsonlite::fromJSON(
@@ -251,13 +254,23 @@ downloadParseTimeseriesData <- function(
     B_data <- B_list$feeds
   }
   
-  # Sanity check for data
+  # Sanity check for data -> fill if empty to avoid error DL 
   if ( length(A_data) == 0 && length(B_data) == 0 ) {
-    stop("No data returned for A or B channels for the requested time period.")
+    A_data <- err_data
+    B_data <- err_data
+    warning(
+     paste0(name,": A & B channels for the requested time period do not exist.")
+    )
   } else if ( length(A_data) == 0) {
-    stop("No data returned for A channel for the requested time period.")
+    A_data <- err_data
+    warning(
+      paste0(name,": A channel for the requested time period do not exist.")
+    )
   } else if ( length(B_data) == 0) {
-    stop("No data returned for B channel for the requested time period.")
+    B_data <- err_data
+    warning(
+      paste0(name,": B channel for the requested time period do not exist")
+    )
   }
   
   # Rename columns
