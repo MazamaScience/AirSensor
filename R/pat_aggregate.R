@@ -5,7 +5,7 @@
 
 #' @title Time averages for PrupleAir time series
 #' 
-#' @param pat PurpleAir Timeseries "pat" object from \code{pat_load()}
+#' @param pat PurpleAir Timeseries "pat" object from \code{pat_loadLatest()}
 #' @param parameter The variable of timeseries data to aggergate, such as
 #' "pm25_B", "temperature", etc.
 #' @param period The time period to average to. Can be "sec", "min", "hour", 

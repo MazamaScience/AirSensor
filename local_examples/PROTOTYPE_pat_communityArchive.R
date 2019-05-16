@@ -36,7 +36,7 @@ for ( label in labels ) {
   print(paste0("Working on ", label, "..."))
   
   result <- try({
-    pat <- pat_load(pas, label,
+    pat <- pat_loadLatest(pas, label,
                     startdate = startdate,
                     enddate = enddate)
   }, silent = TRUE)

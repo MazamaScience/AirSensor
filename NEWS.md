@@ -1,3 +1,9 @@
+# AirSensor 0.2.10
+
+* renamed `pat_load()` to `pat_loadLatest()`
+* removed `subset` and `weights` parameters from `pat_internalFit()`
+* removed unused `param` parameter from `pat_join()`
+
 # AirSensor 0.2.9
 
 * `ast_createAirSensor()` converts `ast` objects into "airsensor" objects that
@@ -92,7 +98,7 @@ requiring tokens on April 25, 2019
 
 * `pat_subdate()` has been renamed to `pat_filterDate()` and defaults to 
 the `America/Los_Angeles` timezone
-* improved handling of date ranges in `pat_load()` -- all requests are assumed
+* improved handling of date ranges in `pat_loadLatest()` -- all requests are assumed
 to be in the sensor's local timezone
 * `pas_load()` function now downloads pre-generated `pas` objects
 * a new `pas_loadLatest()` function downloads raw synoptic data from Purple

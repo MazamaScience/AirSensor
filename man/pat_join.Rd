@@ -4,12 +4,10 @@
 \alias{pat_join}
 \title{Join PurpleAir time series data}
 \usage{
-pat_join(..., param = NULL)
+pat_join(...)
 }
 \arguments{
 \item{...}{Any number of valid \code{pat} objects}
-
-\item{param}{Not used.}
 }
 \value{
 \code{pat} time series object

@@ -22,10 +22,10 @@
 #' \dontrun{
 #' initializeMazamaSpatialUtils()
 #' pas <- pas_load()
-#' pat <- pat_load(pas, "Seattle", startdate = 20180701, enddate = 20180901)
+#' pat <- pat_loadLatest(pas, "Seattle", startdate = 20180701, enddate = 20180901)
 #' }
 
-pat_load <- function(
+pat_loadLatest <- function(
   pas = NULL,
   name = NULL,
   id = NULL,
@@ -34,7 +34,7 @@ pat_load <- function(
   baseURL = "https://api.thingspeak.com/channels/"
 ) {
   
-  logger.debug("----- pat_load() -----")
+  logger.debug("----- pat_loadLatest() -----")
   
   # ----- Validate parameters --------------------------------------------------
   

@@ -2,18 +2,65 @@
 title: "AirSensor Package Overview"
 author: "Mazama Science"
 date: "5/13/2019"
-output: html_document
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{AirSensor Package Overview}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
-## PurpleAir Synoptic Functions
+# Function Overview
 
-### `pas_loadLatest()`
+## Synoptic Data
 
-`pas_loadLatest(baseUrl, countryCodes, includePWFSL, lookbackDays)`
+Purple Air Synoptic (PAS) data provides a view of their sensor network with location
+metadata and an instantaneous view of measured values. Within the **AirSensor**
+package, this data is availabe as a `pas` object. All functions beginning with
+`pas_` are designed for obtaining or working with this data. The
+following functions are the most common end-user functions:
 
-> An AirSensor fundemental function to download, parse, and enhance synoptic 
-data from PurpleAir and return the results as a useful tibble with class 
-\code{pa_synoptic}. 
+| function | params |
+|:------|:-----|
+| **Loading a `pas`** |  |
+| `pas_load()` | _none_ | 
+| `pas_loadLatest()` | `baseUrl, countryCodes, includePWFSL, lookbackDays` |
+| **Mainpulating a `pas`** |  |
+| `pas_filter()` | `pas, ...` |
+| `pas_filterArea()` | `pas, w, e, s, n` |
+| **Plotting a `pas`** | |
+| `pas_leaflet()` | `pas, parameter, ...` |
+| `pas_staticMap()` | `pas, parameter, ...` |
+
+## Timeseries Data
+
+Purple Air Timeseries (PAT) data is available on a per-sensor basis. Within the 
+**AirSensor** package, this data is availabe as a `pat` object. All functions 
+beginning with `pat_` are designed for obtaining or working with this data. The
+following functions are the most common end-user functions:
+
+| function | params |
+|:------|:-----|
+| **Loading a `pat`** |  |
+| `pas_load()` (soon) | `name ,startdate, enddate` (soon) | 
+| `pas_loadLatest()` | `pas, name, id, startdate, enddate` |
+| **Mainpulating a `pat`** |  |
+| `pat_filterData()` | `pat, ...` |
+| `pat_filterDate()` | `pat, startdate, enddate, ...` |
+| `pat_join()` | `pat, pat, ...` |
+| `pat_outliers()` | `pat, n, thresholdMin, replace, showPlot, ...` |
+| `pat_sample()` | `pat, sampleSize` |
+| **Plotting a `pat`** | |
+| `pat_dygraph()` | `pat, parameter, sampleSize, ...` |
+| `pat_multiplot()` | `pat, plottype, sampleSize, ...` |
+| `pat_scatterplot()` | `pat, parameters, sampleSize, ...` |
+| **Other functions** | |
+| `pat_aggregate()` | `pat, period, stats, parameter, dataThreshold, ...` |
+| `pat_internalFit()` | `pat, parameter, ...` |
+| `pat_createASTimeseries()` | `pat, period, pm25Source, qcType, ...` |
+
+-----
+
+## Synoptic Function Details
 
 ### `pas_load()`
 
@@ -22,6 +69,13 @@ data from PurpleAir and return the results as a useful tibble with class
 > Returns a pre-generated PurpleAir synoptic dataframe for all PurpleAir sensors 
 for the day of interest.
 
+### `pas_loadLatest()`
+
+`pas_loadLatest(baseUrl, countryCodes, includePWFSL, lookbackDays)`
+
+> An AirSensor fundemental function to download, parse, and enhance synoptic 
+data from PurpleAir and return the results as a useful tibble with class 
+\code{pa_synoptic}. 
 
 ### `pas_filter()`
 
@@ -32,17 +86,10 @@ valid.
 
 ### `pas_filterArea()` 
 
-`pas_filterArea(w, e, s, n)` 
+`pas_filterArea(pas, w, e, s, n)` 
 
 > A filter to choose PurpleAir sensors that are contained inside a geographic 
 bounding box provided by the user. 
-
-### `pas_staticMap()`
-
-`pas_staticMap(pas, parameter, palette, mapTheme, mapShape, direction, minScale, maxScale, shape, size, alpha, bbuff, zoomAdjust, ...)`
-
-> Creates a thematic static map of a `pas` object containing many sensors. Can 
-be used to show various PurpleAir sensor data.
 
 ### `pas_leaflet()` 
 
@@ -51,11 +98,25 @@ be used to show various PurpleAir sensor data.
 > An interactive JavaScript map that can be used to map many PurpleAir sensors 
 and their synoptic data.
 
-## PurpleAir Timeseries Functions
+### `pas_staticMap()`
 
-### `pat_load()` 
+`pas_staticMap(pas, parameter, palette, mapTheme, mapShape, direction, minScale, maxScale, shape, size, alpha, bbuff, zoomAdjust, ...)`
 
-`pat_load(pas, name, id, startdate, enddate, baseURL)`
+> Creates a thematic static map of a `pas` object containing many sensors. Can 
+be used to show various PurpleAir sensor data.
+
+## Timeseries Function Details
+
+### `pat_loadLatest()` 
+
+`pat_loadLatest(pas, name, id, startdate, enddate, baseURL)`
+
+> Retrieve and parse timeseries data from the Thingspeak API for specifically 
+targeted PurpleAir sensors.
+
+### `pat_loadLatest()` 
+
+`pat_loadLatest(pas, name, id, startdate, enddate, baseURL)`
 
 > Retrieve and parse timeseries data from the Thingspeak API for specifically 
 targeted PurpleAir sensors.

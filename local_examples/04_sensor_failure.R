@@ -16,9 +16,9 @@ scaqmd <-
 pas_leaflet(scaqmd)
 
 # Let's get time series data for a failing sensor in Nipomo
-pat <- pat_load(pas, "SCNP_20",
-                startdate = "2019-04-01",
-                enddate = "2019-04-18")
+pat <- pat_loadLatest(pas, "SCNP_20",
+                      startdate = "2019-04-01",
+                      enddate = "2019-04-18")
 
 # Quick look at raw data to check for spurious correlations
 pat_scatterplot(pat)

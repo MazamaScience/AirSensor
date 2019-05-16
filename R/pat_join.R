@@ -3,7 +3,6 @@
 #' @title Join PurpleAir time series data
 #' 
 #' @param ... Any number of valid \code{pat} objects
-#' @param param Not used.
 #' 
 #' @return \code{pat} time series object
 #' 
@@ -25,9 +24,10 @@
 #' 
 
 pat_join <- function(
-  ...,
-  param = NULL
+  ...
 ) {
+  
+  # TODO:  Handle an incoming list of pat objects rather than separate ones
   
   # Accept any number of pat objects
   patList <- list(...) 

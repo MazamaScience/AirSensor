@@ -5,11 +5,11 @@
 \title{Time averages for PrupleAir time series}
 \usage{
 pat_aggregate(pat, period = "15 min", stats = "mean",
-  parameter = NULL, dataThreshold = NULL, pprobs = NULL,
+  parameter = NULL, dataThreshold = 0, pprobs = NULL,
   quickStats = FALSE)
 }
 \arguments{
-\item{pat}{PurpleAir Timeseries "pat" object from \code{pat_load()}}
+\item{pat}{PurpleAir Timeseries "pat" object from \code{pat_loadLatest()}}
 
 \item{period}{The time period to average to. Can be "sec", "min", "hour", 
 "day", "DSTday", "week", "month", "quarter" or "year". A number can also

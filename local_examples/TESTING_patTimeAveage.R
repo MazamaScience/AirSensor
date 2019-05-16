@@ -23,7 +23,7 @@ ca <-
   filter(stateCode == 'CA')
 
 # Load timeseries data from Nipomo
-scnp_14 <- pat_load(pas, "SCNP_14")
+scnp_14 <- pat_loadLatest(pas, "SCNP_14")
 
 # Merge the A and B channel data
 df_A <- 

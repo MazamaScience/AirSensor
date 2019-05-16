@@ -194,28 +194,31 @@ pat_createASTimeseries <- function(
   
   # ----- Create as_timeseries object  -----------------------------------------
   
+  # Arrange columns so that it will be easy to use scatterPlot():
+  #   scatterPlot(ast$data[,1:5])        # for pm25
+  #   scatterPlot(ast$data[,c(1,6:9)])   # for temperature
+  #   scatterPlot(ast$data[,c(1,10:13)]) # for humidity
   data <- 
     plyr::join_all(
       list(
         pm25_avg, 
-        humidity_avg,
-        temperature_avg, 
         pm25_sd, 
-        humidity_sd, 
-        temperature_sd, 
         pm25_ct, 
-        humidity_ct, 
-        temperature_ct, 
         pm25_qc, 
-        humidity_qc, 
-        temperature_qc
+        temperature_avg, 
+        temperature_sd, 
+        temperature_ct, 
+        temperature_qc,
+        humidity_avg,
+        humidity_sd, 
+        humidity_ct, 
+        humidity_qc 
       ), 
       by = "date", 
       type = "left"
     ) %>%
     dplyr::rename(datetime = date)
   
-  # TODO: Determie what should be in meta
   meta <- 
     pat$meta %>% 
     dplyr::select(

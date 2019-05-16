@@ -55,7 +55,7 @@ The process is as follows:
 }
 \examples{
 \dontrun{
-pat <- pat_load()
+pat <- pat_loadLatest()
 subset <- pat_sample(pat, sampleSize=1000, setSeed=1234)
 }
 

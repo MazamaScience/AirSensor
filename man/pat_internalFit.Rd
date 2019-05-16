@@ -4,20 +4,11 @@
 \alias{pat_internalFit}
 \title{Linear model fitting of channel A and B data}
 \usage{
-pat_internalFit(pat = NULL, subset = NULL, weights = NULL,
-  showPlot = TRUE, size = 1, shape = 15, color = "purple",
-  alpha = 0.25, xylim = NULL)
+pat_internalFit(pat = NULL, showPlot = TRUE, size = 1, shape = 15,
+  color = "purple", alpha = 0.25, xylim = NULL)
 }
 \arguments{
 \item{pat}{Purple Air Timeseries "pat" object}
-
-\item{subset}{(From `stats::lm`) An optional vector specifying a subset of
-observations to be used in the fitting process.}
-
-\item{weights}{(From `stats::lm`) An optional vector of weights to be used in
-the fitting process. Should be NULL or a numeric vector. If non-NULL,
-weighted least squares is used with weights weights (that is, minimizing
-sum(w*e^2)); otherwise ordinary least squares is used.}
 
 \item{showPlot}{logical specifying whether to generate a model fit plot}
 
