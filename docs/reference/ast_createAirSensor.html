@@ -71,7 +71,7 @@ that has appropriate metadata to be used with the *PWFSLSmoke* package." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.10</span>
       </span>
     </div>
 
@@ -174,7 +174,7 @@ axis.</p>
 <span class='no'>pat</span> <span class='kw'>&lt;-</span>
   <span class='kw pkg'>AirSensor</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/AirSensor/topics/example_pat'>example_pat</a></span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='pat_filterDate.html'>pat_filterDate</a></span>(<span class='fl'>20180701</span>, <span class='fl'>20180901</span>)
-<span class='no'>ast</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_createASTimeseriesObject</span>(<span class='no'>pat</span>, <span class='st'>"1 hour"</span>)
+<span class='no'>ast</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pat_createASTimeseries.html'>pat_createASTimeseries</a></span>(<span class='no'>pat</span>, <span class='st'>"1 hour"</span>)
 <span class='no'>as</span> <span class='kw'>&lt;-</span> <span class='fu'>ast_createAirSensor</span>(<span class='no'>ast</span>)
 <span class='co'># }</span></pre>
   </div>

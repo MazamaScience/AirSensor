@@ -73,7 +73,7 @@ circumstances where it is necessary to work with different time average data." /
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.10</span>
       </span>
     </div>
 
@@ -148,7 +148,7 @@ circumstances where it is necessary to work with different time average data.</p
     </div>
 
     <pre class="usage"><span class='fu'>pat_aggregate</span>(<span class='no'>pat</span>, <span class='kw'>period</span> <span class='kw'>=</span> <span class='st'>"15 min"</span>, <span class='kw'>stats</span> <span class='kw'>=</span> <span class='st'>"mean"</span>,
-  <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dataThreshold</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>pprobs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dataThreshold</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>pprobs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>quickStats</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -156,7 +156,7 @@ circumstances where it is necessary to work with different time average data.</p
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pat</th>
-      <td><p>PurpleAir Timeseries "pat" object from <code><a href='pat_load.html'>pat_loadLatest()</a></code></p></td>
+      <td><p>PurpleAir Timeseries "pat" object from <code><a href='pat_loadLatest.html'>pat_loadLatest()</a></code></p></td>
     </tr>
     <tr>
       <th>period</th>

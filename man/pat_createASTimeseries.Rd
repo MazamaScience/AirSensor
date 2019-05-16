@@ -35,5 +35,5 @@ ast <- pat_createASTimeseries(pat, "1 hour")
 }
 }
 \seealso{
-\link{pat_timeAverage}
+\link{pat_aggregate}
 }

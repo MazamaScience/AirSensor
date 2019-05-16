@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Test for an empty <em>pas</em> object — pas_isEmpty • AirSensor</title>
+<title>Create a AirSensor Timeseries object — pat_createASTimeseries_OLD • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,10 +37,10 @@
 
 
 
-<meta property="og:title" content="Test for an empty <em>pas</em> object — pas_isEmpty" />
+<meta property="og:title" content="Create a AirSensor Timeseries object — pat_createASTimeseries_OLD" />
 
-<meta property="og:description" content="Convenience function for nrow(pas) == 0.
-This makes for more readable code in functions that need to test for this." />
+<meta property="og:description" content="Aggregates a PurpleAir timeseries object along the datetime
+axis to produce a new dataframe period-aggregated timeseries data." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -131,34 +131,68 @@ This makes for more readable code in functions that need to test for this." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Test for an empty <em>pas</em> object</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/utils-paSynoptic.R'><code>R/utils-paSynoptic.R</code></a></small>
-    <div class="hidden name"><code>pas_isEmpty.Rd</code></div>
+    <h1>Create a AirSensor Timeseries object</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_createASTimeseries_OLD.R'><code>R/pat_createASTimeseries_OLD.R</code></a></small>
+    <div class="hidden name"><code>pat_createASTimeseries_OLD.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Convenience function for <code>nrow(pas) == 0</code>.
-This makes for more readable code in functions that need to test for this.</p>
+    <p>Aggregates a PurpleAir timeseries object along the datetime
+axis to produce a new dataframe period-aggregated timeseries data.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pas_isEmpty</span>(<span class='no'>pas</span>)</pre>
+    <pre class="usage"><span class='fu'>pat_createASTimeseries_OLD</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>period</span> <span class='kw'>=</span> <span class='st'>"1 hour"</span>,
+  <span class='kw'>pm25Source</span> <span class='kw'>=</span> <span class='st'>"AB"</span>, <span class='kw'>qcType</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>removeOutliers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pas</th>
-      <td><p><em>pas</em> object</p></td>
+      <th>pat</th>
+      <td><p>Purple Air timeseries data from <code><a href='createPATimeseriesObject.html'>createPATimeseriesObject()</a></code></p></td>
+    </tr>
+    <tr>
+      <th>period</th>
+      <td><p>The time period to average to. Can be "sec", "min", "hour", 
+"day". A number can also precede these options followed by a space 
+(i.e. "15 min" or "1 hour").</p></td>
+    </tr>
+    <tr>
+      <th>pm25Source</th>
+      <td><p>Which <code>pat</code> object columns to use when calculating
+the "pm25" column: either <code>A</code>, <code>B</code> or <code>AB</code></p></td>
+    </tr>
+    <tr>
+      <th>qcType</th>
+      <td><p>named quality control method (currently none)</p></td>
+    </tr>
+    <tr>
+      <th>removeOutliers</th>
+      <td><p>logical specifying whether to automatically remove
+outliers using <code><a href='pat_outliers.html'>pat_outliers</a></code> with default parameters.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Extra parameters to fine tune time-averaging function</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>TRUE</code> if no data exist in <code>pas</code>, <code>FALSE</code> otherwise.</p>
+    <p>List with <code>meta</code> and <code>data</code> elements on a uniform time 
+axis.</p>
+<p>"as_timeseries" list of aggregated time series PurpleAir data</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='no'>pat</span> <span class='kw'>&lt;-</span>
+  <span class='kw pkg'>AirSensor</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/AirSensor/topics/example_pat'>example_pat</a></span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='pat_filterDate.html'>pat_filterDate</a></span>(<span class='fl'>20180701</span>, <span class='fl'>20180901</span>)
+<span class='no'>ast</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_createASTimeseries_OLD</span>(<span class='no'>pat</span>, <span class='st'>"1 hour"</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -166,7 +200,9 @@ This makes for more readable code in functions that need to test for this.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

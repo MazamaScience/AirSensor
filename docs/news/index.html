@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.10</span>
       </span>
     </div>
 
@@ -131,6 +131,18 @@
       <small>Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="airsensor-0-2-10" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-2-10" class="anchor"></a>AirSensor 0.2.10</h1>
+<ul>
+<li>renamed <code>pat_load()</code> to <code><a href="../reference/pat_loadLatest.html">pat_loadLatest()</a></code>
+</li>
+<li>removed <code>subset</code> and <code>weights</code> parameters from <code><a href="../reference/pat_internalFit.html">pat_internalFit()</a></code>
+</li>
+<li>removed unused <code>param</code> parameter from <code><a href="../reference/pat_join.html">pat_join()</a></code>
+</li>
+</ul>
+</div>
     <div id="airsensor-0-2-9" class="section level1">
 <h1 class="page-header">
 <a href="#airsensor-0-2-9" class="anchor"></a>AirSensor 0.2.9</h1>
@@ -275,7 +287,7 @@
 <ul>
 <li>
 <code>pat_subdate()</code> has been renamed to <code><a href="../reference/pat_filterDate.html">pat_filterDate()</a></code> and defaults to the <code>America/Los_Angeles</code> timezone</li>
-<li>improved handling of date ranges in <code><a href="../reference/pat_load.html">pat_loadLatest()</a></code> – all requests are assumed to be in the sensor’s local timezone</li>
+<li>improved handling of date ranges in <code><a href="../reference/pat_loadLatest.html">pat_loadLatest()</a></code> – all requests are assumed to be in the sensor’s local timezone</li>
 <li>
 <code><a href="../reference/pas_load.html">pas_load()</a></code> function now downloads pre-generated <code>pas</code> objects</li>
 <li>a new <code><a href="../reference/pas_loadLatest.html">pas_loadLatest()</a></code> function downloads raw synoptic data from Purple Air and generates a <code>pas</code> object</li>
@@ -361,6 +373,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#airsensor-0-2-10">0.2.10</a></li>
         <li><a href="#airsensor-0-2-9">0.2.9</a></li>
         <li><a href="#airsensor-0-2-8">0.2.8</a></li>
         <li><a href="#airsensor-0-2-7">0.2.7</a></li>

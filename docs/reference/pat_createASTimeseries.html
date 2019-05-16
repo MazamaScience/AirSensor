@@ -40,7 +40,9 @@
 <meta property="og:title" content="Create a AirSensor Timeseries object — pat_createASTimeseries" />
 
 <meta property="og:description" content="Aggregates a PurpleAir timeseries object along the datetime
-axis to produce a new dataframe period-aggregated timeseries data." />
+axis to produce a new dataframe with 13 columns of period-aggregated
+timeseries data: averages, standard deviations, measurement frequency, and 
+qualitity control." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -71,7 +73,7 @@ axis to produce a new dataframe period-aggregated timeseries data." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.10</span>
       </span>
     </div>
 
@@ -139,12 +141,13 @@ axis to produce a new dataframe period-aggregated timeseries data." />
     <div class="ref-description">
     
     <p>Aggregates a PurpleAir timeseries object along the datetime
-axis to produce a new dataframe period-aggregated timeseries data.</p>
+axis to produce a new dataframe with 13 columns of period-aggregated
+timeseries data: averages, standard deviations, measurement frequency, and 
+qualitity control.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pat_createASTimeseries</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>period</span> <span class='kw'>=</span> <span class='st'>"1 hour"</span>,
-  <span class='kw'>pm25Source</span> <span class='kw'>=</span> <span class='st'>"AB"</span>, <span class='kw'>qcType</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>removeOutliers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>pat_createASTimeseries</span>(<span class='no'>pat</span>, <span class='kw'>period</span> <span class='kw'>=</span> <span class='st'>"1 hour"</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -156,34 +159,23 @@ axis to produce a new dataframe period-aggregated timeseries data.</p>
     <tr>
       <th>period</th>
       <td><p>The time period to average to. Can be "sec", "min", "hour", 
-"day". A number can also precede these options followed by a space 
-(i.e. "15 min" or "1 hour").</p></td>
-    </tr>
-    <tr>
-      <th>pm25Source</th>
-      <td><p>Which <code>pat</code> object columns to use when calculating
-the "pm25" column: either <code>A</code>, <code>B</code> or <code>AB</code></p></td>
-    </tr>
-    <tr>
-      <th>qcType</th>
-      <td><p>named quality control method (currently none)</p></td>
-    </tr>
-    <tr>
-      <th>removeOutliers</th>
-      <td><p>logical specifying whether to automatically remove
-outliers using <code><a href='pat_outliers.html'>pat_outliers</a></code> with default parameters.</p></td>
+"day", "DSTday", "week", "month", or "year". A number can also
+precede these options followed by a space (i.e. "2 day" or "37 min").</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Extra parameters to fine tune time-averaging function</p></td>
+      <td><p>Extra parameters to fine tune <code><a href='pat_aggregate.html'>pat_aggregate()</a></code> function</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>List with <code>meta</code> and <code>data</code> elements on a uniform time 
-axis.</p>
+    <p>List with original <code>meta</code> and restructured <code>data</code> elements</p>
 <p>"as_timeseries" list of aggregated time series PurpleAir data</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='pat_aggregate.html'>pat_aggregate</a></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -191,7 +183,7 @@ axis.</p>
 <span class='no'>pat</span> <span class='kw'>&lt;-</span>
   <span class='kw pkg'>AirSensor</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/AirSensor/topics/example_pat'>example_pat</a></span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='pat_filterDate.html'>pat_filterDate</a></span>(<span class='fl'>20180701</span>, <span class='fl'>20180901</span>)
-<span class='no'>ast</span> <span class='kw'>&lt;-</span> <span class='fu'>createASTimeseriesObject</span>(<span class='no'>pat</span>, <span class='st'>"1 hour"</span>)
+<span class='no'>ast</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_createASTimeseries</span>(<span class='no'>pat</span>, <span class='st'>"1 hour"</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -200,6 +192,8 @@ axis.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.10</span>
       </span>
     </div>
 
@@ -107,18 +107,145 @@
 
     
     
-<div id="purpleair-synoptic-functions" class="section level2">
+<div id="function-overview" class="section level1">
+<h1 class="hasAnchor">
+<a href="#function-overview" class="anchor"></a>Function Overview</h1>
+<div id="synoptic-data" class="section level2">
 <h2 class="hasAnchor">
-<a href="#purpleair-synoptic-functions" class="anchor"></a>PurpleAir Synoptic Functions</h2>
-<div id="pas_loadlatest" class="section level3">
-<h3 class="hasAnchor">
-<a href="#pas_loadlatest" class="anchor"></a><code><a href="../reference/pas_loadLatest.html">pas_loadLatest()</a></code>
-</h3>
-<p><code><a href="../reference/pas_loadLatest.html">pas_loadLatest(baseUrl, countryCodes, includePWFSL, lookbackDays)</a></code></p>
-<blockquote>
-<p>An AirSensor fundemental function to download, parse, and enhance synoptic data from PurpleAir and return the results as a useful tibble with class .</p>
-</blockquote>
+<a href="#synoptic-data" class="anchor"></a>Synoptic Data</h2>
+<p>Purple Air Synoptic (PAS) data provides a view of their sensor network with location metadata and an instantaneous view of measured values. Within the <strong>AirSensor</strong> package, this data is availabe as a <code>pas</code> object. All functions beginning with <code>pas_</code> are designed for obtaining or working with this data. The following functions are the most common end-user functions:</p>
+<table class="table">
+<thead><tr class="header">
+<th align="left">function</th>
+<th align="left">params</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>Loading a <code>pas</code></strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code><a href="../reference/pas_load.html">pas_load()</a></code></td>
+<td align="left"><em>none</em></td>
+</tr>
+<tr class="odd">
+<td align="left"><code><a href="../reference/pas_loadLatest.html">pas_loadLatest()</a></code></td>
+<td align="left"><code>baseUrl, countryCodes, includePWFSL, lookbackDays</code></td>
+</tr>
+<tr class="even">
+<td align="left"><strong>Mainpulating a <code>pas</code></strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code><a href="../reference/pas_filter.html">pas_filter()</a></code></td>
+<td align="left"><code>pas, ...</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code><a href="../reference/pas_filterArea.html">pas_filterArea()</a></code></td>
+<td align="left"><code>pas, w, e, s, n</code></td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>Plotting a <code>pas</code></strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code><a href="../reference/pas_leaflet.html">pas_leaflet()</a></code></td>
+<td align="left"><code>pas, parameter, ...</code></td>
+</tr>
+<tr class="odd">
+<td align="left"><code><a href="../reference/pas_staticMap.html">pas_staticMap()</a></code></td>
+<td align="left"><code>pas, parameter, ...</code></td>
+</tr>
+</tbody>
+</table>
 </div>
+<div id="timeseries-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#timeseries-data" class="anchor"></a>Timeseries Data</h2>
+<p>Purple Air Timeseries (PAT) data is available on a per-sensor basis. Within the <strong>AirSensor</strong> package, this data is availabe as a <code>pat</code> object. All functions beginning with <code>pat_</code> are designed for obtaining or working with this data. The following functions are the most common end-user functions:</p>
+<table class="table">
+<thead><tr class="header">
+<th align="left">function</th>
+<th align="left">params</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>Loading a <code>pat</code></strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">
+<code><a href="../reference/pas_load.html">pas_load()</a></code> (soon)</td>
+<td align="left">
+<code>name ,startdate, enddate</code> (soon)</td>
+</tr>
+<tr class="odd">
+<td align="left"><code><a href="../reference/pas_loadLatest.html">pas_loadLatest()</a></code></td>
+<td align="left"><code>pas, name, id, startdate, enddate</code></td>
+</tr>
+<tr class="even">
+<td align="left"><strong>Mainpulating a <code>pat</code></strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code><a href="../reference/pat_filterData.html">pat_filterData()</a></code></td>
+<td align="left"><code>pat, ...</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code><a href="../reference/pat_filterDate.html">pat_filterDate()</a></code></td>
+<td align="left"><code>pat, startdate, enddate, ...</code></td>
+</tr>
+<tr class="odd">
+<td align="left"><code><a href="../reference/pat_join.html">pat_join()</a></code></td>
+<td align="left"><code>pat, pat, ...</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code><a href="../reference/pat_outliers.html">pat_outliers()</a></code></td>
+<td align="left"><code>pat, n, thresholdMin, replace, showPlot, ...</code></td>
+</tr>
+<tr class="odd">
+<td align="left"><code><a href="../reference/pat_sample.html">pat_sample()</a></code></td>
+<td align="left"><code>pat, sampleSize</code></td>
+</tr>
+<tr class="even">
+<td align="left"><strong>Plotting a <code>pat</code></strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code><a href="../reference/pat_dygraph.html">pat_dygraph()</a></code></td>
+<td align="left"><code>pat, parameter, sampleSize, ...</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code><a href="../reference/pat_multiplot.html">pat_multiplot()</a></code></td>
+<td align="left"><code>pat, plottype, sampleSize, ...</code></td>
+</tr>
+<tr class="odd">
+<td align="left"><code><a href="../reference/pat_scatterplot.html">pat_scatterplot()</a></code></td>
+<td align="left"><code>pat, parameters, sampleSize, ...</code></td>
+</tr>
+<tr class="even">
+<td align="left"><strong>Other functions</strong></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code><a href="../reference/pat_aggregate.html">pat_aggregate()</a></code></td>
+<td align="left"><code>pat, period, stats, parameter, dataThreshold, ...</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code><a href="../reference/pat_internalFit.html">pat_internalFit()</a></code></td>
+<td align="left"><code>pat, parameter, ...</code></td>
+</tr>
+<tr class="odd">
+<td align="left"><code><a href="../reference/pat_createASTimeseries.html">pat_createASTimeseries()</a></code></td>
+<td align="left"><code>pat, period, pm25Source, qcType, ...</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+</div>
+<div id="synoptic-function-details" class="section level2">
+<h2 class="hasAnchor">
+<a href="#synoptic-function-details" class="anchor"></a>Synoptic Function Details</h2>
 <div id="pas_load" class="section level3">
 <h3 class="hasAnchor">
 <a href="#pas_load" class="anchor"></a><code><a href="../reference/pas_load.html">pas_load()</a></code>
@@ -126,6 +253,15 @@
 <p><code><a href="../reference/pas_load.html">pas_load(datestamp, baseUrl)</a></code></p>
 <blockquote>
 <p>Returns a pre-generated PurpleAir synoptic dataframe for all PurpleAir sensors for the day of interest.</p>
+</blockquote>
+</div>
+<div id="pas_loadlatest" class="section level3">
+<h3 class="hasAnchor">
+<a href="#pas_loadlatest" class="anchor"></a><code><a href="../reference/pas_loadLatest.html">pas_loadLatest()</a></code>
+</h3>
+<p><code><a href="../reference/pas_loadLatest.html">pas_loadLatest(baseUrl, countryCodes, includePWFSL, lookbackDays)</a></code></p>
+<blockquote>
+<p>An AirSensor fundemental function to download, parse, and enhance synoptic data from PurpleAir and return the results as a useful tibble with class .</p>
 </blockquote>
 </div>
 <div id="pas_filter" class="section level3">
@@ -141,18 +277,9 @@
 <h3 class="hasAnchor">
 <a href="#pas_filterarea" class="anchor"></a><code><a href="../reference/pas_filterArea.html">pas_filterArea()</a></code>
 </h3>
-<p><code><a href="../reference/pas_filterArea.html">pas_filterArea(w, e, s, n)</a></code></p>
+<p><code><a href="../reference/pas_filterArea.html">pas_filterArea(pas, w, e, s, n)</a></code></p>
 <blockquote>
 <p>A filter to choose PurpleAir sensors that are contained inside a geographic bounding box provided by the user.</p>
-</blockquote>
-</div>
-<div id="pas_staticmap" class="section level3">
-<h3 class="hasAnchor">
-<a href="#pas_staticmap" class="anchor"></a><code><a href="../reference/pas_staticMap.html">pas_staticMap()</a></code>
-</h3>
-<p><code><a href="../reference/pas_staticMap.html">pas_staticMap(pas, parameter, palette, mapTheme, mapShape, direction, minScale, maxScale, shape, size, alpha, bbuff, zoomAdjust, ...)</a></code></p>
-<blockquote>
-<p>Creates a thematic static map of a <code>pas</code> object containing many sensors. Can be used to show various PurpleAir sensor data.</p>
 </blockquote>
 </div>
 <div id="pas_leaflet" class="section level3">
@@ -164,15 +291,33 @@
 <p>An interactive JavaScript map that can be used to map many PurpleAir sensors and their synoptic data.</p>
 </blockquote>
 </div>
-</div>
-<div id="purpleair-timeseries-functions" class="section level2">
-<h2 class="hasAnchor">
-<a href="#purpleair-timeseries-functions" class="anchor"></a>PurpleAir Timeseries Functions</h2>
-<div id="pat_load" class="section level3">
+<div id="pas_staticmap" class="section level3">
 <h3 class="hasAnchor">
-<a href="#pat_load" class="anchor"></a><code><a href="../reference/pat_load.html">pat_loadLatest()</a></code>
+<a href="#pas_staticmap" class="anchor"></a><code><a href="../reference/pas_staticMap.html">pas_staticMap()</a></code>
 </h3>
-<p><code><a href="../reference/pat_load.html">pat_loadLatest(pas, name, id, startdate, enddate, baseURL)</a></code></p>
+<p><code><a href="../reference/pas_staticMap.html">pas_staticMap(pas, parameter, palette, mapTheme, mapShape, direction, minScale, maxScale, shape, size, alpha, bbuff, zoomAdjust, ...)</a></code></p>
+<blockquote>
+<p>Creates a thematic static map of a <code>pas</code> object containing many sensors. Can be used to show various PurpleAir sensor data.</p>
+</blockquote>
+</div>
+</div>
+<div id="timeseries-function-details" class="section level2">
+<h2 class="hasAnchor">
+<a href="#timeseries-function-details" class="anchor"></a>Timeseries Function Details</h2>
+<div id="pat_loadlatest" class="section level3">
+<h3 class="hasAnchor">
+<a href="#pat_loadlatest" class="anchor"></a><code><a href="../reference/pat_loadLatest.html">pat_loadLatest()</a></code>
+</h3>
+<p><code><a href="../reference/pat_loadLatest.html">pat_loadLatest(pas, name, id, startdate, enddate, baseURL)</a></code></p>
+<blockquote>
+<p>Retrieve and parse timeseries data from the Thingspeak API for specifically targeted PurpleAir sensors.</p>
+</blockquote>
+</div>
+<div id="pat_loadlatest-1" class="section level3">
+<h3 class="hasAnchor">
+<a href="#pat_loadlatest-1" class="anchor"></a><code><a href="../reference/pat_loadLatest.html">pat_loadLatest()</a></code>
+</h3>
+<p><code><a href="../reference/pat_loadLatest.html">pat_loadLatest(pas, name, id, startdate, enddate, baseURL)</a></code></p>
 <blockquote>
 <p>Retrieve and parse timeseries data from the Thingspeak API for specifically targeted PurpleAir sensors.</p>
 </blockquote>
@@ -268,6 +413,7 @@
 </blockquote>
 </div>
 </div>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -275,8 +421,14 @@
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#purpleair-synoptic-functions">PurpleAir Synoptic Functions</a></li>
-      <li><a href="#purpleair-timeseries-functions">PurpleAir Timeseries Functions</a></li>
+<li>
+<a href="#function-overview">Function Overview</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#synoptic-data">Synoptic Data</a></li>
+      <li><a href="#timeseries-data">Timeseries Data</a></li>
+      <li><a href="#synoptic-function-details">Synoptic Function Details</a></li>
+      <li><a href="#timeseries-function-details">Timeseries Function Details</a></li>
+      </ul>
+</li>
       </ul>
 </div>
       </div>

@@ -72,7 +72,7 @@ A diagnostic plot is produced if `showPlot = TRUE`." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.10</span>
       </span>
     </div>
 
@@ -145,9 +145,8 @@ channel A.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pat_internalFit</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>subset</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>showPlot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"purple"</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>xylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>pat_internalFit</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>showPlot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>15</span>,
+  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"purple"</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>xylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -155,18 +154,6 @@ channel A.</p>
     <tr>
       <th>pat</th>
       <td><p>Purple Air Timeseries "pat" object</p></td>
-    </tr>
-    <tr>
-      <th>subset</th>
-      <td><p>(From `stats::lm`) An optional vector specifying a subset of
-observations to be used in the fitting process.</p></td>
-    </tr>
-    <tr>
-      <th>weights</th>
-      <td><p>(From `stats::lm`) An optional vector of weights to be used in
-the fitting process. Should be NULL or a numeric vector. If non-NULL,
-weighted least squares is used with weights weights (that is, minimizing
-sum(w*e^2)); otherwise ordinary least squares is used.</p></td>
     </tr>
     <tr>
       <th>showPlot</th>

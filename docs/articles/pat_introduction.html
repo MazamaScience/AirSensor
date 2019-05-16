@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.10</span>
       </span>
     </div>
 
@@ -117,13 +117,13 @@
 library(AirSensor)
 pas &lt;- pas_load()
 pat &lt;- pat_loadLatest(pas, "Seattle", startdate = 20180701, enddate = 20180901)</a></code></pre>
-<p>Notice when passing our synoptic dataframe “<code>pas</code>” to <code><a href="../reference/pat_load.html">pat_loadLatest()</a></code>, we also supply a unique identification label and date-interval. In this case, our monitor-of-interest (MOI) is a sensor named “Seattle” and our dates-of-interest (DOI) is 2018-07-01 to 2018-09-01.</p>
-<p><strong>Note:</strong> You must provide a label to <code><a href="../reference/pat_load.html">pat_loadLatest()</a></code> in order to supply ThingSpeak with the necessary metadata to access the sensors database. A DOI on the other hand is optional; by default not providing <code><a href="../reference/pat_load.html">pat_loadLatest()</a></code> with a start and end date will return exactly 1-week of time series data.</p>
+<p>Notice when passing our synoptic dataframe “<code>pas</code>” to <code><a href="../reference/pat_loadLatest.html">pat_loadLatest()</a></code>, we also supply a unique identification label and date-interval. In this case, our monitor-of-interest (MOI) is a sensor named “Seattle” and our dates-of-interest (DOI) is 2018-07-01 to 2018-09-01.</p>
+<p><strong>Note:</strong> You must provide a label to <code><a href="../reference/pat_loadLatest.html">pat_loadLatest()</a></code> in order to supply ThingSpeak with the necessary metadata to access the sensors database. A DOI on the other hand is optional; by default not providing <code><a href="../reference/pat_loadLatest.html">pat_loadLatest()</a></code> with a start and end date will return exactly 1-week of time series data.</p>
 </div>
 <div id="purpleair-time-series-data" class="section level3">
 <h3 class="hasAnchor">
 <a href="#purpleair-time-series-data" class="anchor"></a>PurpleAir Time Series Data</h3>
-<p>Let’s begin by exploring the attributes of the dataframe returned by the <code><a href="../reference/pat_load.html">pat_loadLatest()</a></code> function.</p>
+<p>Let’s begin by exploring the attributes of the dataframe returned by the <code><a href="../reference/pat_loadLatest.html">pat_loadLatest()</a></code> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pat <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>()</code></pre></div>
 <pre><code>## [1] "meta" "data"</code></pre>
