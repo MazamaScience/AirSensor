@@ -1,5 +1,6 @@
 # required libraries
 library(AirSensor)
+library(PWFSLSmoke)
 
 ws_monitor <-
   example_pat %>%
