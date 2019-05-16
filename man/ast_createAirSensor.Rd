@@ -26,7 +26,7 @@ that has appropriate metadata to be used with the *PWFSLSmoke* package.
 pat <- 
   AirSensor::example_pat \%>\%
   pat_filterDate(20180701, 20180901)
-ast <- pat_createASTimeseriesObject(pat, "1 hour")
+ast <- pat_createASTimeseries(pat, "1 hour")
 as <- ast_createAirSensor(ast)
 }
 }
