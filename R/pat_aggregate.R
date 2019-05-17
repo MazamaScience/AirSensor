@@ -95,7 +95,7 @@ pat_aggregate <- function(
     parameter = parameter
     len <- 2 # Cheap Hack.
     
-  }
+  } 
   
   # ----- Convert period to seconds --------------------------------------------
   
@@ -238,23 +238,6 @@ pat_aggregate <- function(
         
       }
       
-      # # Recurssively apply f(x) = x in oder to do hacky convert  
-      # t_score <- 
-      #   rapply(
-      #     t_score, 
-      #     f = func 
-      #   ) 
-      # p_value <- 
-      #   rapply(
-      #     p_value, 
-      #     f = func
-      #   )
-      # df_value <- 
-      #   rapply(
-      #     df_value, 
-      #     f = func
-      #   )
-      
       df <- 
         dplyr::tibble(
           datetime = bin$datetime, 
@@ -281,8 +264,11 @@ pat_aggregate <- function(
       plyr::join_all(
         list(
           pat_agg(pat, "tstats", pseconds),
-          pat_agg(pat, "mean", pseconds), 
+          pat_agg(pat, "mean", pseconds),
+          pat_agg(pat, "median", pseconds),
           pat_agg(pat, "sd", pseconds), 
+          pat_agg(pat, "min", pseconds), 
+          pat_agg(pat, "max", pseconds),
           pat_agg(pat, "frequency", pseconds)
         ),
         by = "datetime"
@@ -294,7 +280,7 @@ pat_aggregate <- function(
       pat_agg(pat, stats, pseconds)
     
   }
-  
+ 
   return(timeStats)
   
 }
