@@ -8,8 +8,6 @@
 #' \code{createPATimeseriesObject()}
 #' @param plottype Quick-reference plot types: "all", "aux", "pm25"
 #' @param sampleSize Either an integer or fraction to determine sample size.
-#' @param plotList a \code{list()} of any number of ggplot objects to plot on a 
-#' single pane.
 #' @param columns Number of columns in the plot layout. Use \code{NULL} for 
 #' defaults.
 #' @param a_size size of pm25_A points
@@ -47,7 +45,6 @@ pat_multiplot <- function(
   pat = NULL, 
   plottype = "all", 
   sampleSize = 5000,
-  plotList = NULL,
   columns = NULL,
   a_size = 1,
   a_shape = 15,
@@ -67,9 +64,6 @@ pat_multiplot <- function(
   options(warn = -1)
   
   # ----- Validate parameters --------------------------------------------------
-  
-  if ( is.null(pat) && is.null(plotList) ) 
-    stop("Either 'pat' or 'plotList' must be defined.")
   
   if ( !is.null(pat) ) {
     if ( !pat_isPat(pat) )
@@ -97,13 +91,7 @@ pat_multiplot <- function(
   
   # ----- Create plots ---------------------------------------------------------
   
-  if ( length(plotList) != 0 ) {
-    
-    if ( is.null(columns) ) columns <- 1
-    gg <- multi_ggplot(plotList = plotList, cols = columns)
-    
-  } else { 
-    
+
     # Labels
     timezone <- pat$meta$timezone[1]
     year <- strftime(pat$data$datetime[1], "%Y", tz=timezone)
@@ -289,8 +277,6 @@ pat_multiplot <- function(
       }
       
     }
-    
-  }
   
   options(warn=0)
   
