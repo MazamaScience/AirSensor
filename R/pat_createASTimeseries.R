@@ -30,14 +30,13 @@
 
 pat_createASTimeseries <- function(
   pat, 
-  period = "1 hour", 
-  ...
+  period = "1 hour"
 ) {
   
   # ----- Validate Parameters --------------------------------------------------
   
   tolower(period) -> period
-  tolower(stats) -> stats
+  # tolower(stats) -> stats
   # Avoid opaque error message from openair when a user types "minute(s)"
   period <- stringr::str_replace(period, "ute?", "")
   
@@ -54,7 +53,6 @@ pat_createASTimeseries <- function(
       pat,
       period, 
       quickStats = TRUE, 
-      ...
     )
   
   # TODO: Determie what should be in meta
