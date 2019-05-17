@@ -19,8 +19,6 @@
 #' that all data will be used in a particular period regardless of the number of
 #' values avaliable. Conversely, a value of 100 means that all data will need to 
 #' be present to proceed, else it is recorded as NA. 
-#' @param pprobs 	numeric vector of probabilities with values in [0,1]. Only 
-#' valid when \code{stats = "percentile"}
 #' @param quickStats a logical that if \code{TRUE} will override \code{stats} 
 #' parameter and return and a data frame of "mean", "sd", and "count". 
 #' 

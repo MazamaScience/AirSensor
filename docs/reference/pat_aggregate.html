@@ -73,7 +73,7 @@ circumstances where it is necessary to work with different time average data." /
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.11</span>
       </span>
     </div>
 
@@ -148,8 +148,7 @@ circumstances where it is necessary to work with different time average data.</p
     </div>
 
     <pre class="usage"><span class='fu'>pat_aggregate</span>(<span class='no'>pat</span>, <span class='kw'>period</span> <span class='kw'>=</span> <span class='st'>"15 min"</span>, <span class='kw'>stats</span> <span class='kw'>=</span> <span class='st'>"mean"</span>,
-  <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dataThreshold</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>pprobs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>quickStats</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dataThreshold</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>quickStats</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -167,7 +166,7 @@ circumstances where it is necessary to work with different time average data.</p
     <tr>
       <th>stats</th>
       <td><p>The statistic to apply when aggregating the data; default is the 
-mean. Can be one of "mean", "max", "min", "median", "frequency", 
+mean. Can be one of "mean", "max", "min", "median", "count", 
 "sd", "percentile", "tstats".</p></td>
     </tr>
     <tr>
@@ -183,14 +182,9 @@ values avaliable. Conversely, a value of 100 means that all data will need to
 be present to proceed, else it is recorded as NA.</p></td>
     </tr>
     <tr>
-      <th>pprobs</th>
-      <td><p>numeric vector of probabilities with values in [0,1]. Only 
-valid when <code>stats = "percentile"</code></p></td>
-    </tr>
-    <tr>
       <th>quickStats</th>
       <td><p>a logical that if <code>TRUE</code> will override <code>stats</code> 
-parameter and return and a data frame of "mean", "sd", and "frequency".</p></td>
+parameter and return and a data frame of "mean", "sd", and "count".</p></td>
     </tr>
     </table>
     

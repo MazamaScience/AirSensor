@@ -190,7 +190,7 @@ pat_outliers <- function(
       ) + 
       B_outliers
     
-    pat_multiplot(plotList = list(channelA, channelB)) # No sampling will occur
+    multi_ggplot(plotList = list(channelA, channelB)) # No sampling will occur
     
   }
   

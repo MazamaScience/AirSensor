@@ -79,7 +79,7 @@ argument to quickly display preformatted plots.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.11</span>
       </span>
     </div>
 
@@ -160,11 +160,10 @@ argument to quickly display preformatted plots.</p><ul>
     </div>
 
     <pre class="usage"><span class='fu'>pat_multiplot</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>plottype</span> <span class='kw'>=</span> <span class='st'>"all"</span>, <span class='kw'>sampleSize</span> <span class='kw'>=</span> <span class='fl'>5000</span>,
-  <span class='kw'>plotList</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>columns</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>a_size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>a_shape</span> <span class='kw'>=</span> <span class='fl'>15</span>,
-  <span class='kw'>a_color</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/grDevices/topics/rgb'>rgb</a></span>(<span class='fl'>0.9</span>, <span class='fl'>0.25</span>, <span class='fl'>0.2</span>), <span class='kw'>b_size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>b_shape</span> <span class='kw'>=</span> <span class='fl'>15</span>,
-  <span class='kw'>b_color</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/grDevices/topics/rgb'>rgb</a></span>(<span class='fl'>0.2</span>, <span class='fl'>0.25</span>, <span class='fl'>0.9</span>), <span class='kw'>t_size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>t_shape</span> <span class='kw'>=</span> <span class='fl'>15</span>,
-  <span class='kw'>t_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>h_size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>h_shape</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>h_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</pre>
+  <span class='kw'>columns</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>a_size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>a_shape</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>a_color</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/grDevices/topics/rgb'>rgb</a></span>(<span class='fl'>0.9</span>,
+  <span class='fl'>0.25</span>, <span class='fl'>0.2</span>), <span class='kw'>b_size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>b_shape</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>b_color</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/grDevices/topics/rgb'>rgb</a></span>(<span class='fl'>0.2</span>, <span class='fl'>0.25</span>,
+  <span class='fl'>0.9</span>), <span class='kw'>t_size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>t_shape</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>t_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>h_size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>h_shape</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>h_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -181,11 +180,6 @@ argument to quickly display preformatted plots.</p><ul>
     <tr>
       <th>sampleSize</th>
       <td><p>Either an integer or fraction to determine sample size.</p></td>
-    </tr>
-    <tr>
-      <th>plotList</th>
-      <td><p>a <code><a href='https://www.rdocumentation.org/packages/base/topics/list'>list()</a></code> of any number of ggplot objects to plot on a 
-single pane.</p></td>
     </tr>
     <tr>
       <th>columns</th>

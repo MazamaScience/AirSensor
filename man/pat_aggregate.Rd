@@ -5,8 +5,7 @@
 \title{Time averages for PrupleAir time series}
 \usage{
 pat_aggregate(pat, period = "15 min", stats = "mean",
-  parameter = NULL, dataThreshold = 0, pprobs = NULL,
-  quickStats = FALSE)
+  parameter = NULL, dataThreshold = 0, quickStats = FALSE)
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries "pat" object from \code{pat_loadLatest()}}
@@ -16,7 +15,7 @@ pat_aggregate(pat, period = "15 min", stats = "mean",
  precede these options followed by a space (i.e. "2 day" or "37 min").}
 
 \item{stats}{The statistic to apply when aggregating the data; default is the 
-mean. Can be one of "mean", "max", "min", "median", "frequency", 
+mean. Can be one of "mean", "max", "min", "median", "count", 
 "sd", "percentile", "tstats".}
 
 \item{parameter}{The variable of timeseries data to aggergate, such as
@@ -27,11 +26,8 @@ that all data will be used in a particular period regardless of the number of
 values avaliable. Conversely, a value of 100 means that all data will need to 
 be present to proceed, else it is recorded as NA.}
 
-\item{pprobs}{numeric vector of probabilities with values in [0,1]. Only 
-valid when \code{stats = "percentile"}}
-
 \item{quickStats}{a logical that if \code{TRUE} will override \code{stats} 
-parameter and return and a data frame of "mean", "sd", and "frequency".}
+parameter and return and a data frame of "mean", "sd", and "count".}
 }
 \value{
 Returns a dataframe with a date in class POSIXct.

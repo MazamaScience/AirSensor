@@ -148,8 +148,8 @@ pat_internalFit <- function(
       ggplot2::xlab(year) + ggplot2::ylab("\u03bcg / m\u00b3") 
     
     
-    plot <- pat_multiplot(plotList = list(lm_plot, pm25_plot), 
-                          columns = 1 )
+    plot <- multi_ggplot(plotList = list(lm_plot, pm25_plot), 
+                         columns = 1 )
     
     print(plot)
     

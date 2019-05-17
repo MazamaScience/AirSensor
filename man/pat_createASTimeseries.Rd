@@ -4,7 +4,7 @@
 \alias{pat_createASTimeseries}
 \title{Create a AirSensor Timeseries object}
 \usage{
-pat_createASTimeseries(pat, period = "1 hour", ...)
+pat_createASTimeseries(pat, period = "1 hour")
 }
 \arguments{
 \item{pat}{Purple Air timeseries data from \code{createPATimeseriesObject()}}
