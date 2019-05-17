@@ -12,7 +12,7 @@
 #' "day", "DSTday", "week", "month", "quarter" or "year". A number can also
 #'  precede these options followed by a space (i.e. "2 day" or "37 min").
 #' @param stats The statistic to apply when aggregating the data; default is the 
-#' mean. Can be one of "mean", "max", "min", "median", "frequency", 
+#' mean. Can be one of "mean", "max", "min", "median", "count", 
 #' "sd", "percentile", "tstats". 
 #' 
 #' @param dataThreshold A % of the data capture threshold. A value of 0 means 
@@ -22,7 +22,7 @@
 #' @param pprobs 	numeric vector of probabilities with values in [0,1]. Only 
 #' valid when \code{stats = "percentile"}
 #' @param quickStats a logical that if \code{TRUE} will override \code{stats} 
-#' parameter and return and a data frame of "mean", "sd", and "frequency". 
+#' parameter and return and a data frame of "mean", "sd", and "count". 
 #' 
 #' @description Function to flexibly aggregate or expand data frames by 
 #' different time periods and calculating vector-averages for a PurpleAir time 
@@ -49,7 +49,6 @@ pat_aggregate <- function(
   stats = "mean",
   parameter = NULL,
   dataThreshold = 0,
-  pprobs = NULL,
   quickStats = FALSE
 ) {
   
@@ -67,12 +66,11 @@ pat_aggregate <- function(
   if ( !stats %in% c(
     "mean", 
     "median", 
-    "frequency", 
+    "count", 
     "max", 
     "min", 
     "sum",
     "sd", 
-    "percentile",
     "tstats"
   ) ) {
     stop("Statistic not recognized")
@@ -132,16 +130,13 @@ pat_aggregate <- function(
     
     if ( stats == "mean"       ) func <- function(x) mean(thresh(x), na.rm = TRUE)
     if ( stats == "median"     ) func <- function(x) median(thresh(x), na.rm = TRUE) 
-    if ( stats == "frequency"  ) func <- function(x) length(na.omit(x))
+    if ( stats == "count"      ) func <- function(x) length(na.omit(x))
     if ( stats == "sd"         ) func <- function(x) sd(thresh(x), na.rm = TRUE)
     if ( stats == "sum"        ) func <- function(x) sum(na.omit(x))
     if ( stats == "max"        ) func <- function(x) max(na.omit(x))
     if ( stats == "min"        ) func <- function(x) min(na.omit(x))
     if ( stats == "tstats"     ) func <- function(x) x 
-    if ( stats == "percentile" ) func <- function(x) quantile(x, 
-                                                              probs = pprobs,
-                                                              na.rm = TRUE)
-    
+
     if ( stats != "tstats" ) { # Handle ! test stats
       
       data <- 
@@ -269,12 +264,23 @@ pat_aggregate <- function(
           pat_agg(pat, "sd", pseconds), 
           pat_agg(pat, "min", pseconds), 
           pat_agg(pat, "max", pseconds),
-          pat_agg(pat, "frequency", pseconds)
+          pat_agg(pat, "count", pseconds)
         ),
         by = "datetime"
-      )
+      )  
     
-  } else { # Handle all else
+    timeStats <- # Re-arrange order
+      timeStats[,
+                c(
+                  "datetime", 
+                  names(timeStats)[c(
+                    grep("pm25_", names(timeStats)), 
+                    grep("humid", names(timeStats)), 
+                    grep("temp", names(timeStats))
+                  )]
+                )]
+    
+     } else { # Handle all else
     
     timeStats <- 
       pat_agg(pat, stats, pseconds)
