@@ -1,4 +1,4 @@
-FROM mazamascience/pwfslsmoke:1.2.3
+FROM mazamascience/pwfslsmoke:1.2.4
 MAINTAINER "Jonathan Callahan" jonathan@mazamascience.com
 
 #######################################################################
@@ -28,7 +28,7 @@ RUN wget -nv http://mazamascience.com/RData/Spatial/CA_AirBasins_01.RData \
 
 WORKDIR /
 
-COPY AirSensor_0.2.8.tar.gz /
+COPY AirSensor_0.2.10.tar.gz /
 
-RUN R CMD INSTALL AirSensor_0.2.8.tar.gz
+RUN R CMD INSTALL AirSensor_0.2.10.tar.gz
 

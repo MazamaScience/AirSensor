@@ -35,13 +35,13 @@
   
   # ----- Determine starttime and endtime --------------------------------------
   
-  if ( stringr::str_starts(unit, "day") ) {
+  if ( stringr::str_detect(unit, "^day") ) {
     daySecs <- 0
-  } else if ( stringr::str_starts(unit, "day") ) {
+  } else if ( stringr::str_detect(unit, "^day") ) {
     daySecs <- 60 * 60 * 23
-  } else if ( stringr::str_starts(unit, "min") ){
+  } else if ( stringr::str_detect(unit, "^min") ){
     daySecs <- 60 * 60 * 23 - (60 * 1)
-  } else if ( stringr::str_starts(unit, "sec") ) {
+  } else if ( stringr::str_detect(unit, "^sec") ) {
     daySecs <- 60 * 60 * 24 - (1)
   }
   
