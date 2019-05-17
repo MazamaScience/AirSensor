@@ -53,8 +53,7 @@ pat_createASTimeseries <- function(
       pat,
       period, 
       quickStats = TRUE, 
-    ) %>% 
-    select(sort(names(.))) # Sort alphabetically
+    )
   
   # TODO: Determie what should be in meta
   meta <- 
