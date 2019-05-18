@@ -15,7 +15,7 @@
 #' 
 #' By default, the current month is loaded.
 #'
-#' @param name Purple Air 'label'
+#' @param label Purple Air 'label'
 #' @param datestamp A date string in ymd order.
 #' @param timezone Timezone used to interpret datestamp.
 #' @param baseUrl Base URL for synoptic data.
@@ -31,8 +31,8 @@
 #' }
 
 pat_loadMonth <- function(
-  name = NULL,
-  datestamp = strftime(lubridate::today("America/Los_Angeles"), "%Y%m"),
+  label = NULL,
+  datestamp = NULL,
   timezone = "America/Los_Angeles",
   baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/pat"
 ) {
@@ -43,11 +43,11 @@ pat_loadMonth <- function(
   
   # TODO: Work with lubridate to support all formats
   
-  if ( is.null(name) )
-    stop("Required parameter 'name' is missing.")
-  
+  if ( is.null(label) )
+    stop("Required parameter 'label' is missing.")
+
   # Default to the current month
-  if ( datestamp == "" ) {
+  if ( is.null(datestamp) || datestamp == "" ) {
     now <- lubridate::now(timezone)
     datestamp <- strftime(now, "%Y%m%d")
   }
@@ -59,7 +59,7 @@ pat_loadMonth <- function(
   
   # Load data from URL ---------------------------------------------------------
   
-  filename <- paste0("pat_", monthstamp, "_", name, ".rda")
+  filename <- paste0("pat_", monthstamp, "_", label, ".rda")
   filepath <- paste0(baseUrl, '/', yearstamp, '/', filename)
   # Define a 'connection' object so we can close it no matter what happens
   conn <- url(filepath)

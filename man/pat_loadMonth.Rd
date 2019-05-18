@@ -4,13 +4,12 @@
 \alias{pat_loadMonth}
 \title{Load Purple Air Timeseries data}
 \usage{
-pat_loadMonth(name = NULL,
-  datestamp = strftime(lubridate::today("America/Los_Angeles"),
-  "\%Y\%m"), timezone = "America/Los_Angeles",
+pat_loadMonth(label = NULL, datestamp = NULL,
+  timezone = "America/Los_Angeles",
   baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/pat")
 }
 \arguments{
-\item{name}{Purple Air 'label'}
+\item{label}{Purple Air 'label'}
 
 \item{datestamp}{A date string in ymd order.}
 

@@ -55,7 +55,7 @@ ast_createAirSensor <- function(
   meta$siteName <- meta$label
   meta$countyName <- as.character(NA)
   meta$msaName <- as.character(NA)
-  meta$monitorType <- as.character(NA) # TODO -- we know this from the pas
+  meta$monitorType <- meta$sensorType
   meta$siteID <- as.character(NA)
   meta$instrumentID <- as.character(NA)
   meta$aqsID <- as.character(NA)

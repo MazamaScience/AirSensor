@@ -1,5 +1,7 @@
 # AirSensor 0.2.11
 
+* `local_examples/07_pat_archive.R` demonstrates how to efficiently work with
+pre-generated `pat` files from the archive
 * new `pat_loadMonth()` loads pre-generated "pat" objects from a data archive
 * simplified `pat_aggregate()` -- it now always returns all statistics
 * removed unused `plotList` parameter from `pat_multiplot()`

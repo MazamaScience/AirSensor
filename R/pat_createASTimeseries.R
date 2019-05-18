@@ -48,6 +48,7 @@ pat_createASTimeseries <- function(
 
   # ----- Create as_timeseries object  -----------------------------------------
   
+  # Use pat_aggregate() to convert to a regular time axis
   data <- 
     pat_aggregate(
       pat,
@@ -55,20 +56,32 @@ pat_createASTimeseries <- function(
       quickStats = TRUE, 
     )
   
-  # TODO: Determie what should be in meta
+  # Here is the original PAT metadata:
+  # > str(pat$meta)
+  # Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	1 obs. of  13 variables:
+  #  $ ID                            : chr "15907"
+  #  $ label                         : chr "SCNP_05"
+  #  $ sensorType                    : chr "PMS5003+PMS5003+BME280"
+  #  $ DEVICE_LOCATIONTYPE           : chr "outside"
+  #  $ THINGSPEAK_PRIMARY_ID         : chr "580075"
+  #  $ THINGSPEAK_PRIMARY_ID_READ_KEY: chr "XICPPJFS2R49VYAL"
+  #  $ longitude                     : num -121
+  #  $ latitude                      : num 35
+  #  $ countryCode                   : chr "US"
+  #  $ stateCode                     : chr "CA"
+  #  $ timezone                      : chr "America/Los_Angeles"
+  #  $ pwfsl_closestDistance         : num 2293
+  #  $ pwfsl_closestMonitorID        : chr "060792004_01"
+  
+  # Copy almost everything
   meta <- 
-    pat$meta %>% 
-    dplyr::select(
-      .data$ID, 
-      .data$label,
-      .data$longitude, 
-      .data$latitude, 
-      .data$countryCode, 
-      .data$stateCode 
-    )
+    pat$meta %>%
+    dplyr::select(-.data$THINGSPEAK_PRIMARY_ID,
+                  -.data$THINGSPEAK_PRIMARY_ID_READ_KEY) %>%
+    dplyr::rename(locationType = .data$DEVICE_LOCATIONTYPE)
   
   as_object <- list(meta = meta, data = data)
-  class(as_object) <- c("as_timeseries", class(pat))
+  class(as_object) <- c("as_timeseries", "list")
   
   return(as_object)
   
