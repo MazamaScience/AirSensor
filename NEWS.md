@@ -1,5 +1,6 @@
 # AirSensor 0.2.11
 
+* new `pat_loadMonth()` loads pre-generated "pat" objects from a data archive
 * simplified `pat_aggregate()` -- it now always returns all statistics
 * removed unused `plotList` parameter from `pat_multiplot()`
 * `pat_join()` can now accept either individual `pat` objects or a list of 
