@@ -34,7 +34,7 @@
 #' relatively large value for `thresholdMin`` we make it less likely that we 
 #' will generate false positives.
 #' 
-#' The default setting of the window size \code{n = 23} means that 23 samples
+#' The default setting of the window size \code{windowSize = 23} means that 23 samples
 #' from a single channel are used to determine the distribution of values for
 #' which a median is calculated. Each Purple Air channel makes a measurement
 #' approximately every 80 seconds so the temporal window is 23 * 80 sec or
@@ -51,7 +51,7 @@
 
 pat_outliers <- function(
   pat = NULL,
-  n = 23,
+  windowSize = 23,
   thresholdMin = 8,
   replace = FALSE,
   showPlot = TRUE,
@@ -93,18 +93,19 @@ pat_outliers <- function(
   # Find outliers 
   A_outlierIndices <- 
     seismicRoll::findOutliers(A_data$pm25_A, 
-                              n = n, 
+                              n = windowSize, 
                               thresholdMin = thresholdMin)
   B_outlierIndices <- 
     seismicRoll::findOutliers(B_data$pm25_B, 
-                              n = n, 
+                              n = windowSize, 
                               thresholdMin = thresholdMin)
   
   # Create median-fixed replacement values
   A_fixed <- A_data$pm25_A
   if ( replace ) {
     A_fixed[A_outlierIndices] <- 
-      seismicRoll::roll_median(A_data$pm25_A, n)[A_outlierIndices]
+      seismicRoll::roll_median(A_data$pm25_A, 
+                               n = windowSize)[A_outlierIndices]
   } else {
     A_fixed[A_outlierIndices] <- NA
   }
@@ -112,7 +113,8 @@ pat_outliers <- function(
   B_fixed <- B_data$pm25_B
   if ( replace ) {
     B_fixed[B_outlierIndices] <- 
-      seismicRoll::roll_median(B_data$pm25_B, n)[B_outlierIndices]
+      seismicRoll::roll_median(B_data$pm25_B, 
+                               n = windowSize)[B_outlierIndices]
   } else {
     B_fixed[B_outlierIndices] <- NA
   }
