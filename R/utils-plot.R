@@ -18,11 +18,22 @@ scatterplot <- function(
   data,  
   parameters = NULL, 
   sampleSize = 5000,
+  sampleFraction = NULL,
   shape = 18, 
   size = 1.5, 
   color = "black", 
   alpha = 0.5
 ) {
+  
+  # ----- Sample if large ------------------------------------------------------
+  
+  data <- 
+    sample(
+      data = data,
+      sampleSize = sampleSize, 
+      sampleFraction = sampleFraction
+    )
+  
   scatterPlot <- 
     GGally::ggpairs( 
       data,

@@ -120,18 +120,18 @@ pat_sample <- function(
     
     A_data <- 
       A_data[-outlierIndex_A,] %>% 
-      dplyr::sample_n(
-        size = (sampleSize - length(outlierIndex_A) + length(outlierIndex_B)) /2, 
-        replace = FALSE, 
+      sample(
+        sampleSize = (sampleSize - length(outlierIndex_A) + 
+                        length(outlierIndex_B)) / 2, 
         weight = weight
       ) %>% 
       dplyr::bind_rows(A_outlierData) 
     
     B_data <- 
       B_data[-outlierIndex_B,] %>% 
-      dplyr::sample_n(
-        size = (sampleSize - length(outlierIndex_B) + length(outlierIndex_A)) /2, 
-        replace = FALSE,
+      sample(
+        sampleSize = (sampleSize - length(outlierIndex_B) + 
+                        length(outlierIndex_A)) / 2, 
         weight = weight
       ) %>% 
       dplyr::bind_rows(B_outlierData)
@@ -140,9 +140,8 @@ pat_sample <- function(
     
     A_data <- 
       A_data[-outlierIndex_A,] %>% 
-      dplyr::sample_frac(
-        size = sampleFraction/2, 
-        replace = FALSE, 
+      sample(
+        sampleFraction = sampleFraction / 2, 
         weight = weight 
       ) %>% 
       dplyr::bind_rows(A_outlierData)
@@ -150,8 +149,7 @@ pat_sample <- function(
     B_data <- 
       B_data[-outlierIndex_B,] %>% 
       dplyr::sample_frac(
-        size = sampleFraction/2, 
-        replace = FALSE, 
+        sampleFraction = sampleFraction / 2, 
         weight = weight) %>% 
       dplyr::bind_rows(B_outlierData) 
     
