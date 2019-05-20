@@ -26,11 +26,17 @@ scatterplot <- function(
 ) {
   
   # ----- Allow parameter selection --------------------------------------------
-  
-  if ( !is.null(parameters) ) {
+  # Validate 
+  if ( !is.null(parameters) && parameters %in% names(data)) {
+    
     data <- 
       data %>% 
       dplyr::select(parameters) 
+    
+  } else { 
+    
+    stop(paste0("Error: Non-valid parameter : ", parameters, "\n"))
+    
   }
   
   # ----- Sample if large ------------------------------------------------------
