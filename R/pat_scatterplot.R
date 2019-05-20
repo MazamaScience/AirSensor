@@ -85,7 +85,7 @@ pat_scatterplot <- function(
   }
   
   scatterPlot <- 
-    scatterPlot(
+    scatterplot(
       data = data, 
       size = size, 
       shape = shape, 

@@ -14,28 +14,32 @@
 #' @param alpha opacity of points
 #'
 
-scatterPlot <- function(
-  data, 
+scatterplot <- function(
+  data,  
+  parameters = NULL, 
+  sampleSize = 5000,
   shape = 18, 
   size = 1.5, 
   color = "black", 
   alpha = 0.5
 ) {
-  scatterPlot <- GGally::ggpairs( 
-    data,
-    mapping = ggplot2::aes(alpha = 0.15),
-    lower = list(
-      continuous = GGally::wrap(
-        "points", 
-        size = size, 
-        shape = shape,
-        color = color,
-        alpha = alpha)),
-    diag = list(
-      continuous = GGally::wrap(
-        "densityDiag")), 
-    upper = list(continuous = "cor")
-  ) + ggplot2::theme_bw()
+  scatterPlot <- 
+    GGally::ggpairs( 
+      data,
+      mapping = ggplot2::aes(alpha = 0.15),
+      lower = list(
+        continuous = GGally::wrap(
+          "points", 
+          size = size, 
+          shape = shape,
+          color = color,
+          alpha = alpha)),
+      diag = list(
+        continuous = GGally::wrap(
+          "densityDiag")), 
+      upper = list(continuous = "cor")
+    ) + 
+    ggplot2::theme_bw()
   
   return(scatterPlot)
 }
