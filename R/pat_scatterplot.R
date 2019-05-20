@@ -22,7 +22,8 @@
 #' 
 #' @param pat Purple Air Timeseries \emph{pat} object
 #' @param parameters vector of parameters to include
-#' @param sampleSize Either an integer or fraction to determine sample size
+#' @param sampleSize integer to determine sample size
+#' @param sampleFraction fractional sample size 
 #' @param shape symbol to use for points
 #' @param size size of points
 #' @param color color of points
@@ -35,6 +36,7 @@ pat_scatterplot <- function(
   pat = NULL,
   parameters = c('datetime', 'pm25_A', 'pm25_B', 'temperature', 'humidity'),
   sampleSize = 5000,
+  sampleFraction = NULL,
   size = 0.5,
   shape = 15,
   color = "black",
@@ -47,23 +49,9 @@ pat_scatterplot <- function(
     stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")
   
   if ( pat_isEmpty(pat) )
-    stop("Parameter 'pat' has no data.")
+    stop("Parameter 'pat' has no data.") 
   
-  # ----- Reduce large datasets by sampling ------------------------------------
-  
-  if ( !is.null(sampleSize) ) { 
-    
-    if ( sampleSize > 1 ) {
-      pat <- 
-        pat %>% 
-        pat_sample(sampleSize = sampleSize, forGraphics = TRUE)
-    } else {
-      pat <- 
-        pat %>% 
-        pat_sample(sampleFraction = sampleSize, forGraphics = TRUE)
-    }
-    
-  }
+  if ( !is.null(sampleFraction) )( sampleSize = NULL ) # Disable one 
   
   # For easier access
   meta <- pat$meta
@@ -87,7 +75,9 @@ pat_scatterplot <- function(
   scatterPlot <- 
     scatterplot(
       data = data, 
-      size = size, 
+      size = size,
+      sampleSize = sampleSize, 
+      sampleFraction = sampleFraction,
       shape = shape, 
       color = color, 
       alpha = alpha
