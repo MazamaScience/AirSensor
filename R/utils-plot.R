@@ -25,6 +25,14 @@ scatterplot <- function(
   alpha = 0.5
 ) {
   
+  # ----- Allow parameter selection --------------------------------------------
+  
+  if ( !is.null(parameters) ) {
+    data <- 
+      data %>% 
+      dplyr::select(parameters) 
+  }
+  
   # ----- Sample if large ------------------------------------------------------
   
   data <- 
