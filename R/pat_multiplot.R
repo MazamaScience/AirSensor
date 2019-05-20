@@ -80,11 +80,11 @@ pat_multiplot <- function(
     if ( sampleSize > 1 ) {
       pat <- 
         pat %>% 
-        pat_sample(sampleSize = sampleSize, forGraphics = TRUE)
+        pat_sample(sampleSize = sampleSize, keepOutliers = TRUE)
     } else {
       pat <- 
         pat %>% 
-        pat_sample(sampleFraction = sampleSize, forGraphics = TRUE)
+        pat_sample(sampleFraction = sampleSize, keepOutliers = TRUE)
     }
     
   }

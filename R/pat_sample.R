@@ -11,7 +11,7 @@
 #' vector being sampled.
 #' @param setSeed an integer that sets random numbver generation. Can be used to 
 #' reproduce sampling.
-#' @param forGraphics logical specifying a graphics focused sampling algorithm
+#' @param keepOutliers logical specifying a graphics focused sampling algorithm
 #' (see Details)
 #''
 #' @return \code{pat} timeseries object - subset.
@@ -23,10 +23,10 @@
 #' If both `sampleSize` and `sampleFraction` are unspecified,
 #'  `sampleSize = 5000` will be used.
 #' 
-#' @details When `forGraphics = FALSE`, random sampling is used to provide a
+#' @details When `keepOutliers = FALSE`, random sampling is used to provide a
 #' statistically relevant subsample of the data.
 #' 
-#' When `forGraphics = TRUE`, a customized sampling algorithm is used that
+#' When `keepOutliers = TRUE`, a customized sampling algorithm is used that
 #' attempts to create subsets for use in plotting that create plots that are
 #' visually identical to plots using all data. This is accomplished by
 #' preserving outliers and only sampling data in regions where overplotting
@@ -53,7 +53,7 @@ pat_sample <- function(
   sampleFraction = NULL, 
   weight = NULL, 
   setSeed = NULL,
-  forGraphics = FALSE
+  keepOutliers = FALSE
 ) {
   
   # Validate parameters --------------------------------------------------------
@@ -72,7 +72,7 @@ pat_sample <- function(
   
   # ----- Detect Outliers ------------------------------------------------------
   
-  if ( forGraphics == TRUE ) {
+  if ( keepOutliers == TRUE ) {
     
     A_data <- 
       filter(pat$data, !is.na(.data$pm25_A)) %>% 
@@ -101,7 +101,7 @@ pat_sample <- function(
     if ( length(outlierIndex_A) == 0 ) outlierIndex_A <- c(1)
     if ( length(outlierIndex_B) == 0 ) outlierIndex_B <- c(1)
     
-  } else { # forGraphics == FALSE
+  } else { # keepOutliers == FALSE
     
     # Cheap hack to avoid rewriting too much code
     outlierIndex_A <- c(1)
