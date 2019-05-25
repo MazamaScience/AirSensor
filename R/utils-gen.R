@@ -145,12 +145,13 @@ replaceOutliers <-
     if ( is.null(parameter) ) 
       stop("Missing parameter")
     
-    data <- df[[parameter]]
     flag <- paste0("flag_", parameter)
     
     roll_med <- function(x, n) seismicRoll::roll_median(x, n)
     
     flagged <- which(df[[flag]])
+    
+    df[[flag]] = NULL
     
     df[[parameter]][flagged] <- 
       roll_med(df[[parameter]], medWin)[flagged]
