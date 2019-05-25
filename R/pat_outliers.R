@@ -5,7 +5,7 @@
 #' @title Detect and replace timeseries outliers
 #' 
 #' @param pat Purple Air Timeseries "pat" object
-#' @param n integer window size
+#' @param windowSize integer window size for outlier detection
 #' @param thresholdMin threshold value for outlier detection
 #' @param replace logical specifying whether replace outliers with the window 
 #' median value
@@ -90,33 +90,52 @@ pat_outliers <- function(
     filter(pat$data, !is.na(.data$pm25_B)) %>% 
     select(.data$datetime, .data$pm25_B, .data$datetime_B)
   
-  # Find outliers 
+  # Flag outliers 
+  A_flagged <- 
+    flagOutliers(
+      A_data,
+      parameter = "pm25_A", 
+      windowSize = windowSize, 
+      thresholdMin = thresholdMin
+    )
+  
+  B_flagged <- 
+    flagOutliers(
+      B_data,
+      parameter = "pm25_B", 
+      windowSize = windowSize, 
+      thresholdMin = thresholdMin
+    )
+  
   A_outlierIndices <- 
-    seismicRoll::findOutliers(A_data$pm25_A, 
-                              n = windowSize, 
-                              thresholdMin = thresholdMin)
+    which(A_flagged[,ncol(A_flagged)])
+  
   B_outlierIndices <- 
-    seismicRoll::findOutliers(B_data$pm25_B, 
-                              n = windowSize, 
-                              thresholdMin = thresholdMin)
+    which(B_flagged[,ncol(B_flagged)])
   
   # Create median-fixed replacement values
-  A_fixed <- A_data$pm25_A
   if ( replace ) {
-    A_fixed[A_outlierIndices] <- 
-      seismicRoll::roll_median(A_data$pm25_A, 
-                               n = windowSize)[A_outlierIndices]
-  } else {
+    
+    A_fixed <- 
+      replaceOutliers(
+        A_data, 
+        parameter = "pm25_A"
+      )
+    
+    B_fixed <- 
+      replaceOutliers(
+        B_data, 
+        parameter = "pm25_B"
+      )
+    
+  } else { 
+    
+    A_fixed <- A_data$pm25_A
+    B_fixed <- B_data$pm25_B
+    
     A_fixed[A_outlierIndices] <- NA
-  }
-  
-  B_fixed <- B_data$pm25_B
-  if ( replace ) {
-    B_fixed[B_outlierIndices] <- 
-      seismicRoll::roll_median(B_data$pm25_B, 
-                               n = windowSize)[B_outlierIndices]
-  } else {
     B_fixed[B_outlierIndices] <- NA
+    
   }
   
   # ----- Plot the data --------------------------------------------------------
