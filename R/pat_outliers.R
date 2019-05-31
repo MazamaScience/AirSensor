@@ -221,20 +221,17 @@ pat_outliers <- function(
   B_data$pm25_B <- B_fixed
   
   # Combine dataframes 
-  data <- dplyr::full_join(A_data, B_data, by = 'datetime')
-    # dplyr::select(c(
-    #   "datetime", 
-    #   "pm25_A", 
-    #   "pm25_B", 
-    #   "temperature", 
-    #   "humidity", 
-    #   "uptime", 
-    #   "adc0", 
-    #   "rssi", 
-    #   "datetime_A", "datetime_B"
-    # )) %>%
-    # dplyr::arrange(.data$datetime)
+  data <- 
+    dplyr::full_join(A_data, B_data, by = 'datetime') %>% 
+    dplyr::arrange(.data$datetime)
   
+  data <- data[,c("datetime",    "pm25_A",      "pm25_B",     
+                  "temperature", "humidity",    "uptime",     
+                  "adc0",        "rssi",        "datetime_A", 
+                  "datetime_B")]
+  
+    
+
   # ----- Create the Purple Air Timeseries (pat) object ------------------------
   
   # Combine meta and data dataframes into a list
