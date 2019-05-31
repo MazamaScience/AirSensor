@@ -72,29 +72,44 @@ pat_sample <- function(
   
   # ----- Detect Outliers ------------------------------------------------------
   
+  A_data <- 
+    dplyr::filter(pat$data, !is.na(.data$pm25_A)) %>% 
+    dplyr::select( -.data$pm25_B, -.data$datetime_B)
+  
+  B_data <- 
+    dplyr::filter(pat$data, !is.na(.data$pm25_B)) %>% 
+    dplyr::select(.data$datetime, .data$pm25_B, .data$datetime_B)
+  
+  
   if ( keepOutliers == TRUE ) {
     
-    A_data <- 
-      filter(pat$data, !is.na(.data$pm25_A)) %>% 
-      select( -.data$pm25_B, -.data$datetime_B)
-    
-    B_data <- 
-      filter(pat$data, !is.na(.data$pm25_B)) %>% 
-      select(.data$datetime, .data$pm25_B, .data$datetime_B)
+    # A_data <- 
+    #   dplyr::filter(pat$data, !is.na(.data$pm25_A)) %>% 
+    #   dplyr::select( -.data$pm25_B, -.data$datetime_B)
+    # 
+    # B_data <- 
+    #   dplyr::filter(pat$data, !is.na(.data$pm25_B)) %>% 
+    #   dplyr::select(.data$datetime, .data$pm25_B, .data$datetime_B)
     
     # Find outliers 
     outlierIndex_A <- 
-      seismicRoll::findOutliers(
-        A_data$pm25_A, 
-        n = 23, 
-        thresholdMin = 8
+      which(
+        flagOutliers(
+          df = A_data, 
+          parameter = "pm25_A",
+          windowSize = 23,
+          thresholdMin = 8
+        )[,ncol(A_data) + 1]
       )
     
     outlierIndex_B <- 
-      seismicRoll::findOutliers(
-        B_data$pm25_B, 
-        n = 23, 
-        thresholdMin = 8
+      which(
+        flagOutliers(
+          df = B_data, 
+          parameter = "pm25_B",
+          windowSize = 23,
+          thresholdMin = 8
+        )[,ncol(B_data) + 1]
       )
     
     # Can't have an index of zero
@@ -148,9 +163,10 @@ pat_sample <- function(
     
     B_data <- 
       B_data[-outlierIndex_B,] %>% 
-      dplyr::sample_frac(
+      sample(
         sampleFraction = sampleFraction / 2, 
-        weight = weight) %>% 
+        weight = weight
+        ) %>% 
       dplyr::bind_rows(B_outlierData) 
     
   } else {
