@@ -12,6 +12,8 @@
 #' @param weight
 #' @param setSeed 
 #' 
+#' @return A data.frame
+#' 
 
 sample <- 
   function(
