@@ -83,14 +83,6 @@ pat_sample <- function(
   
   if ( keepOutliers == TRUE ) {
     
-    # A_data <- 
-    #   dplyr::filter(pat$data, !is.na(.data$pm25_A)) %>% 
-    #   dplyr::select( -.data$pm25_B, -.data$datetime_B)
-    # 
-    # B_data <- 
-    #   dplyr::filter(pat$data, !is.na(.data$pm25_B)) %>% 
-    #   dplyr::select(.data$datetime, .data$pm25_B, .data$datetime_B)
-    
     # Find outliers 
     outlierIndex_A <- 
       which(
