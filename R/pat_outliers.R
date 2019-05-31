@@ -84,11 +84,11 @@ pat_outliers <- function(
   # NOTE:  so that we can dplyr::left_join() them together at the end.
   
   A_data <- 
-    filter(pat$data, !is.na(.data$pm25_A)) %>% 
-    select( -.data$pm25_B, -.data$datetime_B)
+    dplyr::filter(pat$data, !is.na(.data$pm25_A)) %>% 
+    dplyr::select( -.data$pm25_B, -.data$datetime_B)
   B_data <- 
-    filter(pat$data, !is.na(.data$pm25_B)) %>% 
-    select(.data$datetime, .data$pm25_B, .data$datetime_B)
+    dplyr::filter(pat$data, !is.na(.data$pm25_B)) %>% 
+    dplyr::select(.data$datetime, .data$pm25_B, .data$datetime_B)
   
   # Flag outliers 
   A_flagged <- 
@@ -120,13 +120,13 @@ pat_outliers <- function(
       replaceOutliers(
         A_data, 
         parameter = "pm25_A"
-      )
+      )[["pm25_A"]]
     
     B_fixed <- 
       replaceOutliers(
         B_data, 
         parameter = "pm25_B"
-      )
+      )[["pm25_B"]]
     
   } else { 
     
@@ -167,7 +167,7 @@ pat_outliers <- function(
     
     channelA <- 
       A_data %>%
-      tibble(datetime = A_data$datetime, pm25_A = A_data$pm25_A) %>% 
+      dplyr::tibble(datetime = A_data$datetime, pm25_A = A_data$pm25_A) %>% 
       ggplot2::ggplot(ggplot2::aes(x = .data$datetime, y = .data$pm25_A)) + 
       ggplot2::geom_point(
         shape = data_shape,
@@ -190,7 +190,7 @@ pat_outliers <- function(
     
     channelB <- 
       B_data %>%
-      tibble(datetime = B_data$datetime, pm25_B = B_data$pm25_B) %>% 
+      dplyr::tibble(datetime = B_data$datetime, pm25_B = B_data$pm25_B) %>% 
       ggplot2::ggplot(ggplot2::aes(x = .data$datetime, y = .data$pm25_B)) + 
       ggplot2::geom_point(
         shape = data_shape,
@@ -221,16 +221,19 @@ pat_outliers <- function(
   B_data$pm25_B <- B_fixed
   
   # Combine dataframes 
-  data <- dplyr::full_join(A_data, B_data, by = 'datetime') %>%
-    dplyr::select(
-      .data$datetime, 
-      .data$pm25_A, 
-      .data$pm25_B, 
-      .data$temperature, 
-      .data$humidity, .data$uptime, .data$adc0, .data$rssi, 
-      .data$datetime_A, .data$datetime_B
-    ) %>%
-    dplyr::arrange(.data$datetime)
+  data <- dplyr::full_join(A_data, B_data, by = 'datetime')
+    # dplyr::select(c(
+    #   "datetime", 
+    #   "pm25_A", 
+    #   "pm25_B", 
+    #   "temperature", 
+    #   "humidity", 
+    #   "uptime", 
+    #   "adc0", 
+    #   "rssi", 
+    #   "datetime_A", "datetime_B"
+    # )) %>%
+    # dplyr::arrange(.data$datetime)
   
   # ----- Create the Purple Air Timeseries (pat) object ------------------------
   
