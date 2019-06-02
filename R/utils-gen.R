@@ -1,4 +1,4 @@
-#' @export
+#'
 #' 
 #' @title General table row sampling
 #' 
@@ -6,40 +6,40 @@
 #' random rows from a table. Supports both integer (sampleSize) and fractional 
 #' (sampleFraction) N row sampling. For reproducible debugging, set a hash seed.
 #' 
-#' @param data
-#' @param sampleSize
-#' @param sampleFraction
-#' @param weight
-#' @param setSeed 
+#' @param data Dataframe to be sampled
+#' @param sampleSize a non-negative integer giving the number of rows to choose.
+#' @param sampleFraction the fraction of rows to choose.
+#' \code{smapleSize} is uised)
+#' @param setSeed an integer that sets random numbver generation. Can be used to 
+#' reproduce sampling.
 #' 
 #' @return A data.frame
 #' 
 
-sample <- 
+.sample <- 
   function(
     data,
     sampleSize = NULL,
-    sampleFraction = NULL, 
-    weight = NULL,
+    sampleFraction = 1, 
     setSeed = NULL
   ) { 
     
-    if (!is.null(setSeed) )( set.seed(setSeed) ) 
+    if ( !is.null(setSeed) ) set.seed(setSeed)
     
     if ( !is.null(sampleSize) && 
-         sampleSize <= nrow(data) 
-    ) { 
+         sampleSize <= nrow(data)  ) { 
       
       sz <- sampleSize
       
-    } 
-    
-    if ( !is.null(sampleFraction) &&
-         sampleFraction <= 1 && 
-         sampleFraction > 0 
-    ) { 
+    } else  if ( !is.null(sampleFraction) &&
+                 sampleFraction <= 1 && 
+                 sampleFraction > 0  ) { 
       
       sz <- nrow(data) * sampleFraction
+      
+    } else {
+      
+      stop("Invlaid sampleSize or sampleFraction.")
       
     }
     
@@ -50,8 +50,8 @@ sample <-
           sample(
             x = nrow(data), 
             size = sz, 
-            replace = FALSE, 
-            prob = weight
+            replace = FALSE,
+            prob = NULL
           )
         ),]
     

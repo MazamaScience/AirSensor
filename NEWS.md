@@ -1,3 +1,8 @@
+# AirSensor 0.2.12
+
+* renamed internal `sample()` to `.sample()` to avoid confusion with
+`base::sample()`
+
 # AirSensor 0.2.11
 
 * `local_examples/07_pat_archive.R` demonstrates how to efficiently work with

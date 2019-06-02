@@ -5,7 +5,7 @@
 \title{Sample PurpleAir time series data}
 \usage{
 pat_sample(pat = NULL, sampleSize = NULL, sampleFraction = NULL,
-  weight = NULL, setSeed = NULL, forGraphics = FALSE)
+  setSeed = NULL, keepOutliers = FALSE)
 }
 \arguments{
 \item{pat}{Purple Air Timeseries "pat" object}
@@ -14,13 +14,10 @@ pat_sample(pat = NULL, sampleSize = NULL, sampleFraction = NULL,
 
 \item{sampleFraction}{the fraction of rows to choose.}
 
-\item{weight}{a vector of probability weights for obtaining the elements of the
-vector being sampled.}
-
 \item{setSeed}{an integer that sets random numbver generation. Can be used to 
 reproduce sampling.}
 
-\item{forGraphics}{logical specifying a graphics focused sampling algorithm
+\item{keepOutliers}{logical specifying a graphics focused sampling algorithm
 (see Details)
 '}
 }
@@ -36,10 +33,10 @@ If both `sampleSize` and `sampleFraction` are unspecified,
  `sampleSize = 5000` will be used.
 }
 \details{
-When `forGraphics = FALSE`, random sampling is used to provide a
+When `keepOutliers = FALSE`, random sampling is used to provide a
 statistically relevant subsample of the data.
 
-When `forGraphics = TRUE`, a customized sampling algorithm is used that
+When `keepOutliers = TRUE`, a customized sampling algorithm is used that
 attempts to create subsets for use in plotting that create plots that are
 visually identical to plots using all data. This is accomplished by
 preserving outliers and only sampling data in regions where overplotting
@@ -56,7 +53,7 @@ The process is as follows:
 \examples{
 \dontrun{
 pat <- pat_loadLatest()
-subset <- pat_sample(pat, sampleSize=1000, setSeed=1234)
+subset <- pat_sample(pat, sampleSize=1000, setSeed=1)
 }
 
 }

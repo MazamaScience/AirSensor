@@ -89,7 +89,7 @@ detection:
 * `thresholdMin` -- number of std. dev. units above which a measurement is
 considered an outlier
 
-The default setting of the window size `n = 23` means that 23 samples
+The default setting of `windowSize = 23` means that 23 samples
 from a single channel become the population from which the median and standard
 deviation are calculated. Each Purple Air channel makes a measurement
 approximately every 80 seconds so the temporal window is 23 * 80 sec or
@@ -196,7 +196,7 @@ pat2Day %>% pat_multiplot("pm25", sampleSize = 1e6)
 ```{r hampel_smoothing_1}
 # Default outlier replacement
 pat2Day %>%
-  pat_outliers(n = 23, thresholdMin = 8, replace = TRUE) %>%
+  pat_outliers(windowSize = 23, thresholdMin = 8, replace = TRUE) %>%
   pat_multiplot("pm25", sampleSize = 1e6)
 ```
 
@@ -204,6 +204,6 @@ pat2Day %>%
 ```{r hampel_smoothing_2}
 # Aggressive outlier replacement 
 pat2Day %>%
-  pat_outliers(n = 23, thresholdMin = 4, replace = TRUE) %>%
+  pat_outliers(windowSize = 23, thresholdMin = 4, replace = TRUE) %>%
   pat_multiplot("pm25", sampleSize = 1e6)
 ```

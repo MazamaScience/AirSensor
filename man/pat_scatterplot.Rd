@@ -5,15 +5,18 @@
 \title{Compare all variables in a Purple Air Timeseries object}
 \usage{
 pat_scatterplot(pat = NULL, parameters = c("datetime", "pm25_A",
-  "pm25_B", "temperature", "humidity"), sampleSize = 5000, size = 0.5,
-  shape = 15, color = "black", alpha = 0.25)
+  "pm25_B", "temperature", "humidity"), sampleSize = 5000,
+  sampleFraction = NULL, size = 0.5, shape = 15, color = "black",
+  alpha = 0.25)
 }
 \arguments{
 \item{pat}{Purple Air Timeseries \emph{pat} object}
 
 \item{parameters}{vector of parameters to include}
 
-\item{sampleSize}{Either an integer or fraction to determine sample size}
+\item{sampleSize}{integer to determine sample size}
+
+\item{sampleFraction}{fractional sample size}
 
 \item{size}{size of points}
 

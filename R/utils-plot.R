@@ -42,7 +42,7 @@ scatterplot <- function(
   # ----- Sample if large ------------------------------------------------------
   
   data <- 
-    sample(
+    .sample(
       data = data,
       sampleSize = sampleSize, 
       sampleFraction = sampleFraction

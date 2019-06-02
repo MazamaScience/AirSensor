@@ -7,8 +7,6 @@
 #' @param pat Purple Air Timeseries "pat" object
 #' @param sampleSize a non-negative integer giving the number of rows to choose.
 #' @param sampleFraction the fraction of rows to choose.
-#' @param weight a vector of probability weights for obtaining the elements of the
-#' vector being sampled.
 #' @param setSeed an integer that sets random numbver generation. Can be used to 
 #' reproduce sampling.
 #' @param keepOutliers logical specifying a graphics focused sampling algorithm
@@ -43,7 +41,7 @@
 #' @examples 
 #' \dontrun{
 #' pat <- pat_loadLatest()
-#' subset <- pat_sample(pat, sampleSize=1000, setSeed=1234)
+#' subset <- pat_sample(pat, sampleSize=1000, setSeed=1)
 #' }
 #' 
 
@@ -51,7 +49,6 @@ pat_sample <- function(
   pat = NULL,
   sampleSize = NULL, 
   sampleFraction = NULL, 
-  weight = NULL, 
   setSeed = NULL,
   keepOutliers = FALSE
 ) {
@@ -119,7 +116,9 @@ pat_sample <- function(
   A_outlierData <- A_data[outlierIndex_A,]
   B_outlierData <- B_data[outlierIndex_B,]
   
-  if ( !is.null(setSeed) )( set.seed(setSeed) )
+  if ( !is.null(setSeed) ) {
+    set.seed(setSeed) 
+  }
   
   # ----- Remove outlier data -> Sample data -> Reinsert outlier data ->
   
@@ -127,19 +126,17 @@ pat_sample <- function(
     
     A_data <- 
       A_data[-outlierIndex_A,] %>% 
-      sample(
+      .sample(
         sampleSize = (sampleSize - length(outlierIndex_A) + 
-                        length(outlierIndex_B)) / 2, 
-        weight = weight
+                        length(outlierIndex_B)) / 2
       ) %>% 
       dplyr::bind_rows(A_outlierData) 
     
     B_data <- 
       B_data[-outlierIndex_B,] %>% 
-      sample(
+      .sample(
         sampleSize = (sampleSize - length(outlierIndex_B) + 
-                        length(outlierIndex_A)) / 2, 
-        weight = weight
+                        length(outlierIndex_A)) / 2
       ) %>% 
       dplyr::bind_rows(B_outlierData)
     
@@ -147,17 +144,15 @@ pat_sample <- function(
     
     A_data <- 
       A_data[-outlierIndex_A,] %>% 
-      sample(
-        sampleFraction = sampleFraction / 2, 
-        weight = weight 
+      .sample(
+        sampleFraction = sampleFraction / 2
       ) %>% 
       dplyr::bind_rows(A_outlierData)
     
     B_data <- 
       B_data[-outlierIndex_B,] %>% 
-      sample(
-        sampleFraction = sampleFraction / 2, 
-        weight = weight
+      .sample(
+        sampleFraction = sampleFraction / 2
         ) %>% 
       dplyr::bind_rows(B_outlierData) 
     
@@ -195,4 +190,5 @@ pat_sample <- function(
   class(pat) <- c("pa_timeseries", class(pat))
   
   return(invisible(pat))
+  
 }

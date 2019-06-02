@@ -4,15 +4,15 @@
 \alias{pat_outliers}
 \title{Detect and replace timeseries outliers}
 \usage{
-pat_outliers(pat = NULL, n = 23, thresholdMin = 8, replace = FALSE,
-  showPlot = TRUE, data_shape = 18, data_size = 1,
+pat_outliers(pat = NULL, windowSize = 23, thresholdMin = 8,
+  replace = FALSE, showPlot = TRUE, data_shape = 18, data_size = 1,
   data_color = "black", data_alpha = 0.5, outlier_shape = 8,
   outlier_size = 1, outlier_color = "red", outlier_alpha = 1)
 }
 \arguments{
 \item{pat}{Purple Air Timeseries "pat" object}
 
-\item{n}{integer window size}
+\item{windowSize}{integer window size for outlier detection}
 
 \item{thresholdMin}{threshold value for outlier detection}
 
@@ -54,7 +54,7 @@ distribution and therefore very likely to be an outlier. By choosing a
 relatively large value for `thresholdMin`` we make it less likely that we 
 will generate false positives.
 
-The default setting of the window size \code{n = 23} means that 23 samples
+The default setting of the window size \code{windowSize = 23} means that 23 samples
 from a single channel are used to determine the distribution of values for
 which a median is calculated. Each Purple Air channel makes a measurement
 approximately every 80 seconds so the temporal window is 23 * 80 sec or
