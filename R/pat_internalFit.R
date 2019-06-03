@@ -7,12 +7,6 @@
 #' @title Linear model fitting of channel A and B data
 #' 
 #' @param pat Purple Air Timeseries "pat" object
-# @param subset (From `stats::lm`) An optional vector specifying a subset of
-#   observations to be used in the fitting process.
-# @param weights (From `stats::lm`) An optional vector of weights to be used in
-#   the fitting process. Should be NULL or a numeric vector. If non-NULL,
-#   weighted least squares is used with weights weights (that is, minimizing
-#   sum(w*e^2)); otherwise ordinary least squares is used.
 #' @param showPlot logical specifying whether to generate a model fit plot
 #' @param size size of points
 #' @param shape symbol to use for points
@@ -32,8 +26,6 @@
 
 pat_internalFit <- function(
   pat = NULL,
-#  subset = NULL,
-#  weights = NULL,
   showPlot = TRUE,
   size = 1,
   shape = 15,
@@ -41,12 +33,7 @@ pat_internalFit <- function(
   alpha = 0.25,
   xylim = NULL
 ) {
-  
-  # TODO:  Decide to remove subset and weights and delete the code.
-  # Disable these parameters as too far down in the weeds.
-  subset <- NULL
-  weights <- NULL
-  
+
   # ----- Validate parameters --------------------------------------------------
   
   if ( !pat_isPat(pat) )
@@ -54,10 +41,6 @@ pat_internalFit <- function(
   
   if ( pat_isEmpty(pat) )
     stop("Parameter 'pat' has no data.")
-  
-  if ( !is.null(weights) && !is.numeric(weights) ) {
-    stop("Parameter 'weights' must be either NULL or a numeric vector.")
-  }
   
   # For easier access
   meta <- pat$meta
@@ -72,7 +55,7 @@ pat_internalFit <- function(
   # ----- Linear model ---------------------------------------------------------
   
   # Model A as a function of B (data should lie on a line)
-  model <- lm(data$pm25_A ~ data$pm25_B, subset = subset, weights = weights)
+  model <- lm(data$pm25_A ~ data$pm25_B, subset = NULL, weights = NULL)
   
   slope <- as.numeric(model$coefficients[2])      # as.numeric() to remove name
   intercept <- as.numeric(model$coefficients[1])
