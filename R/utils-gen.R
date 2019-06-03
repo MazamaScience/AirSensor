@@ -1,5 +1,4 @@
-#'
-#' 
+
 #' @title General table row sampling
 #' 
 #' @description This is a wrapper around sample() to make it easy to select 
@@ -43,16 +42,13 @@
       
     }
     
-    # ----- Fastest possible way to sample -------------------------------------
     subset <- 
       data[
-        .Internal(
-          sample(
-            x = nrow(data), 
-            size = sz, 
-            replace = FALSE,
-            prob = NULL
-          )
+        base::sample(
+          x = nrow(data), 
+          size = sz, 
+          replace = FALSE,
+          prob = NULL
         ),]
     
     return(subset)
