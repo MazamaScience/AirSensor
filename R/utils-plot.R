@@ -8,6 +8,9 @@
 #' from the plot.
 #' 
 #' @param data data frame
+#' @param parameters the columns of the data frame to plot
+#' @param sampleSize the integer sample number of rows 
+#' @param sampleFraction the fractional sample of rows 
 #' @param shape symbol to use for points
 #' @param size size of points
 #' @param color color of points
