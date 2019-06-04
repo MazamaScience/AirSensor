@@ -2,6 +2,10 @@
 
 * renamed internal `sample()` to `.sample()` to avoid confusion with
 `base::sample()`
+* simplified end-user parameters
+* Added ShinyAirSensor
+* `utils-plot.R` added to support general functions
+* `utils-gen.R` added to support general functions
 
 # AirSensor 0.2.11
 

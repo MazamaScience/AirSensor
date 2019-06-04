@@ -30,7 +30,6 @@ Imports:
     MazamaCoreUtils,
     MazamaSpatialUtils (>= 0.6.1),
     plyr,
-    openair,
     PWFSLSmoke (>= 1.2.4),
     RColorBrewer,
     rlang,
