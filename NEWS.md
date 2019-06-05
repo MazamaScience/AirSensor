@@ -1,3 +1,8 @@
+# AirSensor 0.2.13 
+
+* Added ShinyAirSensor directory for alpha web-apps
+* Added `threePlot` web-app
+
 # AirSensor 0.2.12
 
 * renamed internal `sample()` to `.sample()` to avoid confusion with
