@@ -2,6 +2,7 @@
 
 * Added ShinyAirSensor directory for alpha web-apps
 * Added `threePlot` web-app
+* Added `dailyAveragePlot` web-app
 
 # AirSensor 0.2.12
 
