@@ -10,45 +10,56 @@ pas_labels <-
 # Define UI for application
 ui <- shiny::fluidPage(
     shiny::fluidRow(
-        column(width = 2,
-               
-               # PAS selection input
-               shiny::selectInput(
-                   inputId = "pas_select", 
-                   label = "Purple Air Sensors:",
-                   choices = pas_labels
-               ),
-               
-               # Period Selection
-               shiny::textInput(
-                   inputId = "period_select", 
-                   label = "Period:",
-                   value = "1 hour", 
-                   placeholder = "X month/week/day/hour/min/sec"
-               ),
-               
-               # Plot stat selection
-               shiny::selectInput(
-                   inputId = "stat_select", 
-                   label = "Plot Stats:", 
-                   choices = c(
-                       "Standard Deviation" = "_sd", 
-                       "Mean" = "_mean"
-                   )
-               )
+        column(
+            width = 2,
+            
+            
+            # PAS selection input
+            shiny::selectInput(
+                inputId = "pas_select", 
+                label = "Purple Air Sensors:",
+                choices = pas_labels
+            ),
+            
+            shiny::dateRangeInput(
+                inputId = "date_range", 
+                label = "Date Range:"
+            ),
+            
+            # Period Selection
+            shiny::textInput(
+                inputId = "period_select", 
+                label = "Period:",
+                value = "5 min", 
+                placeholder = "X month/week/day/hour/min/sec"
+            ),
+            
+            # Plot stat selection
+            shiny::selectInput(
+                inputId = "stat_select", 
+                label = "Plot Stats:", 
+                choices = c(
+                    "Mean" = "_mean",
+                    "Standard Deviation" = "_sd"
+                )
+            )
+            
+            # shiny::actionButton("update_button", "update") # Update Button
         ), 
         
-        column(width = 10,
-               # Plot outputs
-               shiny::plotOutput(outputId = "pm25_plot"), 
-               shiny::plotOutput(outputId = "temp_plot"), 
-               shiny::plotOutput(outputId = "hum_plot") 
-               
+        column(
+            width = 10,
+            # Plot outputs
+            shiny::plotOutput(outputId = "pm25_plot"), 
+            shiny::plotOutput(outputId = "temp_plot"), 
+            shiny::plotOutput(outputId = "hum_plot") 
+            
         )
     )
 )
 # Define server logic
 server <- function(input, output) {
+    
     # Table render
     output$pas_tbl <- 
         shiny::renderTable({
@@ -77,8 +88,8 @@ server <- function(input, output) {
             pat <- 
                 AirSensor::pat_load(
                     label = input$pas_select, 
-                    startdate = 20190411, 
-                    enddate = 20190521
+                    startdate = input$date_range[1], 
+                    enddate = input$date_range[2]
                 ) 
             ast <- 
                 AirSensor::pat_createASTimeseries(
@@ -111,7 +122,9 @@ server <- function(input, output) {
                             "pm25_A",
                             input$stat_select
                         )]]
-                    ), color = "red", shape = 18, alpha = 1/2
+                    ), color = "red", shape = 18,
+                    size = 2, 
+                    alpha = 1/2
                 )
             
             pm25_B <- 
@@ -124,11 +137,41 @@ server <- function(input, output) {
                             input$stat_select
                         )]]
                     ), 
-                    color = "blue", shape = 18, 
+                    color = "blue", shape = 18,
+                    size = 2,
                     alpha = 1/2
                 )
             
-            pm25_plot + pm25_A + pm25_B
+            # Smoothing via polynomial regression 
+            
+            # smooth_A <- 
+            #     ggplot2::geom_smooth(
+            #         data = ast$data,
+            #         method = "loess",
+            #         mapping = ggplot2::aes(
+            #             x = .data$datetime, 
+            #             y = .data[[paste0(
+            #                 "pm25_B",
+            #                 input$stat_select
+            #             )]]
+            #         )
+            #     )
+            # 
+            # smooth_B <- 
+            #     ggplot2::geom_smooth(
+            #         data = ast$data,
+            #         method = "loess",
+            #         mapping = ggplot2::aes(
+            #             x = .data$datetime, 
+            #             y = .data[[paste0(
+            #                 "pm25_B",
+            #                 input$stat_select
+            #             )]]
+            #         )
+            #     )
+            
+            
+            return(pm25_plot + pm25_A + pm25_B)
             
         })
     
@@ -137,8 +180,8 @@ server <- function(input, output) {
             pat <- 
                 AirSensor::pat_load(
                     label = input$pas_select, 
-                    startdate = 20190411, 
-                    enddate = 20190521
+                    startdate = input$date_range[1], 
+                    enddate = input$date_range[2]
                 ) 
             ast <- 
                 AirSensor::pat_createASTimeseries(
@@ -171,6 +214,7 @@ server <- function(input, output) {
                         )]]
                     ), 
                     color = "black", shape = 18, 
+                    size = 2,
                     alpha = 1/2
                 )
             
@@ -183,8 +227,8 @@ server <- function(input, output) {
             pat <- 
                 AirSensor::pat_load(
                     label = input$pas_select, 
-                    startdate = 20190411, 
-                    enddate = 20190521
+                    startdate = input$date_range[1], 
+                    enddate = input$date_range[2]
                 ) 
             ast <- 
                 AirSensor::pat_createASTimeseries(
@@ -218,6 +262,7 @@ server <- function(input, output) {
                     ), 
                     color = "black", 
                     shape = 18, 
+                    size = 2, 
                     alpha = 1/2
                 )
             
