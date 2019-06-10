@@ -329,7 +329,9 @@ pas_leaflet <- function(
       fillColor=cols,
       fillOpacity=opacity,
       stroke=FALSE,
-      popup=pas$popupText) %>%
+      popup=pas$popupText,
+      layerId = pas$label
+      ) %>%
     leaflet::addLegend(
       position='bottomright',
       colors=rev(colors), # show low levels at the bottom
