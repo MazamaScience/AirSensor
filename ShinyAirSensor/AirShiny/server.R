@@ -23,7 +23,7 @@ shiny::shinyServer(
                 
                 pat <- 
                     AirSensor::pat_load(
-                        label = input$pas_select, 
+                        label = input$leaflet_marker_click[1], #uses marker id from leaflet
                         startdate = input$date_range[1],
                         enddate = input$date_range[2]
                     )
