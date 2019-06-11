@@ -11,6 +11,12 @@ scatterplot(data, parameters = NULL, sampleSize = 5000,
 \arguments{
 \item{data}{data frame}
 
+\item{parameters}{the columns of the data frame to plot}
+
+\item{sampleSize}{the integer sample number of rows}
+
+\item{sampleFraction}{the fractional sample of rows}
+
 \item{shape}{symbol to use for points}
 
 \item{size}{size of points}

@@ -17,3 +17,6 @@
 
 # Ignore all directories beginning with "local"
 ^local*
+
+# NOTE:  TEMPORARY -- for development only
+^ShinyAirSensor/

@@ -65,10 +65,10 @@ points(df_5minMean, pch=avg_shape, col=avg_color, cex=avg_size)
 title(paste0("A & B raw data and ",avg.time," mean"))
 
 plot(df_5minMean, type='l', col=avg_color, lwd=avg_lwd)
-title(paste0(avg.time," min mean timeseries"))
+title(paste0(avg.time," mean timeseries"))
 
 plot(df_5minSd, pch=avg_shape, col=avg_color, cex=avg_size,
      ylab = "std dev.")
-title(paste0(avg.time," min mean standard deviation"))
+title(paste0(avg.time," mean standard deviation"))
 
 
