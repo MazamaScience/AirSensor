@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.13</span>
       </span>
     </div>
 
@@ -147,7 +147,7 @@
 <li>
 <code>thresholdMin</code> – number of std. dev. units above which a measurement is considered an outlier</li>
 </ul>
-<p>The default setting of the window size <code>n = 23</code> means that 23 samples from a single channel become the population from which the median and standard deviation are calculated. Each Purple Air channel makes a measurement approximately every 80 seconds so the temporal window is 23 * 80 sec or approximately 30 minutes. This seems like a reasonable period of time over which to evaluate PM2.5 measurements. It is long enough to capture significant change making it more likely we will only identify true outliers.</p>
+<p>The default setting of <code>windowSize = 23</code> means that 23 samples from a single channel become the population from which the median and standard deviation are calculated. Each Purple Air channel makes a measurement approximately every 80 seconds so the temporal window is 23 * 80 sec or approximately 30 minutes. This seems like a reasonable period of time over which to evaluate PM2.5 measurements. It is long enough to capture significant change making it more likely we will only identify true outliers.</p>
 <p>The default setting for the detection threshold <code>thresholdMin = 8</code> means that the sample at the center of the rolling window must have a value at least 8 standard deviation units away from the window median to be flagged as an outlier.</p>
 <p>To explain how this works, we will focus on a single day’s worth of data and use base R functionality to zoom in and visually explore the algorithm. We start with a visual inspection of the data:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">oneDayData &lt;-<span class="st"> </span>
@@ -222,7 +222,7 @@ pat2Day <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">
 <a href="#default-outlier-replacement" class="anchor"></a>Default outlier replacement</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Default outlier replacement</span>
 pat2Day <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/pat_outliers.html">pat_outliers</a></span>(<span class="dt">n =</span> <span class="dv">23</span>, <span class="dt">thresholdMin =</span> <span class="dv">8</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/pat_outliers.html">pat_outliers</a></span>(<span class="dt">windowSize =</span> <span class="dv">23</span>, <span class="dt">thresholdMin =</span> <span class="dv">8</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(<span class="st">"pm25"</span>, <span class="dt">sampleSize =</span> <span class="fl">1e6</span>)</code></pre></div>
 <p><img src="outlier_detection_files/figure-html/hampel_smoothing_1-1.png" width="672"><img src="outlier_detection_files/figure-html/hampel_smoothing_1-2.png" width="672"></p>
 </div>
@@ -231,7 +231,7 @@ pat2Day <span class="op">%&gt;%</span>
 <a href="#aggressive-outlier-replacement" class="anchor"></a>Aggressive outlier replacement</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Aggressive outlier replacement </span>
 pat2Day <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/pat_outliers.html">pat_outliers</a></span>(<span class="dt">n =</span> <span class="dv">23</span>, <span class="dt">thresholdMin =</span> <span class="dv">4</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/pat_outliers.html">pat_outliers</a></span>(<span class="dt">windowSize =</span> <span class="dv">23</span>, <span class="dt">thresholdMin =</span> <span class="dv">4</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(<span class="st">"pm25"</span>, <span class="dt">sampleSize =</span> <span class="fl">1e6</span>)</code></pre></div>
 <p><img src="outlier_detection_files/figure-html/hampel_smoothing_2-1.png" width="672"><img src="outlier_detection_files/figure-html/hampel_smoothing_2-2.png" width="672"></p>
 </div>
