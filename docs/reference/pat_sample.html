@@ -74,7 +74,7 @@ If both `sampleSize` and `sampleFraction` are unspecified,
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.13</span>
       </span>
     </div>
 
@@ -150,7 +150,7 @@ size.</p>
     </div>
 
     <pre class="usage"><span class='fu'>pat_sample</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sampleSize</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sampleFraction</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>weight</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>setSeed</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>forGraphics</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>setSeed</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>keepOutliers</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -168,17 +168,12 @@ size.</p>
       <td><p>the fraction of rows to choose.</p></td>
     </tr>
     <tr>
-      <th>weight</th>
-      <td><p>a vector of probability weights for obtaining the elements of the
-vector being sampled.</p></td>
-    </tr>
-    <tr>
       <th>setSeed</th>
       <td><p>an integer that sets random numbver generation. Can be used to 
 reproduce sampling.</p></td>
     </tr>
     <tr>
-      <th>forGraphics</th>
+      <th>keepOutliers</th>
       <td><p>logical specifying a graphics focused sampling algorithm
 (see Details)
 '</p></td>
@@ -191,9 +186,9 @@ reproduce sampling.</p></td>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>When `forGraphics = FALSE`, random sampling is used to provide a
+    <p>When `keepOutliers = FALSE`, random sampling is used to provide a
 statistically relevant subsample of the data.</p>
-<p>When `forGraphics = TRUE`, a customized sampling algorithm is used that
+<p>When `keepOutliers = TRUE`, a customized sampling algorithm is used that
 attempts to create subsets for use in plotting that create plots that are
 visually identical to plots using all data. This is accomplished by
 preserving outliers and only sampling data in regions where overplotting
@@ -209,7 +204,7 @@ is expected.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='no'>pat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pat_loadLatest.html'>pat_loadLatest</a></span>()
-<span class='no'>subset</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_sample</span>(<span class='no'>pat</span>, <span class='kw'>sampleSize</span><span class='kw'>=</span><span class='fl'>1000</span>, <span class='kw'>setSeed</span><span class='kw'>=</span><span class='fl'>1234</span>)
+<span class='no'>subset</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_sample</span>(<span class='no'>pat</span>, <span class='kw'>sampleSize</span><span class='kw'>=</span><span class='fl'>1000</span>, <span class='kw'>setSeed</span><span class='kw'>=</span><span class='fl'>1</span>)
 <span class='co'># }</span><div class='input'>
 </div></pre>
   </div>

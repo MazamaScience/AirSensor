@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Matrix scatter plot variables in a data frame — scatterPlot • AirSensor</title>
+<title>Matrix scatter plot variables in a data frame — scatterplot • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,7 +37,7 @@
 
 
 
-<meta property="og:title" content="Matrix scatter plot variables in a data frame — scatterPlot" />
+<meta property="og:title" content="Matrix scatter plot variables in a data frame — scatterplot" />
 
 <meta property="og:description" content="Creates a multi-panel scatterplot comparing all variables in the
 data frame object. If any variables have not valid data, they are omitted 
@@ -72,7 +72,7 @@ from the plot." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.13</span>
       </span>
     </div>
 
@@ -134,7 +134,7 @@ from the plot." />
     <div class="page-header">
     <h1>Matrix scatter plot variables in a data frame</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/utils-plot.R'><code>R/utils-plot.R</code></a></small>
-    <div class="hidden name"><code>scatterPlot.Rd</code></div>
+    <div class="hidden name"><code>scatterplot.Rd</code></div>
     </div>
 
     <div class="ref-description">
@@ -145,7 +145,8 @@ from the plot.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>scatterPlot</span>(<span class='no'>data</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>18</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1.5</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
+    <pre class="usage"><span class='fu'>scatterplot</span>(<span class='no'>data</span>, <span class='kw'>parameters</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sampleSize</span> <span class='kw'>=</span> <span class='fl'>5000</span>,
+  <span class='kw'>sampleFraction</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>18</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1.5</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
   <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -154,6 +155,18 @@ from the plot.</p>
     <tr>
       <th>data</th>
       <td><p>data frame</p></td>
+    </tr>
+    <tr>
+      <th>parameters</th>
+      <td><p>the columns of the data frame to plot</p></td>
+    </tr>
+    <tr>
+      <th>sampleSize</th>
+      <td><p>the integer sample number of rows</p></td>
+    </tr>
+    <tr>
+      <th>sampleFraction</th>
+      <td><p>the fractional sample of rows</p></td>
     </tr>
     <tr>
       <th>shape</th>

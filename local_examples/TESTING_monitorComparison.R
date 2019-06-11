@@ -61,8 +61,8 @@ Nipomo_Mesa2 <- monitor_subset(ca_april, monitorIDs = "060792004_01")
 # [13] "temperature_qc"
 # > sort(unique(diff(ast_08$data$date)))
 # [1] 1
-ast_08 <- pat_createASTimeseriesObject(scnp_08, period = "1 hour")
-ast_14 <- pat_createASTimeseriesObject(scnp_14, period = "1 hour")
+ast_08 <- pat_createASTimeseries(scnp_08, period = "1 hour")
+ast_14 <- pat_createASTimeseries(scnp_14, period = "1 hour")
 
 layout(matrix(seq(3)))
 ast_08$data %>% select(datetime, humidity) %>% plot()

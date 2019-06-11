@@ -49,7 +49,7 @@ identifies points that are extremely unlikely to be part of a normal
 distribution and therefore very likely to be an outlier. By choosing a 
 relatively large value for `thresholdMin`` we make it less likely that we 
 will generate false positives.
-The default setting of the window size n = 23 means that 23 samples
+The default setting of the window size windowSize = 23 means that 23 samples
 from a single channel are used to determine the distribution of values for
 which a median is calculated. Each Purple Air channel makes a measurement
 approximately every 80 seconds so the temporal window is 23 * 80 sec or
@@ -89,7 +89,7 @@ thresholdMin = 1 or lower (but always above zero)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.13</span>
       </span>
     </div>
 
@@ -166,7 +166,7 @@ identifies points that are extremely unlikely to be part of a normal
 distribution and therefore very likely to be an outlier. By choosing a 
 relatively large value for `thresholdMin`` we make it less likely that we 
 will generate false positives.</p>
-<p>The default setting of the window size <code>n = 23</code> means that 23 samples
+<p>The default setting of the window size <code>windowSize = 23</code> means that 23 samples
 from a single channel are used to determine the distribution of values for
 which a median is calculated. Each Purple Air channel makes a measurement
 approximately every 80 seconds so the temporal window is 23 * 80 sec or
@@ -179,8 +179,8 @@ can create an highly smoothed, artificial dataset by setting
     
     </div>
 
-    <pre class="usage"><span class='fu'>pat_outliers</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>23</span>, <span class='kw'>thresholdMin</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>showPlot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>data_shape</span> <span class='kw'>=</span> <span class='fl'>18</span>, <span class='kw'>data_size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+    <pre class="usage"><span class='fu'>pat_outliers</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>windowSize</span> <span class='kw'>=</span> <span class='fl'>23</span>, <span class='kw'>thresholdMin</span> <span class='kw'>=</span> <span class='fl'>8</span>,
+  <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>showPlot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>data_shape</span> <span class='kw'>=</span> <span class='fl'>18</span>, <span class='kw'>data_size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>data_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>data_alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>outlier_shape</span> <span class='kw'>=</span> <span class='fl'>8</span>,
   <span class='kw'>outlier_size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>outlier_color</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>outlier_alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
     
@@ -192,8 +192,8 @@ can create an highly smoothed, artificial dataset by setting
       <td><p>Purple Air Timeseries "pat" object</p></td>
     </tr>
     <tr>
-      <th>n</th>
-      <td><p>integer window size</p></td>
+      <th>windowSize</th>
+      <td><p>integer window size for outlier detection</p></td>
     </tr>
     <tr>
       <th>thresholdMin</th>
