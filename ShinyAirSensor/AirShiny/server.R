@@ -30,7 +30,7 @@ shiny::shinyServer(
                 
                     AirSensor::pat_multiplot(
                         pat, 
-                        columns = 1)
+                        columns = 4)
 
             })
         
@@ -53,6 +53,59 @@ shiny::shinyServer(
         
         output$test <-
             shiny::renderText(paste0(input$leaflet_marker_click))
+        
+        output$pm25_daily_plot <- 
+            shiny::renderPlot({
+                pat <- 
+                    AirSensor::pat_load(
+                        label = input$leaflet_marker_click[1], 
+                        startdate = input$date_range[1], 
+                        enddate = input$date_range[2]
+                    ) 
+                ast <- 
+                    AirSensor::pat_createASTimeseries(
+                        pat = pat, 
+                        period = "1 day" 
+                    )
+                
+                pm25_AB_avg <- 
+                    ast$data %>% 
+                    dplyr::select(
+                        .data$pm25_A_mean, 
+                        .data$pm25_B_mean
+                    ) %>% 
+                    dplyr::transmute(
+                        pm25_AB_avg = 
+                            (.data$pm25_A_mean + .data$pm25_B_mean) / 2
+                    )
+                
+                pm25_plot <- 
+                    ast$data %>% 
+                    ggplot2::ggplot(
+                        ggplot2::aes(
+                            x = .data$datetime, 
+                            y = pm25_AB_avg
+                        )
+                    ) + 
+                    ggplot2::ggtitle(
+                        label = "PM2.5"
+                    ) + 
+                    ggplot2::xlab("Datetime") + 
+                    ggplot2::ylab("\u03bcg / m\u00b3")
+                
+                pm25_avg_bar <- 
+                    ggplot2::geom_bar(                   
+                        data = ast$data,
+                        mapping = ggplot2::aes(
+                            x = .data$datetime, 
+                            y = pm25_AB_avg[,1]
+                        ), 
+                        stat = "identity"
+                    )
+                
+                return(pm25_plot + pm25_avg_bar)
+                
+            })
         
         
     }

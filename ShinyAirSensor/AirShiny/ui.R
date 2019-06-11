@@ -7,10 +7,15 @@
 #    http://shiny.rstudio.com/
 #
 
+pas <- example_pas[which(stringr::str_detect(example_pas$label, "SCNP")),] 
+pas_labels <- 
+    pas$label[-which(stringr::str_detect(pas$label, " B"))]
+
 # Define UI for application 
 shiny::shinyUI(
     shiny::navbarPage(
-        title = "AirShiny",
+        title = "AirShiny (Beta)",
+        shiny::tabPanel("Interactive Map"),
 
      shiny::fluidRow(
         shiny::column(
@@ -40,7 +45,9 @@ shiny::shinyUI(
                             "Pressure" = "pressure", 
                             "Temperature" = "temperature")
             ), 
-            shiny::plotOutput(outputId = "pm25_plot")
+            
+            shiny::plotOutput(outputId = "pm25_daily_plot")
+            
             
 
         ), 
@@ -53,7 +60,8 @@ shiny::shinyUI(
                 outputId = "leaflet" 
             ), 
             
-            shiny::textOutput("test")
+            shiny::textOutput("test"),
+            shiny::plotOutput(outputId = "pm25_plot")
             
         )
         
