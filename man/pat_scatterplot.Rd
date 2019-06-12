@@ -27,7 +27,7 @@ pat_scatterplot(pat = NULL, parameters = c("datetime", "pm25_A",
 \item{alpha}{opacity of points}
 }
 \value{
-Tibble portion of the \emph{pat} object, subset.
+Multi-panel ggplot comparing all parameters.
 }
 \description{
 Creates a multi-panel scatterplot comparing all variables in the
@@ -46,4 +46,11 @@ The list of available parameters include:
 \item{\code{adc0} -- analog input voltage}
 \item{\code{rssi} -- wifi signal strength (dBm)}
 }
+}
+\examples{
+pat <- 
+  get(data(example_pat)) \%>\%
+  pat_filterDate(20180811,20180818)
+  
+pat_scatterplot(pat, sampleSize = 1000)
 }

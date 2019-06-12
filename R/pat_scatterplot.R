@@ -29,8 +29,14 @@
 #' @param color color of points
 #' @param alpha opacity of points
 #' 
-#' @return Tibble portion of the \emph{pat} object, subset.
+#' @return Multi-panel ggplot comparing all parameters.
 #' 
+#' @examples
+#' pat <- 
+#'   get(data(example_pat)) %>%
+#'   pat_filterDate(20180811,20180818)
+#'   
+#' pat_scatterplot(pat, sampleSize = 1000)
 
 pat_scatterplot <- function(
   pat = NULL,
@@ -43,7 +49,7 @@ pat_scatterplot <- function(
   alpha = 0.25
 ) {
   
-  # Validate parameters -----------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
   
   if ( !pat_isPat(pat) )
     stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")
@@ -51,7 +57,8 @@ pat_scatterplot <- function(
   if ( pat_isEmpty(pat) )
     stop("Parameter 'pat' has no data.") 
   
-  if ( !is.null(sampleFraction) )( sampleSize = NULL ) # Disable one 
+  if ( !is.null(sampleFraction) )
+    sampleSize = NULL # Disable one 
   
   # For easier access
   meta <- pat$meta
@@ -71,8 +78,10 @@ pat_scatterplot <- function(
                   badString, 
                   ") have all missing data and are not shown."))
   }
+
+  # ----- Create plot ----------------------------------------------------------
   
-  scatterPlot <- 
+  gg_scatterplot <- 
     scatterplot(
       data = data, 
       size = size,
@@ -83,7 +92,9 @@ pat_scatterplot <- function(
       alpha = alpha
     ) 
   
-  return(scatterPlot)
+  # ----- Return ---------------------------------------------------------------
+  
+  return(gg_scatterplot)
   
 }
 
