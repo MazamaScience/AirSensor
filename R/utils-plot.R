@@ -29,16 +29,24 @@ scatterplot <- function(
 ) {
   
   # ----- Allow parameter selection --------------------------------------------
-  # Validate 
-  if ( !is.null(parameters) && parameters %in% names(data)) {
+  
+  if ( !is.null(parameters) ) {
     
-    data <- 
-      data %>% 
-      dplyr::select(parameters) 
-    
-  } else { 
-    
-    stop(paste0("Error: Non-valid parameter : ", parameters, "\n"))
+    # Validation 
+    if ( !all(parameters %in% names(data)) ) {
+      
+      paramString <- paste(parameters, ",")
+      namesString <- paste(names(data), ",")
+      stop(paste0("Ivalid parameter in: ", paramString, 
+                  "\nAvailable parameters include: ", namesString))
+      
+    } else {
+      
+      data <- 
+        data %>% 
+        dplyr::select(parameters) 
+      
+    }
     
   }
   
@@ -51,7 +59,9 @@ scatterplot <- function(
       sampleFraction = sampleFraction
     )
   
-  scatterPlot <- 
+  # ----- Create plot ----------------------------------------------------------
+  
+  gg_scatterplot <- 
     GGally::ggpairs( 
       data,
       mapping = ggplot2::aes(alpha = 0.15),
@@ -69,7 +79,8 @@ scatterplot <- function(
     ) + 
     ggplot2::theme_bw()
   
-  return(scatterPlot)
+  return(gg_scatterplot)
+  
 }
 
 #' @export

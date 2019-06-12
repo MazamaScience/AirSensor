@@ -89,7 +89,7 @@ sensor data. Currently supported parameter arguments include:
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.13</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.15</span>
       </span>
     </div>
 
@@ -246,7 +246,7 @@ underlying map tile if available. See
 <span class='co'># Methow Valley Clean Air Ambassador</span>
 <span class='fu'><a href='initializeMazamaSpatialUtils.html'>initializeMazamaSpatialUtils</a></span>()
 <span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pas_load.html'>pas_load</a></span>()
-<span class='no'>mvcaa</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter</a></span>(<span class='no'>pas</span>, <span class='kw pkg'>stringr</span><span class='kw ns'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_detect.html'>str_detect</a></span>(<span class='no'>pas</span>$<span class='no'>label</span>, <span class='st'>'^MV Clean Air'</span>))
+<span class='no'>mvcaa</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter</a></span>(<span class='no'>pas</span>, <span class='kw pkg'>stringr</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/stringr/topics/str_detect'>str_detect</a></span>(<span class='no'>pas</span>$<span class='no'>label</span>, <span class='st'>'^MV Clean Air'</span>))
 <span class='fu'>pas_leaflet</span>(<span class='no'>mvcaa</span>, <span class='kw'>parameter</span><span class='kw'>=</span><span class='st'>"pm25_1hr"</span>)
 <span class='co'># }</span></pre>
   </div>

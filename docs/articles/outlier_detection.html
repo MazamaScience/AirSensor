@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.13</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.15</span>
       </span>
     </div>
 
@@ -129,7 +129,7 @@
 <h2 class="hasAnchor">
 <a href="#the-hampel-filter" class="anchor"></a>The Hampel Filter</h2>
 <p>The <a href="https://cran.r-project.org/web/packages/seismicRoll/index.html">seismicRoll</a> R package was developed for use with high resolution seismology waveforms. It provides high performance functions for a variety of signal processing algorithms including the Hampel Filter.</p>
-<p>The <code>pat_outlier()</code> function uses the Hampel filter to identify outliers. The Hampel filter is a robust outlier detector that uses <a href="https://en.wikipedia.org/wiki/Median_absolute_deviation">Median Absolute Deviation</a>. For each point, a median and standard deviation are calculated using all neighboring values within a window of size <code>n</code>. If the point of interest lies multiple standard deviations from the median it is flagged as an outlier. As the Hampel value increases, the more likely it is that the value is an outlier. However, there is no universally appropriate window size or threshold to use. It’s up to us to come up with our own window size and threshold based on the characteristics of our time series.</p>
+<p>The <code>pat_outlier()</code> function uses the Hampel filter to identify outliers. The Hampel filter is a robust outlier detector that uses <a href="https://en.wikipedia.org/wiki/Median_absolute_deviation">Median Absolute Deviation</a>. For each point, a median and standard deviation are calculated using all neighboring values within a window of size <code>windowSize</code>. If the point of interest lies multiple standard deviations from the median it is flagged as an outlier. As the Hampel value increases, the more likely it is that the value is an outlier. However, there is no universally appropriate window size or threshold to use. It’s up to us to come up with our own window size and threshold based on the characteristics of our time series.</p>
 <p>Detailed discussion of the algorithm is available at:</p>
 <ul>
 <li>
@@ -143,7 +143,7 @@
 <p>The <code><a href="../reference/pat_outliers.html">pat_outliers()</a></code> function provides two parameters to control outlier detection:</p>
 <ul>
 <li>
-<code>n</code> – number of measurements to include in a window</li>
+<code>windowSize</code> – number of measurements to include in a window</li>
 <li>
 <code>thresholdMin</code> – number of std. dev. units above which a measurement is considered an outlier</li>
 </ul>

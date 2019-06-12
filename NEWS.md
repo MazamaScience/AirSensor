@@ -1,3 +1,7 @@
+# AirSensor 0.2.15
+
+* Fixed default parameters bug in `pat_scatterplot()`
+
 # AirSensor 0.2.14 
 
 * Remove out-of-time-range records in `pat_loadLatest()`
