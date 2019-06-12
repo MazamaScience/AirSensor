@@ -87,7 +87,7 @@ result <- try({
   # Default to the current month
   if ( opt$datestamp == "" ) {
     now <- lubridate::now(opt$timezone)
-    opt$datestamp <- strftime(now, "%Y%m%d")
+    opt$datestamp <- strftime(now, "%Y%m01")
   }
   
   # Handle the case where the day is already specified
@@ -126,6 +126,7 @@ result <- try({
       pat <- pat_loadLatest(pas, label,
                             startdate = startdate,
                             enddate = enddate)
+      
       logger.info('Writing "pat" data to %s', filename)
       save(list="pat", file=filepath)
       

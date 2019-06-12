@@ -91,6 +91,25 @@ pat_loadLatest <- function(
     
   }
   
+  # ----- Remove bad records ---------------------------------------------------
+  
+  # Sometimes we get records with all bad values:
+  
+  # datetime pm25_A pm25_B temperature humidity uptime adc0 rssi          datetime_A          datetime_B
+  # 1  2000-01-01 12:00:00     NA     NA          NA       NA     NA   NA   NA 2000-01-01 12:00:00 2000-01-01 12:00:00
+  # 2  2000-01-01 12:00:00     NA     NA          NA       NA     NA   NA   NA 2000-01-01 12:00:00 2000-01-01 12:00:00
+  
+  # We remove them by limiting the data to the requested local time range
+  
+  data <- 
+    pat_raw$data %>%
+    dplyr::filter(.data$datetime >= dateRange[1]) %>%
+    dplyr::filter(.data$datetime <= dateRange[2])
+  
+  pat_raw$data <- data
+  
+  # ----- Return ---------------------------------------------------------------
+  
   pat <- createPATimeseriesObject(pat_raw)
   
   return(pat)
