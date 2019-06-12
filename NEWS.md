@@ -1,3 +1,8 @@
+# AirSensor 0.2.14 
+
+* Remove out-of-time-range records in `pat_loadLatest()`
+* Corrected default date calculation in `createMonthlyPAT_exec.R`
+
 # AirSensor 0.2.13 
 
 * Added ShinyAirSensor directory for alpha web-apps

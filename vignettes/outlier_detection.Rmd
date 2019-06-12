@@ -65,9 +65,9 @@ The `pat_outlier()` function uses the Hampel filter to identify
 outliers. The Hampel filter is a robust outlier detector that uses 
 [Median Absolute Deviation](https://en.wikipedia.org/wiki/Median_absolute_deviation). 
 For each point, a median and standard deviation are calculated 
-using all neighboring values within a window of size `n`. If the point of 
-interest lies multiple standard deviations from the median it is flagged as an 
-outlier. As the 
+using all neighboring values within a window of size `windowSize`. If the point 
+of interest lies multiple standard deviations from the median it is flagged as 
+an outlier. As the 
 Hampel value increases, the more likely it is that the value is an outlier. 
 However, there is no universally appropriate window size or threshold to use. 
 It's up to us to come up with our own window size and threshold based on the 
@@ -85,7 +85,7 @@ Detailed discussion of the algorithm is available at:
 The `pat_outliers()` function provides two parameters to control outlier
 detection:
 
-* `n` -- number of measurements to include in a window
+* `windowSize` -- number of measurements to include in a window
 * `thresholdMin` -- number of std. dev. units above which a measurement is
 considered an outlier
 
