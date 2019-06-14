@@ -136,17 +136,18 @@ shiny::shinyServer(
         })
     
     # Download button
-    # TODO: FIX RENAMING SCHEME ON PAS SELECTION (REACTIVE?)
     output$download_data <- 
         shiny::downloadHandler(
-            filename = paste0(
-                input$leaflet_marker_click[1],
-                "_",
-                input$date_range[1],
-                "_",
-                input$date_range[2], 
-                ".csv"
-            ), 
+            filename = function() {
+                paste0(
+                    input$leaflet_marker_click[1],
+                    "_",
+                    input$date_range[1],
+                    "_",
+                    input$date_range[2], 
+                    ".csv"
+                )
+            }, 
             
             content = function(file) {
                 write.csv(
