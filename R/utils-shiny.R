@@ -57,11 +57,14 @@ pas_leaflet_shiny <- function(
   pas = NULL,
   parameter = "pm25_1hr",
   paletteName = NULL,
-  radius = 10,
+  radius = 11,
   opacity = 0.8,
   maptype = "terrain",
   outsideOnly = TRUE
 ) {
+  
+  # TODO: Remove unecessary paramters, etc for the AirShiny version. 
+  #       This will likely be a majority. Consider full re-write
   
   # ----- Validate parameters --------------------------------------------------
   
@@ -257,7 +260,6 @@ pas_leaflet_shiny <- function(
       "<b>", parameter, " = ", value, " ", unit, "</b><br/>",
       "temperature = ", round(pas$temperature, 0), " F<br/>",
       "humidity = ", round(pas$humidity, 0), "%<br/>",
-      "pm25_1hr = ", round(pas$pm25_1hr, 1), " \U00B5g/m3<br/>",
       "pm25_1day = ", round(pas$pm25_1day, 1), " \U00B5g/m3<br/>",
       "location_type = ", pas$DEVICE_LOCATIONTYPE, "<br/"
     )
@@ -308,23 +310,21 @@ pas_leaflet_shiny <- function(
   }
   
   # Create leaflet map
-  m <- leaflet::leaflet(SPDF) %>%
-    leaflet::setView(lng=mean(lonRange), lat=mean(latRange), zoom=zoom) %>%
+  m <- 
+    leaflet::leaflet(SPDF) %>%
+    leaflet::setView(
+      lng=mean(lonRange), 
+      lat=mean(latRange), zoom=zoom
+    ) %>%
     leaflet::addProviderTiles(providerTiles) %>%
     leaflet::addCircleMarkers(
       radius=radius,
       fillColor=cols,
       fillOpacity=opacity,
-      stroke=FALSE,
+      stroke=TRUE,
       popup=pas$popupText,
       layerId = pas$label
-    ) %>%
-    leaflet::addLegend(
-      position='bottomright',
-      colors=rev(colors), # show low levels at the bottom
-      labels=rev(labels),  # show low levels at the bottom
-      opacity = 1,
-      title=legendTitle)
+    )
   
   return(m)
   
@@ -335,6 +335,8 @@ pas_leaflet_shiny <- function(
 #' @title Bar plot for AirShiny
 #' 
 
+# TODO: Improve documentation
+
 shiny_barplot <- 
   function( pat, period ) {
     ast <- 
@@ -343,6 +345,9 @@ shiny_barplot <-
         period = period
       )
     
+    # NOTE: This is a risky method and should be revised in order to avoid error
+    # NOTE: IF a channel is reporting erronous values, the avg will be skew
+    # TODO: Improve averaging
     pm25_AB_avg <- 
       ast$data %>% 
       dplyr::select(
