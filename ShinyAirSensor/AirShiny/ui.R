@@ -8,9 +8,10 @@
 #
 # - Mazama Science
 
-# # -- Debug
-pas <- AirSensor::example_pas 
-pas_community <- unique(AirSensor::example_pas$communityRegion) %>% na.omit()
+# ---- Debug 
+pas <- AirSensor::pas_load()
+pas_community <- unique(pas$communityRegion) %>% na.omit()
+# ----
 
 # Define UI for application 
 shiny::shinyUI(
