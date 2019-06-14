@@ -9,6 +9,8 @@
 # - Mazama Science
 
 # ---- Debug 
+library(AirSensor)
+library(rlang)
 pas <- AirSensor::pas_load()
 pas_community <- unique(pas$communityRegion) %>% na.omit()
 # ----
@@ -120,7 +122,7 @@ shiny::shinyServer(
             
             meta <-
                 dplyr::select(
-                    pas$meta,
+                    pat$meta,
                     "Sensor Label" = .data$label,
                     "Sensor Type" = .data$sensorType,
                     "Longitude" = .data$longitude, 
