@@ -76,10 +76,10 @@ shiny::shinyServer(
             pat <- 
                 AirSensor::pat_load(
                     label = input$leaflet_marker_click[1], 
-                    startdate = input$date_range[1], 
-                    enddate = input$date_range[2]
-                ) %>% 
-                AirSensor::pat_outliers(replace = T, showPlot = F)
+                    enddate = lubridate::ymd(input$date_selection), 
+                    startdate = lubridate::ymd(input$date_selection) - 
+                        lubridate::ddays(as.numeric(input$date_interval))
+                )
             
             if ( input$plot_type_select == "daily_plot" ) {
                 
@@ -105,8 +105,9 @@ shiny::shinyServer(
             pat <- 
                 AirSensor::pat_load(
                     label = input$leaflet_marker_click[1], 
-                    startdate = input$date_range[1], 
-                    enddate = input$date_range[2]
+                    enddate = lubridate::ymd(input$date_selection),
+                    startdate = lubridate::ymd(input$date_selection) - 
+                        lubridate::ddays(as.numeric(input$date_interval))
                 )
             
             data <- pat$data 
@@ -122,8 +123,9 @@ shiny::shinyServer(
             pat <- 
                 AirSensor::pat_load(
                     label = input$leaflet_marker_click[1], 
-                    startdate = input$date_range[1], 
-                    enddate = input$date_range[2]
+                    enddate = lubridate::ymd(input$date_selection),
+                    startdate = lubridate::ymd(input$date_selection) - 
+                        lubridate::ddays(as.numeric(input$date_interval))
                 )
             
             meta <-
@@ -160,8 +162,9 @@ shiny::shinyServer(
                 write.csv(
                     AirSensor::pat_load(
                         label = input$leaflet_marker_click[1], 
-                        startdate = input$date_range[1], 
-                        enddate = input$date_range[2]
+                        enddate = lubridate::ymd(input$date_selection),
+                        startdate = lubridate::ymd(input$date_selection) - 
+                            lubridate::ddays(as.numeric(input$date_interval))
                     )$data,
                     file = file
                 )

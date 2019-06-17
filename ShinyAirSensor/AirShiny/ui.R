@@ -48,13 +48,18 @@ shiny::shinyUI(
                         choices = ""
                     ),
                     
-                    # Date Range input
-                    shiny::dateRangeInput(
-                        inputId = "date_range", 
-                        label = "Date Range:", 
-                        min = "2017-01-01", 
-                        start = "2019-04-01", # START DEFAULT DATE
-                        end = "2019-04-03" # END 
+                    # End Date input 
+                    shiny::dateInput(
+                        inputId = "date_selection",
+                        label = "Date:"),
+                    
+                    # Lookback interval
+                    shiny::radioButtons(
+                        inputId = "date_interval", 
+                        label = "Look back", 
+                        choices = c("3 Days" = 3,
+                                    "7 Days" = 7,
+                                    "30 Days" = 30)
                     ),
                     
                     # Plot type selection
