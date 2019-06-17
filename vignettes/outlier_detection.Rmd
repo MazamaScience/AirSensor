@@ -1,6 +1,6 @@
 ---
 title: "Outlier Detection with the Hampel Filter"
-author: Mazama Science
+author: "Mazama Science"
 date: "2019-04-19"
 output: rmarkdown::html_vignette
 vignette: >

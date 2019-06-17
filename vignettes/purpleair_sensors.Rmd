@@ -1,0 +1,75 @@
+---
+title: "Purple Air Sensors"
+author: "Mazama Science"
+date: "2019-06-13"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Purple Air Sensors}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE, message=FALSE}
+knitr::opts_chunk$set(fig.width=7, fig.height=5)
+library(AirSensor)
+```
+
+This vignette decribes technical details of Purple Air Sensor internals.
+
+## General Description
+
+## Internal Hardware
+
+### Particle Detectors
+
+### Temerature/Humidity Sensor
+
+## Internal Firmware
+
+### Sampling Protocol
+
+The firmware in each PA sensor is in charge of communicating with the internal
+particle detectors and averaging instantaneous measurements over a sampling
+period before reporting the sampleing-period averaged value back over wifi.
+
+From internal communication with PurpleAir:
+
+```
+Do the reported pm2.5 values in the raw data represent instantaneous values or 
+does the PA sensor firmware do some averaging? If the firmware does averaging, 
+what is the underlying sampling period -- i.e. how many particle counter
+measurements does the firmware average together before reporting every 80/120 
+seconds?
+
+----- >8 -----
+
+The PM data is averaged over a sampling period. For PA-II and PA-II-SD sensors
+that contain 2 laser counters (Channel A and Channel B) they alternate averaging
+5 1-second measurements over the sampling period, which is 80 seconds for
+firmware versions 3.00 and orders and 120 seconds for firmware versions 4.00 and
+later. So Channel A will measure to 5 seconds and then Channel B will measure
+for 5 seconds, then back to Channel A, etc. At the end of the sampling period
+Channel A will be a cumulative 40s/60s average over the sampling period of
+80s/120s and Channel B will be a cumulative 40s/60s average of the other half of
+that 80s/120s sampling period.
+
+----- >8 -----
+
+Just to make sure I've got it:
+
+If each letter is 1 sec then we have, for an 80 second sampling period:
+
+AAAAA-----AAAAA-----AAAAA-----AAAAA-----AAAAA-----AAAAA-----AAAAA-----AAAAA-----
+-----BBBBB-----BBBBB-----BBBBB-----BBBBB-----BBBBB-----BBBBB-----BBBBB-----BBBBB
+
+So the pm2.5 value reported for the A channel at the end of 80 seconds actually
+consists of 40 separate measurements, spaced as shown. And similarly for the B
+channel.
+
+Is that correct?
+
+----- >8 -----
+
+That is correct!
+```
+
