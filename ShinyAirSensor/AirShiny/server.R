@@ -71,6 +71,14 @@ shiny::shinyServer(
     output$selected_plot <-
         shiny::renderPlot({
             
+            # Validate a pas selection has been made. If not display message.
+            validate(
+                need(
+                    input$leaflet_marker_click != "", 
+                    "Select a Purple Air Sensor"
+                )
+            )
+            
             # NOTE: The current method is not filtering ANY outliers for
             # NOTE: ANY of the plots - may be prone to change.
             pat <- 
