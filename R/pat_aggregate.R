@@ -210,10 +210,16 @@ pat_aggregate <- function(
       
       for( i in 1:length(bin$datetime) ) { 
         
-        result <- try({
-          stats <- 
-            t.test(bin$pm25_A[[i]], bin$pm25_B[[i]])
-        }, silent = TRUE)
+        result <- 
+          try({
+            stats <- 
+              t.test(
+                bin$pm25_A[[i]], 
+                bin$pm25_B[[i]], 
+                paired = TRUE
+              )}, 
+              silent = TRUE
+            )
         
         if ( "try-error" %in% class(result) ) {
           
