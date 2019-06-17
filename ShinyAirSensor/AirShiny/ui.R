@@ -7,7 +7,9 @@
 #    http://shiny.rstudio.com/
 #
 # - Mazama Science
-
+library(AirSensor)
+library(rlang)
+library(magrittr)
 # ---- Debug 
 pas <- AirSensor::pas_load()
 pas_community <- unique(pas$communityRegion) %>% na.omit()

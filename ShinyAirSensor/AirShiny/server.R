@@ -11,6 +11,7 @@
 # ---- Debug 
 library(AirSensor)
 library(rlang)
+library(magrittr)
 pas <- AirSensor::pas_load()
 pas_community <- unique(pas$communityRegion) %>% na.omit()
 # ----
@@ -33,7 +34,7 @@ shiny::shinyServer(
             AirSensor::pas_leaflet_shiny(
                 pas_in_comm, 
                 parameter = "pm25_1day", 
-                paletteName = "Spectral"
+                paletteName = "Purple"
             )
             
         })
@@ -46,6 +47,10 @@ shiny::shinyServer(
                 stringr::str_detect(
                     pas$communityRegion, 
                     input$comm_select
+                ) & 
+                !stringr::str_detect(
+                    pas$label, 
+                    " B"
                 )
             ),]
         
@@ -73,7 +78,8 @@ shiny::shinyServer(
                     label = input$leaflet_marker_click[1], 
                     startdate = input$date_range[1], 
                     enddate = input$date_range[2]
-                )
+                ) %>% 
+                AirSensor::pat_outliers(replace = T, showPlot = F)
             
             if ( input$plot_type_select == "daily_plot" ) {
                 
