@@ -1,6 +1,7 @@
 # AirSensor 0.2.15
 
 * Fixed default parameters bug in `pat_scatterplot()`
+* New shiny utilities for AirShiny
 
 # AirSensor 0.2.14 
 

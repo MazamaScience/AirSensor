@@ -1,69 +1,126 @@
 #
-# This is the user-interface definition of a Shiny web application. You can
+# This is the user-interface definition of AirShiny web application. You can
 # run the application by clicking 'Run App' above.
 #
-# Find out more about building applications with Shiny here:
+# Find out more about Shiny apps here:
 #
 #    http://shiny.rstudio.com/
 #
-
-pas <- example_pas[which(stringr::str_detect(example_pas$label, "SCNP")),] 
-pas_labels <- 
-    pas$label[-which(stringr::str_detect(pas$label, " B"))]
+# - Mazama Science
+library(AirSensor)
+library(rlang)
+library(magrittr)
+# ---- Debug 
+pas <- AirSensor::pas_load()
+pas_community <- unique(pas$communityRegion) %>% na.omit()
+# ----
 
 # Define UI for application 
 shiny::shinyUI(
     shiny::navbarPage(
-        title = "AirShiny (Beta)",
-        shiny::tabPanel("Interactive Map"),
-
-     shiny::fluidRow(
-        shiny::column(
-            width = 2,
-            # PAS selection input
-            shiny::selectInput(
-                inputId = "pas_select", 
-                label = "Purple Air Sensors:",
-                choices = pas_labels
-            ),
-            
-            shiny::dateRangeInput(
-                inputId = "date_range", 
-                label = "Date Range:"
-            ),
-            
-            # Leaflet Selection input
-            shiny::selectInput(
-                inputId = "leaflet_select", 
-                label = "Map type:", 
-                choices = c("Current PM2.5" = "pm25_current",
-                            "30 Min. PM2.5" = "pm25_30min", 
-                            "1 hour PM2.5" = "pm25_1hr",
-                            "1 day PM2.5" = "pm25_1day",
-                            "1 week PM2.5" = "pm25_1week",
-                            "Humidity" = "humidity", 
-                            "Pressure" = "pressure", 
-                            "Temperature" = "temperature")
-            ), 
-            
-            shiny::plotOutput(outputId = "pm25_daily_plot")
-            
-            
-
-        ), 
         
-        shiny::column(
-            width = 10,
-            # Plot outputs
+        # ----- Nav Bar --------------------------------------------------------
+        title = "AirShiny (Beta)", 
+        
+        ## ---- Tab 1 ----------------------------------------------------------
+        shiny::tabPanel(
             
-            leaflet::leafletOutput(
-                outputId = "leaflet" 
-            ), 
+            title = "Interactive Map",
             
-            shiny::textOutput("test"),
-            shiny::plotOutput(outputId = "pm25_plot")
+            shiny::fluidRow(
+                
+                #### ----- L Column  -------------------------------------------
+                shiny::column(
+                    
+                    width = 2,
+                    
+                    # Community Selection input
+                    shiny::selectInput(
+                        inputId = "comm_select", 
+                        label = "Community Selection", 
+                        choices = pas_community 
+                    ), 
+                    
+                    # PAS selection input
+                    shiny::selectInput(
+                        inputId = "pas_select",
+                        label = "Purple Air Sensor:", 
+                        choices = ""
+                    ),
+                    
+                    # Date Range input
+                    shiny::dateRangeInput(
+                        inputId = "date_range", 
+                        label = "Date Range:", 
+                        min = "2017-01-01", 
+                        start = "2019-04-01", # START DEFAULT DATE
+                        end = "2019-04-03" # END 
+                    ),
+                    
+                    # Plot type selection
+                    shiny::selectInput(
+                        inputId = "plot_type_select", 
+                        label = "Plot Selection:", 
+                        choices = c("Hourly Average" = "hourly_plot",
+                                    "Daily Average" = "daily_plot",
+                                    "Multi-sensor Raw Data" = "multi_plot")
+                    )
+                    
+                ), 
+                
+                ####----- R Column ---------------------------------------------
+                shiny::column(
+                    
+                    width = 10,
+                    
+                    # Plot outputs
+                    leaflet::leafletOutput(
+                        outputId = "leaflet", height = 500
+                    ), 
+                    
+                    # # Debug text
+                    # shiny::textOutput("test"),
+                    
+                    # Selected Plot
+                    shiny::plotOutput(
+                        outputId = "selected_plot"
+                    )
+                    
+                )
+                
+            )
+            
+        ),
+        
+        ## ----- Tab 2 ---------------------------------------------------------
+        
+        shiny::tabPanel(
+            
+            title = "Data Explorer",
+            
+            # Meta explorer
+            shiny::column( 
+                width = 11,
+                shiny::tableOutput(
+                    outputId = "meta_explorer"
+                )
+            ),
+            
+            # Download Button
+            shiny::column( 
+                width = 1,
+                shiny::downloadButton(
+                    outputId = "download_data"
+                )
+            ),
+            
+            # Data explorer
+            shiny::dataTableOutput(
+                outputId = "data_explorer"
+            )
             
         )
         
     )
-))
+    
+)
