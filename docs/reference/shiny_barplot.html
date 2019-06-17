@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Display multiple plots on one page — pat_multiplot • AirSensor</title>
+<title>Bar plot for AirShiny — shiny_barplot • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,18 +37,9 @@
 
 
 
-<meta property="og:title" content="Display multiple plots on one page — pat_multiplot" />
+<meta property="og:title" content="Bar plot for AirShiny — shiny_barplot" />
 
-<meta property="og:description" content="A plotting function that uses ggplot2 to display multiple 
-ggplot objects in a single pane. Can either be passed individual ggplot 
-objects OR a pat object and a plot type. 
-Typical usage would be to supply pat and use the plottype 
-argument to quickly display preformatted plots.
-&quot;all&quot;: pm25_A, pm25_B, temperature, humidity
-&quot;pm25&quot;: PM2.5 from Channel A and Channel B
-&quot;pm25_over&quot;: PM2.5 from Channel A and Channel B in the same plot
-&quot;aux&quot;: auxillary data (temperature, humidity)
-" />
+<meta property="og:description" content="Bar plot for AirShiny" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -142,115 +133,33 @@ argument to quickly display preformatted plots.
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Display multiple plots on one page</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_multiplot.R'><code>R/pat_multiplot.R</code></a></small>
-    <div class="hidden name"><code>pat_multiplot.Rd</code></div>
+    <h1>Bar plot for AirShiny</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/utils-shiny.R'><code>R/utils-shiny.R</code></a></small>
+    <div class="hidden name"><code>shiny_barplot.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>A plotting function that uses ggplot2 to display multiple 
-ggplot objects in a single pane. Can either be passed individual ggplot 
-objects OR a pat object and a plot type. 
-Typical usage would be to supply <code>pat</code> and use the <code>plottype</code> 
-argument to quickly display preformatted plots.</p><ul>
-<li><p>"all": pm25_A, pm25_B, temperature, humidity</p></li>
-<li><p>"pm25": PM2.5 from Channel A and Channel B</p></li>
-<li><p>"pm25_over": PM2.5 from Channel A and Channel B in the same plot</p></li>
-<li><p>"aux": auxillary data (temperature, humidity)</p></li>
-</ul>
+    <p>Bar plot for AirShiny</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pat_multiplot</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>plottype</span> <span class='kw'>=</span> <span class='st'>"all"</span>, <span class='kw'>sampleSize</span> <span class='kw'>=</span> <span class='fl'>5000</span>,
-  <span class='kw'>columns</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>a_size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>a_shape</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>a_color</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/grDevices/topics/rgb'>rgb</a></span>(<span class='fl'>0.9</span>,
-  <span class='fl'>0.25</span>, <span class='fl'>0.2</span>), <span class='kw'>b_size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>b_shape</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>b_color</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/grDevices/topics/rgb'>rgb</a></span>(<span class='fl'>0.2</span>, <span class='fl'>0.25</span>,
-  <span class='fl'>0.9</span>), <span class='kw'>t_size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>t_shape</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>t_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>h_size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>h_shape</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>h_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</pre>
+    <pre class="usage"><span class='fu'>shiny_barplot</span>(<span class='no'>pat</span>, <span class='no'>period</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pat</th>
-      <td><p>Purple Air Timeseries "pat" object from 
-<code><a href='createPATimeseriesObject.html'>createPATimeseriesObject()</a></code></p></td>
+      <td><p>PurpleAir Timeseries "pat" object from <code><a href='pat_loadLatest.html'>pat_loadLatest()</a></code></p></td>
     </tr>
     <tr>
-      <th>plottype</th>
-      <td><p>Quick-reference plot types: "all", "aux", "pm25"</p></td>
-    </tr>
-    <tr>
-      <th>sampleSize</th>
-      <td><p>Either an integer or fraction to determine sample size.</p></td>
-    </tr>
-    <tr>
-      <th>columns</th>
-      <td><p>Number of columns in the plot layout. Use <code>NULL</code> for 
-defaults.</p></td>
-    </tr>
-    <tr>
-      <th>a_size</th>
-      <td><p>size of pm25_A points</p></td>
-    </tr>
-    <tr>
-      <th>a_shape</th>
-      <td><p>symbol to use for pm25_A points</p></td>
-    </tr>
-    <tr>
-      <th>a_color</th>
-      <td><p>color of pm25_A points</p></td>
-    </tr>
-    <tr>
-      <th>b_size</th>
-      <td><p>size of pm25_B points</p></td>
-    </tr>
-    <tr>
-      <th>b_shape</th>
-      <td><p>symbol to use for pm25_B points</p></td>
-    </tr>
-    <tr>
-      <th>b_color</th>
-      <td><p>color of pm25_B points</p></td>
-    </tr>
-    <tr>
-      <th>t_size</th>
-      <td><p>size of temperature points</p></td>
-    </tr>
-    <tr>
-      <th>t_shape</th>
-      <td><p>symbol to use for temperature points</p></td>
-    </tr>
-    <tr>
-      <th>t_color</th>
-      <td><p>color of temperature points</p></td>
-    </tr>
-    <tr>
-      <th>h_size</th>
-      <td><p>size of humidity points</p></td>
-    </tr>
-    <tr>
-      <th>h_shape</th>
-      <td><p>symbol to use for humidity points</p></td>
-    </tr>
-    <tr>
-      <th>h_color</th>
-      <td><p>color of humidity points</p></td>
-    </tr>
-    <tr>
-      <th>alpha</th>
-      <td><p>opacity of points</p></td>
+      <th>period</th>
+      <td><p>The time period to average to. Can be "sec", "min", "hour", 
+"day", "DSTday", "week", "month", "quarter" or "year". A number can also
+ precede these options followed by a space (i.e. "2 day" or "37 min").</p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>Returns a ggplot object.</p>
-    
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
-
-    <p>Additional documentation of the multiplot algorithm is available at 
-cookbook-r.com.</p>
     
 
   </div>
@@ -258,11 +167,7 @@ cookbook-r.com.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#note">Note</a></li>
-          </ul>
+                </ul>
 
   </div>
 </div>
