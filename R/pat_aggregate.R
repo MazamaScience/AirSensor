@@ -119,7 +119,7 @@ pat_aggregate <- function(
     options(warn = -1)
     
     thresh <- function(x) { # handle data thresholding
-      if( sum(is.na(x)) / length(x) >= 1 - dataThreshold ) {
+      if( sum(is.na(x)) / length(x) >= 1 - (dataThreshold / 100) ) {
         return(NA)
       } else {
         return(x)
