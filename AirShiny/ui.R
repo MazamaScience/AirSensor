@@ -80,7 +80,7 @@ shiny::shinyUI(
                     
                     # Plot outputs
                     leaflet::leafletOutput(
-                        outputId = "leaflet", height = 500
+                        outputId = "leaflet", height = 550
                     ), 
                     
                     # # Debug text
@@ -88,7 +88,7 @@ shiny::shinyUI(
                     
                     # Selected Plot
                     shiny::plotOutput(
-                        outputId = "selected_plot"
+                        outputId = "selected_plot", height = 270
                     )
                     
                 )

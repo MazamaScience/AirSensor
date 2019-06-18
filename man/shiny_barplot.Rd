@@ -4,7 +4,7 @@
 \alias{shiny_barplot}
 \title{Bar plot for AirShiny}
 \usage{
-shiny_barplot(pat, period)
+shiny_barplot(pat, period, start, end)
 }
 \description{
 Bar plot for AirShiny
