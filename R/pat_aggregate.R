@@ -14,11 +14,6 @@
 #' @param stats The statistic to apply when aggregating the data; default is the 
 #' mean. Can be one of "mean", "max", "min", "median", "count", 
 #' "sd", "percentile", "tstats". 
-#' 
-#' @param dataThreshold A % of the data capture threshold. A value of 0 means 
-#' that all data will be used in a particular period regardless of the number of
-#' values avaliable. Conversely, a value of 100 means that all data will need to 
-#' be present to proceed, else it is recorded as NA. 
 #' @param quickStats a logical that if \code{TRUE} will override \code{stats} 
 #' parameter and return and a data frame of "mean", "sd", and "count". 
 #' 
@@ -46,7 +41,6 @@ pat_aggregate <- function(
   period = "1 hour",
   stats = "mean",
   parameter = NULL,
-  dataThreshold = 0,
   quickStats = TRUE
 ) {
   
@@ -110,16 +104,28 @@ pat_aggregate <- function(
   if ( units == "quarter" ) int <- 3600 * 24 * 31 * 3
   if ( units == "year"    ) int <- 3600 * 8784 
   
-  pseconds <- seconds * int 
+  periodSeconds <- seconds * int 
   
   # ----- Aggregate the data ---------------------------------------------------
   
-  pat_agg <- function(pat, stats, pseconds) {
+  pat_agg <- function(pat, stats, periodSeconds) {
     
     options(warn = -1)
     
+    # NOTE:  Not currently allowing user adjustment of dataThreshold as it is
+    # NOTE:  confusing to users. Instead we juset set the dataThreshold to zero.
+    # NOTE:  Donwnstream filtering base on "~_count" variables seems more
+    # NOTE:  appropriate in the QC context.
+    # NOTE:
+    # NOTE:  This function is still useful because it guarantees the return of
+    # NOTE:  NA rather than NaN when no valid data exist within a period.
+    
+    # dataThreshold is the fraction of data within a period that must be non-NA
+    dataThreshold <- 0
     thresh <- function(x) { # handle data thresholding
-      if( sum(is.na(x)) / length(x) >= 1 - dataThreshold ) {
+      if ( length(x) == 0 ) {
+        return(NA)
+      } else if ( (sum(is.na(x)) / length(x)) >= (1 - dataThreshold) ) {
         return(NA)
       } else {
         return(x)
@@ -134,7 +140,7 @@ pat_aggregate <- function(
     if ( stats == "max"        ) func <- function(x) max(na.omit(x))
     if ( stats == "min"        ) func <- function(x) min(na.omit(x))
     if ( stats == "tstats"     ) func <- function(x) x 
-
+    
     if ( stats != "tstats" ) { # Handle ! test stats
       
       data <- 
@@ -155,7 +161,7 @@ pat_aggregate <- function(
       df <- 
         aggregate(
           zz, 
-          by = time(zz) - as.numeric(time(zz)) %% pseconds, 
+          by = time(zz) - as.numeric(time(zz)) %% periodSeconds, 
           FUN = func, 
           simplify = TRUE
         ) %>%
@@ -190,7 +196,7 @@ pat_aggregate <- function(
       bin <-
         aggregate(
           zz, 
-          by = time(zz) - as.numeric(time(zz)) %% pseconds, 
+          by = time(zz) - as.numeric(time(zz)) %% periodSeconds, 
           FUN = func, 
           simplify = TRUE
         ) %>% 
@@ -218,8 +224,8 @@ pat_aggregate <- function(
                 bin$pm25_B[[i]], 
                 paired = TRUE
               )}, 
-              silent = TRUE
-            )
+            silent = TRUE
+          )
         
         if ( "try-error" %in% class(result) ) {
           
@@ -262,13 +268,13 @@ pat_aggregate <- function(
     timeStats <- 
       plyr::join_all(
         list(
-          pat_agg(pat, "tstats", pseconds),
-          pat_agg(pat, "mean", pseconds),
-          pat_agg(pat, "median", pseconds),
-          pat_agg(pat, "sd", pseconds), 
-          pat_agg(pat, "min", pseconds), 
-          pat_agg(pat, "max", pseconds),
-          pat_agg(pat, "count", pseconds)
+          pat_agg(pat, "tstats", periodSeconds),
+          pat_agg(pat, "mean", periodSeconds),
+          pat_agg(pat, "median", periodSeconds),
+          pat_agg(pat, "sd", periodSeconds), 
+          pat_agg(pat, "min", periodSeconds), 
+          pat_agg(pat, "max", periodSeconds),
+          pat_agg(pat, "count", periodSeconds)
         ),
         by = "datetime"
       )  
@@ -284,13 +290,13 @@ pat_aggregate <- function(
                   )]
                 )]
     
-     } else { # Handle all else
+  } else { # Handle all else
     
     timeStats <- 
-      pat_agg(pat, stats, pseconds)
+      pat_agg(pat, stats, periodSeconds)
     
   }
- 
+  
   return(timeStats)
   
 }

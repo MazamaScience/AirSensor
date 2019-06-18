@@ -5,7 +5,7 @@
 \title{Time averages for PrupleAir time series}
 \usage{
 pat_aggregate(pat, period = "1 hour", stats = "mean",
-  parameter = NULL, dataThreshold = 0, quickStats = TRUE)
+  parameter = NULL, quickStats = TRUE)
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries "pat" object from \code{pat_loadLatest()}}
@@ -20,11 +20,6 @@ mean. Can be one of "mean", "max", "min", "median", "count",
 
 \item{parameter}{The variable of timeseries data to aggergate, such as
 "pm25_B", "temperature", etc.}
-
-\item{dataThreshold}{A % of the data capture threshold. A value of 0 means 
-that all data will be used in a particular period regardless of the number of
-values avaliable. Conversely, a value of 100 means that all data will need to 
-be present to proceed, else it is recorded as NA.}
 
 \item{quickStats}{a logical that if \code{TRUE} will override \code{stats} 
 parameter and return and a data frame of "mean", "sd", and "count".}

@@ -5,6 +5,8 @@
 * updated `pat_outliers()` to retain records with missing PM2.5 values when
 `replace = TRUE`
 * modified `pat_aggregate()` defaults to: `period = "1 hour", quickStats = TRUE`
+* removed `pat_aggregate()` `dataThreshold` argument
+* added `example_pat_failure_B` dataset with severe A channel errors
 
 # AirSensor 0.2.15
 
