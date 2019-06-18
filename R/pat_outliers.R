@@ -65,6 +65,25 @@ pat_outliers <- function(
   outlier_alpha = 1.0
 ) {
   
+  # ===== DEBUGGING ============================================================
+  
+  if ( FALSE ) {
+    
+    windowSize = 23
+    thresholdMin = 8
+    replace = FALSE
+    showPlot = TRUE
+    data_shape = 18 
+    data_size = 1
+    data_color = "black"
+    data_alpha = 0.5
+    outlier_shape = 8 
+    outlier_size = 1
+    outlier_color = "red"
+    outlier_alpha = 1.0
+    
+  }
+  
   # ----- Validate parameters --------------------------------------------------
   
   if ( !pat_isPat(pat) )
@@ -79,6 +98,7 @@ pat_outliers <- function(
   # NOTE:  The 'pat' object combines data from both channels which are on separate
   # NOTE:  time axes. The result is a dataframe that has lots of missing values.
   # NOTE:  We filter here to separate the A data from the B data and avoid this problem.
+  # NOTE:  But we retain the omitted records for merging back later.
   # NOTE:
   # NOTE:  We keep most columns in A_data and only pm25_B and datetime_B in B_data
   # NOTE:  so that we can dplyr::left_join() them together at the end.
@@ -88,6 +108,13 @@ pat_outliers <- function(
     dplyr::select( -.data$pm25_B, -.data$datetime_B)
   B_data <- 
     dplyr::filter(pat$data, !is.na(.data$pm25_B)) %>% 
+    dplyr::select(.data$datetime, .data$pm25_B, .data$datetime_B)
+  
+  A_missing <- 
+    dplyr::filter(pat$data, is.na(.data$pm25_A)) %>% 
+    dplyr::select( -.data$pm25_B, -.data$datetime_B)
+  B_missing <- 
+    dplyr::filter(pat$data, is.na(.data$pm25_B)) %>% 
     dplyr::select(.data$datetime, .data$pm25_B, .data$datetime_B)
   
   # Flag outliers 
@@ -215,14 +242,19 @@ pat_outliers <- function(
     
   }
   
-  # ----- Create a fixed 'pat' object ------------------------------------------
+  # ----- Create a fixed 'data' dataframe --------------------------------------
   
   A_data$pm25_A <- A_fixed
   B_data$pm25_B <- B_fixed
   
+  # Add back records with missing values.
+  # Save time -- don't arrange by datetime yet.
+  A_full <- dplyr::bind_rows(A_data, A_missing)
+  B_full <- dplyr::bind_rows(B_data, B_missing)
+  
   # Combine dataframes 
   data <- 
-    dplyr::full_join(A_data, B_data, by = 'datetime') %>% 
+    dplyr::full_join(A_full, B_full, by = 'datetime') %>% 
     dplyr::arrange(.data$datetime)
   
   data <- data[,c("datetime",    "pm25_A",      "pm25_B",     

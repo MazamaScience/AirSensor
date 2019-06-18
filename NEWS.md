@@ -1,3 +1,11 @@
+# AirSensor 0.2.16
+
+* Updated `pat_load()` to default to the most recent week of data
+* New `pat_qc()` function applies low level QC
+* updated `pat_outliers()` to retain records with missing PM2.5 values when
+`replace = TRUE`
+* modified `pat_aggregate()` defaults to: `period = "1 hour", quickStats = TRUE`
+
 # AirSensor 0.2.15
 
 * Fixed default parameters bug in `pat_scatterplot()`

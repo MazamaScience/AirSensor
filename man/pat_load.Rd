@@ -4,16 +4,18 @@
 \alias{pat_load}
 \title{Load Purple Air Timeseries data}
 \usage{
-pat_load(label = NULL, startdate = NULL, enddate = NULL,
+pat_load(label = NULL, startdate = NULL, enddate = NULL, days = 7,
   timezone = "America/Los_Angeles",
   baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/pat")
 }
 \arguments{
 \item{label}{Purple Air 'label'}
 
-\item{startdate}{A starting date in ymd order.}
+\item{startdate}{desired start datetime (ISO 8601)}
 
-\item{enddate}{An ending date in ymd order}
+\item{enddate}{desired end datetime (ISO 8601)}
+
+\item{days}{number of days of data to include}
 
 \item{timezone}{Timezone used to interpret datestamp.}
 
@@ -27,20 +29,25 @@ A pre-generated \code{pa_timeseries} object will be loaded for
 the given time interval. Archived data for SCAQMD sensors go back to 
 January, 2018.
 
-The \code{startdate} and \code{enddate} can be in the following format:
+Dates can be anything that is understood by 
+\code{lubrdiate::parse_date_time()} including either of the following 
+recommended formats:
 
 \itemize{
 \item{\code{"YYYYmmdd"}}
+\item{\code{"YYYY-mm-dd"}}
 }
 
-By default, the current month is loaded.
+By default, the current week is loaded.
 }
 \examples{
 \dontrun{
-pat_load("SCNP_20", 20190411, 20190521)
-  pat_multiplot()
+pat <- pat_load("SCNP_20", 20190411, 20190521)
+pat_multiplot(pat)
 }
 }
 \seealso{
 \link{pat_loadMonth}
+
+\link{.dateRange}
 }

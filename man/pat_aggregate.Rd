@@ -4,8 +4,8 @@
 \alias{pat_aggregate}
 \title{Time averages for PrupleAir time series}
 \usage{
-pat_aggregate(pat, period = "15 min", stats = "mean",
-  parameter = NULL, dataThreshold = 0, quickStats = FALSE)
+pat_aggregate(pat, period = "1 hour", stats = "mean",
+  parameter = NULL, dataThreshold = 0, quickStats = TRUE)
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries "pat" object from \code{pat_loadLatest()}}

@@ -43,11 +43,11 @@
 
 pat_aggregate <- function(
   pat, 
-  period = "15 min",
+  period = "1 hour",
   stats = "mean",
   parameter = NULL,
   dataThreshold = 0,
-  quickStats = FALSE
+  quickStats = TRUE
 ) {
   
   # ----- Validate parameters --------------------------------------------------
