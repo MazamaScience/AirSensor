@@ -64,7 +64,8 @@ pas_leaflet_shiny <- function(
   pas$popupText <- 
     paste0(
       "<b>", pas$label, "</b><br/>",
-      "PM2.5 (Daily) = ", round(pas$pm25_1day, 1), " \U00B5g/m3<br/>",
+      pas$statsLastModifiedDate, "<br/>",
+      "PM2.5 = ", round(pas$pm25_1day, 1), " \U00B5g/m3<br/>",
       "Temperature = ", round(pas$temperature, 0), " F<br/>",
       "Humidity = ", round(pas$humidity, 0), "%<br/>"
     )
@@ -158,7 +159,12 @@ pas_leaflet_shiny <- function(
 # TODO: Improve documentation
 
 shiny_barplot <- 
-  function( pat, period ) {
+  function(
+    pat, 
+    period, 
+    start, 
+    end
+    ) {
     ast <- 
       AirSensor::pat_createASTimeseries(
         pat = pat, 
@@ -183,17 +189,24 @@ shiny_barplot <-
       ast$data %>% 
       ggplot2::ggplot(
         ggplot2::aes(
-          x = .data$datetime, 
+          x = lubridate::interval(start, end), 
           y = pm25_AB_avg
         )
-      ) + 
+      ) +
       ggplot2::ggtitle(
         label = "PM2.5"
       ) + 
+      ggplot2::coord_cartesian(ylim = c(0, 125)) + 
       ggplot2::xlab("Datetime") + 
       ggplot2::ylab("\u03bcg / m\u00b3") + 
-      ggplot2::theme_minimal()
-    
+      ggplot2::theme_minimal() + 
+      ggplot2::scale_fill_gradient(low = "#9733ee", high = "#da22ff")
+        #low = "#667eea", high = "#764ba2")
+    # NOTE: The Y-domain ranges from 0-125. Anything above will be cut off 
+    #       from the graph view. PurpleAir's plots do not have any QC and max 
+    #       out at 600 ug/m3; however, a limit of 600 renders the 
+    #       average air-quaility day illegible. 
+    # 
     pm25_avg_bar <- 
       ggplot2::geom_bar(                   
         data = ast$data,
@@ -202,7 +215,7 @@ shiny_barplot <-
           y = pm25_AB_avg[,1],
           fill = pm25_AB_avg[,1]), 
         stat = "identity",
-        color = "gray", 
+        color = "gray95", 
         show.legend = FALSE
       )
     
