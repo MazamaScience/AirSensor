@@ -6,7 +6,7 @@
 #' @param pat Purple Air Timeseries \emph{pat} object
 #' @param removeOutOfSpec logical specifying removal of measurements that are
 #' out of instrument specs
-#' @param humidityMax maximum humidity threshold above which pm25 measurements
+#' @param max_humidity maximum humidity threshold above which pm25 measurements
 #' are invalidated
 #' 
 #' @description Optionally applies QC thresholds to a \emph{pat} object
@@ -18,7 +18,7 @@
 #' components. Out-of-spec values imply an electrical or software problem and 
 #' can never be valid measurements.
 #' 
-#' Setting a \code{humidityMax} threshold is less fundamental. There are many
+#' Setting a \code{max_humidity} threshold is less fundamental. There are many
 #' cases where PM2.5 readings during periods of high humidity should be called
 #' into question which is why this QC option is provided. However, this type of 
 #' filtering is dependent upon a properly functioning humidity sensor. Humidity
@@ -34,13 +34,13 @@
 #' pat <- example_pat_failure
 #' pat %>% pat_multiplot(sampleSize = NULL)
 #' pat %>% pat_qc() %>% pat_multiplot(sampleSize = NULL)
-#' pat %>% pat_qc(humidityMax = 80) %>% pat_multiplot(sampleSize = NULL)
+#' pat %>% pat_qc(max_humidity = 80) %>% pat_multiplot(sampleSize = NULL)
 #' }
 
 pat_qc <- function(
   pat = NULL, 
   removeOutOfSpec = TRUE,
-  humidityMax = NULL
+  max_humidity = NULL
 ) {
   
   # Validate parameters --------------------------------------------------------
@@ -51,9 +51,9 @@ pat_qc <- function(
   if ( !is.logical(removeOutOfSpec) )
     stop("Parameter 'removeOutOfSpec' must be logical.")
   
-  if ( !is.null(humidityMax) ) {
-    if ( !is.numeric(humidityMax) ) {
-      stop("Parameter 'humidityMax' must be numeric")
+  if ( !is.null(max_humidity) ) {
+    if ( !is.numeric(max_humidity) ) {
+      stop("Parameter 'max_humidity' must be numeric")
     }
   }
   
@@ -87,15 +87,15 @@ pat_qc <- function(
   
   # Invalidate hi-humidity pm25 values -----------------------------------------
   
-  if ( !is.null(humidityMax) ) {
+  if ( !is.null(max_humidity) ) {
     
     data <- pat$data
 
     data <- 
       data %>%
       # pm25 is invalid at high humidities
-      dplyr::mutate(pm25_A = replace(.data$pm25_A, which(.data$humidity > humidityMax), NA) ) %>%
-      dplyr::mutate(pm25_B = replace(.data$pm25_B, which(.data$humidity > humidityMax), NA) )
+      dplyr::mutate(pm25_A = replace(.data$pm25_A, which(.data$humidity > max_humidity), NA) ) %>%
+      dplyr::mutate(pm25_B = replace(.data$pm25_B, which(.data$humidity > max_humidity), NA) )
       
     pat$data <- data
     

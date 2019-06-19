@@ -1,3 +1,9 @@
+# AirSensor 0.2.18
+
+* New `pat_createAirSensor()` function converts from `pat` object to `airsensor`
+object that is compatible with the `PWFSLSmoke` package.
+* Changed `pat_qc()` argument `humidityMax` --> `max_humidity`.
+
 # AirSensor 0.2.17
 
 * Refactored `pat_aggregate()` to fix an issue with t-test statistics. Also
