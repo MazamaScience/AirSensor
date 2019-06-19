@@ -70,7 +70,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.15</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.17</span>
       </span>
     </div>
 
@@ -103,6 +103,9 @@
     </li>
     <li>
       <a href="../articles/pat_introduction.html">An Introduction to PurpleAir Time Series Data</a>
+    </li>
+    <li>
+      <a href="../articles/purpleair_qc.html">Purple Air Quality Control</a>
     </li>
     <li>
       <a href="../articles/purpleair_sensors.html">Purple Air Sensors</a>
@@ -144,7 +147,7 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>shiny_barplot</span>(<span class='no'>pat</span>, <span class='no'>period</span>)</pre>
+    <pre class="usage"><span class='fu'>shiny_barplot</span>(<span class='no'>pat</span>, <span class='no'>period</span>, <span class='no'>startdate</span>, <span class='no'>enddate</span>, <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -158,6 +161,20 @@
       <td><p>The time period to average to. Can be "sec", "min", "hour", 
 "day", "DSTday", "week", "month", "quarter" or "year". A number can also
  precede these options followed by a space (i.e. "2 day" or "37 min").</p></td>
+    </tr>
+    <tr>
+      <th>startdate</th>
+      <td><p>The start date. Used to provide the Datetime domain.</p></td>
+    </tr>
+    <tr>
+      <th>enddate</th>
+      <td><p>The end date. Used to provide the Datetime domain.</p></td>
+    </tr>
+    <tr>
+      <th>ylim</th>
+      <td><p>Fix the Y-axis domain in order to have consistent visualization.
+Provide a vector with upper and lower bounds.
+Note: The X-axis is determined by the datetime interval.</p></td>
     </tr>
     </table>
     

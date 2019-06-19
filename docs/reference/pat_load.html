@@ -42,12 +42,15 @@
 <meta property="og:description" content="A pre-generated pa_timeseries object will be loaded for
 the given time interval. Archived data for SCAQMD sensors go back to 
 January, 2018.
-The startdate and enddate can be in the following format:
+Dates can be anything that is understood by 
+lubrdiate::parse_date_time() including either of the following 
+recommended formats:
 
 &quot;YYYYmmdd&quot;
+&quot;YYYY-mm-dd&quot;
 " />
 
-<meta property="og:description" content="By default, the current month is loaded." />
+<meta property="og:description" content="By default, the current week is loaded." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -78,7 +81,7 @@ The startdate and enddate can be in the following format:
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.15</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.17</span>
       </span>
     </div>
 
@@ -111,6 +114,9 @@ The startdate and enddate can be in the following format:
     </li>
     <li>
       <a href="../articles/pat_introduction.html">An Introduction to PurpleAir Time Series Data</a>
+    </li>
+    <li>
+      <a href="../articles/purpleair_qc.html">Purple Air Quality Control</a>
     </li>
     <li>
       <a href="../articles/purpleair_sensors.html">Purple Air Sensors</a>
@@ -151,16 +157,19 @@ The startdate and enddate can be in the following format:
     <p>A pre-generated <code>pa_timeseries</code> object will be loaded for
 the given time interval. Archived data for SCAQMD sensors go back to 
 January, 2018.</p>
-<p>The <code>startdate</code> and <code>enddate</code> can be in the following format:</p>
+<p>Dates can be anything that is understood by 
+<code>lubrdiate::parse_date_time()</code> including either of the following 
+recommended formats:</p>
 <ul>
 <li><p><code>"YYYYmmdd"</code></p></li>
+<li><p><code>"YYYY-mm-dd"</code></p></li>
 </ul>
 
-    <p>By default, the current month is loaded.</p>
+    <p>By default, the current week is loaded.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pat_load</span>(<span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>pat_load</span>(<span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>days</span> <span class='kw'>=</span> <span class='fl'>7</span>,
   <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='st'>"America/Los_Angeles"</span>,
   <span class='kw'>baseUrl</span> <span class='kw'>=</span> <span class='st'>"http://smoke.mazamascience.com/data/PurpleAir/pat"</span>)</pre>
     
@@ -173,11 +182,15 @@ January, 2018.</p>
     </tr>
     <tr>
       <th>startdate</th>
-      <td><p>A starting date in ymd order.</p></td>
+      <td><p>desired start datetime (ISO 8601)</p></td>
     </tr>
     <tr>
       <th>enddate</th>
-      <td><p>An ending date in ymd order</p></td>
+      <td><p>desired end datetime (ISO 8601)</p></td>
+    </tr>
+    <tr>
+      <th>days</th>
+      <td><p>number of days of data to include</p></td>
     </tr>
     <tr>
       <th>timezone</th>
@@ -195,13 +208,14 @@ January, 2018.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='pat_loadMonth.html'>pat_loadMonth</a></p></div>
+    <div class='dont-index'><p><a href='pat_loadMonth.html'>pat_loadMonth</a></p>
+<p><a href='dot-dateRange.html'>.dateRange</a></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>pat_load</span>(<span class='st'>"SCNP_20"</span>, <span class='fl'>20190411</span>, <span class='fl'>20190521</span>)
-  <span class='fu'><a href='pat_multiplot.html'>pat_multiplot</a></span>()
+<span class='no'>pat</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_load</span>(<span class='st'>"SCNP_20"</span>, <span class='fl'>20190411</span>, <span class='fl'>20190521</span>)
+<span class='fu'><a href='pat_multiplot.html'>pat_multiplot</a></span>(<span class='no'>pat</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

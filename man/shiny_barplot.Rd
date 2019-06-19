@@ -4,7 +4,7 @@
 \alias{shiny_barplot}
 \title{Bar plot for AirShiny}
 \usage{
-shiny_barplot(pat, period, start, end)
+shiny_barplot(pat, period, startdate, enddate, ylim = NULL)
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries "pat" object from \code{pat_loadLatest()}}
@@ -13,9 +13,13 @@ shiny_barplot(pat, period, start, end)
 "day", "DSTday", "week", "month", "quarter" or "year". A number can also
  precede these options followed by a space (i.e. "2 day" or "37 min").}
 
-\item{start}{starttime}
+\item{startdate}{The start date. Used to provide the Datetime domain.}
 
-\item{end}{endtime}
+\item{enddate}{The end date. Used to provide the Datetime domain.}
+
+\item{ylim}{Fix the Y-axis domain in order to have consistent visualization.
+Provide a vector with upper and lower bounds.
+Note: The X-axis is determined by the datetime interval.}
 }
 \description{
 Bar plot for AirShiny

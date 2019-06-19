@@ -159,9 +159,11 @@ pas_leaflet_shiny <- function(
 #' @param period The time period to average to. Can be "sec", "min", "hour", 
 #' "day", "DSTday", "week", "month", "quarter" or "year". A number can also
 #'  precede these options followed by a space (i.e. "2 day" or "37 min").
-#' @param start starttime
-#' @param end endtime
-
+#' @param startdate The start date. Used to provide the Datetime domain.
+#' @param enddate The end date. Used to provide the Datetime domain.
+#' @param ylim Fix the Y-axis domain in order to have consistent visualization.
+#' Provide a vector with upper and lower bounds.
+#' Note: The X-axis is determined by the datetime interval.
 #' 
 
 # TODO: Improve documentation
@@ -170,9 +172,13 @@ shiny_barplot <-
   function(
     pat, 
     period, 
-    start, 
-    end
-    ) {
+    startdate, 
+    enddate, 
+    ylim = NULL
+    ) { 
+    
+    logger.debug(" # shiny_barplot() # ")
+    
     ast <- 
       AirSensor::pat_createASTimeseries(
         pat = pat, 
@@ -197,24 +203,23 @@ shiny_barplot <-
       ast$data %>% 
       ggplot2::ggplot(
         ggplot2::aes(
-          x = lubridate::interval(start, end), 
+          x = lubridate::interval(
+            startdate, 
+            enddate, 
+            tzone = "America/Los_Angeles" 
+          ), 
           y = pm25_AB_avg
         )
       ) +
       ggplot2::ggtitle(
         label = "PM2.5"
       ) + 
-      ggplot2::coord_cartesian(ylim = c(0, 125)) + 
+      ggplot2::coord_cartesian(ylim = ylim) + 
       ggplot2::xlab("Datetime") + 
       ggplot2::ylab("\u03bcg / m\u00b3") + 
       ggplot2::theme_minimal() + 
       ggplot2::scale_fill_gradient(low = "#9733ee", high = "#da22ff")
-        #low = "#667eea", high = "#764ba2")
-    # NOTE: The Y-domain ranges from 0-125. Anything above will be cut off 
-    #       from the graph view. PurpleAir's plots do not have any QC and max 
-    #       out at 600 ug/m3; however, a limit of 600 renders the 
-    #       average air-quaility day illegible. 
-    # 
+
     pm25_avg_bar <- 
       ggplot2::geom_bar(                   
         data = ast$data,

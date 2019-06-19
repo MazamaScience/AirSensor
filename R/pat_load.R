@@ -46,7 +46,7 @@ pat_load <-
     timezone = "America/Los_Angeles",
     baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/pat"
     ) {
-     
+    
     logger.debug("----- pat_load() -----")
     
     # Validate parameters ------------------------------------------------------
@@ -59,12 +59,18 @@ pat_load <-
     # Asssemble monthly archive files ------------------------------------------
     
     datestamps <-
-      seq(
-        dateRange[1],
-        dateRange[2],
-        by = "months"
-      ) %>%
-      strftime(format = "%Y%m")
+      sort(
+        unique(
+          strftime(
+            seq(
+              dateRange[1],
+              dateRange[2],
+              by = "days"
+            ), 
+            format = "%Y%m"
+          )
+        )
+      )
     
     patList <- list()
     
@@ -83,10 +89,12 @@ pat_load <-
     # Return -------------------------------------------------------------------
     
     patObj <- 
-      patList %>% 
-      pat_join() %>% 
-      pat_filterDate(dateRange[1], dateRange[2])
-   
+      pat_filterDate(
+        pat = pat_join(patList),
+        startdate = dateRange[1], 
+        enddate = dateRange[2]
+      )
+
     return(patObj)
     
   }

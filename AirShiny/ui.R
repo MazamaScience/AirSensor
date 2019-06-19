@@ -51,11 +51,12 @@ shiny::shinyUI(
                     # End Date input 
                     shiny::dateInput(
                         inputId = "date_selection",
-                        label = "Date:"),
+                        label = "Date:"
+                    ),
                     
                     # Lookback interval
                     shiny::radioButtons(
-                        inputId = "date_interval", 
+                        inputId = "lookback_days", 
                         label = "Look back", 
                         choices = c("3 Days" = 3,
                                     "7 Days" = 7,

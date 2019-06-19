@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.15</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.17</span>
       </span>
     </div>
 
@@ -100,6 +100,9 @@
     </li>
     <li>
       <a href="../articles/pat_introduction.html">An Introduction to PurpleAir Time Series Data</a>
+    </li>
+    <li>
+      <a href="../articles/purpleair_qc.html">Purple Air Quality Control</a>
     </li>
     <li>
       <a href="../articles/purpleair_sensors.html">Purple Air Sensors</a>
@@ -219,7 +222,13 @@
         <td>
           <p><code><a href="example_pat_failure.html">example_pat_failure</a></code> </p>
         </td>
-        <td><p>Example Purple Air Timeseries dataset exhibiting errors</p></td>
+        <td><p>Example Purple Air Timeseries dataset exhibiting moderate errors</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="example_pat_failure_B.html">example_pat_failure_B</a></code> </p>
+        </td>
+        <td><p>Example Purple Air Timeseries dataset exhibiting severe errors</p></td>
       </tr><tr>
         
         <td>
@@ -303,7 +312,7 @@
         <td>
           <p><code><a href="pat_aggregate.html">pat_aggregate()</a></code> </p>
         </td>
-        <td><p>Time averages for PrupleAir time series</p></td>
+        <td><p>Aggregation statistics for PrupleAir time series</p></td>
       </tr><tr>
         
         <td>
@@ -388,6 +397,12 @@
           <p><code><a href="pat_outliers.html">pat_outliers()</a></code> </p>
         </td>
         <td><p>Detect and replace timeseries outliers</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="pat_qc.html">pat_qc()</a></code> </p>
+        </td>
+        <td><p>Apply Quality Control to a PAT object</p></td>
       </tr><tr>
         
         <td>

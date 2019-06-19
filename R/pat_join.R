@@ -26,13 +26,13 @@
 pat_join <- function(
   ...
 ) {
-  
-  # TODO:  Handle an incoming list of pat objects rather than separate ones
+
+  logger.debug("----- pat_join() -----")
   
   # Accept any number of pat objects
   patList <- list(...)  
   
-  suppressWarnings({ # checks class type to see if alreadya list
+  suppressWarnings({ # checks class type to see if already a list
     
   if( class(patList[[1]]) != c("pa_timeseries", "list") ) {
     patList <- patList[[1]]
