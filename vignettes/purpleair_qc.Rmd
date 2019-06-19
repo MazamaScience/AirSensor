@@ -222,7 +222,6 @@ dplyr::sample_n(raw_data, 10)
 
 # Create a timeseries using boxplots
 colors <- c(rgb(0.9, 0.25, 0.2), rgb(0.2, 0.25, 0.9))
-colors <- c("green","purple")
 ggplot(raw_data, aes(datetime, pm25, color = channel)) + 
   geom_boxplot(outlier.shape = NA,
                show.legend = FALSE) +

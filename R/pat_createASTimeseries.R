@@ -52,8 +52,7 @@ pat_createASTimeseries <- function(
   data <- 
     pat_aggregate(
       pat,
-      period, 
-      quickStats = TRUE, 
+      period
     )
   
   # Here is the original PAT metadata:

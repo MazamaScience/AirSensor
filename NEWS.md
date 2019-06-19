@@ -1,3 +1,8 @@
+# AirSensor 0.2.17
+
+* Refactored `pat_aggregate()` to fix an issue with t-test statistics. Also
+simplified the function signature to accept just `pat` and `period` arguments.
+
 # AirSensor 0.2.16
 
 * Updated `pat_load()` to default to the most recent week of data
