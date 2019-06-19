@@ -22,6 +22,8 @@ This vignette decribes technical details of Purple Air Sensor internals.
 
 ### Particle Detectors
 
+[Plantower PMS5003 Particle Detector](http://www.aqmd.gov/docs/default-source/aq-spec/resources-page/plantower-pms5003-manual_v2-3.pdf)
+
 ### Temerature/Humidity Sensor
 
 ## Internal Firmware

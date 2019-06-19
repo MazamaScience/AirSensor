@@ -222,7 +222,7 @@ pat_aggregate <- function(
               t.test(
                 bin$pm25_A[[i]], 
                 bin$pm25_B[[i]], 
-                paired = TRUE
+                paired = FALSE
               )}, 
             silent = TRUE
           )
