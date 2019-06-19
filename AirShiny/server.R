@@ -11,9 +11,12 @@
 # ---- Debug 
 library(AirSensor)
 library(rlang)
-library(magrittr)
+library(magrittr) 
+library(MazamaCoreUtils)
 pas <- AirSensor::pas_load()
 pas_community <- unique(pas$communityRegion) %>% na.omit()
+
+logger.debug("----- server -----")
 # ----
 
 # Define server logic 
@@ -23,12 +26,16 @@ shiny::shinyServer(
         # Reload the PAT based on the selected PAT and date interval 
         reload_pat <- function() {
             
-            AirSensor::pat_load(
+            logger.debug(" # reload_pat #")
+            
+            pat <- AirSensor::pat_load(
                 label = input$leaflet_marker_click[1], 
                 enddate = lubridate::ymd(input$date_selection), 
                 startdate = lubridate::ymd(input$date_selection) - 
-                    lubridate::ddays(as.numeric(input$date_interval))
-            )
+                    lubridate::ddays(as.numeric(input$lookback_days))
+            ) 
+            
+            return(pat)
             
         }    
         
@@ -84,13 +91,14 @@ shiny::shinyServer(
             shiny::renderPlot({
                 
                 sd <- lubridate::ymd(input$date_selection) - 
-                    lubridate::ddays(as.numeric(input$date_interval))
+                    lubridate::ddays(as.numeric(input$lookback_days))
                 ed <- lubridate::ymd(input$date_selection)
+                
                 # Validate a pas selection has been made. If not display message.
                 validate(
                     need(
-                      input$leaflet_marker_click != "", 
-                      "Select a Purple Air Sensor"
+                        input$leaflet_marker_click != "", 
+                        "Select a Purple Air Sensor"
                     )
                 )
                 
@@ -100,23 +108,26 @@ shiny::shinyServer(
                 
                 if ( input$plot_type_select == "daily_plot" ) {
                     
-                    return(AirSensor::shiny_barplot(
+                    AirSensor::shiny_barplot(
                         pat, 
                         period = "1 day", 
-                        start = sd, 
-                        end = ed 
+                        startdate = sd, 
+                        enddate = ed
                     )
-                    )
-                    
                     
                 } else if ( input$plot_type_select == "multi_plot" ) { 
                     
-                    return(AirSensor::pat_multiplot(pat))
+                    AirSensor::pat_multiplot(pat)
                     
                 }  else if ( input$plot_type_select == "hourly_plot" ) {
                     
-                    return(AirSensor::shiny_barplot(pat, period = "1 hour",                         start = sd, 
-                                                    end = ed ))
+                    AirSensor::shiny_barplot(
+                        pat, 
+                        period = "1 hour",
+                        startdate = sd, 
+                        enddate = ed
+                    )
+                    
                 }
                 
             })
@@ -130,8 +141,8 @@ shiny::shinyServer(
                 # Validate a pas selection has been made. If not display message.
                 validate(
                     need(
-                      input$leaflet_marker_click != "", 
-                      "Select a Purple Air Sensor from the Interactive Map."
+                        input$leaflet_marker_click != "", 
+                        "Select a Purple Air Sensor from the Interactive Map."
                     )
                 )
                 
@@ -169,13 +180,19 @@ shiny::shinyServer(
         output$download_data <- 
             shiny::downloadHandler(
                 filename = function() {
+                    
+                    sd <- lubridate::ymd(input$date_selection) - 
+                        lubridate::ddays(as.numeric(input$lookback_days))
+                    ed <- lubridate::ymd(input$date_selection)
+                    
                     paste0(
                         input$leaflet_marker_click[1],
                         "_",
-                        input$date_range[1],
+                        sd,
                         "_",
-                        input$date_range[2], 
+                        ed, 
                         ".csv"
+                        
                     )
                     
                 }, 
