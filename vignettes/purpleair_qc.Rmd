@@ -198,6 +198,7 @@ agg_data <-
 
 ggplot(agg_data, aes(datetime, pm25_t)) +
   geom_point() +
+  scale_y_log10() + 
   ggtitle("t-statistic")
 ```
 
@@ -237,6 +238,7 @@ agg_data <-
 
 ggplot(agg_data, aes(datetime, pm25_t)) +
   geom_point() +
+  scale_y_log10() + 
   ggtitle("t-statistic")
 ```
 
@@ -245,5 +247,96 @@ where the A and B channels have hourly avergaes that are both highly precise
 (low std dev) and very different. We can thus use the `pm25_t` variable to flag
 those hours where the A and B channels disagree.
 
+## Hourly Averages
 
+One of the most important data products we can create form raw Purple Air data
+is the hourly avergaged dataset that can be used for comparison with co-located
+federal regulatory monitors. 
 
+The following steps are recommend for creating an hourly PM2.5 timeseries:
+
+1) apply out-of-spec QC
+2) calculate aggregation statistics
+3) average together pm25_A and pm25_B hourly values
+4) invalidate pm25 hourly values where the absolute value of the t-test 
+statistic is above some threshold (e.g. 100)
+5) invalidate pm25 values where the count on either the A or B channel is below
+some threshold (e.g. 10 where 30 are expected)
+
+The R code to apply this QC would be:
+
+```{r example_qc, eval = FALSE}
+hourlyData <-
+  example_pat_failure %>%
+  # Apply out-of-spec QC
+  pat_qc() %>%
+  # Calculate aggregation statistics
+  pat_aggregate(period = "1 hour") %>%
+  # Average together both channels
+  dplyr::mutate(pm25 = (pm25_A_mean + pm25_B_mean) / 2) %>%
+  # Invalidate data where either channel has too few measurements
+  dplyr::mutate(pm25 = replace(pm25, which(pm25_A_count < 10), NA) ) %>%
+  dplyr::mutate(pm25 = replace(pm25, which(pm25_B_count < 10), NA) ) %>%
+  # Invlidate data where t-test is too high
+  dplyr::mutate(pm25 = replace(pm25, which(abs(pm25_t) > 100), NA) ) %>%
+  dplyr::select(datetime, pm25)
+
+plot(hourlyData)
+```
+
+As a test of the overall effect, here are some hourly barplots for each of 
+the three examples we started with:
+
+```{r hourly_barplots, echo = FALSE, warning = FALSE}
+
+suppressPackageStartupMessages({
+  library(PWFSLSmoke)
+})
+
+pat_hourlyData <- function(
+  pat
+) {
+  
+  hourlyData <-
+    pat %>%
+    # Apply out-of-spec QC
+    pat_qc() %>%
+    # Calculate aggregation statistics
+    pat_aggregate(period = "1 hour") %>%
+    # Average together both channels
+    dplyr::mutate(pm25 = (pm25_A_mean + pm25_B_mean) / 2) %>%
+    # Invalidate data where either channel has too few measurements
+    dplyr::mutate(pm25 = replace(pm25, which(pm25_A_count < 10), NA) ) %>%
+    dplyr::mutate(pm25 = replace(pm25, which(pm25_B_count < 10), NA) ) %>%
+    # Invlidate data where t-test is too high
+    dplyr::mutate(pm25 = replace(pm25, which(abs(pm25_t) > 100), NA) ) %>%
+    dplyr::select(datetime, pm25)
+  
+  return(hourlyData)
+
+}
+
+layout(matrix(seq(3)))
+hourlyData <- example_pat %>% 
+  pat_filterDate(20180701, 20180708) %>%
+  pat_hourlyData()
+plot(hourlyData, type='h', lwd=2, main = 'example_pat')
+
+hourlyData <- example_pat_failure %>% 
+  pat_hourlyData()
+plot(hourlyData, type='h', lwd=2, main = 'example_pat_failure')
+
+hourlyData <- example_pat_failure_B %>% 
+  pat_hourlyData()
+plot(hourlyData, type='h', lwd=2, main = 'example_pat_failure_B')
+```
+
+Things look pretty good. The first two time seres look quite reasonable given
+the input data and *most* of the hours of questionable data have been removed
+from `example_pat_failure_B`. The four questionably high values in
+`example_pat_failure_B` are all adjacent to an hour that has been flagged
+as invalid which should call the validity of those values into question as well.
+
+It is beyond the scope of this vignette, but one could imagine further cleanup
+that removed every value adjacent to an invalid value which would have 
+completely cleaned up the last example.

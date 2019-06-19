@@ -225,7 +225,7 @@ pat_aggregate <- function(
     
     dataList <- 
       data %>%
-      dplyr::group_split(binIndex)
+      dplyr::group_split(.data$binIndex)
     
     # NOTE:  T-tests should only be used when n < 30. Any larger, the 
     # NOTE:  distribution approches normal -> should use Z test when n > 30.
