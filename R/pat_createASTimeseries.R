@@ -31,8 +31,10 @@
 pat_createASTimeseries <- function(
   pat, 
   period = "1 hour"
-) {
+) { 
   
+  logger.debug("----- pat_createASTimeseries() -----")
+
   # ----- Validate Parameters --------------------------------------------------
   
   tolower(period) -> period
