@@ -1,3 +1,12 @@
+# AirSensor 0.3.0
+
+The *AirSensor* package is now almost feature complete with functions for QC
+and aggregation to an houly axis.
+
+* Fixed bug in `pat_aggregate()` that occasionaly returned empty columns of data.
+* Added `local_examples/Jons_qc_1.R` with Jon's best take on appropriate QC of
+the hourly aggregated data.
+
 # AirSensor 0.2.18
 
 * New `pat_createAirSensor()` function converts from `pat` object to `airsensor`

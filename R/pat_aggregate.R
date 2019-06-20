@@ -2,7 +2,7 @@
 #' @export
 #' @importFrom rlang .data
 #' @importFrom stats aggregate median na.omit quantile sd t.test time
-
+#'
 #' @title Aggregation statistics for PrupleAir time series
 #' 
 #' @param pat PurpleAir Timeseries "pat" object
@@ -64,6 +64,7 @@ pat_aggregate <- function(
     pat <- 
       example_pat_failure_B %>%
       pat_filterDate(20190611,20190611)
+    
     period <- "1 hour"
     stat <- "tstats"
     parameters <- c("pm25_A", "pm25_B", "humidity", "temperature")
@@ -179,7 +180,9 @@ pat_aggregate <- function(
     
     tbl <- 
       # Aggregate data by bin and calculate a single-value statistic for the
-      # measurements within each bin.
+      # measurements within each bin. With an initial object of type "zoo",
+      # the function here is actually zoo::aggregate.zoo() which isn't exported
+      # so we can't call it explicitly and have to rely on "dispatching".
       aggregate(
         zz, 
         by = time(zz) - as.numeric(time(zz)) %% periodSeconds, 
@@ -205,21 +208,33 @@ pat_aggregate <- function(
   
   if ( stat == "tstats" ) {
     
+    # Create an aggregated time axis first
+    
+    # NOTE:  Use zoo style aggregation to guarantee we get the same datetime axis.
+    # NOTE:  If datetime differs by any time at all, plyr::join_all() will fail
+    # NOTE:  to properly join dataframes.
+    # NOTE:  This time axis is also important for calculating binIndex as we
+    # NOTE:  want to calculate binIndex relative the the aggregation unit
+    # NOTE:  boundaries.
+    
+    tt <- as.numeric(pat$data$datetime)
+    x <- zoo::zoo(tt, structure(tt, class = c("POSIXt", "POSIXct")))
+    dummy <- aggregate(x, time(x) - as.numeric(time(x)) %% periodSeconds, mean)
+    aggregatedTimeAxis <- time(dummy)
+
     # TODO:  We can't do the same zoo::aggregate magic with tstats.
     # TODO:  The documentation clearly states that FUN:
     # TODO:
     # TODO:    "Always needs to return a result of fixed length (typically scalar)."
     # TODO:
-    # TODO:  In the first implementation we used "FUN <- function(x) x" to store
-    # TODO:  the raw values in each aggregated table cell. But this only works
-    # TODO:  when we ALWAYS have the same number of measurements per cell.
+    # TODO:  So we roll our own dplyr based aggregation
     
     data <-
       pat$data %>%
       dplyr::select("datetime", "pm25_A", "pm25_B")
     
     # Create a binIndex column
-    firstTime <- data$datetime[1]
+    firstTime <- aggregatedTimeAxis[1]
     elapsedSeconds <- as.numeric(difftime(data$datetime, firstTime, units = "secs"))
     data$binIndex <- floor(elapsedSeconds / periodSeconds) + 1
     
@@ -261,9 +276,6 @@ pat_aggregate <- function(
       }
       
     }
-    
-    aggregatedTimeAxis <- 
-      seq.POSIXt(data$datetime[1], data$datetime[nrow(data)], by = periodSeconds)
     
     tbl <- 
       dplyr::tibble(
