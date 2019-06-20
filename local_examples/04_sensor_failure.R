@@ -16,21 +16,19 @@ scaqmd <-
 pas_leaflet(scaqmd)
 
 # Let's get time series data for a failing sensor in Nipomo
-pat <- pat_loadLatest(pas, "SCNP_20",
-                      startdate = "2019-04-01",
-                      enddate = "2019-04-18")
+pat <- pat_load("SCNP_20", "2019-04-01", "2019-04-18")
 
 # Quick look at raw data to check for spurious correlations
 pat_scatterplot(pat)
 
-# Humidity values over 100% are clearly wrong so remove those records
-pat <- pat_filterData(pat, humidity <= 100)
+# Humidity values over 100% are clearly wrong so apply out-of-spec QC
+pat <- pat_qc(pat)
 
 # Look at raw data again with better y-axis scaling
 pat_scatterplot(pat)
 
 # Now for a closer look at the timeseries data
-pat_multiplot(pat, plottype = "all")
+pat_multiplot(pat)
 
 # And an A/B comparison
 pat_multiplot(pat, plottype = "pm25_over")

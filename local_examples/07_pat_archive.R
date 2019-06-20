@@ -17,7 +17,7 @@ patList <-
 
 # Create a list of AST objects
 astList <-
-  purrr::map(patList, pat_createASTimeseries, "1 hour")
+  purrr::map(patList, pat_createAirSensor)
 
 # Create a list of AS objects
 asList <- 
