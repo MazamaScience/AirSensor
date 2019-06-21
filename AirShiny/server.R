@@ -183,7 +183,7 @@ shiny::shinyServer(
                 pat <- reload_pat(selector = TRUE)
                 
                 meta <-
-                    dplyr::data_frame(
+                    dplyr::tibble(
                         "Community" = input$comm_select,
                         "Sensor Type" = pat$meta$sensorType,
                         "Longitude" = pat$meta$longitude, 
