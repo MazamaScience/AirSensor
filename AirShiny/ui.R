@@ -22,7 +22,9 @@ shiny::shinyUI(
     shiny::navbarPage(
         
         # ----- Nav Bar --------------------------------------------------------
-        title = "AirShiny (Beta)", 
+        title = "AirShiny (Beta)",
+        theme = shinythemes::shinytheme("lumen"),
+        inverse = TRUE, 
         
         # ----- Tab 1 ----------------------------------------------------------
         shiny::tabPanel(
@@ -131,6 +133,16 @@ shiny::shinyUI(
             shiny::dataTableOutput(
                 outputId = "data_explorer"
             )
+            
+        ), 
+        
+        # ----- Tab 3 ----------------------------------------------------------
+        
+        shiny::tabPanel(
+            
+            title = "About"
+        
+            # TODO: Get an about section.  
             
         )
         
