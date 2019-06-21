@@ -5,7 +5,10 @@ and aggregation to an houly axis.
 
 * Fixed bug in `pat_aggregate()` that occasionaly returned empty columns of data.
 * Added `local_examples/Jons_qc_1.R` with Jon's best take on appropriate QC of
-the hourly aggregated data.
+the hourly aggregated data. 
+* Updated AirShiny theme and include About section
+* Revamped AirShiny UI
+* Support for `pat_createAirSensor()` added to barplot
 
 # AirSensor 0.2.18
 
