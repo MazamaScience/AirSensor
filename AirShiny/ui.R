@@ -13,7 +13,7 @@ library(AirSensor)
 library(MazamaCoreUtils)
 
 pas <- AirSensor::pas_load()
-pas_community <- unique(pas$communityRegion) %>% na.omit()
+pas_community <- na.omit(unique(pas$communityRegion))
 
 logger.debug("----- server() -----")
 

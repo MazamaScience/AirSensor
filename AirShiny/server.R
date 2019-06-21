@@ -183,15 +183,14 @@ shiny::shinyServer(
                 pat <- reload_pat(selector = TRUE)
                 
                 meta <-
-                    dplyr::select(
-                        pat$meta,
-                        #"Sensor Label" = .data$label,
-                        "Sensor Type" = .data$sensorType,
-                        "Longitude" = .data$longitude, 
-                        "Latitude" = .data$latitude,
-                        "State" = .data$stateCode, 
-                        "Country" = .data$countryCode, 
-                        "Timezone" = .data$timezone
+                    dplyr::data_frame(
+                        "Community" = input$comm_select,
+                        "Sensor Type" = pat$meta$sensorType,
+                        "Longitude" = pat$meta$longitude, 
+                        "Latitude" = pat$meta$latitude,
+                        "State" = pat$meta$stateCode, 
+                        "Country" = pat$meta$countryCode, 
+                        "Timezone" = pat$meta$timezone
                     )
                 
                 return(meta)
