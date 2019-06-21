@@ -8,36 +8,61 @@
 #
 # - Mazama Science
 
-# ---- Debug 
 library(AirSensor)
-library(rlang)
-library(magrittr) 
 library(MazamaCoreUtils)
+
 pas <- AirSensor::pas_load()
 pas_community <- unique(pas$communityRegion) %>% na.omit()
 
-logger.debug("----- server -----")
-# ----
+logger.debug("----- server() -----")
 
-# Define server logic 
+# ----- Define Server Logic ----------------------------------------------------
+
 shiny::shinyServer(
     function(input, output, session) {
+       
+        # Capture date inputs  
+        get_dates <- function() {
+            
+            sd <- lubridate::ymd(input$date_selection) - 
+                  lubridate::ddays(as.numeric(input$lookback_days))
+            
+            ed <- lubridate::ymd(input$date_selection)
+            
+            return(c(sd, ed))
+            
+        }
         
-        # Reload the PAT based on the selected PAT and date interval 
-        reload_pat <- function() {
+        # Capture PAT selection from leaflet(?)
+        reload_pat <- function(selector = FALSE) {
             
             logger.debug(" # reload_pat #")
             
-            pat <- AirSensor::pat_load(
-                label = input$leaflet_marker_click[1], 
-                enddate = lubridate::ymd(input$date_selection), 
-                startdate = lubridate::ymd(input$date_selection) - 
-                    lubridate::ddays(as.numeric(input$lookback_days))
-            ) 
+            d <- get_dates()
+            
+            if ( selector ) {
+                
+                pat <-
+                    AirSensor::pat_load(
+                        label = input$pas_select, 
+                        startdate = d[1],
+                        enddate = d[2]
+                    ) 
+            
+            } else { 
+                
+                pat <-
+                    AirSensor::pat_load(
+                        label = input$leaflet_marker_click[1], 
+                        startdate = d[1],
+                        enddate = d[2]
+                    ) 
+            
+            } 
             
             return(pat)
             
-        }    
+        }   
         
         # Leaflet render
         output$leaflet <- 
@@ -78,7 +103,7 @@ shiny::shinyServer(
                 inputId = "pas_select", 
                 selected = input$leaflet_marker_click[1], 
                 choices = pas_in_comm$label
-            )
+            ) 
             
         })
         
@@ -89,10 +114,6 @@ shiny::shinyServer(
         # Standard Plot output   
         output$selected_plot <-
             shiny::renderPlot({
-                
-                sd <- lubridate::ymd(input$date_selection) - 
-                    lubridate::ddays(as.numeric(input$lookback_days))
-                ed <- lubridate::ymd(input$date_selection)
                 
                 # Validate a pas selection has been made. If not display message.
                 validate(
@@ -105,14 +126,15 @@ shiny::shinyServer(
                 # NOTE: The current method is not filtering ANY outliers for
                 # NOTE: ANY of the plots - may be prone to change.
                 pat <- reload_pat()
+                d <- get_dates()
                 
                 if ( input$plot_type_select == "daily_plot" ) {
                     
                     AirSensor::shiny_barplot(
                         pat, 
                         period = "1 day", 
-                        startdate = sd, 
-                        enddate = ed
+                        startdate = d[1], 
+                        enddate = d[2]
                     )
                     
                 } else if ( input$plot_type_select == "multi_plot" ) { 
@@ -124,8 +146,8 @@ shiny::shinyServer(
                     AirSensor::shiny_barplot(
                         pat, 
                         period = "1 hour",
-                        startdate = sd, 
-                        enddate = ed
+                        startdate = d[1], 
+                        enddate = d[2]
                     )
                     
                 }
@@ -146,7 +168,7 @@ shiny::shinyServer(
                     )
                 )
                 
-                pat <- reload_pat()
+                pat <- reload_pat(selector = TRUE)
                 
                 data <- pat$data 
                 
@@ -158,7 +180,7 @@ shiny::shinyServer(
         output$meta_explorer <- 
             shiny::renderTable({
                 
-                pat <- reload_pat()
+                pat <- reload_pat(selector = TRUE)
                 
                 meta <-
                     dplyr::select(
@@ -181,16 +203,15 @@ shiny::shinyServer(
             shiny::downloadHandler(
                 filename = function() {
                     
-                    sd <- lubridate::ymd(input$date_selection) - 
-                        lubridate::ddays(as.numeric(input$lookback_days))
-                    ed <- lubridate::ymd(input$date_selection)
+                    d <- get_dates()
+                    pat <- reload_pat(selector = TRUE)
                     
                     paste0(
-                        input$leaflet_marker_click[1],
+                        pat$meta$label,
                         "_",
-                        sd,
+                        d[1],
                         "_",
-                        ed, 
+                        d[2], 
                         ".csv"
                         
                     )
@@ -199,7 +220,7 @@ shiny::shinyServer(
                 
                 content = function(file) {
                     
-                    write.csv(reload_pat()$data, file = file)
+                    write.csv(pat$data, file = file)
                     
                 }
                 

@@ -7,29 +7,31 @@
 #    http://shiny.rstudio.com/
 #
 # - Mazama Science
+#
+
 library(AirSensor)
-library(rlang)
-library(magrittr)
-# ---- Debug 
+library(MazamaCoreUtils)
+
 pas <- AirSensor::pas_load()
 pas_community <- unique(pas$communityRegion) %>% na.omit()
-# ----
 
-# Define UI for application 
+logger.debug("----- server() -----")
+
+# ----- Define UI --------------------------------------------------------------
 shiny::shinyUI(
     shiny::navbarPage(
         
         # ----- Nav Bar --------------------------------------------------------
         title = "AirShiny (Beta)", 
         
-        ## ---- Tab 1 ----------------------------------------------------------
+        # ----- Tab 1 ----------------------------------------------------------
         shiny::tabPanel(
             
             title = "Interactive Map",
             
             shiny::fluidRow(
                 
-                #### ----- L Column  -------------------------------------------
+                # ----- L Column -----------------------------------------------
                 shiny::column(
                     
                     width = 2,
@@ -41,12 +43,12 @@ shiny::shinyUI(
                         choices = pas_community 
                     ), 
                     
-                    # PAS selection input
-                    shiny::selectInput(
-                        inputId = "pas_select",
-                        label = "Purple Air Sensor:", 
-                        choices = ""
-                    ),
+                    # # PAS selection input
+                    # shiny::selectInput(
+                    #     inputId = "pas_select",
+                    #     label = "Purple Air Sensor:", 
+                    #     choices = ""
+                    # ),
                     
                     # End Date input 
                     shiny::dateInput(
@@ -74,7 +76,7 @@ shiny::shinyUI(
                     
                 ), 
                 
-                ####----- R Column ---------------------------------------------
+                #----- R Column ------------------------------------------------
                 shiny::column(
                     
                     width = 10,
@@ -98,15 +100,24 @@ shiny::shinyUI(
             
         ),
         
-        ## ----- Tab 2 ---------------------------------------------------------
+        # ----- Tab 2 ----------------------------------------------------------
         
         shiny::tabPanel(
             
             title = "Data Explorer",
             
+            shiny::column(width = 3,
+                          # PAS selection input
+                          shiny::selectInput(
+                              inputId = "pas_select",
+                              label = "Purple Air Sensor:", 
+                              choices = ""
+                          )
+            ),
+            
             # Meta explorer
             shiny::column( 
-                width = 11,
+                width = 9,
                 shiny::tableOutput(
                     outputId = "meta_explorer"
                 )
