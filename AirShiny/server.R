@@ -163,8 +163,8 @@ shiny::shinyServer(
                 # Validate a pas selection has been made. If not display message.
                 validate(
                     need(
-                        input$leaflet_marker_click != "", 
-                        "Select a Purple Air Sensor from the Interactive Map."
+                        input$pas_select != "", 
+                        "Select a Sensor"
                     )
                 )
                 
@@ -185,7 +185,7 @@ shiny::shinyServer(
                 meta <-
                     dplyr::select(
                         pat$meta,
-                        "Sensor Label" = .data$label,
+                        #"Sensor Label" = .data$label,
                         "Sensor Type" = .data$sensorType,
                         "Longitude" = .data$longitude, 
                         "Latitude" = .data$latitude,
@@ -220,12 +220,32 @@ shiny::shinyServer(
                 
                 content = function(file) {
                     
+                    pat <- reload_pat(selector = TRUE)
                     write.csv(pat$data, file = file)
                     
                 }
                 
-            )
+            ) 
         
+        # Leaflet selection label
+        output$selected_label <- 
+            shiny::renderTable({
+                
+                validate(
+                    need(
+                        input$leaflet_marker_click != "", 
+                        ""
+                    )
+                )
+                
+                dplyr::tibble(
+                    "Sensor" = input$leaflet_marker_click[1], 
+                    "Latitude" = input$leaflet_marker_click[3],
+                    "Longitude" = input$leaflet_marker_click[4]
+                )
+                
+            })
+
     }
     
 )

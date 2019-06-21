@@ -43,13 +43,6 @@ shiny::shinyUI(
                         choices = pas_community 
                     ), 
                     
-                    # # PAS selection input
-                    # shiny::selectInput(
-                    #     inputId = "pas_select",
-                    #     label = "Purple Air Sensor:", 
-                    #     choices = ""
-                    # ),
-                    
                     # End Date input 
                     shiny::dateInput(
                         inputId = "date_selection",
@@ -72,7 +65,10 @@ shiny::shinyUI(
                         choices = c("Hourly Average" = "hourly_plot",
                                     "Daily Average" = "daily_plot",
                                     "Multi-sensor Raw Data" = "multi_plot")
-                    )
+                    ),
+                    
+                    # Display leaflet selection
+                    shiny::tableOutput(outputId = "selected_label")
                     
                 ), 
                 
@@ -106,7 +102,7 @@ shiny::shinyUI(
             
             title = "Data Explorer",
             
-            shiny::column(width = 3,
+            shiny::column(width = 2,
                           # PAS selection input
                           shiny::selectInput(
                               inputId = "pas_select",
