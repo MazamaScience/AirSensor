@@ -7,12 +7,7 @@
 #    http://shiny.rstudio.com/
 #
 # - Mazama Science
-
-library(AirSensor)
-library(MazamaCoreUtils)
-
-pas <- AirSensor::pas_load()
-pas_community <- unique(pas$communityRegion) %>% na.omit()
+#
 
 logger.debug("----- server() -----")
 
@@ -34,9 +29,9 @@ shiny::shinyServer(
         }
         
         # Capture PAT selection from leaflet(?)
-        reload_pat <- function(selector = FALSE) {
+        get_pat <- function(selector = FALSE) {
             
-            logger.debug(" # reload_pat #")
+            logger.debug(" # get_pat #")
             
             d <- get_dates()
             
@@ -64,19 +59,37 @@ shiny::shinyServer(
             
         }   
         
-        # Leaflet render
-        output$leaflet <- 
-            leaflet::renderLeaflet({
+        # Capture selected PAS based on community selection
+        get_pas <- function() {
+            
+            if ( input$comm_select == "all" )  {
                 
-                pas_in_comm <- 
-                    pas[which(
+                pas <- PAS[which(!is.na(PAS$communityRegion)),]
+                
+            } else { 
+                
+                pas <- 
+                    PAS[which(
                         stringr::str_detect(
-                            pas$communityRegion, 
+                            PAS$communityRegion, 
                             input$comm_select)
                     ),]
                 
+            }
+            
+            return(pas)
+            
+        }
+        
+        
+        # Leaflet render
+        output$leaflet <- 
+            leaflet::renderLeaflet({
+        
+                pas <- get_pas()
+                    
                 AirSensor::pas_leaflet_shiny(
-                    pas_in_comm, 
+                    pas[which(!stringr::str_detect(pas$label, " B")),],
                     parameter = "pm25_current", 
                     paletteName = "Purple"
                 )
@@ -86,36 +99,25 @@ shiny::shinyServer(
         # Update Selected pas based on leaflet selection
         shiny::observe({
             
-            pas_in_comm <- 
-                pas[which(
-                    stringr::str_detect(
-                        pas$communityRegion, 
-                        input$comm_select
-                    ) & 
-                        !stringr::str_detect(
-                            pas$label, 
-                            " B"
-                        )
-                ),]
+            pas <- get_pas()
+            
+            pas_choices <- 
+                pas$label[which(!stringr::str_detect(pas$label, " B"))]
             
             shiny::updateSelectInput(
                 session, 
                 inputId = "pas_select", 
                 selected = input$leaflet_marker_click[1], 
-                choices = pas_in_comm$label
+                choices = pas_choices
             ) 
             
         })
-        
-        # # Text debug output 
-        #  output$test <-
-        #      shiny::renderText(paste0(input$leaflet_marker_click))
         
         # Standard Plot output   
         output$selected_plot <-
             shiny::renderPlot({
                 
-                # Validate a pas selection has been made. If not display message.
+                # Validate a pas selection has been made. If not display message
                 validate(
                     need(
                         input$leaflet_marker_click != "", 
@@ -125,7 +127,7 @@ shiny::shinyServer(
                 
                 # NOTE: The current method is not filtering ANY outliers for
                 # NOTE: ANY of the plots - may be prone to change.
-                pat <- reload_pat()
+                pat <- get_pat()
                 d <- get_dates()
                 
                 if ( input$plot_type_select == "daily_plot" ) {
@@ -160,7 +162,7 @@ shiny::shinyServer(
         output$data_explorer <- 
             shiny::renderDataTable({
                 
-                # Validate a pas selection has been made. If not display message.
+                # Validate a pas selection has been made & display if not
                 validate(
                     need(
                         input$pas_select != "", 
@@ -168,7 +170,7 @@ shiny::shinyServer(
                     )
                 )
                 
-                pat <- reload_pat(selector = TRUE)
+                pat <- get_pat(selector = TRUE)
                 
                 data <- pat$data 
                 
@@ -180,11 +182,18 @@ shiny::shinyServer(
         output$meta_explorer <- 
             shiny::renderTable({
                 
-                pat <- reload_pat(selector = TRUE)
+                validate(need(input$pas_select != "", ""))
+                
+                pat <- get_pat(selector = TRUE)
+                
+                pas <- get_pas()
+                
+                community <- 
+                    pas$communityRegion[which(pas$label == pat$meta$label)]
                 
                 meta <-
                     dplyr::tibble(
-                        "Community" = input$comm_select,
+                        "Community" = community,
                         "Sensor Type" = pat$meta$sensorType,
                         "Longitude" = pat$meta$longitude, 
                         "Latitude" = pat$meta$latitude,
@@ -203,7 +212,7 @@ shiny::shinyServer(
                 filename = function() {
                     
                     d <- get_dates()
-                    pat <- reload_pat(selector = TRUE)
+                    pat <- get_pat(selector = TRUE)
                     
                     paste0(
                         pat$meta$label,
@@ -219,7 +228,7 @@ shiny::shinyServer(
                 
                 content = function(file) {
                     
-                    pat <- reload_pat(selector = TRUE)
+                    pat <- get_pat(selector = TRUE)
                     write.csv(pat$data, file = file)
                     
                 }
@@ -230,12 +239,7 @@ shiny::shinyServer(
         output$selected_label <- 
             shiny::renderTable({
                 
-                validate(
-                    need(
-                        input$leaflet_marker_click != "", 
-                        ""
-                    )
-                )
+                validate(need(input$leaflet_marker_click != "", ""))
                 
                 dplyr::tibble(
                     "Sensor" = input$leaflet_marker_click[1], 

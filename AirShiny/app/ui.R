@@ -9,13 +9,7 @@
 # - Mazama Science
 #
 
-library(AirSensor)
-library(MazamaCoreUtils)
-
-pas <- AirSensor::pas_load()
-pas_community <- na.omit(unique(pas$communityRegion))
-
-logger.debug("----- server() -----")
+logger.debug("----- ui() -----")
 
 # ----- Define UI --------------------------------------------------------------
 shiny::shinyUI(
@@ -42,7 +36,8 @@ shiny::shinyUI(
                     shiny::selectInput(
                         inputId = "comm_select", 
                         label = "Community Selection", 
-                        choices = pas_community 
+                        choices = c("All..." = "all", 
+                                    PAS_COMM) 
                     ), 
                     
                     # End Date input 
@@ -83,10 +78,7 @@ shiny::shinyUI(
                     leaflet::leafletOutput(
                         outputId = "leaflet", height = 550
                     ), 
-                    
-                    # # Debug text
-                    # shiny::textOutput("test"),
-                    
+
                     # Selected Plot
                     shiny::plotOutput(
                         outputId = "selected_plot", height = 270
@@ -104,13 +96,14 @@ shiny::shinyUI(
             
             title = "Data Explorer",
             
-            shiny::column(width = 2,
-                          # PAS selection input
-                          shiny::selectInput(
-                              inputId = "pas_select",
-                              label = "Purple Air Sensor:", 
-                              choices = ""
-                          )
+            # PAS selection input
+            shiny::column(
+                width = 2,
+                shiny::selectInput(
+                    inputId = "pas_select",
+                    label = "Purple Air Sensor:", 
+                    choices = ""
+                )
             ),
             
             # Meta explorer
