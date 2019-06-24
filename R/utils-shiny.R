@@ -161,9 +161,14 @@ pas_leaflet_shiny <- function(
 #'  precede these options followed by a space (i.e. "2 day" or "37 min").
 #' @param startdate The start date. Used to provide the Datetime domain.
 #' @param enddate The end date. Used to provide the Datetime domain.
-#' @param ylim Fix the Y-axis domain in order to have consistent visualization.
-#' Provide a vector with upper and lower bounds. The X-axis is determined by the 
+#' @param ylim A vector of upper and lower bounds. 
+#' 
+#' @description A barplot that bins by period and preforms an average of 
+#' Channel A & B, or seperately. Intended for use with the AirShiny web app.  
+#' @details The \code{ylim} is used to fix the Y-axis domain in order to have 
+#' consistent visualization.The X-axis is determined by the 
 #' datetime interval. 
+#' 
 #' 
 
 shiny_barplot <- 
