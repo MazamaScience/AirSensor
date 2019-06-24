@@ -32,77 +32,79 @@ jons_qc_1 <- function(
   
   # ----- Prepare data ---------------------------------------------------------
   
-  agg <-
+  hourlyData <-
     pat %>%
     pat_qc() %>%
     pat_aggregate(period = "1 hour") %>%
-    dplyr::mutate(min_count = pmin(pm25_A_count, pm25_B_count, na.rm = TRUE)) %>%
+    # Create pm25 by averaging the A and B channel aggregation means
     dplyr::mutate(pm25 = (pm25_A_mean + pm25_B_mean) / 2) %>%
+    # Calculate min_count and mean_diff for use in QC
+    dplyr::mutate(min_count = pmin(pm25_A_count, pm25_B_count, na.rm = TRUE)) %>%
     dplyr::mutate(mean_diff = abs(pm25_A_mean - pm25_B_mean)) %>%
-    # JONS_QC_1
+    # JONS_QC_1 follows
     dplyr::mutate(pm25_qc = pm25) %>%
-    # Invalidate data where:  (min_count < 10)
     # When only 1/3 of data are reporting, something is wrong.
+    # Invalidate data where:  (min_count < 10)
     dplyr::mutate(pm25_qc = replace(
       pm25_qc, 
       which(min_count < 10), 
       NA) 
     ) %>%
-    # Invalidate data where:  (p-value < 1e-4) & (mean_diff > 10)
     # When the means are significantly differnt AND 'large', something is wrong.
+    # Invalidate data where:  (p-value < 1e-4) & (mean_diff > 10)
     dplyr::mutate(pm25_qc = replace(
       pm25_qc,
       which( (pm25_p < 1e-4) & (mean_diff > 10) ),
       NA)
     ) %>% 
-    # Invalidate data where:  (mean < 100) & (mean_diff > 20)
     # A difference of 20 ug/m3 should only be seen at very high levels.
+    # Invalidate data where:  (mean < 100) & (mean_diff > 20)
     dplyr::mutate(pm25_qc = replace(
       pm25_qc,
       which( (pm25 < 100) & (mean_diff > 20) ),
       NA)
     )
-    
+  
   # ----- Create plots ---------------------------------------------------------
   
   # min count plot
   gg_min_count <- 
-    ggplot(agg, aes(datetime, min_count)) +
+    ggplot(hourlyData, aes(datetime, min_count)) +
     geom_point(shape = 15) +
     scale_y_continuous() + 
     ggtitle("A/B minimum count")
   
   # mean difference plot
   gg_mean_diff <- 
-    ggplot(agg, aes(datetime, mean_diff)) +
+    ggplot(hourlyData, aes(datetime, mean_diff)) +
     geom_point(shape = 15) +
     scale_y_log10() + 
     ggtitle("A/B difference")
   
   # p-value plot
   gg_pm25_p <- 
-    ggplot(agg, aes(datetime, pm25_p)) +
+    ggplot(hourlyData, aes(datetime, pm25_p)) +
     geom_point(shape = 15) +
     scale_y_log10() + 
     ggtitle("t-test p-value")
   
   # A B mean plot
   gg_pm25 <- 
-    ggplot(agg, aes(datetime, pm25)) +
+    ggplot(hourlyData, aes(datetime, pm25)) +
     geom_point(shape = 15) +
     scale_y_continuous() + 
     ggtitle("merged pm25 with no QC")
   
   # Jons_qc_1 plot
   gg_pm25_qc <- 
-    ggplot(agg, aes(datetime, pm25_qc)) +
+    ggplot(hourlyData, aes(datetime, pm25_qc)) +
     geom_point(shape = 15) +
     scale_y_continuous() + 
     ggtitle("merged pm25 with Jons QC 1")
   
   # A B means
   gg_AB_means <- 
-    agg %>%
+    hourlyData %>%
     dplyr::select(datetime, pm25_A_mean, pm25_B_mean) %>%
     tidyr::gather("channel", "value", -datetime) %>%
     

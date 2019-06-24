@@ -2,6 +2,7 @@
 
 export("%>%")
 export(.dateRange)
+export(airSensorQC_AB_01)
 export(ast_createAirSensor)
 export(createPATimeseriesObject)
 export(downloadParseSynopticData)

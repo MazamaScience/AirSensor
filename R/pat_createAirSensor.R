@@ -16,15 +16,10 @@
 #' greater than `max_t` will be marked as `NA`. This applies only to
 #' `parameter = "pm25"`.
 #'  
-#' @return List with \code{meta} and \code{data} elements on a uniform time 
-#' axis.
-#' 
 #' @description Aggregates data from a \code{pat} object into an "Air Sensor" 
 #' object that has appropriate metadata to be used with the *PWFSLSmoke* package.
 #'
 #' @return "as" object of aggregated time series PurpleAir data
-#' 
-#' @seealso \link{pat_createASTimeseries}
 #' 
 #' @examples 
 #' \dontrun{
@@ -96,31 +91,23 @@ pat_createAirSensor <- function(
       
       hourlyData <-
         aggregationStats %>%
-        dplyr::mutate(pm25 = .data$pm25_A_mean)
+        dplyr::mutate(pm25 = .data$pm25_A_mean) %>%
+        dplyr::mutate(pm25 = replace(.data$pm25, which(.data$pm25_A_count < min_count), NA) ) %>%
+        dplyr::select(.data$datetime, .data$pm25)
       
     } else if ( channel == "b" ) {
       
       hourlyData <-
         aggregationStats %>%
-        dplyr::mutate(pm25 = .data$pm25_B_mean)
+        dplyr::mutate(pm25 = .data$pm25_B_mean) %>%
+        dplyr::mutate(pm25 = replace(.data$pm25, which(.data$pm25_B_count < min_count), NA) ) %>%
+        dplyr::select(.data$datetime, .data$pm25)
       
     } else if ( channel == "ab" ) {
       
-      hourlyData <-
-        aggregationStats %>%
-        # Average together both channels
-        dplyr::mutate(pm25 = (.data$pm25_A_mean + .data$pm25_B_mean) / 2)
+      hourlyData <- airSensorQC_AB_01(aggregationStats)
       
     }
-    
-    hourlyData <-
-      hourlyData %>%
-      # Invalidate data where either channel has too few measurements
-      dplyr::mutate(pm25 = replace(.data$pm25, which(.data$pm25_A_count < min_count), NA) ) %>%
-      dplyr::mutate(pm25 = replace(.data$pm25, which(.data$pm25_B_count < min_count), NA) ) %>%
-      # Invlidate data where t-test is too high
-      dplyr::mutate(pm25 = replace(.data$pm25, which(abs(.data$pm25_t) > max_t), NA) ) %>%
-      dplyr::select(.data$datetime, .data$pm25)
     
   } else if ( parameter == "temperature" ) {
     

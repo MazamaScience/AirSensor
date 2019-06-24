@@ -27,9 +27,6 @@ greater than `max_t` will be marked as `NA`. This applies only to
 `parameter = "pm25"`.}
 }
 \value{
-List with \code{meta} and \code{data} elements on a uniform time 
-axis.
-
 "as" object of aggregated time series PurpleAir data
 }
 \description{
@@ -43,7 +40,4 @@ as <-
   pat_filterDate(20180701, 20180901) \%>\%
   pat_createAirSensor(period = "1 hour")
 }
-}
-\seealso{
-\link{pat_createASTimeseries}
 }
