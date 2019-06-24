@@ -12,7 +12,8 @@ the hourly aggregated data.
 * Dockerized AirShiny
 * Updated Namespace
 * Added `global.R` to improve clarity of scope
-* Added hex-sticker logo for AirShiny
+* Added hex-sticker logo for AirShiny 
+* Added `pas_within()` for spatial analysis
 
 # AirSensor 0.2.18
 
