@@ -17,10 +17,14 @@ shiny_barplot(pat, period, startdate, enddate, ylim = NULL)
 
 \item{enddate}{The end date. Used to provide the Datetime domain.}
 
-\item{ylim}{Fix the Y-axis domain in order to have consistent visualization.
-Provide a vector with upper and lower bounds. The X-axis is determined by the 
-datetime interval.}
+\item{ylim}{A vector of upper and lower bounds.}
 }
 \description{
-Bar plot for AirShiny
+A barplot that bins by period and preforms an average of 
+Channel A & B, or seperately. Intended for use with the AirShiny web app.
+}
+\details{
+The \code{ylim} is used to fix the Y-axis domain in order to have 
+consistent visualization.The X-axis is determined by the 
+datetime interval.
 }
