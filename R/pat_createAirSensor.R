@@ -22,9 +22,7 @@
 #' @description Aggregates data from a \code{pat} object into an "Air Sensor" 
 #' object that has appropriate metadata to be used with the *PWFSLSmoke* package.
 #'
-#' @return "as" object of aggregated time series PurpleAir data
-#' 
-#' @seealso \link{pat_createASTimeseries}
+#' @return "as" object of aggregated time series PurpleAir data.
 #' 
 #' @examples 
 #' \dontrun{
