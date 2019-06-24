@@ -1,4 +1,6 @@
-# AirSensor
+
+
+# AirSensor R Package <img src="man/figures/hex_sm.png" align="right"/>
 
 `Utilities to process and display PM2.5 data from PurpleAir`
 
@@ -32,7 +34,6 @@ dir.create('~/Data/Spatial', recursive=TRUE)
 setSpatialDataDir('~/Data/Spatial')
 installSpatialData()
 ```
-## Examples
 
 
 

@@ -7,29 +7,27 @@
 #    http://shiny.rstudio.com/
 #
 # - Mazama Science
-library(AirSensor)
-library(rlang)
-library(magrittr)
-# ---- Debug 
-pas <- AirSensor::pas_load()
-pas_community <- unique(pas$communityRegion) %>% na.omit()
-# ----
+#
 
-# Define UI for application 
+logger.debug("----- ui() -----")
+
+# ----- Define UI --------------------------------------------------------------
 shiny::shinyUI(
     shiny::navbarPage(
         
         # ----- Nav Bar --------------------------------------------------------
-        title = "AirShiny (Beta)", 
+        title = "AirShiny (Beta)",
+        theme = shinythemes::shinytheme("lumen"),
+        inverse = TRUE, 
         
-        ## ---- Tab 1 ----------------------------------------------------------
+        # ----- Tab 1 ----------------------------------------------------------
         shiny::tabPanel(
             
             title = "Interactive Map",
             
             shiny::fluidRow(
                 
-                #### ----- L Column  -------------------------------------------
+                # ----- L Column -----------------------------------------------
                 shiny::column(
                     
                     width = 2,
@@ -38,15 +36,9 @@ shiny::shinyUI(
                     shiny::selectInput(
                         inputId = "comm_select", 
                         label = "Community Selection", 
-                        choices = pas_community 
+                        choices = c("All..." = "all", 
+                                    PAS_COMM) 
                     ), 
-                    
-                    # PAS selection input
-                    shiny::selectInput(
-                        inputId = "pas_select",
-                        label = "Purple Air Sensor:", 
-                        choices = ""
-                    ),
                     
                     # End Date input 
                     shiny::dateInput(
@@ -70,11 +62,14 @@ shiny::shinyUI(
                         choices = c("Hourly Average" = "hourly_plot",
                                     "Daily Average" = "daily_plot",
                                     "Multi-sensor Raw Data" = "multi_plot")
-                    )
+                    ),
+                    
+                    # Display leaflet selection
+                    shiny::tableOutput(outputId = "selected_label")
                     
                 ), 
                 
-                ####----- R Column ---------------------------------------------
+                #----- R Column ------------------------------------------------
                 shiny::column(
                     
                     width = 10,
@@ -83,10 +78,7 @@ shiny::shinyUI(
                     leaflet::leafletOutput(
                         outputId = "leaflet", height = 550
                     ), 
-                    
-                    # # Debug text
-                    # shiny::textOutput("test"),
-                    
+
                     # Selected Plot
                     shiny::plotOutput(
                         outputId = "selected_plot", height = 270
@@ -98,15 +90,25 @@ shiny::shinyUI(
             
         ),
         
-        ## ----- Tab 2 ---------------------------------------------------------
+        # ----- Tab 2 ----------------------------------------------------------
         
         shiny::tabPanel(
             
             title = "Data Explorer",
             
+            # PAS selection input
+            shiny::column(
+                width = 2,
+                shiny::selectInput(
+                    inputId = "pas_select",
+                    label = "Purple Air Sensor:", 
+                    choices = ""
+                )
+            ),
+            
             # Meta explorer
             shiny::column( 
-                width = 11,
+                width = 9,
                 shiny::tableOutput(
                     outputId = "meta_explorer"
                 )
@@ -124,6 +126,16 @@ shiny::shinyUI(
             shiny::dataTableOutput(
                 outputId = "data_explorer"
             )
+            
+        ), 
+        
+        # ----- Tab 3 ----------------------------------------------------------
+        
+        shiny::tabPanel(
+            
+            title = "About"
+        
+            # TODO: Get an about section.  
             
         )
         

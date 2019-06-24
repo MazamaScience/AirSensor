@@ -162,11 +162,9 @@ pas_leaflet_shiny <- function(
 #' @param startdate The start date. Used to provide the Datetime domain.
 #' @param enddate The end date. Used to provide the Datetime domain.
 #' @param ylim Fix the Y-axis domain in order to have consistent visualization.
-#' Provide a vector with upper and lower bounds.
-#' Note: The X-axis is determined by the datetime interval.
+#' Provide a vector with upper and lower bounds. The X-axis is determined by the 
+#' datetime interval. 
 #' 
-
-# TODO: Improve documentation
 
 shiny_barplot <- 
   function(
@@ -180,25 +178,13 @@ shiny_barplot <-
     logger.debug(" # shiny_barplot() # ")
     
     ast <- 
-      AirSensor::pat_createASTimeseries(
+      AirSensor::pat_createAirSensor(
         pat = pat, 
-        period = period
+        period = period, 
+        channel = "ab"
       )
-    
-    # NOTE: This is a risky method and should be revised in order to avoid error
-    # NOTE: IF a channel is reporting erronous values, the avg will be skew
-    # TODO: Improve averaging
-    pm25_AB_avg <- 
-      ast$data %>% 
-      dplyr::select(
-        .data$pm25_A_mean, 
-        .data$pm25_B_mean
-      ) %>% 
-      dplyr::transmute(
-        pm25_AB_avg = 
-          (.data$pm25_A_mean + .data$pm25_B_mean) / 2
-      )
-    
+
+    # Plot
     pm25_plot <- 
       ast$data %>% 
       ggplot2::ggplot(
@@ -208,7 +194,7 @@ shiny_barplot <-
             enddate, 
             tzone = "America/Los_Angeles" 
           ), 
-          y = pm25_AB_avg
+          y = ast$data[[2]]
         )
       ) +
       ggplot2::ggtitle(
@@ -220,18 +206,24 @@ shiny_barplot <-
       ggplot2::theme_minimal() + 
       ggplot2::scale_fill_gradient(low = "#9733ee", high = "#da22ff")
 
+    # Average PM2.5 barplot
     pm25_avg_bar <- 
       ggplot2::geom_bar(                   
         data = ast$data,
         mapping = ggplot2::aes(
           x = .data$datetime, 
-          y = pm25_AB_avg[,1],
-          fill = pm25_AB_avg[,1]), 
+          y = ast$data[[2]],
+          fill = ast$data[[2]]), 
         stat = "identity",
         color = "gray95", 
         show.legend = FALSE
       )
     
-    return(pm25_plot + pm25_avg_bar)
+    gg <- 
+      pm25_plot + 
+      pm25_avg_bar
+     
+    
+    return(gg)
     
   }
