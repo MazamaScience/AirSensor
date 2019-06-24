@@ -4,13 +4,13 @@ Version: 0.3.0
 Title: Utilities to Process and Display PM2.5 data from Air Quality Sensors
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
+    person("Hans", "Martin", email="hansmrtn@gmail.com", role=c("aut")),
     person("Tate", "Brasel", email="tatebrasel6@gmail.com", role=c("aut")),
-    person("Hans", "Martin", email="hansmrtn@gmail.com", role=c("aut")), 
     person("Helen", "Miller", email="helen@ohana.org", role=c("aut"))
     )
 Author: Jonathan Callahan [aut, cre],
-    Tate Brasel [aut],
     Hans Martin [aut],
+    Tate Brasel [aut],
     Helen Miller [aut]
 Maintainer: Jonathan Callahan <jonathan.s.callahan@gmail.com>
 Depends:

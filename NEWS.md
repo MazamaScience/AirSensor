@@ -8,7 +8,11 @@ and aggregation to an houly axis.
 the hourly aggregated data. 
 * Updated AirShiny theme and include About section
 * Revamped AirShiny UI
-* Support for `pat_createAirSensor()` added to barplot
+* Support for `pat_createAirSensor()` added to barplot 
+* Dockerized AirShiny
+* Updated Namespace
+* Added `global.R` to improve clarity of scope
+* Added hex-sticker logo for AirShiny
 
 # AirSensor 0.2.18
 
