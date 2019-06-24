@@ -2,7 +2,7 @@ title: AirSensor
 
 template:
   params:
-    bootswatch: flatly
+    bootswatch: lumen
 
 navbar: 
   type: inverse
