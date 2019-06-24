@@ -5,7 +5,8 @@
 \title{Create an Air Sensor object}
 \usage{
 pat_createAirSensor(pat = NULL, period = "1 hour",
-  parameter = "pm25", channel = "ab", min_count = 10, max_t = 100)
+  parameter = "pm25", channel = "ab", qc_algorithm = "hourly_AB_01",
+  min_count = 10)
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries "pat" object}
@@ -19,12 +20,10 @@ pat_createAirSensor(pat = NULL, period = "1 hour",
 
 \item{channel}{Data channel to use for PM2.5 -- one of "a", "b or "ab".}
 
+\item{qc_algorithm}{Named QC algorithm to apply to hourly aggregation stats.}
+
 \item{min_count}{Aggregation bins with fewer than `min_count` measurements
 will be marked as `NA`.}
-
-\item{max_t}{Aggregation bins where the two-sample t-test statistic is 
-greater than `max_t` will be marked as `NA`. This applies only to
-`parameter = "pm25"`.}
 }
 \value{
 "as" object of aggregated time series PurpleAir data
@@ -32,12 +31,24 @@ greater than `max_t` will be marked as `NA`. This applies only to
 \description{
 Aggregates data from a \code{pat} object into an "Air Sensor" 
 object that has appropriate metadata to be used with the *PWFSLSmoke* package.
+
+Current QC algorithms exist for \code{channe = "ab"} and include:
+\itemize{
+\item{\code{hourly_AB_00}}
+\item{\code{hourly_AB_01}}
+}
+#'
 }
 \examples{
 \dontrun{
 as <- 
   example_pat \%>\%
   pat_filterDate(20180701, 20180901) \%>\%
-  pat_createAirSensor(period = "1 hour")
+  pat_createAirSensor()
 }
+}
+\seealso{
+airSensorQC_hourly_AB_00
+
+airSensorQC_hourly_AB_01
 }

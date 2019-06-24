@@ -1,3 +1,11 @@
+# AirSensor 0.3.1
+
+* Added quality control algorithms: `hourly_AB_00` and `hourly_AB_01`.
+* Updated `pat_cerateAirSensor()` to accept arguments that impact the conversion
+of `pat` data into aggregated period-averages: `period`, `channel`, `qc_algorithm`,
+`min_count`.
+* Fixed `pat_aggregate()` so that any `NaN` or `Inf` values are converted to `NA`.
+
 # AirSensor 0.3.0
 
 The *AirSensor* package is now almost feature complete with functions for QC

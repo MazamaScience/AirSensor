@@ -121,7 +121,11 @@ pat_aggregate <- function(
         .pat_agg(pat, "count", periodSeconds, parameters)
       ),
       by = "datetime"
-    )  
+    ) %>%
+    # Deal with periods that had no data where mean,min,max generated NaN or Inf
+    dplyr::mutate_all( function(x) replace(x, which(is.nan(x)), NA) ) %>%
+    dplyr::mutate_all( function(x) replace(x, which(is.infinite(x)), NA) )
+
   
   # Re-arrange order of columns to group by input column
   aggregationStats <-

@@ -10,23 +10,30 @@
 #' @param parameter parameter for which to create an \emph{as} object -- one of
 #' "pm25", "humidity" or "temperature".
 #' @param channel Data channel to use for PM2.5 -- one of "a", "b or "ab".
+#' @param qc_algorithm Named QC algorithm to apply to hourly aggregation stats.
 #' @param min_count Aggregation bins with fewer than `min_count` measurements
 #' will be marked as `NA`.
-#' @param max_t Aggregation bins where the two-sample t-test statistic is 
-#' greater than `max_t` will be marked as `NA`. This applies only to
-#' `parameter = "pm25"`.
 #'  
 #' @description Aggregates data from a \code{pat} object into an "Air Sensor" 
 #' object that has appropriate metadata to be used with the *PWFSLSmoke* package.
 #'
+#' Current QC algorithms exist for \code{channe = "ab"} and include:
+#' \itemize{
+#' \item{\code{hourly_AB_00}}
+#' \item{\code{hourly_AB_01}}
+#' }
+#' #' 
 #' @return "as" object of aggregated time series PurpleAir data
+#' 
+#' @seealso airSensorQC_hourly_AB_00
+#' @seealso airSensorQC_hourly_AB_01
 #' 
 #' @examples 
 #' \dontrun{
 #' as <- 
 #'   example_pat %>%
 #'   pat_filterDate(20180701, 20180901) %>%
-#'   pat_createAirSensor(period = "1 hour")
+#'   pat_createAirSensor()
 #' }
 
 pat_createAirSensor <- function(
@@ -34,8 +41,8 @@ pat_createAirSensor <- function(
   period = "1 hour",
   parameter = "pm25",
   channel = "ab",
-  min_count = 10,
-  max_t = 100
+  qc_algorithm = "hourly_AB_01",
+  min_count = 10
 ) {
   
   # ===== DEBUG ================================================================
@@ -46,8 +53,8 @@ pat_createAirSensor <- function(
     period = "1 hour"
     parameter = "pm25"
     channel = "ab"
+    qc_algorithm = "hourly_AB_01"
     min_count = 10
-    max_t = 100
     
   }  
   
@@ -69,6 +76,10 @@ pat_createAirSensor <- function(
   if ( !is.null(channel) ) {
     if ( !channel %in% c("a", "b", "ab") )
       stop("Required parameter 'channel' must be one of 'a', 'b' or 'ab'")
+  }
+  
+  if ( !qc_algorithm %in% c("hourly_AB_00", "hourly_AB_01") ) {
+    stop("Required parameter 'qc_algorithm' must be one of 'hourly_AB_00' or 'hourly_AB_01'")
   }
   
   # ----- Raw data QC ----------------------------------------------------------
@@ -105,7 +116,9 @@ pat_createAirSensor <- function(
       
     } else if ( channel == "ab" ) {
       
-      hourlyData <- airSensorQC_AB_01(aggregationStats)
+      functionName <- paste0("airSensorQC_", qc_algorithm)
+      FUNC <- get(functionName)
+      hourlyData <- FUNC(aggregationStats)
       
     }
     

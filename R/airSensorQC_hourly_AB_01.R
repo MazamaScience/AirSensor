@@ -5,6 +5,8 @@
 #' 
 #' @param aggregationStats Dataframe of statistics as returned by
 #' \code{pat_aggregate()}.
+#' @param min_count Aggregation bins with fewer than `min_count` measurements
+#' will be marked as `NA`.
 #'  
 #' @description Creates a \code{pm25} timeseries by averaging aggregated data
 #' from the A and B channels and applying the following QC logic:
@@ -24,16 +26,17 @@
 #'   example_pat %>%
 #'   pat_qc() %>%
 #'   pat_aggregate() %>%
-#'   airSensorQC_AB_01()
+#'   airSensorQC_hourly_AB_01()
 #'   
 #' plot(df)
 #' }
 
-airSensorQC_AB_01 <- function(
-  aggregationStats
+airSensorQC_hourly_AB_01 <- function(
+  aggregationStats,
+  min_count = 10
 ) {
   
-  # ----- QC_AB_01 -------------------------------------------------------------
+  # ----- hourly_AB_01 ---------------------------------------------------------
   
   hourlyData <-
     aggregationStats %>%
@@ -42,12 +45,12 @@ airSensorQC_AB_01 <- function(
     # Calculate min_count and mean_diff for use in QC
     dplyr::mutate(min_count = pmin(.data$pm25_A_count, .data$pm25_B_count, na.rm = TRUE)) %>%
     dplyr::mutate(mean_diff = abs(.data$pm25_A_mean - .data$pm25_B_mean)) %>%
-    # JONS_QC_1 follows
-    # When only 1/3 of data are reporting, something is wrong.
-    # Invalidate data where:  (min_count < 10)
+    # hourly_AB_01 follows
+    # When only a fraction of the data are reporting, something is wrong.
+    # Invalidate data where:  (min_count < SOME_THRESHOLD)
     dplyr::mutate(pm25 = replace(
       .data$pm25, 
-      which(.data$min_count < 10), 
+      which(.data$min_count < min_count), 
       NA) 
     ) %>%
     # When the means are significantly differnt AND 'large', something is wrong.
