@@ -11,19 +11,19 @@ pas_load(datestamp = strftime(lubridate::today("America/Los_Angeles"),
 \arguments{
 \item{datestamp}{A date string in ymd order.}
 
-\item{baseUrl}{Base URL for synoptic data.}
+\item{baseUrl}{The base URL for synoptic data.}
 }
 \value{
-Enhanced dataframe of synoptic Purple Air data.
+A \code{pa_synoptic} dataframe.
 }
 \description{
-A pre-generated \code{pa_synoptic} dataframe will be loaded for
-the given date. These files are generated each day at 4am California time
-and provide a record of all currently installed Purple Air sensors for the
-day of interest.
+A pre-generated \emph{pa_synoptic} dataframe will be loaded for
+  the given date. These files are generated each day at 4am California time
+  and provide a record of all currently installed Purple Air sensors for the
+  day of interest.
 
-The \code{datestamp} can be anything that is understood by \code{lubrdiate::ymd()}
-including either of the following recommended formats:
+  The \code{datestamp} can be anything that is understood by \code{lubrdiate::ymd()}
+  including either of the following recommended formats:
 
 \itemize{
 \item{\code{"YYYYmmdd"}}

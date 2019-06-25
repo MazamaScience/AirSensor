@@ -4,25 +4,25 @@
 #' 
 #' @title Static map of Purple Air sensors
 #' 
-#' @param pas \emph{pa_synoptic} object
-#' @param parameter Value to plot, e.g. \code{pm25_1hr}.
-#' @param palette base color or palette to be used. 
-#' @param mapTheme default is "terrain", see description for additional options
-#' @param mapShape default is "square", can also be "natural"
-#' @param direction legend color direction
-#' @param minScale default is 0, minimum value to set scale for color gradient
-#' @param maxScale default is 150, maximum value to set scale for color gradient
-#' @param shape symbol to use for points
-#' @param size size of points
-#' @param alpha opacity of points
-#' @param bbuff bounding box buffer, default is 0.1
-#' @param zoomAdjust adjustment to map zoom level (-1:3)
-#' @param ... additional options: the legend can disabled \code{guide = FALSE}, 
-#' and renamed with \code{name= "Example name"}. 
+#' @param pas A \emph{pa_synoptic} object
+#' @param parameter The value to plot, e.g. \code{pm25_1hr}.
+#' @param palette The base color or palette to be used. 
+#' @param mapTheme Default is "terrain", see description for additional options.
+#' @param mapShape Default is "square", can also be "natural".
+#' @param direction The legend color direction.
+#' @param minScale The minimum value to set scale for color gradient. Default is 0.
+#' @param maxScale The maximum value to set scale for color gradient. Default is 150.
+#' @param shape The symbol to use for points.
+#' @param size The size of points.
+#' @param alpha The opacity of points.
+#' @param bbuff The bounding box buffer. Default is 0.1.
+#' @param zoomAdjust Adjustment to map zoom level (-1:3).
+#' @param ... Additional options: the legend can disabled \code{guide = FALSE}, 
+#'   and renamed with \code{name= "Example name"}. 
 #'   
-#' @return ggplot object 
+#' @return A ggplot object.
 #' 
-#' @description Creates a static map of a \emph{pa_synoptic} object.
+#' @description Creates a static map of a \code{pa_synoptic} object
 #' 
 #' Users can create a map using any numeric data column within the
 #' \emph{pa_synoptic} object:
@@ -52,7 +52,6 @@
 #' LA_basin <- pas_load() %>% pas_filterArea(-118.5, -117.5, 33.5, 34.5)
 #' pas_staticMap(LA_basin, palette = "AQI", zoomAdjust = 1)
 #' }
-#' 
 
 pas_staticMap <- function(
   pas, 

@@ -5,13 +5,13 @@
 #' 
 #' @title Load Purple Air synoptic data
 #' 
-#' @description A pre-generated \code{pa_synoptic} dataframe will be loaded for
-#' the given date. These files are generated each day at 4am California time
-#' and provide a record of all currently installed Purple Air sensors for the
-#' day of interest.
+#' @description A pre-generated \emph{pa_synoptic} object will be loaded for
+#'   the given date. These files are generated each day at 4am California time
+#'   and provide a record of all currently installed Purple Air sensors for the
+#'   day of interest.
 #' 
-#' The \code{datestamp} can be anything that is understood by \code{lubrdiate::ymd()}
-#' including either of the following recommended formats:
+#'   The \code{datestamp} can be anything that is understood by \code{lubrdiate::ymd()}
+#'   including either of the following recommended formats:
 #' 
 #' \itemize{
 #' \item{\code{"YYYYmmdd"}}
@@ -21,9 +21,9 @@
 #' By default, today's date is used.
 #'
 #' @param datestamp A date string in ymd order.
-#' @param baseUrl Base URL for synoptic data.
+#' @param baseUrl The base URL for synoptic data.
 #' 
-#' @return Enhanced dataframe of synoptic Purple Air data.
+#' @return A \code{pa_synoptic} object
 #' 
 #' @seealso \link{pas_loadLatest}
 #' 
@@ -46,7 +46,7 @@ pas_load <- function(
   
   date <- lubridate::ymd(datestamp)
   
-  if ( datestamp < "20190404" ) 
+  if ( datestamp <= "20190404" ) 
     stop("No data is available prior to April 5, 2019.")
 
   # Allow datestamp to be one day past today to handle timezone differences

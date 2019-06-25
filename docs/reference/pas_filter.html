@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>General purpose PurpleAir synoptic filter — pas_filter • AirSensor</title>
+<title>General purpose pa_synoptic dataframe filter — pas_filter • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -18,7 +18,7 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/lumen/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -37,7 +37,7 @@
 
 
 
-<meta property="og:title" content="General purpose PurpleAir synoptic filter — pas_filter" />
+<meta property="og:title" content="General purpose pa_synoptic dataframe filter — pas_filter" />
 
 <meta property="og:description" content="A generalized data filter for pa_synoptic pas objects to 
 choose rows/cases where conditions are true. Rows where the condition 
@@ -72,7 +72,7 @@ evaluates to NA are dropped." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -138,7 +138,7 @@ evaluates to NA are dropped." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>General purpose PurpleAir synoptic filter</h1>
+    <h1>General purpose pa_synoptic dataframe filter</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pas_filter.R'><code>R/pas_filter.R</code></a></small>
     <div class="hidden name"><code>pas_filter.Rd</code></div>
     </div>
@@ -158,7 +158,7 @@ evaluates to NA are dropped.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pas</th>
-      <td><p>a pa_synoptic dataframe</p></td>
+      <td><p><em>pa_synoptic</em> dataframe</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -199,7 +199,7 @@ Only rows where the condition evaluates to TRUE are kept.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Jonathan Callahan, Tate Brasel, Hans Martin, Helen Miller.</p>
+  <p>Developed by Jonathan Callahan, Hans Martin, Tate Brasel, Helen Miller.</p>
 </div>
 
 <div class="pkgdown">

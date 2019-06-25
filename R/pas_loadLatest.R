@@ -3,7 +3,7 @@
 #' @importFrom dplyr filter
 #' @importFrom MazamaCoreUtils logger.debug
 #' 
-#' @title Get latest Purple Air synoptic data
+#' @title Load latest Purple Air synoptic data
 #' 
 #' @description Download, parse and enhance synoptic data from PurpleAir and
 #' return the results as a useful tibble with class \code{pa_synoptic}.
@@ -28,17 +28,17 @@
 #' Subsetting by country may be performed by specifying the \code{countryCodes}
 #' argument.
 #'
-#' @param baseUrl Base URL for synoptic data.
+#' @param baseUrl The base URL for synoptic data.
 #' @param countryCodes ISO country codes used to subset the data.
 #' @param includePWFSL Logical specifying whether to calculate distances from 
-#' PWFSL monitors.
-#' @param lookbackDays Number of days to "look back" for valid data. Data are
-#' filtered to only include sensors with data more recent than 
-#' \code{lookbackDays} ago.
+#'   PWFSL monitors.
+#' @param lookbackDays The number of days to "look back" for valid data. Data are
+#'   filtered to only include sensors with data more recent than 
+#'   \code{lookbackDays} ago.
 #' 
-#' @return Enhanced dataframe of synoptic Purple Air data.
+#' @return A \emph{pa_synoptic} dataframe.
 #' 
-#' @seealso \link{downloadParseSynopticData}
+#' @seealso \link{pas_load}, \link{downloadParseSynopticData}
 #' 
 #' @examples
 #' \dontrun{

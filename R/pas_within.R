@@ -1,20 +1,25 @@
-#' 
 #' @export
+#' 
 #' @title Find Purple Air sensors within radial distance
-#' @param pas a pa_synoptic dataframe
-#' @param label a target (centered) Purple Air sensor label 
-#' @param radius a distance with unit (i.e "15 km")
 #' 
-#' @description Calculate Purple Air sensors within a specified distance from 
-#' a target Purple Air sensor.
+#' @param pas A \code{pa_synoptic} object.
+#' @param label A target (centered) Purple Air sensor label.
+#' @param radius A distance with unit (i.e "15 km").
 #' 
-#' @details \code{radius} should be a numeric string with provided metric unit,
+#' @description Filter for Purple Air sensors within a specified distance from 
+#' a target Purple Air sensor.  
+#' 
+#' @details \code{radius} Should be a numeric string with provided metric unit separated by a space,
 #' such as \code{"250 m"}.
 #'
-#' @return a pa_synoptic object
-#'
-#' @examples pas_within(example_pas,"SaratogaMiddleHighSchool", "1024 km")
+#' @return A subset of the given \code{pa_synoptic} object.
 #' 
+#' @seealso \link{pas_filter}, \link{pas_filterArea}
+#'
+#' @examples 
+#' \dontrun{
+#' pas_within(example_pas, "SaratogaMiddleHighSchool", "1024 km")
+#' }
 
 pas_within <- function(
   pas,

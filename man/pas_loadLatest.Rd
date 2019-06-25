@@ -2,25 +2,25 @@
 % Please edit documentation in R/pas_loadLatest.R
 \name{pas_loadLatest}
 \alias{pas_loadLatest}
-\title{Get latest Purple Air synoptic data}
+\title{Load latest Purple Air synoptic data}
 \usage{
 pas_loadLatest(baseUrl = "https://www.purpleair.com/json",
   countryCodes = c("US"), includePWFSL = TRUE, lookbackDays = 1)
 }
 \arguments{
-\item{baseUrl}{Base URL for synoptic data.}
+\item{baseUrl}{The base URL for synoptic data.}
 
 \item{countryCodes}{ISO country codes used to subset the data.}
 
 \item{includePWFSL}{Logical specifying whether to calculate distances from 
 PWFSL monitors.}
 
-\item{lookbackDays}{Number of days to "look back" for valid data. Data are
+\item{lookbackDays}{The number of days to "look back" for valid data. Data are
 filtered to only include sensors with data more recent than 
 \code{lookbackDays} ago.}
 }
 \value{
-Enhanced dataframe of synoptic Purple Air data.
+A \emph{pa_synoptic} dataframe.
 }
 \description{
 Download, parse and enhance synoptic data from PurpleAir and
@@ -53,5 +53,5 @@ pas <- pas_loadLatest()
 }
 }
 \seealso{
-\link{downloadParseSynopticData}
+\link{pas_load}, \link{downloadParseSynopticData}
 }

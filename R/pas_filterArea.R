@@ -1,19 +1,20 @@
 #' @export
 #' @importFrom rlang .data
 #' 
-#' @title Area filtering for \emph{pas} objects
+#' @title Area filtering for \emph{pa_synoptic} objects
 #' 
-#' @param pas \emph{pa_synoptic} dataframe
-#' @param w west edge of bounding box (deg E)
-#' @param e east edge of bounding box (deg E)
-#' @param s south edge of bounding box (deg N)
-#' @param n north edge of bounding box (deg N)
+#' @param pas A \emph{pa_synoptic} object.
+#' @param w West edge of area bounding box (deg E).
+#' @param e East edge of area bounding box (deg E).
+#' @param s South edge of area bounding box (deg N).
+#' @param n North edge of area bounding box (deg N).
 #' 
-#' @description Filters \emph{pa_synoptic} objects based on a bounding box.
+#' @description Filters \emph{pa_synoptic} object sensors based on a bounding box.
 #' 
-#' @return A subset of the incoming \code{pas}.
+#' @return A subset of the given \emph{pa_synoptic} object.
 #' 
-#' @seealso \link{pas_load}
+#' @seealso \link{pas_filter}, \link{pas_within}
+#' 
 #' @examples
 #' pas <- example_pas
 #' range(pas$longitude)
@@ -26,7 +27,7 @@
 #'                  n = 33.78)
 #' range(scsb$longitude)
 #' range(scsb$latitude)
-#'
+
 pas_filterArea <- function(
   pas,
   w = NULL,
@@ -46,7 +47,7 @@ pas_filterArea <- function(
   if ( is.null(w) ) w <- min(pas$longitude, na.rm = TRUE)
   if ( is.null(e) ) e <- max(pas$longitude, na.rm = TRUE)
   if ( is.null(s) ) s <- min(pas$latitude, na.rm = TRUE)
-  if ( is.null(n) ) n <- min(pas$latitude, na.rm = TRUE)
+  if ( is.null(n) ) n <- max(pas$latitude, na.rm = TRUE)
   
   # Filter the tibble ----------------------------------------------------------
   

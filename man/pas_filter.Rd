@@ -2,24 +2,24 @@
 % Please edit documentation in R/pas_filter.R
 \name{pas_filter}
 \alias{pas_filter}
-\title{General purpose PurpleAir synoptic filter}
+\title{General purpose \emph{pa_synoptic} dataframe filter}
 \usage{
 pas_filter(pas, ...)
 }
 \arguments{
-\item{pas}{a pa_synoptic dataframe}
+\item{pas}{A \emph{pa_synoptic} dataframe.}
 
 \item{...}{Logical predicates defined in terms of the variables in the 
 \code{pas}. Multiple conditions are combined with & or seperated by a comma. 
 Only rows where the condition evaluates to TRUE are kept.}
 }
 \value{
-a pa_synoptic object
+A subset of the incoming \emph{pa_synoptic} dataframe.
 }
 \description{
-A generalized data filter for pa_synoptic \emph{pas} objects to 
-choose rows/cases where conditions are true. Rows where the condition 
-evaluates to NA are dropped.
+A generalized data filter for \emph{pa_synoptic} dataframes to 
+  choose rows/cases where conditions are true. Rows where the condition 
+  evaluates to NA are dropped.
 }
 \examples{
 \dontrun{
@@ -27,5 +27,5 @@ californiaSensors <- pas_filter(pas, stateCode == "CA")
 }
 }
 \seealso{
-\link{pas_load}
+\link{pas_filterArea}, \link{pas_within}
 }
