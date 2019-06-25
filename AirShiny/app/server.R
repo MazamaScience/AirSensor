@@ -132,7 +132,7 @@ shiny::shinyServer(
                 
                 if ( input$plot_type_select == "daily_plot" ) {
                     
-                    AirSensor::shiny_barplot(
+                    AirSensor::AirShiny_barplot(
                         pat, 
                         period = "1 day", 
                         startdate = d[1], 
@@ -145,7 +145,7 @@ shiny::shinyServer(
                     
                 }  else if ( input$plot_type_select == "hourly_plot" ) {
                     
-                    AirSensor::shiny_barplot(
+                    AirSensor::AirShiny_barplot(
                         pat, 
                         period = "1 hour",
                         startdate = d[1], 

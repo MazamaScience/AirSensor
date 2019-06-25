@@ -33,6 +33,9 @@ pas_within <- function(
   if ( is.null(label) ) 
     stop("Required parameter 'label' is missing")
   
+  if ( !stringr::str_ends(radius, "[ km]") )
+    stop("Raidus requires a unit and format (i.e '1 m' or '1 km')")
+   
   r_split <- 
     stringr::str_split(
       string = radius, 
