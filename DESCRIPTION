@@ -17,7 +17,7 @@ Depends:
     R (>= 3.1.0)
 Imports:
     countrycode,
-    dplyr,
+    dplyr (>= 0.8.1),
     dygraphs,
     geosphere,
     GGally,
