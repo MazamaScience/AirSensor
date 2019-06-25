@@ -28,6 +28,12 @@
 30 04 * * *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2019:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201901
 
 
+# ----- Create "airsensor" files after the "pat" file --------------------------------
+
+# joule
+50 04 * * *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2019:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$
+
+
 # ----- Create a 2018 "pat" archive on joule -----------------------------------------
 
 12 01 18 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2018:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201801
