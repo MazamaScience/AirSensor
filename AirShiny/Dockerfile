@@ -3,8 +3,8 @@ FROM rocker/shiny:3.6.0
 LABEL maintainer="hans@mazamascience.com" \
       maintainer="jon@mazamascience.com"
  
-LABEL build_date="2019-06-21"
-LABEL version="1.0"
+LABEL build_date="2019-06-25"
+LABEL version="1.1"
 
 LABEL description="AirShiny Docker Image"
 
@@ -85,10 +85,10 @@ COPY app /srv/shiny-server/
 RUN chmod -R 755 /srv/shiny-server/
 
 # Copy the AirSensor package to image
-COPY AirSensor_0.3.0.tar.gz /
+COPY AirSensor_0.3.1.tar.gz /
 
 # Install the AirSensor package
-RUN R CMD INSTALL AirSensor_0.3.0.tar.gz
+RUN R CMD INSTALL AirSensor_0.3.1.tar.gz
 
 # Port 
 EXPOSE 3838
