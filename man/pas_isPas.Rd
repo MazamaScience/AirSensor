@@ -2,12 +2,12 @@
 % Please edit documentation in R/utils-paSynoptic.R
 \name{pas_isPas}
 \alias{pas_isPas}
-\title{Test for correct structure in a \emph{pas} object}
+\title{Test for correct structure in a \emph{pa_synoptic} object}
 \usage{
 pas_isPas(pas)
 }
 \arguments{
-\item{pas}{\emph{pas} object}
+\item{pas}{A \emph{pa_synoptic} object.}
 }
 \value{
 \code{TRUE} if \code{pas} has the correct structure, \code{FALSE} otherwise.

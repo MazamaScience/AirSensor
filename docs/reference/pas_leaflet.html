@@ -40,7 +40,7 @@
 <meta property="og:title" content="Leaflet interactive map of Purple Air sensors — pas_leaflet" />
 
 <meta property="og:description" content="This function creates interactive maps that will be displayed in 
-RStudio's 'Viewer' tab.
+  RStudio's 'Viewer' tab.
 Typical usage would be to use the parameter argument to display pm25 
 values from one of:
 &quot;pm25_current&quot;
@@ -52,7 +52,7 @@ values from one of:
 &quot;pm25_1week&quot;
 " />
 
-<meta property="og:description" content="Auxillary parameter arguments can be usd to display various Purple Air 
+<meta property="og:description" content="Auxillary parameter arguments can be used to display various Purple Air 
 sensor data. Currently supported parameter arguments include:
 &quot;humidity&quot;
 &quot;pressure&quot;
@@ -89,7 +89,7 @@ sensor data. Currently supported parameter arguments include:
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
       </span>
     </div>
 
@@ -163,7 +163,7 @@ sensor data. Currently supported parameter arguments include:
     <div class="ref-description">
     
     <p>This function creates interactive maps that will be displayed in 
-RStudio's 'Viewer' tab.</p>
+  RStudio's 'Viewer' tab.</p>
 <p>Typical usage would be to use the <code>parameter</code> argument to display pm25 
 values from one of:</p><ul>
 <li><p>"pm25_current"</p></li>
@@ -175,7 +175,7 @@ values from one of:</p><ul>
 <li><p>"pm25_1week"</p></li>
 </ul>
 
-    <p>Auxillary <code>parameter</code> arguments can be usd to display various Purple Air 
+    <p>Auxillary <code>parameter</code> arguments can be used to display various Purple Air 
 sensor data. Currently supported <code>parameter</code> arguments include:</p><ul>
 <li><p>"humidity"</p></li>
 <li><p>"pressure"</p></li>
@@ -194,11 +194,11 @@ sensor data. Currently supported <code>parameter</code> arguments include:</p><u
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pas</th>
-      <td><p>Enhanced dataframe of PurpleAir synoptic data.</p></td>
+      <td><p>A <em>pa_synoptic</em> object</p></td>
     </tr>
     <tr>
       <th>parameter</th>
-      <td><p>Value to plot, e.g. <code>pm25_1hr</code>.</p></td>
+      <td><p>The value to plot, e.g. <code>pm25_1hr</code>.</p></td>
     </tr>
     <tr>
       <th>paletteName</th>
@@ -211,15 +211,15 @@ sensor data. Currently supported <code>parameter</code> arguments include:</p><u
     </tr>
     <tr>
       <th>radius</th>
-      <td><p>Radius (pixels) of monitor circles.</p></td>
+      <td><p>The radius (pixels) of monitor circles.</p></td>
     </tr>
     <tr>
       <th>opacity</th>
-      <td><p>Opacity of monitor circles.</p></td>
+      <td><p>The opacity of monitor circles.</p></td>
     </tr>
     <tr>
       <th>maptype</th>
-      <td><p>Optional name of leaflet ProviderTiles to use, e.g. <code>terrain</code>.</p></td>
+      <td><p>An optional name of leaflet ProviderTiles to use, e.g. <code>terrain</code>.</p></td>
     </tr>
     <tr>
       <th>outsideOnly</th>
@@ -235,7 +235,7 @@ Rstudio's 'Viewer' tab.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The <code>maptype</code> argument is mapped onto leaflet "ProviderTile" 
-names. Current mappings include:</p><ol>
+  names. Current mappings include:</p><ol>
 <li><p>"roadmap" -- "OpenStreetMap"</p></li>
 <li><p>"satellite" -- "Esri.WorldImagery"</p></li>
 <li><p>"terrain" -- "Esri.WorldTopoMap"</p></li>

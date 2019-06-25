@@ -2,12 +2,12 @@
 % Please edit documentation in R/utils-paSynoptic.R
 \name{pas_isEmpty}
 \alias{pas_isEmpty}
-\title{Test for an empty \emph{pas} object}
+\title{Test for an empty \emph{pa_synoptic} object}
 \usage{
 pas_isEmpty(pas)
 }
 \arguments{
-\item{pas}{\emph{pas} object}
+\item{pas}{A \emph{pa+synoptic} object.}
 }
 \value{
 \code{TRUE} if no data exist in \code{pas}, \code{FALSE} otherwise.

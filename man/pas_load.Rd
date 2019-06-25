@@ -14,10 +14,10 @@ pas_load(datestamp = strftime(lubridate::today("America/Los_Angeles"),
 \item{baseUrl}{The base URL for synoptic data.}
 }
 \value{
-A \code{pa_synoptic} dataframe.
+A \code{pa_synoptic} object
 }
 \description{
-A pre-generated \emph{pa_synoptic} dataframe will be loaded for
+A pre-generated \emph{pa_synoptic} object will be loaded for
   the given date. These files are generated each day at 4am California time
   and provide a record of all currently installed Purple Air sensors for the
   day of interest.

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Color palettes for PurpleAir — pas_palette • AirSensor</title>
+<title>Bar plot for AirShiny — AirShiny_barplot • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,10 +37,10 @@
 
 
 
-<meta property="og:title" content="Color palettes for PurpleAir — pas_palette" />
+<meta property="og:title" content="Bar plot for AirShiny — AirShiny_barplot" />
 
-<meta property="og:description" content="Generates color palettes for PurpleAir synoptic data with the 
-intention of having a reproducible functional color generator." />
+<meta property="og:description" content="A barplot that bins by period and preforms an average of 
+Channel A &amp;amp; B, or seperately. Intended for use with the AirShiny web app." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -137,51 +137,52 @@ intention of having a reproducible functional color generator." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Color palettes for PurpleAir</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/utils-plot.R'><code>R/utils-plot.R</code></a></small>
-    <div class="hidden name"><code>pas_palette.Rd</code></div>
+    <h1>Bar plot for AirShiny</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/utils-shiny.R'><code>R/utils-shiny.R</code></a></small>
+    <div class="hidden name"><code>AirShiny_barplot.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Generates color palettes for PurpleAir synoptic data with the 
-intention of having a reproducible functional color generator.</p>
+    <p>A barplot that bins by period and preforms an average of 
+Channel A &amp; B, or seperately. Intended for use with the AirShiny web app.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pas_palette</span>(<span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>paletteName</span> <span class='kw'>=</span> <span class='st'>"AQI"</span>, <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>"pm25_1hr"</span>,
-  <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>AirShiny_barplot</span>(<span class='no'>pat</span>, <span class='no'>period</span>, <span class='no'>startdate</span>, <span class='no'>enddate</span>, <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pas</th>
-      <td><p>Enhanced data frame of PurpleAir synoptic data.</p></td>
+      <th>pat</th>
+      <td><p>PurpleAir Timeseries "pat" object from <code><a href='pat_loadLatest.html'>pat_loadLatest()</a></code></p></td>
     </tr>
     <tr>
-      <th>paletteName</th>
-      <td><p>A predefined color palette name. Can be of the following:</p><ul>
-<li><p>"AQI"</p></li>
-<li><p>"humidity</p></li>
-<li><p>"temperature</p></li>
-<li><p>"distance"</p></li>
-</ul></td>
+      <th>period</th>
+      <td><p>The time period to average to. Can be "sec", "min", "hour", 
+"day", "DSTday", "week", "month", "quarter" or "year". A number can also
+ precede these options followed by a space (i.e. "2 day" or "37 min").</p></td>
     </tr>
     <tr>
-      <th>parameter</th>
-      <td><p>Value to generate colors for, e.g. <code>pm25_1hr</code>.</p></td>
+      <th>startdate</th>
+      <td><p>The start date. Used to provide the Datetime domain.</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>Additional arguments passed on to <code>leaflet::color~</code> functions.</p></td>
+      <th>enddate</th>
+      <td><p>The end date. Used to provide the Datetime domain.</p></td>
+    </tr>
+    <tr>
+      <th>ylim</th>
+      <td><p>A vector of upper and lower bounds.</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>An object that consists of a label and color dataframe, and
-calculated color values from PurpleAir sensors</p>
+    <p>The <code>ylim</code> is used to fix the Y-axis domain in order to have 
+consistent visualization.The X-axis is determined by the 
+datetime interval.</p>
     
 
   </div>
@@ -190,7 +191,7 @@ calculated color values from PurpleAir sensors</p>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#value">Value</a></li>
+      <li><a href="#details">Details</a></li>
           </ul>
 
   </div>

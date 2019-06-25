@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Color palettes for PurpleAir — pas_palette • AirSensor</title>
+<title>Load hourly-aggregated Purple Air data — airsensor_load • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,10 +37,20 @@
 
 
 
-<meta property="og:title" content="Color palettes for PurpleAir — pas_palette" />
+<meta property="og:title" content="Load hourly-aggregated Purple Air data — airsensor_load" />
 
-<meta property="og:description" content="Generates color palettes for PurpleAir synoptic data with the 
-intention of having a reproducible functional color generator." />
+<meta property="og:description" content="A pre-generated airsensor object will be loaded for
+the given time interval. Archived data for SCAQMD sensors go back to 
+January, 2018.
+Dates can be anything that is understood by 
+lubrdiate::parse_date_time() including either of the following 
+recommended formats:
+
+&quot;YYYYmmdd&quot;
+&quot;YYYY-mm-dd&quot;
+" />
+
+<meta property="og:description" content="By default, the current week is loaded." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -137,53 +147,75 @@ intention of having a reproducible functional color generator." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Color palettes for PurpleAir</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/utils-plot.R'><code>R/utils-plot.R</code></a></small>
-    <div class="hidden name"><code>pas_palette.Rd</code></div>
+    <h1>Load hourly-aggregated Purple Air data</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/airsensor_load.R'><code>R/airsensor_load.R</code></a></small>
+    <div class="hidden name"><code>airsensor_load.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Generates color palettes for PurpleAir synoptic data with the 
-intention of having a reproducible functional color generator.</p>
+    <p>A pre-generated <code>airsensor</code> object will be loaded for
+the given time interval. Archived data for SCAQMD sensors go back to 
+January, 2018.</p>
+<p>Dates can be anything that is understood by 
+<code>lubrdiate::parse_date_time()</code> including either of the following 
+recommended formats:</p>
+<ul>
+<li><p><code>"YYYYmmdd"</code></p></li>
+<li><p><code>"YYYY-mm-dd"</code></p></li>
+</ul>
+
+    <p>By default, the current week is loaded.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pas_palette</span>(<span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>paletteName</span> <span class='kw'>=</span> <span class='st'>"AQI"</span>, <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>"pm25_1hr"</span>,
-  <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>airsensor_load</span>(<span class='kw'>collection</span> <span class='kw'>=</span> <span class='st'>"scaqmd"</span>, <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>days</span> <span class='kw'>=</span> <span class='fl'>7</span>, <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='st'>"America/Los_Angeles"</span>,
+  <span class='kw'>baseUrl</span> <span class='kw'>=</span> <span class='st'>"http://smoke.mazamascience.com/data/PurpleAir/airsensor"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pas</th>
-      <td><p>Enhanced data frame of PurpleAir synoptic data.</p></td>
+      <th>collection</th>
+      <td><p>Name associated with the collection.</p></td>
     </tr>
     <tr>
-      <th>paletteName</th>
-      <td><p>A predefined color palette name. Can be of the following:</p><ul>
-<li><p>"AQI"</p></li>
-<li><p>"humidity</p></li>
-<li><p>"temperature</p></li>
-<li><p>"distance"</p></li>
-</ul></td>
+      <th>startdate</th>
+      <td><p>Desired start datetime (ISO 8601).</p></td>
     </tr>
     <tr>
-      <th>parameter</th>
-      <td><p>Value to generate colors for, e.g. <code>pm25_1hr</code>.</p></td>
+      <th>enddate</th>
+      <td><p>Desired end datetime (ISO 8601).</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>Additional arguments passed on to <code>leaflet::color~</code> functions.</p></td>
+      <th>days</th>
+      <td><p>Number of days of data to include.</p></td>
+    </tr>
+    <tr>
+      <th>timezone</th>
+      <td><p>Timezone used to interpret datestamp.</p></td>
+    </tr>
+    <tr>
+      <th>baseUrl</th>
+      <td><p>Base URL for the <code>airsensor</code> data archive.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object that consists of a label and color dataframe, and
-calculated color values from PurpleAir sensors</p>
+    <p>An object of class "airsensor".</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='airsensor_loadMonth.html'>airsensor_loadMonth</a></p></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='fu'>airsensor_load</span>(<span class='st'>"scaqmd"</span>, <span class='fl'>20190411</span>, <span class='fl'>20190521</span>) <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>PWFSLSmoke</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/PWFSLSmoke/topics/monitor_timeseriesPlot'>monitor_timeseriesPlot</a></span>(<span class='kw'>style</span> <span class='kw'>=</span> <span class='st'>'gnats'</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -191,7 +223,11 @@ calculated color values from PurpleAir sensors</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-          </ul>
+
+      <li><a href="#see-also">See also</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

@@ -39,7 +39,7 @@
 
 <meta property="og:title" content="Find Purple Air sensors within radial distance — pas_within" />
 
-<meta property="og:description" content="Calculate Purple Air sensors within a specified distance from 
+<meta property="og:description" content="Filter for Purple Air sensors within a specified distance from 
 a target Purple Air sensor." />
 <meta name="twitter:card" content="summary" />
 
@@ -71,7 +71,7 @@ a target Purple Air sensor." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
       </span>
     </div>
 
@@ -144,7 +144,7 @@ a target Purple Air sensor." />
 
     <div class="ref-description">
     
-    <p>Calculate Purple Air sensors within a specified distance from 
+    <p>Filter for Purple Air sensors within a specified distance from 
 a target Purple Air sensor.</p>
     
     </div>
@@ -156,55 +156,36 @@ a target Purple Air sensor.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pas</th>
-      <td><p>a pa_synoptic dataframe</p></td>
+      <td><p>A <code>pa_synoptic</code> object.</p></td>
     </tr>
     <tr>
       <th>label</th>
-      <td><p>a target (centered) Purple Air sensor label</p></td>
+      <td><p>A target (centered) Purple Air sensor label.</p></td>
     </tr>
     <tr>
       <th>radius</th>
-      <td><p>a distance with unit (i.e "15 km")</p></td>
+      <td><p>A distance with unit (i.e "15 km").</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a pa_synoptic object</p>
+    <p>A subset of the given <code>pa_synoptic</code> object.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>radius</code> should be a numeric string with provided metric unit,
+    <p><code>radius</code> Should be a numeric string with provided metric unit separated by a space,
 such as <code>"250 m"</code>.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='pas_filter.html'>pas_filter</a>, <a href='pas_filterArea.html'>pas_filterArea</a></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>pas_within</span>(<span class='no'>example_pas</span>,<span class='st'>"SaratogaMiddleHighSchool"</span>, <span class='st'>"1024 km"</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1,244 x 40</span><span>
-#&gt;    ID    label DEVICE_LOCATION… THINGSPEAK_PRIM… THINGSPEAK_PRIM…
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>           
-#&gt; </span><span style='color: #555555;'> 1</span><span> 8304  MDAQ… outside          443822           R3OIPMBF7EIE8WBK
-#&gt; </span><span style='color: #555555;'> 2</span><span> 8305  MDAQ… </span><span style='color: #BB0000;'>NA</span><span>               443824           Q20INRIJMQG3W00Z
-#&gt; </span><span style='color: #555555;'> 3</span><span> 10808 1-80… outside          496465           NJQEPVB0BHDCQKXA
-#&gt; </span><span style='color: #555555;'> 4</span><span> 10809 1-80… </span><span style='color: #BB0000;'>NA</span><span>               496467           U9BJQDBKB38741GM
-#&gt; </span><span style='color: #555555;'> 5</span><span> 5460  1027… outside          385885           5CPPE62979927J8N
-#&gt; </span><span style='color: #555555;'> 6</span><span> 5461  1027… </span><span style='color: #BB0000;'>NA</span><span>               385887           8JBNGZA8AFWCTCCX
-#&gt; </span><span style='color: #555555;'> 7</span><span> 2890  1092… outside          317401           R3CUAV2V4SX026VA
-#&gt; </span><span style='color: #555555;'> 8</span><span> 2891  1092… </span><span style='color: #BB0000;'>NA</span><span>               317403           N0C47KQZJV6AU8DI
-#&gt; </span><span style='color: #555555;'> 9</span><span> 5416  121 … outside          385210           PAWKOGOH2HL1W1LB
-#&gt; </span><span style='color: #555555;'>10</span><span> 5417  121 … </span><span style='color: #BB0000;'>NA</span><span>               385214           IR3SBZIJ3NHW1581
-#&gt; </span><span style='color: #555555;'># … with 1,234 more rows, and 35 more variables: THINGSPEAK_SECONDARY_ID </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   THINGSPEAK_SECONDARY_ID_READ_KEY </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, latitude </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, longitude </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
-#&gt; #   pm25 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, lastSeenDate </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, sensorType </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, flag_hidden </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>,
-#&gt; #   isOwner </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, temperature </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, humidity </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, pressure </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
-#&gt; #   age </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, parentID </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, flag_highValue </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>,
-#&gt; #   flag_attenuation_hardware </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>, pm25_current </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, pm25_10min </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
-#&gt; #   pm25_30min </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, pm25_1hr </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, pm25_6hr </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, pm25_1day </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
-#&gt; #   pm25_1week </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, statsLastModifiedDate </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>,
-#&gt; #   statsLastModifiedInterval </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, countryCode </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, stateCode </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   timezone </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, airDistrict </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, pwfsl_closestDistance </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
-#&gt; #   pwfsl_closestMonitorID </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, sensorManufacturer </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
-#&gt; #   targetPollutant </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, technologyType </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, communityRegion </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span></div><div class='input'>
-</div></span></pre>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='fu'>pas_within</span>(<span class='no'>example_pas</span>, <span class='st'>"SaratogaMiddleHighSchool"</span>, <span class='st'>"1024 km"</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -214,6 +195,8 @@ such as <code>"250 m"</code>.</p>
       <li><a href="#value">Value</a></li>
 
       <li><a href="#details">Details</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

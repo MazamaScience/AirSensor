@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Color palettes for PurpleAir — pas_palette • AirSensor</title>
+<title>Leaflet interactive map for use with AirShiny — AirShiny_leaflet • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,10 +37,10 @@
 
 
 
-<meta property="og:title" content="Color palettes for PurpleAir — pas_palette" />
+<meta property="og:title" content="Leaflet interactive map for use with AirShiny — AirShiny_leaflet" />
 
-<meta property="og:description" content="Generates color palettes for PurpleAir synoptic data with the 
-intention of having a reproducible functional color generator." />
+<meta property="og:description" content="This function creates interactive maps that will be displayed in 
+AirShiny web-app." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -137,51 +137,69 @@ intention of having a reproducible functional color generator." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Color palettes for PurpleAir</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/utils-plot.R'><code>R/utils-plot.R</code></a></small>
-    <div class="hidden name"><code>pas_palette.Rd</code></div>
+    <h1>Leaflet interactive map for use with AirShiny</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/utils-shiny.R'><code>R/utils-shiny.R</code></a></small>
+    <div class="hidden name"><code>AirShiny_leaflet.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Generates color palettes for PurpleAir synoptic data with the 
-intention of having a reproducible functional color generator.</p>
+    <p>This function creates interactive maps that will be displayed in 
+AirShiny web-app.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pas_palette</span>(<span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>paletteName</span> <span class='kw'>=</span> <span class='st'>"AQI"</span>, <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>"pm25_1hr"</span>,
-  <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>AirShiny_leaflet</span>(<span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>"pm25_1hr"</span>,
+  <span class='kw'>paletteName</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>radius</span> <span class='kw'>=</span> <span class='fl'>11</span>, <span class='kw'>opacity</span> <span class='kw'>=</span> <span class='fl'>0.8</span>,
+  <span class='kw'>maptype</span> <span class='kw'>=</span> <span class='st'>"terrain"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pas</th>
-      <td><p>Enhanced data frame of PurpleAir synoptic data.</p></td>
-    </tr>
-    <tr>
-      <th>paletteName</th>
-      <td><p>A predefined color palette name. Can be of the following:</p><ul>
-<li><p>"AQI"</p></li>
-<li><p>"humidity</p></li>
-<li><p>"temperature</p></li>
-<li><p>"distance"</p></li>
-</ul></td>
+      <td><p>Enhanced dataframe of PurpleAir synoptic data.</p></td>
     </tr>
     <tr>
       <th>parameter</th>
-      <td><p>Value to generate colors for, e.g. <code>pm25_1hr</code>.</p></td>
+      <td><p>Value to plot, e.g. <code>pm25_1hr</code>.</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>Additional arguments passed on to <code>leaflet::color~</code> functions.</p></td>
+      <th>paletteName</th>
+      <td><p>A predefined color palette name.</p></td>
+    </tr>
+    <tr>
+      <th>radius</th>
+      <td><p>Radius (pixels) of monitor circles.</p></td>
+    </tr>
+    <tr>
+      <th>opacity</th>
+      <td><p>Opacity of monitor circles.</p></td>
+    </tr>
+    <tr>
+      <th>maptype</th>
+      <td><p>Optional name of leaflet ProviderTiles to use, e.g. <code>terrain</code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object that consists of a label and color dataframe, and
-calculated color values from PurpleAir sensors</p>
+    <p>A leaflet "plot" object which, if not assigned, is rendered in 
+Rstudio's 'Viewer' tab.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The <code>maptype</code> argument is mapped onto leaflet "ProviderTile" 
+names. Current mappings include:</p><ol>
+<li><p>"roadmap" -- "OpenStreetMap"</p></li>
+<li><p>"satellite" -- "Esri.WorldImagery"</p></li>
+<li><p>"terrain" -- "Esri.WorldTopoMap"</p></li>
+<li><p>"toner" -- "Stamen.Toner"</p></li>
+</ol>
+    <p>If a character string not listed above is provided, it will be used as the 
+underlying map tile if available. See 
+<a href='https://leaflet-extras.github.io/leaflet-providers/'>https://leaflet-extras.github.io/leaflet-providers/</a> for a list of 
+"provider tiles" to use as the background map.</p>
     
 
   </div>
@@ -191,6 +209,8 @@ calculated color values from PurpleAir sensors</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
           </ul>
 
   </div>

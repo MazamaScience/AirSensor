@@ -7,21 +7,21 @@
 pas_filterArea(pas, w = NULL, e = NULL, s = NULL, n = NULL)
 }
 \arguments{
-\item{pas}{A \emph{pa_synoptic} dataframe}
+\item{pas}{A \emph{pa_synoptic} object.}
 
-\item{w}{West edge of area bounding box (deg E)}
+\item{w}{West edge of area bounding box (deg E).}
 
-\item{e}{East edge of area bounding box (deg E)}
+\item{e}{East edge of area bounding box (deg E).}
 
-\item{s}{South edge of area bounding box (deg N)}
+\item{s}{South edge of area bounding box (deg N).}
 
-\item{n}{North edge of area bounding box (deg N)}
+\item{n}{North edge of area bounding box (deg N).}
 }
 \value{
-A subset of the incoming \emph{pa_synoptic} dataframe.
+A subset of the given \emph{pa_synoptic} object.
 }
 \description{
-Filters \emph{pa_synoptic} dataframes based on a bounding box.
+Filters \emph{pa_synoptic} object sensors based on a bounding box.
 }
 \examples{
 pas <- example_pas
