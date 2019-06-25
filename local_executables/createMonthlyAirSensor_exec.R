@@ -2,15 +2,16 @@
 
 # This Rscript will process archived 'pat' data files into a single 'airsensor'
 # file.
-
-# This script is desgined to be run monthly as a cron job.
-
-# 1 2 3 4 5 /Users/jonathan/Projects/PWFSL/mazamascience/airsensor/createMonthlyAirSensor_exec.R --outputDir=/Users/jonathan/Data/AirNow/RData --logDir=/Users/jonathan/Data/AirNow/RData
-
+#
+# Test this script on a local machine with.
+#
+# docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --pattern=^[Ss][Cc].._..$ --datestamp=201801
+#
+# 
 # You can test things by firing up the docker image interactively with bash and 
 # then Running R and testing this script a few lines at a time:
 #
-# docker run --rm -v /home/monitoring/Projects/mazamascience/airsensor:/monitoring/v4 -v /data/monitoring:/monitoring/v4/data -w /monitoring/v4 -ti mazamascience/airsensor bash
+# docker run --rm -ti mazamascience/airsensor bash
 
 VERSION = "0.3.1" #  --- . --- . AirSensor 0.3.1
 
@@ -67,12 +68,16 @@ if ( !dir.exists(opt$outputDir) ) stop(paste0("outputDir not found:  ",opt$outpu
 if ( !dir.exists(opt$logDir) ) stop(paste0("logDir not found:  ",opt$logDir))
 
 # Assign log file names
+traceLog <- file.path(opt$logDir, 'createMonthlyAirSensor_TRACE.log')
 debugLog <- file.path(opt$logDir, 'createMonthlyAirSensor_DEBUG.log')
 infoLog  <- file.path(opt$logDir, 'createMonthlyAirSensor_INFO.log')
 errorLog <- file.path(opt$logDir, 'createMonthlyAirSensor_ERROR.log')
 
 # Set up logging
-logger.setup(debugLog=debugLog, infoLog=infoLog, errorLog=errorLog)
+logger.setup(traceLog = traceLog,
+             debugLog = debugLog, 
+             infoLog = infoLog, 
+             errorLog = errorLog)
 
 # Silence other warning messages
 options(warn=-1) # -1=ignore, 0=save/print, 1=print, 2=error
@@ -94,6 +99,10 @@ result <- try({
   # Handle the case where the day is already specified
   datestamp <- stringr::str_sub(paste0(opt$datestamp,"01"), 1, 8)
   monthstamp <- stringr::str_sub(datestamp, 1, 6)
+  
+  # Get times
+  starttime <- lubridate::ymd(datestamp, tz=opt$timezone)
+  endtime <- lubridate::ceiling_date(starttime + lubridate::ddays(20), unit="month")
   
   logger.info('Loading PA Synoptic data')
   pas <- pas_load()
@@ -127,6 +136,9 @@ result <- try({
   
   airsensor <- PWFSLSmoke::monitor_combine(airSensorList)
   class(airsensor) <- c("airsensor", "ws_monitor", "list")
+  
+  # Guarantee we don't end up with "2000" dates
+  airsensor <- PWFSLSmoke::monitor_subset(airsensor, tlim=c(starttime, endtime))
   
   filename <- paste0("airsensor_scaqmd_", monthstamp, ".rda")
   filepath <- file.path(opt$outputDir, filename)

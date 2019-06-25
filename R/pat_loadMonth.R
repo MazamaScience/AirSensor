@@ -37,8 +37,6 @@ pat_loadMonth <- function(
   baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/pat"
 ) {
   
-  logger.debug("----- pat_loadMonth() -----")
-  
   # Validate parameters --------------------------------------------------------
   
   # TODO: Work with lubridate to support all formats
