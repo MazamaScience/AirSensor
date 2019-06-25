@@ -88,7 +88,7 @@ shiny::shinyServer(
         
                 pas <- get_pas()
                     
-                AirSensor::pas_leaflet_shiny(
+                AirSensor::AirShiny_leaflet(
                     pas[which(!stringr::str_detect(pas$label, " B")),],
                     parameter = "pm25_current", 
                     paletteName = "Purple"
