@@ -2,26 +2,26 @@
 % Please edit documentation in R/pas_filterArea.R
 \name{pas_filterArea}
 \alias{pas_filterArea}
-\title{Area filtering for \emph{pas} objects}
+\title{Area filtering for \emph{pa_synoptic} objects}
 \usage{
 pas_filterArea(pas, w = NULL, e = NULL, s = NULL, n = NULL)
 }
 \arguments{
-\item{pas}{\emph{pa_synoptic} dataframe}
+\item{pas}{A \emph{pa_synoptic} dataframe}
 
-\item{w}{west edge of bounding box (deg E)}
+\item{w}{West edge of area bounding box (deg E)}
 
-\item{e}{east edge of bounding box (deg E)}
+\item{e}{East edge of area bounding box (deg E)}
 
-\item{s}{south edge of bounding box (deg N)}
+\item{s}{South edge of area bounding box (deg N)}
 
-\item{n}{north edge of bounding box (deg N)}
+\item{n}{North edge of area bounding box (deg N)}
 }
 \value{
-A subset of the incoming \code{pas}.
+A subset of the incoming \emph{pa_synoptic} dataframe.
 }
 \description{
-Filters \emph{pa_synoptic} objects based on a bounding box.
+Filters \emph{pa_synoptic} dataframes based on a bounding box.
 }
 \examples{
 pas <- example_pas
@@ -35,8 +35,7 @@ scsb <-
                  n = 33.78)
 range(scsb$longitude)
 range(scsb$latitude)
-
 }
 \seealso{
-\link{pas_load}
+\link{pas_filter}, \link{pas_within}
 }

@@ -18,7 +18,7 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/lumen/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -39,7 +39,8 @@
 
 <meta property="og:title" content="Bar plot for AirShiny — shiny_barplot" />
 
-<meta property="og:description" content="Bar plot for AirShiny" />
+<meta property="og:description" content="A barplot that bins by period and preforms an average of 
+Channel A &amp;amp; B, or seperately. Intended for use with the AirShiny web app." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -70,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -143,7 +144,8 @@
 
     <div class="ref-description">
     
-    <p>Bar plot for AirShiny</p>
+    <p>A barplot that bins by period and preforms an average of 
+Channel A &amp; B, or seperately. Intended for use with the AirShiny web app.</p>
     
     </div>
 
@@ -172,11 +174,15 @@
     </tr>
     <tr>
       <th>ylim</th>
-      <td><p>Fix the Y-axis domain in order to have consistent visualization.
-Provide a vector with upper and lower bounds.
-Note: The X-axis is determined by the datetime interval.</p></td>
+      <td><p>A vector of upper and lower bounds.</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The <code>ylim</code> is used to fix the Y-axis domain in order to have 
+consistent visualization.The X-axis is determined by the 
+datetime interval.</p>
     
 
   </div>
@@ -184,14 +190,16 @@ Note: The X-axis is determined by the datetime interval.</p></td>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#details">Details</a></li>
+          </ul>
 
   </div>
 </div>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Jonathan Callahan, Tate Brasel, Hans Martin, Helen Miller.</p>
+  <p>Developed by Jonathan Callahan, Hans Martin, Tate Brasel, Helen Miller.</p>
 </div>
 
 <div class="pkgdown">

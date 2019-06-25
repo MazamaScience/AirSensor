@@ -9,9 +9,9 @@ pas_leaflet(pas = NULL, parameter = "pm25_1hr", paletteName = NULL,
   outsideOnly = TRUE)
 }
 \arguments{
-\item{pas}{Enhanced dataframe of PurpleAir synoptic data.}
+\item{pas}{A \emph{pa_synoptic} dataframe.}
 
-\item{parameter}{Value to plot, e.g. \code{pm25_1hr}.}
+\item{parameter}{The value to plot, e.g. \code{pm25_1hr}.}
 
 \item{paletteName}{A predefined color palette name. Can be of the following:
 \itemize{
@@ -21,11 +21,11 @@ pas_leaflet(pas = NULL, parameter = "pm25_1hr", paletteName = NULL,
 \item{"distance"}
 }}
 
-\item{radius}{Radius (pixels) of monitor circles.}
+\item{radius}{The radius (pixels) of monitor circles.}
 
-\item{opacity}{Opacity of monitor circles.}
+\item{opacity}{The opacity of monitor circles.}
 
-\item{maptype}{Optional name of leaflet ProviderTiles to use, e.g. \code{terrain}.}
+\item{maptype}{An optional name of leaflet ProviderTiles to use, e.g. \code{terrain}.}
 
 \item{outsideOnly}{Logical specifying subsetting for monitors marked as 'outside'.}
 }
@@ -35,7 +35,7 @@ Rstudio's 'Viewer' tab.
 }
 \description{
 This function creates interactive maps that will be displayed in 
-RStudio's 'Viewer' tab.
+  RStudio's 'Viewer' tab.
 
 Typical usage would be to use the \code{parameter} argument to display pm25 
 values from one of:
@@ -49,7 +49,7 @@ values from one of:
 \item{"pm25_1week"}
 }
 
-Auxillary \code{parameter} arguments can be usd to display various Purple Air 
+Auxillary \code{parameter} arguments can be used to display various Purple Air 
 sensor data. Currently supported \code{parameter} arguments include:
 \itemize{
 \item{"humidity"}
@@ -60,7 +60,7 @@ sensor data. Currently supported \code{parameter} arguments include:
 }
 \details{
 The \code{maptype} argument is mapped onto leaflet "ProviderTile" 
-names. Current mappings include:
+  names. Current mappings include:
 \enumerate{
 \item{"roadmap"}{ -- "OpenStreetMap"}
 \item{"satellite"}{ -- "Esri.WorldImagery"}

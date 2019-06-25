@@ -8,5 +8,5 @@ test_that("A spatial data directory exists", {
 test_that("Spatial Data is loaded", {
   initializeMazamaSpatialUtils()
   expect_true(exists("NaturalEarthAdm1"))
-  })
+})
 

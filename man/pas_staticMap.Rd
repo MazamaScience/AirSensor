@@ -10,40 +10,40 @@ pas_staticMap(pas, parameter = "pm25_1hr", palette = "Purples",
   alpha = 0.8, bbuff = 0.1, zoomAdjust = 0, ...)
 }
 \arguments{
-\item{pas}{\emph{pa_synoptic} object}
+\item{pas}{A \emph{pa_synoptic} dataframe.}
 
-\item{parameter}{Value to plot, e.g. \code{pm25_1hr}.}
+\item{parameter}{The value to plot, e.g. \code{pm25_1hr}.}
 
-\item{palette}{base color or palette to be used.}
+\item{palette}{The base color or palette to be used.}
 
-\item{mapTheme}{default is "terrain", see description for additional options}
+\item{mapTheme}{Default is "terrain", see description for additional options.}
 
-\item{mapShape}{default is "square", can also be "natural"}
+\item{mapShape}{Default is "square", can also be "natural".}
 
-\item{direction}{legend color direction}
+\item{direction}{The legend color direction.}
 
-\item{minScale}{default is 0, minimum value to set scale for color gradient}
+\item{minScale}{The minimum value to set scale for color gradient. Default is 0.}
 
-\item{maxScale}{default is 150, maximum value to set scale for color gradient}
+\item{maxScale}{The maximum value to set scale for color gradient. Default is 150.}
 
-\item{shape}{symbol to use for points}
+\item{shape}{The symbol to use for points.}
 
-\item{size}{size of points}
+\item{size}{The size of points.}
 
-\item{alpha}{opacity of points}
+\item{alpha}{The opacity of points.}
 
-\item{bbuff}{bounding box buffer, default is 0.1}
+\item{bbuff}{The bounding box buffer. Default is 0.1.}
 
-\item{zoomAdjust}{adjustment to map zoom level (-1:3)}
+\item{zoomAdjust}{Adjustment to map zoom level (-1:3).}
 
-\item{...}{additional options: the legend can disabled \code{guide = FALSE}, 
+\item{...}{Additional options: the legend can disabled \code{guide = FALSE}, 
 and renamed with \code{name= "Example name"}.}
 }
 \value{
-ggplot object
+A ggplot object.
 }
 \description{
-Creates a static map of a \emph{pa_synoptic} object.
+Creates a static map of a \code{pa_synoptic} dataframe
 
 Users can create a map using any numeric data column within the
 \emph{pa_synoptic} object:

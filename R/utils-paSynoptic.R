@@ -1,9 +1,9 @@
 #' @keywords pas
 #' @export
 #' 
-#' @title Test for correct structure in a \emph{pas} object
+#' @title Test for correct structure in a \emph{pa_synoptic} object
 #' 
-#' @param pas \emph{pas} object
+#' @param pas A \emph{pa_synoptic} object.
 #' 
 #' @return \code{TRUE} if \code{pas} has the correct structure, \code{FALSE} otherwise.
 #' 
@@ -29,7 +29,7 @@
 #' 
 #' The "pwfsl", official, monitors are obtained from the USFS AirFire site 
 #' using the \pkg{PWFSLSmoke} R package.
-#' 
+
 pas_isPas <- function(pas) {
   
   # Test a variety of things that could go wrong
@@ -54,13 +54,13 @@ pas_isPas <- function(pas) {
 
 #' @export
 #' 
-#' @title Test for an empty \emph{pas} object
+#' @title Test for an empty \emph{pa_synoptic} object
 #' 
-#' @param pas \emph{pas} object
+#' @param pas A \emph{pa+synoptic} object.
 #' @return \code{TRUE} if no data exist in \code{pas}, \code{FALSE} otherwise.
 #' @description Convenience function for \code{nrow(pas) == 0}.
 #' This makes for more readable code in functions that need to test for this.
-#'
+
 pas_isEmpty <- function(pas) {
   if (!pas_isPas(pas)) stop("Not a valid 'pas' object.")
   return( nrow(pas) == 0 )

@@ -18,7 +18,7 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/lumen/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -160,9 +160,15 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="ast_createAirSensor.html">ast_createAirSensor()</a></code> </p>
+          <p><code><a href="airSensorQC_hourly_AB_00.html">airSensorQC_hourly_AB_00()</a></code> </p>
         </td>
-        <td><p>Create a Air Sensor object</p></td>
+        <td><p>Apply QC to Aggregation Statistics</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="airSensorQC_hourly_AB_01.html">airSensorQC_hourly_AB_01()</a></code> </p>
+        </td>
+        <td><p>Apply QC to Aggregation Statistics</p></td>
       </tr><tr>
         
         <td>
@@ -252,13 +258,13 @@
         <td>
           <p><code><a href="pas_filter.html">pas_filter()</a></code> </p>
         </td>
-        <td><p>General purpose PurpleAir synoptic filter</p></td>
+        <td><p>General purpose pa_synoptic dataframe filter</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="pas_filterArea.html">pas_filterArea()</a></code> </p>
         </td>
-        <td><p>Area filtering for <em>pas</em> objects</p></td>
+        <td><p>Area filtering for <em>pa_synoptic</em> dataframes</p></td>
       </tr><tr>
         
         <td>
@@ -310,15 +316,15 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="pat_aggregate.html">pat_aggregate()</a></code> </p>
+          <p><code><a href="pas_within.html">pas_within()</a></code> </p>
         </td>
-        <td><p>Aggregation statistics for PrupleAir time series</p></td>
+        <td><p>Find Purple Air sensors within radial distance</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="pat_createASTimeseries.html">pat_createASTimeseries()</a></code> </p>
+          <p><code><a href="pat_aggregate.html">pat_aggregate()</a></code> </p>
         </td>
-        <td><p>Create a AirSensor Timeseries object</p></td>
+        <td><p>Aggregation statistics for PrupleAir time series</p></td>
       </tr><tr>
         
         <td>
@@ -466,7 +472,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Jonathan Callahan, Tate Brasel, Hans Martin, Helen Miller.</p>
+  <p>Developed by Jonathan Callahan, Hans Martin, Tate Brasel, Helen Miller.</p>
 </div>
 
 <div class="pkgdown">

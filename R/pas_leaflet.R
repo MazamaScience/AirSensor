@@ -3,7 +3,7 @@
 #' @title Leaflet interactive map of Purple Air sensors
 #' 
 #' @description This function creates interactive maps that will be displayed in 
-#' RStudio's 'Viewer' tab.
+#'   RStudio's 'Viewer' tab.
 #'
 #' Typical usage would be to use the \code{parameter} argument to display pm25 
 #' values from one of:
@@ -17,7 +17,7 @@
 #' \item{"pm25_1week"}
 #' }
 #' 
-#' Auxillary \code{parameter} arguments can be usd to display various Purple Air 
+#' Auxillary \code{parameter} arguments can be used to display various Purple Air 
 #' sensor data. Currently supported \code{parameter} arguments include:
 #' \itemize{
 #' \item{"humidity"}
@@ -27,7 +27,7 @@
 #' } 
 #' 
 #' @details The \code{maptype} argument is mapped onto leaflet "ProviderTile" 
-#' names. Current mappings include:
+#'   names. Current mappings include:
 #' \enumerate{
 #' \item{"roadmap"}{ -- "OpenStreetMap"}
 #' \item{"satellite"}{ -- "Esri.WorldImagery"}
@@ -40,8 +40,8 @@
 #' \url{https://leaflet-extras.github.io/leaflet-providers/} for a list of 
 #' "provider tiles" to use as the background map.
 #' 
-#' @param pas Enhanced dataframe of PurpleAir synoptic data.
-#' @param parameter Value to plot, e.g. \code{pm25_1hr}.
+#' @param pas A \emph{pa_synoptic} object
+#' @param parameter The value to plot, e.g. \code{pm25_1hr}.
 #' @param paletteName A predefined color palette name. Can be of the following:
 #' \itemize{
 #' \item{"AQI"}
@@ -49,9 +49,9 @@
 #' \item{"temperature}
 #' \item{"distance"}
 #' }
-#' @param radius Radius (pixels) of monitor circles.
-#' @param opacity Opacity of monitor circles.
-#' @param maptype Optional name of leaflet ProviderTiles to use, e.g. \code{terrain}. 
+#' @param radius The radius (pixels) of monitor circles.
+#' @param opacity The opacity of monitor circles.
+#' @param maptype An optional name of leaflet ProviderTiles to use, e.g. \code{terrain}. 
 #' @param outsideOnly Logical specifying subsetting for monitors marked as 'outside'.
 #' 
 #' @return A leaflet "plot" object which, if not assigned, is rendered in 

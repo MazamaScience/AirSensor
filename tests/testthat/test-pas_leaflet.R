@@ -7,6 +7,7 @@ test_that("input validation works", {
   expect_error(pas_leaflet(example_pas, outsideOnly = 'outside'))
   expect_error(pas_leaflet(example_pas, radius=NA))
 })
+
 test_that("leaflet class returned", { 
   expect_true(is(pas_leaflet(example_pas), "leaflet"))
-  })
+})

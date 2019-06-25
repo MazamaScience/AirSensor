@@ -18,7 +18,7 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/lumen/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -137,33 +137,50 @@
       <small>Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="airsensor-0-3-0" class="section level1">
+    <div id="airsensor-031" class="section level1">
 <h1 class="page-header">
-<a href="#airsensor-0-3-0" class="anchor"></a>AirSensor 0.3.0</h1>
+<a href="#airsensor-031" class="anchor"></a>AirSensor 0.3.1</h1>
+<ul>
+<li>Added quality control algorithms: <code>hourly_AB_00</code> and <code>hourly_AB_01</code>.</li>
+<li>Updated <code>pat_cerateAirSensor()</code> to accept arguments that impact the conversion of <code>pat</code> data into aggregated period-averages: <code>period</code>, <code>channel</code>, <code>qc_algorithm</code>, <code>min_count</code>.</li>
+<li>Fixed <code><a href="../reference/pat_aggregate.html">pat_aggregate()</a></code> so that any <code>NaN</code> or <code>Inf</code> values are converted to <code>NA</code>.</li>
+</ul>
+</div>
+    <div id="airsensor-030" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-030" class="anchor"></a>AirSensor 0.3.0</h1>
 <p>The <em>AirSensor</em> package is now almost feature complete with functions for QC and aggregation to an houly axis.</p>
 <ul>
 <li>Fixed bug in <code><a href="../reference/pat_aggregate.html">pat_aggregate()</a></code> that occasionaly returned empty columns of data.</li>
 <li>Added <code>local_examples/Jons_qc_1.R</code> with Jon’s best take on appropriate QC of the hourly aggregated data.</li>
+<li>Updated AirShiny theme and include About section</li>
+<li>Revamped AirShiny UI</li>
+<li>Support for <code><a href="../reference/pat_createAirSensor.html">pat_createAirSensor()</a></code> added to barplot</li>
+<li>Dockerized AirShiny</li>
+<li>Updated Namespace</li>
+<li>Added <code>global.R</code> to improve clarity of scope</li>
+<li>Added hex-sticker logo for AirShiny</li>
+<li>Added <code><a href="../reference/pas_within.html">pas_within()</a></code> for spatial analysis</li>
 </ul>
 </div>
-    <div id="airsensor-0-2-18" class="section level1">
+    <div id="airsensor-0218" class="section level1">
 <h1 class="page-header">
-<a href="#airsensor-0-2-18" class="anchor"></a>AirSensor 0.2.18</h1>
+<a href="#airsensor-0218" class="anchor"></a>AirSensor 0.2.18</h1>
 <ul>
 <li>New <code><a href="../reference/pat_createAirSensor.html">pat_createAirSensor()</a></code> function converts from <code>pat</code> object to <code>airsensor</code> object that is compatible with the <code>PWFSLSmoke</code> package.</li>
 <li>Changed <code><a href="../reference/pat_qc.html">pat_qc()</a></code> argument <code>humidityMax</code> –&gt; <code>max_humidity</code>.</li>
 </ul>
 </div>
-    <div id="airsensor-0-2-17" class="section level1">
+    <div id="airsensor-0217" class="section level1">
 <h1 class="page-header">
-<a href="#airsensor-0-2-17" class="anchor"></a>AirSensor 0.2.17</h1>
+<a href="#airsensor-0217" class="anchor"></a>AirSensor 0.2.17</h1>
 <ul>
 <li>Refactored <code><a href="../reference/pat_aggregate.html">pat_aggregate()</a></code> to fix an issue with t-test statistics. Also simplified the function signature to accept just <code>pat</code> and <code>period</code> arguments.</li>
 </ul>
 </div>
-    <div id="airsensor-0-2-16" class="section level1">
+    <div id="airsensor-0216" class="section level1">
 <h1 class="page-header">
-<a href="#airsensor-0-2-16" class="anchor"></a>AirSensor 0.2.16</h1>
+<a href="#airsensor-0216" class="anchor"></a>AirSensor 0.2.16</h1>
 <ul>
 <li>Updated <code><a href="../reference/pat_load.html">pat_load()</a></code> to default to the most recent week of data</li>
 <li>New <code><a href="../reference/pat_qc.html">pat_qc()</a></code> function applies low level QC</li>
@@ -175,18 +192,18 @@
 <li>added <code>example_pat_failure_B</code> dataset with severe A channel errors</li>
 </ul>
 </div>
-    <div id="airsensor-0-2-15" class="section level1">
+    <div id="airsensor-0215" class="section level1">
 <h1 class="page-header">
-<a href="#airsensor-0-2-15" class="anchor"></a>AirSensor 0.2.15</h1>
+<a href="#airsensor-0215" class="anchor"></a>AirSensor 0.2.15</h1>
 <ul>
 <li>Fixed default parameters bug in <code><a href="../reference/pat_scatterplot.html">pat_scatterplot()</a></code>
 </li>
 <li>New shiny utilities for AirShiny</li>
 </ul>
 </div>
-    <div id="airsensor-0-2-14" class="section level1">
+    <div id="airsensor-0214" class="section level1">
 <h1 class="page-header">
-<a href="#airsensor-0-2-14" class="anchor"></a>AirSensor 0.2.14</h1>
+<a href="#airsensor-0214" class="anchor"></a>AirSensor 0.2.14</h1>
 <ul>
 <li>Remove out-of-time-range records in <code><a href="../reference/pat_loadLatest.html">pat_loadLatest()</a></code>
 </li>
@@ -194,18 +211,18 @@
 </li>
 </ul>
 </div>
-    <div id="airsensor-0-2-13" class="section level1">
+    <div id="airsensor-0213" class="section level1">
 <h1 class="page-header">
-<a href="#airsensor-0-2-13" class="anchor"></a>AirSensor 0.2.13</h1>
+<a href="#airsensor-0213" class="anchor"></a>AirSensor 0.2.13</h1>
 <ul>
 <li>Added ShinyAirSensor directory for alpha web-apps</li>
 <li>Added <code>threePlot</code> web-app</li>
 <li>Added <code>dailyAveragePlot</code> web-app</li>
 </ul>
 </div>
-    <div id="airsensor-0-2-12" class="section level1">
+    <div id="airsensor-0212" class="section level1">
 <h1 class="page-header">
-<a href="#airsensor-0-2-12" class="anchor"></a>AirSensor 0.2.12</h1>
+<a href="#airsensor-0212" class="anchor"></a>AirSensor 0.2.12</h1>
 <ul>
 <li>renamed internal <code><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample()</a></code> to <code><a href="../reference/dot-sample.html">.sample()</a></code> to avoid confusion with <code><a href="https://www.rdocumentation.org/packages/base/topics/sample">base::sample()</a></code>
 </li>
@@ -217,9 +234,9 @@
 <code>utils-gen.R</code> added to support general functions</li>
 </ul>
 </div>
-    <div id="airsensor-0-2-11" class="section level1">
+    <div id="airsensor-0211" class="section level1">
 <h1 class="page-header">
-<a href="#airsensor-0-2-11" class="anchor"></a>AirSensor 0.2.11</h1>
+<a href="#airsensor-0211" class="anchor"></a>AirSensor 0.2.11</h1>
 <ul>
 <li>
 <code>local_examples/07_pat_archive.R</code> demonstrates how to efficiently work with pre-generated <code>pat</code> files from the archive</li>
@@ -232,9 +249,9 @@
 <li>new <code>local_executables/createMonthlyPAT_exec.R</code> script for populating an archive with <code>pat</code> data files</li>
 </ul>
 </div>
-    <div id="airsensor-0-2-10" class="section level1">
+    <div id="airsensor-0210" class="section level1">
 <h1 class="page-header">
-<a href="#airsensor-0-2-10" class="anchor"></a>AirSensor 0.2.10</h1>
+<a href="#airsensor-0210" class="anchor"></a>AirSensor 0.2.10</h1>
 <ul>
 <li>renamed <code><a href="../reference/pat_load.html">pat_load()</a></code> to <code><a href="../reference/pat_loadLatest.html">pat_loadLatest()</a></code>
 </li>
@@ -244,12 +261,12 @@
 </li>
 </ul>
 </div>
-    <div id="airsensor-0-2-9" class="section level1">
+    <div id="airsensor-029" class="section level1">
 <h1 class="page-header">
-<a href="#airsensor-0-2-9" class="anchor"></a>AirSensor 0.2.9</h1>
+<a href="#airsensor-029" class="anchor"></a>AirSensor 0.2.9</h1>
 <ul>
 <li>
-<code><a href="../reference/ast_createAirSensor.html">ast_createAirSensor()</a></code> converts <code>ast</code> objects into “airsensor” objects that are compatible with the <em>PWFSLSmoke</em> package</li>
+<code>ast_createAirSensor()</code> converts <code>ast</code> objects into “airsensor” objects that are compatible with the <em>PWFSLSmoke</em> package</li>
 <li>
 <code><a href="../reference/initializeMazamaSpatialUtils.html">initializeMazamaSpatialUtils()</a></code> now imports all datasets need to create <code>pas</code> objects</li>
 <li>updated <code>example_pas</code> data file has additional fields introduced by the 0.2.8 version of <code><a href="../reference/enhanceSynopticData.html">enhanceSynopticData()</a></code>
@@ -258,25 +275,26 @@
 <li>new <code><a href="../reference/pat_aggregate.html">pat_aggregate()</a></code> function performs temporal aggregation</li>
 </ul>
 </div>
-    <div id="airsensor-0-2-8" class="section level1">
+    <div id="airsensor-028" class="section level1">
 <h1 class="page-header">
-<a href="#airsensor-0-2-8" class="anchor"></a>AirSensor 0.2.8</h1>
+<a href="#airsensor-028" class="anchor"></a>AirSensor 0.2.8</h1>
 <ul>
 <li>improvements in <code><a href="../reference/enhanceSynopticData.html">enhanceSynopticData()</a></code> now handle changing order of json properties and validate locations before adding spatial metadata</li>
-<li>new <code><a href="../reference/pat_createASTimeseries.html">pat_createASTimeseries()</a></code> function handles conversion of Purple Air-specific “pat” objects into sensor-generic “ast” objects.</li>
-<li>new <code><a href="../reference/ast_createAirSensor.html">ast_createAirSensor()</a></code> objects converts “ast” objects into a “as” data type that is compatible with the “ws_monitor” data type used in the <em>PWFSLSmoke</em> package</li>
+<li>new <code>pat_createASTimeseries()</code> function handles conversion of Purple Air-specific “pat” objects into sensor-generic “ast” objects.</li>
+<li>new <code>ast_createAirSensor()</code> objects converts “ast” objects into a “as” data type that is compatible with the “ws_monitor” data type used in the <em>PWFSLSmoke</em> package</li>
 </ul>
 </div>
-    <div id="airsensor-0-2-7" class="section level1">
+    <div id="airsensor-027" class="section level1">
 <h1 class="page-header">
-<a href="#airsensor-0-2-7" class="anchor"></a>AirSensor 0.2.7</h1>
+<a href="#airsensor-027" class="anchor"></a>AirSensor 0.2.7</h1>
 <ul>
 <li>corrected the algorithm for <code><a href="../reference/pat_sample.html">pat_sample(forGraphics = TRUE)</a></code>
 </li>
 <li>consistent support for named palettes in <code><a href="../reference/pas_leaflet.html">pas_leaflet()</a></code> and <code><a href="../reference/pas_staticMap.html">pas_staticMap()</a></code>
 </li>
 <li>
-<code>enhanceSynopticMetadata()</code> adds the following columns to a <code>pas</code> object:</li>
+<code>enhanceSynopticMetadata()</code> adds the following columns to a <code>pas</code> object:
+<ul>
 <li>
 <code>airDistrict</code> – CARB air district</li>
 <li><code>sensorManufacturer = "Purple Air"</code></li>
@@ -285,10 +303,12 @@
 <li>
 <code>communityRegion</code> – (where known)</li>
 </ul>
+</li>
+</ul>
 </div>
-    <div id="airsensor-0-2-6" class="section level1">
+    <div id="airsensor-026" class="section level1">
 <h1 class="page-header">
-<a href="#airsensor-0-2-6" class="anchor"></a>AirSensor 0.2.6</h1>
+<a href="#airsensor-026" class="anchor"></a>AirSensor 0.2.6</h1>
 <ul>
 <li>added <code>example_pat_failure</code> dataset</li>
 <li>added <code>createASTimeseriesObject()</code>
@@ -298,9 +318,9 @@
 <li>removed <code>pas_esriMap()</code> because the ESRI map service we were using started requiring tokens on April 25, 2019</li>
 </ul>
 </div>
-    <div id="airsensor-0-2-5" class="section level1">
+    <div id="airsensor-025" class="section level1">
 <h1 class="page-header">
-<a href="#airsensor-0-2-5" class="anchor"></a>AirSensor 0.2.5</h1>
+<a href="#airsensor-025" class="anchor"></a>AirSensor 0.2.5</h1>
 <ul>
 <li>changed parameter name from <code>param</code> to <code>parameter</code> in <code><a href="../reference/pas_leaflet.html">pas_leaflet()</a></code>
 </li>
@@ -308,18 +328,18 @@
 </li>
 </ul>
 </div>
-    <div id="airsensor-0-2-4" class="section level1">
+    <div id="airsensor-024" class="section level1">
 <h1 class="page-header">
-<a href="#airsensor-0-2-4" class="anchor"></a>AirSensor 0.2.4</h1>
+<a href="#airsensor-024" class="anchor"></a>AirSensor 0.2.4</h1>
 <ul>
 <li>uniform parameter validation in all <code>pat~</code> functions</li>
 <li>improved defaults for <code><a href="../reference/pat_sample.html">pat_sample()</a></code> function</li>
 <li>minor improvements to <code>pat~</code> plot functions</li>
 </ul>
 </div>
-    <div id="airsensor-0-2-3" class="section level1">
+    <div id="airsensor-023" class="section level1">
 <h1 class="page-header">
-<a href="#airsensor-0-2-3" class="anchor"></a>AirSensor 0.2.3</h1>
+<a href="#airsensor-023" class="anchor"></a>AirSensor 0.2.3</h1>
 <ul>
 <li>
 <code><a href="../reference/pat_sample.html">pat_sample()</a></code> included to sample <code>pat</code> datasets</li>
@@ -327,9 +347,9 @@
 <code>pat_dygraphs()</code> included to plot JavaScript based “dygraphs”</li>
 </ul>
 </div>
-    <div id="airsensor-0-2-2" class="section level1">
+    <div id="airsensor-022" class="section level1">
 <h1 class="page-header">
-<a href="#airsensor-0-2-2" class="anchor"></a>AirSensor 0.2.2</h1>
+<a href="#airsensor-022" class="anchor"></a>AirSensor 0.2.2</h1>
 <ul>
 <li>
 <code><a href="../reference/pat_multiplot.html">pat_multiplot()</a></code> time axis now in sensor local time</li>
@@ -339,9 +359,9 @@
 </li>
 </ul>
 </div>
-    <div id="airsensor-0-2-1" class="section level1">
+    <div id="airsensor-021" class="section level1">
 <h1 class="page-header">
-<a href="#airsensor-0-2-1" class="anchor"></a>AirSensor 0.2.1</h1>
+<a href="#airsensor-021" class="anchor"></a>AirSensor 0.2.1</h1>
 <ul>
 <li>minor documentation cleanup</li>
 <li>graphical options and other improvements for <code>pas_esriMap()</code>
@@ -354,9 +374,9 @@
 </li>
 </ul>
 </div>
-    <div id="airsensor-0-2-0" class="section level1">
+    <div id="airsensor-020" class="section level1">
 <h1 class="page-header">
-<a href="#airsensor-0-2-0" class="anchor"></a>AirSensor 0.2.0</h1>
+<a href="#airsensor-020" class="anchor"></a>AirSensor 0.2.0</h1>
 <ul>
 <li>renamed package to <em>AirSensor</em>
 </li>
@@ -370,9 +390,9 @@
 </li>
 </ul>
 </div>
-    <div id="airsensor-0-1-9" class="section level1">
+    <div id="airsensor-019" class="section level1">
 <h1 class="page-header">
-<a href="#airsensor-0-1-9" class="anchor"></a>AirSensor 0.1.9</h1>
+<a href="#airsensor-019" class="anchor"></a>AirSensor 0.1.9</h1>
 <ul>
 <li>added generalized multiplot function <code><a href="../reference/multi_ggplot.html">multi_ggplot()</a></code>
 </li>
@@ -382,9 +402,9 @@
 </li>
 </ul>
 </div>
-    <div id="airsensor-0-1-8" class="section level1">
+    <div id="airsensor-018" class="section level1">
 <h1 class="page-header">
-<a href="#airsensor-0-1-8" class="anchor"></a>AirSensor 0.1.8</h1>
+<a href="#airsensor-018" class="anchor"></a>AirSensor 0.1.8</h1>
 <ul>
 <li>
 <code>pat_subdate()</code> has been renamed to <code><a href="../reference/pat_filterDate.html">pat_filterDate()</a></code> and defaults to the <code>America/Los_Angeles</code> timezone</li>
@@ -395,51 +415,51 @@
 <li>simplified docker image usage</li>
 </ul>
 </div>
-    <div id="airsensor-0-1-7" class="section level1">
+    <div id="airsensor-017" class="section level1">
 <h1 class="page-header">
-<a href="#airsensor-0-1-7" class="anchor"></a>AirSensor 0.1.7</h1>
+<a href="#airsensor-017" class="anchor"></a>AirSensor 0.1.7</h1>
 <ul>
 <li>include docker image</li>
 <li>added subdating feature</li>
 </ul>
 </div>
-    <div id="airsensor-0-1-6" class="section level1">
+    <div id="airsensor-016" class="section level1">
 <h1 class="page-header">
-<a href="#airsensor-0-1-6" class="anchor"></a>AirSensor 0.1.6</h1>
+<a href="#airsensor-016" class="anchor"></a>AirSensor 0.1.6</h1>
 <ul>
 <li>added multiplotting tools</li>
 <li>added outlier detection</li>
 <li>added pat_internalData</li>
 </ul>
 </div>
-    <div id="airsensor-0-1-5" class="section level1">
+    <div id="airsensor-015" class="section level1">
 <h1 class="page-header">
-<a href="#airsensor-0-1-5" class="anchor"></a>AirSensor 0.1.5</h1>
+<a href="#airsensor-015" class="anchor"></a>AirSensor 0.1.5</h1>
 <ul>
 <li>added PurpleAir timeseries functionality</li>
 <li>updated PurpleAir synoptic vignette</li>
 </ul>
 </div>
-    <div id="airsensor-0-1-4" class="section level1">
+    <div id="airsensor-014" class="section level1">
 <h1 class="page-header">
-<a href="#airsensor-0-1-4" class="anchor"></a>AirSensor 0.1.4</h1>
+<a href="#airsensor-014" class="anchor"></a>AirSensor 0.1.4</h1>
 <ul>
 <li>improved, more consistent documentation</li>
 <li>renamed example datasets to <code>example_pas</code> and <code>example_raw_pas</code>
 </li>
 </ul>
 </div>
-    <div id="airsensor-0-1-3" class="section level1">
+    <div id="airsensor-013" class="section level1">
 <h1 class="page-header">
-<a href="#airsensor-0-1-3" class="anchor"></a>AirSensor 0.1.3</h1>
+<a href="#airsensor-013" class="anchor"></a>AirSensor 0.1.3</h1>
 <ul>
 <li>added documentation file for package datasets</li>
 <li>changed header of vignette so that it is built properly</li>
 </ul>
 </div>
-    <div id="airsensor-0-1-2" class="section level1">
+    <div id="airsensor-012" class="section level1">
 <h1 class="page-header">
-<a href="#airsensor-0-1-2" class="anchor"></a>AirSensor 0.1.2</h1>
+<a href="#airsensor-012" class="anchor"></a>AirSensor 0.1.2</h1>
 <ul>
 <li>added parameter validation and testing for all existing functions</li>
 <li>adding <code>data/</code> directory with sample <code>pas</code> object</li>
@@ -447,17 +467,17 @@
 </li>
 </ul>
 </div>
-    <div id="airsensor-0-1-1" class="section level1">
+    <div id="airsensor-011" class="section level1">
 <h1 class="page-header">
-<a href="#airsensor-0-1-1" class="anchor"></a>AirSensor 0.1.1</h1>
+<a href="#airsensor-011" class="anchor"></a>AirSensor 0.1.1</h1>
 <ul>
 <li>added parameter validation to pas_leaflet.R</li>
 <li>added test-pas_leaflet.R file</li>
 </ul>
 </div>
-    <div id="airsensor-0-1-0" class="section level1">
+    <div id="airsensor-010" class="section level1">
 <h1 class="page-header">
-<a href="#airsensor-0-1-0" class="anchor"></a>AirSensor 0.1.0</h1>
+<a href="#airsensor-010" class="anchor"></a>AirSensor 0.1.0</h1>
 <p>Initial functions to download and map Purple Air synoptic data.</p>
 <ul>
 <li>downloadParseSynopticData.R – gets the most recent syoptic data from purpleair.com</li>
@@ -474,36 +494,37 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#airsensor-0-3-0">0.3.0</a></li>
-        <li><a href="#airsensor-0-2-18">0.2.18</a></li>
-        <li><a href="#airsensor-0-2-17">0.2.17</a></li>
-        <li><a href="#airsensor-0-2-16">0.2.16</a></li>
-        <li><a href="#airsensor-0-2-15">0.2.15</a></li>
-        <li><a href="#airsensor-0-2-14">0.2.14</a></li>
-        <li><a href="#airsensor-0-2-13">0.2.13</a></li>
-        <li><a href="#airsensor-0-2-12">0.2.12</a></li>
-        <li><a href="#airsensor-0-2-11">0.2.11</a></li>
-        <li><a href="#airsensor-0-2-10">0.2.10</a></li>
-        <li><a href="#airsensor-0-2-9">0.2.9</a></li>
-        <li><a href="#airsensor-0-2-8">0.2.8</a></li>
-        <li><a href="#airsensor-0-2-7">0.2.7</a></li>
-        <li><a href="#airsensor-0-2-6">0.2.6</a></li>
-        <li><a href="#airsensor-0-2-5">0.2.5</a></li>
-        <li><a href="#airsensor-0-2-4">0.2.4</a></li>
-        <li><a href="#airsensor-0-2-3">0.2.3</a></li>
-        <li><a href="#airsensor-0-2-2">0.2.2</a></li>
-        <li><a href="#airsensor-0-2-1">0.2.1</a></li>
-        <li><a href="#airsensor-0-2-0">0.2.0</a></li>
-        <li><a href="#airsensor-0-1-9">0.1.9</a></li>
-        <li><a href="#airsensor-0-1-8">0.1.8</a></li>
-        <li><a href="#airsensor-0-1-7">0.1.7</a></li>
-        <li><a href="#airsensor-0-1-6">0.1.6</a></li>
-        <li><a href="#airsensor-0-1-5">0.1.5</a></li>
-        <li><a href="#airsensor-0-1-4">0.1.4</a></li>
-        <li><a href="#airsensor-0-1-3">0.1.3</a></li>
-        <li><a href="#airsensor-0-1-2">0.1.2</a></li>
-        <li><a href="#airsensor-0-1-1">0.1.1</a></li>
-        <li><a href="#airsensor-0-1-0">0.1.0</a></li>
+        <li><a href="#airsensor-031">0.3.1</a></li>
+        <li><a href="#airsensor-030">0.3.0</a></li>
+        <li><a href="#airsensor-0218">0.2.18</a></li>
+        <li><a href="#airsensor-0217">0.2.17</a></li>
+        <li><a href="#airsensor-0216">0.2.16</a></li>
+        <li><a href="#airsensor-0215">0.2.15</a></li>
+        <li><a href="#airsensor-0214">0.2.14</a></li>
+        <li><a href="#airsensor-0213">0.2.13</a></li>
+        <li><a href="#airsensor-0212">0.2.12</a></li>
+        <li><a href="#airsensor-0211">0.2.11</a></li>
+        <li><a href="#airsensor-0210">0.2.10</a></li>
+        <li><a href="#airsensor-029">0.2.9</a></li>
+        <li><a href="#airsensor-028">0.2.8</a></li>
+        <li><a href="#airsensor-027">0.2.7</a></li>
+        <li><a href="#airsensor-026">0.2.6</a></li>
+        <li><a href="#airsensor-025">0.2.5</a></li>
+        <li><a href="#airsensor-024">0.2.4</a></li>
+        <li><a href="#airsensor-023">0.2.3</a></li>
+        <li><a href="#airsensor-022">0.2.2</a></li>
+        <li><a href="#airsensor-021">0.2.1</a></li>
+        <li><a href="#airsensor-020">0.2.0</a></li>
+        <li><a href="#airsensor-019">0.1.9</a></li>
+        <li><a href="#airsensor-018">0.1.8</a></li>
+        <li><a href="#airsensor-017">0.1.7</a></li>
+        <li><a href="#airsensor-016">0.1.6</a></li>
+        <li><a href="#airsensor-015">0.1.5</a></li>
+        <li><a href="#airsensor-014">0.1.4</a></li>
+        <li><a href="#airsensor-013">0.1.3</a></li>
+        <li><a href="#airsensor-012">0.1.2</a></li>
+        <li><a href="#airsensor-011">0.1.1</a></li>
+        <li><a href="#airsensor-010">0.1.0</a></li>
       </ul>
     </div>
   </div>
@@ -512,7 +533,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Jonathan Callahan, Tate Brasel, Hans Martin, Helen Miller.</p>
+  <p>Developed by Jonathan Callahan, Hans Martin, Tate Brasel, Helen Miller.</p>
 </div>
 
 <div class="pkgdown">
