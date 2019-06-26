@@ -10,7 +10,7 @@ pas_staticMap(pas, parameter = "pm25_1hr", palette = "Purples",
   alpha = 0.8, bbuff = 0.1, zoomAdjust = 0, ...)
 }
 \arguments{
-\item{pas}{A \emph{pa_synoptic} dataframe.}
+\item{pas}{A \emph{pa_synoptic} object}
 
 \item{parameter}{The value to plot, e.g. \code{pm25_1hr}.}
 
@@ -43,7 +43,7 @@ and renamed with \code{name= "Example name"}.}
 A ggplot object.
 }
 \description{
-Creates a static map of a \code{pa_synoptic} dataframe
+Creates a static map of a \code{pa_synoptic} object
 
 Users can create a map using any numeric data column within the
 \emph{pa_synoptic} object:
@@ -73,6 +73,5 @@ Additional map tile info found at:
 LA_basin <- pas_load() \%>\% pas_filterArea(-118.5, -117.5, 33.5, 34.5)
 pas_staticMap(LA_basin, palette = "AQI", zoomAdjust = 1)
 }
-
 }
 \keyword{pa_synoptic}

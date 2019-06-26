@@ -1,3 +1,10 @@
+# AirSensor 0.3.2
+
+* Created an archive of `airsensor` data files with pre-generated, 
+hourly-aggregated data suitable for use with the *PWFSLSmoke* package.
+* Added `airsensor_load()` to load pre-generated, hourly-aggregated data files
+suitable for use with the *PWFSLSmoke* package.
+
 # AirSensor 0.3.1
 
 * Added quality control algorithms: `hourly_AB_00` and `hourly_AB_01`.

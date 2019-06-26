@@ -39,12 +39,12 @@
 
 <meta property="og:title" content="Load Purple Air synoptic data — pas_load" />
 
-<meta property="og:description" content="A pre-generated pa_synoptic dataframe will be loaded for
-the given date. These files are generated each day at 4am California time
-and provide a record of all currently installed Purple Air sensors for the
-day of interest.
+<meta property="og:description" content="A pre-generated pa_synoptic object will be loaded for
+  the given date. These files are generated each day at 4am California time
+  and provide a record of all currently installed Purple Air sensors for the
+  day of interest.
 The datestamp can be anything that is understood by lubrdiate::ymd()
-including either of the following recommended formats:
+  including either of the following recommended formats:
 
 &quot;YYYYmmdd&quot;
 &quot;YYYY-mm-dd&quot;
@@ -81,7 +81,7 @@ including either of the following recommended formats:
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
       </span>
     </div>
 
@@ -154,12 +154,12 @@ including either of the following recommended formats:
 
     <div class="ref-description">
     
-    <p>A pre-generated <code>pa_synoptic</code> dataframe will be loaded for
-the given date. These files are generated each day at 4am California time
-and provide a record of all currently installed Purple Air sensors for the
-day of interest.</p>
+    <p>A pre-generated <em>pa_synoptic</em> object will be loaded for
+  the given date. These files are generated each day at 4am California time
+  and provide a record of all currently installed Purple Air sensors for the
+  day of interest.</p>
 <p>The <code>datestamp</code> can be anything that is understood by <code>lubrdiate::ymd()</code>
-including either of the following recommended formats:</p>
+  including either of the following recommended formats:</p>
 <ul>
 <li><p><code>"YYYYmmdd"</code></p></li>
 <li><p><code>"YYYY-mm-dd"</code></p></li>
@@ -182,13 +182,13 @@ including either of the following recommended formats:</p>
     </tr>
     <tr>
       <th>baseUrl</th>
-      <td><p>Base URL for synoptic data.</p></td>
+      <td><p>The base URL for synoptic data.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Enhanced dataframe of synoptic Purple Air data.</p>
+    <p>A <code>pa_synoptic</code> object</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 

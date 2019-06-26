@@ -31,7 +31,7 @@
 #' Rstudio's 'Viewer' tab.
 #' 
 
-pas_leaflet_shiny <- function(
+AirShiny_leaflet <- function(
   pas = NULL,
   parameter = "pm25_1hr",
   paletteName = NULL,
@@ -171,7 +171,7 @@ pas_leaflet_shiny <- function(
 #' 
 #' 
 
-shiny_barplot <- 
+AirShiny_barplot <- 
   function(
     pat, 
     period, 
@@ -179,8 +179,16 @@ shiny_barplot <-
     enddate, 
     ylim = NULL
     ) { 
+
+    # ----- Validate parameters ------------------------------------------------
     
-    logger.debug(" # shiny_barplot() # ")
+    if ( pat_isEmpty(pat) ) 
+      stop("Required Purple Air time series is missing") 
+    
+    if ( !pat_isPat(pat) )
+      stop("Required parameter 'pat' is not a valid 'pa_timerseries' object.")
+    
+    logger.debug(" # AirShiny_barplot() # ")
     
     ast <- 
       AirSensor::pat_createAirSensor(

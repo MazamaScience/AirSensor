@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
       </span>
     </div>
 
@@ -119,15 +119,15 @@
 <a href="#a-quick-example" class="anchor"></a>A quick example</h2>
 <p>Raw PurpleAir PM 2.5 time series data will occasionally contain visible outliers – measurements which are not plausibly explained by atmospheric processes and thus likely due to sensor error. Some monitors are noisier than others, but a week’s worth of data from any sensor will likely contain some of these electrical glitches.</p>
 <p>Using example data released with the package, let’s have a look at the raw PM2.5 measurements for a Seattle based sensor during the first week of August, 2018. We will use the <code>sampleSize = 1e6</code> argument to prevent sub sampling of the data that might leave out some outliers. <em>(We’re willing to wait for the plot so we can see everything!)</em></p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">pat &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="st">  </span>AirSensor<span class="op">::</span>example_pat <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="st">  </span><span class="kw"><a href="../reference/pat_filterDate.html">pat_filterDate</a></span>(<span class="st">"2018-08-01"</span>,<span class="st">"2018-08-07"</span>)</a>
-<a class="sourceLine" id="cb1-4" title="4"></a>
-<a class="sourceLine" id="cb1-5" title="5"><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(pat, <span class="dt">plottype =</span> <span class="st">"pm25"</span>, <span class="dt">sampleSize =</span> <span class="fl">1e6</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pat &lt;-<span class="st"> </span>
+<span class="st">  </span>AirSensor<span class="op">::</span>example_pat <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/pat_filterDate.html">pat_filterDate</a></span>(<span class="st">"2018-08-01"</span>,<span class="st">"2018-08-07"</span>)
+
+<span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(pat, <span class="dt">plottype =</span> <span class="st">"pm25"</span>, <span class="dt">sampleSize =</span> <span class="fl">1e6</span>)</code></pre></div>
 <p><img src="outlier_detection_files/figure-html/quick_example-1.png" width="672"></p>
 <p>We definitely see a few individual data points that look like outliers while other momentarily elevated levels consist of multiple measurements and are more likely to represent valid measurements.</p>
 <p>Let’s see if our outlier detector can correctly identify outliers without flagging the more believable measurements:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="../reference/pat_outliers.html">pat_outliers</a></span>(pat, <span class="dt">showPlot =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/pat_outliers.html">pat_outliers</a></span>(pat, <span class="dt">showPlot =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><img src="outlier_detection_files/figure-html/pat_outliers-1.png" width="672"></p>
 <p>An excellent result!</p>
 </div>
@@ -156,54 +156,54 @@
 <p>The default setting of <code>windowSize = 23</code> means that 23 samples from a single channel become the population from which the median and standard deviation are calculated. Each Purple Air channel makes a measurement approximately every 80 seconds so the temporal window is 23 * 80 sec or approximately 30 minutes. This seems like a reasonable period of time over which to evaluate PM2.5 measurements. It is long enough to capture significant change making it more likely we will only identify true outliers.</p>
 <p>The default setting for the detection threshold <code>thresholdMin = 8</code> means that the sample at the center of the rolling window must have a value at least 8 standard deviation units away from the window median to be flagged as an outlier.</p>
 <p>To explain how this works, we will focus on a single day’s worth of data and use base R functionality to zoom in and visually explore the algorithm. We start with a visual inspection of the data:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">oneDayData &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb3-2" title="2"><span class="st">  </span>pat <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-3" title="3"><span class="st">  </span><span class="kw"><a href="../reference/pat_filterDate.html">pat_filterDate</a></span>(<span class="st">"2018-08-03"</span>, <span class="dt">days =</span> <span class="dv">1</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb3-4" title="4"><span class="st">  </span><span class="kw"><a href="../reference/pat_extractDataFrame.html">pat_extractData</a></span>()</a>
-<a class="sourceLine" id="cb3-5" title="5"></a>
-<a class="sourceLine" id="cb3-6" title="6"><span class="co"># Visually inspect for outliers</span></a>
-<a class="sourceLine" id="cb3-7" title="7"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(oneDayData<span class="op">$</span>datetime, oneDayData<span class="op">$</span>pm25_A, </a>
-<a class="sourceLine" id="cb3-8" title="8">     <span class="dt">xlab =</span> <span class="st">"Aug 1, 21018"</span>, <span class="dt">ylab =</span> <span class="st">"ug/m3"</span>, <span class="dt">las =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb3-9" title="9"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/title">title</a></span>(<span class="st">"A channel PM2.5"</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">oneDayData &lt;-<span class="st"> </span>
+<span class="st">  </span>pat <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/pat_filterDate.html">pat_filterDate</a></span>(<span class="st">"2018-08-03"</span>, <span class="dt">days =</span> <span class="dv">1</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/pat_extractDataFrame.html">pat_extractData</a></span>()
+
+<span class="co"># Visually inspect for outliers</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(oneDayData<span class="op">$</span>datetime, oneDayData<span class="op">$</span>pm25_A, 
+     <span class="dt">xlab =</span> <span class="st">"Aug 1, 21018"</span>, <span class="dt">ylab =</span> <span class="st">"ug/m3"</span>, <span class="dt">las =</span> <span class="dv">1</span>)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/title">title</a></span>(<span class="st">"A channel PM2.5"</span>)</code></pre></div>
 <p><img src="outlier_detection_files/figure-html/visual_inspection-1.png" width="672"></p>
 <p>We definitely have what looks to the eye like outliers so let’s use the <code><a href="https://www.rdocumentation.org/packages/seismicRoll/topics/findOutliers">seismicRoll::findOutliers()</a></code> function to figure out exactly where they are:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="co"># Find the outliers</span></a>
-<a class="sourceLine" id="cb4-2" title="2">seismicRoll<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/seismicRoll/topics/findOutliers">findOutliers</a></span>(oneDayData<span class="op">$</span>pm25_A)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Find the outliers</span>
+seismicRoll<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/seismicRoll/topics/findOutliers">findOutliers</a></span>(oneDayData<span class="op">$</span>pm25_A)</code></pre></div>
 <pre><code>## [1] 872 874</code></pre>
 <p>The following example explains the outlier detection process with a single window centered on the outlier at index <code>872</code>:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="co"># Set example point, neighbors, median, and window</span></a>
-<a class="sourceLine" id="cb6-2" title="2">windowWidth &lt;-<span class="st"> </span><span class="dv">23</span></a>
-<a class="sourceLine" id="cb6-3" title="3">halfWidth &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(<span class="dv">23</span><span class="op">/</span><span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb6-4" title="4">exampleIndex &lt;-<span class="st"> </span><span class="dv">872</span></a>
-<a class="sourceLine" id="cb6-5" title="5">windowStart &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/integer">as.integer</a></span>(exampleIndex <span class="op">-</span><span class="st"> </span>halfWidth)</a>
-<a class="sourceLine" id="cb6-6" title="6">windowEnd &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/integer">as.integer</a></span>(exampleIndex <span class="op">+</span><span class="st"> </span>halfWidth)</a>
-<a class="sourceLine" id="cb6-7" title="7">exampleNeighbors &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(windowStart<span class="op">:</span>(exampleIndex <span class="op">-</span><span class="st"> </span><span class="dv">1</span>), (exampleIndex <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)<span class="op">:</span>windowEnd)</a>
-<a class="sourceLine" id="cb6-8" title="8">windowMedian &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/median">median</a></span>(oneDayData<span class="op">$</span>pm25_A[exampleNeighbors], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb6-9" title="9">windowSd &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/sd">sd</a></span>(oneDayData<span class="op">$</span>pm25_A[exampleNeighbors], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb6-10" title="10"></a>
-<a class="sourceLine" id="cb6-11" title="11"><span class="co"># Plot the window around the example point along with the window median</span></a>
-<a class="sourceLine" id="cb6-12" title="12"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(oneDayData<span class="op">$</span>datetime_A[windowStart<span class="op">:</span>windowEnd], </a>
-<a class="sourceLine" id="cb6-13" title="13">     oneDayData<span class="op">$</span>pm25_A[windowStart<span class="op">:</span>windowEnd],</a>
-<a class="sourceLine" id="cb6-14" title="14">     <span class="dt">col =</span> <span class="st">"black"</span>, <span class="dt">pch =</span> <span class="dv">16</span>, <span class="dt">cex =</span> <span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb6-15" title="15">     <span class="dt">main =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"Window Around Measurement #"</span>, exampleIndex),</a>
-<a class="sourceLine" id="cb6-16" title="16">     <span class="dt">las =</span> <span class="dv">1</span>, <span class="dt">xlab =</span> <span class="st">"Time (UTC)"</span>, <span class="dt">ylab =</span> <span class="st">"PM 2.5 (ug/m3)"</span>)</a>
-<a class="sourceLine" id="cb6-17" title="17"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/points">points</a></span>(oneDayData<span class="op">$</span>datetime_A[exampleIndex], </a>
-<a class="sourceLine" id="cb6-18" title="18">       oneDayData<span class="op">$</span>pm25_A[exampleIndex],</a>
-<a class="sourceLine" id="cb6-19" title="19">       <span class="dt">col =</span> <span class="st">"red"</span>, <span class="dt">pch =</span> <span class="dv">16</span>, <span class="dt">cex =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb6-20" title="20"><span class="co"># Add lines for the median and several standard deviations beyond</span></a>
-<a class="sourceLine" id="cb6-21" title="21"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/abline">abline</a></span>(<span class="dt">h =</span> windowMedian, <span class="dt">col =</span> <span class="st">"blue"</span>)</a>
-<a class="sourceLine" id="cb6-22" title="22"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/abline">abline</a></span>(<span class="dt">h =</span> windowMedian <span class="op">+</span><span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">8</span> <span class="op">*</span><span class="st"> </span>windowSd, </a>
-<a class="sourceLine" id="cb6-23" title="23">       <span class="dt">lty =</span> <span class="st">"dashed"</span>, <span class="dt">col =</span> <span class="st">"orange"</span>)</a>
-<a class="sourceLine" id="cb6-24" title="24"><span class="co"># Add a legend</span></a>
-<a class="sourceLine" id="cb6-25" title="25"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/legend">legend</a></span>(<span class="dt">x =</span> <span class="st">"topright"</span>,</a>
-<a class="sourceLine" id="cb6-26" title="26">       <span class="dt">legend =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Point of Interest"</span>, </a>
-<a class="sourceLine" id="cb6-27" title="27">                  <span class="st">"Neighbors"</span>, </a>
-<a class="sourceLine" id="cb6-28" title="28">                  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"Median = "</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(windowMedian,<span class="dv">2</span>)),</a>
-<a class="sourceLine" id="cb6-29" title="29">                  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"Stddev = "</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(windowSd,<span class="dv">2</span>))),</a>
-<a class="sourceLine" id="cb6-30" title="30">       <span class="dt">col =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"red"</span>, <span class="st">"black"</span>, <span class="st">"blue"</span>, <span class="st">"orange"</span>),</a>
-<a class="sourceLine" id="cb6-31" title="31">       <span class="dt">lwd =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>), </a>
-<a class="sourceLine" id="cb6-32" title="32">       <span class="dt">lty =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="ot">NA</span>, <span class="ot">NA</span>, <span class="st">"solid"</span>, <span class="st">"dashed"</span>), </a>
-<a class="sourceLine" id="cb6-33" title="33">       <span class="dt">pch =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">16</span>, <span class="dv">16</span>, <span class="ot">NA</span>, <span class="ot">NA</span>))</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Set example point, neighbors, median, and window</span>
+windowWidth &lt;-<span class="st"> </span><span class="dv">23</span>
+halfWidth &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(<span class="dv">23</span><span class="op">/</span><span class="dv">2</span>)
+exampleIndex &lt;-<span class="st"> </span><span class="dv">872</span>
+windowStart &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/integer">as.integer</a></span>(exampleIndex <span class="op">-</span><span class="st"> </span>halfWidth)
+windowEnd &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/integer">as.integer</a></span>(exampleIndex <span class="op">+</span><span class="st"> </span>halfWidth)
+exampleNeighbors &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(windowStart<span class="op">:</span>(exampleIndex <span class="op">-</span><span class="st"> </span><span class="dv">1</span>), (exampleIndex <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)<span class="op">:</span>windowEnd)
+windowMedian &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/median">median</a></span>(oneDayData<span class="op">$</span>pm25_A[exampleNeighbors], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)
+windowSd &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/sd">sd</a></span>(oneDayData<span class="op">$</span>pm25_A[exampleNeighbors], <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)
+
+<span class="co"># Plot the window around the example point along with the window median</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(oneDayData<span class="op">$</span>datetime_A[windowStart<span class="op">:</span>windowEnd], 
+     oneDayData<span class="op">$</span>pm25_A[windowStart<span class="op">:</span>windowEnd],
+     <span class="dt">col =</span> <span class="st">"black"</span>, <span class="dt">pch =</span> <span class="dv">16</span>, <span class="dt">cex =</span> <span class="dv">1</span>,
+     <span class="dt">main =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"Window Around Measurement #"</span>, exampleIndex),
+     <span class="dt">las =</span> <span class="dv">1</span>, <span class="dt">xlab =</span> <span class="st">"Time (UTC)"</span>, <span class="dt">ylab =</span> <span class="st">"PM 2.5 (ug/m3)"</span>)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/points">points</a></span>(oneDayData<span class="op">$</span>datetime_A[exampleIndex], 
+       oneDayData<span class="op">$</span>pm25_A[exampleIndex],
+       <span class="dt">col =</span> <span class="st">"red"</span>, <span class="dt">pch =</span> <span class="dv">16</span>, <span class="dt">cex =</span> <span class="dv">1</span>)
+<span class="co"># Add lines for the median and several standard deviations beyond</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/abline">abline</a></span>(<span class="dt">h =</span> windowMedian, <span class="dt">col =</span> <span class="st">"blue"</span>)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/abline">abline</a></span>(<span class="dt">h =</span> windowMedian <span class="op">+</span><span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">8</span> <span class="op">*</span><span class="st"> </span>windowSd, 
+       <span class="dt">lty =</span> <span class="st">"dashed"</span>, <span class="dt">col =</span> <span class="st">"orange"</span>)
+<span class="co"># Add a legend</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/legend">legend</a></span>(<span class="dt">x =</span> <span class="st">"topright"</span>,
+       <span class="dt">legend =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Point of Interest"</span>, 
+                  <span class="st">"Neighbors"</span>, 
+                  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"Median = "</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(windowMedian,<span class="dv">2</span>)),
+                  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"Stddev = "</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(windowSd,<span class="dv">2</span>))),
+       <span class="dt">col =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"red"</span>, <span class="st">"black"</span>, <span class="st">"blue"</span>, <span class="st">"orange"</span>),
+       <span class="dt">lwd =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>), 
+       <span class="dt">lty =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="ot">NA</span>, <span class="ot">NA</span>, <span class="st">"solid"</span>, <span class="st">"dashed"</span>), 
+       <span class="dt">pch =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">16</span>, <span class="dv">16</span>, <span class="ot">NA</span>, <span class="ot">NA</span>))</code></pre></div>
 <p><img src="outlier_detection_files/figure-html/hampel_window-1.png" width="672"></p>
 <p>The example code above can be applied to any outliers identified with <code><a href="https://www.rdocumentation.org/packages/seismicRoll/topics/findOutliers">seismicRoll::findOutliers()</a></code> to gain a better understanding of why each point is flagged as an outlier. Remember that this is a “rolling” algorithm and that the <code>windowMedian</code> and <code>windowSd</code> are recalculated for every single point in the timeseries.</p>
 <p>If an outlier is detected even when it visually appears to lie on top of other data points it just means that the window-local median and standard deviation are very small, thus requiring much smaller deviations from the median to be flagged as an outlier.</p>
@@ -216,29 +216,29 @@
 <div id="no-outlier-replacement" class="section level3">
 <h3 class="hasAnchor">
 <a href="#no-outlier-replacement" class="anchor"></a>No outlier replacement</h3>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">pat2Day &lt;-</a>
-<a class="sourceLine" id="cb7-2" title="2"><span class="st">  </span><span class="kw"><a href="../reference/pat_filterDate.html">pat_filterDate</a></span>(pat, <span class="st">"2018-08-02"</span>, <span class="dt">days =</span> <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb7-3" title="3"></a>
-<a class="sourceLine" id="cb7-4" title="4"><span class="co"># No outlier replacement</span></a>
-<a class="sourceLine" id="cb7-5" title="5">pat2Day <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(<span class="st">"pm25"</span>, <span class="dt">sampleSize =</span> <span class="fl">1e6</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pat2Day &lt;-
+<span class="st">  </span><span class="kw"><a href="../reference/pat_filterDate.html">pat_filterDate</a></span>(pat, <span class="st">"2018-08-02"</span>, <span class="dt">days =</span> <span class="dv">2</span>)
+
+<span class="co"># No outlier replacement</span>
+pat2Day <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(<span class="st">"pm25"</span>, <span class="dt">sampleSize =</span> <span class="fl">1e6</span>)</code></pre></div>
 <p><img src="outlier_detection_files/figure-html/hampel_smoothing_0-1.png" width="672"></p>
 </div>
 <div id="default-outlier-replacement" class="section level3">
 <h3 class="hasAnchor">
 <a href="#default-outlier-replacement" class="anchor"></a>Default outlier replacement</h3>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="co"># Default outlier replacement</span></a>
-<a class="sourceLine" id="cb8-2" title="2">pat2Day <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb8-3" title="3"><span class="st">  </span><span class="kw"><a href="../reference/pat_outliers.html">pat_outliers</a></span>(<span class="dt">windowSize =</span> <span class="dv">23</span>, <span class="dt">thresholdMin =</span> <span class="dv">8</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb8-4" title="4"><span class="st">  </span><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(<span class="st">"pm25"</span>, <span class="dt">sampleSize =</span> <span class="fl">1e6</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Default outlier replacement</span>
+pat2Day <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/pat_outliers.html">pat_outliers</a></span>(<span class="dt">windowSize =</span> <span class="dv">23</span>, <span class="dt">thresholdMin =</span> <span class="dv">8</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(<span class="st">"pm25"</span>, <span class="dt">sampleSize =</span> <span class="fl">1e6</span>)</code></pre></div>
 <p><img src="outlier_detection_files/figure-html/hampel_smoothing_1-1.png" width="672"><img src="outlier_detection_files/figure-html/hampel_smoothing_1-2.png" width="672"></p>
 </div>
 <div id="aggressive-outlier-replacement" class="section level3">
 <h3 class="hasAnchor">
 <a href="#aggressive-outlier-replacement" class="anchor"></a>Aggressive outlier replacement</h3>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="co"># Aggressive outlier replacement </span></a>
-<a class="sourceLine" id="cb9-2" title="2">pat2Day <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-3" title="3"><span class="st">  </span><span class="kw"><a href="../reference/pat_outliers.html">pat_outliers</a></span>(<span class="dt">windowSize =</span> <span class="dv">23</span>, <span class="dt">thresholdMin =</span> <span class="dv">4</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-4" title="4"><span class="st">  </span><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(<span class="st">"pm25"</span>, <span class="dt">sampleSize =</span> <span class="fl">1e6</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Aggressive outlier replacement </span>
+pat2Day <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/pat_outliers.html">pat_outliers</a></span>(<span class="dt">windowSize =</span> <span class="dv">23</span>, <span class="dt">thresholdMin =</span> <span class="dv">4</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(<span class="st">"pm25"</span>, <span class="dt">sampleSize =</span> <span class="fl">1e6</span>)</code></pre></div>
 <p><img src="outlier_detection_files/figure-html/hampel_smoothing_2-1.png" width="672"><img src="outlier_detection_files/figure-html/hampel_smoothing_2-2.png" width="672"></p>
 </div>
 </div>

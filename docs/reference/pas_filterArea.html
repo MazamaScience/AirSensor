@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Area filtering for <em>pa_synoptic</em> dataframes — pas_filterArea • AirSensor</title>
+<title>Area filtering for <em>pa_synoptic</em> objects — pas_filterArea • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,9 +37,9 @@
 
 
 
-<meta property="og:title" content="Area filtering for <em>pa_synoptic</em> dataframes — pas_filterArea" />
+<meta property="og:title" content="Area filtering for <em>pa_synoptic</em> objects — pas_filterArea" />
 
-<meta property="og:description" content="Filters pa_synoptic objects based on a bounding box." />
+<meta property="og:description" content="Filters pa_synoptic object sensors based on a bounding box." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -70,7 +70,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
       </span>
     </div>
 
@@ -136,14 +136,14 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Area filtering for <em>pa_synoptic</em> dataframes</h1>
+    <h1>Area filtering for <em>pa_synoptic</em> objects</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pas_filterArea.R'><code>R/pas_filterArea.R</code></a></small>
     <div class="hidden name"><code>pas_filterArea.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Filters <em>pa_synoptic</em> objects based on a bounding box.</p>
+    <p>Filters <em>pa_synoptic</em> object sensors based on a bounding box.</p>
     
     </div>
 
@@ -154,33 +154,33 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pas</th>
-      <td><p><em>pa_synoptic</em> dataframe</p></td>
+      <td><p>A <em>pa_synoptic</em> object.</p></td>
     </tr>
     <tr>
       <th>w</th>
-      <td><p>west edge of bounding box (deg E)</p></td>
+      <td><p>West edge of area bounding box (deg E).</p></td>
     </tr>
     <tr>
       <th>e</th>
-      <td><p>east edge of bounding box (deg E)</p></td>
+      <td><p>East edge of area bounding box (deg E).</p></td>
     </tr>
     <tr>
       <th>s</th>
-      <td><p>south edge of bounding box (deg N)</p></td>
+      <td><p>South edge of area bounding box (deg N).</p></td>
     </tr>
     <tr>
       <th>n</th>
-      <td><p>north edge of bounding box (deg N)</p></td>
+      <td><p>North edge of area bounding box (deg N).</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A subset of the incoming <code>pas</code>.</p>
+    <p>A subset of the given <em>pa_synoptic</em> object.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='pas_load.html'>pas_load</a> <a href='pas_filter.html'>pas_filter</a></p></div>
+    <div class='dont-index'><p><a href='pas_filter.html'>pas_filter</a>, <a href='pas_within.html'>pas_within</a></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -191,8 +191,7 @@
                  <span class='kw'>e</span> <span class='kw'>=</span> -<span class='fl'>118.07</span>,
                  <span class='kw'>s</span> <span class='kw'>=</span> <span class='fl'>33.75</span>,
                  <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>33.78</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/range'>range</a></span>(<span class='no'>scsb</span>$<span class='no'>longitude</span>)</div><div class='output co'>#&gt; [1] -118.0945 -118.0782</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/range'>range</a></span>(<span class='no'>scsb</span>$<span class='no'>latitude</span>)</div><div class='output co'>#&gt; [1] 33.75989 33.77767</div><div class='input'>
-</div></pre>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/range'>range</a></span>(<span class='no'>scsb</span>$<span class='no'>longitude</span>)</div><div class='output co'>#&gt; [1] -118.0945 -118.0782</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/range'>range</a></span>(<span class='no'>scsb</span>$<span class='no'>latitude</span>)</div><div class='output co'>#&gt; [1] 33.75989 33.77767</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

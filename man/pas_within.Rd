@@ -7,14 +7,14 @@
 pas_within(pas, label = NULL, radius = "1 km")
 }
 \arguments{
-\item{pas}{A \code{pa_synoptic} dataframe}
+\item{pas}{A \code{pa_synoptic} object.}
 
-\item{label}{A target (centered) Purple Air sensor label}
+\item{label}{A target (centered) Purple Air sensor label.}
 
-\item{radius}{A distance with unit (i.e "15 km")}
+\item{radius}{A distance with unit (i.e "15 km").}
 }
 \value{
-A subset of the incoming \code{pa_synoptic} dataframe.
+A subset of the given \code{pa_synoptic} object.
 }
 \description{
 Filter for Purple Air sensors within a specified distance from 
@@ -30,5 +30,5 @@ pas_within(example_pas, "SaratogaMiddleHighSchool", "1024 km")
 }
 }
 \seealso{
-\link{pas_filter}
+\link{pas_filter}, \link{pas_filterArea}
 }

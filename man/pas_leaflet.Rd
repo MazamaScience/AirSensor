@@ -9,7 +9,7 @@ pas_leaflet(pas = NULL, parameter = "pm25_1hr", paletteName = NULL,
   outsideOnly = TRUE)
 }
 \arguments{
-\item{pas}{A \emph{pa_synoptic} dataframe.}
+\item{pas}{A \emph{pa_synoptic} object}
 
 \item{parameter}{The value to plot, e.g. \code{pm25_1hr}.}
 
