@@ -3,7 +3,7 @@
 #' @importFrom dplyr filter
 #' @importFrom MazamaCoreUtils logger.debug logger.error
 #' 
-#' @title Load Purple Air synoptic data
+#' @title Load PurpleAir synoptic data
 #' 
 #' @description A pre-generated \emph{pa_synoptic} object will be loaded for
 #'   the given date. These files are generated each day at 4am California time
@@ -23,7 +23,7 @@
 #' @param datestamp A date string in ymd order.
 #' @param baseUrl The base URL for synoptic data.
 #' 
-#' @return A \code{pa_synoptic} object
+#' @return A PurpleAir Synoptic \code{pas} object.
 #' 
 #' @seealso \link{pas_loadLatest}
 #' 
@@ -31,7 +31,7 @@
 #' \dontrun{
 #' pas <- pas_load()
 #' pas %>% 
-#'   filter(stateCode == "CA") %>%
+#'   pas_filter(stateCode == "CA") %>%
 #'   pas_leaflet()
 #' }
 

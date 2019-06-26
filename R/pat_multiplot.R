@@ -4,25 +4,24 @@
 #' 
 #' @title Display multiple plots on one page
 #' 
-#' @param pat Purple Air Timeseries "pat" object from 
-#' \code{createPATimeseriesObject()}
-#' @param plottype Quick-reference plot types: "all", "aux", "pm25"
+#' @param pat PurpleAir Timeseries \emph{pat} object.
+#' @param plottype Quick-reference plot types: "all", "aux", "pm25".
 #' @param sampleSize Either an integer or fraction to determine sample size.
 #' @param columns Number of columns in the plot layout. Use \code{NULL} for 
 #' defaults.
-#' @param a_size size of pm25_A points
-#' @param a_shape symbol to use for pm25_A points
-#' @param a_color color of pm25_A points
-#' @param b_size size of pm25_B points
-#' @param b_shape symbol to use for pm25_B points
-#' @param b_color color of pm25_B points
-#' @param t_size size of temperature points
-#' @param t_shape symbol to use for temperature points
-#' @param t_color color of temperature points
-#' @param h_size size of humidity points
-#' @param h_shape symbol to use for humidity points
-#' @param h_color color of humidity points
-#' @param alpha opacity of points
+#' @param a_size Size of pm25_A points.
+#' @param a_shape Symbol to use for pm25_A points.
+#' @param a_color Color of pm25_A points.
+#' @param b_size Size of pm25_B points.
+#' @param b_shape Symbol to use for pm25_B points.
+#' @param b_color Color of pm25_B points.
+#' @param t_size Size of temperature points.
+#' @param t_shape Symbol to use for temperature points.
+#' @param t_color Color of temperature points.
+#' @param h_size Size of humidity points.
+#' @param h_shape Symbol to use for humidity points.
+#' @param h_color Color of humidity points.
+#' @param alpha Opacity of points.
 #' 
 #' @description A plotting function that uses ggplot2 to display multiple 
 #' ggplot objects in a single pane. Can either be passed individual ggplot 
@@ -36,10 +35,15 @@
 #' \item{"aux": auxillary data (temperature, humidity)}
 #' } 
 #' 
-#' @return Returns a ggplot object.
+#' @return A ggplot object.
 #' 
 #' @note Additional documentation of the multiplot algorithm is available at 
 #' cookbook-r.com.
+#' 
+#' @examples
+#' \dontrun{
+#' pat_multiplot(pat = example_pat, plottype="pm25", alpha=0.5)
+#' }
 
 pat_multiplot <- function(
   pat = NULL, 

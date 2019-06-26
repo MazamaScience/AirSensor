@@ -2,15 +2,17 @@
 #' @importFrom rlang .data
 #' @importFrom MazamaCoreUtils logger.debug logger.error
 #' 
-#' @title Get Purple Air timeseries data
+#' @title Load latest PurpleAir time series data
 #' 
-#' @param pas Purple Air 'enhanced' synoptic data
-#' @param name Purple Air 'label'
-#' @param id Purple Air 'ID'
-#' @param startdate desired start datetime (ISO 8601)
-#' @param enddate desired end datetime (ISO 8601)
-#' @param baseURL Base URL for Thingspeak API
-#' @return List with \code{meta} and \code{data} elements
+#' @param pas PurpleAir Synoptic \emph{pas} object.
+#' @param name PurpleAir sensor 'label'.
+#' @param id PurpleAir sensor 'ID'.
+#' @param startdate Desired start datetime (ISO 8601).
+#' @param enddate Desired end datetime (ISO 8601).
+#' @param baseURL Base URL for Thingspeak API.
+#' 
+#' @return A PurpleAir Timeseries \emph{pat} object.
+#' 
 #' @description Retrieve and parse timeseries data from the Thingspeak API for 
 #' specific PurpleAir sensors.
 #' 
@@ -18,9 +20,9 @@
 #' interest.
 #'
 #' @seealso \link{downloadParseTimeseriesData}
+#' 
 #' @examples
 #' \dontrun{
-#' initializeMazamaSpatialUtils()
 #' pas <- pas_load()
 #' pat <- pat_loadLatest(pas, "Seattle", startdate = 20180701, enddate = 20180901)
 #' }

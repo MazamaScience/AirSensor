@@ -2,25 +2,25 @@
 #' @importFrom rlang .data
 #' @import graphics
 #' 
-#' @title Detect and replace timeseries outliers
+#' @title Detect and replace time series outliers
 #' 
-#' @param pat Purple Air Timeseries "pat" object
-#' @param windowSize integer window size for outlier detection
-#' @param thresholdMin threshold value for outlier detection
-#' @param replace logical specifying whether replace outliers with the window 
-#' median value
-#' @param showPlot logical specifying whether to generate outlier detection 
-#' plots
-#' @param data_shape symbol to use for data points
-#' @param data_size size of data points
-#' @param data_color color of data points
-#' @param data_alpha opacity of data points
-#' @param outlier_shape symbol to use for outlier points
-#' @param outlier_size size of outlier points
-#' @param outlier_color color of outlier points
-#' @param outlier_alpha opacity of outlier points
+#' @param pat PurpleAir Timeseries \emph{pat} object.
+#' @param windowSize Integer window size for outlier detection.
+#' @param thresholdMin Threshold value for outlier detection.
+#' @param replace Logical specifying whether replace outliers with the window
+#'   median value.
+#' @param showPlot Logical specifying whether to generate outlier detection 
+#'   plots.
+#' @param data_shape Symbol to use for data points.
+#' @param data_size Size of data points.
+#' @param data_color Color of data points.
+#' @param data_alpha Opacity of data points.
+#' @param outlier_shape Symbol to use for outlier points.
+#' @param outlier_size Size of outlier points.
+#' @param outlier_color Color of outlier points.
+#' @param outlier_alpha Opacity of outlier points.
 #' 
-#' @return \code{pat} timeseries object with outliers replaced by median values.
+#' @return A \emph{pat} object with outliers replaced by median values.
 #' 
 #' @description Outlier detection using a Median Average Deviation "Hampel" 
 #' filter. This function applies a rolling Hampel filter to find those points
@@ -36,7 +36,7 @@
 #' 
 #' The default setting of the window size \code{windowSize = 23} means that 23 samples
 #' from a single channel are used to determine the distribution of values for
-#' which a median is calculated. Each Purple Air channel makes a measurement
+#' which a median is calculated. Each PurpleAir channel makes a measurement
 #' approximately every 80 seconds so the temporal window is 23 * 80 sec or
 #' approximately 30 minutes. This seems like a reasonable period of time over
 #' which to evaluate PM2.5 measurements.
@@ -48,6 +48,11 @@
 #' 
 #' @note Additional documentation on the algorithm is available in 
 #' \code{seismicRoll::findOutliers()}.
+#' 
+#' @examples
+#' \dontrun{
+#' outlierPlot <- example_pat %>% pat_outliers(replace = TRUE, showPlot = TRUE)
+#' }
 
 pat_outliers <- function(
   pat = NULL,

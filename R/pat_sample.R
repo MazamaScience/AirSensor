@@ -4,15 +4,15 @@
 #' 
 #' @title Sample PurpleAir time series data
 #' 
-#' @param pat Purple Air Timeseries "pat" object
-#' @param sampleSize a non-negative integer giving the number of rows to choose.
-#' @param sampleFraction the fraction of rows to choose.
-#' @param setSeed an integer that sets random numbver generation. Can be used to 
-#' reproduce sampling.
+#' @param pat PurpleAir Timeseries \emph{pat} object.
+#' @param sampleSize Non-negative integer giving the number of rows to choose.
+#' @param sampleFraction Fraction of rows to choose.
+#' @param setSeed Integer that sets random number generation. Can be used to 
+#'   reproduce sampling.
 #' @param keepOutliers logical specifying a graphics focused sampling algorithm
-#' (see Details)
-#''
-#' @return \code{pat} timeseries object - subset.
+#'   (see Details).
+#'
+#' @return A subset of the given \emph{pat} object.
 #' 
 #' @description A sampling function that accepts PurpleAir timeseries dataframes
 #' and reduces them by randomly selecting distinct rows of the users choosen 
@@ -40,7 +40,7 @@
 #' 
 #' @examples 
 #' \dontrun{
-#' pat <- pat_loadLatest()
+#' pat <- pat_load("SCNP_20", 20190411, 20190521)
 #' subset <- pat_sample(pat, sampleSize=1000, setSeed=1)
 #' }
 #' 

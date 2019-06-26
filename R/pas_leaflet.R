@@ -1,6 +1,6 @@
 #' @export
 #' 
-#' @title Leaflet interactive map of Purple Air sensors
+#' @title Leaflet interactive map of PurpleAir sensors
 #' 
 #' @description This function creates interactive maps that will be displayed in 
 #'   RStudio's 'Viewer' tab.
@@ -40,18 +40,18 @@
 #' \url{https://leaflet-extras.github.io/leaflet-providers/} for a list of 
 #' "provider tiles" to use as the background map.
 #' 
-#' @param pas A \emph{pa_synoptic} object
-#' @param parameter The value to plot, e.g. \code{pm25_1hr}.
-#' @param paletteName A predefined color palette name. Can be of the following:
+#' @param pas PurpleAir Synoptic \emph{pas} object.
+#' @param parameter Value to plot, e.g. \code{pm25_1hr}.
+#' @param paletteName Predefined color palette name. Can be of the following:
 #' \itemize{
 #' \item{"AQI"}
 #' \item{"humidity}
 #' \item{"temperature}
 #' \item{"distance"}
 #' }
-#' @param radius The radius (pixels) of monitor circles.
-#' @param opacity The opacity of monitor circles.
-#' @param maptype An optional name of leaflet ProviderTiles to use, e.g. \code{terrain}. 
+#' @param radius Radius (pixels) of monitor circles.
+#' @param opacity Opacity of monitor circles.
+#' @param maptype Optional name of leaflet ProviderTiles to use, e.g. \code{terrain}. 
 #' @param outsideOnly Logical specifying subsetting for monitors marked as 'outside'.
 #' 
 #' @return A leaflet "plot" object which, if not assigned, is rendered in 
@@ -62,7 +62,7 @@
 #' # Methow Valley Clean Air Ambassador
 #' initializeMazamaSpatialUtils()
 #' pas <- pas_load()
-#' mvcaa <- filter(pas, stringr::str_detect(pas$label, '^MV Clean Air'))
+#' mvcaa <- pas_filter(pas, stringr::str_detect(pas$label, '^MV Clean Air'))
 #' pas_leaflet(mvcaa, parameter="pm25_1hr")
 #' }
 

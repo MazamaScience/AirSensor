@@ -2,30 +2,30 @@
 #' 
 #' @export
 #' 
-#' @title Static map of Purple Air sensors
+#' @title Static map of PurpleAir sensors
 #' 
-#' @param pas A \emph{pa_synoptic} object
-#' @param parameter The value to plot, e.g. \code{pm25_1hr}.
-#' @param palette The base color or palette to be used. 
+#' @param pas PurpleAir Synoptic \emph{pas} object.
+#' @param parameter Value to plot, e.g. \code{pm25_1hr}.
+#' @param palette Base color or palette to be used. 
 #' @param mapTheme Default is "terrain", see description for additional options.
 #' @param mapShape Default is "square", can also be "natural".
-#' @param direction The legend color direction.
-#' @param minScale The minimum value to set scale for color gradient. Default is 0.
-#' @param maxScale The maximum value to set scale for color gradient. Default is 150.
-#' @param shape The symbol to use for points.
-#' @param size The size of points.
-#' @param alpha The opacity of points.
-#' @param bbuff The bounding box buffer. Default is 0.1.
+#' @param direction Legend color direction.
+#' @param minScale Minimum value to set scale for color gradient. Default is 0.
+#' @param maxScale Maximum value to set scale for color gradient. Default is 150.
+#' @param shape Symbol to use for points.
+#' @param size Size of points.
+#' @param alpha Opacity of points.
+#' @param bbuff Bounding box buffer. Default is 0.1.
 #' @param zoomAdjust Adjustment to map zoom level (-1:3).
 #' @param ... Additional options: the legend can disabled \code{guide = FALSE}, 
 #'   and renamed with \code{name= "Example name"}. 
 #'   
 #' @return A ggplot object.
 #' 
-#' @description Creates a static map of a \code{pa_synoptic} object
+#' @description Creates a static map of a \emph{pas} object
 #' 
 #' Users can create a map using any numeric data column within the
-#' \emph{pa_synoptic} object:
+#' \emph{pas} object:
 #' 
 #' \code{"pm25" "temperature" "humidity" "pressure" 
 #'  "pm25_current" "pm25_10min" "pm25_30min" "pm25_1hr" "pm25_6hr" 

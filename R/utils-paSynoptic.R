@@ -29,6 +29,10 @@
 #' 
 #' The "pwfsl", official, monitors are obtained from the USFS AirFire site 
 #' using the \pkg{PWFSLSmoke} R package.
+#' 
+#' @examples
+#' pas_isPas(example_pas)
+#' pas_isPas(1:10)
 
 pas_isPas <- function(pas) {
   
@@ -56,10 +60,18 @@ pas_isPas <- function(pas) {
 #' 
 #' @title Test for an empty \emph{pa_synoptic} object
 #' 
-#' @param pas A \emph{pa+synoptic} object.
+#' @param pas A \emph{pa_synoptic} object.
+#' 
 #' @return \code{TRUE} if no data exist in \code{pas}, \code{FALSE} otherwise.
+#' 
 #' @description Convenience function for \code{nrow(pas) == 0}.
 #' This makes for more readable code in functions that need to test for this.
+#' 
+#' @examples
+#' pas <- example_pas
+#' pas_isEmpty(pas)
+#' pas <- pas %>% pas_filter(ID < 0)
+#' pas_isEmpty(pas)
 
 pas_isEmpty <- function(pas) {
   if (!pas_isPas(pas)) stop("Not a valid 'pas' object.")

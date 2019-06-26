@@ -1,10 +1,10 @@
 #' @export
 #' @importFrom rlang .data
 #' 
-#' @title General purpose filtering for \emph{pat} objects
+#' @title General purpose data filtering for PurpleAir Timeseries objects
 #' 
-#' @param pat \emph{pa_timeseries} dataframe
-#' @param ... logical predicates defined in terms of the variables in the 
+#' @param pat PurpleAir Timeseries \emph{pat} object.
+#' @param ... Logical predicates defined in terms of the variables in the 
 #' \code{pat$data}.
 #' 
 #' @description A generalized data filter for \emph{pat} objects to 
@@ -18,7 +18,8 @@
 #' @seealso \link{pat_filterDate}
 #' @examples
 #' \dontrun{
-#' unhealthy <- pat_filterData(pat, pm25_A > 55.5, pm25_B > 55.5) 
+#' unhealthy <- pat_filterData(example_pat, pm25_A > 55.5, pm25_B > 55.5)
+#' head(unhealthy)
 #' }
 
 pat_filterData <- function(

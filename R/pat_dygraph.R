@@ -3,7 +3,7 @@
 #' 
 #' @title Interactive time series plot
 #' 
-#' @param pat Purple Air Timeseries "pat" object from \code{createPATimeseriesObject()}
+#' @param pat PurpleAir Timeseries \emph{pat} object from \code{createPATimeseriesObject()}
 #' @param parameter Data to display: "pm25", "humidity", "temperature"
 #' @param sampleSize Either an integer or fraction to determine sample size
 #' @param title title text
@@ -30,8 +30,7 @@
 #' 
 #' @examples
 #' \dontrun{
-#' pas <- example_pas
-#' nb <- pat_loadLatest(pas, "North Bend Weather", startdate = 20180801, enddate = 20180901)
+#' nb <- pat_loadLatest(example_pas, "North Bend Weather", startdate = 20180801, enddate = 20180901)
 #' subset_nb <- pat_sample(pat=nb, sampleSize = 1000, setSeed = 1)
 #' pat_dygraph(pat = subset_nb, xlab = "2018", rollPeriod = 7)
 #' }

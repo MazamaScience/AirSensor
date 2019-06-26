@@ -4,16 +4,16 @@
 #' @import dplyr
 #' @import graphics
 #' 
-#' @title Linear model fitting of channel A and B data
+#' @title Linear model fitting of channel A and B time series data
 #' 
-#' @param pat Purple Air Timeseries "pat" object
-#' @param showPlot logical specifying whether to generate a model fit plot
-#' @param size size of points
-#' @param shape symbol to use for points
-#' @param color color of points
-#' @param alpha opacity of points
-#' @param xylim vector of (lo,hi) limits used as limits on the correlation plot 
-#' axes -- useful for zooming in
+#' @param pat PurpleAir Timeseries \emph{pat} object.
+#' @param showPlot Logical specifying whether to generate a model fit plot.
+#' @param size Size of points.
+#' @param shape Symbol to use for points.
+#' @param color Color of points.
+#' @param alpha Opacity of points.
+#' @param xylim Vector of (lo,hi) limits used as limits on the correlation plot 
+#' axes -- useful for zooming in.
 #' 
 #' @description Uses a liner model to fit data from channel B to data from 
 #' channel A.
@@ -23,6 +23,10 @@
 #' @return A linear model, fitting the `pat` B channel readings to A channel 
 #' readings.
 #' 
+#' @example 
+#' \dontrun{
+#' pat_internalFit(pat = example_pat)
+#' }
 
 pat_internalFit <- function(
   pat = NULL,

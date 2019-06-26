@@ -1,20 +1,21 @@
 #' @export
 #' 
-#' @title Find Purple Air sensors within radial distance
+#' @title Find PurpleAir sensors within radial distance
 #' 
-#' @param pas A \code{pa_synoptic} object.
-#' @param label A target (centered) Purple Air sensor label.
-#' @param radius A distance with unit (i.e "15 km").
+#' @param pas PurpleAir \emph{pas} object.
+#' @param label Target (centered) Purple Air sensor label.
+#' @param radius Distance from target with unit (i.e "15 km").
 #' 
-#' @description Filter for Purple Air sensors within a specified distance from 
+#' @description Filter for PurpleAir sensors within a specified distance from 
 #' a target Purple Air sensor.  
 #' 
 #' @details \code{radius} Should be a numeric string with provided metric unit separated by a space,
 #' such as \code{"250 m"}.
 #'
-#' @return A subset of the given \code{pa_synoptic} object.
+#' @return A subset of the given \emph{pas} object.
 #' 
-#' @seealso \link{pas_filter}, \link{pas_filterArea}
+#' @seealso \link{pas_filter}
+#' @seealso \link{pas_filterArea}
 #'
 #' @examples 
 #' \dontrun{

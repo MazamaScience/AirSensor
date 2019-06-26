@@ -1,14 +1,14 @@
 #' @export
 #' @importFrom rlang .data
 #' 
-#' @title Date filtering for \emph{pat} objects
+#' @title Date filtering for PurpleAir Timeseries objects
 #' 
-#' @param pat Purple Air Timeseries \emph{pat} object
-#' @param startdate desired start datetime (ISO 8601)
-#' @param enddate desired end datetime (ISO 8601)
-#' @param days Number of days to include in the filterDate interval
-#' @param weeks Number of weeks to include in the filterDate interval
-#' @param timezone Olson timezone used to interpret dates
+#' @param pat PurpleAir Timeseries \emph{pat} object.
+#' @param startdate Desired start datetime (ISO 8601).
+#' @param enddate Desired end datetime (ISO 8601).
+#' @param days Number of days to include in the filterDate interval.
+#' @param weeks Number of weeks to include in the filterDate interval.
+#' @param timezone Olson timezone used to interpret dates.
 #' 
 #' @description Subsets a Purple Air Timeseries object by date. 
 #' 
@@ -20,8 +20,13 @@
 #' \item{\code{"YYYY-mm-dd"}}
 #' }
 #' 
-#' @return A subset of the incoming \code{pat}.
+#' @return A subset of the given \emph{pat} object.
 #' 
+#' @examples
+#' \dontrun{
+#' august <- pat_filterDate(example_pat, startdate = 20180801, enddate = 20180901)
+#' pat_multiplot(pat = august)
+#' }
 
 pat_filterDate <- function(
   pat = NULL, 

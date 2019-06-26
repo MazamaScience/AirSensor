@@ -2,9 +2,9 @@
 #' @importFrom rlang .data
 #' @importFrom dplyr filter
 #' 
-#' @title Load Purple Air Timeseries data
+#' @title Load PurpleAir time series data fr a month
 #' 
-#' @description A pre-generated \code{pa_timeseries} object will be loaded for
+#' @description A pre-generated PurpleAir Timeseries \emph{pat} object will be loaded for
 #' the given month. Archived data for SCAQMD sensors go back to January, 2018.
 #' 
 #' The \code{datestamp} can must be in the following format:
@@ -15,19 +15,19 @@
 #' 
 #' By default, the current month is loaded.
 #'
-#' @param label Purple Air 'label'
-#' @param datestamp A date string in ymd order.
+#' @param label Purple Air sensor 'label'
+#' @param datestamp Date string in ymd order.
 #' @param timezone Timezone used to interpret datestamp.
 #' @param baseUrl Base URL for synoptic data.
 #' 
-#' @return An object of class "pa_timeseries".
+#' @return A PurpleAir Timeseries \emph{pat} object.
 #' 
 #' @seealso \link{pat_loadLatest}
 #' 
 #' @examples
 #' \dontrun{
-#' pat_loadMonth("SCNP_20", 201905)
-#'   pat_multiplot()
+#' may <- pat_loadMonth("SCNP_20", 201905)
+#' pat_multiplot(may)
 #' }
 
 pat_loadMonth <- function(

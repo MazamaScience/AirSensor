@@ -2,9 +2,9 @@
 #' @importFrom rlang .data
 #' @importFrom MazamaCoreUtils logger.debug
 #' 
-#' @title Load Purple Air Timeseries data
+#' @title Load PurpleAir time series data
 #' 
-#' @description A pre-generated \code{pa_timeseries} object will be loaded for
+#' @description A pre-generated PurpleAir Timeseries \emph{pat} object will be loaded for
 #' the given time interval. Archived data for SCAQMD sensors go back to 
 #' January, 2018.
 #' 
@@ -19,14 +19,14 @@
 #' 
 #' By default, the current week is loaded.
 #'
-#' @param label Purple Air 'label'
-#' @param startdate desired start datetime (ISO 8601)
-#' @param enddate desired end datetime (ISO 8601)
-#' @param days number of days of data to include
+#' @param label PurpleAir sensor 'label'.
+#' @param startdate Desired start datetime (ISO 8601).
+#' @param enddate Desired end datetime (ISO 8601).
+#' @param days Number of days of data to include.
 #' @param timezone Timezone used to interpret datestamp.
 #' @param baseUrl Base URL for synoptic data.
 #' 
-#' @return An object of class "pa_timeseries".
+#' @return A PurpleAir Timeseries \emph{pat} object.
 #' 
 #' @seealso \link{pat_loadMonth}
 #' @seealso \link{.dateRange}

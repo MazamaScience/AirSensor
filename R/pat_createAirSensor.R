@@ -3,18 +3,18 @@
 #' 
 #' @title Create an Air Sensor object
 #' 
-#' @param pat PurpleAir Timeseries "pat" object
-#' @param period The time period to average to. Can be "sec", "min", "hour", 
+#' @param pat PurpleAir Timeseries \emph{pat} object.
+#' @param period Time period to average to. Can be "sec", "min", "hour", 
 #' "day", "DSTday", "week", "month", "quarter" or "year". A number can also
 #'  precede these options followed by a space (i.e. "2 day" or "37 min").
-#' @param parameter parameter for which to create an \emph{as} object -- one of
+#' @param parameter Parameter for which to create an \emph{as} object -- one of
 #' "pm25", "humidity" or "temperature".
 #' @param channel Data channel to use for PM2.5 -- one of "a", "b or "ab".
 #' @param qc_algorithm Named QC algorithm to apply to hourly aggregation stats.
 #' @param min_count Aggregation bins with fewer than `min_count` measurements
 #' will be marked as `NA`.
 #'  
-#' @description Aggregates data from a \code{pat} object into an "Air Sensor" 
+#' @description Aggregates data from a \emph{pat} object into an "Air Sensor" 
 #' object that has appropriate metadata to be used with the *PWFSLSmoke* package.
 #'
 #' Current QC algorithms exist for \code{channe = "ab"} and include:
@@ -22,8 +22,8 @@
 #' \item{\code{hourly_AB_00}}
 #' \item{\code{hourly_AB_01}}
 #' }
-#' #' 
-#' @return "as" object of aggregated time series PurpleAir data
+#'
+#' @return An "as" object of aggregated PurpleAir Timeseries data.
 #' 
 #' @seealso airSensorQC_hourly_AB_00
 #' @seealso airSensorQC_hourly_AB_01

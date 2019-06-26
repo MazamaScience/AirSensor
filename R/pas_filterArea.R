@@ -1,19 +1,20 @@
 #' @export
 #' @importFrom rlang .data
 #' 
-#' @title Area filtering for \emph{pa_synoptic} objects
+#' @title Rectangle area filtering for PurpleAir Synoptic objects
 #' 
-#' @param pas A \emph{pa_synoptic} object.
+#' @param pas PurpleAir Synoptic \emph{pas} object.
 #' @param w West edge of area bounding box (deg E).
 #' @param e East edge of area bounding box (deg E).
 #' @param s South edge of area bounding box (deg N).
 #' @param n North edge of area bounding box (deg N).
 #' 
-#' @description Filters \emph{pa_synoptic} object sensors based on a bounding box.
+#' @description Filters \emph{pas} object sensors based on a bounding box.
 #' 
-#' @return A subset of the given \emph{pa_synoptic} object.
+#' @return A subset of the given \emph{pas} object.
 #' 
-#' @seealso \link{pas_filter}, \link{pas_within}
+#' @seealso \link{pas_filter}
+#' @seealso \link{pas_within}
 #' 
 #' @examples
 #' pas <- example_pas

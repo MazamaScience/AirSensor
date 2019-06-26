@@ -2,15 +2,17 @@
 #' 
 #' @title Join PurpleAir time series data
 #' 
-#' @param ... Any number of valid \code{pat} objects
+#' @param ... Any number of valid PurpleAir Time series \emph{pat} objects.
 #' 
-#' @return \code{pat} time series object
+#' @return A PurpleAir Time series \emph{pat} object.
 #' 
-#' @description Create a union of any number of \code{pat} objects along a 
+#' @description Create a union of any number of \emph{pat} objects along a 
 #' non-continuous datetime axis. 
 #' 
 #' @examples 
 #' \dontrun{
+#' pat <- example_pat
+#' 
 #' jul01_15 <- 
 #'   pat %>%
 #'   pat_filterDate(20180701, 20180715)

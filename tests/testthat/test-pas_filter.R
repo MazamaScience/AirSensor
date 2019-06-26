@@ -5,9 +5,8 @@ test_that("input validation works", {
   
   expect_error(pas_filter(NULL))
   expect_error(pas_filter(1:10))
-  #expect_error(pas_filter(example_pas, param="PM2.5"))
-  #expect_error(pas_filter(example_pas, outsideOnly = 'outside'))
-  #expect_error(pas_filter(example_pas, radius=NA))
+  expect_error(pas_filter(example_pas, "pm25_current > 70.0"))
+  expect_error(pas_filter(pm25_current > 70.0, example_pas))
 })
 
 test_that("pa_synoptic class returned", { 

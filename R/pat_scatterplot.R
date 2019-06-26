@@ -1,7 +1,7 @@
 #' @export
 #' @import graphics
 #' 
-#' @title Compare all variables in a Purple Air Timeseries object
+#' @title Compare all variables in a PurpleAir Timeseries object
 #' 
 #' @description Creates a multi-panel scatterplot comparing all variables in the
 #' \emph{pat} object. If any variables have no valid data, they are omitted from
@@ -20,22 +20,19 @@
 #' \item{\code{rssi} -- wifi signal strength (dBm)}
 #' }
 #' 
-#' @param pat Purple Air Timeseries \emph{pat} object
-#' @param parameters vector of parameters to include
-#' @param sampleSize integer to determine sample size
-#' @param sampleFraction fractional sample size 
-#' @param shape symbol to use for points
-#' @param size size of points
-#' @param color color of points
-#' @param alpha opacity of points
+#' @param pat PurpleAir Timeseries \emph{pat} object.
+#' @param parameters Vector of parameters to include.
+#' @param sampleSize Integer to determine sample size.
+#' @param sampleFraction Fractional sample size.
+#' @param shape Symbol to use for points.
+#' @param size Size of points.
+#' @param color Color of points.
+#' @param alpha Opacity of points.
 #' 
 #' @return Multi-panel ggplot comparing all parameters.
 #' 
 #' @examples
-#' pat <- 
-#'   get(data(example_pat)) %>%
-#'   pat_filterDate(20180811,20180818)
-#'   
+#' pat <- example_pat %>% pat_filterDate(20180811,20180818)
 #' pat_scatterplot(pat, sampleSize = 1000)
 
 pat_scatterplot <- function(
