@@ -12,80 +12,80 @@
 
 # ----- Create a 2018 "pat" archive on joule -----------------------------------------
 
-12 01 18 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2018:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201801
+12 01 28 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2018:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201801
 
-12 02 18 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2018:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201802
+12 02 28 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2018:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201802
 
-12 03 18 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2018:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201803
+12 03 28 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2018:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201803
 
-12 04 18 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2018:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201804
+12 04 28 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2018:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201804
 
-12 05 18 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2018:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201805
+12 05 28 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2018:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201805
 
-12 06 18 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2018:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201806
+12 06 28 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2018:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201806
 
-12 07 18 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2018:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201807
+12 07 28 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2018:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201807
 
-12 08 18 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2018:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201808
+12 08 28 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2018:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201808
 
-12 09 18 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2018:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201809
+12 09 28 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2018:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201809
 
-12 10 18 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2018:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201810
+12 10 28 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2018:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201810
 
-12 11 18 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2018:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201811
+12 11 28 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2018:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201811
 
-12 12 18 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2018:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201812
+12 12 28 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2018:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201812
 
 
 # ----- Create a 2019 "pat" archive on joule -----------------------------------------
 
-12 01 19 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2019:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201901
+12 01 29 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2019:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201901
 
-12 02 19 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2019:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201902
+12 02 29 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2019:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201902
 
-12 03 19 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2019:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201903
+12 03 29 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2019:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201903
 
-12 04 19 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2019:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201904
+12 04 29 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2019:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201904
 
-12 05 19 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2019:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201905
+12 05 29 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/pat/2019:/data -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201905
 
 
 # ----- Create a 2018 "airsensor" archive on joule -----------------------------------------
 
-12 01 18 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2018:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201801
+22 01 28 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2018:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201801
 
-12 02 18 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2018:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201802
+22 02 28 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2018:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201802
 
-12 03 18 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2018:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201803
+22 03 28 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2018:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201803
 
-12 04 18 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2018:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201804
+22 04 28 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2018:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201804
 
-12 05 18 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2018:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201805
+22 05 28 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2018:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201805
 
-12 06 18 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2018:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201806
+22 06 28 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2018:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201806
 
-12 07 18 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2018:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201807
+22 07 28 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2018:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201807
 
-12 08 18 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2018:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201808
+22 08 28 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2018:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201808
 
-12 09 18 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2018:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201809
+22 09 28 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2018:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201809
 
-12 10 18 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2018:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201810
+22 10 28 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2018:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201810
 
-12 11 18 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2018:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201811
+22 11 28 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2018:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201811
 
-12 12 18 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2018:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201812
+22 12 28 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2018:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201812
 
 
 # ----- Create a 2019 "airsensor" archive on joule -----------------------------------------
 
-12 01 19 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2019:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201901
+22 01 29 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2019:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201901
 
-12 02 19 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2019:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201902
+22 02 29 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2019:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201902
 
-12 03 19 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2019:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201903
+22 03 29 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2019:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201903
 
-12 04 19 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2019:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201904
+22 04 29 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2019:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201904
 
-12 05 19 5 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2019:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201905
+22 05 29 6 *    docker run --rm -v /home/jonc/Projects/MazamaScience/AirSensor/local_executables:/app -v /var/www/smoke.mazamascience.com/html/data/PurpleAir/airsensor/2019:/data -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --outputDir=/data --logDir=/data --pattern=^[Ss][Cc].._..$ --datestamp=201905
 
