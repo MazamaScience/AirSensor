@@ -14,7 +14,7 @@
 #' 
 #' @return A subset of the given \emph{pa_synoptic} object.
 #' 
-#' @seealso \link{pas_filterArea}, \link{pas_within}
+#' @seealso \link{pas_filterArea}, \link{pas_filterNear}
 #' 
 #' @examples
 #' \dontrun{

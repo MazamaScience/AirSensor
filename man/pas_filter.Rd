@@ -27,5 +27,5 @@ californiaSensors <- pas_filter(pas, stateCode == "CA")
 }
 }
 \seealso{
-\link{pas_filterArea}, \link{pas_within}
+\link{pas_filterArea}, \link{pas_filterNear}
 }

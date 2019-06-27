@@ -37,5 +37,5 @@ range(scsb$longitude)
 range(scsb$latitude)
 }
 \seealso{
-\link{pas_filter}, \link{pas_within}
+\link{pas_filter}, \link{pas_filterNear}
 }
