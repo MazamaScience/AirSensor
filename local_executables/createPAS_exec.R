@@ -6,6 +6,10 @@
 #
 # ./createPAS_exec.R
 #
+# Run it inside a docker continer with something like:
+#
+# docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/airsensor /app/createPAS_exec.R --outputDir=/app --logDir=/app 
+#
 
 VERSION = "0.1.1" #  --- . --- . AirSensor 0.3.2
 
