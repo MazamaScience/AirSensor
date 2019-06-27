@@ -9,13 +9,13 @@ pat_createAirSensor(pat = NULL, period = "1 hour",
   min_count = 10)
 }
 \arguments{
-\item{pat}{PurpleAir Timeseries "pat" object}
+\item{pat}{PurpleAir Timeseries \emph{pat} object.}
 
-\item{period}{The time period to average to. Can be "sec", "min", "hour", 
+\item{period}{Time period to average to. Can be "sec", "min", "hour", 
 "day", "DSTday", "week", "month", "quarter" or "year". A number can also
  precede these options followed by a space (i.e. "2 day" or "37 min").}
 
-\item{parameter}{parameter for which to create an \emph{as} object -- one of
+\item{parameter}{Parameter for which to create an \emph{as} object -- one of
 "pm25", "humidity" or "temperature".}
 
 \item{channel}{Data channel to use for PM2.5 -- one of "a", "b or "ab".}
@@ -26,10 +26,10 @@ pat_createAirSensor(pat = NULL, period = "1 hour",
 will be marked as `NA`.}
 }
 \value{
-"as" object of aggregated time series PurpleAir data
+An "airsensor" object of aggregated PurpleAir Timeseries data.
 }
 \description{
-Aggregates data from a \code{pat} object into an "Air Sensor" 
+Aggregates data from a \emph{pat} object into an \emph{airsensor} 
 object that has appropriate metadata to be used with the *PWFSLSmoke* package.
 
 Current QC algorithms exist for \code{channe = "ab"} and include:
@@ -37,7 +37,6 @@ Current QC algorithms exist for \code{channe = "ab"} and include:
 \item{\code{hourly_AB_00}}
 \item{\code{hourly_AB_01}}
 }
-#'
 }
 \examples{
 \dontrun{

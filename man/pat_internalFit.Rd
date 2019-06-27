@@ -2,26 +2,26 @@
 % Please edit documentation in R/pat_internalFit.R
 \name{pat_internalFit}
 \alias{pat_internalFit}
-\title{Linear model fitting of channel A and B data}
+\title{Linear model fitting of channel A and B time series data}
 \usage{
 pat_internalFit(pat = NULL, showPlot = TRUE, size = 1, shape = 15,
   color = "purple", alpha = 0.25, xylim = NULL)
 }
 \arguments{
-\item{pat}{Purple Air Timeseries "pat" object}
+\item{pat}{PurpleAir Timeseries \emph{pat} object.}
 
-\item{showPlot}{logical specifying whether to generate a model fit plot}
+\item{showPlot}{Logical specifying whether to generate a model fit plot.}
 
-\item{size}{size of points}
+\item{size}{Size of points.}
 
-\item{shape}{symbol to use for points}
+\item{shape}{Symbol to use for points.}
 
-\item{color}{color of points}
+\item{color}{Color of points.}
 
-\item{alpha}{opacity of points}
+\item{alpha}{Opacity of points.}
 
-\item{xylim}{vector of (lo,hi) limits used as limits on the correlation plot 
-axes -- useful for zooming in}
+\item{xylim}{Vector of (lo,hi) limits used as limits on the correlation plot 
+axes -- useful for zooming in.}
 }
 \value{
 A linear model, fitting the `pat` B channel readings to A channel 

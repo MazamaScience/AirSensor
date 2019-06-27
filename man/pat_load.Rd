@@ -2,30 +2,30 @@
 % Please edit documentation in R/pat_load.R
 \name{pat_load}
 \alias{pat_load}
-\title{Load Purple Air Timeseries data}
+\title{Load PurpleAir time series data}
 \usage{
 pat_load(label = NULL, startdate = NULL, enddate = NULL, days = 7,
   timezone = "America/Los_Angeles",
   baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/pat")
 }
 \arguments{
-\item{label}{Purple Air 'label'}
+\item{label}{PurpleAir sensor 'label'.}
 
-\item{startdate}{desired start datetime (ISO 8601)}
+\item{startdate}{Desired start datetime (ISO 8601).}
 
-\item{enddate}{desired end datetime (ISO 8601)}
+\item{enddate}{Desired end datetime (ISO 8601).}
 
-\item{days}{number of days of data to include}
+\item{days}{Number of days of data to include.}
 
 \item{timezone}{Timezone used to interpret datestamp.}
 
 \item{baseUrl}{Base URL for synoptic data.}
 }
 \value{
-An object of class "pa_timeseries".
+A PurpleAir Timeseries \emph{pat} object.
 }
 \description{
-A pre-generated \code{pa_timeseries} object will be loaded for
+A pre-generated PurpleAir Timeseries \emph{pat} object will be loaded for
 the given time interval. Archived data for SCAQMD sensors go back to 
 January, 2018.
 

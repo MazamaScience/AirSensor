@@ -2,26 +2,26 @@
 % Please edit documentation in R/pat_filterDate.R
 \name{pat_filterDate}
 \alias{pat_filterDate}
-\title{Date filtering for \emph{pat} objects}
+\title{Date filtering for PurpleAir Timeseries objects}
 \usage{
 pat_filterDate(pat = NULL, startdate = NULL, enddate = NULL,
   days = NULL, weeks = NULL, timezone = "America/Los_Angeles")
 }
 \arguments{
-\item{pat}{Purple Air Timeseries \emph{pat} object}
+\item{pat}{PurpleAir Timeseries \emph{pat} object.}
 
-\item{startdate}{desired start datetime (ISO 8601)}
+\item{startdate}{Desired start datetime (ISO 8601).}
 
-\item{enddate}{desired end datetime (ISO 8601)}
+\item{enddate}{Desired end datetime (ISO 8601).}
 
-\item{days}{Number of days to include in the filterDate interval}
+\item{days}{Number of days to include in the filterDate interval.}
 
-\item{weeks}{Number of weeks to include in the filterDate interval}
+\item{weeks}{Number of weeks to include in the filterDate interval.}
 
-\item{timezone}{Olson timezone used to interpret dates}
+\item{timezone}{Olson timezone used to interpret dates.}
 }
 \value{
-A subset of the incoming \code{pat}.
+A subset of the given \emph{pat} object.
 }
 \description{
 Subsets a Purple Air Timeseries object by date. 
@@ -32,5 +32,11 @@ including either of the following recommended formats:
 \itemize{
 \item{\code{"YYYYmmdd"}}
 \item{\code{"YYYY-mm-dd"}}
+}
+}
+\examples{
+\dontrun{
+august <- pat_filterDate(example_pat, startdate = 20180801, enddate = 20180901)
+pat_multiplot(pat = august)
 }
 }

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Detect and replace timeseries outliers — pat_outliers • AirSensor</title>
+<title>Detect and replace time series outliers — pat_outliers • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,7 +37,7 @@
 
 
 
-<meta property="og:title" content="Detect and replace timeseries outliers — pat_outliers" />
+<meta property="og:title" content="Detect and replace time series outliers — pat_outliers" />
 
 <meta property="og:description" content="Outlier detection using a Median Average Deviation &quot;Hampel&quot; 
 filter. This function applies a rolling Hampel filter to find those points
@@ -51,7 +51,7 @@ relatively large value for `thresholdMin`` we make it less likely that we
 will generate false positives.
 The default setting of the window size windowSize = 23 means that 23 samples
 from a single channel are used to determine the distribution of values for
-which a median is calculated. Each Purple Air channel makes a measurement
+which a median is calculated. Each PurpleAir channel makes a measurement
 approximately every 80 seconds so the temporal window is 23 * 80 sec or
 approximately 30 minutes. This seems like a reasonable period of time over
 which to evaluate PM2.5 measurements.
@@ -155,7 +155,7 @@ thresholdMin = 1 or lower (but always above zero)." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Detect and replace timeseries outliers</h1>
+    <h1>Detect and replace time series outliers</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_outliers.R'><code>R/pat_outliers.R</code></a></small>
     <div class="hidden name"><code>pat_outliers.Rd</code></div>
     </div>
@@ -174,7 +174,7 @@ relatively large value for `thresholdMin`` we make it less likely that we
 will generate false positives.</p>
 <p>The default setting of the window size <code>windowSize = 23</code> means that 23 samples
 from a single channel are used to determine the distribution of values for
-which a median is calculated. Each Purple Air channel makes a measurement
+which a median is calculated. Each PurpleAir channel makes a measurement
 approximately every 80 seconds so the temporal window is 23 * 80 sec or
 approximately 30 minutes. This seems like a reasonable period of time over
 which to evaluate PM2.5 measurements.</p>
@@ -195,63 +195,63 @@ can create an highly smoothed, artificial dataset by setting
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pat</th>
-      <td><p>Purple Air Timeseries "pat" object</p></td>
+      <td><p>PurpleAir Timeseries <em>pat</em> object.</p></td>
     </tr>
     <tr>
       <th>windowSize</th>
-      <td><p>integer window size for outlier detection</p></td>
+      <td><p>Integer window size for outlier detection.</p></td>
     </tr>
     <tr>
       <th>thresholdMin</th>
-      <td><p>threshold value for outlier detection</p></td>
+      <td><p>Threshold value for outlier detection.</p></td>
     </tr>
     <tr>
       <th>replace</th>
-      <td><p>logical specifying whether replace outliers with the window 
-median value</p></td>
+      <td><p>Logical specifying whether replace outliers with the window
+median value.</p></td>
     </tr>
     <tr>
       <th>showPlot</th>
-      <td><p>logical specifying whether to generate outlier detection 
-plots</p></td>
+      <td><p>Logical specifying whether to generate outlier detection 
+plots.</p></td>
     </tr>
     <tr>
       <th>data_shape</th>
-      <td><p>symbol to use for data points</p></td>
+      <td><p>Symbol to use for data points.</p></td>
     </tr>
     <tr>
       <th>data_size</th>
-      <td><p>size of data points</p></td>
+      <td><p>Size of data points.</p></td>
     </tr>
     <tr>
       <th>data_color</th>
-      <td><p>color of data points</p></td>
+      <td><p>Color of data points.</p></td>
     </tr>
     <tr>
       <th>data_alpha</th>
-      <td><p>opacity of data points</p></td>
+      <td><p>Opacity of data points.</p></td>
     </tr>
     <tr>
       <th>outlier_shape</th>
-      <td><p>symbol to use for outlier points</p></td>
+      <td><p>Symbol to use for outlier points.</p></td>
     </tr>
     <tr>
       <th>outlier_size</th>
-      <td><p>size of outlier points</p></td>
+      <td><p>Size of outlier points.</p></td>
     </tr>
     <tr>
       <th>outlier_color</th>
-      <td><p>color of outlier points</p></td>
+      <td><p>Color of outlier points.</p></td>
     </tr>
     <tr>
       <th>outlier_alpha</th>
-      <td><p>opacity of outlier points</p></td>
+      <td><p>Opacity of outlier points.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>pat</code> timeseries object with outliers replaced by median values.</p>
+    <p>A <em>pat</em> object with outliers replaced by median values.</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
@@ -259,6 +259,10 @@ plots</p></td>
 <code><a href='https://www.rdocumentation.org/packages/seismicRoll/topics/findOutliers'>seismicRoll::findOutliers()</a></code>.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='no'>outlierPlot</span> <span class='kw'>&lt;-</span> <span class='no'>example_pat</span> <span class='kw'>%&gt;%</span> <span class='fu'>pat_outliers</span>(<span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>showPlot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -268,7 +272,9 @@ plots</p></td>
       <li><a href="#value">Value</a></li>
 
       <li><a href="#note">Note</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

@@ -2,14 +2,14 @@
 % Please edit documentation in R/pat_filterData.R
 \name{pat_filterData}
 \alias{pat_filterData}
-\title{General purpose filtering for \emph{pat} objects}
+\title{General purpose data filtering for PurpleAir Timeseries objects}
 \usage{
 pat_filterData(pat = NULL, ...)
 }
 \arguments{
-\item{pat}{\emph{pa_timeseries} dataframe}
+\item{pat}{PurpleAir Timeseries \emph{pat} object.}
 
-\item{...}{logical predicates defined in terms of the variables in the 
+\item{...}{Logical predicates defined in terms of the variables in the 
 \code{pat$data}.}
 }
 \value{
@@ -24,7 +24,8 @@ aredropped.
 }
 \examples{
 \dontrun{
-unhealthy <- pat_filterData(pat, pm25_A > 55.5, pm25_B > 55.5) 
+unhealthy <- pat_filterData(example_pat, pm25_A > 55.5, pm25_B > 55.5)
+head(unhealthy)
 }
 }
 \seealso{

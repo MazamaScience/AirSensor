@@ -2,7 +2,7 @@
 % Please edit documentation in R/pat_scatterplot.R
 \name{pat_scatterplot}
 \alias{pat_scatterplot}
-\title{Compare all variables in a Purple Air Timeseries object}
+\title{Compare all variables in a PurpleAir Timeseries object}
 \usage{
 pat_scatterplot(pat = NULL, parameters = c("datetime", "pm25_A",
   "pm25_B", "temperature", "humidity"), sampleSize = 5000,
@@ -10,21 +10,21 @@ pat_scatterplot(pat = NULL, parameters = c("datetime", "pm25_A",
   alpha = 0.25)
 }
 \arguments{
-\item{pat}{Purple Air Timeseries \emph{pat} object}
+\item{pat}{PurpleAir Timeseries \emph{pat} object.}
 
-\item{parameters}{vector of parameters to include}
+\item{parameters}{Vector of parameters to include.}
 
-\item{sampleSize}{integer to determine sample size}
+\item{sampleSize}{Integer to determine sample size.}
 
-\item{sampleFraction}{fractional sample size}
+\item{sampleFraction}{Fractional sample size.}
 
-\item{size}{size of points}
+\item{size}{Size of points.}
 
-\item{shape}{symbol to use for points}
+\item{shape}{Symbol to use for points.}
 
-\item{color}{color of points}
+\item{color}{Color of points.}
 
-\item{alpha}{opacity of points}
+\item{alpha}{Opacity of points.}
 }
 \value{
 Multi-panel ggplot comparing all parameters.
@@ -48,9 +48,6 @@ The list of available parameters include:
 }
 }
 \examples{
-pat <- 
-  get(data(example_pat)) \%>\%
-  pat_filterDate(20180811,20180818)
-  
+pat <- example_pat \%>\% pat_filterDate(20180811,20180818)
 pat_scatterplot(pat, sampleSize = 1000)
 }

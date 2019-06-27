@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Date filtering for <em>pat</em> objects — pat_filterDate • AirSensor</title>
+<title>Date filtering for PurpleAir Timeseries objects — pat_filterDate • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,7 +37,7 @@
 
 
 
-<meta property="og:title" content="Date filtering for <em>pat</em> objects — pat_filterDate" />
+<meta property="og:title" content="Date filtering for PurpleAir Timeseries objects — pat_filterDate" />
 
 <meta property="og:description" content="Subsets a Purple Air Timeseries object by date.
 Dates can be anything that is understood by lubrdiate::ymd()
@@ -142,7 +142,7 @@ including either of the following recommended formats:
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Date filtering for <em>pat</em> objects</h1>
+    <h1>Date filtering for PurpleAir Timeseries objects</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_filterDate.R'><code>R/pat_filterDate.R</code></a></small>
     <div class="hidden name"><code>pat_filterDate.Rd</code></div>
     </div>
@@ -167,35 +167,40 @@ including either of the following recommended formats:</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pat</th>
-      <td><p>Purple Air Timeseries <em>pat</em> object</p></td>
+      <td><p>PurpleAir Timeseries <em>pat</em> object.</p></td>
     </tr>
     <tr>
       <th>startdate</th>
-      <td><p>desired start datetime (ISO 8601)</p></td>
+      <td><p>Desired start datetime (ISO 8601).</p></td>
     </tr>
     <tr>
       <th>enddate</th>
-      <td><p>desired end datetime (ISO 8601)</p></td>
+      <td><p>Desired end datetime (ISO 8601).</p></td>
     </tr>
     <tr>
       <th>days</th>
-      <td><p>Number of days to include in the filterDate interval</p></td>
+      <td><p>Number of days to include in the filterDate interval.</p></td>
     </tr>
     <tr>
       <th>weeks</th>
-      <td><p>Number of weeks to include in the filterDate interval</p></td>
+      <td><p>Number of weeks to include in the filterDate interval.</p></td>
     </tr>
     <tr>
       <th>timezone</th>
-      <td><p>Olson timezone used to interpret dates</p></td>
+      <td><p>Olson timezone used to interpret dates.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A subset of the incoming <code>pat</code>.</p>
+    <p>A subset of the given <em>pat</em> object.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='no'>august</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_filterDate</span>(<span class='no'>example_pat</span>, <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fl'>20180801</span>, <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='fl'>20180901</span>)
+<span class='fu'><a href='pat_multiplot.html'>pat_multiplot</a></span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='no'>august</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -203,7 +208,9 @@ including either of the following recommended formats:</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

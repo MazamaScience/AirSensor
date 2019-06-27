@@ -2,7 +2,7 @@
 % Please edit documentation in R/pas_load.R
 \name{pas_load}
 \alias{pas_load}
-\title{Load Purple Air synoptic data}
+\title{Load PurpleAir synoptic data}
 \usage{
 pas_load(datestamp = strftime(lubridate::today("America/Los_Angeles"),
   "\%Y\%m\%d"),
@@ -14,7 +14,7 @@ pas_load(datestamp = strftime(lubridate::today("America/Los_Angeles"),
 \item{baseUrl}{The base URL for synoptic data.}
 }
 \value{
-A \code{pa_synoptic} object
+A PurpleAir Synoptic \code{pas} object.
 }
 \description{
 A pre-generated \emph{pa_synoptic} object will be loaded for
@@ -36,7 +36,7 @@ By default, today's date is used.
 \dontrun{
 pas <- pas_load()
 pas \%>\% 
-  filter(stateCode == "CA") \%>\%
+  pas_filter(stateCode == "CA") \%>\%
   pas_leaflet()
 }
 }

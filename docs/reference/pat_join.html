@@ -144,7 +144,7 @@ non-continuous datetime axis." />
 
     <div class="ref-description">
     
-    <p>Create a union of any number of <code>pat</code> objects along a 
+    <p>Create a union of any number of <em>pat</em> objects along a 
 non-continuous datetime axis.</p>
     
     </div>
@@ -156,17 +156,19 @@ non-continuous datetime axis.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>...</th>
-      <td><p>Any number of valid <code>pat</code> objects</p></td>
+      <td><p>Any number of valid PurpleAir Time series <em>pat</em> objects.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>pat</code> time series object</p>
+    <p>A PurpleAir Time series <em>pat</em> object.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='no'>pat</span> <span class='kw'>&lt;-</span> <span class='no'>example_pat</span>
+
 <span class='no'>jul01_15</span> <span class='kw'>&lt;-</span>
   <span class='no'>pat</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='pat_filterDate.html'>pat_filterDate</a></span>(<span class='fl'>20180701</span>, <span class='fl'>20180715</span>)

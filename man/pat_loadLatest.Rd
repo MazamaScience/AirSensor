@@ -2,27 +2,27 @@
 % Please edit documentation in R/pat_loadLatest.R
 \name{pat_loadLatest}
 \alias{pat_loadLatest}
-\title{Get Purple Air timeseries data}
+\title{Load latest PurpleAir time series data}
 \usage{
 pat_loadLatest(pas = NULL, name = NULL, id = NULL,
   startdate = NULL, enddate = NULL,
   baseURL = "https://api.thingspeak.com/channels/")
 }
 \arguments{
-\item{pas}{Purple Air 'enhanced' synoptic data}
+\item{pas}{PurpleAir Synoptic \emph{pas} object.}
 
-\item{name}{Purple Air 'label'}
+\item{name}{PurpleAir sensor 'label'.}
 
-\item{id}{Purple Air 'ID'}
+\item{id}{PurpleAir sensor 'ID'.}
 
-\item{startdate}{desired start datetime (ISO 8601)}
+\item{startdate}{Desired start datetime (ISO 8601).}
 
-\item{enddate}{desired end datetime (ISO 8601)}
+\item{enddate}{Desired end datetime (ISO 8601).}
 
-\item{baseURL}{Base URL for Thingspeak API}
+\item{baseURL}{Base URL for Thingspeak API.}
 }
 \value{
-List with \code{meta} and \code{data} elements
+A PurpleAir Timeseries \emph{pat} object.
 }
 \description{
 Retrieve and parse timeseries data from the Thingspeak API for 
@@ -34,7 +34,6 @@ interest.
 }
 \examples{
 \dontrun{
-initializeMazamaSpatialUtils()
 pas <- pas_load()
 pat <- pat_loadLatest(pas, "Seattle", startdate = 20180701, enddate = 20180901)
 }

@@ -39,12 +39,12 @@
 
 <meta property="og:title" content="Create an Air Sensor object — pat_createAirSensor" />
 
-<meta property="og:description" content="Aggregates data from a pat object into an &quot;Air Sensor&quot; 
+<meta property="og:description" content="Aggregates data from a pat object into an airsensor 
 object that has appropriate metadata to be used with the *PWFSLSmoke* package.
 Current QC algorithms exist for channe = &quot;ab&quot; and include:
 hourly_AB_00
 hourly_AB_01
-#'" />
+" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -148,12 +148,12 @@ hourly_AB_01
 
     <div class="ref-description">
     
-    <p>Aggregates data from a <code>pat</code> object into an "Air Sensor" 
+    <p>Aggregates data from a <em>pat</em> object into an <em>airsensor</em> 
 object that has appropriate metadata to be used with the *PWFSLSmoke* package.</p>
 <p>Current QC algorithms exist for <code>channe = "ab"</code> and include:</p><ul>
 <li><p><code>hourly_AB_00</code></p></li>
 <li><p><code>hourly_AB_01</code></p></li>
-</ul><p>#'</p>
+</ul>
     
     </div>
 
@@ -166,17 +166,17 @@ object that has appropriate metadata to be used with the *PWFSLSmoke* package.</
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pat</th>
-      <td><p>PurpleAir Timeseries "pat" object</p></td>
+      <td><p>PurpleAir Timeseries <em>pat</em> object.</p></td>
     </tr>
     <tr>
       <th>period</th>
-      <td><p>The time period to average to. Can be "sec", "min", "hour", 
+      <td><p>Time period to average to. Can be "sec", "min", "hour", 
 "day", "DSTday", "week", "month", "quarter" or "year". A number can also
  precede these options followed by a space (i.e. "2 day" or "37 min").</p></td>
     </tr>
     <tr>
       <th>parameter</th>
-      <td><p>parameter for which to create an <em>as</em> object -- one of
+      <td><p>Parameter for which to create an <em>as</em> object -- one of
 "pm25", "humidity" or "temperature".</p></td>
     </tr>
     <tr>
@@ -196,7 +196,7 @@ will be marked as `NA`.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>"as" object of aggregated time series PurpleAir data</p>
+    <p>An "airsensor" object of aggregated PurpleAir Timeseries data.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 

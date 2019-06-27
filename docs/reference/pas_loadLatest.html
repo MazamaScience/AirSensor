@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Load latest Purple Air synoptic data — pas_loadLatest • AirSensor</title>
+<title>Load latest PurpleAir synoptic data — pas_loadLatest • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,7 +37,7 @@
 
 
 
-<meta property="og:title" content="Load latest Purple Air synoptic data — pas_loadLatest" />
+<meta property="og:title" content="Load latest PurpleAir synoptic data — pas_loadLatest" />
 
 <meta property="og:description" content="Download, parse and enhance synoptic data from PurpleAir and
 return the results as a useful tibble with class pa_synoptic.
@@ -150,7 +150,7 @@ argument." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Load latest Purple Air synoptic data</h1>
+    <h1>Load latest PurpleAir synoptic data</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pas_loadLatest.R'><code>R/pas_loadLatest.R</code></a></small>
     <div class="hidden name"><code>pas_loadLatest.Rd</code></div>
     </div>
@@ -183,7 +183,7 @@ argument.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>baseUrl</th>
-      <td><p>The base URL for synoptic data.</p></td>
+      <td><p>Base URL for synoptic data.</p></td>
     </tr>
     <tr>
       <th>countryCodes</th>
@@ -196,7 +196,7 @@ PWFSL monitors.</p></td>
     </tr>
     <tr>
       <th>lookbackDays</th>
-      <td><p>The number of days to "look back" for valid data. Data are
+      <td><p>Number of days to "look back" for valid data. Data are
 filtered to only include sensors with data more recent than 
 <code>lookbackDays</code> ago.</p></td>
     </tr>
@@ -204,17 +204,21 @@ filtered to only include sensors with data more recent than
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <em>pa_synoptic</em> dataframe.</p>
+    <p>A PurpleAir Synoptic <em>pas</em> object.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='pas_load.html'>pas_load</a>, <a href='downloadParseSynopticData.html'>downloadParseSynopticData</a></p></div>
+    <div class='dont-index'><p><a href='pas_load.html'>pas_load</a></p>
+<p><a href='downloadParseSynopticData.html'>downloadParseSynopticData</a></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='fu'><a href='initializeMazamaSpatialUtils.html'>initializeMazamaSpatialUtils</a></span>()
 <span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='fu'>pas_loadLatest</span>()
+<span class='no'>pas</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='pas_filter.html'>pas_filter</a></span>(<span class='no'>stateCode</span> <span class='kw'>==</span> <span class='st'>"CA"</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='pas_leaflet.html'>pas_leaflet</a></span>()
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

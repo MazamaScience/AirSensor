@@ -2,26 +2,26 @@
 % Please edit documentation in R/pat_loadMonth.R
 \name{pat_loadMonth}
 \alias{pat_loadMonth}
-\title{Load Purple Air Timeseries data}
+\title{Load PurpleAir time series data fr a month}
 \usage{
 pat_loadMonth(label = NULL, datestamp = NULL,
   timezone = "America/Los_Angeles",
   baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/pat")
 }
 \arguments{
-\item{label}{Purple Air 'label'}
+\item{label}{Purple Air sensor 'label'}
 
-\item{datestamp}{A date string in ymd order.}
+\item{datestamp}{Date string in ymd order.}
 
 \item{timezone}{Timezone used to interpret datestamp.}
 
 \item{baseUrl}{Base URL for synoptic data.}
 }
 \value{
-An object of class "pa_timeseries".
+A PurpleAir Timeseries \emph{pat} object.
 }
 \description{
-A pre-generated \code{pa_timeseries} object will be loaded for
+A pre-generated PurpleAir Timeseries \emph{pat} object will be loaded for
 the given month. Archived data for SCAQMD sensors go back to January, 2018.
 
 The \code{datestamp} can must be in the following format:
@@ -34,8 +34,8 @@ By default, the current month is loaded.
 }
 \examples{
 \dontrun{
-pat_loadMonth("SCNP_20", 201905)
-  pat_multiplot()
+may <- pat_loadMonth("SCNP_20", 201905)
+pat_multiplot(may)
 }
 }
 \seealso{
