@@ -14,11 +14,12 @@
 #' 
 #' @return A subset of the given \emph{pas} object.
 #' 
-#' @seealso \link{pas_filterArea}
-#' @seealso \link{pas_within}
+#' @seealso \link{pas_filterArea}, \link{pas_filterNear}
 #' 
 #' @examples
-#' pas_filter(example_pas, stateCode == "CA") 
+#' nrow(example_pas)
+#' ca <- pas_filter(example_pas, stateCode == "CA")
+#' nrow(ca)
 
 pas_filter <- function(pas, ...) { 
   

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Aggregation statistics for PrupleAir time series — pat_aggregate • AirSensor</title>
+<title>Aggregation statistics for PurpleAir Timeseries objects — pat_aggregate • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,7 +37,7 @@
 
 
 
-<meta property="og:title" content="Aggregation statistics for PrupleAir time series — pat_aggregate" />
+<meta property="og:title" content="Aggregation statistics for PurpleAir Timeseries objects — pat_aggregate" />
 
 <meta property="og:description" content="Calculates statistics associated with the aggregation of raw 
 Purple Air Timeseries data onto a regular time axis.
@@ -99,7 +99,7 @@ values based on sd, count or pm25_t." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
       </span>
     </div>
 
@@ -165,7 +165,7 @@ values based on sd, count or pm25_t." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Aggregation statistics for PrupleAir time series</h1>
+    <h1>Aggregation statistics for PurpleAir Timeseries objects</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_aggregate.R'><code>R/pat_aggregate.R</code></a></small>
     <div class="hidden name"><code>pat_aggregate.Rd</code></div>
     </div>
@@ -212,7 +212,7 @@ values based on <code>sd</code>, <code>count</code> or <code>pm25_t</code>.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pat</th>
-      <td><p>PurpleAir Timeseries "pat" object</p></td>
+      <td><p>PurpleAir Timeseries <em>pat</em> object.</p></td>
     </tr>
     <tr>
       <th>period</th>
@@ -229,7 +229,8 @@ values based on <code>sd</code>, <code>count</code> or <code>pm25_t</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_aggregate</span>(<span class='no'>pat</span>, <span class='st'>"1 hour"</span>)
+<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_aggregate</span>(<span class='no'>example_pat</span>, <span class='st'>"1 hour"</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>df</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

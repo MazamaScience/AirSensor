@@ -26,10 +26,10 @@ pat_createAirSensor(pat = NULL, period = "1 hour",
 will be marked as `NA`.}
 }
 \value{
-An "as" object of aggregated PurpleAir Timeseries data.
+An "airsensor" object of aggregated PurpleAir Timeseries data.
 }
 \description{
-Aggregates data from a \emph{pat} object into an "Air Sensor" 
+Aggregates data from a \emph{pat} object into an \emph{airsensor} 
 object that has appropriate metadata to be used with the *PWFSLSmoke* package.
 
 Current QC algorithms exist for \code{channe = "ab"} and include:

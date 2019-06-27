@@ -68,6 +68,6 @@ cookbook-r.com.
 }
 \examples{
 \dontrun{
-pat_multiplot(pat = example_pat, plottype="pm25", alpha=0.5)
+pat_multiplot(pat = example_pat, plottype = "pm25", alpha = 0.5)
 }
 }

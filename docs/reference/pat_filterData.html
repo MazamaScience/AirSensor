@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>General purpose filtering for <em>pat</em> objects — pat_filterData • AirSensor</title>
+<title>General purpose data filtering for PurpleAir Timeseries objects — pat_filterData • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,7 +37,7 @@
 
 
 
-<meta property="og:title" content="General purpose filtering for <em>pat</em> objects — pat_filterData" />
+<meta property="og:title" content="General purpose data filtering for PurpleAir Timeseries objects — pat_filterData" />
 
 <meta property="og:description" content="A generalized data filter for pat objects to 
 choose rows/cases where conditions are true.  Multiple conditions are 
@@ -74,7 +74,7 @@ aredropped." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
       </span>
     </div>
 
@@ -140,7 +140,7 @@ aredropped." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>General purpose filtering for <em>pat</em> objects</h1>
+    <h1>General purpose data filtering for PurpleAir Timeseries objects</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_filterData.R'><code>R/pat_filterData.R</code></a></small>
     <div class="hidden name"><code>pat_filterData.Rd</code></div>
     </div>
@@ -162,11 +162,11 @@ aredropped.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pat</th>
-      <td><p><em>pa_timeseries</em> dataframe</p></td>
+      <td><p>PurpleAir Timeseries <em>pat</em> object.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>logical predicates defined in terms of the variables in the 
+      <td><p>Logical predicates defined in terms of the variables in the 
 <code>pat$data</code>.</p></td>
     </tr>
     </table>
@@ -182,7 +182,8 @@ aredropped.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>unhealthy</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_filterData</span>(<span class='no'>pat</span>, <span class='no'>pm25_A</span> <span class='kw'>&gt;</span> <span class='fl'>55.5</span>, <span class='no'>pm25_B</span> <span class='kw'>&gt;</span> <span class='fl'>55.5</span>)
+<span class='no'>unhealthy</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_filterData</span>(<span class='no'>example_pat</span>, <span class='no'>pm25_A</span> <span class='kw'>&gt;</span> <span class='fl'>55.5</span>, <span class='no'>pm25_B</span> <span class='kw'>&gt;</span> <span class='fl'>55.5</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>unhealthy</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

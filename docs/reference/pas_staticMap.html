@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Static map of Purple Air sensors — pas_staticMap • AirSensor</title>
+<title>Static map of PurpleAir sensors — pas_staticMap • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,11 +37,11 @@
 
 
 
-<meta property="og:title" content="Static map of Purple Air sensors — pas_staticMap" />
+<meta property="og:title" content="Static map of PurpleAir sensors — pas_staticMap" />
 
-<meta property="og:description" content="Creates a static map of a pa_synoptic object
+<meta property="og:description" content="Creates a static map of a pas object
 Users can create a map using any numeric data column within the
-pa_synoptic object:
+pas object:
 &quot;pm25&quot; &quot;temperature&quot; &quot;humidity&quot; &quot;pressure&quot; 
  &quot;pm25_current&quot; &quot;pm25_10min&quot; &quot;pm25_30min&quot; &quot;pm25_1hr&quot; &quot;pm25_6hr&quot; 
  &quot;pm25_1day&quot; &quot;pm25_1week&quot; &quot;pwfsl_closestDistance&quot;
@@ -85,7 +85,7 @@ http://maps.stamen.com/" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
       </span>
     </div>
 
@@ -151,16 +151,16 @@ http://maps.stamen.com/" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Static map of Purple Air sensors</h1>
+    <h1>Static map of PurpleAir sensors</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pas_staticMap.R'><code>R/pas_staticMap.R</code></a></small>
     <div class="hidden name"><code>pas_staticMap.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Creates a static map of a <code>pa_synoptic</code> object</p>
+    <p>Creates a static map of a <em>pas</em> object</p>
 <p>Users can create a map using any numeric data column within the
-<em>pa_synoptic</em> object:</p>
+<em>pas</em> object:</p>
 <p><code>"pm25" "temperature" "humidity" "pressure" 
  "pm25_current" "pm25_10min" "pm25_30min" "pm25_1hr" "pm25_6hr" 
  "pm25_1day" "pm25_1week" "pwfsl_closestDistance"</code></p>
@@ -187,15 +187,15 @@ as well as a suite of sequential and diverging palettes from the
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pas</th>
-      <td><p>A <em>pa_synoptic</em> object</p></td>
+      <td><p>PurpleAir Synoptic <em>pas</em> object.</p></td>
     </tr>
     <tr>
       <th>parameter</th>
-      <td><p>The value to plot, e.g. <code>pm25_1hr</code>.</p></td>
+      <td><p>Value to plot, e.g. <code>pm25_1hr</code>.</p></td>
     </tr>
     <tr>
       <th>palette</th>
-      <td><p>The base color or palette to be used.</p></td>
+      <td><p>Base color or palette to be used.</p></td>
     </tr>
     <tr>
       <th>mapTheme</th>
@@ -207,31 +207,31 @@ as well as a suite of sequential and diverging palettes from the
     </tr>
     <tr>
       <th>direction</th>
-      <td><p>The legend color direction.</p></td>
+      <td><p>Legend color direction.</p></td>
     </tr>
     <tr>
       <th>minScale</th>
-      <td><p>The minimum value to set scale for color gradient. Default is 0.</p></td>
+      <td><p>Minimum value to set scale for color gradient. Default is 0.</p></td>
     </tr>
     <tr>
       <th>maxScale</th>
-      <td><p>The maximum value to set scale for color gradient. Default is 150.</p></td>
+      <td><p>Maximum value to set scale for color gradient. Default is 150.</p></td>
     </tr>
     <tr>
       <th>shape</th>
-      <td><p>The symbol to use for points.</p></td>
+      <td><p>Symbol to use for points.</p></td>
     </tr>
     <tr>
       <th>size</th>
-      <td><p>The size of points.</p></td>
+      <td><p>Size of points.</p></td>
     </tr>
     <tr>
       <th>alpha</th>
-      <td><p>The opacity of points.</p></td>
+      <td><p>Opacity of points.</p></td>
     </tr>
     <tr>
       <th>bbuff</th>
-      <td><p>The bounding box buffer. Default is 0.1.</p></td>
+      <td><p>Bounding box buffer. Default is 0.1.</p></td>
     </tr>
     <tr>
       <th>zoomAdjust</th>

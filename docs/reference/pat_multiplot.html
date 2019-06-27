@@ -79,7 +79,7 @@ argument to quickly display preformatted plots.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
       </span>
     </div>
 
@@ -176,12 +176,11 @@ argument to quickly display preformatted plots.</p><ul>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pat</th>
-      <td><p>Purple Air Timeseries "pat" object from 
-<code><a href='createPATimeseriesObject.html'>createPATimeseriesObject()</a></code></p></td>
+      <td><p>PurpleAir Timeseries <em>pat</em> object.</p></td>
     </tr>
     <tr>
       <th>plottype</th>
-      <td><p>Quick-reference plot types: "all", "aux", "pm25"</p></td>
+      <td><p>Quick-reference plot types: "all", "aux", "pm25".</p></td>
     </tr>
     <tr>
       <th>sampleSize</th>
@@ -194,61 +193,61 @@ defaults.</p></td>
     </tr>
     <tr>
       <th>a_size</th>
-      <td><p>size of pm25_A points</p></td>
+      <td><p>Size of pm25_A points.</p></td>
     </tr>
     <tr>
       <th>a_shape</th>
-      <td><p>symbol to use for pm25_A points</p></td>
+      <td><p>Symbol to use for pm25_A points.</p></td>
     </tr>
     <tr>
       <th>a_color</th>
-      <td><p>color of pm25_A points</p></td>
+      <td><p>Color of pm25_A points.</p></td>
     </tr>
     <tr>
       <th>b_size</th>
-      <td><p>size of pm25_B points</p></td>
+      <td><p>Size of pm25_B points.</p></td>
     </tr>
     <tr>
       <th>b_shape</th>
-      <td><p>symbol to use for pm25_B points</p></td>
+      <td><p>Symbol to use for pm25_B points.</p></td>
     </tr>
     <tr>
       <th>b_color</th>
-      <td><p>color of pm25_B points</p></td>
+      <td><p>Color of pm25_B points.</p></td>
     </tr>
     <tr>
       <th>t_size</th>
-      <td><p>size of temperature points</p></td>
+      <td><p>Size of temperature points.</p></td>
     </tr>
     <tr>
       <th>t_shape</th>
-      <td><p>symbol to use for temperature points</p></td>
+      <td><p>Symbol to use for temperature points.</p></td>
     </tr>
     <tr>
       <th>t_color</th>
-      <td><p>color of temperature points</p></td>
+      <td><p>Color of temperature points.</p></td>
     </tr>
     <tr>
       <th>h_size</th>
-      <td><p>size of humidity points</p></td>
+      <td><p>Size of humidity points.</p></td>
     </tr>
     <tr>
       <th>h_shape</th>
-      <td><p>symbol to use for humidity points</p></td>
+      <td><p>Symbol to use for humidity points.</p></td>
     </tr>
     <tr>
       <th>h_color</th>
-      <td><p>color of humidity points</p></td>
+      <td><p>Color of humidity points.</p></td>
     </tr>
     <tr>
       <th>alpha</th>
-      <td><p>opacity of points</p></td>
+      <td><p>Opacity of points.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Returns a ggplot object.</p>
+    <p>A ggplot object.</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
@@ -256,6 +255,10 @@ defaults.</p></td>
 cookbook-r.com.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='fu'>pat_multiplot</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='no'>example_pat</span>, <span class='kw'>plottype</span> <span class='kw'>=</span> <span class='st'>"pm25"</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -265,7 +268,9 @@ cookbook-r.com.</p>
       <li><a href="#value">Value</a></li>
 
       <li><a href="#note">Note</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

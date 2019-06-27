@@ -23,7 +23,7 @@
 #' @return A linear model, fitting the `pat` B channel readings to A channel 
 #' readings.
 #' 
-#' @example 
+#' @examples
 #' \dontrun{
 #' pat_internalFit(pat = example_pat)
 #' }
