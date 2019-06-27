@@ -46,11 +46,8 @@ separate them and take a look at B on its own scale to see if it's readings are
 more reasonable:
 
 ```{r plot_pm25_overlay, warning=FALSE}
-#sampled_b <- pat_bikesvg$data # Unsampled and noisy
-#sampled_b <- pat_sample(pat_bikesvg, 5000)$data # Sampled, but draws gaps at NA points
-sampled_b <- na.omit(pat_sample(pat_bikesgv, 5000)$data) # Sampled with no gaps, but have to na.omit once sampled
 pm25_b <- sampled_b[, c("datetime", "pm25_B")]
-plot(pm25_b, type = "l", main = "PM 2.5 Channel B", 
+plot(pm25_b, type = "p", main = "PM 2.5 Channel B", cex = 0.5, pch=15, col=adjustcolor("black", 0.2),
      xlab = "Date", ylab = "PM 2.5 (ug/m3)")
 ```
 
