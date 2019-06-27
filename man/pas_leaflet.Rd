@@ -2,18 +2,18 @@
 % Please edit documentation in R/pas_leaflet.R
 \name{pas_leaflet}
 \alias{pas_leaflet}
-\title{Leaflet interactive map of Purple Air sensors}
+\title{Leaflet interactive map of PurpleAir sensors}
 \usage{
 pas_leaflet(pas = NULL, parameter = "pm25_1hr", paletteName = NULL,
   radius = 10, opacity = 0.8, maptype = "terrain",
   outsideOnly = TRUE)
 }
 \arguments{
-\item{pas}{A \emph{pa_synoptic} object}
+\item{pas}{PurpleAir Synoptic \emph{pas} object.}
 
-\item{parameter}{The value to plot, e.g. \code{pm25_1hr}.}
+\item{parameter}{Value to plot, e.g. \code{pm25_1hr}.}
 
-\item{paletteName}{A predefined color palette name. Can be of the following:
+\item{paletteName}{Predefined color palette name. Can be of the following:
 \itemize{
 \item{"AQI"}
 \item{"humidity}
@@ -21,11 +21,11 @@ pas_leaflet(pas = NULL, parameter = "pm25_1hr", paletteName = NULL,
 \item{"distance"}
 }}
 
-\item{radius}{The radius (pixels) of monitor circles.}
+\item{radius}{Radius (pixels) of monitor circles.}
 
-\item{opacity}{The opacity of monitor circles.}
+\item{opacity}{Opacity of monitor circles.}
 
-\item{maptype}{An optional name of leaflet ProviderTiles to use, e.g. \code{terrain}.}
+\item{maptype}{Optional name of leaflet ProviderTiles to use, e.g. \code{terrain}.}
 
 \item{outsideOnly}{Logical specifying subsetting for monitors marked as 'outside'.}
 }
@@ -78,7 +78,7 @@ underlying map tile if available. See
 # Methow Valley Clean Air Ambassador
 initializeMazamaSpatialUtils()
 pas <- pas_load()
-mvcaa <- filter(pas, stringr::str_detect(pas$label, '^MV Clean Air'))
+mvcaa <- pas_filter(pas, stringr::str_detect(pas$label, '^MV Clean Air'))
 pas_leaflet(mvcaa, parameter="pm25_1hr")
 }
 }

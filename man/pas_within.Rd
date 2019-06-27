@@ -2,22 +2,22 @@
 % Please edit documentation in R/pas_within.R
 \name{pas_within}
 \alias{pas_within}
-\title{Find Purple Air sensors within radial distance}
+\title{Find PurpleAir sensors within radial distance}
 \usage{
 pas_within(pas, label = NULL, radius = "1 km")
 }
 \arguments{
-\item{pas}{A \code{pa_synoptic} object.}
+\item{pas}{PurpleAir \emph{pas} object.}
 
-\item{label}{A target (centered) Purple Air sensor label.}
+\item{label}{Target (centered) Purple Air sensor label.}
 
-\item{radius}{A distance with unit (i.e "15 km").}
+\item{radius}{Distance from target with unit (i.e "15 km").}
 }
 \value{
-A subset of the given \code{pa_synoptic} object.
+A subset of the given \emph{pas} object.
 }
 \description{
-Filter for Purple Air sensors within a specified distance from 
+Filter for PurpleAir sensors within a specified distance from 
 a target Purple Air sensor.
 }
 \details{
@@ -30,5 +30,7 @@ pas_within(example_pas, "SaratogaMiddleHighSchool", "1024 km")
 }
 }
 \seealso{
-\link{pas_filter}, \link{pas_filterArea}
+\link{pas_filter}
+
+\link{pas_filterArea}
 }

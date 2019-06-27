@@ -87,7 +87,7 @@ pat_scatterplot <- function(
       shape = shape, 
       color = color, 
       alpha = alpha
-    ) 
+    )
   
   # ----- Return ---------------------------------------------------------------
   

@@ -2,30 +2,30 @@
 % Please edit documentation in R/pas_filter.R
 \name{pas_filter}
 \alias{pas_filter}
-\title{General purpose \emph{pa_synoptic} object filter}
+\title{General purpose filtering for PurpleAir Synoptic objects}
 \usage{
 pas_filter(pas, ...)
 }
 \arguments{
-\item{pas}{A \emph{pa_synoptic} object.}
+\item{pas}{PurpleAir Synoptic \emph{pas} object.}
 
 \item{...}{Logical predicates defined in terms of the variables in the 
 \code{pas}. Multiple conditions are combined with & or seperated by a comma. 
 Only rows where the condition evaluates to TRUE are kept.}
 }
 \value{
-A subset of the given \emph{pa_synoptic} object.
+A subset of the given \emph{pas} object.
 }
 \description{
-A generalized data filter for \emph{pa_synoptic} objects to 
+A generalized data filter for \emph{pas} objects to 
   choose rows/cases where conditions are true. Rows where the condition 
   evaluates to NA are dropped.
 }
 \examples{
-\dontrun{
-californiaSensors <- pas_filter(pas, stateCode == "CA") 
-}
+pas_filter(example_pas, stateCode == "CA") 
 }
 \seealso{
-\link{pas_filterArea}, \link{pas_within}
+\link{pas_filterArea}
+
+\link{pas_within}
 }

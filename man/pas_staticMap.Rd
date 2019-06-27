@@ -2,7 +2,7 @@
 % Please edit documentation in R/pas_staticMap.R
 \name{pas_staticMap}
 \alias{pas_staticMap}
-\title{Static map of Purple Air sensors}
+\title{Static map of PurpleAir sensors}
 \usage{
 pas_staticMap(pas, parameter = "pm25_1hr", palette = "Purples",
   mapTheme = "terrain", mapShape = "sq", direction = 1,
@@ -10,29 +10,29 @@ pas_staticMap(pas, parameter = "pm25_1hr", palette = "Purples",
   alpha = 0.8, bbuff = 0.1, zoomAdjust = 0, ...)
 }
 \arguments{
-\item{pas}{A \emph{pa_synoptic} object}
+\item{pas}{PurpleAir Synoptic \emph{pas} object.}
 
-\item{parameter}{The value to plot, e.g. \code{pm25_1hr}.}
+\item{parameter}{Value to plot, e.g. \code{pm25_1hr}.}
 
-\item{palette}{The base color or palette to be used.}
+\item{palette}{Base color or palette to be used.}
 
 \item{mapTheme}{Default is "terrain", see description for additional options.}
 
 \item{mapShape}{Default is "square", can also be "natural".}
 
-\item{direction}{The legend color direction.}
+\item{direction}{Legend color direction.}
 
-\item{minScale}{The minimum value to set scale for color gradient. Default is 0.}
+\item{minScale}{Minimum value to set scale for color gradient. Default is 0.}
 
-\item{maxScale}{The maximum value to set scale for color gradient. Default is 150.}
+\item{maxScale}{Maximum value to set scale for color gradient. Default is 150.}
 
-\item{shape}{The symbol to use for points.}
+\item{shape}{Symbol to use for points.}
 
-\item{size}{The size of points.}
+\item{size}{Size of points.}
 
-\item{alpha}{The opacity of points.}
+\item{alpha}{Opacity of points.}
 
-\item{bbuff}{The bounding box buffer. Default is 0.1.}
+\item{bbuff}{Bounding box buffer. Default is 0.1.}
 
 \item{zoomAdjust}{Adjustment to map zoom level (-1:3).}
 
@@ -43,10 +43,10 @@ and renamed with \code{name= "Example name"}.}
 A ggplot object.
 }
 \description{
-Creates a static map of a \code{pa_synoptic} object
+Creates a static map of a \emph{pas} object
 
 Users can create a map using any numeric data column within the
-\emph{pa_synoptic} object:
+\emph{pas} object:
 
 \code{"pm25" "temperature" "humidity" "pressure" 
  "pm25_current" "pm25_10min" "pm25_30min" "pm25_1hr" "pm25_6hr" 

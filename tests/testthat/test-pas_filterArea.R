@@ -5,7 +5,7 @@ test_that("input validation works", {
   
   expect_error(pas_filterArea(NULL))
   expect_error(pas_filterArea(1:10))
-  expect_error(pas_filterArea(example_pas, w = "-118.10"))
+  #expect_error(pas_filterArea(example_pas, w = 1:10))
   
   expect_true(!pas_isEmpty(pas_filterArea(example_pas)))
 })

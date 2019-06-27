@@ -11,44 +11,43 @@ pat_multiplot(pat = NULL, plottype = "all", sampleSize = 5000,
   h_shape = 15, h_color = "black", alpha = 0.5)
 }
 \arguments{
-\item{pat}{Purple Air Timeseries "pat" object from 
-\code{createPATimeseriesObject()}}
+\item{pat}{PurpleAir Timeseries \emph{pat} object.}
 
-\item{plottype}{Quick-reference plot types: "all", "aux", "pm25"}
+\item{plottype}{Quick-reference plot types: "all", "aux", "pm25".}
 
 \item{sampleSize}{Either an integer or fraction to determine sample size.}
 
 \item{columns}{Number of columns in the plot layout. Use \code{NULL} for 
 defaults.}
 
-\item{a_size}{size of pm25_A points}
+\item{a_size}{Size of pm25_A points.}
 
-\item{a_shape}{symbol to use for pm25_A points}
+\item{a_shape}{Symbol to use for pm25_A points.}
 
-\item{a_color}{color of pm25_A points}
+\item{a_color}{Color of pm25_A points.}
 
-\item{b_size}{size of pm25_B points}
+\item{b_size}{Size of pm25_B points.}
 
-\item{b_shape}{symbol to use for pm25_B points}
+\item{b_shape}{Symbol to use for pm25_B points.}
 
-\item{b_color}{color of pm25_B points}
+\item{b_color}{Color of pm25_B points.}
 
-\item{t_size}{size of temperature points}
+\item{t_size}{Size of temperature points.}
 
-\item{t_shape}{symbol to use for temperature points}
+\item{t_shape}{Symbol to use for temperature points.}
 
-\item{t_color}{color of temperature points}
+\item{t_color}{Color of temperature points.}
 
-\item{h_size}{size of humidity points}
+\item{h_size}{Size of humidity points.}
 
-\item{h_shape}{symbol to use for humidity points}
+\item{h_shape}{Symbol to use for humidity points.}
 
-\item{h_color}{color of humidity points}
+\item{h_color}{Color of humidity points.}
 
-\item{alpha}{opacity of points}
+\item{alpha}{Opacity of points.}
 }
 \value{
-Returns a ggplot object.
+A ggplot object.
 }
 \description{
 A plotting function that uses ggplot2 to display multiple 
@@ -66,4 +65,9 @@ argument to quickly display preformatted plots.
 \note{
 Additional documentation of the multiplot algorithm is available at 
 cookbook-r.com.
+}
+\examples{
+\dontrun{
+pat_multiplot(pat = example_pat, plottype="pm25", alpha=0.5)
+}
 }

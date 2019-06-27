@@ -9,7 +9,7 @@ pat_dygraph(pat = NULL, parameter = "pm25", sampleSize = 5000,
   rollPeriod = 1, showLegend = TRUE, colors = NULL)
 }
 \arguments{
-\item{pat}{Purple Air Timeseries "pat" object from \code{createPATimeseriesObject()}}
+\item{pat}{PurpleAir Timeseries \emph{pat} object from \code{createPATimeseriesObject()}}
 
 \item{parameter}{Data to display: "pm25", "humidity", "temperature"}
 
@@ -47,8 +47,7 @@ The list of available parameters include:
 }
 \examples{
 \dontrun{
-pas <- example_pas
-nb <- pat_loadLatest(pas, "North Bend Weather", startdate = 20180801, enddate = 20180901)
+nb <- pat_loadLatest(example_pas, "North Bend Weather", startdate = 20180801, enddate = 20180901)
 subset_nb <- pat_sample(pat=nb, sampleSize = 1000, setSeed = 1)
 pat_dygraph(pat = subset_nb, xlab = "2018", rollPeriod = 7)
 }

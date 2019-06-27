@@ -18,11 +18,11 @@
 #' @seealso \link{pat_filterDate}
 #' @examples
 #' \dontrun{
-#' unhealthy <- pat_filterData(example_pat, pm25_A > 55.5, pm25_B > 55.5)
+#' unhealthy <- pat_filter(example_pat, pm25_A > 55.5, pm25_B > 55.5)
 #' head(unhealthy)
 #' }
 
-pat_filterData <- function(
+pat_filter <- function(
   pat = NULL, 
   ...
 ) {

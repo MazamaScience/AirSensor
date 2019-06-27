@@ -8,21 +8,20 @@ pat_sample(pat = NULL, sampleSize = NULL, sampleFraction = NULL,
   setSeed = NULL, keepOutliers = FALSE)
 }
 \arguments{
-\item{pat}{Purple Air Timeseries "pat" object}
+\item{pat}{PurpleAir Timeseries \emph{pat} object.}
 
-\item{sampleSize}{a non-negative integer giving the number of rows to choose.}
+\item{sampleSize}{Non-negative integer giving the number of rows to choose.}
 
-\item{sampleFraction}{the fraction of rows to choose.}
+\item{sampleFraction}{Fraction of rows to choose.}
 
-\item{setSeed}{an integer that sets random numbver generation. Can be used to 
+\item{setSeed}{Integer that sets random number generation. Can be used to 
 reproduce sampling.}
 
 \item{keepOutliers}{logical specifying a graphics focused sampling algorithm
-(see Details)
-'}
+(see Details).}
 }
 \value{
-\code{pat} timeseries object - subset.
+A subset of the given \emph{pat} object.
 }
 \description{
 A sampling function that accepts PurpleAir timeseries dataframes
@@ -52,7 +51,7 @@ The process is as follows:
 }
 \examples{
 \dontrun{
-pat <- pat_loadLatest()
+pat <- pat_load("SCNP_20", 20190411, 20190521)
 subset <- pat_sample(pat, sampleSize=1000, setSeed=1)
 }
 

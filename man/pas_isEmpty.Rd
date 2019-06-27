@@ -7,7 +7,7 @@
 pas_isEmpty(pas)
 }
 \arguments{
-\item{pas}{A \emph{pa+synoptic} object.}
+\item{pas}{A \emph{pa_synoptic} object.}
 }
 \value{
 \code{TRUE} if no data exist in \code{pas}, \code{FALSE} otherwise.
@@ -15,4 +15,10 @@ pas_isEmpty(pas)
 \description{
 Convenience function for \code{nrow(pas) == 0}.
 This makes for more readable code in functions that need to test for this.
+}
+\examples{
+pas <- example_pas
+pas_isEmpty(pas)
+pas <- pas \%>\% pas_filter(ID < 0)
+pas_isEmpty(pas)
 }

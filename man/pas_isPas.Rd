@@ -36,4 +36,8 @@ and presence of core metadata columns:
 The "pwfsl", official, monitors are obtained from the USFS AirFire site 
 using the \pkg{PWFSLSmoke} R package.
 }
+\examples{
+pas_isPas(example_pas)
+pas_isPas(1:10)
+}
 \keyword{pas}

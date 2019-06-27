@@ -2,14 +2,14 @@
 % Please edit documentation in R/pat_aggregate.R
 \name{pat_aggregate}
 \alias{pat_aggregate}
-\title{Aggregation statistics for PrupleAir time series}
+\title{Aggregation statistics for PurpleAir Timeseries objects}
 \usage{
 pat_aggregate(pat, period = "1 hour")
 }
 \arguments{
-\item{pat}{PurpleAir Timeseries "pat" object}
+\item{pat}{PurpleAir Timeseries \emph{pat} object.}
 
-\item{period}{The time period to average to. Can be "sec", "min", "hour", 
+\item{period}{Time period to average to. Can be "sec", "min", "hour", 
 "day", "DSTday", "week", "month", "quarter" or "year". A number can also
  precede these options followed by a space (i.e. "2 day" or "37 min").}
 }
@@ -54,7 +54,8 @@ values based on \code{sd}, \code{count} or \code{pm25_t}.
 }
 \examples{
 \dontrun{
-df <- pat_aggregate(pat, "1 hour")
+df <- pat_aggregate(example_pat, "1 hour")
+head(df)
 }
 }
 \keyword{pa_timeseries}

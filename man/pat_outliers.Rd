@@ -2,7 +2,7 @@
 % Please edit documentation in R/pat_outliers.R
 \name{pat_outliers}
 \alias{pat_outliers}
-\title{Detect and replace timeseries outliers}
+\title{Detect and replace time series outliers}
 \usage{
 pat_outliers(pat = NULL, windowSize = 23, thresholdMin = 8,
   replace = FALSE, showPlot = TRUE, data_shape = 18, data_size = 1,
@@ -10,36 +10,36 @@ pat_outliers(pat = NULL, windowSize = 23, thresholdMin = 8,
   outlier_size = 1, outlier_color = "red", outlier_alpha = 1)
 }
 \arguments{
-\item{pat}{Purple Air Timeseries "pat" object}
+\item{pat}{PurpleAir Timeseries \emph{pat} object.}
 
-\item{windowSize}{integer window size for outlier detection}
+\item{windowSize}{Integer window size for outlier detection.}
 
-\item{thresholdMin}{threshold value for outlier detection}
+\item{thresholdMin}{Threshold value for outlier detection.}
 
-\item{replace}{logical specifying whether replace outliers with the window 
-median value}
+\item{replace}{Logical specifying whether replace outliers with the window
+median value.}
 
-\item{showPlot}{logical specifying whether to generate outlier detection 
-plots}
+\item{showPlot}{Logical specifying whether to generate outlier detection 
+plots.}
 
-\item{data_shape}{symbol to use for data points}
+\item{data_shape}{Symbol to use for data points.}
 
-\item{data_size}{size of data points}
+\item{data_size}{Size of data points.}
 
-\item{data_color}{color of data points}
+\item{data_color}{Color of data points.}
 
-\item{data_alpha}{opacity of data points}
+\item{data_alpha}{Opacity of data points.}
 
-\item{outlier_shape}{symbol to use for outlier points}
+\item{outlier_shape}{Symbol to use for outlier points.}
 
-\item{outlier_size}{size of outlier points}
+\item{outlier_size}{Size of outlier points.}
 
-\item{outlier_color}{color of outlier points}
+\item{outlier_color}{Color of outlier points.}
 
-\item{outlier_alpha}{opacity of outlier points}
+\item{outlier_alpha}{Opacity of outlier points.}
 }
 \value{
-\code{pat} timeseries object with outliers replaced by median values.
+A \emph{pat} object with outliers replaced by median values.
 }
 \description{
 Outlier detection using a Median Average Deviation "Hampel" 
@@ -56,7 +56,7 @@ will generate false positives.
 
 The default setting of the window size \code{windowSize = 23} means that 23 samples
 from a single channel are used to determine the distribution of values for
-which a median is calculated. Each Purple Air channel makes a measurement
+which a median is calculated. Each PurpleAir channel makes a measurement
 approximately every 80 seconds so the temporal window is 23 * 80 sec or
 approximately 30 minutes. This seems like a reasonable period of time over
 which to evaluate PM2.5 measurements.
@@ -69,4 +69,9 @@ can create an highly smoothed, artificial dataset by setting
 \note{
 Additional documentation on the algorithm is available in 
 \code{seismicRoll::findOutliers()}.
+}
+\examples{
+\dontrun{
+outlierPlot <- example_pat \%>\% pat_outliers(replace = TRUE, showPlot = TRUE)
+}
 }

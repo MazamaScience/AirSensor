@@ -2,12 +2,12 @@
 % Please edit documentation in R/pas_filterArea.R
 \name{pas_filterArea}
 \alias{pas_filterArea}
-\title{Area filtering for \emph{pa_synoptic} objects}
+\title{Rectangle area filtering for PurpleAir Synoptic objects}
 \usage{
 pas_filterArea(pas, w = NULL, e = NULL, s = NULL, n = NULL)
 }
 \arguments{
-\item{pas}{A \emph{pa_synoptic} object.}
+\item{pas}{PurpleAir Synoptic \emph{pas} object.}
 
 \item{w}{West edge of area bounding box (deg E).}
 
@@ -18,10 +18,10 @@ pas_filterArea(pas, w = NULL, e = NULL, s = NULL, n = NULL)
 \item{n}{North edge of area bounding box (deg N).}
 }
 \value{
-A subset of the given \emph{pa_synoptic} object.
+A subset of the given \emph{pas} object.
 }
 \description{
-Filters \emph{pa_synoptic} object sensors based on a bounding box.
+Filters \emph{pas} object sensors based on a bounding box.
 }
 \examples{
 pas <- example_pas
@@ -37,5 +37,7 @@ range(scsb$longitude)
 range(scsb$latitude)
 }
 \seealso{
-\link{pas_filter}, \link{pas_within}
+\link{pas_filter}
+
+\link{pas_within}
 }

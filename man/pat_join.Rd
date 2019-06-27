@@ -7,17 +7,19 @@
 pat_join(...)
 }
 \arguments{
-\item{...}{Any number of valid \code{pat} objects}
+\item{...}{Any number of valid PurpleAir Time series \emph{pat} objects.}
 }
 \value{
-\code{pat} time series object
+A PurpleAir Time series \emph{pat} object.
 }
 \description{
-Create a union of any number of \code{pat} objects along a 
+Create a union of any number of \emph{pat} objects along a 
 non-continuous datetime axis.
 }
 \examples{
 \dontrun{
+pat <- example_pat
+
 jul01_15 <- 
   pat \%>\%
   pat_filterDate(20180701, 20180715)
