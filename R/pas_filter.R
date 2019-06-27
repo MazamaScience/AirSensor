@@ -18,7 +18,9 @@
 #' @seealso \link{pas_within}
 #' 
 #' @examples
-#' pas_filter(example_pas, stateCode == "CA") 
+#' nrow(example_pas)
+#' ca <- pas_filter(example_pas, stateCode == "CA")
+#' nrow(ca)
 
 pas_filter <- function(pas, ...) { 
   
