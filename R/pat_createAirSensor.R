@@ -25,8 +25,8 @@
 #'
 #' @return An "airsensor" object of aggregated PurpleAir Timeseries data.
 #' 
-#' @seealso airSensorQC_hourly_AB_00
-#' @seealso airSensorQC_hourly_AB_01
+#' @seealso PurpleAirQC_hourly_AB_00
+#' @seealso PurpleAirQC_hourly_AB_01
 #' 
 #' @examples 
 #' \dontrun{
@@ -116,7 +116,7 @@ pat_createAirSensor <- function(
       
     } else if ( channel == "ab" ) {
       
-      functionName <- paste0("airSensorQC_", qc_algorithm)
+      functionName <- paste0("PurpleAirQC_", qc_algorithm)
       FUNC <- get(functionName)
       hourlyData <- FUNC(aggregationStats)
       

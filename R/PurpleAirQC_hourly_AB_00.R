@@ -25,12 +25,12 @@
 #'   example_pat %>%
 #'   pat_qc() %>%
 #'   pat_aggregate() %>%
-#'   airSensorQC_hourly_AB_00()
+#'   PurpleAirQC_hourly_AB_00()
 #'   
 #' plot(df)
 #' }
 
-airSensorQC_hourly_AB_00 <- function(
+PurpleAirQC_hourly_AB_00 <- function(
   aggregationStats,
   min_count = 10
 ) {

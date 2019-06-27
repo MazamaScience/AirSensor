@@ -11,10 +11,8 @@
 # docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/airsensor /app/createPAS_exec.R --outputDir=/app --logDir=/app 
 #
 
-VERSION = "0.1.1" #  --- . --- . AirSensor 0.3.2
-
-library(methods)       # always included for Rscripts
-library(optparse)      # to parse command line flags
+#  --- . --- . AirSensor 0.3.2
+VERSION = "0.1.1"
 
 # The following packages are attached here so they show up in the sessionInfo
 suppressPackageStartupMessages({
@@ -35,6 +33,9 @@ if ( interactive() ) {
   
 } else {
   
+  # Set up OptionParser
+  library(optparse)
+
   option_list <- list(
     make_option(
       c("-o","--outputDir"), 
@@ -96,7 +97,7 @@ options(warn=-1) # -1=ignore, 0=save/print, 1=print, 2=error
 # Set up MazamaSpatialUtils
 initializeMazamaSpatialUtils(opt$spatialDataDir)
 
-logger.debug("Running createPAS_exec.R version %s",VERSION)
+logger.info("Running createPAS_exec.R version %s",VERSION)
 sessionString <- paste(capture.output(sessionInfo()), collapse="\n")
 logger.debug("R session:\n\n%s\n", sessionString)
 
@@ -104,12 +105,21 @@ logger.debug("R session:\n\n%s\n", sessionString)
 
 result <- try({
   
+  # Save it with the YYYYmmddHH stamp
   timestamp <- strftime(lubridate::now("UTC"), "%Y%m%d%H", tz="UTC")
   filename <- paste0("pas_", timestamp, ".rda")
   filepath <- file.path(opt$outputDir, filename)
   
   logger.info("Obtaining 'pas' data for %s", timestamp)
   pas <- pas_loadLatest()
+  
+  logger.info("Writing 'pas' data to %s", filename)
+  save(list="pas", file=filepath)  
+  
+  # Save it with the YYYYmmdd stamp
+  timestamp <- strftime(lubridate::now("UTC"), "%Y%m%d", tz="UTC")
+  filename <- paste0("pas_", timestamp, ".rda")
+  filepath <- file.path(opt$outputDir, filename)
   
   logger.info("Writing 'pas' data to %s", filename)
   save(list="pas", file=filepath)  

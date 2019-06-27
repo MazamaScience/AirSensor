@@ -1,74 +1,100 @@
 #!/usr/local/bin/Rscript
 
-# This Rscript will download the latest synoptic JSON file from Purple Air. 
-
-# This script is desgined to be run monthly as a cron job.
-
-# 1 2 3 4 5 /Users/jonathan/Projects/PWFSL/mazamascience/airsensor/createMonthlyPAT_exec.R --outputDir=/Users/jonathan/Data/AirNow/RData --logDir=/Users/jonathan/Data/AirNow/RData
-
-# You can test things by firing up the docker image interactively with bash and 
-# then Running R and testing this script a few lines at a time:
+# This Rscript will download the latest timeseries data from Purple Air. 
 #
-# docker run --rm -v /home/monitoring/Projects/mazamascience/airsensor:/monitoring/v4 -v /data/monitoring:/monitoring/v4/data -w /monitoring/v4 -ti mazamascience/airsensor bash
+# Test this script from the command line with:
+#
+# ./createMonthlyPAT_exec.R
+#
+# Run it inside a docker continer with something like:
+#
+# docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/app --logDir=/app --pattern=^SCNP_..$
+#
 
-VERSION = "0.1.2" #  --- . --- . AirSensor 0.2.10
-
-library(methods)       # always included for Rscripts
-library(optparse)      # to parse command line flags
+#  --- . --- . label_monthstamp
+VERSION = "0.1.3"
 
 # The following packages are attached here so they show up in the sessionInfo
 suppressPackageStartupMessages({
-  library(futile.logger)
   library(MazamaCoreUtils)
   library(AirSensor)
 })
 
-# Set up OptionParser
-option_list <- list(
-  make_option(c("-o","--outputDir"), default=getwd(), help="Output directory for generated .RData files [default=\"%default\"]"),
-  make_option(c("-l","--logDir"), default=getwd(), help="Output directory for generated .log file [default=\"%default\"]"),
-  make_option(c("-d","--datestamp"), default='', help="Datestamp specifying the year and month as YYYYMM [default=current month]"),
-  make_option(c("-t","--timezone"), default='America/Los_Angeles', help="timezone used to interpret datestamp  [default=\"%default\"]"),
-  make_option(c("-p","--pattern"), default='^[Ss][Cc].._..$', help="String patter passed to stringr::str_detect  [default=\"%default\"]"),
-  make_option(c("-V","--version"), action="store_true", default=FALSE, help="Print out version number [default=\"%default\"]")
-)
+# ----- Get command line arguments ---------------------------------------------
 
-# Parse arguments
-opt <- parse_args(OptionParser(option_list=option_list))
-
-# For debugging
-if ( FALSE ) {
+if ( interactive() ) {
   
-  # Desktop
+  # RStudio session
   opt <- list(outputDir = getwd(),
               logDir = getwd(),
               datestamp = "",
               timezone = "America/Los_Angeles",
-              pattern = "^[Ss][Cc].._..$")  
+              pattern = "^SCNP_..$")  
   
-  # Docker container
-  opt <- list(outputDir = getwd(),
-              logDir = getwd(),
-              datestemp = "",
-              timezone = "America/Los_Angeles",
-              pattern = "^[Ss][Cc].._..$")  
+} else {
+  
+  # Set up OptionParser
+  library(optparse)
+  
+  option_list <- list(
+    make_option(
+      c("-o","--outputDir"), 
+      default=getwd(), 
+      help="Output directory for generated .RData files [default=\"%default\"]"
+    ),
+    make_option(
+      c("-l","--logDir"), 
+      default=getwd(), 
+      help="Output directory for generated .log file [default=\"%default\"]"
+    ),
+    make_option(
+      c("-d","--datestamp"), 
+      default="", 
+      help="Datestamp specifying the year and month as YYYYMM [default=current month]"
+    ),
+    make_option(
+      c("-t","--timezone"), 
+      default="America/Los_Angeles", 
+      help="timezone used to interpret datestamp  [default=\"%default\"]"
+    ),
+    make_option(
+      c("-p","--pattern"), 
+      default="^[Ss][Cc].._..$", 
+      help="String patter passed to stringr::str_detect  [default=\"%default\"]"
+    ),
+    make_option(
+      c("-V","--version"), 
+      action="store_true", 
+      default=FALSE, 
+      help="Print out version number [default=\"%default\"]"
+    )
+  )
+  
+  # Parse arguments
+  opt <- parse_args(OptionParser(option_list=option_list))
   
 }
 
 # Print out version and quit
 if ( opt$version ) {
-  cat(paste0('createMonthlyPAT_exec.R ',VERSION,'\n'))
+  cat(paste0("createMonthlyPAT_exec.R ",VERSION,"\n"))
   quit()
 }
 
-# Sanity checks
-if ( !dir.exists(opt$outputDir) ) stop(paste0("outputDir not found:  ",opt$outputDir))
-if ( !dir.exists(opt$logDir) ) stop(paste0("logDir not found:  ",opt$logDir))
+# ----- Validate parameters ----------------------------------------------------
+
+if ( !dir.exists(opt$outputDir) ) 
+  stop(paste0("outputDir not found:  ",opt$outputDir))
+
+if ( !dir.exists(opt$logDir) ) 
+  stop(paste0("logDir not found:  ",opt$logDir))
+
+# ----- Set up logging ---------------------------------------------------------
 
 # Assign log file names
-debugLog <- file.path(opt$logDir, 'createMonthlyPAT_DEBUG.log')
-infoLog  <- file.path(opt$logDir, 'createMonthlyPAT_INFO.log')
-errorLog <- file.path(opt$logDir, 'createMonthlyPAT_ERROR.log')
+debugLog <- file.path(opt$logDir, "createMonthlyPAT_DEBUG.log")
+infoLog  <- file.path(opt$logDir, "createMonthlyPAT_INFO.log")
+errorLog <- file.path(opt$logDir, "createMonthlyPAT_ERROR.log")
 
 # Set up logging
 logger.setup(debugLog=debugLog, infoLog=infoLog, errorLog=errorLog)
@@ -76,11 +102,11 @@ logger.setup(debugLog=debugLog, infoLog=infoLog, errorLog=errorLog)
 # Silence other warning messages
 options(warn=-1) # -1=ignore, 0=save/print, 1=print, 2=error
 
-logger.debug('Running createMonthlyPAT_exec.R version %s',VERSION)
-sessionString <- paste(capture.output(sessionInfo()), collapse='\n')
-logger.debug('R session:\n\n%s\n', sessionString)
+logger.info("Running createMonthlyPAT_exec.R version %s",VERSION)
+sessionString <- paste(capture.output(sessionInfo()), collapse="\n")
+logger.debug("R session:\n\n%s\n", sessionString)
 
-# ------ Download data ---------------------------------------------------------
+# ------ Create PAT objects ----------------------------------------------------
 
 result <- try({
   
@@ -102,7 +128,7 @@ result <- try({
   startdate <- strftime(starttime, "%Y-%m-%d", tz = opt$timezone)
   enddate <- strftime(endtime, "%Y-%m-%d", tz = opt$timezone)
   
-  logger.info('Loading PA Synoptic data')
+  logger.info("Loading PA Synoptic data")
   pas <- pas_load()
   
   # Find the labels of interest
@@ -110,13 +136,10 @@ result <- try({
     pas %>%
     pas_filter(stringr::str_detect(label, opt$pattern)) %>%
     dplyr::pull(label)
-
-  logger.info('Loading PA Timeseries data for %d sensors', length(labels))
+  
+  logger.info("Loading PA Timeseries data for %d sensors", length(labels))
   
   for ( label in labels ) {
-
-    filename <- paste0("pat_", monthstamp, "_", label, ".rda")
-    filepath <- file.path(opt$outputDir, filename)
     
     # Try block so we keep chugging if one sensor fails
     result <- try({
@@ -127,7 +150,16 @@ result <- try({
                             startdate = startdate,
                             enddate = enddate)
       
-      logger.info('Writing "pat" data to %s', filename)
+      filename <- paste0("pat_", label, "_", monthstamp, ".rda")
+      filepath <- file.path(opt$outputDir, filename)
+      logger.info("Writing 'pat' data to %s", filename)
+      save(list="pat", file=filepath)
+      
+      # TODO:  Remove "monthstamp_label" version when everyone is using an 
+      # TODO:  updated version of pat_load().
+      filename <- paste0("pat_", monthstamp, "_", label, ".rda")
+      filepath <- file.path(opt$outputDir, filename)
+      logger.info("Writing 'pat' data to %s", filename)
       save(list="pat", file=filepath)
       
     }, silent = TRUE)
@@ -136,8 +168,6 @@ result <- try({
     }
     
   }  
-  
-  
   
 }, silent=TRUE)
 

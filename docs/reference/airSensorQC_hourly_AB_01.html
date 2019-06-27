@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Apply QC to Aggregation Statistics — airSensorQC_hourly_AB_01 • AirSensor</title>
+<title>Apply QC to Aggregation Statistics — PurpleAirQC_hourly_AB_01 • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,7 +37,7 @@
 
 
 
-<meta property="og:title" content="Apply QC to Aggregation Statistics — airSensorQC_hourly_AB_01" />
+<meta property="og:title" content="Apply QC to Aggregation Statistics — PurpleAirQC_hourly_AB_01" />
 
 <meta property="og:description" content="Creates a pm25 timeseries by averaging aggregated data
 from the A and B channels and applying the following QC logic:
@@ -144,8 +144,8 @@ Invalidate data where:  (pm25 &amp;lt; 100) &amp;amp; (mean_diff &amp;gt; 20)
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Apply QC to Aggregation Statistics</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/airSensorQC_hourly_AB_01.R'><code>R/airSensorQC_hourly_AB_01.R</code></a></small>
-    <div class="hidden name"><code>airSensorQC_hourly_AB_01.Rd</code></div>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/PurpleAirQC_hourly_AB_01.R'><code>R/PurpleAirQC_hourly_AB_01.R</code></a></small>
+    <div class="hidden name"><code>PurpleAirQC_hourly_AB_01.Rd</code></div>
     </div>
 
     <div class="ref-description">
@@ -161,7 +161,7 @@ from the A and B channels and applying the following QC logic:</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>airSensorQC_hourly_AB_01</span>(<span class='no'>aggregationStats</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
+    <pre class="usage"><span class='fu'>PurpleAirQC_hourly_AB_01</span>(<span class='no'>aggregationStats</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -189,7 +189,7 @@ will be marked as `NA`.</p></td>
   <span class='no'>example_pat</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='pat_qc.html'>pat_qc</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='pat_aggregate.html'>pat_aggregate</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>airSensorQC_hourly_AB_01</span>()
+  <span class='fu'>PurpleAirQC_hourly_AB_01</span>()
 
 <span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>df</span>)
 <span class='co'># }</span></pre>

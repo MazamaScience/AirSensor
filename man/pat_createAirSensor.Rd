@@ -47,7 +47,7 @@ as <-
 }
 }
 \seealso{
-airSensorQC_hourly_AB_00
+PurpleAirQC_hourly_AB_00
 
-airSensorQC_hourly_AB_01
+PurpleAirQC_hourly_AB_01
 }

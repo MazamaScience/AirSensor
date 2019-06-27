@@ -7,7 +7,7 @@
 #' @description A pre-generated PurpleAir Timeseries \emph{pat} object will be loaded for
 #' the given month. Archived data for SCAQMD sensors go back to January, 2018.
 #' 
-#' The \code{datestamp} can must be in the following format:
+#' The \code{datestamp} must be in the following format:
 #' 
 #' \itemize{
 #' \item{\code{"YYYYmm"}}

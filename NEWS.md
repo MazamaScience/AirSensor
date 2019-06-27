@@ -1,6 +1,8 @@
 # AirSensor 0.3.3
 
 * renamed `pas_within()` to `pas_filterNear()`
+* renamed `airSensorQC_~` functions to `PurpleAirQC_~`
+* refactored scripts in `local_executables/` to be more similar
 
 # AirSensor 0.3.2
 
