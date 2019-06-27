@@ -27,7 +27,5 @@ ca <- pas_filter(example_pas, stateCode == "CA")
 nrow(ca)
 }
 \seealso{
-\link{pas_filterArea}
-
-\link{pas_within}
+\link{pas_filterArea}, \link{pas_filterNear}
 }

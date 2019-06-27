@@ -13,8 +13,7 @@
 #' 
 #' @return A subset of the given \emph{pas} object.
 #' 
-#' @seealso \link{pas_filter}
-#' @seealso \link{pas_within}
+#' @seealso \link{pas_filter}, \link{pas_filterNear}
 #' 
 #' @examples
 #' pas <- example_pas

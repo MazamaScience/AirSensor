@@ -14,8 +14,7 @@
 #' 
 #' @return A subset of the given \emph{pas} object.
 #' 
-#' @seealso \link{pas_filterArea}
-#' @seealso \link{pas_within}
+#' @seealso \link{pas_filterArea}, \link{pas_filterNear}
 #' 
 #' @examples
 #' nrow(example_pas)

@@ -1,3 +1,7 @@
+# AirSensor 0.3.3
+
+* renamed `pas_within()` to `pas_filterNear()`
+
 # AirSensor 0.3.2
 
 * Created an archive of `airsensor` data files with pre-generated, 

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Load hourly-aggregated Purple Air data — airsensor_load • AirSensor</title>
+<title>Find PurpleAir sensors within radial distance — pas_filterNear • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,20 +37,10 @@
 
 
 
-<meta property="og:title" content="Load hourly-aggregated Purple Air data — airsensor_load" />
+<meta property="og:title" content="Find PurpleAir sensors within radial distance — pas_filterNear" />
 
-<meta property="og:description" content="A pre-generated airsensor object will be loaded for
-the given time interval. Archived data for SCAQMD sensors go back to 
-January, 2018.
-Dates can be anything that is understood by 
-lubrdiate::parse_date_time() including either of the following 
-recommended formats:
-
-&quot;YYYYmmdd&quot;
-&quot;YYYY-mm-dd&quot;
-" />
-
-<meta property="og:description" content="By default, the current week is loaded." />
+<meta property="og:description" content="Filter for Purple Air sensors within a specified distance from 
+specified target coordinates." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -147,75 +137,66 @@ recommended formats:
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Load hourly-aggregated Purple Air data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/airsensor_load.R'><code>R/airsensor_load.R</code></a></small>
-    <div class="hidden name"><code>airsensor_load.Rd</code></div>
+    <h1>Find PurpleAir sensors within radial distance</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pas_filterNear.R'><code>R/pas_filterNear.R</code></a></small>
+    <div class="hidden name"><code>pas_filterNear.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>A pre-generated <code>airsensor</code> object will be loaded for
-the given time interval. Archived data for SCAQMD sensors go back to 
-January, 2018.</p>
-<p>Dates can be anything that is understood by 
-<code>lubrdiate::parse_date_time()</code> including either of the following 
-recommended formats:</p>
-<ul>
-<li><p><code>"YYYYmmdd"</code></p></li>
-<li><p><code>"YYYY-mm-dd"</code></p></li>
-</ul>
-
-    <p>By default, the current week is loaded.</p>
+    <p>Filter for Purple Air sensors within a specified distance from 
+specified target coordinates.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>airsensor_load</span>(<span class='kw'>collection</span> <span class='kw'>=</span> <span class='st'>"scaqmd"</span>, <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>days</span> <span class='kw'>=</span> <span class='fl'>7</span>, <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='st'>"America/Los_Angeles"</span>,
-  <span class='kw'>baseUrl</span> <span class='kw'>=</span> <span class='st'>"http://smoke.mazamascience.com/data/PurpleAir/airsensor"</span>)</pre>
+    <pre class="usage"><span class='fu'>pas_filterNear</span>(<span class='no'>pas</span>, <span class='kw'>latitude</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>longitude</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>radius</span> <span class='kw'>=</span> <span class='st'>"1 km"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>collection</th>
-      <td><p>Name associated with the collection.</p></td>
+      <th>pas</th>
+      <td><p>PurpleAir <em>pas</em> object.</p></td>
     </tr>
     <tr>
-      <th>startdate</th>
-      <td><p>Desired start datetime (ISO 8601).</p></td>
+      <th>latitude</th>
+      <td><p>a Target latitude.</p></td>
     </tr>
     <tr>
-      <th>enddate</th>
-      <td><p>Desired end datetime (ISO 8601).</p></td>
+      <th>longitude</th>
+      <td><p>a Target longitude.</p></td>
     </tr>
     <tr>
-      <th>days</th>
-      <td><p>Number of days of data to include.</p></td>
-    </tr>
-    <tr>
-      <th>timezone</th>
-      <td><p>Timezone used to interpret datestamp.</p></td>
-    </tr>
-    <tr>
-      <th>baseUrl</th>
-      <td><p>Base URL for the <code>airsensor</code> data archive.</p></td>
+      <th>radius</th>
+      <td><p>Distance from target with unit (i.e "15 km").</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object of class "airsensor".</p>
+    <p>A subset of the given <em>pas</em> object.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p><code>radius</code> Should be a numeric string with provided metric unit 
+separated by a space, such as <code>"250 m"</code>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='airsensor_loadMonth.html'>airsensor_loadMonth</a></p></div>
+    <div class='dont-index'><p><a href='pas_filter.html'>pas_filter</a></p>
+<p><a href='pas_filterArea.html'>pas_filterArea</a></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>airsensor_load</span>(<span class='st'>"scaqmd"</span>, <span class='fl'>20190411</span>, <span class='fl'>20190521</span>) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>PWFSLSmoke</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/PWFSLSmoke/topics/monitor_timeseriesPlot'>monitor_timeseriesPlot</a></span>(<span class='kw'>style</span> <span class='kw'>=</span> <span class='st'>'gnats'</span>)
-<span class='co'># }</span></pre>
+<span class='fu'>pas_filterNear</span>(
+    <span class='kw'>pas</span> <span class='kw'>=</span> <span class='no'>example_pas</span>,
+    <span class='kw'>latitude</span> <span class='kw'>=</span> <span class='fl'>47.61702</span>,
+    <span class='kw'>longitude</span> <span class='kw'>=</span> -<span class='fl'>122.34376</span>
+    )
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -223,6 +204,8 @@ recommended formats:</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
 
       <li><a href="#see-also">See also</a></li>
       
