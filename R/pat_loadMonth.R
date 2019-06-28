@@ -2,7 +2,7 @@
 #' @importFrom rlang .data
 #' @importFrom dplyr filter
 #' 
-#' @title Load PurpleAir time series data fr a month
+#' @title Load PurpleAir time series data for a month
 #' 
 #' @description A pre-generated PurpleAir Timeseries \emph{pat} object will be loaded for
 #' the given month. Archived data for SCAQMD sensors go back to January, 2018.

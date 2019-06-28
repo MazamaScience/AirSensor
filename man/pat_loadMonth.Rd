@@ -2,7 +2,7 @@
 % Please edit documentation in R/pat_loadMonth.R
 \name{pat_loadMonth}
 \alias{pat_loadMonth}
-\title{Load PurpleAir time series data fr a month}
+\title{Load PurpleAir time series data for a month}
 \usage{
 pat_loadMonth(label = NULL, datestamp = NULL,
   timezone = "America/Los_Angeles",
