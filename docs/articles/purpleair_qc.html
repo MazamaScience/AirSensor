@@ -123,9 +123,9 @@
 <h3 class="hasAnchor">
 <a href="#good-data" class="anchor"></a>Good Data</h3>
 <p>Lets begin by looking at one week’s worth of trouble free sensor data:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pat &lt;-<span class="st"> </span>example_pat <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/pat_filterDate.html">pat_filterDate</a></span>(<span class="dv">20180701</span>, <span class="dv">20180708</span>)
-<span class="co"># use sampleSize = NULL to force display of every data point</span>
-<span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(pat, <span class="dt">sampleSize =</span> <span class="ot">NULL</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">pat &lt;-<span class="st"> </span>example_pat <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/pat_filterDate.html">pat_filterDate</a></span>(<span class="dv">20180701</span>, <span class="dv">20180708</span>)</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="co"># use sampleSize = NULL to force display of every data point</span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(pat, <span class="dt">sampleSize =</span> <span class="ot">NULL</span>)</a></code></pre></div>
 <p><img src="purpleair_qc_files/figure-html/example_pat_basic-1.png" width="672"></p>
 <p>In this case, no obvious errors are seen in the data.</p>
 </div>
@@ -133,18 +133,18 @@
 <h3 class="hasAnchor">
 <a href="#bad-humitidy-values-noisy-channel-a" class="anchor"></a>Bad Humitidy Values, Noisy Channel A</h3>
 <p>Occasionally one sees aphysical relative humidity values &gt; 100. The example below also shows one of the particle detectors generating noisy data.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pat &lt;-<span class="st"> </span>example_pat_failure
-<span class="co"># use sampleSize = NULL to force display of every data point</span>
-<span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(pat, <span class="dt">sampleSize =</span> <span class="ot">NULL</span>)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">pat &lt;-<span class="st"> </span>example_pat_failure</a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="co"># use sampleSize = NULL to force display of every data point</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(pat, <span class="dt">sampleSize =</span> <span class="ot">NULL</span>)</a></code></pre></div>
 <p><img src="purpleair_qc_files/figure-html/example_pat_failure_basic-1.png" width="672"></p>
 </div>
 <div id="out-of-spec-pm2-5-values" class="section level3">
 <h3 class="hasAnchor">
 <a href="#out-of-spec-pm2-5-values" class="anchor"></a>Out-of-spec PM2.5 Values</h3>
 <p>One of the PM2.5 channels can also report completely bogus data:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pat &lt;-<span class="st"> </span>example_pat_failure_B
-<span class="co"># use sampleSize = NULL to force display of every data point</span>
-<span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(pat, <span class="dt">sampleSize =</span> <span class="ot">NULL</span>)</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">pat &lt;-<span class="st"> </span>example_pat_failure_B</a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="co"># use sampleSize = NULL to force display of every data point</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(pat, <span class="dt">sampleSize =</span> <span class="ot">NULL</span>)</a></code></pre></div>
 <p><img src="purpleair_qc_files/figure-html/example_pat_failure_B_basic-1.png" width="672"></p>
 </div>
 </div>
@@ -157,16 +157,16 @@
 -40 &lt; temperature &lt; 185
   0 &lt;     pm25    &lt; 1000</code></pre>
 <p>The <code><a href="../reference/pat_qc.html">pat_qc()</a></code> function applies these thresholds and returns a <em>pat</em> object where out-of-spec values have been replaced by <code>NA</code>. See how the out-of-spec humidity values get replaced in <code>example_pat_failure</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pat &lt;-
-<span class="st">  </span>example_pat_failure <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/pat_qc.html">pat_qc</a></span>()
-<span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(pat, <span class="dt">sampleSize =</span> <span class="ot">NULL</span>)</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">pat &lt;-</a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="st">  </span>example_pat_failure <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="st">  </span><span class="kw"><a href="../reference/pat_qc.html">pat_qc</a></span>()</a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(pat, <span class="dt">sampleSize =</span> <span class="ot">NULL</span>)</a></code></pre></div>
 <p><img src="purpleair_qc_files/figure-html/example_pat_failure_qc1-1.png" width="672"></p>
 <p>The case of <code>example_pat_failure_B</code> is also improved by removing out-of-spec values but some questionable data still exist in channel A:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pat &lt;-
-<span class="st">  </span>example_pat_failure_B <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/pat_qc.html">pat_qc</a></span>()
-<span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(pat, <span class="dt">sampleSize =</span> <span class="ot">NULL</span>)</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">pat &lt;-</a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="st">  </span>example_pat_failure_B <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="st">  </span><span class="kw"><a href="../reference/pat_qc.html">pat_qc</a></span>()</a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(pat, <span class="dt">sampleSize =</span> <span class="ot">NULL</span>)</a></code></pre></div>
 <p><img src="purpleair_qc_files/figure-html/example_pat_failure_B_qc1-1.png" width="672"></p>
 </div>
 <div id="aggregation" class="section level2">
@@ -174,13 +174,13 @@
 <a href="#aggregation" class="anchor"></a>Aggregation</h2>
 <p>The <code><a href="../reference/pat_aggregate.html">pat_aggregate()</a></code> function is used in the conversion of <em>pat</em> data objects into data objects that have a uniform, typically hourly, time axis with. The aggregation process invovles creating regular time bins and then calculating a variety of statistics for the data within each bin. We end up with a dataframe with a regular time axis and multiple columns of statistics for each input variable.</p>
 <p>Applying our uncontroversion <code><a href="../reference/pat_qc.html">pat_qc()</a></code> as the first step in the pipeline, we can reivew which statistics are calcualted:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-
-<span class="st">  </span>example_pat_failure <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/pat_qc.html">pat_qc</a></span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/pat_aggregate.html">pat_aggregate</a></span>(<span class="dt">period =</span> <span class="st">"1 hour"</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(df)</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">df &lt;-</a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="st">  </span>example_pat_failure <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="st">  </span><span class="kw"><a href="../reference/pat_qc.html">pat_qc</a></span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="st">  </span><span class="kw"><a href="../reference/pat_aggregate.html">pat_aggregate</a></span>(<span class="dt">period =</span> <span class="st">"1 hour"</span>)</a>
+<a class="sourceLine" id="cb7-5" title="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(df)</a></code></pre></div>
 <pre><code>## [1] "data.frame"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(df)</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(df)</a></code></pre></div>
 <pre><code>##  [1] "datetime"           "pm25_t"             "pm25_p"            
 ##  [4] "pm25_df"            "pm25_A_mean"        "pm25_B_mean"       
 ##  [7] "pm25_A_median"      "pm25_B_median"      "pm25_A_sd"         
@@ -217,64 +217,64 @@
 </ul>
 <p>For visual thinkers, imagine a boxplot showing the range of values from the A and B channels for a particular hour. If the boxplots overlap, then the means, although not identical, are not significantly different.</p>
 <p>A picture may help. Below we display hourly boxplots for the A and B channels during a day when they largely agree:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)
-
-<span class="co"># Grab a 1-day subset of the data</span>
-raw_data &lt;-<span class="st"> </span>
-<span class="st">  </span>example_pat_failure_B <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/pat_filterDate.html">pat_filterDate</a></span>(<span class="dv">20190611</span>,<span class="dv">20190611</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/pat_extractDataFrame.html">pat_extractData</a></span>() <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(datetime, pm25_A, pm25_B) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="co"># Convert datetime to an hourly timestamp to use as a factor</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">datetime =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/strptime">strftime</a></span>(datetime, <span class="st">"%Y%m%d%H"</span>)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="co"># Convert from wide to "tidy" so we can use channel as a factor</span>
-<span class="st">  </span>tidyr<span class="op">::</span><span class="kw"><a href="https://tidyr.tidyverse.org/reference/gather.html">gather</a></span>(<span class="st">"channel"</span>, <span class="st">"pm25"</span>, <span class="op">-</span>datetime)
-
-<span class="co"># Look at a random sample of this new dataframe</span>
-dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(raw_data, <span class="dv">10</span>)</code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)</a>
+<a class="sourceLine" id="cb11-2" title="2"></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="co"># Grab a 1-day subset of the data</span></a>
+<a class="sourceLine" id="cb11-4" title="4">raw_data &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb11-5" title="5"><span class="st">  </span>example_pat_failure_B <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-6" title="6"><span class="st">  </span><span class="kw"><a href="../reference/pat_filterDate.html">pat_filterDate</a></span>(<span class="dv">20190611</span>,<span class="dv">20190611</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-7" title="7"><span class="st">  </span><span class="kw"><a href="../reference/pat_extractDataFrame.html">pat_extractData</a></span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-8" title="8"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(datetime, pm25_A, pm25_B) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-9" title="9"><span class="st">  </span><span class="co"># Convert datetime to an hourly timestamp to use as a factor</span></a>
+<a class="sourceLine" id="cb11-10" title="10"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">datetime =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/strptime">strftime</a></span>(datetime, <span class="st">"%Y%m%d%H"</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-11" title="11"><span class="st">  </span><span class="co"># Convert from wide to "tidy" so we can use channel as a factor</span></a>
+<a class="sourceLine" id="cb11-12" title="12"><span class="st">  </span>tidyr<span class="op">::</span><span class="kw"><a href="https://tidyr.tidyverse.org/reference/gather.html">gather</a></span>(<span class="st">"channel"</span>, <span class="st">"pm25"</span>, <span class="op">-</span>datetime)</a>
+<a class="sourceLine" id="cb11-13" title="13"></a>
+<a class="sourceLine" id="cb11-14" title="14"><span class="co"># Look at a random sample of this new dataframe</span></a>
+<a class="sourceLine" id="cb11-15" title="15">dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(raw_data, <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>##      datetime channel  pm25
-## 1  2019061114  pm25_B  7.34
-## 2  2019061114  pm25_A  8.58
-## 3  2019061121  pm25_B 12.94
-## 4  2019061106  pm25_A  7.27
-## 5  2019061101  pm25_A  5.88
-## 6  2019061105  pm25_B  6.25
-## 7  2019061119  pm25_B    NA
-## 8  2019061111  pm25_B  8.97
-## 9  2019061113  pm25_A  5.30
-## 10 2019061120  pm25_B 11.45</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create a timeseries using boxplots</span>
-colors &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/rgb">rgb</a></span>(<span class="fl">0.9</span>, <span class="fl">0.25</span>, <span class="fl">0.2</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/rgb">rgb</a></span>(<span class="fl">0.2</span>, <span class="fl">0.25</span>, <span class="fl">0.9</span>))
-<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(raw_data, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(datetime, pm25, <span class="dt">color =</span> channel)) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html">geom_boxplot</a></span>(<span class="dt">outlier.shape =</span> <span class="ot">NA</span>,
-               <span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span>(<span class="dt">values=</span>colors) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_jitter.html">geom_jitter</a></span>(<span class="dt">cex =</span> <span class="fl">0.2</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"A/B hourly averages"</span>)</code></pre></div>
+## 1  2019061123  pm25_A 20.32
+## 2  2019061111  pm25_B  7.62
+## 3  2019061109  pm25_A  9.91
+## 4  2019061123  pm25_B 12.58
+## 5  2019061123  pm25_A 21.58
+## 6  2019061121  pm25_A 15.61
+## 7  2019061122  pm25_A 17.20
+## 8  2019061111  pm25_B  7.44
+## 9  2019061115  pm25_A  9.90
+## 10 2019061112  pm25_B  5.70</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="co"># Create a timeseries using boxplots</span></a>
+<a class="sourceLine" id="cb13-2" title="2">colors &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/rgb">rgb</a></span>(<span class="fl">0.9</span>, <span class="fl">0.25</span>, <span class="fl">0.2</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/rgb">rgb</a></span>(<span class="fl">0.2</span>, <span class="fl">0.25</span>, <span class="fl">0.9</span>))</a>
+<a class="sourceLine" id="cb13-3" title="3"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(raw_data, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(datetime, pm25, <span class="dt">color =</span> channel)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb13-4" title="4"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html">geom_boxplot</a></span>(<span class="dt">outlier.shape =</span> <span class="ot">NA</span>,</a>
+<a class="sourceLine" id="cb13-5" title="5">               <span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb13-6" title="6"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span>(<span class="dt">values=</span>colors) <span class="op">+</span></a>
+<a class="sourceLine" id="cb13-7" title="7"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_jitter.html">geom_jitter</a></span>(<span class="dt">cex =</span> <span class="fl">0.2</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb13-8" title="8"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"A/B hourly averages"</span>)</a></code></pre></div>
 <p><img src="purpleair_qc_files/figure-html/AB_boxplot-1.png" width="672"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Compare the t-statistic for that day</span>
-agg_data &lt;-<span class="st"> </span>
-<span class="st">  </span>example_pat_failure_B <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/pat_filterDate.html">pat_filterDate</a></span>(<span class="dv">20190611</span>,<span class="dv">20190611</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/pat_aggregate.html">pat_aggregate</a></span>()
-
-<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(agg_data, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(datetime, pm25_t)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10</a></span>() <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"t-statistic"</span>)</code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="co"># Compare the t-statistic for that day</span></a>
+<a class="sourceLine" id="cb14-2" title="2">agg_data &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb14-3" title="3"><span class="st">  </span>example_pat_failure_B <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-4" title="4"><span class="st">  </span><span class="kw"><a href="../reference/pat_filterDate.html">pat_filterDate</a></span>(<span class="dv">20190611</span>,<span class="dv">20190611</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-5" title="5"><span class="st">  </span><span class="kw"><a href="../reference/pat_aggregate.html">pat_aggregate</a></span>()</a>
+<a class="sourceLine" id="cb14-6" title="6"></a>
+<a class="sourceLine" id="cb14-7" title="7"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(agg_data, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(datetime, pm25_t)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-8" title="8"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-9" title="9"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10</a></span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-10" title="10"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"t-statistic"</span>)</a></code></pre></div>
 <p><img src="purpleair_qc_files/figure-html/AB_boxplot-2.png" width="672"></p>
 <p>And here is the same for a day with serious problems:</p>
 <pre><code>##      datetime channel    pm25
-## 1  2019061200  pm25_A   38.77
-## 2  2019061205  pm25_A  146.97
-## 3  2019061200  pm25_A   24.68
-## 4  2019061203  pm25_A 3093.90
-## 5  2019061202  pm25_A 3332.71
-## 6  2019061217  pm25_A   10.98
-## 7  2019061221  pm25_A      NA
-## 8  2019061207  pm25_B   14.13
-## 9  2019061202  pm25_A   15.35
-## 10 2019061202  pm25_B   11.42</code></pre>
+## 1  2019061200  pm25_B   13.30
+## 2  2019061201  pm25_B   13.97
+## 3  2019061207  pm25_A 3329.03
+## 4  2019061201  pm25_B   16.06
+## 5  2019061208  pm25_A 3335.28
+## 6  2019061205  pm25_B   14.97
+## 7  2019061206  pm25_A 3332.78
+## 8  2019061207  pm25_B   12.60
+## 9  2019061200  pm25_A   25.55
+## 10 2019061201  pm25_B   13.90</code></pre>
 <p><img src="purpleair_qc_files/figure-html/AB_boxplot_2-1.png" width="672"><img src="purpleair_qc_files/figure-html/AB_boxplot_2-2.png" width="672"></p>
 <p>We can see that values of <code>pm25_t &gt; 100</code>, for example, only occur for hours where the A and B channels have hourly avergaes that are both highly precise (low std dev) and very different. We can thus use the <code>pm25_t</code> variable to flag those hours where the A and B channels disagree.</p>
 </div>
@@ -292,22 +292,22 @@ agg_data &lt;-<span class="st"> </span>
 <li>invalidate pm25 values where the count on either the A or B channel is below some threshold (e.g. 10 where 30 are expected)</li>
 </ol>
 <p>The R code to apply this QC would be:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">hourlyData &lt;-
-<span class="st">  </span>example_pat_failure <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="co"># Apply out-of-spec QC</span>
-<span class="st">  </span><span class="kw"><a href="../reference/pat_qc.html">pat_qc</a></span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="co"># Calculate aggregation statistics</span>
-<span class="st">  </span><span class="kw"><a href="../reference/pat_aggregate.html">pat_aggregate</a></span>(<span class="dt">period =</span> <span class="st">"1 hour"</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="co"># Average together both channels</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">pm25 =</span> (pm25_A_mean <span class="op">+</span><span class="st"> </span>pm25_B_mean) <span class="op">/</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="co"># Invalidate data where either channel has too few measurements</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">pm25 =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/replace">replace</a></span>(pm25, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/which">which</a></span>(pm25_A_count <span class="op">&lt;</span><span class="st"> </span><span class="dv">10</span>), <span class="ot">NA</span>) ) <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">pm25 =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/replace">replace</a></span>(pm25, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/which">which</a></span>(pm25_B_count <span class="op">&lt;</span><span class="st"> </span><span class="dv">10</span>), <span class="ot">NA</span>) ) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="co"># Invlidate data where t-test is too high</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">pm25 =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/replace">replace</a></span>(pm25, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/which">which</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">abs</a></span>(pm25_t) <span class="op">&gt;</span><span class="st"> </span><span class="dv">100</span>), <span class="ot">NA</span>) ) <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(datetime, pm25)
-
-<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(hourlyData)</code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1">hourlyData &lt;-</a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="st">  </span>example_pat_failure <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-3" title="3"><span class="st">  </span><span class="co"># Apply out-of-spec QC</span></a>
+<a class="sourceLine" id="cb16-4" title="4"><span class="st">  </span><span class="kw"><a href="../reference/pat_qc.html">pat_qc</a></span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-5" title="5"><span class="st">  </span><span class="co"># Calculate aggregation statistics</span></a>
+<a class="sourceLine" id="cb16-6" title="6"><span class="st">  </span><span class="kw"><a href="../reference/pat_aggregate.html">pat_aggregate</a></span>(<span class="dt">period =</span> <span class="st">"1 hour"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-7" title="7"><span class="st">  </span><span class="co"># Average together both channels</span></a>
+<a class="sourceLine" id="cb16-8" title="8"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">pm25 =</span> (pm25_A_mean <span class="op">+</span><span class="st"> </span>pm25_B_mean) <span class="op">/</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-9" title="9"><span class="st">  </span><span class="co"># Invalidate data where either channel has too few measurements</span></a>
+<a class="sourceLine" id="cb16-10" title="10"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">pm25 =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/replace">replace</a></span>(pm25, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/which">which</a></span>(pm25_A_count <span class="op">&lt;</span><span class="st"> </span><span class="dv">10</span>), <span class="ot">NA</span>) ) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-11" title="11"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">pm25 =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/replace">replace</a></span>(pm25, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/which">which</a></span>(pm25_B_count <span class="op">&lt;</span><span class="st"> </span><span class="dv">10</span>), <span class="ot">NA</span>) ) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-12" title="12"><span class="st">  </span><span class="co"># Invlidate data where t-test is too high</span></a>
+<a class="sourceLine" id="cb16-13" title="13"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">pm25 =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/replace">replace</a></span>(pm25, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/which">which</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">abs</a></span>(pm25_t) <span class="op">&gt;</span><span class="st"> </span><span class="dv">100</span>), <span class="ot">NA</span>) ) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-14" title="14"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(datetime, pm25)</a>
+<a class="sourceLine" id="cb16-15" title="15"></a>
+<a class="sourceLine" id="cb16-16" title="16"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(hourlyData)</a></code></pre></div>
 <p>As a test of the overall effect, here are some hourly barplots for each of the three examples we started with:</p>
 <p><img src="purpleair_qc_files/figure-html/hourly_barplots-1.png" width="672"></p>
 <p>Things look pretty good. The first two time seres look quite reasonable given the input data and <em>most</em> of the hours of questionable data have been removed from <code>example_pat_failure_B</code>. The four questionably high values in <code>example_pat_failure_B</code> are all adjacent to an hour that has been flagged as invalid which should call the validity of those values into question as well.</p>
