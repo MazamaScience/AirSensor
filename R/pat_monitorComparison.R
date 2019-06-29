@@ -120,7 +120,7 @@ pat_monitorComparison <- function(
   timezone <- pat$meta$timezone[1]
   year <- strftime(pat$data$datetime[1], "%Y", tz=timezone)
   title <- paste0(
-    "PA Sensor / Monitor comparison -- ",
+    "Sensor / Monitor comparison -- PurpleAir ",
     pat$meta$label,
     " is ",
     round((pat$meta$pwfsl_closestDistance/1000),1),
