@@ -136,9 +136,9 @@ result <- try({
   }
   
   if ( opt$period == "" ) {
-   
+    
     periodHours <- 7 * 24 
-     
+    
   } else {
     
     periodHours <- as.numeric(opt$period) * 24 
@@ -153,7 +153,8 @@ result <- try({
   
   # Get times
   starttime <- 
-    lubridate::ymd(datestamp, tz=opt$timezone) - lubridate::ddays(as.numeric(opt$period))
+    lubridate::ymd(datestamp, tz=opt$timezone) - 
+    lubridate::ddays(as.numeric(opt$period))
   endtime <- 
     lubridate::ceiling_date(starttime + lubridate::ddays(20), unit="month")
   
@@ -177,6 +178,7 @@ result <- try({
   
   logger.info("Loading Wind data")
   
+  # Load monitor objects
   airnow_monitorObjects <- 
     PWFSLSmoke::airnow_createMonitorObjects(
       parameters = c("WS", "WD"), 
@@ -207,6 +209,7 @@ result <- try({
        "West LA - VA Hospital"
     )
   
+  # Gather monitorIDs using provided site names
   monitorIDs <- 
     airnow_monitorIDs[which(airnow_WD$meta$siteName %in% siteNames)]
   
@@ -235,11 +238,7 @@ result <- try({
   WS <- 
     PWFSLSmoke::monitor_subset(WS, tlim=c(starttime, endtime))
   
-  #monthstamp = "03"
-  
-  #opt <- list()
-  #opt$outputDir= "/home/hansmrtn"
-  
+  # Write file names and paths
   WD_filename <- paste0("airsensor_WD_", monthstamp, ".rda")
   WD_filepath <- file.path(opt$outputDir, WD_filename)
   
