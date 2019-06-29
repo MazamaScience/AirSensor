@@ -1,3 +1,7 @@
+# AirSensor 0.3.4
+
+* Added `local_examples/bikesgv_story.Rmd`.
+
 # AirSensor 0.3.3
 
 * renamed `pas_within()` to `pas_filterNear()`

@@ -43,8 +43,9 @@
   the given date. These files are generated each day at 4am California time
   and provide a record of all currently installed Purple Air sensors for the
   day of interest.
-The datestamp can be anything that is understood by lubrdiate::ymd()
-  including either of the following recommended formats:
+The datestamp can be anything that is understood by 
+  lubrdiate::ymd() including either of the following recommended 
+  formats:
 
 &quot;YYYYmmdd&quot;
 &quot;YYYY-mm-dd&quot;
@@ -81,7 +82,7 @@ The datestamp can be anything that is understood by lubrdiate::ymd()
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4</span>
       </span>
     </div>
 
@@ -158,8 +159,9 @@ The datestamp can be anything that is understood by lubrdiate::ymd()
   the given date. These files are generated each day at 4am California time
   and provide a record of all currently installed Purple Air sensors for the
   day of interest.</p>
-<p>The <code>datestamp</code> can be anything that is understood by <code>lubrdiate::ymd()</code>
-  including either of the following recommended formats:</p>
+<p>The <code>datestamp</code> can be anything that is understood by 
+  <code>lubrdiate::ymd()</code> including either of the following recommended 
+  formats:</p>
 <ul>
 <li><p><code>"YYYYmmdd"</code></p></li>
 <li><p><code>"YYYY-mm-dd"</code></p></li>
@@ -171,24 +173,30 @@ The datestamp can be anything that is understood by lubrdiate::ymd()
 
     <pre class="usage"><span class='fu'>pas_load</span>(<span class='kw'>datestamp</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>strftime</a></span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/today.html'>today</a></span>(<span class='st'>"America/Los_Angeles"</span>),
   <span class='st'>"%Y%m%d"</span>),
-  <span class='kw'>baseUrl</span> <span class='kw'>=</span> <span class='st'>"http://smoke.mazamascience.com/data/PurpleAir/pas/2019"</span>)</pre>
+  <span class='kw'>baseUrl</span> <span class='kw'>=</span> <span class='st'>"http://smoke.mazamascience.com/data/PurpleAir/pas/2019"</span>,
+  <span class='kw'>retries</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>datestamp</th>
-      <td><p>A date string in ymd order.</p></td>
+      <td><p>Date string in ymd order.</p></td>
     </tr>
     <tr>
       <th>baseUrl</th>
-      <td><p>The base URL for synoptic data.</p></td>
+      <td><p>Base URL for synoptic data.</p></td>
+    </tr>
+    <tr>
+      <th>retries</th>
+      <td><p>Max number of days to go back and try to load if requested 
+date cannot be retrieved.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A PurpleAir Synoptic <code>pas</code> object.</p>
+    <p>A PurpleAir Synoptic <em>pas</em> object.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 

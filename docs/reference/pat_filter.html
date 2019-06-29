@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Initialize MazamaSpatialUtils package — initializeMazamaSpatialUtils • AirSensor</title>
+<title>General purpose data filtering for PurpleAir Timeseries objects — pat_filter • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,25 +37,13 @@
 
 
 
-<meta property="og:title" content="Initialize MazamaSpatialUtils package — initializeMazamaSpatialUtils" />
+<meta property="og:title" content="General purpose data filtering for PurpleAir Timeseries objects — pat_filter" />
 
-<meta property="og:description" content="Convenience function that wraps:
-
-  logger.setup()
-  logger.setLevel(WARN)
-  data(&quot;SimpleCountriesEEZ&quot;, package = &quot;MazamaSpatialUtils&quot;)
-  data(&quot;SimpleTimezones&quot;, package = &quot;MazamaSpatialUtils&quot;)
-  MazamaSpatialUtils::setSpatialDataDir('~/Data/Spatial')
-  MazamaSpatialUtils::loadSpatialData('NaturalEarthAdm1')
-" />
-
-<meta property="og:description" content="This function should be run before using pas_load(), as 
-pas_load() uses the spatial data loaded by 
-initializeMazamaSpatialUtils() to enhance  raw synoptic data via 
-enhanceSynopticData().
-If file logging is desired, these commands should be run individually with
-output log files specified as arguments to logger.setup() from the
-MazamaCoreUtils package." />
+<meta property="og:description" content="A generalized data filter for pat objects to 
+choose rows/cases where conditions are true.  Multiple conditions are 
+combined with &amp;amp; or seperated by a comma. Only rows where the condition 
+evaluates to TRUE are kept.Rows where the condition evaluates to NA
+aredropped." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -152,61 +140,63 @@ MazamaCoreUtils package." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Initialize MazamaSpatialUtils package</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/initializeMazamaSpatialUtils.R'><code>R/initializeMazamaSpatialUtils.R</code></a></small>
-    <div class="hidden name"><code>initializeMazamaSpatialUtils.Rd</code></div>
+    <h1>General purpose data filtering for PurpleAir Timeseries objects</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_filter.R'><code>R/pat_filter.R</code></a></small>
+    <div class="hidden name"><code>pat_filter.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Convenience function that wraps:</p>
-<pre>
-  logger.setup()
-  logger.setLevel(WARN)
-  data("SimpleCountriesEEZ", package = "MazamaSpatialUtils")
-  data("SimpleTimezones", package = "MazamaSpatialUtils")
-  MazamaSpatialUtils::setSpatialDataDir('~/Data/Spatial')
-  MazamaSpatialUtils::loadSpatialData('NaturalEarthAdm1')
-</pre>
-
-    <p>This function should be run before using <code><a href='pas_load.html'>pas_load()</a></code>, as 
-<code><a href='pas_load.html'>pas_load()</a></code> uses the spatial data loaded by 
-<code>initializeMazamaSpatialUtils()</code> to enhance  raw synoptic data via 
-<code><a href='enhanceSynopticData.html'>enhanceSynopticData()</a></code>.</p>
-<p>If file logging is desired, these commands should be run individually with
-output log files specified as arguments to <code>logger.setup()</code> from the
-<span class="pkg">MazamaCoreUtils</span> package.</p>
+    <p>A generalized data filter for <em>pat</em> objects to 
+choose rows/cases where conditions are true.  Multiple conditions are 
+combined with <code>&amp;</code> or seperated by a comma. Only rows where the condition 
+evaluates to TRUE are kept.Rows where the condition evaluates to <code>NA</code>
+aredropped.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>initializeMazamaSpatialUtils</span>(<span class='kw'>spatialDataDir</span> <span class='kw'>=</span> <span class='st'>"~/Data/Spatial"</span>,
-  <span class='kw'>stateCodeDataset</span> <span class='kw'>=</span> <span class='st'>"NaturalEarthAdm1"</span>, <span class='kw'>logLevel</span> <span class='kw'>=</span> <span class='no'>WARN</span>)</pre>
+    <pre class="usage"><span class='fu'>pat_filter</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>spatialDataDir</th>
-      <td><p>directory where spatial datasets are created</p></td>
+      <th>pat</th>
+      <td><p>PurpleAir Timeseries <em>pat</em> object.</p></td>
     </tr>
     <tr>
-      <th>stateCodeDataset</th>
-      <td><p>MazamaSpatialUtils dataset returning ISO 3166-2 
-alpha-2 stateCodes</p></td>
-    </tr>
-    <tr>
-      <th>logLevel</th>
-      <td><p>logging level used</p></td>
+      <th>...</th>
+      <td><p>Logical predicates defined in terms of the variables in the 
+<code>pat$data</code>.</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>A subset of the incoming <code>pat</code>.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='pat_filterDate.html'>pat_filterDate</a></p></div>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='no'>unhealthy</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_filter</span>(<span class='no'>example_pat</span>, <span class='no'>pm25_A</span> <span class='kw'>&gt;</span> <span class='fl'>55.5</span>, <span class='no'>pm25_B</span> <span class='kw'>&gt;</span> <span class='fl'>55.5</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>unhealthy</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
