@@ -6,15 +6,19 @@
 \usage{
 pas_load(datestamp = strftime(lubridate::today("America/Los_Angeles"),
   "\%Y\%m\%d"),
-  baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/pas/2019")
+  baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/pas/2019",
+  retries = 10)
 }
 \arguments{
-\item{datestamp}{A date string in ymd order.}
+\item{datestamp}{Date string in ymd order.}
 
-\item{baseUrl}{The base URL for synoptic data.}
+\item{baseUrl}{Base URL for synoptic data.}
+
+\item{retries}{Max number of days to go back and try to load if requested 
+date cannot be retrieved.}
 }
 \value{
-A PurpleAir Synoptic \code{pas} object.
+A PurpleAir Synoptic \emph{pas} object.
 }
 \description{
 A pre-generated \emph{pa_synoptic} object will be loaded for
@@ -22,8 +26,9 @@ A pre-generated \emph{pa_synoptic} object will be loaded for
   and provide a record of all currently installed Purple Air sensors for the
   day of interest.
 
-  The \code{datestamp} can be anything that is understood by \code{lubrdiate::ymd()}
-  including either of the following recommended formats:
+  The \code{datestamp} can be anything that is understood by 
+  \code{lubrdiate::ymd()} including either of the following recommended 
+  formats:
 
 \itemize{
 \item{\code{"YYYYmmdd"}}

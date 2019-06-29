@@ -22,6 +22,24 @@
 #' nrow(ca)
 
 pas_filter <- function(pas, ...) { 
+
+  # ----- Validate parameters --------------------------------------------------
+  
+  # A little involved to catch the case where the user forgets to pass in 'pas'
+  
+  result <- try({
+    if ( !pas_isPas(pas) )
+      stop("First argument is not of class 'pas'.")
+  }, silent = TRUE)
+  
+  if ( class(result) %in% "try-error" ) {
+    err_msg <- geterrmessage()
+    if ( stringr::str_detect(err_msg, "object .* not found") ) {
+      stop(paste0(err_msg, "\n(Did you forget to pass in the 'pas' object?)"))
+    }
+  }
+  
+  # ----- Apply filter ---------------------------------------------------------
   
   pas <- 
     pas %>% 

@@ -4,7 +4,10 @@
 \alias{pwfsl_loadLatest}
 \title{Get PWFSLSmoke monitoring data}
 \usage{
-pwfsl_loadLatest()
+pwfsl_loadLatest(...)
+}
+\arguments{
+\item{...}{Arguments passed on to \code{PWFSLSmoke::monitor_load()}.}
 }
 \value{
 List with \code{meta} and \code{data} elements, a \emph{ws_monitor}

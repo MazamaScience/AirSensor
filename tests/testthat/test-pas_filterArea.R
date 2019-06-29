@@ -5,9 +5,6 @@ test_that("input validation works", {
   
   expect_error(pas_filterArea(NULL))
   expect_error(pas_filterArea(1:10))
-  expect_error(pas_filterArea(example_pas, w = "-118.10"), NA) # No error expected
-  
-  expect_true(!pas_isEmpty(pas_filterArea(example_pas)))
 })
 
 test_that("pa_synoptic class returned", { 
