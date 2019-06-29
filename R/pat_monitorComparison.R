@@ -124,7 +124,7 @@ pat_monitorComparison <- function(
     pat$meta$label,
     " is ",
     round((pat$meta$pwfsl_closestDistance/1000),1),
-    " km from PWFSL monitor ",
+    " km from PWFSL ",
     monitorID
   )
   
