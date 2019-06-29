@@ -10,13 +10,15 @@
 #' package. By default, this function loads data from all 50 states for the past 
 #' 10 days. 
 #'
-#' This function is a wrapper around \code{PWFSLSmoke::monitor_loadLatest}.
+#' By default, this function is a wrapper around 
+#' \code{PWFSLSmoke::monitor_loadLatest}. But it can also be used as a wrapper
+#' around \code{PWFSLSmoke::monitor_load} by passing in arguments.
 #' 
-#' Data for the most recent 45 days can be downloaded using 
-#' \code{PWFSLSmoke::monitor_loadDaily()}. See the \code{PWFSLSmoke package} for
-#' additional data loading functions.
+#' If you pass in arguments, \emph{e.g.} \code{starttime} and \code{endtime},
+#' \code{PWFSLSmoke::monitor_load()} will be invoked. Otherwise,
+#' \code{PWFSLSmoke::monitor_loadLatest()} will be invoked.
 #' 
-#' @inheritParams PWFSLSmoke::monitor_loadLatest
+#' @param ... Arguments passed on to \code{PWFSLSmoke::monitor_load()}.
 #' 
 #' @return List with \code{meta} and \code{data} elements, a \emph{ws_monitor} 
 #' object.
@@ -26,12 +28,19 @@
 #' pwfsl <- pwfsl_load()
 #' }
 
-pwfsl_load <- function() {
+pwfsl_load <- function(...) {
   
-  logger.debug("----- pwfsl_load() -----")
+  # ----- Validate parameters --------------------------------------------------
   
-  # Download PWFSL data
-  pwfsl <- PWFSLSmoke::monitor_loadLatest()
+  argsList <- list(...)
+  
+  # ----- Load data ------------------------------------------------------------
+
+  if ( length(argsList) == 0 ) {
+    pwfsl <- PWFSLSmoke::monitor_loadLatest()
+  }  else {
+    pwfsl <- PWFSLSmoke::monitor_load(...)
+  }
   
   return(pwfsl)
   

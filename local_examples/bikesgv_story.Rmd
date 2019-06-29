@@ -6,11 +6,11 @@ output:
 ---
 
 Using just few of AirSensor's synoptic and time series functions, we can 
-investigate something fishy going on with one particular air monitor in 
+investigate something fishy going on with one particular air sensor in 
 northwest Pasadena.
 
-Let's pull it up by its monitor label, *BikeSGV - West Pasadena*, from a loaded 
-list of US PurpleAir monitors:
+Let's pull it up by its sensor label, *BikeSGV - West Pasadena*, from a loaded 
+list of US PurpleAir sensors:
 
 ```{r setup}
 library(AirSensor)
@@ -20,7 +20,7 @@ pas_bikesgv <- pas_filter(pas, label == "BikeSGV - West Pasadena")
 pas_leaflet(pas_bikesgv)
 ```
 
-While this surface level view may seem normal at first, the monitor's past
+While this surface level view may seem normal at first, the sensor's past
 measurements happen to display something very strange. We can gather these 
 readings by loading a PurpleAir Timeseries *pat* object using the same label:
 
@@ -30,7 +30,7 @@ pat_bikesgv <- pat_loadLatest(pas, "BikeSGV - West Pasadena",
 pat_multiplot(pat_bikesgv)
 ```
 
-This monitor's A and B PM sensors appear to be telling us two very different 
+This sensor's A and B PM sensors appear to be telling us two very different 
 stories! Let's ignore temperature and humidity for now and zoom in on just the 
 PM readings by setting *plottype*:
 
@@ -77,11 +77,11 @@ is a shapeless cloud, channel A seems to have a very well defined relationship
 with temperature and humidity while channel B has no similarities with them at 
 all.
 
-Just for reference, this is the scatterplot for a different monitor not 
-experiencing this strange issue:
+Just for reference, this is the scatterplot for a different sensor, only a few
+hundred feet away, that is not experiencing this issue:
 
 ```{r normal_scatterplot, warning=FALSE, message=FALSE}
-pat_normal <- pat_loadLatest(pas, "NW of Claremont Village", 
+pat_normal <- pat_loadLatest(pas, "AQMD_NASA_33", 
                              startdate="2019-06-18", enddate="2019-06-25")
 pat_scatterplot(pat_normal)
 ```
@@ -89,7 +89,7 @@ pat_scatterplot(pat_normal)
 Notice that at this site, both PM 2.5 sensors share a proper linear relationship
 and neither channel has much correlation with the auxillary sensors.
 
-The Pasedena monitor is quite the opposite. Let's take a closer look at how its 
+The BikeSGV sensor is quite the opposite. Let's take a closer look at how its 
 A channel is related to temperature by generating a linear model: 
 
 ```{r pm25a_and_temp, warning=FALSE}
@@ -171,7 +171,7 @@ temperature or humidity readings have been leaking into the PM 2.5 channel A
 sensor and overriding its measurements.
 
 So far though we've only looked at a week's worth of questionable data. Has this
-monitor always been acting this way? Lets load and view readings from earlier 
+sensor always been acting this way? Lets load and view readings from earlier 
 this year:
 
 ```{r april_dygraph, warning=FALSE}

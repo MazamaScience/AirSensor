@@ -1,196 +1,165 @@
 #' @export
 #' @importFrom rlang .data
-#' @importFrom stats lm
-#' @import dplyr
-#' @import graphics
 #' 
-#' @title Linear model fitting of Purple Air and federal donitoring data
+#' @title Comparison of Purple Air and federal donitoring data
 #' 
 #' @param pat PurpleAir Timeseries \emph{pat} object.
-#' @param showPlot Logical specifying whether to generate a model fit plot.
-#' @param size Size of points.
-#' @param shape Symbol to use for points.
-#' @param color Color of points.
-#' @param alpha Opacity of points.
-#' @param xylim Vector of (lo,hi) limits used as limits on the correlation plot 
-#' axes -- useful for zooming in.
+#' @param ylim Vector of (lo,hi) y-axis limits used as limits. 
+#' @param replaceOutliers Logical specifying whether replace outliers in the
+#'   \emph{pat} object.
+#' @param a_size Size of pm25_A points.
+#' @param a_shape Symbol to use for pm25_A points.
+#' @param a_color Color of pm25_A points.
+#' @param b_size Size of pm25_B points.
+#' @param b_shape Symbol to use for pm25_B points.
+#' @param b_color Color of pm25_B points.
+#' @param ab_alpha Opacity of pm25_A, pm25_B points.
+#' @param hourly_size Size of hourly points.
+#' @param hourly_shape Symbol to use for hourly points
+#' @param hourly_stroke Line width of hourly points
+#' @param pa_color Color of hourly points
+#' @param pwfsl_color Color of hourly points
 #' 
-#' @description Uses a liner model to fit data from channel B to data from 
-#' channel A.
+#' @description Creates and regurns a ggplot object that plots raw \emph{pat}
+#' data, hourly aggregated \emph{pat} data and hourly data from the nearest
+#' federal monitor from the PWFSL database.
 #' 
-#' A diagnostic plot is produced if `showPlot = TRUE`.
-#' 
-#' @return A linear model, fitting the `pat` B channel readings to A channel 
-#' readings.
+#' @return A ggplot object.
 #' 
 #' @examples
 #' \dontrun{
-#' pat_monitorComparison(pat = example_pat)
+#' pat_monitorComparison(example_pat)
 #' }
 
-# pat_monitorComparison <- function(
-#   pat = NULL,
-#   showPlot = TRUE,
-#   size = 1,
-#   shape = 15,
-#   color = "purple",
-#   alpha = 0.25,
-#   xylim = NULL
-# ) {
-#   
-#   # ----- Validate parameters --------------------------------------------------
-#   
-#   if ( !pat_isPat(pat) )
-#     stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")
-#   
-#   if ( pat_isEmpty(pat) )
-#     stop("Parameter 'pat' has no data.")
-#   
-#   # For easier access
-#   meta <- pat$meta
-#   data <- pat$data
-#   
-#   if ( is.null(xylim) ) {
-#     dataMin <- min(c(0, data$pm25_A, data$pm25_B), na.rm = TRUE)
-#     dataMax <- max(c(data$pm25_A, data$pm25_B), na.rm = TRUE)
-#     xylim <- c(dataMin, dataMax)
-#   }
-#   
-#   ##############################################################################
-#   ##############################################################################
-#   ##############################################################################
-#   
-#   monitorID = meta$pwfsl_closestMonitorID
-#   
-#   # Get the regulatory monitor data
-#   monitor_data <-
-#     pwfsl_load() %>%
-#     PWFSLSmoke::monitor_subset(monitorIDs = monitorID) %>%
-#     PWFSLSmoke::monitor_extractData()
-#   
-#   names(monitor_data) <- c("datetime", "pm25")
-# 
-#   # Labels
-#   timezone <- pat$meta$timezone[1]
-#   year <- strftime(pat$data$datetime[1], "%Y", tz=timezone)
-#   
-#   pm25_plot <-
-#     pat$data %>%
-#     ggplot2::ggplot() +
-#     ggplot2::geom_point(ggplot2::aes(x = .data$datetime, y = .data$pm25_A),
-#                         size = size,
-#                         shape = shape,
-#                         color = rgb(0.9, 0.25, 0.2), # pat_multiplot default
-#                         alpha = alpha) +
-#     ggplot2::geom_point(ggplot2::aes(x = .data$datetime, y = .data$pm25_B),
-#                         size = size,
-#                         shape = shape,
-#                         color = rgb(0.2, 0.25, 0.9), # pat_multiplot default
-#                         alpha = alpha) +
-#     ggplot2::geom_point(data = monitor_data,
-#                         ggplot2::aes(x = datetime, y = pm25),
-#                         size = 2,
-#                         shape = "circle",
-#                         color = "black",
-#                         alpha = 1) +
-#     ggplot2::ylim(xylim) +
-#     ggplot2::ggtitle(expression("Channel A/B PM"[2.5])) +
-#     ggplot2::xlab(year) + ggplot2::ylab("\u03bcg / m\u00b3")
-#   
-#   
-#   print(pm25_plot)  
-#   
-#   ##############################################################################
-#   ##############################################################################
-#   ##############################################################################
-#   
-  # # ----- Linear model ---------------------------------------------------------
-  # 
-  # # Model A as a function of B (data should lie on a line)
-  # model <- lm(data$pm25_A ~ data$pm25_B, subset = NULL, weights = NULL)
-  # 
-  # slope <- as.numeric(model$coefficients[2])      # as.numeric() to remove name
-  # intercept <- as.numeric(model$coefficients[1])
-  # r_squared <- summary(model)$r.squared
-  # 
-  # # Label for linear fit
-  # equationLabel <- 
-  #   ggplot2::annotate(
-  #     geom = "text", 
-  #     x = 0.75 * xylim[2],
-  #     y = c(0.4, 0.3, 0.2) * xylim[2], 
-  #     label = c(paste0("Slope = ", round(slope, digits = 2)),
-  #               paste0("Intercept = ", round(intercept, digits = 1)),
-  #               paste0("R\U00B2 = ", round(r_squared, digits = 3))) )
-  # 
-  # # ----- Plot -----------------------------------------------------------------
-  # 
-  # if ( showPlot ) { 
-  #   
-  #   # LH Linear regression plot
-  #   lm_plot <- 
-  #     pat$data %>% 
-  #     ggplot2::ggplot(ggplot2::aes(x = .data$pm25_B, y = .data$pm25_A)) + 
-  #     ggplot2::geom_point(size = size, 
-  #                         shape = shape,
-  #                         color = color,
-  #                         alpha = alpha) + 
-  #     ggplot2::geom_smooth(method = "lm", color = "gray80", alpha = 1.0) + 
-  #     ggplot2::labs(title = "Channel A vs. Channel B", 
-  #                   x = "Channel B PM 2.5 (\U00B5g/m3)", 
-  #                   y = "Channel A PM 2.5 (\U00B5g/m3)" ) + 
-  #     ggplot2::theme_bw() + 
-  #     ggplot2::xlim(xylim) +
-  #     ggplot2::ylim(xylim) +
-  #     ggplot2::coord_fixed() +    # square aspect ratio
-  #     equationLabel
-  #   
-  #   # # RH pm25_over plot
-  #   # # TODO: Fix printing on ggmultiplot
-  #   # pm25_plot <- invisible(pat_multiplot(pat = pat, 
-  #   #                                      plottype = "pm25_over") )
-  #   
-  #   # Copied from pat_multiplot 
-  #   
-  #   # Labels
-  #   timezone <- pat$meta$timezone[1]
-  #   year <- strftime(pat$data$datetime[1], "%Y", tz=timezone)
-  #   
-  #   # TODO:  Do we need to do this to get local timezones?
-  #   # # Create a tibble
-  #   # tbl <- 
-  #   #   dplyr::tibble(datetime = lubridate::with_tz(pat$data$datetime, timezone),
-  #   #                 pm25_A = pat$data$pm25_A, 
-  #   #                 pm25_B = pat$data$pm25_B, 
-  #   #                 humidity = pat$data$humidity, 
-  #   #                 temp = pat$data$temperature)
-  #   
-  #   pm25_plot <- 
-  #     pat$data %>% 
-  #     ggplot2::ggplot() +
-  #     ggplot2::geom_point(ggplot2::aes(x = .data$datetime, y = .data$pm25_A),
-  #                         size = size,
-  #                         shape = shape,
-  #                         color = rgb(0.9, 0.25, 0.2), # pat_multiplot default
-  #                         alpha = alpha) +
-  #     ggplot2::geom_point(ggplot2::aes(x = .data$datetime, y = .data$pm25_B),
-  #                         size = size,
-  #                         shape = shape,
-  #                         color = rgb(0.2, 0.25, 0.9), # pat_multiplot default
-  #                         alpha = alpha) +
-  #     ggplot2::ylim(xylim) +
-  #     ggplot2::ggtitle(expression("Channel A/B PM"[2.5])) + 
-  #     ggplot2::xlab(year) + ggplot2::ylab("\u03bcg / m\u00b3") 
-  #   
-  #   
-  #   plot <- multi_ggplot(plotList = list(lm_plot, pm25_plot), 
-  #                        columns = 1 )
-  #   
-  #   print(plot)
-  #   
-  # }
-  # 
-  # return(invisible(model))
-#   
-# }
+pat_monitorComparison <- function(
+  pat = NULL,
+  ylim = NULL,
+  replaceOutliers = TRUE,
+  a_size = 1,
+  a_shape = 15,
+  a_color = "gray80", # rgb(0.9, 0.25, 0.2),
+  b_size = 1,
+  b_shape = 15,
+  b_color = "gray80", # rgb(0.2, 0.25, 0.9),
+  ab_alpha = 0.5,
+  hourly_size = 2,
+  hourly_shape = 1,
+  hourly_stroke = 0.6,
+  pa_color = "purple",
+  pwfsl_color = "black"
+) {
+  
+  # ===== DEBUGGING ============================================================
+  
+  if ( FALSE ) {
+
+    pat = pat_load("SCPR_19", 20190618, 20190629)
+    ylim = NULL
+    replaceOutliers = TRUE
+    a_size = 1
+    a_shape = 15
+    a_color = "gray80"
+    b_size = 1
+    b_shape = 15
+    b_color = "gray80"
+    ab_alpha = 0.5
+    hourly_size = 2
+    hourly_shape = 1
+    hourly_stroke = 0.6
+    pa_color = "purple"
+    pwfsl_color = "black"
+    
+  }
+
+  # ----- Validate parameters --------------------------------------------------
+
+  if ( !pat_isPat(pat) )
+    stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")
+
+  if ( pat_isEmpty(pat) )
+    stop("Parameter 'pat' has no data.")
+
+  # ----- Assemble data --------------------------------------------------------
+  
+  if ( replaceOutliers )
+    pat <- pat_outliers(pat, showPlot = FALSE, replace = TRUE)
+  
+  # Get the houry aggregated data
+  paHourly_data <-
+    pat %>% 
+    pat_createAirSensor(period = "1 hour") %>%
+    PWFSLSmoke::monitor_extractData()
+  
+  names(paHourly_data) <- c("datetime", "PA hourly")
+
+  tlim <- range(paHourly_data$datetime)
+  
+  # Get the PWFSL monitor data
+  monitorID = pat$meta$pwfsl_closestMonitorID
+  pwfsl_data <-
+    PWFSLSmoke::monitor_load(tlim[1], tlim[2], monitorIDs = monitorID) %>%
+    PWFSLSmoke::monitor_subset(tlim = tlim) %>%
+    PWFSLSmoke::monitor_extractData()
+
+  names(pwfsl_data) <- c("datetime", "PWFSL")
+
+  # Create a tidy dataframe appropriate for ggplot
+  tidy_data <-
+    dplyr::full_join(paHourly_data, pwfsl_data, by = "datetime") %>%
+    tidyr::gather("source", "pm25", -.data$datetime)
+  
+  # ----- Plot styling ---------------------------------------------------------
+
+  if ( is.null(ylim) ) {
+    dataMin <- min(c(0, pat$data$pm25_A, pat$data$pm25_B), na.rm = TRUE)
+    dataMax <- max(c(pat$data$pm25_A, pat$data$pm25_B), na.rm = TRUE)
+    ylim <- c(dataMin, dataMax)
+  }
+  
+  # Labels
+  timezone <- pat$meta$timezone[1]
+  year <- strftime(pat$data$datetime[1], "%Y", tz=timezone)
+  title <- paste0(
+    "PA Sensor / Monitor comparison -- ",
+    pat$meta$label,
+    " is ",
+    round((pat$meta$pwfsl_closestDistance/1000),1),
+    " km from PWFSL monitor ",
+    monitorID
+  )
+  
+  # ----- Construct plot -------------------------------------------------------
+  
+  pm25_plot <-
+    pat$data %>%
+    ggplot2::ggplot() +
+    ggplot2::geom_point(ggplot2::aes(x = .data$datetime, y = .data$pm25_A),
+                        size = a_size,
+                        shape = a_shape,
+                        color = a_color,
+                        alpha = ab_alpha) +
+    ggplot2::geom_point(ggplot2::aes(x = .data$datetime, y = .data$pm25_B),
+                        size = b_size,
+                        shape = b_shape,
+                        color = b_color,
+                        alpha = ab_alpha) +
+    ggplot2::geom_point(data = tidy_data,
+                        ggplot2::aes(x = .data$datetime, y = .data$pm25, color = source),
+                        size = hourly_size,
+                        shape = hourly_shape,
+                        stroke = hourly_stroke,
+                        alpha = 1) +
+    ggplot2::scale_color_manual(values=c(pa_color, pwfsl_color)) +
+    
+    ggplot2::ylim(ylim) +
+    
+    ggplot2::ggtitle(title) +
+    ggplot2::xlab(year) + 
+    ggplot2::ylab("\u03bcg / m\u00b3")
+  
+  # ----- Return ---------------------------------------------------------------
+  
+  return(pm25_plot)
+
+}
 

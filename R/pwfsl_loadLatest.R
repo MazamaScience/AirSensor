@@ -15,7 +15,7 @@
 #' \code{PWFSLSmoke::monitor_loadDaily()}. See the \code{PWFSLSmoke package} for
 #' additional data loading functions.
 #' 
-#' @inheritParams PWFSLSmoke::monitor_loadLatest
+#' @param ... Arguments passed on to \code{PWFSLSmoke::monitor_load()}.
 #' 
 #' @return List with \code{meta} and \code{data} elements, a \emph{ws_monitor}
 #' object. 
@@ -25,12 +25,12 @@
 #' pwfsl <- pwfsl_loadLatest()
 #' }
 
-pwfsl_loadLatest <- function() {
+pwfsl_loadLatest <- function(...) {
 
   logger.debug("----- pwfsl_loadLatest() -----")
   
   # Download PWFSL data
-  pwfsl <- PWFSLSmoke::monitor_loadLatest()
+  pwfsl <- PWFSLSmoke::monitor_loadLatest(...)
   
   return(pwfsl)
   

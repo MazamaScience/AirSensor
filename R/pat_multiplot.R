@@ -30,8 +30,10 @@
 #' argument to quickly display preformatted plots. 
 #' \itemize{
 #' \item{"all": pm25_A, pm25_B, temperature, humidity}
-#' \item{"pm25": PM2.5 from Channel A and Channel B}
-#' \item{"pm25_over": PM2.5 from Channel A and Channel B in the same plot}
+#' \item{"pm25_a": PM2.5 from channel A only}
+#' \item{"pm25_b": PM2.5 from channel B only}
+#' \item{"pm25": PM2.5 from channels A and B in separate plots}
+#' \item{"pm25_over": PM2.5 from channels A and B in the same plot}
 #' \item{"aux": auxillary data (temperature, humidity)}
 #' } 
 #' 
@@ -221,7 +223,7 @@ pat_multiplot <- function(
     ) + 
     ggplot2::theme(
       plot.title = ggplot2::element_text(size = 12),
-      plot.subtitle = ggplot2::element_text(size = 8),
+      plot.subtitle = ggplot2::element_text(size = 8)
     )
   
   # Assemble multi_ggplot
@@ -229,6 +231,16 @@ pat_multiplot <- function(
     
     if ( is.null(columns) ) columns <- 1
     gg <- multi_ggplot(channelA, channelB, cols = columns)
+    
+  } else if ( plottype == "pm25_a" ) {
+    
+    columns <- 1
+    gg <- multi_ggplot(channelA, cols = columns)
+    
+  } else if ( plottype == "pm25_b" ) {
+    
+    columns <- 1
+    gg <- multi_ggplot(channelB, cols = columns)
     
   } else if ( plottype == "pm25_over" ) {
     

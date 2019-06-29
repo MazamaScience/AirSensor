@@ -4,7 +4,10 @@
 \alias{pwfsl_load}
 \title{Get PWFSLSmoke monitoring data}
 \usage{
-pwfsl_load()
+pwfsl_load(...)
+}
+\arguments{
+\item{...}{Arguments passed on to \code{PWFSLSmoke::monitor_load()}.}
 }
 \value{
 List with \code{meta} and \code{data} elements, a \emph{ws_monitor} 
@@ -18,11 +21,13 @@ consistency with other data loading functions in the \code{AirSensor}
 package. By default, this function loads data from all 50 states for the past 
 10 days. 
 
-This function is a wrapper around \code{PWFSLSmoke::monitor_loadLatest}.
+By default, this function is a wrapper around 
+\code{PWFSLSmoke::monitor_loadLatest}. But it can also be used as a wrapper
+around \code{PWFSLSmoke::monitor_load} by passing in arguments.
 
-Data for the most recent 45 days can be downloaded using 
-\code{PWFSLSmoke::monitor_loadDaily()}. See the \code{PWFSLSmoke package} for
-additional data loading functions.
+If you pass in arguments, \emph{e.g.} \code{starttime} and \code{endtime},
+\code{PWFSLSmoke::monitor_load()} will be invoked. Otherwise,
+\code{PWFSLSmoke::monitor_loadLatest()} will be invoked.
 }
 \examples{
 \dontrun{

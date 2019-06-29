@@ -1,6 +1,9 @@
 # AirSensor 0.3.4
 
+* Added `pat_monitorComparison()`.
 * Added `local_examples/bikesgv_story.Rmd`.
+* Improved error handling in `pas_filter()`.
+* Added `"pm25_a"` and `"pm25_b"` plot types to `pat_multiplot()`.
 
 # AirSensor 0.3.3
 
