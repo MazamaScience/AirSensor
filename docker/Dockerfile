@@ -1,4 +1,4 @@
-FROM mazamascience/pwfslsmoke:1.2.4
+FROM mazamascience/pwfslsmoke:1.2.9
 MAINTAINER "Jonathan Callahan" jonathan@mazamascience.com
 
 #######################################################################
@@ -13,7 +13,6 @@ RUN apt-get update \
   && install2.r --error -r "https://cran.rstudio.com" \
     dplyr \
     GGally \
-    optparse \
     seismicRoll
 
 ################################################################################
