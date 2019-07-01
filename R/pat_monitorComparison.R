@@ -1,7 +1,7 @@
 #' @export
 #' @importFrom rlang .data
 #' 
-#' @title Comparison of Purple Air and federal donitoring data
+#' @title Comparison of Purple Air and federal monitoring data
 #' 
 #' @param pat PurpleAir Timeseries \emph{pat} object.
 #' @param ylim Vector of (lo,hi) y-axis limits used as limits. 

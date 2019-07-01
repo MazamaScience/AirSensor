@@ -37,7 +37,7 @@ pat_internalFit <- function(
   alpha = 0.25,
   xylim = NULL
 ) {
-
+  
   # ----- Validate parameters --------------------------------------------------
   
   if ( !pat_isPat(pat) )
@@ -74,7 +74,7 @@ pat_internalFit <- function(
       label = c(paste0("Slope = ", round(slope, digits = 2)),
                 paste0("Intercept = ", round(intercept, digits = 1)),
                 paste0("R\U00B2 = ", round(r_squared, digits = 3))) )
-
+  
   # ----- Plot -----------------------------------------------------------------
   
   if ( showPlot ) { 
@@ -90,7 +90,7 @@ pat_internalFit <- function(
       ggplot2::geom_smooth(method = "lm", color = "gray80", alpha = 1.0) + 
       ggplot2::labs(title = "Channel A vs. Channel B", 
                     x = "Channel B PM 2.5 (\U00B5g/m3)", 
-                    y = "Channel A PM 2.5 (\U00B5g/m3)" ) + 
+                    y = "Channel A PM 2.5 (\U00B5g/m3)") + 
       ggplot2::theme_bw() + 
       ggplot2::xlim(xylim) +
       ggplot2::ylim(xylim) +
@@ -135,8 +135,8 @@ pat_internalFit <- function(
       ggplot2::xlab(year) + ggplot2::ylab("\u03bcg / m\u00b3") 
     
     
-    plot <- multi_ggplot(plotList = list(lm_plot, pm25_plot), 
-                         columns = 1 )
+    plot <- multi_ggplot(lm_plot, pm25_plot, 
+                         cols = 1, plotList = NULL)
     
     print(plot)
     
