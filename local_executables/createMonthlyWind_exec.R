@@ -1,18 +1,24 @@
+#!/usr/local/bin/Rscript
+
 # This Rscript will process archived wind data files into a single 'windData'
 # file containing hourly data for all sensors.
 #
 # Test this script from the command line with:
 #
-# $ Rscript ./createMonthlyWind_exec.R
+# ./createMonthlyWind_exec.R
 # 
+# Run it inside a docker continer with something like:
+#
+# docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/pwfslsmoke /app/createMonthlyWind_exec.R --outputDir=/app --logDir=/app
+#
 
-VERSION = "0.0.1" 
+# ---- . ---- . Jon's mild cleanup
+VERSION = "0.0.2" 
 
 suppressPackageStartupMessages({
   library(MazamaCoreUtils)
+  library(PWFSLSmoke)
 })
-
-AirSensor::initializeMazamaSpatialUtils()
 
 # ----- Get command line arguments ---------------------------------------------
 
@@ -22,8 +28,10 @@ if ( interactive() ) {
   opt <- list(
     outputDir = getwd(),
     logDir = getwd(),
-    datestamp = "",
-    timezone = "America/Los_Angeles"
+    spatialDataDir = "~/Data/Spatial",
+    datestamp = "20190701",
+    timezone = "America/Los_Angeles",
+    version = FALSE
   )  
   
 } else {
@@ -44,16 +52,16 @@ if ( interactive() ) {
       help="Output directory for generated .log file [default=\"%default\"]"
     ),
     
+    make_option(
+      c("-s","--spatialDataDir"), 
+      default="/home/mazama/data/Spatial", 
+      help="Directory containing spatial datasets used by MazamaSpatialUtils [default=\"%default\"]"
+    ),
+
     optparse::make_option(
       c("-d","--datestamp"), 
       default="", 
       help="Datestamp of the year & month as YYYYMM [default=current month]"
-    ),
-    
-    optparse::make_option(
-      c("-p","--period"), 
-      default="", 
-      help="Period previous days to retrive data as integer [default= 7 days]"
     ),
     
     optparse::make_option(
@@ -84,14 +92,6 @@ if ( opt$version ) {
   
 }
 
-# Print out version and quit
-if ( opt$version ) {
-  
-  cat(paste0("createMonthlyWind_exec.R ",VERSION,"\n"))
-  quit()
-  
-}
-
 # ----- Validate parameters ----------------------------------------------------
 
 if ( !dir.exists(opt$outputDir) ) 
@@ -99,6 +99,9 @@ if ( !dir.exists(opt$outputDir) )
 
 if ( !dir.exists(opt$logDir) ) 
   stop(paste0("logDir not found:  ",opt$logDir))
+
+if ( !dir.exists(opt$spatialDataDir) ) 
+  stop(paste0("spatialDataDir not found:  ",opt$spatialDataDir))
 
 # ----- Set up logging ---------------------------------------------------------
 
@@ -119,6 +122,11 @@ logger.setup(
 # Silence other warning messages
 options(warn=-1) # -1=ignore, 0=save/print, 1=print, 2=error
 
+# Set up MazamaSpatialUtils
+initializeMazamaSpatialUtils(opt$spatialDataDir)
+
+if ( interactive() ) logger.setLevel(TRACE)
+
 logger.info("Running createMonthlyWind_exec.R version %s",VERSION)
 sessionString <- paste(capture.output(sessionInfo()), collapse="\n")
 logger.debug("R session:\n\n%s\n", sessionString)
@@ -126,25 +134,13 @@ logger.debug("R session:\n\n%s\n", sessionString)
 # ----- Create Wind Data -------------------------------------------------------
 
 result <- try({
+
+  now <- lubridate::now(opt$timezone)
   
   # Default to the current month
-  if ( opt$datestamp == "" ) {
-    
-    now <- lubridate::now(opt$timezone)
-    opt$datestamp <- strftime(now, "%Y%m01")
-    
-  }
-  
-  if ( opt$period == "" ) {
-    
-    periodHours <- 7 * 24 
-    
-  } else {
-    
-    periodHours <- as.numeric(opt$period) * 24 
-    
-  }
-  
+  if ( opt$datestamp == "" )
+    opt$datestamp <- strftime(now, "%Y%m01", tz = opt$timezone)
+
   # Handle the case where the day is already specified
   datestamp <- 
     stringr::str_sub(paste0(opt$datestamp,"01"), 1, 8)
@@ -153,10 +149,16 @@ result <- try({
   
   # Get times
   starttime <- 
-    lubridate::ymd(datestamp, tz=opt$timezone) - 
-    lubridate::ddays(as.numeric(opt$period))
+    lubridate::ymd(datestamp, tz=opt$timezone)
   endtime <- 
     lubridate::ceiling_date(starttime + lubridate::ddays(20), unit="month")
+  
+  # Handle current month
+  if ( endtime > now ) 
+    endtime <- lubridate::floor_date(now, unit="hours")
+  
+  # Get hours
+  hourCount <- as.numeric(difftime(endtime, starttime, units = "hours"))
   
   # === Monitors needed ===
   # SCAH: Chabot
@@ -172,8 +174,8 @@ result <- try({
   # SCSG: Compton
   # SCSH: Riverside– Rubidoux
   # SCSJ: NA
-  # SCTV: Lake Elsinor – W. Flint Street
-  # SCUV: West LA – VA Hospital
+  # SCTV: Lake Elsinore – W. Flint Street
+  # SCUV: West Los Angeles – VA Hospital
   
   
   logger.info("Loading Wind data")
@@ -183,7 +185,7 @@ result <- try({
     PWFSLSmoke::airnow_createMonitorObjects(
       parameters = c("WS", "WD"), 
       startdate = starttime, 
-      hours = periodHours
+      hours = hourCount
     )
   
   airnow_WS <- airnow_monitorObjects$WS
@@ -192,7 +194,7 @@ result <- try({
   
   # SCAQMD Provided monitors 
   siteNames <-
-    c( "Chabot", 
+    c( #"Chabot", # Cannot find this one
        "Vallejo", 
        "Pasadena", 
        "Crestline - Lake Gregory",
@@ -201,12 +203,12 @@ result <- try({
        #"NA", 
        #"NA", 
        "South Long Beach", 
-       "mislabeled", 
+       #"mislabeled", 
        "Compton", 
        "Riverside - Rubidoux", 
        #"NA", 
-       "Lake Elsinor - W. Flint Street", 
-       "West LA - VA Hospital"
+       "Lake Elsinore - W. Flint Street", 
+       "West Los Angeles - VA Hospital"
     )
   
   # Gather monitorIDs using provided site names

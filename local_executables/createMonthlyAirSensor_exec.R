@@ -28,11 +28,13 @@ suppressPackageStartupMessages({
 if ( interactive() ) {
   
   # RStudio session
-  opt <- list(outputDir = getwd(),
-              logDir = getwd(),
-              datestamp = "",
-              timezone = "America/Los_Angeles",
-              pattern = "^SCNP_..$")  
+  opt <- list(
+    outputDir = getwd(),
+    logDir = getwd(),
+    datestamp = "",
+    timezone = "America/Los_Angeles",
+    pattern = "^SCNP_..$"
+  )  
   
 } else {
   
@@ -120,7 +122,7 @@ result <- try({
   # Default to the current month
   if ( opt$datestamp == "" ) {
     now <- lubridate::now(opt$timezone)
-    opt$datestamp <- strftime(now, "%Y%m01")
+    opt$datestamp <- strftime(now, "%Y%m01", tz = opt$timezone)
   }
   
   # Handle the case where the day is already specified
