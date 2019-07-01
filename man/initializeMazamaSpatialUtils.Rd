@@ -8,19 +8,18 @@ initializeMazamaSpatialUtils(spatialDataDir = "~/Data/Spatial",
   stateCodeDataset = "NaturalEarthAdm1", logLevel = WARN)
 }
 \arguments{
-\item{spatialDataDir}{directory where spatial datasets are created}
+\item{spatialDataDir}{Directory where spatial datasets are created.}
 
-\item{stateCodeDataset}{MazamaSpatialUtils dataset returning ISO 3166-2 
+\item{stateCodeDataset}{MazamaSpatialUtils dataset returning ISO 3166-2 .
 alpha-2 stateCodes}
 
-\item{logLevel}{logging level used}
+\item{logLevel}{Logging level used if logging has not already been 
+initialized.}
 }
 \description{
 Convenience function that wraps:
 
 \preformatted{
-  logger.setup()
-  logger.setLevel(WARN)
   data("SimpleCountriesEEZ", package = "MazamaSpatialUtils")
   data("SimpleTimezones", package = "MazamaSpatialUtils")
   MazamaSpatialUtils::setSpatialDataDir('~/Data/Spatial')

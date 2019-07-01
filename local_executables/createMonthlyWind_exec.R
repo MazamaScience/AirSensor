@@ -9,11 +9,11 @@
 # 
 # Run it inside a docker continer with something like:
 #
-# docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/pwfslsmoke /app/createMonthlyWind_exec.R --outputDir=/app --logDir=/app
+# docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/pwfslsmoke /app/createMonthlyWind_exec.R
 #
 
-# ---- . ---- . Jon's mild cleanup
-VERSION = "0.0.2" 
+# ---- . ---- .  AirSensor 0.3.5
+VERSION = "0.0.3" 
 
 suppressPackageStartupMessages({
   library(MazamaCoreUtils)
@@ -105,28 +105,20 @@ if ( !dir.exists(opt$spatialDataDir) )
 
 # ----- Set up logging ---------------------------------------------------------
 
-# Assign log file names
-traceLog <- file.path(opt$logDir, "createMonthlyWind_TRACE.log")
-debugLog <- file.path(opt$logDir, "createMonthlyWind_DEBUG.log")
-infoLog  <- file.path(opt$logDir, "createMonthlyWind_INFO.log")
-errorLog <- file.path(opt$logDir, "createMonthlyWind_ERROR.log")
-
-# Set up logging
 logger.setup(
-  traceLog = traceLog,
-  debugLog = debugLog, 
-  infoLog = infoLog, 
-  errorLog = errorLog
+  traceLog = file.path(opt$logDir, "createMonthlyWind_TRACE.log"),
+  debugLog = file.path(opt$logDir, "createMonthlyWind_DEBUG.log"), 
+  infoLog  = file.path(opt$logDir, "createMonthlyWind_INFO.log"), 
+  errorLog = file.path(opt$logDir, "createMonthlyWind_ERROR.log")
 )
+
+# For use at the very end
+errorLog <- file.path(opt$logDir, "createMonthlyWind_ERROR.log")
 
 # Silence other warning messages
 options(warn=-1) # -1=ignore, 0=save/print, 1=print, 2=error
 
-# Set up MazamaSpatialUtils
-initializeMazamaSpatialUtils(opt$spatialDataDir)
-
-if ( interactive() ) logger.setLevel(TRACE)
-
+# Start logging
 logger.info("Running createMonthlyWind_exec.R version %s",VERSION)
 sessionString <- paste(capture.output(sessionInfo()), collapse="\n")
 logger.debug("R session:\n\n%s\n", sessionString)
@@ -135,6 +127,10 @@ logger.debug("R session:\n\n%s\n", sessionString)
 
 result <- try({
 
+  # Set up MazamaSpatialUtils
+  MazamaSpatialUtils::setSpatialDataDir(opt$spatialDataDir)
+  MazamaSpatialUtils::loadSpatialData("NaturalEarthAdm1")
+  
   now <- lubridate::now(opt$timezone)
   
   # Default to the current month
@@ -229,7 +225,6 @@ result <- try({
       monitorIDs = monitorIDs
     )
   
-  
   # Guarantee consistency of classes among package
   class(WD) <- c("airsensor", "ws_monitor", "list")
   class(WS) <- c("airsensor", "ws_monitor", "list")
@@ -260,11 +255,7 @@ result <- try({
 # Handle errors
 if ( "try-error" %in% class(result) ) {
   
-  msg <- 
-    paste(
-      "Error creating monthly AirSensor wind data file: ", 
-      geterrmessage()
-    )
+  msg <- paste0("Error creating monthly Wind data file: ", geterrmessage())
   logger.fatal(msg)
   
 } else {

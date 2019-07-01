@@ -1,3 +1,11 @@
+# AirSensor 0.3.5
+
+* `initializeMazamaSpatialUtils()` now only sets up logging if it hasn't 
+already been set up.
+* Cleanup/refactoring of `local_executables` scripts.
+* Modified `pat_loadMonth()` to use the newer `pat_<label>_<monthstamp>.rda` 
+naming system.
+
 # AirSensor 0.3.4
 
 * Added `pat_monitorComparison()`.

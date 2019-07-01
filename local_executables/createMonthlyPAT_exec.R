@@ -8,11 +8,11 @@
 #
 # Run it inside a docker continer with something like:
 #
-# docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --outputDir=/app --logDir=/app --pattern=^SCNP_..$
+# docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --pattern=^SCNP_..$
 #
 
-#  --- . --- . label_monthstamp
-VERSION = "0.1.3"
+#  --- . --- .  AirSensor 0.3.5
+VERSION = "0.1.4"
 
 # The following packages are attached here so they show up in the sessionInfo
 suppressPackageStartupMessages({
@@ -94,17 +94,20 @@ if ( !dir.exists(opt$logDir) )
 
 # ----- Set up logging ---------------------------------------------------------
 
-# Assign log file names
-debugLog <- file.path(opt$logDir, "createMonthlyPAT_DEBUG.log")
-infoLog  <- file.path(opt$logDir, "createMonthlyPAT_INFO.log")
-errorLog <- file.path(opt$logDir, "createMonthlyPAT_ERROR.log")
+logger.setup(
+  traceLog = file.path(opt$logDir, "createMonthlyPAT_TRACE.log"),
+  debugLog = file.path(opt$logDir, "createMonthlyPAT_DEBUG.log"), 
+  infoLog = file.path(opt$logDir, "createMonthlyPAT_INFO.log"), 
+  errorLog = file.path(opt$logDir, "createMonthlyPAT_ERROR.log")
+)
 
-# Set up logging
-logger.setup(debugLog=debugLog, infoLog=infoLog, errorLog=errorLog)
+# For use at the very end
+errorLog <- file.path(opt$logDir, "createMonthlyPAT_ERROR.log")
 
 # Silence other warning messages
 options(warn=-1) # -1=ignore, 0=save/print, 1=print, 2=error
 
+# Start logging
 logger.info("Running createMonthlyPAT_exec.R version %s",VERSION)
 sessionString <- paste(capture.output(sessionInfo()), collapse="\n")
 logger.debug("R session:\n\n%s\n", sessionString)
@@ -155,14 +158,14 @@ result <- try({
       
       filename <- paste0("pat_", label, "_", monthstamp, ".rda")
       filepath <- file.path(opt$outputDir, filename)
-      logger.info("Writing 'pat' data to %s", filename)
+      logger.trace("Writing 'pat' data to %s", filename)
       save(list="pat", file=filepath)
       
       # TODO:  Remove "monthstamp_label" version when everyone is using an 
       # TODO:  updated version of pat_load().
       filename <- paste0("pat_", monthstamp, "_", label, ".rda")
       filepath <- file.path(opt$outputDir, filename)
-      logger.info("Writing 'pat' data to %s", filename)
+      logger.trace("Writing 'pat' data to %s", filename)
       save(list="pat", file=filepath)
       
     }, silent = TRUE)

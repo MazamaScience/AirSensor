@@ -57,7 +57,7 @@ pat_loadMonth <- function(
   
   # Load data from URL ---------------------------------------------------------
   
-  filename <- paste0("pat_", monthstamp, "_", label, ".rda")
+  filename <- paste0("pat_", label, "_", monthstamp, ".rda")
   filepath <- paste0(baseUrl, '/', yearstamp, '/', filename)
   # Define a 'connection' object so we can close it no matter what happens
   conn <- url(filepath)
@@ -71,10 +71,8 @@ pat_loadMonth <- function(
   # NOTE:  loading might fail.
   
   if ( "try-error" %in% class(result) ) {
-    # TODO:  Restore logging when we stop generating "futile.logger" errors
-    # TODO:  when logging has not been initialized.
-    # # Log the error if logging is enabled. Fail silently otherwise.
-    # try({ logger.error("%s", geterrmessage()) }, silent = TRUE)
+    # Log the error if logging is enabled. Fail silently otherwise.
+    try({ logger.error("%s", geterrmessage()) }, silent = TRUE)
     stop(paste0("Data file could not be loaded: ", filepath), call.=FALSE)
   }
   
