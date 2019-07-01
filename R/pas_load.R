@@ -59,12 +59,12 @@ pas_load <- function(
   # Load data from URL ---------------------------------------------------------
   
   result <- NULL
-  loaded <- FALSE
+  successful <- FALSE
   tries <- 0
   date <- lubridate::ymd(datestamp)
   
   # Keep looking back for a valid data file until all tries are used
-  while (!loaded & tries < retries) {
+  while (!successful && tries < retries) {
     datestamp <- strftime(date, "%Y%m%d")
     filename <- paste0("pas_", datestamp, ".rda")
     filepath <- paste0(baseUrl, '/', filename)
@@ -76,7 +76,7 @@ pas_load <- function(
     }, silent=TRUE )
     close(conn)
     
-    loaded <- !("try-error" %in% class(result))
+    successful <- !("try-error" %in% class(result))
     date <- date - lubridate::days(1)
     tries <- tries + 1
   }
@@ -95,5 +95,4 @@ pas_load <- function(
   }
   
   return(invisible(pas))
-  
 }
