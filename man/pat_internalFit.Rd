@@ -28,7 +28,7 @@ A linear model, fitting the `pat` B channel readings to A channel
 readings.
 }
 \description{
-Uses a liner model to fit data from channel B to data from 
+Uses a linear model to fit data from channel B to data from 
 channel A.
 
 A diagnostic plot is produced if `showPlot = TRUE`.

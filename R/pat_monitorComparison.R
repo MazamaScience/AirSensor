@@ -84,7 +84,7 @@ pat_monitorComparison <- function(
   if ( replaceOutliers )
     pat <- pat_outliers(pat, showPlot = FALSE, replace = TRUE)
   
-  # Get the houry aggregated data
+  # Get the hourly aggregated data
   paHourly_data <-
     pat %>% 
     pat_createAirSensor(period = "1 hour") %>%

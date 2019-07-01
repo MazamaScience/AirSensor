@@ -4,9 +4,10 @@
 #' @import dplyr
 #' @import graphics
 #' 
-#' @title Linear model fitting of channel A and B time series data
+#' @title Linear model fitting of PurpleAir and federal time series data
 #' 
 #' @param pat PurpleAir Timeseries \emph{pat} object.
+#' @param replaceOutliers Logical specifying whether or not to replace outliers.
 #' @param showPlot Logical specifying whether to generate a model fit plot.
 #' @param size Size of points.
 #' @param shape Symbol to use for points.
@@ -14,28 +15,41 @@
 #' @param alpha Opacity of points.
 #' @param xylim Vector of (lo,hi) limits used as limits on the correlation plot 
 #' axes -- useful for zooming in.
+#' @param period Time period to average to. Can be "sec", "min", "hour", 
+#' "day", "DSTday", "week", "month", "quarter" or "year". A number can also
+#' precede these options followed by a space (i.e. "2 day" or "37 min").
+#' @param channel Data channel to use for PM2.5 -- one of "a", "b or "ab".
+#' @param qc_algorithm Named QC algorithm to apply to hourly aggregation stats.
+#' @param min_count Aggregation bins with fewer than `min_count` measurements
+#' will be marked as `NA`.
 #' 
-#' @description Uses a linear model to fit data from channel B to data from 
-#' channel A.
+#' @description Uses a linear model to fit data from PurpleAir to data from 
+#' a federal monitor.
 #' 
 #' A diagnostic plot is produced if `showPlot = TRUE`.
 #' 
-#' @return A linear model, fitting the `pat` B channel readings to A channel 
+#' @return A linear model, fitting the `pat` pm25 readings to federal monitor 
 #' readings.
 #' 
 #' @examples
 #' \dontrun{
-#' pat_internalFit(pat = example_pat)
+#' pat <- pat_load("SCAH_07")
+#' pat_externalFit(pat)
 #' }
 
-pat_internalFit <- function(
+pat_externalFit <- function(
   pat = NULL,
+  replaceOutliers = TRUE,
   showPlot = TRUE,
   size = 1,
   shape = 15,
   color = "purple",
-  alpha = 0.25,
-  xylim = NULL
+  alpha = 0.6,
+  xylim = NULL,
+  period = "1 hour",
+  channel = "ab",
+  qc_algorithm = "hourly_AB_01",
+  min_count = 10
 ) {
   
   # ----- Validate parameters --------------------------------------------------
@@ -56,10 +70,37 @@ pat_internalFit <- function(
     xylim <- c(dataMin, dataMax)
   }
   
+  # ----- Assemble data ---------------------------------------------
+  
+  if ( replaceOutliers )
+    pat <- pat_outliers(pat, showPlot = FALSE, replace = TRUE)
+  
+  # Get the hourly aggregated data
+  paHourly_data <-
+    pat %>% 
+    pat_createAirSensor(period = "1 hour") %>%
+    PWFSLSmoke::monitor_extractData()
+  names(paHourly_data) <- c("datetime", "pa_pm25")
+  
+  tlim <- range(paHourly_data$datetime)
+  
+  # Get the PWFSL monitor data
+  monitorID = pat$meta$pwfsl_closestMonitorID
+  pwfsl_data <-
+    PWFSLSmoke::monitor_load(tlim[1], tlim[2], monitorIDs = monitorID) %>%
+    PWFSLSmoke::monitor_subset(tlim = tlim) %>%
+    PWFSLSmoke::monitor_extractData()
+  names(pwfsl_data) <- c("datetime", "pwfsl_pm25")
+  
+  # Create a tidy dataframe appropriate for ggplot
+  tidy_data <-
+    dplyr::full_join(paHourly_data, pwfsl_data, by = "datetime")
+  
   # ----- Linear model ---------------------------------------------------------
   
   # Model A as a function of B (data should lie on a line)
-  model <- lm(data$pm25_A ~ data$pm25_B, subset = NULL, weights = NULL)
+  model <- lm(tidy_data$pwfsl_pm25 ~ tidy_data$pa_pm25, subset = NULL, 
+              weights = NULL)
   
   slope <- as.numeric(model$coefficients[2])      # as.numeric() to remove name
   intercept <- as.numeric(model$coefficients[1])
@@ -79,70 +120,37 @@ pat_internalFit <- function(
   
   if ( showPlot ) { 
     
-    # LH Linear regression plot
-    lm_plot <- 
-      pat$data %>% 
-      ggplot2::ggplot(ggplot2::aes(x = .data$pm25_B, y = .data$pm25_A)) + 
-      ggplot2::geom_point(size = size, 
-                          shape = shape,
-                          color = color,
-                          alpha = alpha) + 
-      ggplot2::geom_smooth(method = "lm", color = "gray80", alpha = 1.0) + 
-      ggplot2::labs(title = "Channel A vs. Channel B", 
-                    x = "Channel B PM 2.5 (\U00B5g/m3)", 
-                    y = "Channel A PM 2.5 (\U00B5g/m3)") + 
-      ggplot2::theme_bw() + 
-      ggplot2::xlim(xylim) +
-      ggplot2::ylim(xylim) +
-      ggplot2::coord_fixed() +    # square aspect ratio
-      equationLabel
-    
-    # # RH pm25_over plot
-    # # TODO: Fix printing on ggmultiplot
-    # pm25_plot <- invisible(pat_multiplot(pat = pat, 
-    #                                      plottype = "pm25_over") )
-    
-    # Copied from pat_multiplot 
-    
-    # Labels
-    timezone <- pat$meta$timezone[1]
-    year <- strftime(pat$data$datetime[1], "%Y", tz=timezone)
-    
-    # TODO:  Do we need to do this to get local timezones?
-    # # Create a tibble
-    # tbl <- 
-    #   dplyr::tibble(datetime = lubridate::with_tz(pat$data$datetime, timezone),
-    #                 pm25_A = pat$data$pm25_A, 
-    #                 pm25_B = pat$data$pm25_B, 
-    #                 humidity = pat$data$humidity, 
-    #                 temp = pat$data$temperature)
-    
     pm25_plot <- 
-      pat$data %>% 
+      tidy_data %>% 
       ggplot2::ggplot() +
-      ggplot2::geom_point(ggplot2::aes(x = .data$datetime, y = .data$pm25_A),
+      ggplot2::geom_point(ggplot2::aes(x = .data$datetime, y = .data$pwfsl_pm25),
                           size = size,
                           shape = shape,
                           color = rgb(0.9, 0.25, 0.2), # pat_multiplot default
                           alpha = alpha) +
-      ggplot2::geom_point(ggplot2::aes(x = .data$datetime, y = .data$pm25_B),
+      ggplot2::geom_point(ggplot2::aes(x = .data$datetime, y = .data$pa_pm25),
                           size = size,
                           shape = shape,
                           color = rgb(0.2, 0.25, 0.9), # pat_multiplot default
                           alpha = alpha) +
       ggplot2::ylim(xylim) +
-      ggplot2::ggtitle(expression("Channel A/B PM"[2.5])) + 
-      ggplot2::xlab(year) + ggplot2::ylab("\u03bcg / m\u00b3") 
-    
-    
-    plot <- multi_ggplot(lm_plot, pm25_plot, 
-                         cols = 1, plotList = NULL)
-    
-    print(plot)
+      ggplot2::ggtitle(expression("Channel A/B PM"[2.5])) #+ 
+      #ggplot2::xlab(year) + ggplot2::ylab("\u03bcg / m\u00b3") 
+
+    print(pm25_plot)
     
   }
   
-  return(invisible(model))
+  return(model)
   
 }
+
+
+
+
+
+
+
+
+
 
