@@ -111,8 +111,10 @@ pat_monitorComparison <- function(
   # ----- Plot styling ---------------------------------------------------------
 
   if ( is.null(ylim) ) {
-    dataMin <- min(c(0, pat$data$pm25_A, pat$data$pm25_B), na.rm = TRUE)
-    dataMax <- max(c(pat$data$pm25_A, pat$data$pm25_B), na.rm = TRUE)
+    dataMin <- min(c(0, pat$data$pm25_A, pat$data$pm25_B, tidy_data$pm25), 
+                   na.rm = TRUE)
+    dataMax <- max(c(pat$data$pm25_A, pat$data$pm25_B, tidy_data$pm25), 
+                   na.rm = TRUE)
     ylim <- c(dataMin, dataMax)
   }
   

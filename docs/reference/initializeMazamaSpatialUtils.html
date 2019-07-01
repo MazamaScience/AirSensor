@@ -41,8 +41,6 @@
 
 <meta property="og:description" content="Convenience function that wraps:
 
-  logger.setup()
-  logger.setLevel(WARN)
   data(&quot;SimpleCountriesEEZ&quot;, package = &quot;MazamaSpatialUtils&quot;)
   data(&quot;SimpleTimezones&quot;, package = &quot;MazamaSpatialUtils&quot;)
   MazamaSpatialUtils::setSpatialDataDir('~/Data/Spatial')
@@ -86,7 +84,7 @@ MazamaCoreUtils package." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.5</span>
       </span>
     </div>
 
@@ -161,8 +159,6 @@ MazamaCoreUtils package." />
     
     <p>Convenience function that wraps:</p>
 <pre>
-  logger.setup()
-  logger.setLevel(WARN)
   data("SimpleCountriesEEZ", package = "MazamaSpatialUtils")
   data("SimpleTimezones", package = "MazamaSpatialUtils")
   MazamaSpatialUtils::setSpatialDataDir('~/Data/Spatial')
@@ -187,16 +183,17 @@ output log files specified as arguments to <code>logger.setup()</code> from the
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>spatialDataDir</th>
-      <td><p>directory where spatial datasets are created</p></td>
+      <td><p>Directory where spatial datasets are created.</p></td>
     </tr>
     <tr>
       <th>stateCodeDataset</th>
-      <td><p>MazamaSpatialUtils dataset returning ISO 3166-2 
+      <td><p>MazamaSpatialUtils dataset returning ISO 3166-2 .
 alpha-2 stateCodes</p></td>
     </tr>
     <tr>
       <th>logLevel</th>
-      <td><p>logging level used</p></td>
+      <td><p>Logging level used if logging has not already been 
+initialized.</p></td>
     </tr>
     </table>
     
