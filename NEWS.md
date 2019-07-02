@@ -1,3 +1,8 @@
+# AirSensor 0.3.5
+
+* Added `as_pollutionRose()`
+* Added `createMonthlyWind_exec()` 
+
 # AirSensor 0.3.4
 
 * Added `pat_monitorComparison()`.
