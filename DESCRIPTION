@@ -1,6 +1,6 @@
 Type: Package
 Package: AirSensor
-Version: 0.3.5
+Version: 0.3.6
 Title: Utilities to Process and Display PM2.5 data from Air Quality Sensors
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
@@ -31,6 +31,7 @@ Imports:
     MazamaSpatialUtils (>= 0.6.1),
     openair, 
     plyr,
+    purrr,
     PWFSLSmoke (>= 1.2.4),
     RColorBrewer,
     rlang,

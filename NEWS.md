@@ -1,3 +1,9 @@
+# AirSensor 0.3.6 
+
+* Added `wind_loadMonth()` to load pre-generated monthly wind data
+* Added `wind_load()` to load pre-generated wind data from timestamps
+* Updated `as_pollutionRose()` to accept new wind model
+
 # AirSensor 0.3.5
 
 * Added `as_pollutionRose()`
