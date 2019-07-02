@@ -1,7 +1,8 @@
 # AirSensor 0.3.5
 
 * Added `as_pollutionRose()`
-* Added `createMonthlyWind_exec()` 
+* Added `createMonthlyWind_exec()`
+* Includ `example_as` as an example "airsensor" object
 
 # AirSensor 0.3.4
 
