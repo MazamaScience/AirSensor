@@ -2,12 +2,13 @@
 % Please edit documentation in R/pat_externalFit.R
 \name{pat_externalFit}
 \alias{pat_externalFit}
-\title{Linear model fitting of PurpleAir and federal time series data}
+\title{Linear model fitting of PurpleAir and federal PWFSL time series data}
 \usage{
 pat_externalFit(pat = NULL, replaceOutliers = TRUE, showPlot = TRUE,
-  size = 1, shape = 15, color = "purple", alpha = 0.6,
+  size = 1, shape = 15, color = "purple", alpha = 0.5,
   xylim = NULL, period = "1 hour", channel = "ab",
-  qc_algorithm = "hourly_AB_01", min_count = 10)
+  qc_algorithm = "hourly_AB_01", min_count = 10, pa_color = rgb(0.9,
+  0.25, 0.2), pwfsl_color = rgb(0.2, 0.25, 0.9))
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}
@@ -37,20 +38,24 @@ precede these options followed by a space (i.e. "2 day" or "37 min").}
 
 \item{min_count}{Aggregation bins with fewer than `min_count` measurements
 will be marked as `NA`.}
+
+\item{pa_color}{Color of hourly points}
+
+\item{pwfsl_color}{Color of hourly points}
 }
 \value{
-A linear model, fitting the `pat` pm25 readings to federal monitor 
-readings.
+A linear model, fitting the `pat` PurpleAir readings to the closest
+PWFSL monitor readings.
 }
 \description{
-Uses a linear model to fit data from PurpleAir to data from 
-a federal monitor.
+Produces a linear model between data from PurpleAir and data 
+from the closest PWFSL monitor.
 
 A diagnostic plot is produced if `showPlot = TRUE`.
 }
 \examples{
 \dontrun{
-pat <- pat_load("SCAH_07")
+pat <- pat_load("SCAH_22")
 pat_externalFit(pat)
 }
 }
