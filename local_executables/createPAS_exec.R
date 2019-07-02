@@ -8,16 +8,15 @@
 #
 # Run it inside a docker continer with something like:
 #
-# docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/airsensor /app/createPAS_exec.R --outputDir=/app --logDir=/app 
+# docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/airsensor /app/createPAS_exec.R 
 #
 
-#  --- . --- . AirSensor 0.3.2
-VERSION = "0.1.1"
+#  --- . --- . AirSensor 0.3.5
+VERSION = "0.1.3"
 
 # The following packages are attached here so they show up in the sessionInfo
 suppressPackageStartupMessages({
   library(MazamaCoreUtils)
-  library(MazamaSpatialUtils)
   library(AirSensor)
 })
 
@@ -84,19 +83,20 @@ if ( !dir.exists(opt$spatialDataDir) )
 
 # ----- Set up logging ---------------------------------------------------------
 
-debugLog <- file.path(opt$logDir, "createPAS_DEBUG.log")
-infoLog  <- file.path(opt$logDir, "createPAS_INFO.log")
-errorLog <- file.path(opt$logDir, "createPAS_ERROR.log")
+logger.setup(
+  traceLog = file.path(opt$logDir, "createPAS_TRACE.log"),
+  debugLog = file.path(opt$logDir, "createPAS_DEBUG.log"), 
+  infoLog  = file.path(opt$logDir, "createPAS_INFO.log"), 
+  errorLog = file.path(opt$logDir, "createPAS_ERROR.log")
+)
 
-# Set up logging
-logger.setup(debugLog=debugLog, infoLog=infoLog, errorLog=errorLog)
+# For use at the very end
+errorLog <- file.path(opt$logDir, "createPAS_ERROR.log")
 
 # Silence other warning messages
 options(warn=-1) # -1=ignore, 0=save/print, 1=print, 2=error
 
-# Set up MazamaSpatialUtils
-initializeMazamaSpatialUtils(opt$spatialDataDir)
-
+# Start logging
 logger.info("Running createPAS_exec.R version %s",VERSION)
 sessionString <- paste(capture.output(sessionInfo()), collapse="\n")
 logger.debug("R session:\n\n%s\n", sessionString)
@@ -104,6 +104,9 @@ logger.debug("R session:\n\n%s\n", sessionString)
 # ------ Create PAS ------------------------------------------------------------
 
 result <- try({
+  
+  # Set up MazamaSpatialUtils
+  AirSensor::initializeMazamaSpatialUtils(opt$spatialDataDir)
   
   # Save it with the YYYYmmddHH stamp
   timestamp <- strftime(lubridate::now("UTC"), "%Y%m%d%H", tz="UTC")

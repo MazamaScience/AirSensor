@@ -2,7 +2,7 @@
 % Please edit documentation in R/pat_monitorComparison.R
 \name{pat_monitorComparison}
 \alias{pat_monitorComparison}
-\title{Comparison of Purple Air and federal donitoring data}
+\title{Comparison of Purple Air and federal monitoring data}
 \usage{
 pat_monitorComparison(pat = NULL, ylim = NULL,
   replaceOutliers = TRUE, a_size = 1, a_shape = 15,

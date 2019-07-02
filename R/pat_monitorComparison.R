@@ -1,7 +1,7 @@
 #' @export
 #' @importFrom rlang .data
 #' 
-#' @title Comparison of Purple Air and federal donitoring data
+#' @title Comparison of Purple Air and federal monitoring data
 #' 
 #' @param pat PurpleAir Timeseries \emph{pat} object.
 #' @param ylim Vector of (lo,hi) y-axis limits used as limits. 
@@ -84,7 +84,7 @@ pat_monitorComparison <- function(
   if ( replaceOutliers )
     pat <- pat_outliers(pat, showPlot = FALSE, replace = TRUE)
   
-  # Get the houry aggregated data
+  # Get the hourly aggregated data
   paHourly_data <-
     pat %>% 
     pat_createAirSensor(period = "1 hour") %>%
@@ -111,8 +111,10 @@ pat_monitorComparison <- function(
   # ----- Plot styling ---------------------------------------------------------
 
   if ( is.null(ylim) ) {
-    dataMin <- min(c(0, pat$data$pm25_A, pat$data$pm25_B), na.rm = TRUE)
-    dataMax <- max(c(pat$data$pm25_A, pat$data$pm25_B), na.rm = TRUE)
+    dataMin <- min(c(0, pat$data$pm25_A, pat$data$pm25_B, tidy_data$pm25), 
+                   na.rm = TRUE)
+    dataMax <- max(c(pat$data$pm25_A, pat$data$pm25_B, tidy_data$pm25), 
+                   na.rm = TRUE)
     ylim <- c(dataMin, dataMax)
   }
   

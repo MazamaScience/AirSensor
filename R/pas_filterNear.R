@@ -47,7 +47,7 @@ pas_filterNear <- function(
     stop("Required target coordinate(s) is missing") 
   
   if ( !stringr::str_ends(radius, "[ km]") )
-    stop("Raidus requires a unit and format (i.e '1 m' or '1 km')")
+    stop("Radius requires a unit and format (i.e '1 m' or '1 km')")
    
   r_split <- 
     stringr::str_split(

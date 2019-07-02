@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.5</span>
       </span>
     </div>
 
@@ -233,16 +233,16 @@ raw_data &lt;-<span class="st"> </span>
 <span class="co"># Look at a random sample of this new dataframe</span>
 dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(raw_data, <span class="dv">10</span>)</code></pre></div>
 <pre><code>##      datetime channel  pm25
-## 1  2019061102  pm25_A  5.54
-## 2  2019061123  pm25_A 15.00
-## 3  2019061121  pm25_A 15.44
-## 4  2019061118  pm25_A  7.18
-## 5  2019061108  pm25_B 10.43
-## 6  2019061104  pm25_B  4.55
-## 7  2019061100  pm25_B  6.67
-## 8  2019061104  pm25_A  5.85
-## 9  2019061111  pm25_B  7.68
-## 10 2019061117  pm25_B  5.79</code></pre>
+## 1  2019061117  pm25_A  6.26
+## 2  2019061109  pm25_B  8.15
+## 3  2019061108  pm25_A 13.10
+## 4  2019061123  pm25_B 13.97
+## 5  2019061103  pm25_A  5.18
+## 6  2019061110  pm25_A 13.15
+## 7  2019061103  pm25_B  3.76
+## 8  2019061114  pm25_A  7.91
+## 9  2019061114  pm25_B  7.31
+## 10 2019061114  pm25_B  7.01</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create a timeseries using boxplots</span>
 colors &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/rgb">rgb</a></span>(<span class="fl">0.9</span>, <span class="fl">0.25</span>, <span class="fl">0.2</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/rgb">rgb</a></span>(<span class="fl">0.2</span>, <span class="fl">0.25</span>, <span class="fl">0.9</span>))
 <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(raw_data, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(datetime, pm25, <span class="dt">color =</span> channel)) <span class="op">+</span><span class="st"> </span>
@@ -265,16 +265,16 @@ agg_data &lt;-<span class="st"> </span>
 <p><img src="purpleair_qc_files/figure-html/AB_boxplot-2.png" width="672"></p>
 <p>And here is the same for a day with serious problems:</p>
 <pre><code>##      datetime channel    pm25
-## 1  2019061214  pm25_A   19.84
-## 2  2019061210  pm25_A   18.38
-## 3  2019061208  pm25_B   16.11
-## 4  2019061212  pm25_A   16.20
-## 5  2019061223  pm25_B   17.01
-## 6  2019061206  pm25_A   66.42
-## 7  2019061208  pm25_A 3332.09
-## 8  2019061220  pm25_A   33.03
-## 9  2019061221  pm25_A 3331.37
-## 10 2019061219  pm25_B   11.51</code></pre>
+## 1  2019061213  pm25_A   19.70
+## 2  2019061218  pm25_B   11.11
+## 3  2019061215  pm25_A   12.21
+## 4  2019061222  pm25_A 3333.50
+## 5  2019061212  pm25_B   14.79
+## 6  2019061212  pm25_B   16.74
+## 7  2019061207  pm25_A 3330.56
+## 8  2019061216  pm25_B   10.06
+## 9  2019061217  pm25_A   11.73
+## 10 2019061219  pm25_A   12.70</code></pre>
 <p><img src="purpleair_qc_files/figure-html/AB_boxplot_2-1.png" width="672"><img src="purpleair_qc_files/figure-html/AB_boxplot_2-2.png" width="672"></p>
 <p>We can see that values of <code>pm25_t &gt; 100</code>, for example, only occur for hours where the A and B channels have hourly avergaes that are both highly precise (low std dev) and very different. We can thus use the <code>pm25_t</code> variable to flag those hours where the A and B channels disagree.</p>
 </div>

@@ -3,11 +3,15 @@
 #' 
 #' @title Initialize MazamaSpatialUtils package
 #' 
+#' @param spatialDataDir Directory where spatial datasets are created.
+#' @param stateCodeDataset MazamaSpatialUtils dataset returning ISO 3166-2 .
+#' alpha-2 stateCodes
+#' @param logLevel Logging level used if logging has not already been 
+#' initialized.
+#' 
 #' @description Convenience function that wraps:
 #' 
 #' \preformatted{
-#'   logger.setup()
-#'   logger.setLevel(WARN)
 #'   data("SimpleCountriesEEZ", package = "MazamaSpatialUtils")
 #'   data("SimpleTimezones", package = "MazamaSpatialUtils")
 #'   MazamaSpatialUtils::setSpatialDataDir('~/Data/Spatial')
@@ -23,11 +27,6 @@
 #' output log files specified as arguments to \code{logger.setup()} from the
 #' \pkg{MazamaCoreUtils} package.
 #' 
-#' @param spatialDataDir directory where spatial datasets are created
-#' @param stateCodeDataset MazamaSpatialUtils dataset returning ISO 3166-2 
-#' alpha-2 stateCodes
-#' 
-#' @param logLevel logging level used
 
 initializeMazamaSpatialUtils <- function(
   spatialDataDir = '~/Data/Spatial',
@@ -35,8 +34,15 @@ initializeMazamaSpatialUtils <- function(
   logLevel = WARN
 ) {
   
-  logger.setup()
-  logger.setLevel(logLevel)
+  # TODO:  When it becomes available, switch to using "logger.isInitialized()".
+  
+  # Set up logging if already set up
+  if ( ! 'futile.logger' %in% loadedNamespaces() ) {
+    MazamaCoreUtils::logger.setup()
+    MazamaCoreUtils::logger.setLevel(logLevel)
+  }
+  
+  # Load spatial data
   utils::data("SimpleCountriesEEZ", package = "MazamaSpatialUtils")
   utils::data("SimpleTimezones", package = "MazamaSpatialUtils")
   MazamaSpatialUtils::setSpatialDataDir(spatialDataDir)

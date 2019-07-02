@@ -53,7 +53,7 @@ PurpleAirQC_hourly_AB_01 <- function(
       which(.data$min_count < min_count), 
       NA) 
     ) %>%
-    # When the means are significantly differnt AND 'large', something is wrong.
+    # When the means are significantly different AND 'large', something is wrong.
     # Invalidate data where:  (p-value < 1e-4) & (mean_diff > 10)
     dplyr::mutate(pm25 = replace(
       .data$pm25,
