@@ -45,8 +45,12 @@
 #'
 #' @examples
 #' \dontrun{
-#' as_pollutionRose(example_as, windSpeed = WS, windDirection = WD, 
-#' returns = "plot", statistic = "prop.mean")
+#' sensor_pollutionRose(
+#'   example_as, 
+#'   windSpeed = WS, 
+#'   windDirection = WD, 
+#'   statistic = "prop.mean"
+#' )
 #' }
 #'
 
