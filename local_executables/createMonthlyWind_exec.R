@@ -156,6 +156,19 @@ result <- try({
   # Get hours
   hourCount <- as.numeric(difftime(endtime, starttime, units = "hours"))
   
+  logger.info('Downloading %d hours of AirNow data starting with %s', hourCount, startdate)
+  
+  # Load monitor objects
+  airnow_monitorObjects <- 
+    PWFSLSmoke::airnow_createMonitorObjects(
+      parameters = c("WS", "WD"), 
+      startdate = starttime, 
+      hours = hourCount
+    )
+  
+  airnow_WS <- airnow_monitorObjects$WS
+  airnow_WD <- airnow_monitorObjects$WD
+
   # === Monitors needed ===
   # SCAH: Chabot
   # SCAN: Vallejo
@@ -172,21 +185,6 @@ result <- try({
   # SCSJ: NA
   # SCTV: Lake Elsinore – W. Flint Street
   # SCUV: West Los Angeles – VA Hospital
-  
-  
-  logger.info("Loading Wind data")
-  
-  # Load monitor objects
-  airnow_monitorObjects <- 
-    PWFSLSmoke::airnow_createMonitorObjects(
-      parameters = c("WS", "WD"), 
-      startdate = starttime, 
-      hours = hourCount
-    )
-  
-  airnow_WS <- airnow_monitorObjects$WS
-  airnow_WD <- airnow_monitorObjects$WD
-  airnow_monitorIDs <- airnow_WD$meta$monitorID
   
   # SCAQMD Provided monitors 
   siteNames <-
@@ -208,21 +206,25 @@ result <- try({
     )
   
   # Gather monitorIDs using provided site names
-  monitorIDs <- 
-    airnow_monitorIDs[which(airnow_WD$meta$siteName %in% siteNames)]
+  monitorIDs_WD <- 
+    airnow_WD$meta$monitorID[which(airnow_WD$meta$siteName %in% siteNames)]
   
   # Wind Direction
   WD <- 
     PWFSLSmoke::monitor_subset(
       ws_monitor = airnow_WD, 
-      monitorIDs = monitorIDs
+      monitorIDs = monitorIDs_WD
     ) 
+  
+  # Gather monitorIDs using provided site names
+  monitorIDs_WS <- 
+    airnow_WS$meta$monitorID[which(airnow_WS$meta$siteName %in% siteNames)]
   
   # Wind Speed
   WS <- 
     PWFSLSmoke::monitor_subset(
       ws_monitor = airnow_WS, 
-      monitorIDs = monitorIDs
+      monitorIDs = monitorIDs_WS
     )
   
   # Guarantee consistency of classes among package

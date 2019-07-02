@@ -145,7 +145,6 @@ result <- try({
   
   airnow_WS <- airnow_monitorObjects$WS
   airnow_WD <- airnow_monitorObjects$WD
-  airnow_monitorIDs <- airnow_WD$meta$monitorID
   
   # === Monitors needed ===
   # SCAH: Chabot
@@ -183,22 +182,27 @@ result <- try({
        "West Los Angeles - VA Hospital"
     )
   
+  
   # Gather monitorIDs using provided site names
-  monitorIDs <- 
-    airnow_monitorIDs[which(airnow_WD$meta$siteName %in% siteNames)]
+  monitorIDs_WD <- 
+    airnow_WD$meta$monitorID[which(airnow_WD$meta$siteName %in% siteNames)]
   
   # Wind Direction
   WD <- 
     PWFSLSmoke::monitor_subset(
       ws_monitor = airnow_WD, 
-      monitorIDs = monitorIDs
+      monitorIDs = monitorIDs_WD
     ) 
+  
+  # Gather monitorIDs using provided site names
+  monitorIDs_WS <- 
+    airnow_WS$meta$monitorID[which(airnow_WS$meta$siteName %in% siteNames)]
   
   # Wind Speed
   WS <- 
     PWFSLSmoke::monitor_subset(
       ws_monitor = airnow_WS, 
-      monitorIDs = monitorIDs
+      monitorIDs = monitorIDs_WS
     )
   
   # Guarantee consistency of classes among package
