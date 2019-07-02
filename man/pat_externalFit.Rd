@@ -5,10 +5,10 @@
 \title{Linear model fitting of PurpleAir and federal PWFSL time series data}
 \usage{
 pat_externalFit(pat = NULL, replaceOutliers = TRUE, showPlot = TRUE,
-  size = 1, shape = 15, color = "purple", alpha = 0.5,
-  xylim = NULL, period = "1 hour", channel = "ab",
-  qc_algorithm = "hourly_AB_01", min_count = 10, pa_color = rgb(0.9,
-  0.25, 0.2), pwfsl_color = rgb(0.2, 0.25, 0.9))
+  size = 1, lm_shape = 15, ts_shape = 1, color = "purple",
+  alpha = 0.5, xylim = NULL, channel = "ab",
+  qc_algorithm = "hourly_AB_01", min_count = 10, pa_color = "purple",
+  pwfsl_color = "black")
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}
@@ -19,7 +19,9 @@ pat_externalFit(pat = NULL, replaceOutliers = TRUE, showPlot = TRUE,
 
 \item{size}{Size of points.}
 
-\item{shape}{Symbol to use for points.}
+\item{lm_shape}{Symbol to use for linear model points.}
+
+\item{ts_shape}{Symbol to use for time series plot points.}
 
 \item{color}{Color of points.}
 
@@ -27,10 +29,6 @@ pat_externalFit(pat = NULL, replaceOutliers = TRUE, showPlot = TRUE,
 
 \item{xylim}{Vector of (lo,hi) limits used as limits on the correlation plot 
 axes -- useful for zooming in.}
-
-\item{period}{Time period to average to. Can be "sec", "min", "hour", 
-"day", "DSTday", "week", "month", "quarter" or "year". A number can also
-precede these options followed by a space (i.e. "2 day" or "37 min").}
 
 \item{channel}{Data channel to use for PM2.5 -- one of "a", "b or "ab".}
 

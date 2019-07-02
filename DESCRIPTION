@@ -23,6 +23,7 @@ Imports:
     GGally,
     ggmap,
     ggplot2,
+    gridExtra,
     httr,
     jsonlite,
     leaflet,
