@@ -2,12 +2,13 @@
 % Please edit documentation in R/pat_externalFit.R
 \name{pat_externalFit}
 \alias{pat_externalFit}
-\title{Linear model fitting of PurpleAir and federal time series data}
+\title{Linear model fitting of PurpleAir and federal PWFSL time series data}
 \usage{
 pat_externalFit(pat = NULL, replaceOutliers = TRUE, showPlot = TRUE,
-  size = 1, shape = 15, color = "purple", alpha = 0.6,
-  xylim = NULL, period = "1 hour", channel = "ab",
-  qc_algorithm = "hourly_AB_01", min_count = 10)
+  size = 1, lm_shape = 15, ts_shape = 1, color = "purple",
+  alpha = 0.5, xylim = NULL, channel = "ab",
+  qc_algorithm = "hourly_AB_01", min_count = 10, pa_color = "purple",
+  pwfsl_color = "black")
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}
@@ -18,7 +19,9 @@ pat_externalFit(pat = NULL, replaceOutliers = TRUE, showPlot = TRUE,
 
 \item{size}{Size of points.}
 
-\item{shape}{Symbol to use for points.}
+\item{lm_shape}{Symbol to use for linear model points.}
+
+\item{ts_shape}{Symbol to use for time series plot points.}
 
 \item{color}{Color of points.}
 
@@ -27,30 +30,30 @@ pat_externalFit(pat = NULL, replaceOutliers = TRUE, showPlot = TRUE,
 \item{xylim}{Vector of (lo,hi) limits used as limits on the correlation plot 
 axes -- useful for zooming in.}
 
-\item{period}{Time period to average to. Can be "sec", "min", "hour", 
-"day", "DSTday", "week", "month", "quarter" or "year". A number can also
-precede these options followed by a space (i.e. "2 day" or "37 min").}
-
 \item{channel}{Data channel to use for PM2.5 -- one of "a", "b or "ab".}
 
 \item{qc_algorithm}{Named QC algorithm to apply to hourly aggregation stats.}
 
 \item{min_count}{Aggregation bins with fewer than `min_count` measurements
 will be marked as `NA`.}
+
+\item{pa_color}{Color of hourly points}
+
+\item{pwfsl_color}{Color of hourly points}
 }
 \value{
-A linear model, fitting the `pat` pm25 readings to federal monitor 
-readings.
+A linear model, fitting the `pat` PurpleAir readings to the closest
+PWFSL monitor readings.
 }
 \description{
-Uses a linear model to fit data from PurpleAir to data from 
-a federal monitor.
+Produces a linear model between data from PurpleAir and data 
+from the closest PWFSL monitor.
 
 A diagnostic plot is produced if `showPlot = TRUE`.
 }
 \examples{
 \dontrun{
-pat <- pat_load("SCAH_07")
+pat <- pat_load("SCAH_22")
 pat_externalFit(pat)
 }
 }

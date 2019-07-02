@@ -134,7 +134,7 @@ par(las = 1)
 plot(x, hum_fitted_pm25a, 
      pch = 15, cex = 0.9, col=adjustcolor("black", 0.2),
      main = "Scaling PM2.5_A to Humidity",
-     xlab = "2019", ylab = "Humidity (%)")
+     xlab = "2019", ylab = "Humidity (RH)")
 lines(x, y, lwd = 4, col=adjustcolor("cornflowerblue", 0.7))
 legend(x = "bottomright", legend = c("Humidity", "Fitted ChA"), 
        col = c("cornflowerblue", "black"), bg = adjustcolor("lightgray", 0.3), 
