@@ -1,7 +1,7 @@
 #' @export
 #' @title Pollution rose plot
 #' @param sensor an 'airsensor' object
-#' @param windData a dataframe containing columns "date", "WS", and "WD".
+#' @param windData a dataframe containing columns "date", "ws", and "wd".
 #' @param statistic The statistic to be applied to each data bin in the plot. 
 #' Options currently include “prop.count”, “prop.mean” and “abs.count”. 
 #' The default “prop.count” sizes bins according to the proportion of the 
@@ -41,7 +41,8 @@
 #' @description Plots a traditional wind rose plot for wind direction and PM2.5.
 #'
 #' @return a plot or a dataframe
-#' @seealso openair::pollutionRose
+#' @seealso 
+#' \link{http://davidcarslaw.github.io/openair/reference/windRose.html}
 #'
 #' @examples
 #' \dontrun{
