@@ -6,7 +6,10 @@
 #' @param days Number of days of data to include.
 #' @param timezone Timezone used to interpret datestamp.
 #' @param baseUrl Base URL for synoptic data.
-#'
+#' 
+#' @description Load pre-generated wind data for the given interval. Archived 
+#' data for SCAQMD sensors go back to January, 2018. 
+#' 
 #' @return a data frame
 #' @export
 #'
