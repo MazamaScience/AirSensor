@@ -14,6 +14,13 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' wind_load(
+#'   monitorID = "060950004_01",
+#'   startdate = "20180521", 
+#'   enddate = "20180627"
+#' ) 
+#' }
 #' 
 
 wind_load <-
