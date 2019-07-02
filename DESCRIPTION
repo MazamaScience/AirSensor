@@ -14,7 +14,7 @@ Author: Jonathan Callahan [aut, cre],
     Helen Miller [aut]
 Maintainer: Jonathan Callahan <jonathan.s.callahan@gmail.com>
 Depends:
-    R (>= 3.1.0)
+    R (>= 3.5.0)
 Imports:
     countrycode,
     dplyr (>= 0.8.1),
