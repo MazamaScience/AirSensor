@@ -2,7 +2,8 @@
 
 * Added `wind_loadMonth()` to load pre-generated monthly wind data
 * Added `wind_load()` to load pre-generated wind data from timestamps
-* Updated `as_pollutionRose()` to accept new wind model
+* Updated `sensor_pollutionRose()` to accept new wind model
+* Added `sensor_polarPlot()` to plot bivariate polar plots
 
 # AirSensor 0.3.5
 
