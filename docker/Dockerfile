@@ -1,4 +1,4 @@
-FROM mazamascience/pwfslsmoke:1.2.4
+FROM mazamascience/pwfslsmoke:1.2.9
 MAINTAINER "Jonathan Callahan" jonathan@mazamascience.com
 
 #######################################################################
@@ -13,7 +13,6 @@ RUN apt-get update \
   && install2.r --error -r "https://cran.rstudio.com" \
     dplyr \
     GGally \
-    optparse \
     seismicRoll
 
 ################################################################################
@@ -29,7 +28,7 @@ RUN wget -nv http://mazamascience.com/RData/Spatial/CA_AirBasins_01.RData \
 
 WORKDIR /
 
-COPY AirSensor_0.3.3.tar.gz /
+COPY AirSensor_0.3.5.tar.gz /
 
-RUN R CMD INSTALL AirSensor_0.3.3.tar.gz
+RUN R CMD INSTALL AirSensor_0.3.5.tar.gz
 

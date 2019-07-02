@@ -12,8 +12,8 @@
 # docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --pattern=^SCNP_..$
 #
 
-#  --- . --- . harmonization
-VERSION = "0.3.2" 
+#  --- . --- .  AirSensor 0.3.5
+VERSION = "0.3.3" 
 
 library(optparse)      # to parse command line flags
 
@@ -28,11 +28,13 @@ suppressPackageStartupMessages({
 if ( interactive() ) {
   
   # RStudio session
-  opt <- list(outputDir = getwd(),
-              logDir = getwd(),
-              datestamp = "",
-              timezone = "America/Los_Angeles",
-              pattern = "^SCNP_..$")  
+  opt <- list(
+    outputDir = getwd(),
+    logDir = getwd(),
+    datestamp = "",
+    timezone = "America/Los_Angeles",
+    pattern = "^SCNP_..$"
+  )  
   
 } else {
   
@@ -94,21 +96,20 @@ if ( !dir.exists(opt$logDir) )
 
 # ----- Set up logging ---------------------------------------------------------
 
-# Assign log file names
-traceLog <- file.path(opt$logDir, "createMonthlyAirSensor_TRACE.log")
-debugLog <- file.path(opt$logDir, "createMonthlyAirSensor_DEBUG.log")
-infoLog  <- file.path(opt$logDir, "createMonthlyAirSensor_INFO.log")
-errorLog <- file.path(opt$logDir, "createMonthlyAirSensor_ERROR.log")
+logger.setup(
+  traceLog = file.path(opt$logDir, "createMonthlyAirSensor_TRACE.log"),
+  debugLog = file.path(opt$logDir, "createMonthlyAirSensor_DEBUG.log"), 
+  infoLog = file.path(opt$logDir, "createMonthlyAirSensor_INFO.log"), 
+  errorLog = file.path(opt$logDir, "createMonthlyAirSensor_ERROR.log")
+)
 
-# Set up logging
-logger.setup(traceLog = traceLog,
-             debugLog = debugLog, 
-             infoLog = infoLog, 
-             errorLog = errorLog)
+# For use at the very end
+errorLog <- file.path(opt$logDir, "createMonthlyAirSensor_ERROR.log")
 
 # Silence other warning messages
 options(warn=-1) # -1=ignore, 0=save/print, 1=print, 2=error
 
+# Start logging
 logger.info("Running createMonthlyAirSensor_exec.R version %s",VERSION)
 sessionString <- paste(capture.output(sessionInfo()), collapse="\n")
 logger.debug("R session:\n\n%s\n", sessionString)
@@ -120,7 +121,7 @@ result <- try({
   # Default to the current month
   if ( opt$datestamp == "" ) {
     now <- lubridate::now(opt$timezone)
-    opt$datestamp <- strftime(now, "%Y%m01")
+    opt$datestamp <- strftime(now, "%Y%m01", tz = opt$timezone)
   }
   
   # Handle the case where the day is already specified

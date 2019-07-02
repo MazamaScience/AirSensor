@@ -37,65 +37,64 @@
 #' pat_multiplot(pat)
 #' }
 
-pat_load <- 
-  function(
-    label = NULL, 
-    startdate = NULL, 
-    enddate = NULL, 
-    days = 7, 
-    timezone = "America/Los_Angeles",
-    baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/pat"
-    ) {
-    
-    logger.debug("----- pat_load() -----")
-    
-    # Validate parameters ------------------------------------------------------
-    
-    if ( is.null(label) ) 
-      stop("Required parameter 'label' is missing.")
-    
-    dateRange <- .dateRange(startdate, enddate, days, timezone)
-    
-    # Asssemble monthly archive files ------------------------------------------
-    
-    datestamps <-
-      sort(
-        unique(
-          strftime(
-            seq(
-              dateRange[1],
-              dateRange[2],
-              by = "days"
-            ), 
-            format = "%Y%m"
-          )
+pat_load <- function(
+  label = NULL, 
+  startdate = NULL, 
+  enddate = NULL, 
+  days = 7, 
+  timezone = "America/Los_Angeles",
+  baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/pat"
+) {
+  
+  logger.debug("----- pat_load() -----")
+  
+  # Validate parameters --------------------------------------------------------
+  
+  if ( is.null(label) ) 
+    stop("Required parameter 'label' is missing.")
+  
+  dateRange <- .dateRange(startdate, enddate, days, timezone)
+  
+  # Asssemble monthly archive files --------------------------------------------
+  
+  datestamps <-
+    sort(
+      unique(
+        strftime(
+          seq(
+            dateRange[1],
+            dateRange[2],
+            by = "days"
+          ), 
+          format = "%Y%m"
         )
       )
+    )
+  
+  patList <- list()
+  
+  for ( datestamp in datestamps ) { 
     
-    patList <- list()
-    
-    for ( datestamp in datestamps ) { 
-      
-      patList[[datestamp]] <- 
-        pat_loadMonth(
-          label = label, 
-          datestamp = datestamp, 
-          timezone = timezone,
-          baseUrl = baseUrl
-        )
-      
-    } 
-    
-    # Return -------------------------------------------------------------------
-    
-    patObj <- 
-      pat_filterDate(
-        pat = pat_join(patList),
-        startdate = dateRange[1], 
-        enddate = dateRange[2]
+    patList[[datestamp]] <- 
+      pat_loadMonth(
+        label = label, 
+        datestamp = datestamp, 
+        timezone = timezone,
+        baseUrl = baseUrl
       )
-
-    return(patObj)
     
-  }
+  } 
+  
+  # Return ---------------------------------------------------------------------
+  
+  patObj <- 
+    pat_filterDate(
+      pat = pat_join(patList),
+      startdate = dateRange[1], 
+      enddate = dateRange[2]
+    )
+  
+  return(patObj)
+  
+}
 
