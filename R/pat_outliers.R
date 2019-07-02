@@ -51,7 +51,9 @@
 #' 
 #' @examples
 #' \dontrun{
-#' outlierPlot <- example_pat %>% pat_outliers(replace = TRUE, showPlot = TRUE)
+#' example_pat %>%
+#'   pat_filterDate(20180801, 20180815) %>%
+#'   pat_outliers(replace = TRUE, showPlot = TRUE)
 #' }
 
 pat_outliers <- function(

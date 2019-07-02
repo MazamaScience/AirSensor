@@ -1,8 +1,15 @@
+# AirSensor 0.3.6
+
+* Fixed `airsensor_load()` so that it includes monitors found in _any_ month
+rather that those found in _every_ month.
+* Fixed `createPATimeseriesObject()` and `pat_createAirSensor()` so that they 
+no longer generate `NaN` or `Inf` values.
+
 # AirSensor 0.3.5
 
 * Added `as_pollutionRose()`
 * Added `createMonthlyWind_exec()`
-* Includ `example_as` as an example "airsensor" object
+* Include `example_as` as an example "airsensor" object
 * `initializeMazamaSpatialUtils()` now only sets up logging if it hasn't 
 already been set up.
 * Cleanup/refactoring of `local_executables` scripts.

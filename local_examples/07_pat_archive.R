@@ -11,20 +11,16 @@ scnp_labels <-
   dplyr::filter(stringr::str_detect(label, "^[Ss][Cc][Nn][Pp]_..$")) %>%
   pull(label)
   
-# Load a list of PAT objects
+# Load a list of "PAT"pat" objects
 patList <- 
   purrr::map(scnp_labels, pat_loadMonth, "201901")
 
-# Create a list of AST objects
-astList <-
+# Create a list of "airsensor" objects
+airsensorList <- 
   purrr::map(patList, pat_createAirSensor)
 
-# Create a list of AS objects
-asList <- 
-  purrr::map(astList, ast_createAirSensor, "pm25_A_mean")
-
 # Now we can use PWFSLSmoke functions
-scnp <- monitor_combine(asList)
+scnp <- monitor_combine(airsensorList)
 
 layout(matrix(seq(length(scnp_labels))))
 for ( monitorID in scnp$meta$monitorID ) {
@@ -37,8 +33,7 @@ scnp <-
   dplyr::filter(stringr::str_detect(label, "^[Ss][Cc][Nn][Pp]_..$")) %>%
   pull(label) %>%
   purrr::map(pat_loadMonth, "201901") %>%
-  purrr::map(pat_createASTimeseries, "1 hour") %>%
-  purrr::map(ast_createAirSensor, "pm25_A_mean") %>%
+  purrr::map(pat_createAirSensor) %>%
   monitor_combine()
 
 # Working with not-on-CRAN AirMonitorPlots

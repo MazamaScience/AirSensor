@@ -87,12 +87,31 @@ airsensor_load <-
     for ( i in seq_along(airsensorList) ) {
       
       if ( i == 1 ) {
+        
         airsensor <- airsensorList[[i]]
+        
       } else {
-        airsensor <- PWFSLSmoke::monitor_join(airsensor, airsensorList[[i]])
+        
+        # Be sure to retain all monitorIDs
+        monitorIDs <- 
+          union(airsensor$meta$monitord, airsensorList[[i]]$meta$monitorID)
+        
+        airsensor <- 
+          PWFSLSmoke::monitor_join(airsensor, airsensorList[[i]],
+                                   monitorIDs = monitorIDs)
+        
       }
       
     }
+    
+    # Cleanup any NaN or Inf that might have snuck in
+    data <-
+      airsensor$data %>%
+      dplyr::mutate_all( function(x) replace(x, which(is.nan(x)), NA) ) %>%
+      dplyr::mutate_all( function(x) replace(x, which(is.infinite(x)), NA) )
+    
+    airsensor$data <- data
+    
 
     # Return -------------------------------------------------------------------
     

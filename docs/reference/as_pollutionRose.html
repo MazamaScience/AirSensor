@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Find PurpleAir sensors within radial distance — pas_filterNear • AirSensor</title>
+<title>Pollution rose plot — as_pollutionRose • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,10 +37,9 @@
 
 
 
-<meta property="og:title" content="Find PurpleAir sensors within radial distance — pas_filterNear" />
+<meta property="og:title" content="Pollution rose plot — as_pollutionRose" />
 
-<meta property="og:description" content="Filter for Purple Air sensors within a specified distance from 
-specified target coordinates." />
+<meta property="og:description" content="Plots a traditional wind rose plot for wind direction and PM2.5." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -137,64 +136,125 @@ specified target coordinates." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Find PurpleAir sensors within radial distance</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pas_filterNear.R'><code>R/pas_filterNear.R</code></a></small>
-    <div class="hidden name"><code>pas_filterNear.Rd</code></div>
+    <h1>Pollution rose plot</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/as_pollutionRose.R'><code>R/as_pollutionRose.R</code></a></small>
+    <div class="hidden name"><code>as_pollutionRose.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Filter for Purple Air sensors within a specified distance from 
-specified target coordinates.</p>
+    <p>Plots a traditional wind rose plot for wind direction and PM2.5.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pas_filterNear</span>(<span class='no'>pas</span>, <span class='kw'>latitude</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>longitude</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>radius</span> <span class='kw'>=</span> <span class='st'>"1 km"</span>)</pre>
+    <pre class="usage"><span class='fu'>as_pollutionRose</span>(<span class='no'>as</span>, <span class='kw'>monitorID</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>windSpeed</span>, <span class='no'>windDirection</span>,
+  <span class='kw'>statistic</span> <span class='kw'>=</span> <span class='st'>"prop.count"</span>, <span class='kw'>key</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>keyPosition</span> <span class='kw'>=</span> <span class='st'>"right"</span>,
+  <span class='kw'>annotate</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>angle</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>angleScale</span> <span class='kw'>=</span> <span class='fl'>315</span>, <span class='kw'>gridLine</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='fl'>6</span>, <span class='kw'>paddle</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>seg</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>normalize</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pas</th>
-      <td><p>PurpleAir <em>pas</em> object.</p></td>
+      <th>as</th>
+      <td><p>an 'airsensor' object</p></td>
     </tr>
     <tr>
-      <th>latitude</th>
-      <td><p>a Target latitude.</p></td>
+      <th>monitorID</th>
+      <td><p>an optional monitor ID</p></td>
     </tr>
     <tr>
-      <th>longitude</th>
-      <td><p>a Target longitude.</p></td>
+      <th>windSpeed</th>
+      <td><p>a wind speed data frame</p></td>
     </tr>
     <tr>
-      <th>radius</th>
-      <td><p>Distance from target with unit (i.e "15 km").</p></td>
+      <th>windDirection</th>
+      <td><p>a wind direction data frame</p></td>
+    </tr>
+    <tr>
+      <th>statistic</th>
+      <td><p>The statistic to be applied to each data bin in the plot. 
+Options currently include “prop.count”, “prop.mean” and “abs.count”. 
+The default “prop.count” sizes bins according to the proportion of the 
+frequency of measurements. Similarly, “prop.mean” sizes bins according to 
+their relative contribution to the mean. “abs.count” provides the absolute 
+count of measurements in each bin.</p></td>
+    </tr>
+    <tr>
+      <th>key</th>
+      <td><p>control of the scale key via drawOpenKey. See drawOpenKey for 
+further details.</p></td>
+    </tr>
+    <tr>
+      <th>keyPosition</th>
+      <td><p>location where the scale key is to plotted. Allowed 
+arguments currently include “top”, “right”, “bottom” and “left”.</p></td>
+    </tr>
+    <tr>
+      <th>annotate</th>
+      <td><p>If TRUE then the percentage calm and mean values are printed 
+in each panel together with a description of the statistic below the plot. 
+If " " then only the stastic is below the plot. Custom annotations may be 
+added by setting value to c("annotation 1", "annotation 2").</p></td>
+    </tr>
+    <tr>
+      <th>angle</th>
+      <td><p>default angle of “spokes” is 30. Other potentially useful angles
+are 45 and 10. Note: the width of the wind speed interval may need adjusting
+using width.</p></td>
+    </tr>
+    <tr>
+      <th>angleScale</th>
+      <td><p>The wind speed scale is by default shown at a 315 degree 
+angle. Sometimes the placement of the scale may interfere with an interesting
+feature. The user can therefore set angle.scale to another value (between 0 
+and 360 degrees) to mitigate such problems. For example angleScale = 45 will
+draw the scale heading in a NE direction.</p></td>
+    </tr>
+    <tr>
+      <th>gridLine</th>
+      <td><p>Grid line interval to use. If NULL, as in default, this is 
+assigned by based on the available data range. However, it can also 
+be forced to a specific value, e.g. gridLine = 10. grid.line can also be a 
+list to control the interval, line type and colour. For example 
+gridLine = list(value = 10, lty = 5, col = "purple").</p></td>
+    </tr>
+    <tr>
+      <th>breaks</th>
+      <td><p>the number of break points for wind speed in pollutant</p></td>
+    </tr>
+    <tr>
+      <th>paddle</th>
+      <td><p>Either TRUE (default) or FALSE. If TRUE plots rose using 
+‘paddle’ style spokes. If FALSE plots rose using ‘wedge’ style spokes.</p></td>
+    </tr>
+    <tr>
+      <th>seg</th>
+      <td><p>determines with width of the segments. For example, seg = 0.5 will
+produce segments 0.5 * angle.</p></td>
+    </tr>
+    <tr>
+      <th>normalize</th>
+      <td><p>if TRUE each wind direction segment is normalized to equal 
+one. This is useful for showing how the concentrations (or other parameters) 
+contribute to each wind sector when the proprtion of time the wind is from 
+that direction is low. A line showing the probability that the wind</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A subset of the given <em>pas</em> object.</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p><code>radius</code> Should be a numeric string with provided metric unit 
-separated by a space, such as <code>"250 m"</code>.</p>
+    <p>a plot or a dataframe</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='pas_filter.html'>pas_filter</a></p>
-<p><a href='pas_filterArea.html'>pas_filterArea</a></p></div>
+    <div class='dont-index'><p>openair::pollutionRose</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>pas_filterNear</span>(
-    <span class='kw'>pas</span> <span class='kw'>=</span> <span class='no'>example_pas</span>,
-    <span class='kw'>latitude</span> <span class='kw'>=</span> <span class='fl'>47.61702</span>,
-    <span class='kw'>longitude</span> <span class='kw'>=</span> -<span class='fl'>122.34376</span>
-    )
+<span class='fu'>as_pollutionRose</span>(<span class='no'>example_as</span>, <span class='kw'>windSpeed</span> <span class='kw'>=</span> <span class='no'>WS</span>, <span class='kw'>windDirection</span> <span class='kw'>=</span> <span class='no'>WD</span>,
+<span class='kw'>returns</span> <span class='kw'>=</span> <span class='st'>"plot"</span>, <span class='kw'>statistic</span> <span class='kw'>=</span> <span class='st'>"prop.mean"</span>)
 <span class='co'># }</span><div class='input'>
 </div></pre>
   </div>
@@ -204,8 +264,6 @@ separated by a space, such as <code>"250 m"</code>.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
 
       <li><a href="#see-also">See also</a></li>
       

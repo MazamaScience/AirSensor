@@ -26,7 +26,7 @@
 #' initializeMazamaSpatialUtils()
 #' pas <- pas_load()
 #' pat_raw <- downloadParseTimeseriesData(pas, name ='North Bend Weather', startdate = 20181908)
-#' nb_pat <- createPATimeseriesObject(pat_raw)
+#' pat <- createPATimeseriesObject(pat_raw)
 #' }
 
 createPATimeseriesObject <- function(
