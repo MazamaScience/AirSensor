@@ -12,8 +12,8 @@
 # docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/pwfslsmoke /app/createMonthlyWind_exec.R
 #
 
-# ---- . ---- .  AirSensor 0.3.5
-VERSION = "0.0.3" 
+# ---- . ---- . missing startdate variable
+VERSION = "0.0.4" 
 
 suppressPackageStartupMessages({
   library(MazamaCoreUtils)
@@ -148,6 +148,8 @@ result <- try({
     lubridate::ymd(datestamp, tz=opt$timezone)
   endtime <- 
     lubridate::ceiling_date(starttime + lubridate::ddays(20), unit="month")
+
+  startdate <- strftime(starttime ,"%Y%m%d%H", tz='UTC')
   
   # Handle current month
   if ( endtime > now ) 
