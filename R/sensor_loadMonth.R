@@ -29,11 +29,11 @@
 #' 
 #' @examples
 #' \dontrun{
-#' airsensor_loadMonth("scaqmd", 201905) %>%
+#' sensor_loadMonth("scaqmd", 201905) %>%
 #'   PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
 #' }
 
-airsensor_loadMonth <- function(
+sensor_loadMonth <- function(
   collection = "scaqmd",
   datestamp = NULL,
   timezone = "America/Los_Angeles",

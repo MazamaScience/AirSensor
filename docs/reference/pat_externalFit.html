@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Linear model fitting of PurpleAir and federal time series data — pat_externalFit • AirSensor</title>
+<title>Linear model fitting of PurpleAir and federal PWFSL time series data — pat_externalFit • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,10 +37,10 @@
 
 
 
-<meta property="og:title" content="Linear model fitting of PurpleAir and federal time series data — pat_externalFit" />
+<meta property="og:title" content="Linear model fitting of PurpleAir and federal PWFSL time series data — pat_externalFit" />
 
-<meta property="og:description" content="Uses a linear model to fit data from PurpleAir to data from 
-a federal monitor.
+<meta property="og:description" content="Produces a linear model between data from PurpleAir and data 
+from the closest PWFSL monitor.
 A diagnostic plot is produced if `showPlot = TRUE`." />
 <meta name="twitter:card" content="summary" />
 
@@ -72,7 +72,7 @@ A diagnostic plot is produced if `showPlot = TRUE`." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
       </span>
     </div>
 
@@ -138,23 +138,24 @@ A diagnostic plot is produced if `showPlot = TRUE`." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Linear model fitting of PurpleAir and federal time series data</h1>
+    <h1>Linear model fitting of PurpleAir and federal PWFSL time series data</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_externalFit.R'><code>R/pat_externalFit.R</code></a></small>
     <div class="hidden name"><code>pat_externalFit.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Uses a linear model to fit data from PurpleAir to data from 
-a federal monitor.</p>
+    <p>Produces a linear model between data from PurpleAir and data 
+from the closest PWFSL monitor.</p>
 <p>A diagnostic plot is produced if `showPlot = TRUE`.</p>
     
     </div>
 
     <pre class="usage"><span class='fu'>pat_externalFit</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>replaceOutliers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>showPlot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"purple"</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.6</span>,
-  <span class='kw'>xylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>period</span> <span class='kw'>=</span> <span class='st'>"1 hour"</span>, <span class='kw'>channel</span> <span class='kw'>=</span> <span class='st'>"ab"</span>,
-  <span class='kw'>qc_algorithm</span> <span class='kw'>=</span> <span class='st'>"hourly_AB_01"</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>lm_shape</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>ts_shape</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"purple"</span>,
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>xylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>channel</span> <span class='kw'>=</span> <span class='st'>"ab"</span>,
+  <span class='kw'>qc_algorithm</span> <span class='kw'>=</span> <span class='st'>"hourly_AB_01"</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>pa_color</span> <span class='kw'>=</span> <span class='st'>"purple"</span>,
+  <span class='kw'>pwfsl_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -176,8 +177,12 @@ a federal monitor.</p>
       <td><p>Size of points.</p></td>
     </tr>
     <tr>
-      <th>shape</th>
-      <td><p>Symbol to use for points.</p></td>
+      <th>lm_shape</th>
+      <td><p>Symbol to use for linear model points.</p></td>
+    </tr>
+    <tr>
+      <th>ts_shape</th>
+      <td><p>Symbol to use for time series plot points.</p></td>
     </tr>
     <tr>
       <th>color</th>
@@ -193,12 +198,6 @@ a federal monitor.</p>
 axes -- useful for zooming in.</p></td>
     </tr>
     <tr>
-      <th>period</th>
-      <td><p>Time period to average to. Can be "sec", "min", "hour", 
-"day", "DSTday", "week", "month", "quarter" or "year". A number can also
-precede these options followed by a space (i.e. "2 day" or "37 min").</p></td>
-    </tr>
-    <tr>
       <th>channel</th>
       <td><p>Data channel to use for PM2.5 -- one of "a", "b or "ab".</p></td>
     </tr>
@@ -211,17 +210,25 @@ precede these options followed by a space (i.e. "2 day" or "37 min").</p></td>
       <td><p>Aggregation bins with fewer than `min_count` measurements
 will be marked as `NA`.</p></td>
     </tr>
+    <tr>
+      <th>pa_color</th>
+      <td><p>Color of hourly points</p></td>
+    </tr>
+    <tr>
+      <th>pwfsl_color</th>
+      <td><p>Color of hourly points</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A linear model, fitting the `pat` pm25 readings to federal monitor 
-readings.</p>
+    <p>A linear model, fitting the `pat` PurpleAir readings to the closest
+PWFSL monitor readings.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>pat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pat_load.html'>pat_load</a></span>(<span class='st'>"SCAH_07"</span>)
+<span class='no'>pat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pat_load.html'>pat_load</a></span>(<span class='st'>"SCAH_22"</span>)
 <span class='fu'>pat_externalFit</span>(<span class='no'>pat</span>)
 <span class='co'># }</span></pre>
   </div>

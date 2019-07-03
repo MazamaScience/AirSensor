@@ -1,4 +1,4 @@
-# Filtering a "pas" object
+# Working with "pat" objects
 
 # required libraries
 library(AirSensor)

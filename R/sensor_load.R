@@ -27,15 +27,15 @@
 #' 
 #' @return An object of class "airsensor".
 #' 
-#' @seealso \link{airsensor_loadMonth}
+#' @seealso \link{sensor_loadMonth}
 #' 
 #' @examples
 #' \dontrun{
-#' airsensor_load("scaqmd", 20190411, 20190521) %>%
+#' sensor_load("scaqmd", 20190411, 20190521) %>%
 #'   PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
 #' }
 
-airsensor_load <- 
+sensor_load <- 
   function(
     collection = "scaqmd",
     startdate = NULL, 
@@ -73,7 +73,7 @@ airsensor_load <-
     for ( datestamp in datestamps ) { 
       
       airsensorList[[datestamp]] <- 
-        airsensor_loadMonth(
+        sensor_loadMonth(
           collection = collection, 
           datestamp = datestamp, 
           timezone = timezone,
@@ -87,12 +87,31 @@ airsensor_load <-
     for ( i in seq_along(airsensorList) ) {
       
       if ( i == 1 ) {
+        
         airsensor <- airsensorList[[i]]
+        
       } else {
-        airsensor <- PWFSLSmoke::monitor_join(airsensor, airsensorList[[i]])
+        
+        # Be sure to retain all monitorIDs
+        monitorIDs <- 
+          union(airsensor$meta$monitord, airsensorList[[i]]$meta$monitorID)
+        
+        airsensor <- 
+          PWFSLSmoke::monitor_join(airsensor, airsensorList[[i]],
+                                   monitorIDs = monitorIDs)
+        
       }
       
     }
+    
+    # Cleanup any NaN or Inf that might have snuck in
+    data <-
+      airsensor$data %>%
+      dplyr::mutate_all( function(x) replace(x, which(is.nan(x)), NA) ) %>%
+      dplyr::mutate_all( function(x) replace(x, which(is.infinite(x)), NA) )
+    
+    airsensor$data <- data
+    
 
     # Return -------------------------------------------------------------------
     

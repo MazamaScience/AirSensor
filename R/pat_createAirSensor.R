@@ -144,11 +144,15 @@ pat_createAirSensor <- function(
     
   }
   
+  # Cleanup any NaN or Inf that might have snuck in
+  data <-
+    hourlyData %>%
+    dplyr::mutate_all( function(x) replace(x, which(is.nan(x)), NA) ) %>%
+    dplyr::mutate_all( function(x) replace(x, which(is.infinite(x)), NA) )
+  
+  names(data) <- c("datetime", pat$meta$label)
+  
   # ----- Create metadata  -----------------------------------------------------
-  
-  monitorID <- pat$meta$label
-  
-  names(hourlyData) <- c("datetime", monitorID)
   
   # Copy metadata from pat object
   meta <- 
@@ -170,10 +174,12 @@ pat_createAirSensor <- function(
   meta$telemetryAggregator <- as.character(NA)
   meta$telemetryUnitID <- as.character(NA)
 
-  # NOTE:  As of 2019-05-14, the PWFSLSmoke meta dataframe still has rownames
-  rownames(meta) <- colnames(hourlyData)[-1]
+  # ----- Return ---------------------------------------------------------------
   
-  as_object <- list(meta = meta, data = hourlyData)
+  # NOTE:  As of 2019-05-14, the PWFSLSmoke meta dataframe still has rownames
+  rownames(meta) <- colnames(data)[-1]
+  
+  as_object <- list(meta = meta, data = data)
   class(as_object) <- c("airsensor", "ws_monitor")
   
   return(as_object)

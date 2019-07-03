@@ -1,7 +1,7 @@
 ---
 title: "Purple Air Quality Control"
 author: "Mazama Science"
-date: "2019-06-18"
+date: "2019-07-02"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Purple Air Qualitiy Control}
@@ -15,13 +15,14 @@ library(AirSensor)
 ```
 
 This vignette decribes Quality Control (QC) functions and best practices for
-working with Purple Air Sensor internals.
+working with Purple Air Sensor data.
 
 ## Raw "Engineering" Data
 
 The **AirSensor** package *pat* data model and associated functions make it easy
-to work with raw Purple Air data. Each *pat* object provides unmodified data
-obtained from the *ThingSpeak* database. (ThingSpeak is the Internt of Things 
+to work with raw Purple Air data. (*pat* is for *P*urple *A*ir *T*imeseries.)
+Each *pat* object provides unmodified data
+obtained from the *ThingSpeak* database. (ThingSpeak is the Internet of Things 
 data provider that Purple Air has partnered with to handle access to archival
 data.)
 
@@ -63,8 +64,8 @@ pat_multiplot(pat, sampleSize = NULL)
 ## Raw Data QC
 
 The examples above demonstrate just two of many possible failure modes but they 
-provide data we can use to devel basic QC algorithms that identify the most 
-egregiously misbehaving dat without throwing away potentially interesting 
+provide data we can use to develop basic QC algorithms that identify the most 
+egregiously misbehaving data without throwing away potentially interesting 
 outliers.
 
 The least controversial QC is the removal of values that are out-of-spec for
@@ -103,13 +104,13 @@ pat_multiplot(pat, sampleSize = NULL)
 ## Aggregation
 
 The `pat_aggregate()` function is used in the conversion of *pat* data objects
-into data objects that have a uniform, typically hourly, time axis with. The 
+into dataframes with a uniform, typically hourly, time axis. The 
 aggregation process invovles creating regular time bins and
 then calculating a variety of statistics for the data within each bin. We end
 up with a dataframe with a regular time axis and multiple columns of statistics
 for each input variable.
 
-Applying our uncontroversion `pat_qc()` as the first step in the pipeline, we
+Applying our uncontroversial `pat_qc()` as the first step in the pipeline, we
 can reivew which statistics are calcualted:
 
 ```{r pat_aggregate}
@@ -136,7 +137,7 @@ measurements found in each time bin:
 ### Student's t-Test
 
 Every Purple Air II sensor has two separate particle detectors, each reporting
-on a separate channel: A/B. When measurements in both channels agree within
+on a separate channel: A and B. When measurements in both channels agree within
 measurement error then we have higher confidence in the measurements. Because
 the two particle detectors are so close together we shouldn't expect any
 difference in the air entering detector A or B.
@@ -147,10 +148,10 @@ random processes. The friendliest explanation of this statistical technique
 is available through a serires of 
 [Khan Academy videos](https://www.khanacademy.org/math/ap-statistics/two-sample-inference#two-sample-t-test-means)
 
-When the Purple Air sensor is functioning properly we would expect the hourly 
+When the Purple Air sensor is functioning properly we expect the hourly 
 average of A channel PM2.5 measurements to be close to the average of B channel
 PM2.5 measurements. To determine whether this NULL hypothesis holds,  the
-`pat_aggregate()` function does some additional work for PM2.5 and  calculates 
+`pat_aggregate()` function does some additional work for PM2.5 and calculates 
 the following addition two-sample t-test statistics:
 
 * t -- t-statistic
@@ -187,7 +188,7 @@ ggplot(raw_data, aes(datetime, pm25, color = channel)) +
   geom_boxplot(outlier.shape = NA,
                show.legend = FALSE) +
   scale_color_manual(values=colors) +
-  geom_jitter(cex = 0.2) +
+  geom_point(pch=15, cex=0.2, position = position_jitterdodge()) +
   ggtitle("A/B hourly averages")
 
 # Compare the t-statistic for that day
@@ -196,10 +197,10 @@ agg_data <-
   pat_filterDate(20190611,20190611) %>%
   pat_aggregate()
 
-ggplot(agg_data, aes(datetime, pm25_t)) +
+ggplot(agg_data, aes(datetime, pm25_p)) +
   geom_point() +
   scale_y_log10() + 
-  ggtitle("t-statistic")
+  ggtitle("t-test p-value")
 ```
 
 And here is the same for a day with serious problems:
@@ -227,7 +228,7 @@ ggplot(raw_data, aes(datetime, pm25, color = channel)) +
   geom_boxplot(outlier.shape = NA,
                show.legend = FALSE) +
   scale_color_manual(values=colors) +
-  geom_jitter(cex = 0.2) +
+  geom_point(pch=15, cex=0.2, position = position_jitterdodge()) +
   ggtitle("A/B hourly averages")
 
 # Compare the t-statistic for that day
@@ -236,16 +237,17 @@ agg_data <-
   pat_filterDate(20190612,20190612) %>%
   pat_aggregate()
 
-ggplot(agg_data, aes(datetime, pm25_t)) +
+ggplot(agg_data, aes(datetime, pm25_p)) +
   geom_point() +
   scale_y_log10() + 
-  ggtitle("t-statistic")
+  ggtitle("t-test p-value")
 ```
 
-We can see that values of `pm25_t > 100`, for example, only occur for hours 
-where the A and B channels have hourly avergaes that are both highly precise 
-(low std dev) and very different. We can thus use the `pm25_t` variable to flag
-those hours where the A and B channels disagree.
+We can see that the null hypothesis -- the difference in means is entirely due
+to chance -- is extremely unlikely `pm25_p < 1e-30`, for example, only occur for
+hours where the A and B channels have hourly avergaes that are both highly
+precise (low std dev) and very different. We can thus use the `pm25_t` variable
+to flag those hours where the A and B channels disagree.
 
 ## Hourly Averages
 
@@ -258,84 +260,51 @@ The following steps are recommend for creating an hourly PM2.5 timeseries:
 1) apply out-of-spec QC
 2) calculate aggregation statistics
 3) average together pm25_A and pm25_B hourly values
-4) invalidate pm25 hourly values where the absolute value of the t-test 
-statistic is above some threshold (e.g. 100)
 5) invalidate pm25 values where the count on either the A or B channel is below
 some threshold (e.g. 10 where 30 are expected)
+5) invalidate pm25 hourly values then the mean difference is "moderate" or above
+(e.g. > 10) AND the p-value is below some threshold (e.g. < 1e-4)
+6) invalidate pm25 hourly values regardless of p-value when the average pm25
+value is below some threshold (e.g. < 100) and the difference between channel A
+and B means is high (e.g. > 20)
 
-The R code to apply this QC would be:
-
-```{r example_qc, eval = FALSE}
-hourlyData <-
-  example_pat_failure %>%
-  # Apply out-of-spec QC
-  pat_qc() %>%
-  # Calculate aggregation statistics
-  pat_aggregate(period = "1 hour") %>%
-  # Average together both channels
-  dplyr::mutate(pm25 = (pm25_A_mean + pm25_B_mean) / 2) %>%
-  # Invalidate data where either channel has too few measurements
-  dplyr::mutate(pm25 = replace(pm25, which(pm25_A_count < 10), NA) ) %>%
-  dplyr::mutate(pm25 = replace(pm25, which(pm25_B_count < 10), NA) ) %>%
-  # Invlidate data where t-test is too high
-  dplyr::mutate(pm25 = replace(pm25, which(abs(pm25_t) > 100), NA) ) %>%
-  dplyr::select(datetime, pm25)
-
-plot(hourlyData)
+```
+  (min_count < 10)
+  (p-value < 1e-4) & (mean_diff > 10)
+  (pm25 < 100) & (mean_diff > 20)
 ```
 
-As a test of the overall effect, here are some hourly barplots for each of 
-the three examples we started with:
+As a test of the overall effect, here are some simple, hourly barplots for a 
+single week of data for each of the three examples we started with:
 
 ```{r hourly_barplots, echo = FALSE, warning = FALSE}
-
-suppressPackageStartupMessages({
-  library(PWFSLSmoke)
-})
-
-pat_hourlyData <- function(
-  pat
-) {
-  
-  hourlyData <-
-    pat %>%
-    # Apply out-of-spec QC
-    pat_qc() %>%
-    # Calculate aggregation statistics
-    pat_aggregate(period = "1 hour") %>%
-    # Average together both channels
-    dplyr::mutate(pm25 = (pm25_A_mean + pm25_B_mean) / 2) %>%
-    # Invalidate data where either channel has too few measurements
-    dplyr::mutate(pm25 = replace(pm25, which(pm25_A_count < 10), NA) ) %>%
-    dplyr::mutate(pm25 = replace(pm25, which(pm25_B_count < 10), NA) ) %>%
-    # Invlidate data where t-test is too high
-    dplyr::mutate(pm25 = replace(pm25, which(abs(pm25_t) > 100), NA) ) %>%
-    dplyr::select(datetime, pm25)
-  
-  return(hourlyData)
-
-}
-
 layout(matrix(seq(3)))
-hourlyData <- example_pat %>% 
-  pat_filterDate(20180701, 20180708) %>%
-  pat_hourlyData()
-plot(hourlyData, type='h', lwd=2, main = 'example_pat')
 
-hourlyData <- example_pat_failure %>% 
-  pat_hourlyData()
-plot(hourlyData, type='h', lwd=2, main = 'example_pat_failure')
+example_pat %>%
+  pat_filterDate(20180801, 20180808) %>%
+  pat_createAirSensor() %>%
+  sensor_extractData() %>%
+  plot(type = "h", lwd=2, main = "example_pat")
 
-hourlyData <- example_pat_failure_B %>% 
-  pat_hourlyData()
-plot(hourlyData, type='h', lwd=2, main = 'example_pat_failure_B')
+example_pat_failure %>%
+  pat_filterDate(20190409, 20190417) %>%
+  pat_createAirSensor() %>%
+  sensor_extractData() %>%
+  plot(type = "h", lwd=2, main = "example_pat_failure")
+
+example_pat_failure_B %>%
+  pat_filterDate(20190611, 20190618) %>%
+  pat_createAirSensor() %>%
+  sensor_extractData() %>%
+  plot(type = "h", lwd=2, main = "example_pat_failure_B")
+
 ```
 
 Things look pretty good. The first two time seres look quite reasonable given
 the input data and *most* of the hours of questionable data have been removed
-from `example_pat_failure_B`. The four questionably high values in
-`example_pat_failure_B` are all adjacent to an hour that has been flagged
-as invalid which should call the validity of those values into question as well.
+from `example_pat_failure_B`. The only questionably high value in
+`example_pat_failure_B` has values on either side that have been flagged
+as invalid which should raise questions.
 
 It is beyond the scope of this vignette, but one could imagine further cleanup
 that removed every value adjacent to an invalid value which would have 

@@ -1,10 +1,9 @@
 # Interrogating data generated with PROTOTYPE_pat_communityArchive.R
 
 # load some data
-scnp_14 <- get(load("pat_SCNP_14_20190401.rda"))
-scnp_15 <- get(load("pat_SCNP_15_20190401.rda"))
-scnp_17 <- get(load("pat_SCNP_17_20190401.rda"))
-scnp_18 <- get(load("pat_SCNP_18_20190401.rda"))
+scnp_14 <- pat_loadMonth("SCNP_14", 20190401)
+scnp_15 <- pat_loadMonth("SCNP_15", 20190401)
+scnp_17 <- pat_loadMonth("SCNP_17", 20190401)
 
 # start asking questions
 scnp_14 %>% pat_scatterplot()

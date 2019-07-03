@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
       </span>
     </div>
 
@@ -137,10 +137,35 @@
       <small>Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="airsensor-0-3-7" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-3-7" class="anchor"></a>AirSensor 0.3.7</h1>
+<ul>
+<li>Added <code><a href="../reference/wind_loadMonth.html">wind_loadMonth()</a></code> to load pre-generated monthly wind data</li>
+<li>Added <code><a href="../reference/wind_load.html">wind_load()</a></code> to load pre-generated wind data from timestamps</li>
+<li>Updated <code><a href="../reference/sensor_pollutionRose.html">sensor_pollutionRose()</a></code> to accept new wind model</li>
+<li>Added <code><a href="../reference/sensor_polarPlot.html">sensor_polarPlot()</a></code> to plot bivariate polar plots</li>
+<li>Renamed <code>airsensor_load~()</code> to <code>sensor_load~()</code>.</li>
+<li>Added <code>sensor_~</code> utility functions: <code>isSensor()</code>, <code>isEmpty()</code>, <code>extractMeta()</code> , <code>extractData()</code>.</li>
+</ul>
+</div>
+    <div id="airsensor-0-3-6" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-3-6" class="anchor"></a>AirSensor 0.3.6</h1>
+<ul>
+<li>Fixed <code>airsensor_load()</code> so that it includes monitors found in <em>any</em> month rather that those found in <em>every</em> month.</li>
+<li>Fixed <code><a href="../reference/createPATimeseriesObject.html">createPATimeseriesObject()</a></code> and <code><a href="../reference/pat_createAirSensor.html">pat_createAirSensor()</a></code> so that they no longer generate <code>NaN</code> or <code>Inf</code> values.</li>
+</ul>
+</div>
     <div id="airsensor-0-3-5" class="section level1">
 <h1 class="page-header">
 <a href="#airsensor-0-3-5" class="anchor"></a>AirSensor 0.3.5</h1>
 <ul>
+<li>Added <code>as_pollutionRose()</code>
+</li>
+<li>Added <code>createMonthlyWind_exec()</code>
+</li>
+<li>Include <code>example_as</code> as an example “airsensor” object</li>
 <li>
 <code><a href="../reference/initializeMazamaSpatialUtils.html">initializeMazamaSpatialUtils()</a></code> now only sets up logging if it hasn’t already been set up.</li>
 <li>Cleanup/refactoring of <code>local_executables</code> scripts.</li>
@@ -173,7 +198,7 @@
 <a href="#airsensor-0-3-2" class="anchor"></a>AirSensor 0.3.2</h1>
 <ul>
 <li>Created an archive of <code>airsensor</code> data files with pre-generated, hourly-aggregated data suitable for use with the <em>PWFSLSmoke</em> package.</li>
-<li>Added <code><a href="../reference/airsensor_load.html">airsensor_load()</a></code> to load pre-generated, hourly-aggregated data files suitable for use with the <em>PWFSLSmoke</em> package.</li>
+<li>Added <code>airsensor_load()</code> to load pre-generated, hourly-aggregated data files suitable for use with the <em>PWFSLSmoke</em> package.</li>
 </ul>
 </div>
     <div id="airsensor-0-3-1" class="section level1">
@@ -530,6 +555,8 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#airsensor-0-3-7">0.3.7</a></li>
+        <li><a href="#airsensor-0-3-6">0.3.6</a></li>
         <li><a href="#airsensor-0-3-5">0.3.5</a></li>
         <li><a href="#airsensor-0-3-4">0.3.4</a></li>
         <li><a href="#airsensor-0-3-3">0.3.3</a></li>
