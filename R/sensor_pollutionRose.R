@@ -45,13 +45,19 @@
 #' \url{http://davidcarslaw.github.io/openair/reference/windRose.html}
 #'
 #' @examples
-#' \dontrun{
-#' sensor_pollutionRose(
-#'   sensor = example_as,
-#'   windData = wind, 
-#'   statistic = "prop.mean"
-#' )
-#' }
+#' 
+#' # Use example sensor, whose date range is 2019-08-01 to 2019-10-01
+#' sensor <- example_sensor
+#' 
+#' # Create wind data using same date range
+#' windData <- wind_load(
+#'   monitorID = "060950004_01", 
+#'   startdate = "20180801", 
+#'   enddate = "20181001"
+#'   )
+#' 
+#' # Plot rose using mean binning
+#' sensor_pollutionRose(sensor, windData, statistic = "prop.mean")
 #'
 
 sensor_pollutionRose <- 
