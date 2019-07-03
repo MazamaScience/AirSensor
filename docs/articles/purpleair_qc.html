@@ -104,7 +104,7 @@
       <h1>Purple Air Quality Control</h1>
                         <h4 class="author">Mazama Science</h4>
             
-            <h4 class="date">2019-06-18</h4>
+            <h4 class="date">2019-07-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/MazamaScience/AirSensor/blob/master/vignettes/purpleair_qc.Rmd"><code>vignettes/purpleair_qc.Rmd</code></a></small>
       <div class="hidden name"><code>purpleair_qc.Rmd</code></div>
@@ -113,11 +113,11 @@
 
     
     
-<p>This vignette decribes Quality Control (QC) functions and best practices for working with Purple Air Sensor internals.</p>
+<p>This vignette decribes Quality Control (QC) functions and best practices for working with Purple Air Sensor data.</p>
 <div id="raw-engineering-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#raw-engineering-data" class="anchor"></a>Raw “Engineering” Data</h2>
-<p>The <strong>AirSensor</strong> package <em>pat</em> data model and associated functions make it easy to work with raw Purple Air data. Each <em>pat</em> object provides unmodified data obtained from the <em>ThingSpeak</em> database. (ThingSpeak is the Internt of Things data provider that Purple Air has partnered with to handle access to archival data.)</p>
+<p>The <strong>AirSensor</strong> package <em>pat</em> data model and associated functions make it easy to work with raw Purple Air data. (<em>pat</em> is for <em>P</em>urple <em>A</em>ir <em>T</em>imeseries.) Each <em>pat</em> object provides unmodified data obtained from the <em>ThingSpeak</em> database. (ThingSpeak is the Internet of Things data provider that Purple Air has partnered with to handle access to archival data.)</p>
 <p>See the pat_introduction vignette for details.</p>
 <div id="good-data" class="section level3">
 <h3 class="hasAnchor">
@@ -151,7 +151,7 @@
 <div id="raw-data-qc" class="section level2">
 <h2 class="hasAnchor">
 <a href="#raw-data-qc" class="anchor"></a>Raw Data QC</h2>
-<p>The examples above demonstrate just two of many possible failure modes but they provide data we can use to devel basic QC algorithms that identify the most egregiously misbehaving dat without throwing away potentially interesting outliers.</p>
+<p>The examples above demonstrate just two of many possible failure modes but they provide data we can use to develop basic QC algorithms that identify the most egregiously misbehaving data without throwing away potentially interesting outliers.</p>
 <p>The least controversial QC is the removal of values that are out-of-spec for the sensor. Purple Air provides <a href="https://www2.purpleair.com/products/purpleair-pa-ii">PA-II sensor specs</a> which define the valid measurement range for each variable:</p>
 <pre><code>  0 &lt;   humidity  &lt; 100
 -40 &lt; temperature &lt; 185
@@ -172,8 +172,8 @@
 <div id="aggregation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#aggregation" class="anchor"></a>Aggregation</h2>
-<p>The <code><a href="../reference/pat_aggregate.html">pat_aggregate()</a></code> function is used in the conversion of <em>pat</em> data objects into data objects that have a uniform, typically hourly, time axis with. The aggregation process invovles creating regular time bins and then calculating a variety of statistics for the data within each bin. We end up with a dataframe with a regular time axis and multiple columns of statistics for each input variable.</p>
-<p>Applying our uncontroversion <code><a href="../reference/pat_qc.html">pat_qc()</a></code> as the first step in the pipeline, we can reivew which statistics are calcualted:</p>
+<p>The <code><a href="../reference/pat_aggregate.html">pat_aggregate()</a></code> function is used in the conversion of <em>pat</em> data objects into dataframes with a uniform, typically hourly, time axis. The aggregation process invovles creating regular time bins and then calculating a variety of statistics for the data within each bin. We end up with a dataframe with a regular time axis and multiple columns of statistics for each input variable.</p>
+<p>Applying our uncontroversial <code><a href="../reference/pat_qc.html">pat_qc()</a></code> as the first step in the pipeline, we can reivew which statistics are calcualted:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-
 <span class="st">  </span>example_pat_failure <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/pat_qc.html">pat_qc</a></span>() <span class="op">%&gt;%</span>
@@ -207,9 +207,9 @@
 <div id="students-t-test" class="section level3">
 <h3 class="hasAnchor">
 <a href="#students-t-test" class="anchor"></a>Student’s t-Test</h3>
-<p>Every Purple Air II sensor has two separate particle detectors, each reporting on a separate channel: A/B. When measurements in both channels agree within measurement error then we have higher confidence in the measurements. Because the two particle detectors are so close together we shouldn’t expect any difference in the air entering detector A or B.</p>
+<p>Every Purple Air II sensor has two separate particle detectors, each reporting on a separate channel: A and B. When measurements in both channels agree within measurement error then we have higher confidence in the measurements. Because the two particle detectors are so close together we shouldn’t expect any difference in the air entering detector A or B.</p>
 <p>The two-sample t-test is the standard statistical technique for determining whether a difference in two means is significant or can be attributed to random processes. The friendliest explanation of this statistical technique is available through a serires of <a href="https://www.khanacademy.org/math/ap-statistics/two-sample-inference#two-sample-t-test-means">Khan Academy videos</a></p>
-<p>When the Purple Air sensor is functioning properly we would expect the hourly average of A channel PM2.5 measurements to be close to the average of B channel PM2.5 measurements. To determine whether this NULL hypothesis holds, the <code><a href="../reference/pat_aggregate.html">pat_aggregate()</a></code> function does some additional work for PM2.5 and calculates the following addition two-sample t-test statistics:</p>
+<p>When the Purple Air sensor is functioning properly we expect the hourly average of A channel PM2.5 measurements to be close to the average of B channel PM2.5 measurements. To determine whether this NULL hypothesis holds, the <code><a href="../reference/pat_aggregate.html">pat_aggregate()</a></code> function does some additional work for PM2.5 and calculates the following addition two-sample t-test statistics:</p>
 <ul>
 <li>t – t-statistic</li>
 <li>p – p-value</li>
@@ -233,23 +233,23 @@ raw_data &lt;-<span class="st"> </span>
 <span class="co"># Look at a random sample of this new dataframe</span>
 dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(raw_data, <span class="dv">10</span>)</code></pre></div>
 <pre><code>##      datetime channel  pm25
-## 1  2019061107  pm25_B  5.71
-## 2  2019061123  pm25_A 16.22
-## 3  2019061104  pm25_A  8.43
-## 4  2019061119  pm25_B    NA
-## 5  2019061117  pm25_B  4.93
-## 6  2019061102  pm25_B  4.90
-## 7  2019061117  pm25_A  8.96
-## 8  2019061102  pm25_A  6.38
-## 9  2019061120  pm25_B 11.09
-## 10 2019061116  pm25_A  7.91</code></pre>
+## 1  2019061121  pm25_B 13.14
+## 2  2019061123  pm25_B 12.55
+## 3  2019061113  pm25_A  6.29
+## 4  2019061107  pm25_B  8.81
+## 5  2019061108  pm25_B 10.88
+## 6  2019061123  pm25_B 13.30
+## 7  2019061121  pm25_B 12.06
+## 8  2019061114  pm25_A  8.31
+## 9  2019061103  pm25_A  4.36
+## 10 2019061102  pm25_A  4.52</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create a timeseries using boxplots</span>
 colors &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/rgb">rgb</a></span>(<span class="fl">0.9</span>, <span class="fl">0.25</span>, <span class="fl">0.2</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/rgb">rgb</a></span>(<span class="fl">0.2</span>, <span class="fl">0.25</span>, <span class="fl">0.9</span>))
 <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(raw_data, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(datetime, pm25, <span class="dt">color =</span> channel)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html">geom_boxplot</a></span>(<span class="dt">outlier.shape =</span> <span class="ot">NA</span>,
                <span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span>(<span class="dt">values=</span>colors) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_jitter.html">geom_jitter</a></span>(<span class="dt">cex =</span> <span class="fl">0.2</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(<span class="dt">pch=</span><span class="dv">15</span>, <span class="dt">cex=</span><span class="fl">0.2</span>, <span class="dt">position =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/position_jitterdodge.html">position_jitterdodge</a></span>()) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"A/B hourly averages"</span>)</code></pre></div>
 <p><img src="purpleair_qc_files/figure-html/AB_boxplot-1.png" width="672"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Compare the t-statistic for that day</span>
@@ -258,25 +258,25 @@ agg_data &lt;-<span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/pat_filterDate.html">pat_filterDate</a></span>(<span class="dv">20190611</span>,<span class="dv">20190611</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/pat_aggregate.html">pat_aggregate</a></span>()
 
-<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(agg_data, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(datetime, pm25_t)) <span class="op">+</span>
+<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(agg_data, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(datetime, pm25_p)) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10</a></span>() <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"t-statistic"</span>)</code></pre></div>
+<span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"t-test p-value"</span>)</code></pre></div>
 <p><img src="purpleair_qc_files/figure-html/AB_boxplot-2.png" width="672"></p>
 <p>And here is the same for a day with serious problems:</p>
-<pre><code>##      datetime channel  pm25
-## 1  2019061218  pm25_B 11.27
-## 2  2019061200  pm25_A 23.94
-## 3  2019061217  pm25_A 11.40
-## 4  2019061212  pm25_A 17.79
-## 5  2019061213  pm25_B 15.32
-## 6  2019061219  pm25_B 12.60
-## 7  2019061213  pm25_A 19.54
-## 8  2019061223  pm25_B 15.62
-## 9  2019061201  pm25_A 19.19
-## 10 2019061216  pm25_B    NA</code></pre>
+<pre><code>##      datetime channel    pm25
+## 1  2019061200  pm25_A   22.10
+## 2  2019061208  pm25_A 3330.26
+## 3  2019061204  pm25_A 2314.18
+## 4  2019061223  pm25_A 3330.69
+## 5  2019061200  pm25_B   11.48
+## 6  2019061200  pm25_A   20.73
+## 7  2019061207  pm25_B   13.06
+## 8  2019061202  pm25_B   11.82
+## 9  2019061209  pm25_B   14.47
+## 10 2019061213  pm25_A   18.20</code></pre>
 <p><img src="purpleair_qc_files/figure-html/AB_boxplot_2-1.png" width="672"><img src="purpleair_qc_files/figure-html/AB_boxplot_2-2.png" width="672"></p>
-<p>We can see that values of <code>pm25_t &gt; 100</code>, for example, only occur for hours where the A and B channels have hourly avergaes that are both highly precise (low std dev) and very different. We can thus use the <code>pm25_t</code> variable to flag those hours where the A and B channels disagree.</p>
+<p>We can see that the null hypothesis – the difference in means is entirely due to chance – is extremely unlikely <code>pm25_p &lt; 1e-30</code>, for example, only occur for hours where the A and B channels have hourly avergaes that are both highly precise (low std dev) and very different. We can thus use the <code>pm25_t</code> variable to flag those hours where the A and B channels disagree.</p>
 </div>
 </div>
 <div id="hourly-averages" class="section level2">
@@ -288,29 +288,16 @@ agg_data &lt;-<span class="st"> </span>
 <li>apply out-of-spec QC</li>
 <li>calculate aggregation statistics</li>
 <li>average together pm25_A and pm25_B hourly values</li>
-<li>invalidate pm25 hourly values where the absolute value of the t-test statistic is above some threshold (e.g. 100)</li>
 <li>invalidate pm25 values where the count on either the A or B channel is below some threshold (e.g. 10 where 30 are expected)</li>
+<li>invalidate pm25 hourly values then the mean difference is “moderate” or above (e.g. &gt; 10) AND the p-value is below some threshold (e.g. &lt; 1e-4)</li>
+<li>invalidate pm25 hourly values regardless of p-value when the average pm25 value is below some threshold (e.g. &lt; 100) and the difference between channel A and B means is high (e.g. &gt; 20)</li>
 </ol>
-<p>The R code to apply this QC would be:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">hourlyData &lt;-
-<span class="st">  </span>example_pat_failure <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="co"># Apply out-of-spec QC</span>
-<span class="st">  </span><span class="kw"><a href="../reference/pat_qc.html">pat_qc</a></span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="co"># Calculate aggregation statistics</span>
-<span class="st">  </span><span class="kw"><a href="../reference/pat_aggregate.html">pat_aggregate</a></span>(<span class="dt">period =</span> <span class="st">"1 hour"</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="co"># Average together both channels</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">pm25 =</span> (pm25_A_mean <span class="op">+</span><span class="st"> </span>pm25_B_mean) <span class="op">/</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="co"># Invalidate data where either channel has too few measurements</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">pm25 =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/replace">replace</a></span>(pm25, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/which">which</a></span>(pm25_A_count <span class="op">&lt;</span><span class="st"> </span><span class="dv">10</span>), <span class="ot">NA</span>) ) <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">pm25 =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/replace">replace</a></span>(pm25, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/which">which</a></span>(pm25_B_count <span class="op">&lt;</span><span class="st"> </span><span class="dv">10</span>), <span class="ot">NA</span>) ) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="co"># Invlidate data where t-test is too high</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">pm25 =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/replace">replace</a></span>(pm25, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/which">which</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">abs</a></span>(pm25_t) <span class="op">&gt;</span><span class="st"> </span><span class="dv">100</span>), <span class="ot">NA</span>) ) <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(datetime, pm25)
-
-<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(hourlyData)</code></pre></div>
-<p>As a test of the overall effect, here are some hourly barplots for each of the three examples we started with:</p>
+<pre><code>  (min_count &lt; 10)
+  (p-value &lt; 1e-4) &amp; (mean_diff &gt; 10)
+  (pm25 &lt; 100) &amp; (mean_diff &gt; 20)</code></pre>
+<p>As a test of the overall effect, here are some simple, hourly barplots for a single week of data for each of the three examples we started with:</p>
 <p><img src="purpleair_qc_files/figure-html/hourly_barplots-1.png" width="672"></p>
-<p>Things look pretty good. The first two time seres look quite reasonable given the input data and <em>most</em> of the hours of questionable data have been removed from <code>example_pat_failure_B</code>. The four questionably high values in <code>example_pat_failure_B</code> are all adjacent to an hour that has been flagged as invalid which should call the validity of those values into question as well.</p>
+<p>Things look pretty good. The first two time seres look quite reasonable given the input data and <em>most</em> of the hours of questionable data have been removed from <code>example_pat_failure_B</code>. The only questionably high value in <code>example_pat_failure_B</code> has values on either side that have been flagged as invalid which should raise questions.</p>
 <p>It is beyond the scope of this vignette, but one could imagine further cleanup that removed every value adjacent to an invalid value which would have completely cleaned up the last example.</p>
 </div>
   </div>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Linear model fitting of PurpleAir and federal PWFSL time series data — pat_externalFit • AirSensor</title>
+<title>Load monthly wind data — wind_loadMonth • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,11 +37,10 @@
 
 
 
-<meta property="og:title" content="Linear model fitting of PurpleAir and federal PWFSL time series data — pat_externalFit" />
+<meta property="og:title" content="Load monthly wind data — wind_loadMonth" />
 
-<meta property="og:description" content="Produces a linear model between data from PurpleAir and data 
-from the closest PWFSL monitor.
-A diagnostic plot is produced if `showPlot = TRUE`." />
+<meta property="og:description" content="Load pre-generated wind data for the given month. Archived data 
+for SCAQMD sensors go back to January, 2018." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -138,99 +137,53 @@ A diagnostic plot is produced if `showPlot = TRUE`." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Linear model fitting of PurpleAir and federal PWFSL time series data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_externalFit.R'><code>R/pat_externalFit.R</code></a></small>
-    <div class="hidden name"><code>pat_externalFit.Rd</code></div>
+    <h1>Load monthly wind data</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/wind_loadMonth.R'><code>R/wind_loadMonth.R</code></a></small>
+    <div class="hidden name"><code>wind_loadMonth.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Produces a linear model between data from PurpleAir and data 
-from the closest PWFSL monitor.</p>
-<p>A diagnostic plot is produced if `showPlot = TRUE`.</p>
+    <p>Load pre-generated wind data for the given month. Archived data 
+for SCAQMD sensors go back to January, 2018.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pat_externalFit</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>replaceOutliers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>showPlot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>lm_shape</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>ts_shape</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"purple"</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>xylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>channel</span> <span class='kw'>=</span> <span class='st'>"ab"</span>,
-  <span class='kw'>qc_algorithm</span> <span class='kw'>=</span> <span class='st'>"hourly_AB_01"</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>pa_color</span> <span class='kw'>=</span> <span class='st'>"purple"</span>,
-  <span class='kw'>pwfsl_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>)</pre>
+    <pre class="usage"><span class='fu'>wind_loadMonth</span>(<span class='kw'>monitorID</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>datestamp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='st'>"America/Los_Angeles"</span>,
+  <span class='kw'>baseUrl</span> <span class='kw'>=</span> <span class='st'>"http://smoke.mazamascience.com/data/PurpleAir/wind"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pat</th>
-      <td><p>PurpleAir Timeseries <em>pat</em> object.</p></td>
+      <th>monitorID</th>
+      <td><p>A monitorID</p></td>
     </tr>
     <tr>
-      <th>replaceOutliers</th>
-      <td><p>Logical specifying whether or not to replace outliers.</p></td>
+      <th>datestamp</th>
+      <td><p>Date string in ym or ymd order</p></td>
     </tr>
     <tr>
-      <th>showPlot</th>
-      <td><p>Logical specifying whether to generate a model fit plot.</p></td>
+      <th>timezone</th>
+      <td><p>Timezone used to interpret datestamp.</p></td>
     </tr>
     <tr>
-      <th>size</th>
-      <td><p>Size of points.</p></td>
-    </tr>
-    <tr>
-      <th>lm_shape</th>
-      <td><p>Symbol to use for linear model points.</p></td>
-    </tr>
-    <tr>
-      <th>ts_shape</th>
-      <td><p>Symbol to use for time series plot points.</p></td>
-    </tr>
-    <tr>
-      <th>color</th>
-      <td><p>Color of points.</p></td>
-    </tr>
-    <tr>
-      <th>alpha</th>
-      <td><p>Opacity of points.</p></td>
-    </tr>
-    <tr>
-      <th>xylim</th>
-      <td><p>Vector of (lo,hi) limits used as limits on the correlation plot 
-axes -- useful for zooming in.</p></td>
-    </tr>
-    <tr>
-      <th>channel</th>
-      <td><p>Data channel to use for PM2.5 -- one of "a", "b or "ab".</p></td>
-    </tr>
-    <tr>
-      <th>qc_algorithm</th>
-      <td><p>Named QC algorithm to apply to hourly aggregation stats.</p></td>
-    </tr>
-    <tr>
-      <th>min_count</th>
-      <td><p>Aggregation bins with fewer than `min_count` measurements
-will be marked as `NA`.</p></td>
-    </tr>
-    <tr>
-      <th>pa_color</th>
-      <td><p>Color of hourly points</p></td>
-    </tr>
-    <tr>
-      <th>pwfsl_color</th>
-      <td><p>Color of hourly points</p></td>
+      <th>baseUrl</th>
+      <td><p>Base URL for wind data.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A linear model, fitting the `pat` PurpleAir readings to the closest
-PWFSL monitor readings.</p>
+    <p>a data frame</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>pat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pat_load.html'>pat_load</a></span>(<span class='st'>"SCAH_22"</span>)
-<span class='fu'>pat_externalFit</span>(<span class='no'>pat</span>)
-<span class='co'># }</span></pre>
+<span class='fu'>wind_loadMonth</span>(<span class='kw'>monitorID</span> <span class='kw'>=</span> <span class='st'>"060950004_01"</span>, <span class='kw'>datestamp</span> <span class='kw'>=</span> <span class='st'>"201805"</span>)
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

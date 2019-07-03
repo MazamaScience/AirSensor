@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Linear model fitting of PurpleAir and federal PWFSL time series data — pat_externalFit • AirSensor</title>
+<title>Plot bivariate polar plots with guassian smoothing — sensor_polarPlot • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,11 +37,10 @@
 
 
 
-<meta property="og:title" content="Linear model fitting of PurpleAir and federal PWFSL time series data — pat_externalFit" />
+<meta property="og:title" content="Plot bivariate polar plots with guassian smoothing — sensor_polarPlot" />
 
-<meta property="og:description" content="Produces a linear model between data from PurpleAir and data 
-from the closest PWFSL monitor.
-A diagnostic plot is produced if `showPlot = TRUE`." />
+<meta property="og:description" content="Function for plotting PM2.5 concentration in polar coordinates 
+showing concentration by wind speed and direction." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -138,99 +137,120 @@ A diagnostic plot is produced if `showPlot = TRUE`." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Linear model fitting of PurpleAir and federal PWFSL time series data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_externalFit.R'><code>R/pat_externalFit.R</code></a></small>
-    <div class="hidden name"><code>pat_externalFit.Rd</code></div>
+    <h1>Plot bivariate polar plots with guassian smoothing</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/sensor_polarPlot.R'><code>R/sensor_polarPlot.R</code></a></small>
+    <div class="hidden name"><code>sensor_polarPlot.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Produces a linear model between data from PurpleAir and data 
-from the closest PWFSL monitor.</p>
-<p>A diagnostic plot is produced if `showPlot = TRUE`.</p>
+    <p>Function for plotting PM2.5 concentration in polar coordinates 
+showing concentration by wind speed and direction.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pat_externalFit</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>replaceOutliers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>showPlot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>lm_shape</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>ts_shape</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"purple"</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>xylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>channel</span> <span class='kw'>=</span> <span class='st'>"ab"</span>,
-  <span class='kw'>qc_algorithm</span> <span class='kw'>=</span> <span class='st'>"hourly_AB_01"</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>pa_color</span> <span class='kw'>=</span> <span class='st'>"purple"</span>,
-  <span class='kw'>pwfsl_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>)</pre>
+    <pre class="usage"><span class='fu'>sensor_polarPlot</span>(<span class='no'>sensor</span>, <span class='no'>windData</span>, <span class='kw'>statistic</span> <span class='kw'>=</span> <span class='st'>"mean"</span>,
+  <span class='kw'>resolution</span> <span class='kw'>=</span> <span class='st'>"fine"</span>, <span class='kw'>colors</span> <span class='kw'>=</span> <span class='st'>"default"</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>angleScale</span> <span class='kw'>=</span> <span class='fl'>315</span>, <span class='kw'>normalize</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>key</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>keyPosition</span> <span class='kw'>=</span> <span class='st'>"right"</span>, <span class='kw'>ws_spread</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>wd_spread</span> <span class='kw'>=</span> <span class='fl'>4</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pat</th>
-      <td><p>PurpleAir Timeseries <em>pat</em> object.</p></td>
+      <th>sensor</th>
+      <td><p>an 'airsensor' object</p></td>
     </tr>
     <tr>
-      <th>replaceOutliers</th>
-      <td><p>Logical specifying whether or not to replace outliers.</p></td>
+      <th>windData</th>
+      <td><p>a dataframe containing columns "date", "ws", and "wd".</p></td>
     </tr>
     <tr>
-      <th>showPlot</th>
-      <td><p>Logical specifying whether to generate a model fit plot.</p></td>
+      <th>statistic</th>
+      <td><p>The statistic that should be applied to each wind 
+speed/direction bin. Because of the smoothing involved, the colour scale for 
+some of these statistics is only to provide an indication of overall pattern 
+and should not be interpreted in concentration units e.g. for 
+statistic = "weighted.mean" where the bin mean is multiplied by the bin 
+frequency and divided by the total frequency. In many cases using polarFreq 
+will be better. Setting statistic = "weighted.mean" can be useful because it 
+provides an indication of the concentration * frequency of occurrence and 
+will highlight the wind speed/direction conditions that dominate the overall 
+mean. Can be: “mean” (default), “median”, “max” (maximum), “frequency”. 
+“stdev” (standard deviation), “weighted.mean”</p></td>
     </tr>
     <tr>
-      <th>size</th>
-      <td><p>Size of points.</p></td>
+      <th>resolution</th>
+      <td><p>Two plot resolutions can be set: “normal” and “fine” 
+(the default), for a smoother plot. It should be noted that plots with a 
+“fine” resolution can take longer to render.</p></td>
     </tr>
     <tr>
-      <th>lm_shape</th>
-      <td><p>Symbol to use for linear model points.</p></td>
-    </tr>
-    <tr>
-      <th>ts_shape</th>
-      <td><p>Symbol to use for time series plot points.</p></td>
-    </tr>
-    <tr>
-      <th>color</th>
-      <td><p>Color of points.</p></td>
+      <th>colors</th>
+      <td><p>Colours to be used for plotting. Options include “default”, 
+“increment”, “heat”, “jet” and RColorBrewer colours — see the openair 
+openColours function for more details. For user defined the user can supply a
+list of color names recognised by R (type colors() to see the full list). 
+An example would be color = c("yellow", "green", "blue"). Can also take the 
+values "viridis", "magma", "inferno", or "plasma" which are the viridis 
+colour maps ported from Python's Matplotlib library.</p></td>
     </tr>
     <tr>
       <th>alpha</th>
-      <td><p>Opacity of points.</p></td>
+      <td><p>The alpha transparency to use for the plotting surface (a value 
+between 0 and 1 with zero being fully transparent and 1 fully opaque).</p></td>
     </tr>
     <tr>
-      <th>xylim</th>
-      <td><p>Vector of (lo,hi) limits used as limits on the correlation plot 
-axes -- useful for zooming in.</p></td>
+      <th>angleScale</th>
+      <td><p>The wind speed scale is by default shown at a 315 degree 
+angle. Sometimes the placement of the scale may interfere with an interesting
+feature. The user can therefore set angleScale to another value 
+(between 0 and 360 degrees) to mitigate such problems. For example 
+angle.scale = 45 will draw the scale heading in a NE direction.</p></td>
     </tr>
     <tr>
-      <th>channel</th>
-      <td><p>Data channel to use for PM2.5 -- one of "a", "b or "ab".</p></td>
+      <th>normalize</th>
+      <td><p>If TRUE concentrations are normalised by dividing by their 
+mean value. This is done after fitting the smooth surface. This option is 
+particularly useful if one is interested in the patterns of concentrations 
+of PM2.5.</p></td>
     </tr>
     <tr>
-      <th>qc_algorithm</th>
-      <td><p>Named QC algorithm to apply to hourly aggregation stats.</p></td>
+      <th>key</th>
+      <td><p>Fine control of the scale key via drawOpenKey. See drawOpenKey for
+further details.</p></td>
     </tr>
     <tr>
-      <th>min_count</th>
-      <td><p>Aggregation bins with fewer than `min_count` measurements
-will be marked as `NA`.</p></td>
+      <th>keyPosition</th>
+      <td><p>Location where the scale key is to plotted. Allowed 
+arguments currently include "top", "right", "bottom" and "left".</p></td>
     </tr>
     <tr>
-      <th>pa_color</th>
-      <td><p>Color of hourly points</p></td>
+      <th>ws_spread</th>
+      <td><p>An integer used for the weighting kernel spread for wind 
+speed when correlation or regression techniques are used. Default is 15.</p></td>
     </tr>
     <tr>
-      <th>pwfsl_color</th>
-      <td><p>Color of hourly points</p></td>
+      <th>wd_spread</th>
+      <td><p>An integer used for the weighting kernel spread for wind 
+direction when correlation or regression techniques are used. Default is 4.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A linear model, fitting the `pat` PurpleAir readings to the closest
-PWFSL monitor readings.</p>
+    <p>a plot and dataframe</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='http://davidcarslaw.github.io/openair/reference/polarPlot.html'>http://davidcarslaw.github.io/openair/reference/polarPlot.html</a></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>pat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pat_load.html'>pat_load</a></span>(<span class='st'>"SCAH_22"</span>)
-<span class='fu'>pat_externalFit</span>(<span class='no'>pat</span>)
-<span class='co'># }</span></pre>
+<span class='fu'>sensor_polarPlot</span>(<span class='kw'>sensor</span> <span class='kw'>=</span> <span class='no'>sensor</span>, <span class='kw'>windData</span> <span class='kw'>=</span> <span class='no'>wind</span>, <span class='kw'>resolution</span> <span class='kw'>=</span> <span class='st'>"normal"</span>)
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -238,6 +258,8 @@ PWFSL monitor readings.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

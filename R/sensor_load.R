@@ -27,15 +27,15 @@
 #' 
 #' @return An object of class "airsensor".
 #' 
-#' @seealso \link{airsensor_loadMonth}
+#' @seealso \link{sensor_loadMonth}
 #' 
 #' @examples
 #' \dontrun{
-#' airsensor_load("scaqmd", 20190411, 20190521) %>%
+#' sensor_load("scaqmd", 20190411, 20190521) %>%
 #'   PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
 #' }
 
-airsensor_load <- 
+sensor_load <- 
   function(
     collection = "scaqmd",
     startdate = NULL, 
@@ -73,7 +73,7 @@ airsensor_load <-
     for ( datestamp in datestamps ) { 
       
       airsensorList[[datestamp]] <- 
-        airsensor_loadMonth(
+        sensor_loadMonth(
           collection = collection, 
           datestamp = datestamp, 
           timezone = timezone,

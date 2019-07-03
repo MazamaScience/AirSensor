@@ -1,9 +1,7 @@
 #' @export
 #' @title Pollution rose plot
-#' @param as an 'airsensor' object
-#' @param monitorID an optional monitor ID
-#' @param windSpeed a wind speed data frame
-#' @param windDirection a wind direction data frame
+#' @param sensor an 'airsensor' object
+#' @param windData a dataframe containing columns "date", "ws", and "wd".
 #' @param statistic The statistic to be applied to each data bin in the plot. 
 #' Options currently include “prop.count”, “prop.mean” and “abs.count”. 
 #' The default “prop.count” sizes bins according to the proportion of the 
@@ -43,21 +41,23 @@
 #' @description Plots a traditional wind rose plot for wind direction and PM2.5.
 #'
 #' @return a plot or a dataframe
-#' @seealso openair::pollutionRose
+#' @seealso 
+#' \url{http://davidcarslaw.github.io/openair/reference/windRose.html}
 #'
 #' @examples
 #' \dontrun{
-#' as_pollutionRose(example_as, windSpeed = WS, windDirection = WD, 
-#' returns = "plot", statistic = "prop.mean")
+#' sensor_pollutionRose(
+#'   sensor = example_as,
+#'   windData = wind, 
+#'   statistic = "prop.mean"
+#' )
 #' }
 #'
 
-as_pollutionRose <- 
+sensor_pollutionRose <- 
   function(
-    as, 
-    monitorID = NULL,
-    windSpeed,
-    windDirection,
+    sensor, 
+    windData,
     statistic = "prop.count",
     key = TRUE, 
     keyPosition = "right",
@@ -72,62 +72,23 @@ as_pollutionRose <-
   ) {
     
     # Validate Parameters
-    if ( !PWFSLSmoke::monitor_isMonitor(as) )
-      stop("Parameter 'as' is not a valid 'airsensor' object.") 
+    if ( !PWFSLSmoke::monitor_isMonitor(sensor) )
+      stop("Parameter 'sensor' is not a valid 'airsensor' object.") 
     
-    if ( PWFSLSmoke::monitor_isEmpty(as) ) 
-      stop("Required parameter 'as' has no data.")
+    if ( PWFSLSmoke::monitor_isEmpty(sensor) ) 
+      stop("Required parameter 'sensor' has no data.")
     
-    if ( !PWFSLSmoke::monitor_isMonitor(windSpeed) )
-      stop("Parameter 'windSpeed' is not a valid 'ws_monitor' object.") 
+    if ( is.null(windData) ) 
+      stop("Required parameter 'windData' is NULL")
     
-    if ( PWFSLSmoke::monitor_isEmpty(windSpeed) ) 
-      stop("Required parameter 'windSpeed' has no data.")
-    
-    if ( !PWFSLSmoke::monitor_isMonitor(windDirection) )
-      stop("Parameter 'windDirection' is not a valid 'ws_monitor' object.") 
-    
-    if ( PWFSLSmoke::monitor_isEmpty(windDirection) ) 
-      stop("Required parameter 'windDirection' has no data.")
-    
-    # Check if monitor ID is provided, 
-    # ifnot -> try using AS monitorID or closest monitorID
-    if ( !is.null(monitorID)  ) {
-      
-      ws <- windSpeed$data[[monitorID]]
-      wd <- windDirection$data[[monitorID]]
-      
-    } else {
-      
-      ws <- 
-        try({
-          windSpeed$data[[as$meta$monitorID]]
-          warning = "Can not match monitorID -> closest monitorID used instead" 
-          finally = windSpeed$data[[as$meta$pwfsl_closestMonitorID]]
-        })
-      
-      wd <- 
-        try({
-          windDirection$data[[as$meta$monitorID]] 
-          warning = "Can not match monitorID -> closest monitorID used instead" 
-          finally = windDirection$data[[as$meta$pwfsl_closestMonitorID]]
-        })
-      
-    }
-    
-    # Create windData df 
-    windData <- 
-      dplyr::tibble(
-        "date" = windDirection$data[[1]], 
-        "ws" = windSpeed$data[[2]],
-        "wd" = windDirection$data[[2]]
-      )
-    
+    if ( !all((c("wd", "ws") %in% names(windData))) ) 
+      stop("Parameter 'windData' does not contain necessary columns")
+
     # Data must be the same length
     pollutantData <- 
       dplyr::tibble(
-        "date" = as$data[[1]], 
-        "pm25" = as$data[[2]] 
+        "date" = sensor$data[[1]], 
+        "pm25" = sensor$data[[2]] 
       )
     
     # Combine df's 
@@ -144,15 +105,16 @@ as_pollutionRose <-
       openair::pollutionRose(
         mydata = data,
         pollutant = "pm25",
-        key.position = keyPosition, 
-        key = key, 
-        breaks = breaks, 
+        key.position = keyPosition,
+        key = key,
+        annotate = annotate,
+        breaks = breaks,
         paddle= paddle,
-        seg = seg, 
-        normalise = normalize, 
+        seg = seg,
+        normalise = normalize,
         angle = angle,
-        angle.scale = angleScale, 
-        statistic = statistic, 
+        angle.scale = angleScale,
+        statistic = statistic,
         grid.line = gridLine
       )
     
