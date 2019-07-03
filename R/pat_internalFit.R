@@ -63,8 +63,8 @@ pat_internalFit <- function(
   data <- pat$data
   
   if ( is.null(xylim) ) {
-    dataMin <- min(c(0, .data$pm25_A, .data$pm25_B), na.rm = TRUE)
-    dataMax <- max(c(.data$pm25_A, .data$pm25_B), na.rm = TRUE)
+    dataMin <- min(c(0, data$pm25_A, data$pm25_B), na.rm = TRUE)
+    dataMax <- max(c(data$pm25_A, data$pm25_B), na.rm = TRUE)
     xylim <- c(dataMin, dataMax)
   }
   
