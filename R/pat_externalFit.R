@@ -7,21 +7,24 @@
 #' @title Linear model fitting of PurpleAir and federal PWFSL time series data
 #' 
 #' @param pat PurpleAir Timeseries \emph{pat} object.
-#' @param replaceOutliers Logical specifying whether or not to replace outliers.
 #' @param showPlot Logical specifying whether to generate a model fit plot.
 #' @param size Size of points.
-#' @param lm_shape Symbol to use for linear model points.
-#' @param ts_shape Symbol to use for time series plot points.
-#' @param color Color of points.
+#' @param pa_color Color of hourly points.
+#' @param pwfsl_color Color of hourly points.
 #' @param alpha Opacity of points.
+#' @param lr_shape Symbol to use for linear model points.
+#' @param lr_color Color of linear model plot points.
+#' @param lr_lwd Width of linear regression line.
+#' @param lr_lcolor Color of linear regression line.
+#' @param lr_lalpha Opacity of linear regression line.
+#' @param ts_shape Symbol to use for time series points.
 #' @param xylim Vector of (lo,hi) limits used as limits on the correlation plot 
 #' axes -- useful for zooming in.
 #' @param channel Data channel to use for PM2.5 -- one of "a", "b or "ab".
+#' @param replaceOutliers Logical specifying whether or not to replace outliers.
 #' @param qc_algorithm Named QC algorithm to apply to hourly aggregation stats.
 #' @param min_count Aggregation bins with fewer than `min_count` measurements
 #' will be marked as `NA`.
-#' @param pa_color Color of hourly points
-#' @param pwfsl_color Color of hourly points
 #' 
 #' @description Produces a linear model between data from PurpleAir and data 
 #' from the closest PWFSL monitor.
@@ -39,19 +42,22 @@
 
 pat_externalFit <- function(
   pat = NULL,
-  replaceOutliers = TRUE,
   showPlot = TRUE,
   size = 1,
-  lm_shape = 15,
-  ts_shape = 1,
-  color = "purple",
+  pa_color = "purple",
+  pwfsl_color = "black",
   alpha = 0.5,
+  lr_shape = 15,
+  lr_color = "black",
+  lr_lwd = 1.5,
+  lr_lcolor = "tomato",
+  lr_lalpha = 0.45,
+  ts_shape = 1,
   xylim = NULL,
   channel = "ab",
+  replaceOutliers = TRUE,
   qc_algorithm = "hourly_AB_01",
-  min_count = 10,
-  pa_color = "purple",
-  pwfsl_color = "black"
+  min_count = 10
 ) {
   
   # ----- Validate parameters --------------------------------------------------
@@ -79,19 +85,16 @@ pat_externalFit <- function(
                         qc_algorithm = qc_algorithm,
                         min_count = min_count) %>%
     PWFSLSmoke::monitor_extractData()
-  
-  names(paHourly_data) <- c("datetime", "PA")
-  
-  tlim <- range(paHourly_data$datetime)
+  names(paHourly_data) <- c("datetime", "pa_pm25")
   
   # Get the PWFSL monitor data
   monitorID = pat$meta$pwfsl_closestMonitorID
+  tlim <- range(paHourly_data$datetime)
   pwfsl_data <-
     PWFSLSmoke::monitor_load(tlim[1], tlim[2], monitorIDs = monitorID) %>%
     PWFSLSmoke::monitor_subset(tlim = tlim) %>%
     PWFSLSmoke::monitor_extractData()
-  
-  names(pwfsl_data) <- c("datetime", "PWFSL")
+  names(pwfsl_data) <- c("datetime", "pwfsl_pm25")
   
   # Combine data from both monitors into one dataframe
   both_data <- dplyr::full_join(paHourly_data, pwfsl_data, by = "datetime")
@@ -103,15 +106,15 @@ pat_externalFit <- function(
   
   # Define square xy limit now that we have the data for both monitors
   if ( is.null(xylim) ) {
-    dataMin <- min(c(0, both_data$PA, both_data$PWFSL), na.rm = TRUE)
-    dataMax <- max(c(both_data$PA, both_data$PWFSL), na.rm = TRUE)
+    dataMin <- min(c(0, both_data$pa_pm25, both_data$pwfsl_pm25), na.rm = TRUE)
+    dataMax <- max(c(both_data$pa_pm25, both_data$pwfsl_pm25), na.rm = TRUE)
     xylim <- c(dataMin, dataMax)
   }
   
   # ----- Linear model ---------------------------------------------------------
   
   # Model PWSFL as a function of PurpleAir (data should lie on a line)
-  model <- lm(both_data$PWFSL ~ both_data$PA, subset = NULL, 
+  model <- lm(both_data$pwfsl_pm25 ~ both_data$pa_pm25, subset = NULL, 
               weights = NULL)
   
   slope <- as.numeric(model$coefficients[2])      # as.numeric() to remove name
@@ -132,16 +135,20 @@ pat_externalFit <- function(
   
   if ( showPlot ) { 
     
+    timezone <- pat$meta$timezone[1]
+    year <- strftime(pat$data$datetime[1], "%Y", tz=timezone)
+    
     # LH Linear regression plot
-    lm_plot <- 
+    lr_plot <- 
       both_data %>% 
-      ggplot2::ggplot(ggplot2::aes(x = .data$PA, y = .data$PWFSL)) + 
+      ggplot2::ggplot(ggplot2::aes(x = .data$pa_pm25, y = .data$pwfsl_pm25)) + 
       ggplot2::geom_point(size = size, 
-                          shape = lm_shape,
-                          color = color,
+                          shape = lr_shape,
+                          color = lr_color,
                           alpha = alpha) + 
-      ggplot2::stat_smooth(geom = "line", color = "gray70", alpha = 0.9, 
-                           method = "lm") + 
+      ggplot2::geom_smooth(method = "lm", size = 0, alpha = 0.45) +
+      ggplot2::stat_smooth(geom = "line", color = lr_lcolor, alpha = lr_lalpha, 
+                           method = "lm", size = lr_lwd) + 
       ggplot2::labs(title = "Correlation", 
                     x = paste0("PurpleAir: \"", pat$meta$label, "\""),
                     y = paste0("PWFSL: ", monitorID)) + 
@@ -151,10 +158,7 @@ pat_externalFit <- function(
       ggplot2::coord_fixed() +    # square aspect ratio
       equationLabel
     
-    # Labels
-    timezone <- pat$meta$timezone[1]
-    year <- strftime(pat$data$datetime[1], "%Y", tz=timezone)
-    
+    # Time series PM 2.5 plot
     ts_plot <-
       tidy_data %>%
       ggplot2::ggplot() +
@@ -164,22 +168,24 @@ pat_externalFit <- function(
                           size = size,
                           shape = ts_shape,
                           alpha = alpha) +
-      ggplot2::scale_color_manual(values = c(pa_color, pwfsl_color)) +
+      ggplot2::scale_color_manual(values = c(pa_color, pwfsl_color),
+                                  name = "Source",
+                                  labels = c("PurpleAir", "PWFSL")) +
       ggplot2::ylim(xylim) +
       ggplot2::ggtitle(expression("PM"[2.5])) + 
-      ggplot2::xlab(year) + ggplot2::ylab("\u03bcg / m\u00b3") 
-              
+      ggplot2::xlab(year) + ggplot2::ylab("\u03bcg / m\u00b3")
+    
+    # Gather and arrange the linear regression and time series plots with a banner title
+    roundedDistance <- round((pat$meta$pwfsl_closestDistance / 1000), 1)
     bannerText <- paste0("Sensor / Monitor Comparision -- Distance: ",
-                         round((pat$meta$pwfsl_closestDistance/1000), 1),
-                         "km")
+                         roundedDistance, "km")
     bannerGrob <- grid::textGrob(bannerText,
                              just = "left",
                              x = 0.025,
-                             gp = grid::gpar(fontsize = 20, col="grey60"))
+                             gp = grid::gpar(fontsize = 20, col="grey50"))
     
-    plot <- gridExtra::grid.arrange(bannerGrob, lm_plot, ts_plot, 
+    plot <- gridExtra::grid.arrange(bannerGrob, lr_plot, ts_plot, 
                                     ncol = 1, heights = c(1, 6, 3))
-    print(plot)
   }
   
   return(invisible(model))
