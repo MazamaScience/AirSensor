@@ -49,3 +49,5 @@ rsconnect/
 # RStudio stuff
 *.Rproj
 
+# R Markdown output
+local_examples/*.html
