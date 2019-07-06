@@ -1,3 +1,8 @@
+# AirSensor 0.3.8 
+
+* Added `pat_aggregateOutlierCounts()` to count outliers per aggregation
+period.
+
 # AirSensor 0.3.7 
 
 * Added `wind_loadMonth()` to load pre-generated monthly wind data
