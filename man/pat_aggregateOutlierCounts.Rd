@@ -25,10 +25,10 @@ pat_aggregateOutlierCounts(pat, period = "1 hour", windowSize = 23,
 Aggreagte data with count of outliers in each bin
 }
 \examples{
-\dontrun{
+\donttest{
 
 df <- 
-pat_aggregateOutlierCounts(example_pat_failure)
+  pat_aggregateOutlierCounts(example_pat_failure_A)
 
 library(ggplot2)
 # Plot the counts 

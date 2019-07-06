@@ -45,7 +45,8 @@ In this case, no obvious errors are seen in the data.
 Occasionally one sees aphysical relative humidity values > 100. The example
 below also shows one of the particle detectors generating noisy data.
 
-```{r example_pat_failure_basic}
+```{r example_pat_failure_A_basic}
+data("example_pat_failure_A")
 pat <- example_pat_failure_A
 # use sampleSize = NULL to force display of every data point
 pat_multiplot(pat, sampleSize = NULL)
@@ -56,6 +57,7 @@ pat_multiplot(pat, sampleSize = NULL)
 One of the PM2.5 channels can also report completely bogus data:
 
 ```{r example_pat_failure_B_basic}
+data("example_pat_failure_B")
 pat <- example_pat_failure_B
 # use sampleSize = NULL to force display of every data point
 pat_multiplot(pat, sampleSize = NULL)
@@ -83,7 +85,7 @@ The `pat_qc()` function applies these thresholds and returns a *pat* object
 where out-of-spec values have been replaced by `NA`. See how the out-of-spec
 humidity values get replaced in `example_pat_failure_A`:
 
-```{r example_pat_failure_qc1}
+```{r example_pat_failure_A_qc1}
 pat <-
   example_pat_failure_A %>%
   pat_qc()

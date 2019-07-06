@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.8</span>
       </span>
     </div>
 
@@ -185,7 +185,7 @@ Only rows where the condition evaluates to TRUE are kept.</p></td>
 <span class='co'># Seal Beach</span>
 <span class='no'>scsb</span> <span class='kw'>&lt;-</span>
   <span class='no'>ca</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>pas_filter</span>(<span class='kw pkg'>stringr</span><span class='kw ns'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_detect.html'>str_detect</a></span>(<span class='no'>label</span>, <span class='st'>"^SCSB_"</span>))
+  <span class='fu'>pas_filter</span>(<span class='kw pkg'>stringr</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/stringr/topics/str_detect'>str_detect</a></span>(<span class='no'>label</span>, <span class='st'>"^SCSB_"</span>))
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>scsb</span>)</div><div class='output co'>#&gt; [1] 56</div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='fu'><a href='pas_leaflet.html'>pas_leaflet</a></span>(<span class='no'>ca</span>)

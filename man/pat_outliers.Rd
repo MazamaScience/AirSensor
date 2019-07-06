@@ -71,7 +71,7 @@ Additional documentation on the algorithm is available in
 \code{seismicRoll::findOutliers()}.
 }
 \examples{
-\dontrun{
+\donttest{
 example_pat \%>\%
   pat_filterDate(20180801, 20180815) \%>\%
   pat_outliers(replace = TRUE, showPlot = TRUE)

@@ -11,10 +11,10 @@
 #' @export
 #' @seealso pat_aggregate
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' 
 #' df <- 
-#'   pat_aggregateOutlierCounts(example_pat_failure)
+#'   pat_aggregateOutlierCounts(example_pat_failure_A)
 #' 
 #' library(ggplot2)
 #' # Plot the counts 

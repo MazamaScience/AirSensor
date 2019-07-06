@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Leaflet interactive map of PurpleAir sensors — pas_leaflet • AirSensor</title>
+<title>Flag outliers in vectorized data — .flagOutliers • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,28 +37,17 @@
 
 
 
-<meta property="og:title" content="Leaflet interactive map of PurpleAir sensors — pas_leaflet" />
+<meta property="og:title" content="Flag outliers in vectorized data — .flagOutliers" />
 
-<meta property="og:description" content="This function creates interactive maps that will be displayed in 
-  RStudio's 'Viewer' tab.
-Typical usage would be to use the parameter argument to display pm25 
-values from one of:
-&quot;pm25_current&quot;
-&quot;pm25_10min&quot;
-&quot;pm25_30min&quot;
-&quot;pm25_1hr&quot;
-&quot;pm25_6hr&quot;
-&quot;pm25_1day&quot;
-&quot;pm25_1week&quot;
-" />
-
-<meta property="og:description" content="Auxillary parameter arguments can be used to display various Purple Air 
-sensor data. Currently supported parameter arguments include:
-&quot;humidity&quot;
-&quot;pressure&quot;
-&quot;temperature&quot;
-&quot;pwfsl_closestDistance&quot;
-" />
+<meta property="og:description" content="Outlier detection using Hampel identification.  For each sample 
+ of a vector, the function computes the median of a center-aligned window composed of the sample 
+ and its windowSize surrounding samples. It also estimates the 
+ standard deviation of each sample about its window median using the median 
+ absolute deviation. If a sample differs from the median by more than three 
+ standard deviations, it is replaced with the median. If x is a matrix, then 
+ hampel treats each column of x as an independent channel. 
+The thresholdMin level is similar to a sigma value for normally 
+ distributed data." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -155,113 +144,54 @@ sensor data. Currently supported parameter arguments include:
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Leaflet interactive map of PurpleAir sensors</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pas_leaflet.R'><code>R/pas_leaflet.R</code></a></small>
-    <div class="hidden name"><code>pas_leaflet.Rd</code></div>
+    <h1>Flag outliers in vectorized data</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/utils-outliers.R'><code>R/utils-outliers.R</code></a></small>
+    <div class="hidden name"><code>dot-flagOutliers.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This function creates interactive maps that will be displayed in 
-  RStudio's 'Viewer' tab.</p>
-<p>Typical usage would be to use the <code>parameter</code> argument to display pm25 
-values from one of:</p><ul>
-<li><p>"pm25_current"</p></li>
-<li><p>"pm25_10min"</p></li>
-<li><p>"pm25_30min"</p></li>
-<li><p>"pm25_1hr"</p></li>
-<li><p>"pm25_6hr"</p></li>
-<li><p>"pm25_1day"</p></li>
-<li><p>"pm25_1week"</p></li>
-</ul>
-
-    <p>Auxillary <code>parameter</code> arguments can be used to display various Purple Air 
-sensor data. Currently supported <code>parameter</code> arguments include:</p><ul>
-<li><p>"humidity"</p></li>
-<li><p>"pressure"</p></li>
-<li><p>"temperature"</p></li>
-<li><p>"pwfsl_closestDistance"</p></li>
-</ul>
+    <p>Outlier detection using Hampel identification.  For each sample 
+ of a vector, the function computes the median of a center-aligned window composed of the sample 
+ and its <code>windowSize</code> surrounding samples. It also estimates the 
+ standard deviation of each sample about its window median using the median 
+ absolute deviation. If a sample differs from the median by more than three 
+ standard deviations, it is replaced with the median. If x is a matrix, then 
+ hampel treats each column of x as an independent channel.</p> 
+<p>The <code>thresholdMin</code> level is similar to a sigma value for normally 
+ distributed data.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pas_leaflet</span>(<span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>"pm25_1hr"</span>, <span class='kw'>paletteName</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>radius</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>opacity</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='kw'>maptype</span> <span class='kw'>=</span> <span class='st'>"terrain"</span>,
-  <span class='kw'>outsideOnly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>.flagOutliers</span>(<span class='no'>df</span>, <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>windowSize</span> <span class='kw'>=</span> <span class='fl'>23</span>,
+  <span class='kw'>thresholdMin</span> <span class='kw'>=</span> <span class='fl'>8</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pas</th>
-      <td><p>PurpleAir Synoptic <em>pas</em> object.</p></td>
+      <th>df</th>
+      <td><p>A data frame.</p></td>
     </tr>
     <tr>
       <th>parameter</th>
-      <td><p>Value to plot, e.g. <code>pm25_1hr</code>.</p></td>
+      <td><p>The data frame parameter to check and replace outliers</p></td>
     </tr>
     <tr>
-      <th>paletteName</th>
-      <td><p>Predefined color palette name. Can be of the following:</p><ul>
-<li><p>"AQI"</p></li>
-<li><p>"humidity</p></li>
-<li><p>"temperature</p></li>
-<li><p>"distance"</p></li>
-</ul></td>
+      <th>windowSize</th>
+      <td><p>The size of the rolling window</p></td>
     </tr>
     <tr>
-      <th>radius</th>
-      <td><p>Radius (pixels) of monitor circles.</p></td>
-    </tr>
-    <tr>
-      <th>opacity</th>
-      <td><p>Opacity of monitor circles.</p></td>
-    </tr>
-    <tr>
-      <th>maptype</th>
-      <td><p>Optional name of leaflet ProviderTiles to use, e.g. <code>terrain</code>.</p></td>
-    </tr>
-    <tr>
-      <th>outsideOnly</th>
-      <td><p>Logical specifying subsetting for monitors marked as 'outside'.</p></td>
+      <th>thresholdMin</th>
+      <td><p>The minimum threshold value to detect outliers</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A leaflet "plot" object which, if not assigned, is rendered in 
-Rstudio's 'Viewer' tab.</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>The <code>maptype</code> argument is mapped onto leaflet "ProviderTile" 
-  names. Current mappings include:</p><ol>
-<li><p>"roadmap" -- "OpenStreetMap"</p></li>
-<li><p>"satellite" -- "Esri.WorldImagery"</p></li>
-<li><p>"terrain" -- "Esri.WorldTopoMap"</p></li>
-<li><p>"toner" -- "Stamen.Toner"</p></li>
-</ol>
-    <p>If a character string not listed above is provided, it will be used as the 
-underlying map tile if available. See 
-<a href='https://leaflet-extras.github.io/leaflet-providers/'>https://leaflet-extras.github.io/leaflet-providers/</a> for a list of 
-"provider tiles" to use as the background map.</p>
+    <p><code>data.frame</code> A data.frame with an additional flag vector</p>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='co'># California</span>
-<span class='no'>ca</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='pas_load.html'>pas_load</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='pas_filter.html'>pas_filter</a></span>(<span class='no'>stateCode</span> <span class='kw'>==</span> <span class='st'>'CA'</span>)
-
-<span class='fu'>pas_leaflet</span>(<span class='no'>ca</span>, <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>"pm25_1hr"</span>)
-
-<span class='fu'>pas_leaflet</span>(<span class='no'>ca</span>, <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>"temperature"</span>)
-
-<span class='fu'>pas_leaflet</span>(<span class='no'>ca</span>, <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>"humidity"</span>)
-
-<span class='fu'>pas_leaflet</span>(<span class='no'>ca</span>, <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>"pwfsl_closestDistance"</span>, <span class='kw'>maptype</span> <span class='kw'>=</span> <span class='st'>"satellite"</span>)
-<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -269,11 +199,7 @@ underlying map tile if available. See
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>

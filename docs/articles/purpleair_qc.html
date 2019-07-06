@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.8</span>
       </span>
     </div>
 
@@ -133,16 +133,18 @@
 <h3 class="hasAnchor">
 <a href="#bad-humitidy-values-noisy-channel-a" class="anchor"></a>Bad Humitidy Values, Noisy Channel A</h3>
 <p>Occasionally one sees aphysical relative humidity values &gt; 100. The example below also shows one of the particle detectors generating noisy data.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pat &lt;-<span class="st"> </span>example_pat_failure_A
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(<span class="st">"example_pat_failure_A"</span>)
+pat &lt;-<span class="st"> </span>example_pat_failure_A
 <span class="co"># use sampleSize = NULL to force display of every data point</span>
 <span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(pat, <span class="dt">sampleSize =</span> <span class="ot">NULL</span>)</code></pre></div>
-<p><img src="purpleair_qc_files/figure-html/example_pat_failure_basic-1.png" width="672"></p>
+<p><img src="purpleair_qc_files/figure-html/example_pat_failure_A_basic-1.png" width="672"></p>
 </div>
 <div id="out-of-spec-pm2-5-values" class="section level3">
 <h3 class="hasAnchor">
 <a href="#out-of-spec-pm2-5-values" class="anchor"></a>Out-of-spec PM2.5 Values</h3>
 <p>One of the PM2.5 channels can also report completely bogus data:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pat &lt;-<span class="st"> </span>example_pat_failure_B
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(<span class="st">"example_pat_failure_B"</span>)
+pat &lt;-<span class="st"> </span>example_pat_failure_B
 <span class="co"># use sampleSize = NULL to force display of every data point</span>
 <span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(pat, <span class="dt">sampleSize =</span> <span class="ot">NULL</span>)</code></pre></div>
 <p><img src="purpleair_qc_files/figure-html/example_pat_failure_B_basic-1.png" width="672"></p>
@@ -161,7 +163,7 @@
 <span class="st">  </span>example_pat_failure_A <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/pat_qc.html">pat_qc</a></span>()
 <span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(pat, <span class="dt">sampleSize =</span> <span class="ot">NULL</span>)</code></pre></div>
-<p><img src="purpleair_qc_files/figure-html/example_pat_failure_qc1-1.png" width="672"></p>
+<p><img src="purpleair_qc_files/figure-html/example_pat_failure_A_qc1-1.png" width="672"></p>
 <p>The case of <code>example_pat_failure_B</code> is also improved by removing out-of-spec values but some questionable data still exist in channel A:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pat &lt;-
 <span class="st">  </span>example_pat_failure_B <span class="op">%&gt;%</span>
@@ -233,16 +235,16 @@ raw_data &lt;-<span class="st"> </span>
 <span class="co"># Look at a random sample of this new dataframe</span>
 dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(raw_data, <span class="dv">10</span>)</code></pre></div>
 <pre><code>##      datetime channel  pm25
-## 1  2019061123  pm25_B 13.30
-## 2  2019061104  pm25_B  4.45
-## 3  2019061123  pm25_A 21.58
-## 4  2019061107  pm25_A 10.40
-## 5  2019061115  pm25_B 10.65
-## 6  2019061122  pm25_A 15.81
-## 7  2019061111  pm25_A  9.24
-## 8  2019061101  pm25_A  6.25
-## 9  2019061100  pm25_B  4.75
-## 10 2019061117  pm25_B  4.93</code></pre>
+## 1  2019061120  pm25_A 13.09
+## 2  2019061110  pm25_A 11.47
+## 3  2019061121  pm25_B 13.52
+## 4  2019061118  pm25_A  8.90
+## 5  2019061109  pm25_B 10.31
+## 6  2019061109  pm25_A  9.74
+## 7  2019061112  pm25_B  5.86
+## 8  2019061104  pm25_A  5.71
+## 9  2019061107  pm25_B 10.54
+## 10 2019061122  pm25_A 15.99</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create a timeseries using boxplots</span>
 colors &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/rgb">rgb</a></span>(<span class="fl">0.9</span>, <span class="fl">0.25</span>, <span class="fl">0.2</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/rgb">rgb</a></span>(<span class="fl">0.2</span>, <span class="fl">0.25</span>, <span class="fl">0.9</span>))
 <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(raw_data, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(datetime, pm25, <span class="dt">color =</span> channel)) <span class="op">+</span><span class="st"> </span>
@@ -265,16 +267,16 @@ agg_data &lt;-<span class="st"> </span>
 <p><img src="purpleair_qc_files/figure-html/AB_boxplot-2.png" width="672"></p>
 <p>And here is the same for a day with serious problems:</p>
 <pre><code>##      datetime channel    pm25
-## 1  2019061222  pm25_B   16.91
-## 2  2019061219  pm25_A   12.54
-## 3  2019061223  pm25_A 3331.68
-## 4  2019061218  pm25_A   12.65
-## 5  2019061209  pm25_B   16.12
-## 6  2019061204  pm25_A 2894.14
-## 7  2019061204  pm25_A 1032.75
-## 8  2019061209  pm25_A   20.72
-## 9  2019061206  pm25_B   12.49
-## 10 2019061201  pm25_A   19.64</code></pre>
+## 1  2019061223  pm25_A 3324.47
+## 2  2019061218  pm25_B   11.97
+## 3  2019061200  pm25_A   38.45
+## 4  2019061209  pm25_A   18.41
+## 5  2019061210  pm25_B   15.31
+## 6  2019061208  pm25_B   16.53
+## 7  2019061204  pm25_A 2030.67
+## 8  2019061201  pm25_A   20.41
+## 9  2019061203  pm25_B   12.91
+## 10 2019061200  pm25_B   14.31</code></pre>
 <p><img src="purpleair_qc_files/figure-html/AB_boxplot_2-1.png" width="672"><img src="purpleair_qc_files/figure-html/AB_boxplot_2-2.png" width="672"></p>
 <p>We can see that the null hypothesis – the difference in means is entirely due to chance – is extremely unlikely <code>pm25_p &lt; 1e-30</code>, for example, only occur for hours where the A and B channels have hourly avergaes that are both highly precise (low std dev) and very different. We can thus use the <code>pm25_t</code> variable to flag those hours where the A and B channels disagree.</p>
 </div>
