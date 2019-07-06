@@ -14,7 +14,7 @@
 #' \dontrun{
 #' 
 #' df <- 
-#' pat_aggregateOutlierCounts(example_pat, period = "1 hour", windowSize = 31)
+#'   pat_aggregateOutlierCounts(example_pat_failure)
 #' 
 #' library(ggplot2)
 #' # Plot the counts 
@@ -35,7 +35,7 @@
 pat_aggregateOutlierCounts <- 
   function(
     pat,
-    period,
+    period = "1 hour",
     windowSize = 23,
     thresholdMin = 8
   ) { 
