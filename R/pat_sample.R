@@ -83,7 +83,7 @@ pat_sample <- function(
     # Find outliers 
     outlierIndex_A <- 
       which(
-        flagOutliers(
+        .flagOutliers(
           df = A_data, 
           parameter = "pm25_A",
           windowSize = 23,
@@ -93,7 +93,7 @@ pat_sample <- function(
     
     outlierIndex_B <- 
       which(
-        flagOutliers(
+        .flagOutliers(
           df = B_data, 
           parameter = "pm25_B",
           windowSize = 23,
