@@ -7,6 +7,7 @@
 * Renamed `airsensor_load~()` to `sensor_load~()`.
 * Added `sensor_~` utility functions: `isSensor()`, `isEmpty()`, `extractMeta()`
 , `extractData()`.
+* Added `pat_aggregateOutlierCounts()` to count outliers flagged and aggregate
 
 # AirSensor 0.3.6
 
