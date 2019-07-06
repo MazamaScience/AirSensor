@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>An Introduction to PurpleAir Time Series Data • AirSensor</title>
+<title>An Introduction to PurpleAir TimeSeries Data • AirSensor</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -15,7 +15,7 @@
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/lumen/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="An Introduction to PurpleAir Time Series Data">
+<script src="../pkgdown.js"></script><meta property="og:title" content="An Introduction to PurpleAir TimeSeries Data">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.7</span>
       </span>
     </div>
 
@@ -68,7 +68,7 @@
       <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
     </li>
     <li>
-      <a href="../articles/pat_introduction.html">An Introduction to PurpleAir Time Series Data</a>
+      <a href="../articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
     </li>
     <li>
       <a href="../articles/purpleair_qc.html">Purple Air Quality Control</a>
@@ -101,7 +101,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>An Introduction to PurpleAir Time Series Data</h1>
+      <h1>An Introduction to PurpleAir TimeSeries Data</h1>
                         <h4 class="author">Mazama Science</h4>
             
             <h4 class="date">2019-04-19</h4>
@@ -115,66 +115,98 @@
     
 <p><em>Time series</em> data provides a minute-by-minute database structure for transforming and analyzing <a href="https://www.purpleair.com/">PurpleAir</a> sensor data. This vignette demonstrates an example analysis of an individual monitor located in Seattle, Washington over a two-month duration in which the Pacific Northwest experienced <a href="https://www.usnews.com/news/healthiest-communities/articles/2018-08-19/air-quality-to-worsen-in-northwest-as-smoke-returns">hazardous air-quality conditions</a> caused by wildfires in British Columbia, Canada.</p>
 <p><strong>Disclaimer:</strong> It is highly recommended that you read <code>vignettes/pas_introduction.Rmd</code> before beginning this tutorial.</p>
-<div id="loading-purpleair-time-series-data" class="section level3">
-<h3 class="hasAnchor">
-<a href="#loading-purpleair-time-series-data" class="anchor"></a>Loading PurpleAir Time Series data</h3>
-<p>PurpleAir sensor readings are uploaded to the cloud every 80 seconds or so where they are stored for download and display on the PurpleAir website. After every interval, the synoptic data is refreshed and the outdated synoptic data is then stored in a <a href="https://thingspeak.com">ThingSpeak</a> database. In order to access the ThingSpeak channel API we must first load the synoptic database, which provides access tokens for each PurpleAir sensor – accessed by the monitor of interests label.</p>
+<div id="loading-purpleair-timeseries-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#loading-purpleair-timeseries-data" class="anchor"></a>Loading PurpleAir Timeseries data</h2>
+<p>PurpleAir sensor readings are uploaded to the cloud every 120 seconds where they are stored for download and display on the PurpleAir website. After every interval, the synoptic data is refreshed and the outdated synoptic data is then stored in a <a href="https://thingspeak.com">ThingSpeak</a> database. In order to access the ThingSpeak channel API we must first load the synoptic database, which provides access tokens for each PurpleAir sensor – accessed by the monitor of interests label.</p>
 <pre><code><a href="https://www.rdocumentation.org/packages/base/topics/library">library(MazamaCoreUtils)
 library(AirSensor)
 pas &lt;- pas_load()
 pat &lt;- pat_loadLatest(pas, "Seattle", startdate = 20180701, enddate = 20180901)</a></code></pre>
-<p>Notice when passing our synoptic dataframe “<code>pas</code>” to <code><a href="../reference/pat_loadLatest.html">pat_loadLatest()</a></code>, we also supply a unique identification label and date-interval. In this case, our monitor-of-interest (MOI) is a sensor named “Seattle” and our dates-of-interest (DOI) is 2018-07-01 to 2018-09-01.</p>
-<p><strong>Note:</strong> You must provide a label to <code><a href="../reference/pat_loadLatest.html">pat_loadLatest()</a></code> in order to supply ThingSpeak with the necessary metadata to access the sensors database. A DOI on the other hand is optional; by default not providing <code><a href="../reference/pat_loadLatest.html">pat_loadLatest()</a></code> with a start and end date will return exactly 1-week of time series data.</p>
+<p>Notice that when passing our synoptic dataframe “<code>pas</code>” to <code><a href="../reference/pat_loadLatest.html">pat_loadLatest()</a></code>, we also supply a unique identification label and date-interval. In this case, our monitor-of-interest (MOI) is a sensor named “Seattle” and our dates-of-interest are 2018-07-01 to 2018-09-01.</p>
+<p><strong>Note:</strong> You must provide a label to <code><a href="../reference/pat_loadLatest.html">pat_loadLatest()</a></code> in order to supply ThingSpeak with the necessary metadata to access the sensors database. A time range on the other hand is optional; by default not providing <code><a href="../reference/pat_loadLatest.html">pat_loadLatest()</a></code> with a start and end date will return the most recent week of time series data.</p>
 </div>
-<div id="purpleair-time-series-data" class="section level3">
-<h3 class="hasAnchor">
-<a href="#purpleair-time-series-data" class="anchor"></a>PurpleAir Time Series Data</h3>
+<div id="the-purpleairtimeseries-pat-data-model" class="section level2">
+<h2 class="hasAnchor">
+<a href="#the-purpleairtimeseries-pat-data-model" class="anchor"></a>The PurpleAirTimeseries (“pat”) Data Model</h2>
 <p>Let’s begin by exploring the attributes of the dataframe returned by the <code><a href="../reference/pat_loadLatest.html">pat_loadLatest()</a></code> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pat <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>()</code></pre></div>
 <pre><code>## [1] "meta" "data"</code></pre>
-<p><code>pat</code> contains <em>two</em> tables, <code>meta</code> and <code>data</code>.</p>
-<p>By convention <code>meta</code> contains metadata of the selected PurpleAir sensor – this includes non-time series data such as location information, labels, etc. The time series <code>data</code> contains time-interval PurpleAir sensor readings of PM2.5, temperature, humidity, and other pertinent sensor data.</p>
+<p><code>pat</code> contains <em>two</em> dataframes, <code>meta</code> and <code>data</code>.</p>
+<p>The <code>meta</code> dataframe contains metadata of the selected PurpleAir sensor – this includes non-time series data such as location information, labels, etc. The <code>data</code> dataframe contains datestamped sensor readings of PM2.5, temperature, humidity, and other pertinent sensor data.</p>
 <p>We’ll start by plotting PurpleAir’s raw sensor data. We can quickly display the time series data by using <code><a href="../reference/pat_multiplot.html">pat_multiplot()</a></code> and passing in our raw <code>pat</code> and desired plot type (“<code>all</code>” sensor data).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pat <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(<span class="dt">plottype =</span> <span class="st">"all"</span>)</code></pre></div>
 <p><img src="pat_introduction_files/figure-html/allPlot-1.png" width="672"></p>
 </div>
-<div id="exploring-time-series-data" class="section level3">
-<h3 class="hasAnchor">
-<a href="#exploring-time-series-data" class="anchor"></a>Exploring Time Series Data</h3>
-<p>From the overview plot above, we can gain a general picture of what local <code>"Seattle"</code> atmospheric conditions are like. To take a closer look at PM2.5, we can pass a more specific parameter into <code><a href="../reference/pat_multiplot.html">pat_multiplot()</a></code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pat <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(<span class="dt">plottype =</span> <span class="st">"pm25"</span>)</code></pre></div>
-<p><img src="pat_introduction_files/figure-html/pm25Plot-1.png" width="672"></p>
-<p>Our <code>pat</code> dataframe spans two months. While this provides a great overview of PM2.5, it is unwieldy to analyze if we are only interested in anomalous air quality. We can use <code><a href="../reference/pat_filterDate.html">pat_filterDate()</a></code> to subset our <code>pat</code> dates. In this case, we’ll reduce our DOI to 01 August 2018 - 01 September 2018.</p>
+<div id="exploring-time-series-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#exploring-time-series-data" class="anchor"></a>Exploring Time Series Data</h2>
+<p>Our <code>pat</code> dataframe spans two months. While this provides a great overview of PM2.5, it is unwieldy to analyze if we are only interested in anomalous air quality. We can use <code><a href="../reference/pat_filterDate.html">pat_filterDate()</a></code> to subset our <code>pat</code> dates. In this case, we’ll reduce our time range to 2018-08-01 - 2018-09-01.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pat_august &lt;-<span class="st"> </span>
 <span class="st">  </span>pat <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/pat_filterDate.html">pat_filterDate</a></span>(<span class="dt">startdate =</span> <span class="dv">20180801</span>, <span class="dt">enddate =</span> <span class="dv">20180901</span>)
 
 pat_august <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(<span class="dt">plottype =</span> <span class="st">"pm25"</span>)</code></pre></div>
+<span class="st">  </span><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(<span class="dt">plottype =</span> <span class="st">"pm25_over"</span>)</code></pre></div>
 <p><img src="pat_introduction_files/figure-html/augustPlot-1.png" width="672"></p>
-<p>Our reduced dataframe <code>pat_august</code> may be a smaller time interval but intermittent sensor errors still likely exist. In order to identify and remove PM2.5 outliers we can use <code><a href="../reference/pat_outliers.html">pat_outliers()</a></code>. We’d also like to display the outliers to compare. Each outlier will be marked with a red “*“. We can assign the filtered dataframe a name for future use.</p>
+<p>We can look for correlations in the raw data with <code><a href="../reference/pat_scatterplot.html">pat_scatterplot()</a></code>. When a sensor is properly functioning, the only correlations will be a strong positive one between between the A and B channels (<code>pm25_A:pm25_B</code>) and a strong negative one between temperature and humidity.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  pat_august <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="../reference/pat_scatterplot.html">pat_scatterplot</a></span>()</code></pre></div>
+<p><img src="pat_introduction_files/figure-html/scatterplot-1.png" width="672"></p>
+</div>
+<div id="outlier-detection" class="section level2">
+<h2 class="hasAnchor">
+<a href="#outlier-detection" class="anchor"></a>Outlier Detection</h2>
+<p>Our <code>pat_august</code> “pat” object displays some intermittent sensor errors that appear as spikes in the data. In order to identify and remove PM2.5 outliers like these we can use <code><a href="../reference/pat_outliers.html">pat_outliers()</a></code>. By default, this function will create a plot of the raw data with outliers marked with a red asterisk. It can also be used to replace outliers with window median values.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pat_august_filtered &lt;-<span class="st"> </span>
 <span class="st">  </span>pat_august <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/pat_outliers.html">pat_outliers</a></span>(<span class="dt">replace =</span> <span class="ot">TRUE</span>, <span class="dt">showPlot =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><img src="pat_introduction_files/figure-html/outlierPlot-1.png" width="672"></p>
-<p>Now that we have a filtered dataset we can begin looking into smaller datasets. 14 August 2018 appears to be the initial PM2.5 event. We can view a single day using <code><a href="../reference/pat_filterDate.html">pat_filterDate()</a></code> and <code><a href="../reference/pat_multiplot.html">pat_multiplot()</a></code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">august_<span class="dv">14</span> &lt;-<span class="st"> </span>
+</div>
+<div id="ab-channel-comparison" class="section level2">
+<h2 class="hasAnchor">
+<a href="#ab-channel-comparison" class="anchor"></a>A/B Channel Comparison</h2>
+<p>Now that we have a filtered dataset we can subset the data further and examine it in more detail. The <code><a href="../reference/pat_internalFit.html">pat_internalFit()</a></code> function will compare PM2.5 data from the A and B channels to verify that the sensor is functioning properly.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">one_week &lt;-<span class="st"> </span>
 <span class="st">  </span>pat_august <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="../reference/pat_filterDate.html">pat_filterDate</a></span>(<span class="dt">startdate =</span> <span class="dv">20180814</span>, <span class="dt">days =</span> <span class="dv">1</span>)
+<span class="st">  </span><span class="kw"><a href="../reference/pat_filterDate.html">pat_filterDate</a></span>(<span class="dt">startdate =</span> <span class="dv">20180813</span>, <span class="dt">days =</span> <span class="dv">7</span>)
 
-august_<span class="dv">14</span> <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(<span class="dt">plottype =</span> <span class="st">"all"</span>)</code></pre></div>
-<p><img src="pat_introduction_files/figure-html/unnamed-chunk-1-1.png" width="672"></p>
-<p>At this resolution we can see our PurpleAir Channel A &amp; B data align closely. We can also confirm see that humidity and temperature have an inverse relationship!</p>
-<p>This tutorials is in no way meant to be exhaustive – rather, it is to provide a brief overview of what time series data is, and how it can be used as insightful tool. PurpleAir time series datasets can be large and intimidating. But with a few simple functions we can view PurpleAir sensors with ease. See our other articles to explore deeper PurpleAir functionality.</p>
+<span class="co"># Channel A/B comparison</span>
+one_week <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/pat_internalFit.html">pat_internalFit</a></span>()</code></pre></div>
+<p><img src="pat_introduction_files/figure-html/internalFit-1.png" width="672"></p>
+<p>The high R<sup>2</sup> value says that the two channels are highly correlated while a slope of ~0.9 says that slight relative bias in the measurements. (Perfect alignment would have a slope of 1.0.)</p>
+</div>
+<div id="comparison-with-federal-monitors" class="section level2">
+<h2 class="hasAnchor">
+<a href="#comparison-with-federal-monitors" class="anchor"></a>Comparison with Federal Monitors</h2>
+<p>For locations near federal monitors that are part of the <a href="https://tools.airfire.org/monitoring/v4">USFS Monitoring site</a>, we can also compare the sensor data with hourly data from a federal monitor</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Sensor/Monitor comparison</span>
+one_week <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/pat_externalFit.html">pat_externalFit</a></span>()</code></pre></div>
+<p><img src="pat_introduction_files/figure-html/externalFit-1.png" width="672"></p>
+<p>Overall, this is an excellent fit with the PurpleAir sensor capturing the temporal evolution of the wildfire smoke event impacting Seattle. The sensor data is biased a little high relative to the monitoring data but the much higher temporal resolution of the sensor provides a rich dataset to work with.</p>
+<p>This package contains many additional functions for working with PurpleAir data and users are encouraged to review the reference documentation.</p>
+<p><em>Happy Exploring!</em></p>
 <p><em>Mazama Science</em></p>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+        <div id="tocnav">
+      <h2 class="hasAnchor">
+<a href="#tocnav" class="anchor"></a>Contents</h2>
+      <ul class="nav nav-pills nav-stacked">
+<li><a href="#loading-purpleair-timeseries-data">Loading PurpleAir Timeseries data</a></li>
+      <li><a href="#the-purpleairtimeseries-pat-data-model">The PurpleAirTimeseries (“pat”) Data Model</a></li>
+      <li><a href="#exploring-time-series-data">Exploring Time Series Data</a></li>
+      <li><a href="#outlier-detection">Outlier Detection</a></li>
+      <li><a href="#ab-channel-comparison">A/B Channel Comparison</a></li>
+      <li><a href="#comparison-with-federal-monitors">Comparison with Federal Monitors</a></li>
+      </ul>
+</div>
       </div>
 
 </div>

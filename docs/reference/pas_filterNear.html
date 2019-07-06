@@ -71,7 +71,7 @@ specified target coordinates." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.7</span>
       </span>
     </div>
 
@@ -103,7 +103,7 @@ specified target coordinates." />
       <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
     </li>
     <li>
-      <a href="../articles/pat_introduction.html">An Introduction to PurpleAir Time Series Data</a>
+      <a href="../articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
     </li>
     <li>
       <a href="../articles/purpleair_qc.html">Purple Air Quality Control</a>
@@ -190,13 +190,15 @@ separated by a space, such as <code>"250 m"</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>pas_filterNear</span>(
-    <span class='kw'>pas</span> <span class='kw'>=</span> <span class='no'>example_pas</span>,
-    <span class='kw'>latitude</span> <span class='kw'>=</span> <span class='fl'>47.61702</span>,
-    <span class='kw'>longitude</span> <span class='kw'>=</span> -<span class='fl'>122.34376</span>
-    )
-<span class='co'># }</span><div class='input'>
-</div></pre>
+<span class='co'># Near Diamond Bar, CA</span>
+<span class='no'>diamond_bar</span> <span class='kw'>&lt;-</span>
+  <span class='fu'><a href='pas_load.html'>pas_load</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>pas_filterNear</span>(<span class='kw'>latitude</span> <span class='kw'>=</span> <span class='fl'>34.001667</span>,
+                 <span class='kw'>longitude</span> <span class='kw'>=</span> -<span class='fl'>117.820833</span>,
+                 <span class='kw'>radius</span> <span class='kw'>=</span> <span class='st'>"20 km"</span>)
+
+<span class='fu'><a href='pas_leaflet.html'>pas_leaflet</a></span>(<span class='no'>diamond_bar</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

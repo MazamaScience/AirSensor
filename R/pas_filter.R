@@ -18,8 +18,22 @@
 #' 
 #' @examples
 #' nrow(example_pas)
+#' 
+#' # California
 #' ca <- pas_filter(example_pas, stateCode == "CA")
 #' nrow(ca)
+#' 
+#' # Seal Beach
+#' scsb <- 
+#'   ca %>%
+#'   pas_filter(stringr::str_detect(label, "^SCSB_"))
+#' nrow(scsb)
+#' 
+#' \dontrun{
+#' pas_leaflet(ca)
+#' 
+#' pas_leaflet(scsb, maptype = "satellite")
+#' }
 
 pas_filter <- function(pas, ...) { 
 

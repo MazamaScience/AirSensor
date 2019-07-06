@@ -72,9 +72,21 @@ Function for plotting PM2.5 concentration in polar coordinates
 showing concentration by wind speed and direction.
 }
 \examples{
-\dontrun{
-sensor_polarPlot(sensor = sensor, windData = wind, resolution = "normal")
-}
+
+
+# Use example sensor, whose date range is 2019-08-01 to 2019-10-01
+sensor <- example_sensor
+
+# Create wind data using same date range
+windData <- wind_load(
+  monitorID = "060950004_01", 
+  startdate = "20180801", 
+  enddate = "20181001"
+  )
+
+# Plot polar plot using
+sensor_polarPlot(sensor, windData, resolution = "normal")
+
 
 }
 \seealso{

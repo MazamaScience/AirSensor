@@ -198,7 +198,7 @@ AirShiny_barplot <-
       )
     
     # Create color palette 
-    palette <- colorRampPalette(colors = rev(c("#9733ee", "#da22ff")))
+    palette <- grDevices::colorRampPalette(colors = rev(c("#9733ee", "#da22ff")))
 
     # Plot
     pm25_plot <- 

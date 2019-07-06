@@ -9,6 +9,15 @@
 , `extractData()`.
 * Added `example_sensor` dataset for use in documentation examples.
 * Added `local_examples/LA_fireworks_2019.R`
+* Default required data retentaion rate during hourly aggregation was increased
+from 10/30 to 20/30 (`min_count = 20`).
+* Improved examples in the documentation.
+* Suppressing warnings from `pat_scatterplot()`.
+* Updated "PurpleAir Timeseries" vignette.
+* Added `returnAllColumns` option to `PurpleAirQC_~1 functions.
+* New `PurpleQC_validationPlot()` function.
+* `createPATimeseriesObject()` now retains additional metadata:
+`sensorManufacturer`, `targetPollutant`, `technologyType`, `communityRegion`
 
 # AirSensor 0.3.6
 
