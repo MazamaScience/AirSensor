@@ -93,7 +93,7 @@ pat_aggregateOutlierCounts <-
     
     # map .flagOutliers to all applicable vectors
     flagged_outliers<-
-      purrr:::map2(
+      purrr::map2(
         df2count, 
         names2count, 
         AirSensor:::.flagOutliers, 
