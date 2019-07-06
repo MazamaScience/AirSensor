@@ -96,7 +96,7 @@ pat_aggregateOutlierCounts <-
       purrr::map2(
         df2count, 
         names2count, 
-        AirSensor:::.flagOutliers, 
+        .flagOutliers, 
         windowSize, 
         thresholdMin
       )
@@ -113,7 +113,7 @@ pat_aggregateOutlierCounts <-
     pat[["data"]] <- cbind(pat[["data"]], flags)
     
     counts <- 
-      AirSensor:::.pat_agg(
+      .pat_agg(
         pat = pat, 
         stat = "sum", 
         periodSeconds = periodSeconds, 
