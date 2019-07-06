@@ -12,8 +12,8 @@
 # docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --pattern=^SCNP_..$
 #
 
-#  --- . --- .  AirSensor 0.3.5
-VERSION = "0.3.3" 
+#  --- . --- .  AirSensor 0.3.7
+VERSION = "0.3.4" 
 
 library(optparse)      # to parse command line flags
 
@@ -99,7 +99,7 @@ if ( !dir.exists(opt$logDir) )
 logger.setup(
   traceLog = file.path(opt$logDir, "createMonthlyAirSensor_TRACE.log"),
   debugLog = file.path(opt$logDir, "createMonthlyAirSensor_DEBUG.log"), 
-  infoLog = file.path(opt$logDir, "createMonthlyAirSensor_INFO.log"), 
+  infoLog  = file.path(opt$logDir, "createMonthlyAirSensor_INFO.log"), 
   errorLog = file.path(opt$logDir, "createMonthlyAirSensor_ERROR.log")
 )
 

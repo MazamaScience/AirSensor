@@ -46,7 +46,7 @@ Occasionally one sees aphysical relative humidity values > 100. The example
 below also shows one of the particle detectors generating noisy data.
 
 ```{r example_pat_failure_basic}
-pat <- example_pat_failure
+pat <- example_pat_failure_A
 # use sampleSize = NULL to force display of every data point
 pat_multiplot(pat, sampleSize = NULL)
 ```
@@ -81,11 +81,11 @@ which define the valid measurement range for each variable:
 
 The `pat_qc()` function applies these thresholds and returns a *pat* object
 where out-of-spec values have been replaced by `NA`. See how the out-of-spec
-humidity values get replaced in `example_pat_failure`:
+humidity values get replaced in `example_pat_failure_A`:
 
 ```{r example_pat_failure_qc1}
 pat <-
-  example_pat_failure %>%
+  example_pat_failure_A %>%
   pat_qc()
 pat_multiplot(pat, sampleSize = NULL)
 ```
@@ -115,7 +115,7 @@ can reivew which statistics are calcualted:
 
 ```{r pat_aggregate}
 df <-
-  example_pat_failure %>%
+  example_pat_failure_A %>%
   pat_qc() %>%
   pat_aggregate(period = "1 hour")
 class(df)
@@ -286,11 +286,11 @@ example_pat %>%
   sensor_extractData() %>%
   plot(type = "h", lwd=2, main = "example_pat")
 
-example_pat_failure %>%
+example_pat_failure_A %>%
   pat_filterDate(20190409, 20190417) %>%
   pat_createAirSensor() %>%
   sensor_extractData() %>%
-  plot(type = "h", lwd=2, main = "example_pat_failure")
+  plot(type = "h", lwd=2, main = "example_pat_failure_A")
 
 example_pat_failure_B %>%
   pat_filterDate(20190611, 20190618) %>%

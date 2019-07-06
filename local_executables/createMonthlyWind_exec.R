@@ -12,8 +12,8 @@
 # docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/pwfslsmoke /app/createMonthlyWind_exec.R
 #
 
-# ---- . ---- . missing startdate variable
-VERSION = "0.0.4" 
+# ---- . ---- . AirSensor 0.3.7
+VERSION = "0.0.5" 
 
 suppressPackageStartupMessages({
   library(MazamaCoreUtils)

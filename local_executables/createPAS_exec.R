@@ -11,8 +11,8 @@
 # docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/airsensor /app/createPAS_exec.R 
 #
 
-#  --- . --- . AirSensor 0.3.5
-VERSION = "0.1.3"
+#  --- . --- . AirSensor 0.3.7
+VERSION = "0.1.4"
 
 # The following packages are attached here so they show up in the sessionInfo
 suppressPackageStartupMessages({

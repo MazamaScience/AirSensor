@@ -133,7 +133,7 @@
 <h3 class="hasAnchor">
 <a href="#bad-humitidy-values-noisy-channel-a" class="anchor"></a>Bad Humitidy Values, Noisy Channel A</h3>
 <p>Occasionally one sees aphysical relative humidity values &gt; 100. The example below also shows one of the particle detectors generating noisy data.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pat &lt;-<span class="st"> </span>example_pat_failure
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pat &lt;-<span class="st"> </span>example_pat_failure_A
 <span class="co"># use sampleSize = NULL to force display of every data point</span>
 <span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(pat, <span class="dt">sampleSize =</span> <span class="ot">NULL</span>)</code></pre></div>
 <p><img src="purpleair_qc_files/figure-html/example_pat_failure_basic-1.png" width="672"></p>
@@ -156,9 +156,9 @@
 <pre><code>  0 &lt;   humidity  &lt; 100
 -40 &lt; temperature &lt; 185
   0 &lt;     pm25    &lt; 1000</code></pre>
-<p>The <code><a href="../reference/pat_qc.html">pat_qc()</a></code> function applies these thresholds and returns a <em>pat</em> object where out-of-spec values have been replaced by <code>NA</code>. See how the out-of-spec humidity values get replaced in <code>example_pat_failure</code>:</p>
+<p>The <code><a href="../reference/pat_qc.html">pat_qc()</a></code> function applies these thresholds and returns a <em>pat</em> object where out-of-spec values have been replaced by <code>NA</code>. See how the out-of-spec humidity values get replaced in <code>example_pat_failure_A</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pat &lt;-
-<span class="st">  </span>example_pat_failure <span class="op">%&gt;%</span>
+<span class="st">  </span>example_pat_failure_A <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/pat_qc.html">pat_qc</a></span>()
 <span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(pat, <span class="dt">sampleSize =</span> <span class="ot">NULL</span>)</code></pre></div>
 <p><img src="purpleair_qc_files/figure-html/example_pat_failure_qc1-1.png" width="672"></p>
@@ -175,7 +175,7 @@
 <p>The <code><a href="../reference/pat_aggregate.html">pat_aggregate()</a></code> function is used in the conversion of <em>pat</em> data objects into dataframes with a uniform, typically hourly, time axis. The aggregation process invovles creating regular time bins and then calculating a variety of statistics for the data within each bin. We end up with a dataframe with a regular time axis and multiple columns of statistics for each input variable.</p>
 <p>Applying our uncontroversial <code><a href="../reference/pat_qc.html">pat_qc()</a></code> as the first step in the pipeline, we can reivew which statistics are calcualted:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-
-<span class="st">  </span>example_pat_failure <span class="op">%&gt;%</span>
+<span class="st">  </span>example_pat_failure_A <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/pat_qc.html">pat_qc</a></span>() <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/pat_aggregate.html">pat_aggregate</a></span>(<span class="dt">period =</span> <span class="st">"1 hour"</span>)
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(df)</code></pre></div>
@@ -233,16 +233,16 @@ raw_data &lt;-<span class="st"> </span>
 <span class="co"># Look at a random sample of this new dataframe</span>
 dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(raw_data, <span class="dv">10</span>)</code></pre></div>
 <pre><code>##      datetime channel  pm25
-## 1  2019061103  pm25_B  3.45
-## 2  2019061100  pm25_B  4.84
-## 3  2019061110  pm25_A  9.56
-## 4  2019061108  pm25_A 10.79
-## 5  2019061112  pm25_A 10.25
-## 6  2019061122  pm25_B 12.19
-## 7  2019061102  pm25_A  5.54
-## 8  2019061112  pm25_B  9.06
-## 9  2019061100  pm25_A  7.51
-## 10 2019061111  pm25_A  9.94</code></pre>
+## 1  2019061123  pm25_B 13.30
+## 2  2019061104  pm25_B  4.45
+## 3  2019061123  pm25_A 21.58
+## 4  2019061107  pm25_A 10.40
+## 5  2019061115  pm25_B 10.65
+## 6  2019061122  pm25_A 15.81
+## 7  2019061111  pm25_A  9.24
+## 8  2019061101  pm25_A  6.25
+## 9  2019061100  pm25_B  4.75
+## 10 2019061117  pm25_B  4.93</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create a timeseries using boxplots</span>
 colors &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/rgb">rgb</a></span>(<span class="fl">0.9</span>, <span class="fl">0.25</span>, <span class="fl">0.2</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/rgb">rgb</a></span>(<span class="fl">0.2</span>, <span class="fl">0.25</span>, <span class="fl">0.9</span>))
 <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(raw_data, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(datetime, pm25, <span class="dt">color =</span> channel)) <span class="op">+</span><span class="st"> </span>
@@ -265,16 +265,16 @@ agg_data &lt;-<span class="st"> </span>
 <p><img src="purpleair_qc_files/figure-html/AB_boxplot-2.png" width="672"></p>
 <p>And here is the same for a day with serious problems:</p>
 <pre><code>##      datetime channel    pm25
-## 1  2019061206  pm25_B   13.01
-## 2  2019061215  pm25_B   13.86
-## 3  2019061216  pm25_B      NA
-## 4  2019061211  pm25_A   19.38
-## 5  2019061206  pm25_A 3325.85
-## 6  2019061210  pm25_B   15.79
-## 7  2019061223  pm25_A 3330.69
-## 8  2019061207  pm25_A 3332.92
-## 9  2019061204  pm25_B   14.48
-## 10 2019061212  pm25_B   15.11</code></pre>
+## 1  2019061222  pm25_B   16.91
+## 2  2019061219  pm25_A   12.54
+## 3  2019061223  pm25_A 3331.68
+## 4  2019061218  pm25_A   12.65
+## 5  2019061209  pm25_B   16.12
+## 6  2019061204  pm25_A 2894.14
+## 7  2019061204  pm25_A 1032.75
+## 8  2019061209  pm25_A   20.72
+## 9  2019061206  pm25_B   12.49
+## 10 2019061201  pm25_A   19.64</code></pre>
 <p><img src="purpleair_qc_files/figure-html/AB_boxplot_2-1.png" width="672"><img src="purpleair_qc_files/figure-html/AB_boxplot_2-2.png" width="672"></p>
 <p>We can see that the null hypothesis – the difference in means is entirely due to chance – is extremely unlikely <code>pm25_p &lt; 1e-30</code>, for example, only occur for hours where the A and B channels have hourly avergaes that are both highly precise (low std dev) and very different. We can thus use the <code>pm25_t</code> variable to flag those hours where the A and B channels disagree.</p>
 </div>

@@ -178,15 +178,15 @@ Only rows where the condition evaluates to TRUE are kept.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>example_pas</span>)</div><div class='output co'>#&gt; [1] 7812</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>example_pas</span>)</div><div class='output co'>#&gt; [1] 7864</div><div class='input'>
 <span class='co'># California</span>
 <span class='no'>ca</span> <span class='kw'>&lt;-</span> <span class='fu'>pas_filter</span>(<span class='no'>example_pas</span>, <span class='no'>stateCode</span> <span class='kw'>==</span> <span class='st'>"CA"</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>ca</span>)</div><div class='output co'>#&gt; [1] 4081</div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>ca</span>)</div><div class='output co'>#&gt; [1] 4064</div><div class='input'>
 <span class='co'># Seal Beach</span>
 <span class='no'>scsb</span> <span class='kw'>&lt;-</span>
   <span class='no'>ca</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>pas_filter</span>(<span class='kw pkg'>stringr</span><span class='kw ns'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_detect.html'>str_detect</a></span>(<span class='no'>label</span>, <span class='st'>"^SCSB_"</span>))
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>scsb</span>)</div><div class='output co'>#&gt; [1] 60</div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>scsb</span>)</div><div class='output co'>#&gt; [1] 56</div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='fu'><a href='pas_leaflet.html'>pas_leaflet</a></span>(<span class='no'>ca</span>)
 

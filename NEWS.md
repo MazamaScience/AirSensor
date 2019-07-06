@@ -18,6 +18,7 @@ from 10/30 to 20/30 (`min_count = 20`).
 * New `PurpleQC_validationPlot()` function.
 * `createPATimeseriesObject()` now retains additional metadata:
 `sensorManufacturer`, `targetPollutant`, `technologyType`, `communityRegion`
+* Updated all package datasets so they include additional metadata.
 
 # AirSensor 0.3.6
 
