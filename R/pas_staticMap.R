@@ -49,7 +49,9 @@
 #'
 #' @examples
 #' \dontrun{
-#' LA_basin <- pas_load() %>% pas_filterArea(-118.5, -117.5, 33.5, 34.5)
+#' LA_basin <- 
+#'   pas_load() %>% 
+#'   pas_filterArea(-118.5, -117.5, 33.5, 34.5)
 #' pas_staticMap(LA_basin, palette = "AQI", zoomAdjust = 1)
 #' }
 

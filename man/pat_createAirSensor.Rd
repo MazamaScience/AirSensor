@@ -6,7 +6,7 @@
 \usage{
 pat_createAirSensor(pat = NULL, period = "1 hour",
   parameter = "pm25", channel = "ab", qc_algorithm = "hourly_AB_01",
-  min_count = 10)
+  min_count = 20)
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}

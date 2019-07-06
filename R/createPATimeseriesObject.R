@@ -50,7 +50,11 @@ createPATimeseriesObject <- function(
                   .data$stateCode, 
                   .data$timezone, 
                   .data$pwfsl_closestDistance, 
-                  .data$pwfsl_closestMonitorID)
+                  .data$pwfsl_closestMonitorID,
+                  .data$sensorManufacturer,
+                  .data$targetPollutant,
+                  .data$technologyType,
+                  .data$communityRegion)
   
   # ----- Simplify data --------------------------------------------------------
   

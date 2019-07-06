@@ -4,7 +4,8 @@
 \alias{PurpleAirQC_hourly_AB_01}
 \title{Apply QC to Aggregation Statistics}
 \usage{
-PurpleAirQC_hourly_AB_01(aggregationStats, min_count = 10)
+PurpleAirQC_hourly_AB_01(aggregationStats, min_count = 20,
+  returnAllColumns = FALSE)
 }
 \arguments{
 \item{aggregationStats}{Dataframe of statistics as returned by
@@ -12,6 +13,10 @@ PurpleAirQC_hourly_AB_01(aggregationStats, min_count = 10)
 
 \item{min_count}{Aggregation bins with fewer than `min_count` measurements
 will be marked as `NA`.}
+
+\item{returnAllColumns}{Logical specifying whether to return all columns
+of statistical data generated for QC algorithm or just the final `pm25` 
+result.}
 }
 \value{
 Data frame with columns \code{datetime} and \code{pm25}.
@@ -22,10 +27,16 @@ from the A and B channels and applying the following QC logic:
 
 \enumerate{
 \item{Create pm25 by averaging the A and B channel aggregation means}
-\item{Invalidate data where:  (min_count < 10)}
+\item{Invalidate data where:  (min_count < 20)}
 \item{Invalidate data where:  (p-value < 1e-4) & (mean_diff > 10)}
 \item{Invalidate data where:  (pm25 < 100) & (mean_diff > 20)}
 }
+}
+\note{
+Purple Air II sensors reporting after the June, 2019 firmware
+upgrade report data every 2 minutes or 30 measurements per hour. The default
+setting of \code{min_count = 20} is equivalent to a required data recovery
+rate of 67%.
 }
 \examples{
 \dontrun{

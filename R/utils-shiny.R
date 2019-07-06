@@ -196,6 +196,9 @@ AirShiny_barplot <-
         period = period, 
         channel = "ab"
       )
+    
+    # Create color palette 
+    palette <- grDevices::colorRampPalette(colors = rev(c("#9733ee", "#da22ff")))
 
     # Plot
     pm25_plot <- 
@@ -207,7 +210,8 @@ AirShiny_barplot <-
             enddate, 
             tzone = "America/Los_Angeles" 
           ), 
-          y = ast$data[[2]]
+          y = ast$data[[2]], 
+          colours = ast$data[[2]]
         )
       ) +
       ggplot2::ggtitle(
@@ -217,8 +221,20 @@ AirShiny_barplot <-
       ggplot2::xlab("Datetime") + 
       ggplot2::ylab("\u03bcg / m\u00b3") + 
       ggplot2::theme_minimal() + 
-      ggplot2::scale_fill_gradient(low = "#9733ee", high = "#da22ff")
-
+      ggplot2::scale_fill_gradientn(colors = palette(100), limits = c(0, 200)) + 
+      ggplot2::scale_x_datetime(date_breaks = "1 day") + 
+      ggplot2::theme(
+        axis.text.x = ggplot2::element_text(
+          angle = ifelse(enddate - startdate > 10, 25, 0), 
+          hjust = 1, 
+          size = 12), 
+        axis.text.y = ggplot2::element_text(size = 12),
+        axis.title.x = ggplot2::element_text(size = 14),
+        axis.title.y = ggplot2::element_text(size = 14)
+      )
+    
+    
+    
     # Average PM2.5 barplot
     pm25_avg_bar <- 
       ggplot2::geom_bar(                   

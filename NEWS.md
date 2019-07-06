@@ -2,11 +2,22 @@
 
 * Added `wind_loadMonth()` to load pre-generated monthly wind data
 * Added `wind_load()` to load pre-generated wind data from timestamps
-* Updated `sensor_pollutionRose()` to accept new wind model
+* Updated `sensor_pollutionRose()` to accept new wind data model
 * Added `sensor_polarPlot()` to plot bivariate polar plots
 * Renamed `airsensor_load~()` to `sensor_load~()`.
 * Added `sensor_~` utility functions: `isSensor()`, `isEmpty()`, `extractMeta()`
 , `extractData()`.
+* Added `example_sensor` dataset for use in documentation examples.
+* Added `local_examples/LA_fireworks_2019.R`
+* Default required data retentaion rate during hourly aggregation was increased
+from 10/30 to 20/30 (`min_count = 20`).
+* Improved examples in the documentation.
+* Suppressing warnings from `pat_scatterplot()`.
+* Updated "PurpleAir Timeseries" vignette.
+* Added `returnAllColumns` option to `PurpleAirQC_~1 functions.
+* New `PurpleQC_validationPlot()` function.
+* `createPATimeseriesObject()` now retains additional metadata:
+`sensorManufacturer`, `targetPollutant`, `technologyType`, `communityRegion`
 
 # AirSensor 0.3.6
 

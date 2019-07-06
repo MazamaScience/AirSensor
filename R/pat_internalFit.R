@@ -9,9 +9,15 @@
 #' @param pat PurpleAir Timeseries \emph{pat} object.
 #' @param showPlot Logical specifying whether to generate a model fit plot.
 #' @param size Size of points.
-#' @param shape Symbol to use for points.
-#' @param color Color of points.
+#' @param a_color Color of time series channel A points.
+#' @param b_color Color of time series channel B points.
 #' @param alpha Opacity of points.
+#' @param lr_shape Symbol to use for linear regression points.
+#' @param lr_color Color of linear regression points.
+#' @param lr_lwd Width of linear regression line.
+#' @param lr_lcolor Color of linear regression line.
+#' @param lr_lalpha Opacity of linear regression line.
+#' @param ts_shape Symbol to use for time series points.
 #' @param xylim Vector of (lo,hi) limits used as limits on the correlation plot 
 #' axes -- useful for zooming in.
 #' 
@@ -32,9 +38,15 @@ pat_internalFit <- function(
   pat = NULL,
   showPlot = TRUE,
   size = 1,
-  shape = 15,
-  color = "purple",
+  a_color = "red",
+  b_color = "blue",
   alpha = 0.25,
+  lr_shape = 15,
+  lr_color = "black",
+  lr_lwd = 1.5,
+  lr_lcolor = "tomato",
+  lr_lalpha = 0.45,
+  ts_shape = 1,
   xylim = NULL
 ) {
   
@@ -55,6 +67,19 @@ pat_internalFit <- function(
     dataMax <- max(c(data$pm25_A, data$pm25_B), na.rm = TRUE)
     xylim <- c(dataMin, dataMax)
   }
+  
+  a_pm25 <- 
+    data %>%
+    dplyr::select(.data$datetime, .data$pm25_A)
+  
+  b_pm25 <- 
+    data %>%
+    dplyr::select(.data$datetime, .data$pm25_B)
+  
+  # Create a tidy dataframe appropriate for ggplot
+  tidy_data <-
+    dplyr::full_join(a_pm25, b_pm25, by = "datetime") %>%
+    tidyr::gather("channel", "pm25", -.data$datetime)
   
   # ----- Linear model ---------------------------------------------------------
   
@@ -79,18 +104,23 @@ pat_internalFit <- function(
   
   if ( showPlot ) { 
     
+    timezone <- pat$meta$timezone[1]
+    year <- strftime(pat$data$datetime[1], "%Y", tz=timezone)
+    
     # LH Linear regression plot
-    lm_plot <- 
+    lr_plot <- 
       pat$data %>% 
       ggplot2::ggplot(ggplot2::aes(x = .data$pm25_B, y = .data$pm25_A)) + 
       ggplot2::geom_point(size = size, 
-                          shape = shape,
-                          color = color,
-                          alpha = alpha) + 
-      ggplot2::geom_smooth(method = "lm", color = "gray80", alpha = 1.0) + 
-      ggplot2::labs(title = "Channel A vs. Channel B", 
-                    x = "Channel B PM 2.5 (\U00B5g/m3)", 
-                    y = "Channel A PM 2.5 (\U00B5g/m3)") + 
+                         shape = lr_shape,
+                       color = lr_color,
+                       alpha = alpha) + 
+      ggplot2::geom_smooth(method = "lm", size = 0, alpha = 0.45) +
+      ggplot2::stat_smooth(geom = "line", color = lr_lcolor, alpha = lr_lalpha, 
+                           method = "lm", size = lr_lwd) + 
+      ggplot2::labs(title = "Channel Linear Regression", 
+                    x = "Channel B (\u03bcg / m\u00b3)", 
+                    y = "Channel A (\u03bcg / m\u00b3)") + 
       ggplot2::theme_bw() + 
       ggplot2::xlim(xylim) +
       ggplot2::ylim(xylim) +
@@ -102,11 +132,7 @@ pat_internalFit <- function(
     # pm25_plot <- invisible(pat_multiplot(pat = pat, 
     #                                      plottype = "pm25_over") )
     
-    # Copied from pat_multiplot 
-    
-    # Labels
-    timezone <- pat$meta$timezone[1]
-    year <- strftime(pat$data$datetime[1], "%Y", tz=timezone)
+    # Copied from pat_multiplot
     
     # TODO:  Do we need to do this to get local timezones?
     # # Create a tibble
@@ -117,32 +143,34 @@ pat_internalFit <- function(
     #                 humidity = pat$data$humidity, 
     #                 temp = pat$data$temperature)
     
-    pm25_plot <- 
-      pat$data %>% 
+    ts_plot <-
+      tidy_data %>%
       ggplot2::ggplot() +
-      ggplot2::geom_point(ggplot2::aes(x = .data$datetime, y = .data$pm25_A),
+      ggplot2::geom_point(ggplot2::aes(x = .data$datetime,
+                                       y = .data$pm25,
+                                       color = .data$channel),
                           size = size,
-                          shape = shape,
-                          color = rgb(0.9, 0.25, 0.2), # pat_multiplot default
+                          shape = ts_shape,
                           alpha = alpha) +
-      ggplot2::geom_point(ggplot2::aes(x = .data$datetime, y = .data$pm25_B),
-                          size = size,
-                          shape = shape,
-                          color = rgb(0.2, 0.25, 0.9), # pat_multiplot default
-                          alpha = alpha) +
+      ggplot2::scale_color_manual(values = c(a_color, b_color),
+                                  name = "Channel",
+                                  labels = c("A", "B")) +
       ggplot2::ylim(xylim) +
-      ggplot2::ggtitle(expression("Channel A/B PM"[2.5])) + 
-      ggplot2::xlab(year) + ggplot2::ylab("\u03bcg / m\u00b3") 
+      ggplot2::ggtitle(expression("PM"[2.5])) + 
+      ggplot2::xlab(year) + ggplot2::ylab("\u03bcg / m\u00b3")
     
     
-    plot <- multi_ggplot(lm_plot, pm25_plot, 
-                         cols = 1, plotList = NULL)
+    # Gather and arrange the linear regression and time series plots with a banner title
+    bannerText <- paste0("A / B Channel Comparision -- ", pat$meta$label)
+    bannerGrob <- grid::textGrob(bannerText,
+                                 just = "left",
+                                 x = 0.025,
+                                 gp = grid::gpar(fontsize = 20, col="grey50"))
     
-    print(plot)
-    
+    plot <- gridExtra::grid.arrange(bannerGrob, lr_plot, ts_plot, 
+                                    ncol = 1, heights = c(1, 6, 3))
   }
   
   return(invisible(model))
-  
 }
 
