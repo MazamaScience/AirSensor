@@ -165,7 +165,7 @@ pat_internalFit <- function(
     bannerGrob <- grid::textGrob(bannerText,
                                  just = "left",
                                  x = 0.025,
-                                 gp = grid::gpar(fontsize = 20, col="grey50"))
+                                 gp = grid::gpar(fontsize = 18, col="grey50"))
     
     plot <- gridExtra::grid.arrange(bannerGrob, lr_plot, ts_plot, 
                                     ncol = 1, heights = c(1, 6, 3))
