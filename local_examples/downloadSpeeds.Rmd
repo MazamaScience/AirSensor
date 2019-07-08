@@ -1,0 +1,71 @@
+---
+title: "Downloading From ThingSpeak"
+output: html_document
+---
+
+```{r load-libraries, echo=FALSE}
+library(AirSensor)
+library(ggplot2)
+library(microbenchmark)
+```
+
+## Download Speed
+
+Let's check the download speeds for several PurpleAir data requests of 1 hour,
+12 hours, 1 day, and 7 days. We will use the 'microbenchmark' R package to
+time the evaluation of each request.
+
+Let's run these evaluations on the 'Seattle' PurpleAir monitor.
+
+```{r benchmark-test, echo=FALSE}
+pas <- AirSensor::pas_load()
+
+times <- microbenchmark::microbenchmark(
+  one_hr = downloadParseTimeseriesData(  pas, name = "Seattle", 
+                                         startdate = "2018-06-01 0", 
+                                         enddate   = "2018-06-01 1"),
+  twlv_hrs = downloadParseTimeseriesData(pas, name = "Seattle", 
+                                         startdate = "2018-06-01 0", 
+                                         enddate   = "2018-06-01 12"),
+  one_day = downloadParseTimeseriesData( pas, name = "Seattle", 
+                                         startdate = "2018-06-01 0", 
+                                         enddate   = "2018-06-02 0"),
+  one_week = downloadParseTimeseriesData(pas, name = "Seattle", 
+                                         startdate = "2018-06-01 0", 
+                                         enddate   = "2018-06-08 0"),
+  times = 3
+)
+
+times
+```
+
+We can visually compare these benchmarks using the base R boxplot or a 
+violen-plot from ggplot autoplot:
+
+```{r benchmark-plots, message=FALSE, warning=FALSE, error=FALSE}
+# Base R boxplot
+boxplot(times, unit = "s", log = FALSE, horizontal = TRUE,
+        xlab = "Request", ylab = "Loadtime (Seconds)")
+
+# ggplot microbenchmark autoplot
+ggplot2::autoplot(times)
+```
+
+## Download Limit
+
+In the past, ThingSpeak has limited downloads to about 8,200 records per 
+request. Let's see if that's still the case by requesting a longer period and 
+counting the number of readings received:
+
+```{r limit-test}
+two_weeks <- downloadParseTimeseriesData(pas, name = "Seattle", 
+                                         startdate = "2018-06-01 0", 
+                                         enddate   = "2018-06-15 0")
+records_count <- nrow(two_weeks$data)
+first_record <- strftime(two_weeks$data[1,]$datetime, "%Y-%m-%d")
+last_record <- strftime(two_weeks$data[records_count,]$datetime, "%Y-%m-%d")
+```
+
+Now we get `r records_count` entries in total. Although we specified to go from
+`2018-06-01` to `2018-06-15`, the data we received ranges from `r first_record` 
+to `r last_record`.
