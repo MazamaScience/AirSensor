@@ -24,7 +24,7 @@ times <- microbenchmark::microbenchmark(
   one_hr = downloadParseTimeseriesData(  pas, name = "Seattle", 
                                          startdate = "2018-06-01 0", 
                                          enddate   = "2018-06-01 1"),
-  twlv_hrs = downloadParseTimeseriesData(pas, name = "Seattle", 
+  twelve_hrs = downloadParseTimeseriesData(pas, name = "Seattle", 
                                          startdate = "2018-06-01 0", 
                                          enddate   = "2018-06-01 12"),
   one_day = downloadParseTimeseriesData( pas, name = "Seattle", 
@@ -33,7 +33,7 @@ times <- microbenchmark::microbenchmark(
   one_week = downloadParseTimeseriesData(pas, name = "Seattle", 
                                          startdate = "2018-06-01 0", 
                                          enddate   = "2018-06-08 0"),
-  times = 3
+  times = 10
 )
 
 times

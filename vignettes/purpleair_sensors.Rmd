@@ -18,13 +18,29 @@ This vignette decribes technical details of Purple Air Sensor internals.
 
 ## General Description
 
+The PurpleAir PA-II is a real-time air quality sensor with additional 
+functionality for measuring temperature and humidity. The device is connected 
+via wifi to the online database, ThingSpeak, where readings can be stored and 
+retrieved.
+
 ## Internal Hardware
 
 ### Particle Detectors
 
-[Plantower PMS5003 Particle Detector](http://www.aqmd.gov/docs/default-source/aq-spec/resources-page/plantower-pms5003-manual_v2-3.pdf)
+The sensor has two [Plantower PMS5003 Particle Detectors](http://www.aqmd.gov/docs/default-source/aq-spec/resources-page/plantower-pms5003-manual_v2-3.pdf)
+that separately measure levels of particulate matter in the air. These units 
+operate by shining a laser through the air and use the amount of reflected 
+light to calculate counts for PM1.0, PM2.5, and PM10.
+
+The effective range for PM2.5 range from 0 to 500 ug/m3. 
 
 ### Temerature/Humidity Sensor
+
+The PurpleAir PA-II uses a single [Bosch Sensortec Intergrated Environmental Sensor Unit BME280](https://www.bosch-sensortec.com/bst/products/all_products/bme280)
+to measure ambient temperature, relative humidity, and pressure.
+
+Temperature accurately ranges from -40 to 85 C.
+Pressure ranges from 300 to 1100 hPa.
 
 ## Internal Firmware
 
