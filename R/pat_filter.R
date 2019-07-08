@@ -11,7 +11,7 @@
 #' choose rows/cases where conditions are true.  Multiple conditions are 
 #' combined with \code{&} or seperated by a comma. Only rows where the condition 
 #' evaluates to TRUE are kept.Rows where the condition evaluates to \code{NA}
-#' aredropped.
+#' are dropped.
 #' 
 #' @return A subset of the incoming \code{pat}.
 #' 
