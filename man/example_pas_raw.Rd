@@ -11,11 +11,17 @@ https://www.purpleair.com/json
 \description{
 The \code{example_pas_raw} dataset provides a quickly loadable
 version of raw Purple Air synoptic data JSON for practicing and code
-development. This file was downloaded on 2019-03-14.
+examples This dataset was was generated on 2019-07-06 by running:
+
+\preformatted{
+  example_pas_raw <- downloadParseSynopticData()
+}
 
 This dataset can be converted into a standard \emph{pas} dataset with:
 
-\code{pas <- enhanceSynopticData(example_pas_raw)}
+\preformatted{
+  pas <- enhanceSynopticData(example_pas_raw)
+}
 }
 \seealso{
 example_pas

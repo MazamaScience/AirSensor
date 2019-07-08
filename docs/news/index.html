@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.8</span>
       </span>
     </div>
 
@@ -99,7 +99,7 @@
       <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
     </li>
     <li>
-      <a href="../articles/pat_introduction.html">An Introduction to PurpleAir Time Series Data</a>
+      <a href="../articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
     </li>
     <li>
       <a href="../articles/purpleair_qc.html">Purple Air Quality Control</a>
@@ -137,16 +137,36 @@
       <small>Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="airsensor-0-3-8" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-3-8" class="anchor"></a>AirSensor 0.3.8</h1>
+<ul>
+<li>Added <code><a href="../reference/pat_aggregateOutlierCounts.html">pat_aggregateOutlierCounts()</a></code> to count outliers per aggregation period.</li>
+</ul>
+</div>
     <div id="airsensor-0-3-7" class="section level1">
 <h1 class="page-header">
 <a href="#airsensor-0-3-7" class="anchor"></a>AirSensor 0.3.7</h1>
 <ul>
 <li>Added <code><a href="../reference/wind_loadMonth.html">wind_loadMonth()</a></code> to load pre-generated monthly wind data</li>
 <li>Added <code><a href="../reference/wind_load.html">wind_load()</a></code> to load pre-generated wind data from timestamps</li>
-<li>Updated <code><a href="../reference/sensor_pollutionRose.html">sensor_pollutionRose()</a></code> to accept new wind model</li>
+<li>Updated <code><a href="../reference/sensor_pollutionRose.html">sensor_pollutionRose()</a></code> to accept new wind data model</li>
 <li>Added <code><a href="../reference/sensor_polarPlot.html">sensor_polarPlot()</a></code> to plot bivariate polar plots</li>
 <li>Renamed <code>airsensor_load~()</code> to <code>sensor_load~()</code>.</li>
 <li>Added <code>sensor_~</code> utility functions: <code>isSensor()</code>, <code>isEmpty()</code>, <code>extractMeta()</code> , <code>extractData()</code>.</li>
+<li>Added <code>example_sensor</code> dataset for use in documentation examples.</li>
+<li>Added <code>local_examples/LA_fireworks_2019.R</code>
+</li>
+<li>Default required data retentaion rate during hourly aggregation was increased from 10/30 to 20/30 (<code>min_count = 20</code>).</li>
+<li>Improved examples in the documentation.</li>
+<li>Suppressing warnings from <code><a href="../reference/pat_scatterplot.html">pat_scatterplot()</a></code>.</li>
+<li>Updated “PurpleAir Timeseries” vignette.</li>
+<li>Added <code>returnAllColumns</code> option to `PurpleAirQC_~1 functions.</li>
+<li>New <code>PurpleQC_validationPlot()</code> function.</li>
+<li>
+<code><a href="../reference/createPATimeseriesObject.html">createPATimeseriesObject()</a></code> now retains additional metadata: <code>sensorManufacturer</code>, <code>targetPollutant</code>, <code>technologyType</code>, <code>communityRegion</code>
+</li>
+<li>Updated all package datasets so they include additional metadata.</li>
 </ul>
 </div>
     <div id="airsensor-0-3-6" class="section level1">
@@ -555,6 +575,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#airsensor-0-3-8">0.3.8</a></li>
         <li><a href="#airsensor-0-3-7">0.3.7</a></li>
         <li><a href="#airsensor-0-3-6">0.3.6</a></li>
         <li><a href="#airsensor-0-3-5">0.3.5</a></li>

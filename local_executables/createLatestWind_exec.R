@@ -12,8 +12,8 @@
 # docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/pwfslsmoke /app/createLatestWind_exec.R
 #
 
-# ---- . ---- .  AirSensor 0.3.5
-VERSION = "0.0.3" 
+# ---- . ---- .  AirSensor 0.3.7
+VERSION = "0.0.4" 
 
 suppressPackageStartupMessages({
   library(MazamaCoreUtils)

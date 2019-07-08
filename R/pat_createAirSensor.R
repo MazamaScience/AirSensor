@@ -42,7 +42,7 @@ pat_createAirSensor <- function(
   parameter = "pm25",
   channel = "ab",
   qc_algorithm = "hourly_AB_01",
-  min_count = 10
+  min_count = 20
 ) {
   
   # ===== DEBUG ================================================================
@@ -54,7 +54,7 @@ pat_createAirSensor <- function(
     parameter = "pm25"
     channel = "ab"
     qc_algorithm = "hourly_AB_01"
-    min_count = 10
+    min_count = 20
     
   }  
   

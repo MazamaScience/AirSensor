@@ -57,7 +57,7 @@ pat_externalFit <- function(
   channel = "ab",
   replaceOutliers = TRUE,
   qc_algorithm = "hourly_AB_01",
-  min_count = 10
+  min_count = 20
 ) {
   
   # ----- Validate parameters --------------------------------------------------

@@ -36,11 +36,11 @@ test_that("results_are_consistent", {
   pas_fresno <- pas_filterArea(example_pas,
                                w = -119.894617, e = -119.659692,
                                s = 36.681235, n = 36.866996)
-  expect_equal(nrow(pas_fresno), 64)
+  expect_equal(nrow(pas_fresno), 62)
   
   # Redding
   pas_redding <- pas_filterArea(example_pas,
                                 w = -122.430983, e = -122.300330,
                                 s = 40.523458, n = 40.629298) 
-  expect_equal(nrow(pas_redding), 28)
+  expect_equal(nrow(pas_redding), 30)
 })

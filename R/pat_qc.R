@@ -31,7 +31,7 @@
 #' 
 #' @examples
 #' \dontrun{
-#' pat <- example_pat_failure
+#' pat <- example_pat_failure_A
 #' pat %>% pat_multiplot(sampleSize = NULL)
 #' pat %>% pat_qc() %>% pat_multiplot(sampleSize = NULL)
 #' pat %>% pat_qc(max_humidity = 80) %>% pat_multiplot(sampleSize = NULL)

@@ -61,8 +61,6 @@ linear fit between them and see if they might have a common scale factor:
 pat_internalFit(pat_bikesgv)
 ```
 
-(Correlation plot is too small to analyze).
-
 It looks like the A and B channels aren't linearly correlated at all. This is 
 odd since the two sensors are measuring the same air and should at least give
 somewhat similar readings. Maybe comparing more sensors could give us some 

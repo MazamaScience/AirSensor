@@ -50,7 +50,7 @@
 #' \code{seismicRoll::findOutliers()}.
 #' 
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' example_pat %>%
 #'   pat_filterDate(20180801, 20180815) %>%
 #'   pat_outliers(replace = TRUE, showPlot = TRUE)
@@ -80,15 +80,15 @@ pat_outliers <- function(
     thresholdMin = 8
     replace = FALSE
     showPlot = TRUE
-    data_shape = 18 
-    data_size = 1
-    data_color = "black"
-    data_alpha = 0.5
-    outlier_shape = 8 
-    outlier_size = 1
-    outlier_color = "red"
-    outlier_alpha = 1.0
-    
+    # data_shape = 18 
+    # data_size = 1
+    # data_color = "black"
+    # data_alpha = 0.5
+    # outlier_shape = 8 
+    # outlier_size = 1
+    # outlier_color = "red"
+    # outlier_alpha = 1.0
+     
   }
   
   # ----- Validate parameters --------------------------------------------------
@@ -104,8 +104,8 @@ pat_outliers <- function(
   # NOTE:  Outlier detection doesn't work when there are lots of missing values.
   # NOTE:  The 'pat' object combines data from both channels which are on separate
   # NOTE:  time axes. The result is a dataframe that has lots of missing values.
-  # NOTE:  We filter here to separate the A data from the B data and avoid this problem.
-  # NOTE:  But we retain the omitted records for merging back later.
+  # NOTE:  We filter here to separate the A data from the B data and avoid this 
+  # NOTE:  problem. But we retain the omitted records for merging back later.
   # NOTE:
   # NOTE:  We keep most columns in A_data and only pm25_B and datetime_B in B_data
   # NOTE:  so that we can dplyr::left_join() them together at the end.
@@ -126,7 +126,7 @@ pat_outliers <- function(
   
   # Flag outliers 
   A_flagged <- 
-    flagOutliers(
+    .flagOutliers(
       A_data,
       parameter = "pm25_A", 
       windowSize = windowSize, 
@@ -134,7 +134,7 @@ pat_outliers <- function(
     )
   
   B_flagged <- 
-    flagOutliers(
+    .flagOutliers(
       B_data,
       parameter = "pm25_B", 
       windowSize = windowSize, 
@@ -151,13 +151,13 @@ pat_outliers <- function(
   if ( replace ) {
     
     A_fixed <- 
-      replaceOutliers(
+      .replaceOutliers(
         A_data, 
         parameter = "pm25_A"
       )[["pm25_A"]]
     
     B_fixed <- 
-      replaceOutliers(
+      .replaceOutliers(
         B_data, 
         parameter = "pm25_B"
       )[["pm25_B"]]
@@ -179,76 +179,38 @@ pat_outliers <- function(
     # Use the same y limits for both plots
     ylim <- range(c(A_data$pm25_A, B_data$pm25_B), na.rm = TRUE)
     ylim[1] <- min(0, ylim[1]) # always zero unless ylim[1] is neg (possible???)
-    
-    A_outliers <- A_data[A_outlierIndices,] %>%       
-      ggplot2::geom_point(
-        mapping = ggplot2::aes(x = .data$datetime, y = .data$pm25_A), 
-        shape = outlier_shape, 
-        size = outlier_size, 
-        color = outlier_color,
-        alpha = outlier_alpha
+   
+    chA <- .plotOutliers(
+      df = A_flagged, 
+      ylim = ylim, 
+      subtitle = pat$meta$label,
+      data_shape = data_shape, 
+      data_size = data_size, 
+      data_color = data_color,
+      data_alpha = data_alpha,
+      outlier_shape = outlier_shape, 
+      outlier_size = outlier_size, 
+      outlier_color = outlier_color,
+      outlier_alpha = outlier_alpha
+      )
+    chB <- .plotOutliers(
+      df = B_flagged, 
+      ylim = ylim,
+      subtitle = pat$meta$label,
+      data_shape = data_shape, 
+      data_size = data_size, 
+      data_color = data_color,
+      data_alpha = data_alpha,
+      outlier_shape = outlier_shape, 
+      outlier_size = outlier_size, 
+      outlier_color = outlier_color,
+      outlier_alpha = outlier_alpha
       )
     
-    B_outliers <- B_data[B_outlierIndices,] %>% 
-      ggplot2::geom_point(
-        mapping = ggplot2::aes(x = .data$datetime, 
-                               y = .data$pm25_B), 
-        shape = outlier_shape, 
-        size = outlier_size, 
-        color = outlier_color,
-        alpha = outlier_alpha
-      )
-    
-    channelA <- 
-      A_data %>%
-      dplyr::tibble(datetime = A_data$datetime, pm25_A = A_data$pm25_A) %>% 
-      ggplot2::ggplot(ggplot2::aes(x = .data$datetime, y = .data$pm25_A)) + 
-      ggplot2::geom_point(
-        shape = data_shape,
-        size = data_size,
-        color = data_color,
-        alpha = data_alpha
-      ) + 
-      ggplot2::ylim(ylim) +
-      ggplot2::labs(
-        x = "Date", 
-        y = "\u03bcg / m\u00b3", 
-        title = expression("Channel A PM"[2.5]), 
-        subtitle = pat$meta$label
-      ) + 
-      ggplot2::theme(
-        plot.title = ggplot2::element_text(size = 11),
-        plot.subtitle = ggplot2::element_text(size = 8),
-      ) + 
-      A_outliers
-    
-    channelB <- 
-      B_data %>%
-      dplyr::tibble(datetime = B_data$datetime, pm25_B = B_data$pm25_B) %>% 
-      ggplot2::ggplot(ggplot2::aes(x = .data$datetime, y = .data$pm25_B)) + 
-      ggplot2::geom_point(
-        shape = data_shape,
-        size = data_size,
-        color = data_color,
-        alpha = data_alpha
-      ) + 
-      ggplot2::ylim(ylim) +
-      ggplot2::labs(
-        x = "Date", 
-        y = "\u03bcg / m\u00b3", 
-        title = expression("Channel B PM"[2.5]), 
-        subtitle = pat$meta$label
-      ) + 
-      ggplot2::theme(
-        plot.title = ggplot2::element_text(size = 11),
-        plot.subtitle = ggplot2::element_text(size = 8),
-      ) + 
-      B_outliers
-    
-    multi_ggplot(plotList = list(channelA, channelB)) # No sampling will occur
-    
+    multi_ggplot(plotList = list(chA, chB))
+     
   }
-  
+
   # ----- Create a fixed 'data' dataframe --------------------------------------
   
   A_data$pm25_A <- A_fixed

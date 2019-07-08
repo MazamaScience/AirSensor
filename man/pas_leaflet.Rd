@@ -75,10 +75,17 @@ underlying map tile if available. See
 }
 \examples{
 \dontrun{
-# Methow Valley Clean Air Ambassador
-initializeMazamaSpatialUtils()
-pas <- pas_load()
-mvcaa <- pas_filter(pas, stringr::str_detect(pas$label, '^MV Clean Air'))
-pas_leaflet(mvcaa, parameter="pm25_1hr")
+# California
+ca <-
+  pas_load() \%>\%
+  pas_filter(stateCode == 'CA')
+
+pas_leaflet(ca, parameter = "pm25_1hr")
+
+pas_leaflet(ca, parameter = "temperature")
+
+pas_leaflet(ca, parameter = "humidity")
+
+pas_leaflet(ca, parameter = "pwfsl_closestDistance", maptype = "satellite")
 }
 }

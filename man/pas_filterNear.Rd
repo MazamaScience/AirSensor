@@ -29,13 +29,15 @@ separated by a space, such as \code{"250 m"}.
 }
 \examples{
 \dontrun{
-pas_filterNear(
-    pas = example_pas,
-    latitude = 47.61702, 
-    longitude = -122.34376
-    )
+# Near Diamond Bar, CA
+diamond_bar <-
+  pas_load() \%>\%
+  pas_filterNear(latitude = 34.001667, 
+                 longitude = -117.820833,
+                 radius = "20 km")
+                 
+pas_leaflet(diamond_bar)
 }
-
 }
 \seealso{
 \link{pas_filter}

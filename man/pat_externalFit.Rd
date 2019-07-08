@@ -9,7 +9,7 @@ pat_externalFit(pat = NULL, showPlot = TRUE, size = 1,
   lr_shape = 15, lr_color = "black", lr_lwd = 1.5,
   lr_lcolor = "tomato", lr_lalpha = 0.45, ts_shape = 1,
   xylim = NULL, channel = "ab", replaceOutliers = TRUE,
-  qc_algorithm = "hourly_AB_01", min_count = 10)
+  qc_algorithm = "hourly_AB_01", min_count = 20)
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}

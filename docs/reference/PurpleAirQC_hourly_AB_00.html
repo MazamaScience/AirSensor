@@ -43,7 +43,7 @@
 from the A and B channels and applying the following QC logic:
 
 Create pm25 by averaging the A and B channel aggregation means
-Invalidate data where:  (min_count &amp;lt; 10)
+Invalidate data where:  (min_count &amp;lt; 20)
 No further QC
 " />
 <meta name="twitter:card" content="summary" />
@@ -76,7 +76,7 @@ No further QC
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.8</span>
       </span>
     </div>
 
@@ -108,7 +108,7 @@ No further QC
       <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
     </li>
     <li>
-      <a href="../articles/pat_introduction.html">An Introduction to PurpleAir Time Series Data</a>
+      <a href="../articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
     </li>
     <li>
       <a href="../articles/purpleair_qc.html">Purple Air Quality Control</a>
@@ -153,13 +153,14 @@ No further QC
 from the A and B channels and applying the following QC logic:</p>
 <ol>
 <li><p>Create pm25 by averaging the A and B channel aggregation means</p></li>
-<li><p>Invalidate data where:  (min_count &lt; 10)</p></li>
+<li><p>Invalidate data where:  (min_count &lt; 20)</p></li>
 <li><p>No further QC</p></li>
 </ol>
     
     </div>
 
-    <pre class="usage"><span class='fu'>PurpleAirQC_hourly_AB_00</span>(<span class='no'>aggregationStats</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
+    <pre class="usage"><span class='fu'>PurpleAirQC_hourly_AB_00</span>(<span class='no'>aggregationStats</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>20</span>,
+  <span class='kw'>returnAllColumns</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -174,11 +175,24 @@ from the A and B channels and applying the following QC logic:</p>
       <td><p>Aggregation bins with fewer than `min_count` measurements
 will be marked as `NA`.</p></td>
     </tr>
+    <tr>
+      <th>returnAllColumns</th>
+      <td><p>Logical specifying whether to return all columns
+of statistical data generated for QC algorithm or just the final `pm25` 
+result.</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>Data frame with columns <code>datetime</code> and <code>pm25</code>.</p>
+    
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>Purple Air II sensors reporting after the June, 2019 firmware
+upgrade report data every 2 minutes or 30 measurements per hour. The default
+setting of <code>min_count = 20</code> is equivalent to a required data recovery
+rate of 67<!-- %. --></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -198,6 +212,8 @@ will be marked as `NA`.</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#note">Note</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
