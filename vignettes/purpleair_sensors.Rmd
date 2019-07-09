@@ -33,7 +33,7 @@ which provide separate 'A' and 'B' reading channels. These PMS5003 units are
 optical particle counters that function by shining a laser through a small air 
 inlet. The amount of light scattered by particles inside is 
 [used to calculate](http://www.cas.manchester.ac.uk/restools/instruments/aerosol/opc/) 
-levels for PM1.0, PM2.5, and PM10.
+various PM levels.
 
 The effective range for standard PM2.5 is 0 to 500 ug/m3. 
 
