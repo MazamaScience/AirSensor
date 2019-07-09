@@ -9,8 +9,9 @@ test_that("consistent aggregation results", {
   #pat_aggr_previous <- get(load(file_path))
 
   pat_aggr_previous <- get(load("example_pat_aggr_test.rda"))
-  pat_aggr_current <- pat_aggregate(example_pat) 
+  pat_aggr_current <- pat_aggregate(example_pat)
   
   areSame <- identical(pat_aggr_current, pat_aggr_previous)
+  
   expect_true(areSame)
 })

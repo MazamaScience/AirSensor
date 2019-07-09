@@ -18,28 +18,31 @@ This vignette decribes technical details of Purple Air Sensor internals.
 
 ## General Description
 
-The PurpleAir PA-II is a real-time air quality sensor with additional 
+The PurpleAir PA-II sensor tracks real-time air quality with additional 
 functionality for measuring temperature and humidity. The device is connected 
-via wifi to the online database, ThingSpeak, where readings can be stored and 
-retrieved.
+via wifi to the ThingSpeak internet-of-things platform where readings are stored
+and can be retrieved.
 
 ## Internal Hardware
 
 ### Particle Detectors
 
-The sensor has two [Plantower PMS5003 Particle Detectors](http://www.aqmd.gov/docs/default-source/aq-spec/resources-page/plantower-pms5003-manual_v2-3.pdf)
-that separately measure levels of particulate matter in the air. These units 
-operate by shining a laser through the air and use the amount of reflected 
-light to calculate counts for PM1.0, PM2.5, and PM10.
+Particulate matter (PM) levels are measured using two 
+[Plantower PMS5003 Particle Detectors](http://www.aqmd.gov/docs/default-source/aq-spec/resources-page/plantower-pms5003-manual_v2-3.pdf)
+which provide separate 'A' and 'B' reading channels. These PMS5003 units are 
+optical particle counters that function by shining a laser through a small air 
+inlet. The amount of light scattered by particles inside is 
+[used to calculate](http://www.cas.manchester.ac.uk/restools/instruments/aerosol/opc/) 
+levels for PM1.0, PM2.5, and PM10.
 
-The effective range for PM2.5 range from 0 to 500 ug/m3. 
+The effective range for standard PM2.5 is 0 to 500 ug/m3. 
 
-### Temerature/Humidity Sensor
+### Temperature/Humidity Sensor
 
 The PurpleAir PA-II uses a single [Bosch Sensortec Intergrated Environmental Sensor Unit BME280](https://www.bosch-sensortec.com/bst/products/all_products/bme280)
-to measure ambient temperature, relative humidity, and pressure.
+to measure ambient temperature and relative humidity.
 
-Temperature accurately ranges from -40 to 85 C.
+Temperature ranges from -40 to 85 C.
 Pressure ranges from 300 to 1100 hPa.
 
 ## Internal Firmware
@@ -48,7 +51,7 @@ Pressure ranges from 300 to 1100 hPa.
 
 The firmware in each PA sensor is in charge of communicating with the internal
 particle detectors and averaging instantaneous measurements over a sampling
-period before reporting the sampleing-period averaged value back over wifi.
+period before reporting the sampling-period averaged value back over wifi.
 
 From internal communication with PurpleAir:
 
