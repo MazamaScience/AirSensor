@@ -9,14 +9,14 @@
 \arguments{
 \item{df}{A data frame.}
 
-\item{parameter}{The data frame parameter to check and replace outliers}
+\item{parameter}{The data frame parameter to check and replace outliers.}
 
-\item{medWin}{The size of the rolling median window}
+\item{medWin}{The size of the rolling median window.}
 
-\item{...}{Parameters to extend \code{flagOutliers}}
+\item{...}{Parameters to extend \code{flagOutliers}.}
 }
 \value{
-a \code{data.frame} with replaced outliers
+A \code{data.frame} with replaced outliers
 }
 \description{
 Perform smoothing by replacing outliers with the window median 

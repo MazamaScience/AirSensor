@@ -1,23 +1,23 @@
 #' 
 #' @title Flag outliers in vectorized data
 #' 
-#' @description Outlier detection using Hampel identification.  For each sample 
-#'  of a vector, the function computes the median of a center-aligned window composed of the sample 
-#'  and its \code{windowSize} surrounding samples. It also estimates the 
-#'  standard deviation of each sample about its window median using the median 
-#'  absolute deviation. If a sample differs from the median by more than three 
-#'  standard deviations, it is replaced with the median. If x is a matrix, then 
-#'  hampel treats each column of x as an independent channel.
-#'  
-#'  The \code{thresholdMin} level is similar to a sigma value for normally 
-#'  distributed data. 
+#' @description This function uses Hampel filter outlier detection to flag
+#' outliers in \code{parameter} column of the incoming dataframe. The 
+#' \code{windowSize} and \code{thresholdMin} parameters as passed on to the
+#' \code{seismicRoll::findOutliers} function.
+#' 
+#' An additional boolean column named \code{flag_outliers_<parameter>} is added
+#' to the dataframe. This column will have \code{TRUE} whenever an outlier is
+#' detected for the chosen \code{parameter}.
+#' 
+#' See \code{seismicRoll::findOutliers} for further details.
 #' 
 #' @param df A data frame.
-#' @param parameter The data frame parameter to check and replace outliers
-#' @param windowSize The size of the rolling window
-#' @param thresholdMin The minimum threshold value to detect outliers
+#' @param parameter The data frame parameter to use for outlier detection.
+#' @param windowSize The size of the rolling window.
+#' @param thresholdMin The minimum threshold value used to detect outliers.
 #' 
-#' @return \code{data.frame} A data.frame with an additional flag vector
+#' @return A dataframe with an additional column identifying outliers.
 #' 
 
 .flagOutliers <- 
@@ -32,21 +32,19 @@
       stop("Missing parameter")
     
     data <- df[[parameter]]
-    flag <- paste0("flag_", parameter)
+    outlierFlagName <- paste0("flag_outliers_", parameter)
     
-    # Index outliers
-    outlierInd <- 
+    # Identify outliers
+    outlierIndices <- 
       seismicRoll::findOutliers(
         x = data, 
         n = windowSize,
         thresholdMin = thresholdMin
       )
     
-    # Make a new logical column with name: parameter_flag
-    
-    df[[flag]] <- FALSE 
-    
-    df[[flag]][outlierInd] <- TRUE
+    # Make a new logical column
+    df[[outlierFlagName]] <- FALSE 
+    df[[outlierFlagName]][outlierIndices] <- TRUE
     
     return(df)
     
@@ -60,11 +58,11 @@
 #' dataset by setting \code{thresholdMin = 1} or lower (but always above zero).
 #' 
 #' @param df A data frame.
-#' @param parameter The data frame parameter to check and replace outliers
-#' @param medWin The size of the rolling median window
-#' @param ... Parameters to extend \code{flagOutliers}
+#' @param parameter The data frame parameter to check and replace outliers.
+#' @param medWin The size of the rolling median window.
+#' @param ... Parameters to extend \code{flagOutliers}.
 #' 
-#' @return a \code{data.frame} with replaced outliers
+#' @return A \code{data.frame} with replaced outliers
 #' 
 
 .replaceOutliers <- 
@@ -84,13 +82,13 @@
     if ( is.null(parameter) ) 
       stop("Missing parameter")
     
-    flag <- paste0("flag_", parameter)
+    outlierFlagName <- paste0("flag_outliers_", parameter)
     
     roll_med <- function(x, n) seismicRoll::roll_median(x, n)
     
-    flagged <- which(df[[flag]])
+    flagged <- which(df[[outlierFlagName]])
     
-    df[[flag]] = NULL
+    df[[outlierFlagName]] = NULL
     
     df[[parameter]][flagged] <- 
       roll_med(df[[parameter]], medWin)[flagged]
@@ -102,7 +100,7 @@
 
 #' @title Plot flagged outliers
 #' 
-#' @description an internal capability to quickly plot outlier data. 
+#' @description An internal capability to quickly plot outlier data. 
 #'
 #' @param df data frame that contains datetime, PM2.5, and outlier boolean flags
 #' @param parameter the parameter with the associated outliers flag
@@ -141,7 +139,7 @@
     outlier_alpha = 1.0
   ) {
     
-    col_flag <- names(df)[which(stringr::str_detect(names(df), "flag_"))]
+    col_flag <- names(df)[which(stringr::str_detect(names(df), "flag_outliers_"))]
     col_param <- names(df)[which(stringr::str_detect(names(df), parameter))][1]
     
     df_ind <- which(df[[col_flag]])

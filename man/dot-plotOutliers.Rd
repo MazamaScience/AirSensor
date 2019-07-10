@@ -45,5 +45,5 @@
 gg object
 }
 \description{
-an internal capability to quickly plot outlier data.
+An internal capability to quickly plot outlier data.
 }
