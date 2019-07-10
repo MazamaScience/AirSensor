@@ -14,7 +14,7 @@ This vignette gives a surface-level examination of identified failure modes
 found in PurpleAir (PA-II) sensors.
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.width=7, fig.height=5)
 library(AirSensor)
 pas <- pas_load()
 ```

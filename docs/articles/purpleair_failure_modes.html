@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.9</span>
       </span>
     </div>
 
@@ -120,29 +120,31 @@
 <div id="channel-a-noise-1" class="section level2">
 <h2 class="hasAnchor">
 <a href="#channel-a-noise-1" class="anchor"></a>Channel A Noise (1)</h2>
-<p><img src="purpleair_failure_modes_files/figure-html/channel_a_noise_1-1.png" width="700"></p>
+<p>The A channel readings are moderately more noisy than those of the B channel.</p>
+<p><img src="purpleair_failure_modes_files/figure-html/channel_a_noise_1-1.png" width="672"></p>
+<p>Channel A here often measures above B at the same moment in time, as shown by the scatterplot with the vertical clump near the origin instead of along the angled regression line.</p>
 </div>
 <div id="channel-a-noise-2" class="section level2">
 <h2 class="hasAnchor">
 <a href="#channel-a-noise-2" class="anchor"></a>Channel A Noise (2)</h2>
 <p>Channel A readings show extreme levels of noise.</p>
-<p><img src="purpleair_failure_modes_files/figure-html/channel_a_noise_2-1.png" width="700"></p>
-<p>While a small amount of noise is natural when measuring particulate matter, sometimes the noise level goes far beyond what is allowable when measurements start bouncing around in an enormous range of ug/m3 within hours. Here we see the A channel looks like a cloud of points measuring anywhere from below 50 to over 1100 ug/m3. A very faint wave pattern can still be identified, however.</p>
+<p><img src="purpleair_failure_modes_files/figure-html/channel_a_noise_2-1.png" width="672"></p>
+<p>While a small amount of noise is natural when measuring particulate matter, sometimes the noise level goes far beyond what is allowable. Here we see the A channel looks like a cloud of points compared to the much more consistent channel B. A faint wave pattern can still be identified, however.</p>
 </div>
 <div id="channel-a-jumps" class="section level2">
 <h2 class="hasAnchor">
 <a href="#channel-a-jumps" class="anchor"></a>Channel A Jumps</h2>
 <p>A sudden, but short-lived jump in channel A PM2.5 readings.</p>
-<p><img src="purpleair_failure_modes_files/figure-html/channel_a_jump-1.png" width="700"></p>
+<p><img src="purpleair_failure_modes_files/figure-html/channel_a_jump-1.png" width="672"></p>
 <p>This particular plot shows a jump that seems to retain a consistent wave pattern for a while rather than just being random noise. This could possibly be a short-term version of the next failure mode.</p>
 </div>
 <div id="channel-a-matches-humidity" class="section level2">
 <h2 class="hasAnchor">
 <a href="#channel-a-matches-humidity" class="anchor"></a>Channel A Matches Humidity</h2>
 <p>The A channel PM2.5 sensor starts reflecting humidity readings instead of PM levels.</p>
-<p><img src="purpleair_failure_modes_files/figure-html/channel_a_humidity_multi-1.png" width="700"></p>
+<p><img src="purpleair_failure_modes_files/figure-html/channel_a_humidity_multi-1.png" width="672"></p>
 <p>You can see in the multiplot the clear disconnect between the two PM2.5 channels. Both sensors appear to agree with each other until channel A suddenly jumps into the thousands and starts tracing the trend of the humidity data (plotted directly below).</p>
-<p><img src="purpleair_failure_modes_files/figure-html/channel_a_humidity_scatter-1.png" width="700"></p>
+<p><img src="purpleair_failure_modes_files/figure-html/channel_a_humidity_scatter-1.png" width="672"></p>
 <p>A glance at these scatterplots gives a us another look at just how uncorrelated the A and B channels are, while the relationships for channel A with temperature and humidity are abnormally well-defined. It’s actually not very clear which of the auxillary sensors the A channel is reflecting since temperature and relative humidity are naturally correlated themselves.</p>
 <p>A more in-depth analysis of this issue is provided in the <code>bikesgv_story.Rmd</code> report.</p>
 </div>
@@ -150,7 +152,7 @@
 <h2 class="hasAnchor">
 <a href="#channel-b-is-zero" class="anchor"></a>Channel B is Zero</h2>
 <p>Channel B measures no particulate matter at all.</p>
-<p><img src="purpleair_failure_modes_files/figure-html/channel_b_zero-1.png" width="700"></p>
+<p><img src="purpleair_failure_modes_files/figure-html/channel_b_zero-1.png" width="672"></p>
 <pre><code>##              datetime pm25_A pm25_B
 ## 1 2019-07-01 07:01:00  11.57      0
 ## 2 2019-07-01 07:02:00  13.60      0
