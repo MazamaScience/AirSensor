@@ -93,16 +93,19 @@ pat_aggregate <- function(
   
   # ---- Calculate aggregation statistics --------------------------------------
   
+  # Parameters for all numeric 
   parameters <- c("pm25_A", "pm25_B", "humidity", "temperature")
   
+  # Parameters for T-test 
+  t_parameters <- c("pm25_A", "pm25_B")
+  
   # Apply .pat_agg separately for each type of stat -> 
-  # Reduce list by merging -> 
-  # Map replace infinite's and nan's with NA 
+  # Reduce list by merging to common (datetime)
   aggregationStats <- 
     Reduce(
       f = function(...) merge(..., all=TRUE), 
       x = list(    
-        .pat_agg(pat, "tstats", periodSeconds, parameters),
+        .pat_agg(pat, "tstats", periodSeconds, t_parameters),
         .pat_agg(pat, "mean", periodSeconds, parameters),
         .pat_agg(pat, "median", periodSeconds, parameters),
         .pat_agg(pat, "sd", periodSeconds, parameters), 
@@ -139,40 +142,31 @@ pat_aggregate <- function(
   if ( stat == "sum"        ) func <- function(x) sum(na.omit(x))
   if ( stat == "max"        ) func <- function(x) max(na.omit(x))
   if ( stat == "min"        ) func <- function(x) min(na.omit(x))
-  if ( stat == "tstats"     ) func <- function(x) x 
+  if ( stat == "tstats"     ) func <- function(x) list(x) 
   
-  ## Warn if any duplicated dates (toggle warn = 1)
-  # 
-  # if (TRUE %in% duplicated.POSIXlt(pat$data$datetime)) {
-  #   dup <- pat$data$datetime[which(duplicated.POSIXlt(pat$data$datetime))]
-  #   warning(
-  #     paste0("\n", "Duplicate date: ", dup, "\n", " ... Removing... \n" )
-  #     )
-  # }
-  
-  # Remove dupicated time entries and create datetime axis
+  # Remove dupicated time entries and create datetime axis (if any)
   datetime <- 
     pat$data$datetime[which(!duplicated.POSIXlt(pat$data$datetime))]
   
-  # ----- Handle single-input statistics ---------------------------------------
+  # Create data frame 
+  data <- data.frame(pat$data)[, parameters]
   
+  # zoo with datetime index 
+  zz <- zoo::zoo(data, order.by = datetime)
+  
+  # Aggregate 
+  zagg <- 
+    aggregate(
+      zz, 
+      by = time(zz) - as.numeric(time(zz)) %% periodSeconds, 
+      FUN = func
+    )  
+  
+  # ----- !T-test --------------------------------------------------------------
   if ( stat != "tstats" ) {
     
-    data <- data.frame(pat$data)[, parameters]
-    
-    # zoo with datetime index 
-    zz <- 
-      zoo::zoo(data, order.by = datetime)
-    
-    # Aggregate -> 
     # Fortify to data.frame
-    tbl <- 
-      zoo:::aggregate.zoo(
-        zz, 
-        by = time(zz) - as.numeric(time(zz)) %% periodSeconds, 
-        FUN = func
-      )  %>% 
-      zoo::fortify.zoo(names = "datetime") # Convert to data.frame
+    tbl <- zoo::fortify.zoo(zagg, names = "datetime")
     
     # Rename 
     colnames(tbl)[-1] <- paste0(colnames(tbl)[-1], "_", stat)
@@ -181,28 +175,14 @@ pat_aggregate <- function(
     
   }
   
-  # ----- Handle tstats --------------------------------------------------------
-  
+  # ----- T-test ---------------------------------------------------------------
   if ( stat == "tstats" ) {
     
-    data <- data.frame(pat$data)[, c("pm25_A", "pm25_B")]
-    
-    # zoo with datetime index 
-    zz <- zoo::zoo(data, order.by = datetime)
-    
-    # Aggregate function by binned nesting vectors
-    zagg <- 
-      zoo:::aggregate.zoo(
-        zz, 
-        by = time(zz) - as.numeric(time(zz)) %% periodSeconds, 
-        FUN = function(x) list(x)
-      )
-    
     # Internal t.test function to handle too many missing values if applicable
-    .ttest <- function(a,b) {
+    .ttest <- function(x,y) {
       
-      if ( length(na.omit(a)) > 2 && length(na.omit(b)) > 2 ) {
-        return(t.test(x = a, y = b, paired = FALSE))
+      if ( length(na.omit(x)) > 2 && length(na.omit(y)) > 2 ) {
+        return(t.test(x, y, paired = FALSE))
       } else {
         return(t.test(c(0,0,0), c(0,0,0)))
       }
@@ -235,20 +215,20 @@ pat_aggregate <- function(
     # Create zoo with aggregated datetime index -> 
     # Fortify to data.frame 
     tbl <- 
-      zoo::zoo(
-        cbind(
-          "pm25_t" = unlist(t_score),
-          "pm25_p" = unlist(p_value), 
-          "pm25_df" = unlist(df_value)
+      zoo::fortify.zoo(
+        zoo::zoo(
+          cbind(
+            "pm25_t" = unlist(t_score),
+            "pm25_p" = unlist(p_value), 
+            "pm25_df" = unlist(df_value)
+          ), 
+          order.by = zoo::index(zagg)
         ), 
-        order.by = zoo::index(zagg)
-      ) %>% 
-      zoo::fortify.zoo(names = "datetime")
+        names = "datetime" 
+      ) 
     
     return(tbl)
     
   }
   
 }
-
-
