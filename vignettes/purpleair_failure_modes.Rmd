@@ -1,6 +1,10 @@
 ---
 title: "PurpleAir Failure Modes"
 output: html_document
+vignette: >
+  %\VignetteIndexEntry{PurpleAir Failure Modes}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 This vignette gives a surface-level examination of identified failure modes 
