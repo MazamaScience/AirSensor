@@ -35,7 +35,7 @@
 #' PWFSL monitor readings.
 #' 
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' pat <- pat_load("SCAH_22")
 #' pat_externalFit(pat)
 #' }

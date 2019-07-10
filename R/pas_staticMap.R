@@ -48,7 +48,7 @@
 #' \url{http://maps.stamen.com/}
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' LA_basin <- 
 #'   pas_load() %>% 
 #'   pas_filterArea(-118.5, -117.5, 33.5, 34.5)

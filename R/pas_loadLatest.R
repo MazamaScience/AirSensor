@@ -42,7 +42,7 @@
 #' @seealso \link{downloadParseSynopticData}
 #' 
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' initializeMazamaSpatialUtils()
 #' pas <- pas_loadLatest()
 #' pas %>% 

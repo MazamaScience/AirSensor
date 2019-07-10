@@ -74,7 +74,7 @@ underlying map tile if available. See
 "provider tiles" to use as the background map.
 }
 \examples{
-\dontrun{
+\donttest{
 # California
 ca <-
   pas_load() \%>\%

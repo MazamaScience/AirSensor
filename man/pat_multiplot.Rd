@@ -69,7 +69,7 @@ Additional documentation of the multiplot algorithm is available at
 cookbook-r.com.
 }
 \examples{
-\dontrun{
+\donttest{
 pat_multiplot(pat = example_pat, plottype = "pm25", alpha = 0.5)
 }
 }

@@ -35,6 +35,10 @@ scsb <-
                  n = 33.78)
 range(scsb$longitude)
 range(scsb$latitude)
+
+\donttest{
+pas_leaflet(scsb)
+}
 }
 \seealso{
 \link{pas_filter}, \link{pas_filterNear}

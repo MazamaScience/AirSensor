@@ -29,7 +29,7 @@
 #' @return Initiates the interactive dygraph plot in RStudio's 'Viewer' tab.
 #' 
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' nb <- pat_loadLatest(example_pas, "North Bend Weather", startdate = 20180801, enddate = 20180901)
 #' subset_nb <- pat_sample(pat=nb, sampleSize = 1000, setSeed = 1)
 #' pat_dygraph(pat = subset_nb, xlab = "2018", rollPeriod = 7)

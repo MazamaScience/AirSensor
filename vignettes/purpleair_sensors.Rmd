@@ -33,11 +33,10 @@ where readings are stored and can be retrieved.
 PM levels are measured using two
 [Plantower PMS5003 Particle Detectors](http://www.aqmd.gov/docs/default-source/aq-spec/resources-page/plantower-pms5003-manual_v2-3.pdf)
 which provide their own separate 'A' and 'B' reading channels. Optical particle 
-counters of this type function by measuring light scattered by suspended 
-particulate matter. The PMS5003 unit sends a laser through air sucked in by a 
-fan, measures the light received, and calculates the number of different-sized 
-particles based on 
-[Mie scattering](https://en.wikipedia.org/wiki/Mie_scattering) algorithms.
+counters of this type function by measuring light scattered by particulate 
+matter. The PMS5003 unit sends a laser through air sucked in by a fan, measures 
+the light received, and calculates the number of different-sized particles based
+on [Mie scattering](https://en.wikipedia.org/wiki/Mie_scattering) algorithms.
 
 The detectors' effective range for PM2.5 lies between 0 and 500 ug/m3, but can 
 still measure beyond 1000 ug/m3. The operational temperature ranges

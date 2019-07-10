@@ -28,7 +28,7 @@ specified target coordinates.
 separated by a space, such as \code{"250 m"}.
 }
 \examples{
-\dontrun{
+\donttest{
 # Near Diamond Bar, CA
 diamond_bar <-
   pas_load() \%>\%

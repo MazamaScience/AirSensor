@@ -58,7 +58,7 @@
 #' Rstudio's 'Viewer' tab.
 #' 
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # California
 #' ca <-
 #'   pas_load() %>%

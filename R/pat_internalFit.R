@@ -30,7 +30,7 @@
 #' readings.
 #' 
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' pat_internalFit(pat = example_pat)
 #' }
 

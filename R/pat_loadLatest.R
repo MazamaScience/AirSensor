@@ -22,9 +22,10 @@
 #' @seealso \link{downloadParseTimeseriesData}
 #' 
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' pas <- pas_load()
 #' pat <- pat_loadLatest(pas, "Seattle", startdate = 20180701, enddate = 20180901)
+#' pat_multiplot(pat)
 #' }
 
 pat_loadLatest <- function(

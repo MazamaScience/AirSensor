@@ -51,7 +51,7 @@ data, hourly aggregated \emph{pat} data and hourly data from the nearest
 federal monitor from the PWFSL database.
 }
 \examples{
-\dontrun{
+\donttest{
 pat_monitorComparison(example_pat)
 }
 }
