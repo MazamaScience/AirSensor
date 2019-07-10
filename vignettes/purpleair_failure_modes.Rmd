@@ -1,0 +1,94 @@
+---
+title: "PurpleAir Failure Modes"
+output: html_document
+---
+
+This vignette gives a surface-level examination of identified failure modes 
+found in PurpleAir (PA-II) sensors.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(AirSensor)
+pas <- pas_load()
+```
+
+## Channel A Noise (1)
+
+```{r channel_a_noise_1, echo=FALSE, message=FALSE, warning=FALSE}
+pat_a_noisy_1 <- example_pat_failure_B
+pat_internalFit(pat_a_noisy_1)
+```
+
+## Channel A Noise (2)
+
+Channel A readings show extreme levels of noise.
+
+```{r channel_a_noise_2, echo=FALSE}
+pat_a_noisy_2 <- pat_load(pas, label = "SCAP_14", 
+                          startdate = 20190701, enddate = 20190708)
+pat_multiplot(pat_a_noisy_2, plottype = "pm25_over")
+```
+
+While a small amount of noise is natural when measuring particulate matter, 
+sometimes the noise level goes far beyond what is allowable when measurements 
+start bouncing around in an enormous range of ug/m3 within hours. Here we see 
+the A channel looks like a cloud of points measuring anywhere from below 50 to 
+over 1100 ug/m3. A very faint wave pattern can still be identified, however.
+
+## Channel A Jumps
+
+A sudden, but short-lived jump in channel A PM2.5 readings.
+
+```{r channel_a_jump, echo=FALSE}
+pat_a_jump <- example_pat_failure_B
+pat_multiplot(pat_a_jump, plottype = "pm25_over")
+```
+
+This particular plot shows a jump that seems to retain a consistent wave pattern
+for a while rather than just being random noise. This could possibly be a 
+short-term version of the next failure mode.
+
+## Channel A Matches Humidity
+
+The A channel PM2.5 sensor starts reflecting humidity readings instead of PM 
+levels.
+
+```{r channel_a_humidity_multi, echo=FALSE, warning=FALSE}
+pat_a_humidity <- pat_loadLatest(pas, "BikeSGV - West Pasadena", 
+                                 startdate="2019-04-16", enddate="2019-04-24")
+pat_multiplot(pat_a_humidity)
+```
+
+You can see in the multiplot the clear disconnect between the two PM2.5 
+channels. Both sensors appear to agree with each other until channel A suddenly 
+jumps into the thousands and starts tracing the trend of the humidity data 
+(plotted directly below).
+
+```{r, channel_a_humidity_scatter, echo=FALSE, warning=FALSE}
+pat_scatterplot(pat_a_humidity)
+```
+
+A glance at these scatterplots gives a us another look at just how uncorrelated 
+the A and B channels are, while the relationships for channel A 
+with temperature and humidity are abnormally well-defined. It's actually not
+very clear which of the auxillary sensors the A channel is reflecting since
+temperature and relative humidity are naturally correlated themselves.
+
+A more in-depth analysis of this issue is provided in the `bikesgv_story.Rmd` 
+report.
+
+## Channel B is Zero
+
+Channel B measures no particulate matter at all.
+
+```{r channel_b_zero, echo=FALSE}
+pat_b_zero <- pat_loadLatest(pas, "SCAP_46", 
+                             startdate="2019-07-01", enddate="2019-07-08")
+pat_multiplot(pat_b_zero, sampleSize = NULL)
+
+simple <- dplyr::select(pat_b_zero$data, datetime, pm25_A, pm25_B)
+head(simple)
+```
+
+This would certainly be good news if it was more believable, especially
+if the A channel had similar low readings.
