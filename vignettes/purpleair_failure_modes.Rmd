@@ -14,10 +14,16 @@ pas <- pas_load()
 
 ## Channel A Noise (1)
 
+The A channel readings are moderately more noisy than those of the B channel.
+
 ```{r channel_a_noise_1, echo=FALSE, message=FALSE, warning=FALSE}
-pat_a_noisy_1 <- example_pat_failure_B
+pat_a_noisy_1 <- example_pat_failure_A
 pat_internalFit(pat_a_noisy_1)
 ```
+
+Channel A here often measures above B at the same moment in time, as shown by
+the scatterplot with the vertical clump near the origin instead of along the 
+angled regression line.
 
 ## Channel A Noise (2)
 
@@ -30,10 +36,9 @@ pat_multiplot(pat_a_noisy_2, plottype = "pm25_over")
 ```
 
 While a small amount of noise is natural when measuring particulate matter, 
-sometimes the noise level goes far beyond what is allowable when measurements 
-start bouncing around in an enormous range of ug/m3 within hours. Here we see 
-the A channel looks like a cloud of points measuring anywhere from below 50 to 
-over 1100 ug/m3. A very faint wave pattern can still be identified, however.
+sometimes the noise level goes far beyond what is allowable. Here we see the A 
+channel looks like a cloud of points compared to the much more consistent 
+channel B. A faint wave pattern can still be identified, however.
 
 ## Channel A Jumps
 
