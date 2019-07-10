@@ -1,3 +1,10 @@
+# AirSensor 0.3.9
+
+* Added `sensor_filter()`, `sensor_filterDate()` and `sensor_filterMeta()`.
+* Added `local_examples/downloadSpeeds.Rmd` to benchmark data download times
+from ThinkSpeak.
+* New `Purple Air Failure Modes` vignette.
+
 # AirSensor 0.3.8 
 
 * Added `pat_aggregateOutlierCounts()` to count outliers per aggregation

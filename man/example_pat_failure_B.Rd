@@ -6,7 +6,7 @@
 \title{Example Purple Air Timeseries dataset exhibiting severe errors}
 \format{An S3 object composed of "meta" and "data" data.}
 \description{
-The example_pat_failure_B dataset provides a quickly loadable
+The \code{example_pat_failure_B} dataset provides a quickly loadable
 version of a \emph{pa_timeseries} object for practicing and code examples. 
 This dataset was was generated on 2019-07-06 by running:
 

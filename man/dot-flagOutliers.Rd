@@ -10,24 +10,24 @@
 \arguments{
 \item{df}{A data frame.}
 
-\item{parameter}{The data frame parameter to check and replace outliers}
+\item{parameter}{The data frame parameter to use for outlier detection.}
 
-\item{windowSize}{The size of the rolling window}
+\item{windowSize}{The size of the rolling window.}
 
-\item{thresholdMin}{The minimum threshold value to detect outliers}
+\item{thresholdMin}{The minimum threshold value used to detect outliers.}
 }
 \value{
-\code{data.frame} A data.frame with an additional flag vector
+A dataframe with an additional column identifying outliers.
 }
 \description{
-Outlier detection using Hampel identification.  For each sample 
- of a vector, the function computes the median of a center-aligned window composed of the sample 
- and its \code{windowSize} surrounding samples. It also estimates the 
- standard deviation of each sample about its window median using the median 
- absolute deviation. If a sample differs from the median by more than three 
- standard deviations, it is replaced with the median. If x is a matrix, then 
- hampel treats each column of x as an independent channel.
- 
- The \code{thresholdMin} level is similar to a sigma value for normally 
- distributed data.
+This function uses Hampel filter outlier detection to flag
+outliers in \code{parameter} column of the incoming dataframe. The 
+\code{windowSize} and \code{thresholdMin} parameters as passed on to the
+\code{seismicRoll::findOutliers} function.
+
+An additional boolean column named \code{flag_outliers_<parameter>} is added
+to the dataframe. This column will have \code{TRUE} whenever an outlier is
+detected for the chosen \code{parameter}.
+
+See \code{seismicRoll::findOutliers} for further details.
 }

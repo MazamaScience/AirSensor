@@ -39,15 +39,14 @@
 
 <meta property="og:title" content="Flag outliers in vectorized data — .flagOutliers" />
 
-<meta property="og:description" content="Outlier detection using Hampel identification.  For each sample 
- of a vector, the function computes the median of a center-aligned window composed of the sample 
- and its windowSize surrounding samples. It also estimates the 
- standard deviation of each sample about its window median using the median 
- absolute deviation. If a sample differs from the median by more than three 
- standard deviations, it is replaced with the median. If x is a matrix, then 
- hampel treats each column of x as an independent channel. 
-The thresholdMin level is similar to a sigma value for normally 
- distributed data." />
+<meta property="og:description" content="This function uses Hampel filter outlier detection to flag
+outliers in parameter column of the incoming dataframe. The 
+windowSize and thresholdMin parameters as passed on to the
+seismicRoll::findOutliers function.
+An additional boolean column named flag_outliers_&amp;lt;parameter&amp;gt; is added
+to the dataframe. This column will have TRUE whenever an outlier is
+detected for the chosen parameter.
+See seismicRoll::findOutliers for further details." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -78,7 +77,7 @@ The thresholdMin level is similar to a sigma value for normally
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.9</span>
       </span>
     </div>
 
@@ -111,6 +110,9 @@ The thresholdMin level is similar to a sigma value for normally
     </li>
     <li>
       <a href="../articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
+    </li>
+    <li>
+      <a href="../articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
     </li>
     <li>
       <a href="../articles/purpleair_qc.html">Purple Air Quality Control</a>
@@ -151,15 +153,14 @@ The thresholdMin level is similar to a sigma value for normally
 
     <div class="ref-description">
     
-    <p>Outlier detection using Hampel identification.  For each sample 
- of a vector, the function computes the median of a center-aligned window composed of the sample 
- and its <code>windowSize</code> surrounding samples. It also estimates the 
- standard deviation of each sample about its window median using the median 
- absolute deviation. If a sample differs from the median by more than three 
- standard deviations, it is replaced with the median. If x is a matrix, then 
- hampel treats each column of x as an independent channel.</p> 
-<p>The <code>thresholdMin</code> level is similar to a sigma value for normally 
- distributed data.</p>
+    <p>This function uses Hampel filter outlier detection to flag
+outliers in <code>parameter</code> column of the incoming dataframe. The 
+<code>windowSize</code> and <code>thresholdMin</code> parameters as passed on to the
+<code><a href='https://www.rdocumentation.org/packages/seismicRoll/topics/findOutliers'>seismicRoll::findOutliers</a></code> function.</p>
+<p>An additional boolean column named <code>flag_outliers_&lt;parameter&gt;</code> is added
+to the dataframe. This column will have <code>TRUE</code> whenever an outlier is
+detected for the chosen <code>parameter</code>.</p>
+<p>See <code><a href='https://www.rdocumentation.org/packages/seismicRoll/topics/findOutliers'>seismicRoll::findOutliers</a></code> for further details.</p>
     
     </div>
 
@@ -175,21 +176,21 @@ The thresholdMin level is similar to a sigma value for normally
     </tr>
     <tr>
       <th>parameter</th>
-      <td><p>The data frame parameter to check and replace outliers</p></td>
+      <td><p>The data frame parameter to use for outlier detection.</p></td>
     </tr>
     <tr>
       <th>windowSize</th>
-      <td><p>The size of the rolling window</p></td>
+      <td><p>The size of the rolling window.</p></td>
     </tr>
     <tr>
       <th>thresholdMin</th>
-      <td><p>The minimum threshold value to detect outliers</p></td>
+      <td><p>The minimum threshold value used to detect outliers.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>data.frame</code> A data.frame with an additional flag vector</p>
+    <p>A dataframe with an additional column identifying outliers.</p>
     
 
   </div>

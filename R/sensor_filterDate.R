@@ -22,6 +22,9 @@
 #' 
 #' @return A subset of the given \emph{sensor} object.
 #' 
+#' @seealso \link{sensor_filter}
+#' @seealso \link{sensor_filterMeta}
+#' 
 #' @examples
 #' \dontrun{
 #' august <- pat_filterDate(example_sensor, startdate = 20180801, enddate = 20180831)

@@ -64,7 +64,7 @@ NULL
 #' @name example_pat
 #' @title Example Purple Air Timeseries dataset
 #' @format An S3 object composed of "meta" and "data" data.
-#' @description The example_pat dataset provides a quickly loadable version of
+#' @description The \code{example_pat} dataset provides a quickly loadable version of
 #' a \emph{pa_timeseries} object for practicing and code examples.
 #' This dataset was was generated on 2019-07-06 by running:
 #' 
@@ -103,7 +103,7 @@ NULL
 #' @name example_pat_failure_B
 #' @title Example Purple Air Timeseries dataset exhibiting severe errors
 #' @format An S3 object composed of "meta" and "data" data.
-#' @description The example_pat_failure_B dataset provides a quickly loadable
+#' @description The \code{example_pat_failure_B} dataset provides a quickly loadable
 #' version of a \emph{pa_timeseries} object for practicing and code examples. 
 #' This dataset was was generated on 2019-07-06 by running:
 #' 
@@ -123,7 +123,7 @@ NULL
 #' @name example_sensor
 #' @title Example AirSensor Timeseries dataset
 #' @format An S3 object composed of "meta" and "data" data.
-#' @description The example_as dataset provides a quickly loadable version of
+#' @description The \code{example_sensor} dataset provides a quickly loadable version of
 #' an \emph{airsensor} object for practicing and code examples.
 #' This dataset was was generated on 2019-07-06 by running:
 #' 
@@ -134,5 +134,20 @@ NULL
 #'                    startdate = "2018-08-14",
 #'                    enddate = "2018-09-07") %>%
 #'     pat_createAirSensor(period = "1 hour")
+#' }
+NULL
+
+#' @docType data
+#' @keywords datasets
+#' @name example_sensor_scaqmd
+#' @title Example AirSensor Timeseries dataset
+#' @format An S3 object composed of "meta" and "data" data.
+#' @description The \code{example_sensor_scaqmd} dataset provides a quickly 
+#' loadable version of a multi-sensor \emph{airsensor} object for practicing and 
+#' code examples. This dataset was was generated on 2019-07-10 by running:
+#' 
+#' \preformatted{
+#'   example_sensor_scaqmd <- 
+#'     sensor_load("scaqmd", startdate = 20190701, enddate = 20190708)
 #' }
 NULL

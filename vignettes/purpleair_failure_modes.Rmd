@@ -1,6 +1,8 @@
 ---
 title: "PurpleAir Failure Modes"
-output: html_document
+author: "Mazama Science"
+date: "7/09/2019"
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{PurpleAir Failure Modes}
   %\VignetteEngine{knitr::rmarkdown}
@@ -11,7 +13,7 @@ This vignette gives a surface-level examination of identified failure modes
 found in PurpleAir (PA-II) sensors.
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.width=7, fig.height=5)
 library(AirSensor)
 pas <- pas_load()
 ```
