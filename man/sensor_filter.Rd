@@ -2,15 +2,15 @@
 % Please edit documentation in R/sensor_filter.R
 \name{sensor_filter}
 \alias{sensor_filter}
-\title{General purpose data filtering for AirSensor objects}
+\title{Data filtering for AirSensor objects}
 \usage{
 sensor_filter(sensor = NULL, ...)
 }
 \arguments{
 \item{sensor}{An AirSensor object.}
 
-\item{...}{Logical predicates defined in terms of the variables in the 
-\emph{sensor}.}
+\item{...}{Logical predicates defined in terms of the variables in 
+\code{sensor$data}.}
 }
 \value{
 A subset of the incoming \emph{sensor}.
@@ -22,14 +22,17 @@ combined with \code{&} or seperated by a comma. Only rows where the condition
 evaluates to TRUE are kept.Rows where the condition evaluates to \code{NA}
 are dropped.
 }
+\note{
+Filtering predicates are applied to the \code{data} dataframe within
+the \emph{sensor} object.
+}
 \examples{
-\dontrun{
-monitorID <- example_sensor$meta$monitorId
 twenties <- sensor_filter(example_sensor, SCAN_14 >= 20, SCAN_14 < 30)
 head(twenties$data)
-}
 
 }
 \seealso{
 \link{sensor_filterDate}
+
+\link{sensor_filterMeta}
 }

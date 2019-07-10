@@ -6,7 +6,7 @@
 \title{Example AirSensor Timeseries dataset}
 \format{An S3 object composed of "meta" and "data" data.}
 \description{
-The example_as dataset provides a quickly loadable version of
+The \code{example_sensor} dataset provides a quickly loadable version of
 an \emph{airsensor} object for practicing and code examples.
 This dataset was was generated on 2019-07-06 by running:
 

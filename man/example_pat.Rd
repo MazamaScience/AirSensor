@@ -6,7 +6,7 @@
 \title{Example Purple Air Timeseries dataset}
 \format{An S3 object composed of "meta" and "data" data.}
 \description{
-The example_pat dataset provides a quickly loadable version of
+The \code{example_pat} dataset provides a quickly loadable version of
 a \emph{pa_timeseries} object for practicing and code examples.
 This dataset was was generated on 2019-07-06 by running:
 

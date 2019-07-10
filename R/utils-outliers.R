@@ -1,4 +1,3 @@
-#' 
 #' @title Flag outliers in vectorized data
 #' 
 #' @description This function uses Hampel filter outlier detection to flag
@@ -50,7 +49,6 @@
     
   }
 
-#' 
 #' @title Replace outliers with rolling median
 #' 
 #' @description Perform smoothing by replacing outliers with the window median 
