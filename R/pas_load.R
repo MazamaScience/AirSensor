@@ -31,7 +31,7 @@
 #' @seealso \link{pas_loadLatest}
 #' 
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' pas <- pas_load()
 #' pas %>% 
 #'   pas_filter(stateCode == "CA") %>%

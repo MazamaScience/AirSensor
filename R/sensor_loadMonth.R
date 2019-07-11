@@ -28,7 +28,7 @@
 #' @seealso \link{pat_loadLatest}
 #' 
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' sensor_loadMonth("scaqmd", 201905) %>%
 #'   PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
 #' }

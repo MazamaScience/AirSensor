@@ -19,7 +19,7 @@
 #' @seealso \link{pas_filterArea}
 #'
 #' @examples 
-#'\donttest{
+#'\dontrun{
 #' # Near Diamond Bar, CA
 #' diamond_bar <-
 #'   pas_load() %>%

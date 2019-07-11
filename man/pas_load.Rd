@@ -38,7 +38,7 @@ A pre-generated \emph{pa_synoptic} object will be loaded for
 By default, today's date is used.
 }
 \examples{
-\donttest{
+\dontrun{
 pas <- pas_load()
 pas \%>\% 
   pas_filter(stateCode == "CA") \%>\%

@@ -47,7 +47,7 @@ Subsetting by country may be performed by specifying the \code{countryCodes}
 argument.
 }
 \examples{
-\donttest{
+\dontrun{
 initializeMazamaSpatialUtils()
 pas <- pas_loadLatest()
 pas \%>\% 

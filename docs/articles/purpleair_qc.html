@@ -229,33 +229,33 @@
 <a class="sourceLine" id="cb11-5" title="5"><span class="st">  </span>example_pat_failure_B <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb11-6" title="6"><span class="st">  </span><span class="kw"><a href="../reference/pat_filterDate.html">pat_filterDate</a></span>(<span class="dv">20190611</span>,<span class="dv">20190611</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb11-7" title="7"><span class="st">  </span><span class="kw"><a href="../reference/pat_extractDataFrame.html">pat_extractData</a></span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb11-8" title="8"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/select">select</a></span>(datetime, pm25_A, pm25_B) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-8" title="8"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(datetime, pm25_A, pm25_B) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb11-9" title="9"><span class="st">  </span><span class="co"># Convert datetime to an hourly timestamp to use as a factor</span></a>
-<a class="sourceLine" id="cb11-10" title="10"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/mutate">mutate</a></span>(<span class="dt">datetime =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/strptime">strftime</a></span>(datetime, <span class="st">"%Y%m%d%H"</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-10" title="10"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">datetime =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/strptime">strftime</a></span>(datetime, <span class="st">"%Y%m%d%H"</span>)) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb11-11" title="11"><span class="st">  </span><span class="co"># Convert from wide to "tidy" so we can use channel as a factor</span></a>
-<a class="sourceLine" id="cb11-12" title="12"><span class="st">  </span>tidyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/tidyr/topics/gather">gather</a></span>(<span class="st">"channel"</span>, <span class="st">"pm25"</span>, <span class="op">-</span>datetime)</a>
+<a class="sourceLine" id="cb11-12" title="12"><span class="st">  </span>tidyr<span class="op">::</span><span class="kw"><a href="https://tidyr.tidyverse.org/reference/gather.html">gather</a></span>(<span class="st">"channel"</span>, <span class="st">"pm25"</span>, <span class="op">-</span>datetime)</a>
 <a class="sourceLine" id="cb11-13" title="13"></a>
 <a class="sourceLine" id="cb11-14" title="14"><span class="co"># Look at a random sample of this new dataframe</span></a>
-<a class="sourceLine" id="cb11-15" title="15">dplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/sample">sample_n</a></span>(raw_data, <span class="dv">10</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb11-15" title="15">dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(raw_data, <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>##      datetime channel  pm25
-## 1  2019061107  pm25_B 10.54
-## 2  2019061121  pm25_B 14.19
-## 3  2019061114  pm25_A  7.57
-## 4  2019061117  pm25_A  6.21
-## 5  2019061100  pm25_B  5.06
-## 6  2019061111  pm25_A  7.70
-## 7  2019061123  pm25_A 14.55
-## 8  2019061110  pm25_B  9.90
-## 9  2019061105  pm25_A  7.76
-## 10 2019061108  pm25_B 11.59</code></pre>
+## 1  2019061121  pm25_A 16.21
+## 2  2019061123  pm25_B 12.38
+## 3  2019061107  pm25_B  9.48
+## 4  2019061106  pm25_B  8.73
+## 5  2019061106  pm25_A  8.69
+## 6  2019061123  pm25_B 13.30
+## 7  2019061116  pm25_A  8.61
+## 8  2019061119  pm25_B  8.79
+## 9  2019061112  pm25_A  8.29
+## 10 2019061116  pm25_A  9.20</code></pre>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="co"># Create a timeseries using boxplots</span></a>
 <a class="sourceLine" id="cb13-2" title="2">colors &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/rgb">rgb</a></span>(<span class="fl">0.9</span>, <span class="fl">0.25</span>, <span class="fl">0.2</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/rgb">rgb</a></span>(<span class="fl">0.2</span>, <span class="fl">0.25</span>, <span class="fl">0.9</span>))</a>
-<a class="sourceLine" id="cb13-3" title="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(raw_data, <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(datetime, pm25, <span class="dt">color =</span> channel)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-4" title="4"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_boxplot">geom_boxplot</a></span>(<span class="dt">outlier.shape =</span> <span class="ot">NA</span>,</a>
+<a class="sourceLine" id="cb13-3" title="3"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(raw_data, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(datetime, pm25, <span class="dt">color =</span> channel)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb13-4" title="4"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html">geom_boxplot</a></span>(<span class="dt">outlier.shape =</span> <span class="ot">NA</span>,</a>
 <a class="sourceLine" id="cb13-5" title="5">               <span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb13-6" title="6"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/scale_manual">scale_color_manual</a></span>(<span class="dt">values=</span>colors) <span class="op">+</span></a>
-<a class="sourceLine" id="cb13-7" title="7"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>(<span class="dt">pch=</span><span class="dv">15</span>, <span class="dt">cex=</span><span class="fl">0.2</span>, <span class="dt">position =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/position_jitterdodge">position_jitterdodge</a></span>()) <span class="op">+</span></a>
-<a class="sourceLine" id="cb13-8" title="8"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">ggtitle</a></span>(<span class="st">"A/B hourly averages"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb13-6" title="6"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span>(<span class="dt">values=</span>colors) <span class="op">+</span></a>
+<a class="sourceLine" id="cb13-7" title="7"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(<span class="dt">pch=</span><span class="dv">15</span>, <span class="dt">cex=</span><span class="fl">0.2</span>, <span class="dt">position =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/position_jitterdodge.html">position_jitterdodge</a></span>()) <span class="op">+</span></a>
+<a class="sourceLine" id="cb13-8" title="8"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"A/B hourly averages"</span>)</a></code></pre></div>
 <p><img src="purpleair_qc_files/figure-html/AB_boxplot-1.png" width="672"></p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="co"># Compare the t-statistic for that day</span></a>
 <a class="sourceLine" id="cb14-2" title="2">agg_data &lt;-<span class="st"> </span></a>
@@ -263,23 +263,23 @@
 <a class="sourceLine" id="cb14-4" title="4"><span class="st">  </span><span class="kw"><a href="../reference/pat_filterDate.html">pat_filterDate</a></span>(<span class="dv">20190611</span>,<span class="dv">20190611</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb14-5" title="5"><span class="st">  </span><span class="kw"><a href="../reference/pat_aggregate.html">pat_aggregate</a></span>()</a>
 <a class="sourceLine" id="cb14-6" title="6"></a>
-<a class="sourceLine" id="cb14-7" title="7"><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(agg_data, <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(datetime, pm25_p)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb14-8" title="8"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb14-9" title="9"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/scale_continuous">scale_y_log10</a></span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb14-10" title="10"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">ggtitle</a></span>(<span class="st">"t-test p-value"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb14-7" title="7"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(agg_data, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(datetime, pm25_p)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-8" title="8"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-9" title="9"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10</a></span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-10" title="10"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"t-test p-value"</span>)</a></code></pre></div>
 <p><img src="purpleair_qc_files/figure-html/AB_boxplot-2.png" width="672"></p>
 <p>And here is the same for a day with serious problems:</p>
 <pre><code>##      datetime channel    pm25
-## 1  2019061222  pm25_A 3327.52
-## 2  2019061215  pm25_A   13.32
-## 3  2019061208  pm25_B   17.55
-## 4  2019061219  pm25_A   13.59
-## 5  2019061202  pm25_A   18.18
-## 6  2019061203  pm25_B   13.52
-## 7  2019061208  pm25_A 3332.94
-## 8  2019061210  pm25_B   16.29
-## 9  2019061214  pm25_B   16.01
-## 10 2019061210  pm25_B   15.90</code></pre>
+## 1  2019061213  pm25_B   17.24
+## 2  2019061223  pm25_B   17.86
+## 3  2019061211  pm25_B   17.80
+## 4  2019061221  pm25_A 3334.19
+## 5  2019061222  pm25_A      NA
+## 6  2019061215  pm25_A   12.85
+## 7  2019061223  pm25_A 3331.39
+## 8  2019061214  pm25_A   17.94
+## 9  2019061200  pm25_B   13.30
+## 10 2019061202  pm25_B   12.33</code></pre>
 <p><img src="purpleair_qc_files/figure-html/AB_boxplot_2-1.png" width="672"><img src="purpleair_qc_files/figure-html/AB_boxplot_2-2.png" width="672"></p>
 <p>We can see that the null hypothesis – the difference in means is entirely due to chance – is extremely unlikely <code>pm25_p &lt; 1e-30</code>, for example, only occur for hours where the A and B channels have hourly avergaes that are both highly precise (low std dev) and very different. We can thus use the <code>pm25_t</code> variable to flag those hours where the A and B channels disagree.</p>
 </div>

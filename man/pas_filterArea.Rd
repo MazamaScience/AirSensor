@@ -36,7 +36,7 @@ scsb <-
 range(scsb$longitude)
 range(scsb$latitude)
 
-\donttest{
+\dontrun{
 pas_leaflet(scsb)
 }
 }

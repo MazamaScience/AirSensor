@@ -34,7 +34,7 @@ scsb <-
   pas_filter(stringr::str_detect(label, "^SCSB_"))
 nrow(scsb)
 
-\donttest{
+\dontrun{
 pas_leaflet(ca)
 
 pas_leaflet(scsb, maptype = "satellite")
