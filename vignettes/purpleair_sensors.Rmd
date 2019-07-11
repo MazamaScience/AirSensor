@@ -19,46 +19,62 @@ This vignette decribes technical details of Purple Air Sensor internals.
 ## General Description
 
 The PurpleAir PA-II sensor tracks real-time atmospheric measurements including 
-particulate matter (PM) concentrations, temperature, humidity, and pressure. The
-device is connected via wifi to the ThingSpeak "internet of things" platform 
-where readings are stored and can be retrieved.
+particulate matter concentrations (PM1.0, PM2.5, and PM10), temperature and 
+humidity. The device is connected via wifi to the ThingSpeak 
+"internet of things" platform where sensor readings can be stored and retrieved.
 
-1. [PurpleAir technology overview](https://www2.purpleair.com/pages/technology)
-2. [AQ-SPEC evaluation](https://www.aqmd.gov/aq-spec/product/purpleair-pa-ii)
+* Useful resources:
+  + .[PurpleAir technology overview](https://www2.purpleair.com/pages/technology)
+  + .[PurpleAir FAQ](https://www2.purpleair.com/community/faq)
+  + .[AQ-SPEC evaluation](https://www.aqmd.gov/aq-spec/product/purpleair-pa-ii)
+
 
 ## Internal Hardware
 
 ### Particle Detectors
 
-PM levels are measured using two
-[Plantower PMS5003 Particle Detectors](http://www.aqmd.gov/docs/default-source/aq-spec/resources-page/plantower-pms5003-manual_v2-3.pdf)
-which provide their own separate 'A' and 'B' reading channels. Optical particle 
-counters of this type function by measuring light scattered by particulate 
-matter. The PMS5003 unit sends a laser through air sucked in by a fan, measures 
-the light received, and calculates the number of different-sized particles based
-on [Mie scattering](https://en.wikipedia.org/wiki/Mie_scattering) algorithms.
+PM concentration readings are given by two
+[Plantower PMS5003 Particle Detectors](http://www.aqmd.gov/docs/default-source/aq-spec/resources-page/plantower-pms5003-manual_v2-3.pdf),
+each providing its own separate reading channel (A and B). These optical 
+particle counters function by measuring the amount of light scattered by
+suspended particulate matter. A PMS5003 unit sends a laser through air sucked in
+by a fan, detects the light reflected, and counts the number of different-sized 
+particles based on 
+[Mie scattering](https://en.wikipedia.org/wiki/Mie_scattering) algorithms. 
+The final PM1.0, PM2.5, and PM10 concentrations are then calculated from these 
+counts.
+[Source](https://www2.purpleair.com/community/faq#!hc-how-do-laser-particle-counters-work)
+
+In this process, however, calculating concentration relies on assuming an 
+average particle density since not all particles have the same 
+[composition](https://en.wikipedia.org/wiki/Particulates#Composition). 
+This assumption is noted to be a potential cause for PurpleAir monitors reading 
+higher than federal monitors.
+[Source](https://www2.purpleair.com/community/faq#!hc-how-do-purpleair-sensors-compare-to-regulatory-particulate-matter-sensors)
+
+Finally, the PM2.5 AQI provided by the PurpleAir unit is averaged over ~80
+seconds instead of over the past 24 hours, which may appear exaggerate the
+real-time data since PM levels can fluctuate a good deal thoughout the day. 
+[Source](https://www2.purpleair.com/community/faq#!hc-how-do-purpleair-sensors-compare-to-regulatory-particulate-matter-sensors)
 
 The detectors' effective range for PM2.5 lies between 0 and 500 ug/m3, but can 
 still measure beyond 1000 ug/m3. The operational temperature ranges
 from -10 to 60 C, and humidity anywhere between 0-99 RH%.
 
-[More on optical particle counting](http://www.cas.manchester.ac.uk/restools/instruments/aerosol/opc/) 
+More on optical particle counting can be found 
+[here](http://www.cas.manchester.ac.uk/restools/instruments/aerosol/opc/).
 
-### Temperature/Humidity/Pressure Sensor
+### Temperature/Humidity Sensor
 
-Temperature, relative humidity, and pressure are all measured by a single 
+Temperature and humidity are both measured by a single 
 [Bosch Sensortec Intergrated Environmental Sensor Unit BME280](https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BME280-DS002.pdf).
-The manufacturer has provided both 'operational' and 'full-accuracy' ranges for
-the individual sensors:
+PurpleAir notes that temperature readings may be elevated due to the sensor's 
+position within the monitor casing. 
+[Source](https://www2.purpleair.com/pages/technology)
 
-* Temperature sensor
-  + Operational: -40 to 85 C.
-  + Full-accuracy: 0 to 65 C.
-* Humidity sensor
-  + Operational: -40 to 85 C. 0 to 100 %RH.
-* Pressure sensor
-  + Operational: -40 to 85 C. 0 to 100 %RH.
-  + Full-accuracy range: 0 to 65 C. 300 to 1100 hPa.
+The unit's 'operational' temperature sensor range lies between -40°C to +85°C, 
+but narrows its 'full-accuracy' to between 0°C and 65°C. The humidity sensor is 
+operational between -40°C and 85°C, and can measure from 0 to 100 %RH.
 
 ## Internal Firmware
 
