@@ -192,14 +192,16 @@ separated by a space, such as <code>"250 m"</code>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Near Diamond Bar, CA</span>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='co'># Near Diamond Bar, CA</span>
 <span class='no'>diamond_bar</span> <span class='kw'>&lt;-</span>
   <span class='fu'><a href='pas_load.html'>pas_load</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'>pas_filterNear</span>(<span class='kw'>latitude</span> <span class='kw'>=</span> <span class='fl'>34.001667</span>,
                  <span class='kw'>longitude</span> <span class='kw'>=</span> -<span class='fl'>117.820833</span>,
                  <span class='kw'>radius</span> <span class='kw'>=</span> <span class='st'>"20 km"</span>)
 
-<span class='fu'><a href='pas_leaflet.html'>pas_leaflet</a></span>(<span class='no'>diamond_bar</span>)</div></pre>
+<span class='fu'><a href='pas_leaflet.html'>pas_leaflet</a></span>(<span class='no'>diamond_bar</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -120,11 +120,19 @@
 <div id="general-description" class="section level2">
 <h2 class="hasAnchor">
 <a href="#general-description" class="anchor"></a>General Description</h2>
-<p>The PurpleAir PA-II sensor tracks real-time atmospheric measurements including particulate matter (PM) concentrations, temperature, humidity, and pressure. The device is connected via wifi to the ThingSpeak “internet of things” platform where readings are stored and can be retrieved.</p>
-<ol style="list-style-type: decimal">
-<li><a href="https://www2.purpleair.com/pages/technology">PurpleAir technology overview</a></li>
-<li><a href="https://www.aqmd.gov/aq-spec/product/purpleair-pa-ii">AQ-SPEC evaluation</a></li>
-</ol>
+<p>The PurpleAir PA-II sensor tracks real-time atmospheric measurements including particulate matter concentrations (PM1.0, PM2.5, and PM10), temperature and humidity. The device is connected via wifi to the ThingSpeak “internet of things” platform where sensor readings can be stored and retrieved.</p>
+<ul>
+<li>Useful resources:
+<ul>
+<li>.<a href="https://www2.purpleair.com/pages/technology">PurpleAir technology overview</a>
+</li>
+<li>.<a href="https://www2.purpleair.com/community/faq">PurpleAir FAQ</a>
+</li>
+<li>.<a href="https://www.aqmd.gov/aq-spec/product/purpleair-pa-ii">AQ-SPEC evaluation</a>
+</li>
+</ul>
+</li>
+</ul>
 </div>
 <div id="internal-hardware" class="section level2">
 <h2 class="hasAnchor">
@@ -132,33 +140,17 @@
 <div id="particle-detectors" class="section level3">
 <h3 class="hasAnchor">
 <a href="#particle-detectors" class="anchor"></a>Particle Detectors</h3>
-<p>PM levels are measured using two <a href="http://www.aqmd.gov/docs/default-source/aq-spec/resources-page/plantower-pms5003-manual_v2-3.pdf">Plantower PMS5003 Particle Detectors</a> which provide their own separate ‘A’ and ‘B’ reading channels. Optical particle counters of this type function by measuring light scattered by particulate matter. The PMS5003 unit sends a laser through air sucked in by a fan, measures the light received, and calculates the number of different-sized particles based on <a href="https://en.wikipedia.org/wiki/Mie_scattering">Mie scattering</a> algorithms.</p>
+<p>PM concentration readings are given by two <a href="http://www.aqmd.gov/docs/default-source/aq-spec/resources-page/plantower-pms5003-manual_v2-3.pdf">Plantower PMS5003 Particle Detectors</a>, each providing its own separate reading channel (A and B). These optical particle counters function by measuring the amount of light scattered by suspended particulate matter. A PMS5003 unit sends a laser through air sucked in by a fan, detects the light reflected, and counts the number of different-sized particles based on <a href="https://en.wikipedia.org/wiki/Mie_scattering">Mie scattering</a> algorithms. The final PM1.0, PM2.5, and PM10 concentrations are then calculated from these counts. <a href="https://www2.purpleair.com/community/faq#!hc-how-do-laser-particle-counters-work">Source</a></p>
+<p>In this process, however, calculating concentration relies on assuming an average particle density since not all particles have the same <a href="https://en.wikipedia.org/wiki/Particulates#Composition">composition</a>. This assumption is noted to be a potential cause for PurpleAir monitors reading higher than federal monitors. <a href="https://www2.purpleair.com/community/faq#!hc-how-do-purpleair-sensors-compare-to-regulatory-particulate-matter-sensors">Source</a></p>
+<p>Finally, the PM2.5 AQI provided by the PurpleAir unit is averaged over ~80 seconds for firmware versions 3.00 and ~120 seconds for version 4.00 and later. Other regulatory groups often give an AQI averaged over the last 24 hours, which may appear to exaggerate the PurpleAir data on comparison. <a href="https://www2.purpleair.com/community/faq#!hc-how-do-purpleair-sensors-compare-to-regulatory-particulate-matter-sensors">Source</a></p>
 <p>The detectors’ effective range for PM2.5 lies between 0 and 500 ug/m3, but can still measure beyond 1000 ug/m3. The operational temperature ranges from -10 to 60 C, and humidity anywhere between 0-99 RH%.</p>
-<p><a href="http://www.cas.manchester.ac.uk/restools/instruments/aerosol/opc/">More on optical particle counting</a></p>
+<p>More on optical particle counting can be found <a href="http://www.cas.manchester.ac.uk/restools/instruments/aerosol/opc/">here</a>.</p>
 </div>
-<div id="temperaturehumiditypressure-sensor" class="section level3">
+<div id="temperaturehumidity-sensor" class="section level3">
 <h3 class="hasAnchor">
-<a href="#temperaturehumiditypressure-sensor" class="anchor"></a>Temperature/Humidity/Pressure Sensor</h3>
-<p>Temperature, relative humidity, and pressure are all measured by a single <a href="https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BME280-DS002.pdf">Bosch Sensortec Intergrated Environmental Sensor Unit BME280</a>. The manufacturer has provided both ‘operational’ and ‘full-accuracy’ ranges for the individual sensors:</p>
-<ul>
-<li>Temperature sensor
-<ul>
-<li>Operational: -40 to 85 C.</li>
-<li>Full-accuracy: 0 to 65 C.</li>
-</ul>
-</li>
-<li>Humidity sensor
-<ul>
-<li>Operational: -40 to 85 C. 0 to 100 %RH.</li>
-</ul>
-</li>
-<li>Pressure sensor
-<ul>
-<li>Operational: -40 to 85 C. 0 to 100 %RH.</li>
-<li>Full-accuracy range: 0 to 65 C. 300 to 1100 hPa.</li>
-</ul>
-</li>
-</ul>
+<a href="#temperaturehumidity-sensor" class="anchor"></a>Temperature/Humidity Sensor</h3>
+<p>Temperature and humidity are both measured by a single <a href="https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BME280-DS002.pdf">Bosch Sensortec Intergrated Environmental Sensor Unit BME280</a>. PurpleAir notes that temperature readings may be elevated due to the sensor’s position within the monitor casing. <a href="https://www2.purpleair.com/pages/technology">Source</a></p>
+<p>The unit’s ‘operational’ temperature sensor range lies between -40°C to +85°C, but narrows its ‘full-accuracy’ to between 0°C and 65°C. The humidity sensor is operational between -40°C and 85°C, and can measure from 0 to 100 %RH.</p>
 </div>
 </div>
 <div id="internal-firmware" class="section level2">

@@ -216,14 +216,13 @@ filtered to only include sensors with data more recent than
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='initializeMazamaSpatialUtils.html'>initializeMazamaSpatialUtils</a></span>()
-<span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='fu'>pas_loadLatest</span>()</div><div class='output co'>#&gt; WARN [2019-07-11 09:03:41] Unable to load spatial data `CA_AirBasins`.
-#&gt; WARN [2019-07-11 09:03:41] Unable to load spatial data `CA_AirBasins`.
-#&gt; WARN [2019-07-11 09:03:41] Unable to load spatial data `CA_AirBasins`.
-#&gt; WARN [2019-07-11 09:03:41] Unable to load spatial data `CA_AirBasins`.
-#&gt; WARN [2019-07-11 09:03:41] Unable to load spatial data `CA_AirBasins`.</div><div class='input'><span class='no'>pas</span> <span class='kw'>%&gt;%</span>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='fu'><a href='initializeMazamaSpatialUtils.html'>initializeMazamaSpatialUtils</a></span>()
+<span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='fu'>pas_loadLatest</span>()
+<span class='no'>pas</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='pas_filter.html'>pas_filter</a></span>(<span class='no'>stateCode</span> <span class='kw'>==</span> <span class='st'>"CA"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='pas_leaflet.html'>pas_leaflet</a></span>()</div></pre>
+  <span class='fu'><a href='pas_leaflet.html'>pas_leaflet</a></span>()
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

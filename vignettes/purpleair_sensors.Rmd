@@ -53,8 +53,9 @@ higher than federal monitors.
 [Source](https://www2.purpleair.com/community/faq#!hc-how-do-purpleair-sensors-compare-to-regulatory-particulate-matter-sensors)
 
 Finally, the PM2.5 AQI provided by the PurpleAir unit is averaged over ~80
-seconds instead of over the past 24 hours, which may appear exaggerate the
-real-time data since PM levels can fluctuate a good deal thoughout the day. 
+seconds for firmware versions 3.00 and ~120 seconds for version 4.00 and later.
+Other regulatory groups often give an AQI averaged over the last 24 hours, which
+may appear to exaggerate the PurpleAir data on comparison. 
 [Source](https://www2.purpleair.com/community/faq#!hc-how-do-purpleair-sensors-compare-to-regulatory-particulate-matter-sensors)
 
 The detectors' effective range for PM2.5 lies between 0 and 500 ug/m3, but can 

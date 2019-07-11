@@ -190,9 +190,11 @@ Only rows where the condition evaluates to TRUE are kept.</p></td>
   <span class='no'>ca</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>pas_filter</span>(<span class='kw pkg'>stringr</span><span class='kw ns'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_detect.html'>str_detect</a></span>(<span class='no'>label</span>, <span class='st'>"^SCSB_"</span>))
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>scsb</span>)</div><div class='output co'>#&gt; [1] 56</div><div class='input'>
-</div><div class='input'><span class='fu'><a href='pas_leaflet.html'>pas_leaflet</a></span>(<span class='no'>ca</span>)
+</div><span class='co'># NOT RUN {</span>
+<span class='fu'><a href='pas_leaflet.html'>pas_leaflet</a></span>(<span class='no'>ca</span>)
 
-<span class='fu'><a href='pas_leaflet.html'>pas_leaflet</a></span>(<span class='no'>scsb</span>, <span class='kw'>maptype</span> <span class='kw'>=</span> <span class='st'>"satellite"</span>)</div></pre>
+<span class='fu'><a href='pas_leaflet.html'>pas_leaflet</a></span>(<span class='no'>scsb</span>, <span class='kw'>maptype</span> <span class='kw'>=</span> <span class='st'>"satellite"</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

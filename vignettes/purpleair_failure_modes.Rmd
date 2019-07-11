@@ -88,6 +88,34 @@ temperature and relative humidity are naturally correlated themselves.
 A more in-depth analysis of this issue is provided in the `bikesgv_story.Rmd` 
 report.
 
+## Channel A Magic Number
+
+The A channel is centered around a particular level but is sometimes effected
+by humidity when it goes past a certain threshold.
+
+```{r, echo=FALSE, warning=FALSE}
+pat <- pat_loadLatest(pas, "SCEM_05", startdate = 20190701, enddate = 20190710)
+pat_multiplot(pat)
+```
+
+The multiplot shows the A and B channels have very different readings, similar 
+the previous failure mode. The strange thing here though is that the A channel
+is mostly flat, with only the occasional spike when the humidity measures very 
+high. Let's see what number it is centered around:
+
+```{r}
+plot(pat$data$datetime, pat$data$pm25_A, 
+     ylim = c(3325, 3340), 
+     pch = 15, cex = 0.6, col=adjustcolor("black", 0.2),
+     xlab = "2019", ylab = "PM2.5 A")
+
+temp <- table(as.vector(pat$data$pm25_A))
+print(paste0("Mode value: ", names(temp)[temp == max(temp)]))
+```
+
+Although there is plenty of noise between 3325 and 3340 ug/m3, a very clear, 
+very straight line of points is visible at exactly 3333.0 ug/m3.
+
 ## Channel B is Zero
 
 Channel B measures no particulate matter at all.
