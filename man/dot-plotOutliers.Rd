@@ -15,7 +15,7 @@
 
 \item{parameter}{the parameter with the associated outliers flag}
 
-\item{ylim}{y limits for consistency}
+\item{ylim}{y axis limits}
 
 \item{xlab}{x axis label}
 

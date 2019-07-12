@@ -1,3 +1,7 @@
+# AirSensor 0.3.10
+
+* Added `ylim` argument to `pat_multiplot().
+
 # AirSensor 0.3.9
 
 * Added `sensor_filter()`, `sensor_filterDate()` and `sensor_filterMeta()`.

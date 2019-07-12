@@ -13,7 +13,7 @@ pat_monitorComparison(pat = NULL, ylim = NULL,
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}
 
-\item{ylim}{Vector of (lo,hi) y-axis limits used as limits.}
+\item{ylim}{Vector of (lo,hi) y-axis limits.}
 
 \item{replaceOutliers}{Logical specifying whether replace outliers in the
 \emph{pat} object.}

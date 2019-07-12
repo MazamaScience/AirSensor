@@ -102,7 +102,7 @@
 #'
 #' @param df data frame that contains datetime, PM2.5, and outlier boolean flags
 #' @param parameter the parameter with the associated outliers flag
-#' @param ylim y limits for consistency 
+#' @param ylim y axis limits
 #' @param xlab x axis label
 #' @param ylab y axis label
 #' @param title plot title
