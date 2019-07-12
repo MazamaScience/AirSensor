@@ -93,25 +93,26 @@ if ( !dir.exists(opt$logDir) )
   stop(paste0("logDir not found:  ",opt$logDir))
 
 # Default to the current month
+now <- lubridate::now(opt$timezone)
 if ( opt$datestamp == "" ) {
-  now <- lubridate::now(opt$timezone)
   opt$datestamp <- strftime(now, "%Y%m01", tz = opt$timezone)
 }
 
 # Handle the case where the day is already specified
 datestamp <- stringr::str_sub(paste0(opt$datestamp,"01"), 1, 8)
+monthstamp <- stringr::str_sub(datestamp, 1, 6)
 
 # ----- Set up logging ---------------------------------------------------------
 
 logger.setup(
-  traceLog = file.path(opt$logDir, paste0("createMonthlyPAT_",opt$datestamp,"_TRACE.log")),
-  debugLog = file.path(opt$logDir, paste0("createMonthlyPAT_",opt$datestamp,"_DEBUG.log")), 
-  infoLog  = file.path(opt$logDir, paste0("createMonthlyPAT_",opt$datestamp,"_INFO.log")), 
-  errorLog = file.path(opt$logDir, paste0("createMonthlyPAT_",opt$datestamp,"_ERROR.log"))
+  traceLog = file.path(opt$logDir, paste0("createMonthlyPAT_",monthstamp,"_TRACE.log")),
+  debugLog = file.path(opt$logDir, paste0("createMonthlyPAT_",monthstamp,"_DEBUG.log")), 
+  infoLog  = file.path(opt$logDir, paste0("createMonthlyPAT_",monthstamp,"_INFO.log")), 
+  errorLog = file.path(opt$logDir, paste0("createMonthlyPAT_",monthstamp,"_ERROR.log"))
 )
 
 # For use at the very end
-errorLog <- file.path(opt$logDir, paste0("createMonthlyPAT_",opt$datestamp,"_ERROR.log"))
+errorLog <- file.path(opt$logDir, paste0("createMonthlyPAT_",datestamp,"_ERROR.log"))
 
 # Silence other warning messages
 options(warn=-1) # -1=ignore, 0=save/print, 1=print, 2=error
@@ -124,9 +125,6 @@ logger.debug("R session:\n\n%s\n", sessionString)
 # ------ Create PAT objects ----------------------------------------------------
 
 result <- try({
-  
-  # monthstamp
-  monthstamp <- stringr::str_sub(datestamp, 1, 6)
   
   # Get times
   starttime <- lubridate::ymd(datestamp, tz=opt$timezone)
