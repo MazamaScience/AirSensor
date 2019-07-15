@@ -45,11 +45,11 @@ The final PM1.0, PM2.5, and PM10 concentrations are then calculated from these
 counts.
 [Source](https://www2.purpleair.com/community/faq#!hc-how-do-laser-particle-counters-work)
 
-In this process, however, calculating concentration relies on assuming an 
+In this process, however, calculating concentration relies on an assumed 
 average particle density since not all particles have the same 
 [composition](https://en.wikipedia.org/wiki/Particulates#Composition). 
 This assumption is noted to be a potential cause for PurpleAir monitors reading 
-higher than federal monitors.
+higher PM levels than federal monitors.
 [Source](https://www2.purpleair.com/community/faq#!hc-how-do-purpleair-sensors-compare-to-regulatory-particulate-matter-sensors)
 
 Finally, the PM2.5 AQI provided by the PurpleAir unit is averaged over ~80

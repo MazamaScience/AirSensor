@@ -34,6 +34,7 @@ Imports:
     plyr,
     purrr,
     PWFSLSmoke (>= 1.2.4),
+    raster,
     RColorBrewer,
     rlang,
     scales,
