@@ -5,7 +5,8 @@
 \title{Generate video frames}
 \usage{
 sensor_videoFrame(sensor = sensor_load(), communityRegion = NULL,
-  frameTime = NULL, timeInfo = NULL, map = NULL)
+  frameTime = NULL, timeInfo = NULL, timeRange = NULL,
+  timeTicks = NULL, timeLabels = NULL, map = NULL)
 }
 \arguments{
 \item{sensor}{An AirSensor object.}
@@ -16,6 +17,12 @@ sensor_videoFrame(sensor = sensor_load(), communityRegion = NULL,
 
 \item{timeInfo}{???.}
 
+\item{timeRange}{Movie time range.}
+
+\item{timeTicks}{Movie time ticks.}
+
+\item{timeLabels}{Movie time labels.}
+
 \item{map}{A pre-generated basemap image.}
 }
 \value{
@@ -23,4 +30,16 @@ ret
 }
 \description{
 desc
+}
+\examples{
+ft <- lubridate::ymd_h("2019-07-04 18")
+#ti <- PWFSLSmoke::timeInfo(ft, -118.082, 33.767)
+sMap <- PWFSLSmoke::staticmap_getStamenmapBrick(centerLon = -118.083,
+                                                centerLat = 33.767,
+                                                zoom = 15,
+                                                width = 770,
+                                                height = 495)
+sensor_videoFrame(communityRegion = "Seal Beach", 
+                  frameTime = ft,
+                  map = sMap)
 }
