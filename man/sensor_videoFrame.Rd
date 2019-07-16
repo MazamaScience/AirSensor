@@ -32,6 +32,8 @@ ret
 desc
 }
 \examples{
+\dontrun{
+library(MazamaSpatialUtils)
 ft <- lubridate::ymd_h("2019-07-04 18")
 #ti <- PWFSLSmoke::timeInfo(ft, -118.082, 33.767)
 sMap <- PWFSLSmoke::staticmap_getStamenmapBrick(centerLon = -118.083,
@@ -42,4 +44,5 @@ sMap <- PWFSLSmoke::staticmap_getStamenmapBrick(centerLon = -118.083,
 sensor_videoFrame(communityRegion = "Seal Beach", 
                   frameTime = ft,
                   map = sMap)
+}
 }

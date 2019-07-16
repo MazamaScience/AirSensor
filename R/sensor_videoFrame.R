@@ -16,6 +16,8 @@
 #' @return ret
 #' 
 #' @examples 
+#' \dontrun{
+#' library(MazamaSpatialUtils)
 #' ft <- lubridate::ymd_h("2019-07-04 18")
 #' #ti <- PWFSLSmoke::timeInfo(ft, -118.082, 33.767)
 #' sMap <- PWFSLSmoke::staticmap_getStamenmapBrick(centerLon = -118.083,
@@ -26,6 +28,7 @@
 #' sensor_videoFrame(communityRegion = "Seal Beach", 
 #'                   frameTime = ft,
 #'                   map = sMap)
+#' }
 
 sensor_videoFrame <- function(sensor = sensor_load(),
                               communityRegion = NULL,
@@ -39,8 +42,8 @@ sensor_videoFrame <- function(sensor = sensor_load(),
   # Debug
   if (TRUE) {
     # Movie parameters (timeframe, community, map)
-    boop <- sensor_filterDate(sensor, startdate = 20190704, enddate = 20190705)
-    timeRange <- boop$data$datetime
+    movieData <- sensor_filterDate(sensor, startdate = 20190704, enddate = 20190705)
+    timeRange <- movieData$data$datetime
     timeRange[(lubridate::hour(timeRange) - 1) %% 3 == 0 & 
                 lubridate::minute(timeRange) == 0]
     timeTicks <- timeRange[(lubridate::hour(timeRange) - 1) %% 3 == 0 & 
@@ -55,7 +58,7 @@ sensor_videoFrame <- function(sensor = sensor_load(),
                                                    height = 495)
     
     # For the individual frame
-    frameTime <- lubridate::ymd_h("2019-07-04 18")
+    frameTime <- lubridate::ymd_h("2019-07-04 23")
   }
   
   # ----- Validate parameters --------------------------------------------------
@@ -74,18 +77,19 @@ sensor_videoFrame <- function(sensor = sensor_load(),
   
   # ----- Subset data ----------------------------------------------------------
   
+  commReg <- communityRegion
   community <- dplyr::filter(sensor$meta,
-                             .data$communityRegion == communityRegion)
+                             .data$communityRegion == commReg)
   monitorId <- community$monitorID
   longitude <- community$longitude
   latitude <- community$latitude
   
-  data <- sensor$data %>% 
+  sensorData <- sensor$data %>% 
     dplyr::select(.data$datetime, monitorId) %>% 
     dplyr::filter(.data$datetime == frameTime) %>%
     dplyr::select(-.data$datetime) %>%
     tidyr::gather(key = "monitorID", value = "pm25")
-  pm25 <- data$pm25
+  pm25 <- sensorData$pm25
   
   data <- data.frame(monitorId, longitude, latitude, pm25)
   
@@ -142,25 +146,23 @@ sensor_videoFrame <- function(sensor = sensor_load(),
          pch = 16, 
          cex = 4)
   
-  # ----- Plot date ------------------------------------------------------------
+  # ----- Plot time axis -------------------------------------------------------
   
-  par(mar = c(0.5, 0.5, 6, 0.5))
-  plot(rep(0, 10), -(as.numeric(1:10)), axes = F, col = 'red')
-  
-  mtext(strftime(frameTime, "%b %e", tz = "America/Los_Angeles") , line = 2.5, 
-        cex = 2.1)
-  mtext(strftime(frameTime, "%l %P", tz = "America/Los_Angeles") , line = 0.5, 
-        cex = 1.5)
-  
-
-  # Fix: Axis is being drawn way under the date/time text
   if (!is.null(timeRange) && !is.null(timeTicks) && !is.null(timeLabels)) {
-    labels <- timeLabels
-    axis(2, labels = labels, line = -5.5, at = -as.numeric(timeTicks), 
-         cex.axis = 1.9, las = 2, hadj = 1, cex= 2, lwd.ticks = 2.7,
-         lwd = 2.7)
-    axis(4, line = -4.25, at = -as.numeric(frameTime), col = 'transparent', 
-         col.ticks = 2, lwd.ticks = 15, labels = "", tcl = -2)  
+    par(mar = c(0.5, 0.5, 6, 0.5))
+    plot(rep(0, length(timeRange)), -(as.numeric(timeRange)), axes = FALSE, 
+         col = 'transparent')
+    
+    mtext(strftime(frameTime, "%b %e", tz = "America/Los_Angeles") , line = 2.5, 
+          cex = 1.6)
+    mtext(strftime(frameTime, "%l %P", tz = "America/Los_Angeles") , line = 0.5, 
+          cex = 1.1)
+    
+    axis(side = 2, labels = timeLabels, line = -2.9, at = -as.numeric(timeTicks), 
+         cex.axis = 0.7, las = 2, hadj = 1, cex= 0.4, lwd.ticks = 2.0,
+         lwd = 2.0)
+    axis(side = 4, line = -1.2, at = -as.numeric(frameTime), col = 'red', 
+         col.ticks = 2, lwd.ticks = 4, labels = "", tcl = -0.8)
   }
   
 }
