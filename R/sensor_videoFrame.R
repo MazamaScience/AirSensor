@@ -39,35 +39,22 @@ sensor_videoFrame <- function(sensor = sensor_load(),
                               timeLabels = NULL,
                               map = NULL) {
   
-  # Debug
-  if (TRUE) {
-    # Movie parameters (timeframe, community, map)
-    movieData <- sensor_filterDate(sensor, startdate = 20190704, enddate = 20190705)
-    timeRange <- movieData$data$datetime
-    timeRange[(lubridate::hour(timeRange) - 1) %% 3 == 0 & 
-                lubridate::minute(timeRange) == 0]
-    timeTicks <- timeRange[(lubridate::hour(timeRange) - 1) %% 3 == 0 & 
-                             lubridate::minute(timeRange) == 0]
-    timeLabels <- strftime(timeTicks, "%l %P")
-    communityRegion <- "Seal Beach"
-    # timeInfo <- PWFSLSmoke::timeInfo(ft, -118.082, 33.767) # Needs "SimpleTimezones"
-    map <- PWFSLSmoke::staticmap_getStamenmapBrick(centerLon = -118.083,
-                                                   centerLat = 33.767,
-                                                   zoom = 15,
-                                                   width = 770,
-                                                   height = 495)
-    
-    # For the individual frame
-    frameTime <- lubridate::ymd_h("2019-07-04 23")
-  }
-  
   # ----- Validate parameters --------------------------------------------------
   
   if (is.null(frameTime))
     stop("Parameter 'frameTime' must be defined.")
   
-  #if (is.null(timeInfo))
-    #stop("Parameter 'timeInfo' must be defined.")
+  if (is.null(timeInfo))
+    stop("Parameter 'timeInfo' must be defined.")
+  
+  if (is.null(timeRange))
+    stop("Parameter 'timeRange' must be defined.")
+  
+  if (is.null(timeTicks))
+    stop("Parameter 'timeTicks' must be defined.")
+  
+  if (is.null(timeLabels))
+    stop("Parameter 'timeLabels' must be defined.")
   
   if (is.null(map))
     stop("Parameter 'map' must be defined.")
@@ -93,11 +80,50 @@ sensor_videoFrame <- function(sensor = sensor_load(),
   
   data <- data.frame(monitorId, longitude, latitude, pm25)
   
-  # ----- Plot day/night shading -----------------------------------------------
+  # ----- Day/night shading ----------------------------------------------------
   
-  par(bg = "white")
-  #par(bg = "gray60")
-  # Need to have timeInfo working to do this bit
+  ti <- dplyr::filter(timeInfo, .data$localTime == frameTime)
+  
+  if(ti$night) {
+    par(bg = "gray60")
+  } else {
+    par(bg = "white")
+  }
+  
+  # add transitions
+  # sunset
+  if (ti$sunset - ti$localTime < lubridate::dminutes(40) & ti$sunset - ti$localTime >= lubridate::dminutes(30)) {
+    par(bg = "gray95")
+  } else if (ti$sunset - ti$localTime < lubridate::dminutes(30) & ti$sunset - ti$localTime >= lubridate::dminutes(20)) {
+    par(bg = "gray90")
+  } else if (ti$sunset - ti$localTime < lubridate::dminutes(20) & ti$sunset - ti$localTime >= lubridate::dminutes(10)) {
+    par(bg = "gray85")
+  } else if (ti$sunset - ti$localTime < lubridate::dminutes(10) & ti$sunset - ti$localTime >= lubridate::dminutes(0)) {
+    par(bg = "gray80")
+  } else if (ti$localTime - ti$sunset <= lubridate::dminutes(0) & ti$localTime - ti$sunset > lubridate::dminutes(10)) {
+    par(bg = "gray75")
+  } else if (ti$localTime - ti$sunset <= lubridate::dminutes(10) & ti$localTime - ti$sunset > lubridate::dminutes(20)) {
+    par(bg = "gray70")
+  } else if (ti$localTime - ti$sunset <= lubridate::dminutes(20) & ti$localTime - ti$sunset > lubridate::dminutes(30)) {
+    par(bg = "gray65")
+  } 
+  
+  # sunrise
+  if (ti$sunrise - ti$localTime < lubridate::dminutes(30) & ti$sunrise - ti$localTime >= lubridate::dminutes(20)) {
+    par(bg = "gray65")
+  } else if (ti$sunrise - ti$localTime < lubridate::dminutes(20) & ti$sunrise - ti$localTime >= lubridate::dminutes(10) ) {
+    par(bg = "gray70")
+  } else if (ti$sunrise - ti$localTime < lubridate::dminutes(10) & ti$sunrise - ti$localTime >= lubridate::dminutes(0) ) {
+    par(bg = "gray75")
+  } else if (ti$localTime - ti$sunrise <= lubridate::dminutes(10) & ti$localTime - ti$sunrise > lubridate::dminutes(0) ) {
+    par(bg = "gray80")
+  } else if (ti$localTime - ti$sunrise <= lubridate::dminutes(20) & ti$localTime - ti$sunrise > lubridate::dminutes(10) ) {
+    par(bg = "gray85")
+  } else if (ti$localTime - ti$sunrise <= lubridate::dminutes(30) & ti$localTime - ti$sunrise > lubridate::dminutes(20) ) {
+    par(bg = "gray90")
+  } else if (ti$localTime - ti$sunrise <= lubridate::dminutes(40) & ti$localTime - ti$sunrise > lubridate::dminutes(30) ) {
+    par(bg = "gray95")
+  }
   
   # ----- Plot map -------------------------------------------------------------
   
@@ -144,7 +170,7 @@ sensor_videoFrame <- function(sensor = sensor_load(),
          y = data$latitude,
          col = colors,
          pch = 16, 
-         cex = 4)
+         cex = 7)
   
   # ----- Plot time axis -------------------------------------------------------
   
@@ -158,11 +184,11 @@ sensor_videoFrame <- function(sensor = sensor_load(),
     mtext(strftime(frameTime, "%l %P", tz = "America/Los_Angeles") , line = 0.5, 
           cex = 1.1)
     
-    axis(side = 2, labels = timeLabels, line = -2.9, at = -as.numeric(timeTicks), 
-         cex.axis = 0.7, las = 2, hadj = 1, cex= 0.4, lwd.ticks = 2.0,
-         lwd = 2.0)
-    axis(side = 4, line = -1.2, at = -as.numeric(frameTime), col = 'red', 
-         col.ticks = 2, lwd.ticks = 4, labels = "", tcl = -0.8)
+    axis(side = 2, labels = timeLabels, line = -5.5, at = -as.numeric(timeTicks), 
+         cex.axis = 1.9, las = 2, hadj = 1, cex= 2, lwd.ticks = 2.7,
+         lwd = 2.7)
+    axis(side = 4, line = -3.9, at = -as.numeric(frameTime), col = 'red', 
+         col.ticks = 2, lwd.ticks = 12, labels = "", tcl = -2)
   }
   
 }
