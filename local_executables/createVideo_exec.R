@@ -27,12 +27,12 @@ if ( interactive() ) {
   option_list <- list(
     make_option(
       c("-c","--community"), 
-      default="Seal Beach", 
+      default="", 
       help="Name of South Coast community [default=\"%default\"]"
     ),
     make_option(
       c("-s","--startDate"), 
-      default=20190704, 
+      default=0, 
       help="Start date for the 3-day period [default=\"%default\"]"
     ),
     make_option(
@@ -59,10 +59,10 @@ if (opt$version) {
   quit()
 }
 
-#if (!opt$community) {
-#  cat(paste0("Community name must be given\n"))
-#  quit()
-#}
+if (opt$community == "") {
+  cat(paste0("Community name must be given\n"))
+  quit()
+}
 
 # ----- Validate parameters ----------------------------------------------------
 
@@ -96,15 +96,18 @@ result <- try({
   sensor <- sensor_load()
   timeZone <- dplyr::filter(sensor$meta, communityRegion == opt$community)[1, "timezone"]
   
-  if (opt$startDate) {
+  if (opt$startDate > 0) {
     start <- lubridate::parse_date_time(opt$startDate, orders = "ymd", tz = timeZone)
     end   <- start + lubridate::days(2)
   } else {
-    end   <- lubridate::today() + hours(23)
-    start <- end - lubridate::hours(70)
+    # Is this timezone right?
+    end   <- lubridate::now(tz = timeZone)
+    start <- end - lubridate::hours(72)
   }
   
-  movieData <- sensor_filterDate(sensor, startdate = start, enddate = end)
+  # Can't filter by just the date
+  #movieData <- sensor_filterDate(sensor, startdate = start, enddate = end)
+  movieData <- sensor_filter(sensor, datetime >= start, datetime <= end)
   
   # Time axis data
   tickSkip <- 6
