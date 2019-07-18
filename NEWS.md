@@ -15,7 +15,8 @@ from ThinkSpeak.
 # AirSensor 0.3.8 
 
 * Added `pat_aggregateOutlierCounts()` to count outliers per aggregation
-period.
+period. 
+* Revamped `pat_aggregate()` to fix warnings and optimize
 
 # AirSensor 0.3.7 
 

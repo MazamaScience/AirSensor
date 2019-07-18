@@ -54,7 +54,7 @@
 #'   monitorID = "060950004_01", 
 #'   startdate = "20180801", 
 #'   enddate = "20181001"
-#'   )
+#' )
 #' 
 #' # Plot rose using mean binning
 #' sensor_pollutionRose(sensor, windData, statistic = "prop.mean")

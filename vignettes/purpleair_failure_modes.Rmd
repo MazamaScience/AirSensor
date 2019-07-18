@@ -9,8 +9,8 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-This vignette gives a surface-level examination of identified failure modes 
-found in PurpleAir (PA-II) sensors.
+This vignette examines different failure modes we have found in the data from
+PurpleAir (PA-II) sensors.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(fig.width=7, fig.height=5)
@@ -18,7 +18,7 @@ library(AirSensor)
 pas <- pas_load()
 ```
 
-## Channel A Noise (1)
+## Channel A Moderate Noise
 
 The A channel readings are moderately more noisy than those of the B channel.
 
@@ -31,7 +31,7 @@ Channel A here often measures above B at the same moment in time, as shown by
 the scatterplot with the vertical clump near the origin instead of along the 
 angled regression line.
 
-## Channel A Noise (2)
+## Channel A Extreme Noise
 
 Channel A readings show extreme levels of noise.
 
@@ -48,16 +48,16 @@ channel B. A faint wave pattern can still be identified, however.
 
 ## Channel A Jumps
 
-A sudden, but short-lived jump in channel A PM2.5 readings.
+Channel A shows a sudden, but short-lived jump in PM2.5 readings.
 
 ```{r channel_a_jump, echo=FALSE}
 pat_a_jump <- example_pat_failure_B
 pat_multiplot(pat_a_jump, plottype = "pm25_over")
 ```
 
-This particular plot shows a jump that seems to retain a consistent wave pattern
+This plot shows a jump that seems to retain a consistent wave pattern
 for a while rather than just being random noise. This could possibly be a 
-short-term version of the next failure mode.
+temporary mix of the "Matches Humidity" failure mode.
 
 ## Channel A Matches Humidity
 
@@ -85,12 +85,12 @@ with temperature and humidity are abnormally well-defined. It's actually not
 very clear which of the auxillary sensors the A channel is reflecting since
 temperature and relative humidity are naturally correlated themselves.
 
-A more in-depth analysis of this issue is provided in the `bikesgv_story.Rmd` 
-report.
+A more in-depth analysis of this issue is provided in 
+`local_examples/bikesgv_story.Rmd` .
 
 ## Channel A Magic Number
 
-The A channel is centered around a particular level but is sometimes effected
+The A channel is centered around a particular level but is sometimes affected
 by humidity when it goes past a certain threshold.
 
 ```{r, echo=FALSE, warning=FALSE}
@@ -99,9 +99,9 @@ pat_multiplot(pat)
 ```
 
 The multiplot shows the A and B channels have very different readings, similar 
-the previous failure mode. The strange thing here though is that the A channel
-is mostly flat, with only the occasional spike when the humidity measures very 
-high. Let's see what number it is centered around:
+the "Matches Humidity" failure mode. The strange thing here though is that the 
+A channel is mostly flat, with only the occasional spike when the humidity 
+measures very high. Let's see what number it is centered around:
 
 ```{r}
 plot(pat$data$datetime, pat$data$pm25_A, 
@@ -129,5 +129,4 @@ simple <- dplyr::select(pat_b_zero$data, datetime, pm25_A, pm25_B)
 head(simple)
 ```
 
-This would certainly be good news if it was more believable, especially
-if the A channel had similar low readings.
+In this case one may wish to work with the A channel data only

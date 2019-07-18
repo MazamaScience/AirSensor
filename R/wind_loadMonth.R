@@ -1,14 +1,15 @@
 #' @title Load monthly wind data
 #'
-#' @param monitorID A monitorID
+#' @param monitorID A monitorID.
 #' @param datestamp Date string in ym or ymd order
 #' @param timezone Timezone used to interpret datestamp.
 #' @param baseUrl Base URL for wind data.
 #'
 #' @description Load pre-generated wind data for the given month. Archived data 
-#' for SCAQMD sensors go back to January, 2018.
+#' appropriate for use with SCAQMD sensors go back to January, 2018.
 #'
-#' @return a data frame 
+#' @return A data frame with columns \code{"date", "wd", "ws"}.
+#' 
 #' @export
 #'
 #' @examples

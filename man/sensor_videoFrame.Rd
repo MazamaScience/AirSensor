@@ -5,7 +5,7 @@
 \title{Generate video frames}
 \usage{
 sensor_videoFrame(sensor = sensor_load(), communityRegion = NULL,
-  frameTime = NULL, timeInfo = NULL, timeRange = NULL,
+  frameTime = NULL, timeInfo = NULL, timeAxis = NULL,
   timeTicks = NULL, timeLabels = NULL, map = NULL)
 }
 \arguments{
@@ -17,7 +17,7 @@ sensor_videoFrame(sensor = sensor_load(), communityRegion = NULL,
 
 \item{timeInfo}{???.}
 
-\item{timeRange}{Movie time range.}
+\item{timeAxis}{Movie time axis.}
 
 \item{timeTicks}{Movie time ticks.}
 
@@ -26,23 +26,58 @@ sensor_videoFrame(sensor = sensor_load(), communityRegion = NULL,
 \item{map}{A pre-generated basemap image.}
 }
 \value{
-ret
+A plot is generated. Nothing is returned.
 }
 \description{
 desc
 }
 \examples{
 \dontrun{
+# Fourth of July in Seal Beach
 library(MazamaSpatialUtils)
-ft <- lubridate::ymd_h("2019-07-04 18")
-#ti <- PWFSLSmoke::timeInfo(ft, -118.082, 33.767)
-sMap <- PWFSLSmoke::staticmap_getStamenmapBrick(centerLon = -118.083,
-                                                centerLat = 33.767,
-                                                zoom = 15,
-                                                width = 770,
-                                                height = 495)
-sensor_videoFrame(communityRegion = "Seal Beach", 
-                  frameTime = ft,
-                  map = sMap)
+
+start <- lubridate::ymd_h("2019-07-04 00", tz = "America/Los_Angeles")
+end   <- start + lubridate::days(3)
+
+sensor <- sensor_load("scaqmd")
+
+movieData <- 
+  sensor \%>\%
+  sensor_filterMeta(communityRegion == "Seal Beach") \%>\%
+  sensor_filterDate(start, end)
+
+# Seal Beach map
+lon <- -118.083
+lat <- 33.767
+zoom <- 15
+
+staticMap <- PWFSLSmoke::staticmap_getStamenmapBrick(
+  centerLon = lon,
+  centerLat = lat,
+  zoom = zoom,
+  width = 770,
+  height = 495
+)
+
+tickSkip <- 6
+timeAxis <- movieData$data$datetime
+timeTicks <- timeAxis[(lubridate::hour(timeAxis) - 1) \%\% tickSkip == 0 & 
+                 lubridate::minute(timeAxis) == 0]
+timeLabels <- strftime(timeTicks, "\%l \%P")
+timeInfo <- PWFSLSmoke::timeInfo(timeAxis, longitude = lon, latitude = lat)
+
+frameTime <- lubridate::ymd_h("2019-07-04 21", tz="America/Los_Angeles")
+timeInfo <- PWFSLSmoke::timeInfo(frameTime, lon, lat)
+
+sensor_videoFrame(
+  sensor = sensor,
+  communityRegion = "Seal Beach", 
+  frameTime = frameTime,
+  timeInfo = timeInfo,
+  timeAxis = timeAxis,
+  timeTicks = timeTicks,
+  timeLabels = timeLabels,
+  map = map
+)
 }
 }
