@@ -58,24 +58,10 @@ pat_aggregate <- function(
   period = "1 hour"
 ) {
   
-  # ===== DEBUGGING ============================================================
-  
-  if ( FALSE ) {
-    
-    pat <- 
-      example_pat_failure_B %>%
-      pat_filterDate(20190611,20190611)
-    
-    period <- "1 hour"
-    stat <- "tstats"
-    parameters <- c("pm25_A", "pm25_B", "humidity", "temperature")
-    
-  }
-  
   # ----- Validate parameters --------------------------------------------------
   
   tolower(period) -> period
-
+  
   if ( !pat_isPat(pat) )
     stop("Required parameter 'pat' is not a valid 'pa_timeseries' object.")
   
@@ -93,7 +79,7 @@ pat_aggregate <- function(
     periodCount <- as.numeric(periodParts[1])
     units <- periodParts[2]
   }
-
+  
   if ( units == "sec"     ) unitSecs <- 1
   if ( units == "min"     ) unitSecs <- 60
   if ( units == "hour"    ) unitSecs <- 3600
@@ -107,39 +93,35 @@ pat_aggregate <- function(
   
   # ---- Calculate aggregation statistics --------------------------------------
   
+  # Parameters for all numeric 
   parameters <- c("pm25_A", "pm25_B", "humidity", "temperature")
-    
-  # Apply .pat_agg separately for each type of statistic
+  
+  # Parameters for T-test 
+  t_parameters <- c("pm25_A", "pm25_B")
+  
+  # Apply .pat_agg separately for each type of stat -> 
+  # Reduce list by merging to common (datetime)
   aggregationStats <- 
-    plyr::join_all(
-      list(
-        .pat_agg(pat, "tstats", periodSeconds, parameters),
+    Reduce(
+      f = function(...) merge(..., all=TRUE), 
+      x = list(    
+        .pat_agg(pat, "tstats", periodSeconds, t_parameters),
         .pat_agg(pat, "mean", periodSeconds, parameters),
         .pat_agg(pat, "median", periodSeconds, parameters),
         .pat_agg(pat, "sd", periodSeconds, parameters), 
         .pat_agg(pat, "min", periodSeconds, parameters), 
         .pat_agg(pat, "max", periodSeconds, parameters),
         .pat_agg(pat, "count", periodSeconds, parameters)
-      ),
-      by = "datetime"
-    ) %>%
-    # Deal with periods that had no data where mean,min,max generated NaN or Inf
-    dplyr::mutate_all( function(x) replace(x, which(is.nan(x)), NA) ) %>%
-    dplyr::mutate_all( function(x) replace(x, which(is.infinite(x)), NA) )
-
+      )
+    )
   
   # Re-arrange order of columns to group by input column
   aggregationStats <-
-    aggregationStats[,
-              c(
-                "datetime", 
-                names(aggregationStats)[c(
-                  grep("pm25_", names(aggregationStats)), 
-                  grep("humid", names(aggregationStats)), 
-                  grep("temp", names(aggregationStats))
-                )]
-              )]
-  
+    aggregationStats[, c( "datetime",
+                          names(aggregationStats)
+                          [c( grep("pm25_", names(aggregationStats)),
+                              grep("humid", names(aggregationStats)),
+                              grep("temp", names(aggregationStats)) )] )]
   
   # ----- Return ---------------------------------------------------------------
   
@@ -160,144 +142,93 @@ pat_aggregate <- function(
   if ( stat == "sum"        ) func <- function(x) sum(na.omit(x))
   if ( stat == "max"        ) func <- function(x) max(na.omit(x))
   if ( stat == "min"        ) func <- function(x) min(na.omit(x))
-  if ( stat == "tstats"     ) func <- function(x) x 
+  if ( stat == "tstats"     ) func <- function(x) list(x) 
   
-  # ----- Handle single-input statistics ---------------------------------------
+  # Remove dupicated time entries and create datetime axis (if any)
+  datetime <- 
+    pat$data$datetime[which(!duplicated.POSIXlt(pat$data$datetime))]
   
+  # Create data frame 
+  data <- data.frame(pat$data)[, parameters]
+  
+  # zoo with datetime index 
+  zz <- zoo::zoo(data, order.by = datetime)
+  
+  # Aggregate 
+  zagg <- 
+    aggregate(
+      zz, 
+      by = time(zz) - as.numeric(time(zz)) %% periodSeconds, 
+      FUN = func
+    )  
+  
+  # ----- !T-test --------------------------------------------------------------
   if ( stat != "tstats" ) {
-
-    # Data only input dataframe    
-    data <- 
-      pat$data %>%  
-      dplyr::select(parameters)
     
-    datetime <- pat$data$datetime
+    # Fortify to data.frame
+    tbl <- zoo::fortify.zoo(zagg, names = "datetime")
     
-    # Create a 'zoo' object so that we can use zoo::aggregate()
-    zz <- 
-      zoo::zoo(
-        data, 
-        structure(
-          datetime, 
-          class = c("POSIXt", "POSIXct")
-        )
-      )
-    
-    tbl <- 
-      # Aggregate data by bin and calculate a single-value statistic for the
-      # measurements within each bin. With an initial object of type "zoo",
-      # the function here is actually zoo::aggregate.zoo() which isn't exported
-      # so we can't call it explicitly and have to rely on "dispatching".
-      aggregate(
-        zz, 
-        by = time(zz) - as.numeric(time(zz)) %% periodSeconds, 
-        FUN = func, 
-        simplify = TRUE
-      ) %>%
-      # Use "datetime" as the zoo index
-      zoo::fortify.zoo(
-        names = c(Index = "datetime")
-      ) %>% 
-      # Rename columns as parameter_stat
-      dplyr::rename_at(
-        dplyr::vars(2:(ncol(data) + 1)),
-        .funs = function(x) paste0(x, "_", stat) # functionally name
-      ) %>% 
-      dplyr::as_tibble()
+    # Rename 
+    colnames(tbl)[-1] <- paste0(colnames(tbl)[-1], "_", stat)
     
     return(tbl)
     
   }
   
-  # ----- Handle tstats --------------------------------------------------------
-  
+  # ----- T-test ---------------------------------------------------------------
   if ( stat == "tstats" ) {
     
-    # Create an aggregated time axis first
-    
-    # NOTE:  Use zoo style aggregation to guarantee we get the same datetime axis.
-    # NOTE:  If datetime differs by any time at all, plyr::join_all() will fail
-    # NOTE:  to properly join dataframes.
-    # NOTE:  This time axis is also important for calculating binIndex as we
-    # NOTE:  want to calculate binIndex relative the the aggregation unit
-    # NOTE:  boundaries.
-    
-    tt <- as.numeric(pat$data$datetime)
-    x <- zoo::zoo(tt, structure(tt, class = c("POSIXt", "POSIXct")))
-    dummy <- aggregate(x, time(x) - as.numeric(time(x)) %% periodSeconds, mean)
-    aggregatedTimeAxis <- time(dummy)
-
-    # TODO:  We can't do the same zoo::aggregate magic with tstats.
-    # TODO:  The documentation clearly states that FUN:
-    # TODO:
-    # TODO:    "Always needs to return a result of fixed length (typically scalar)."
-    # TODO:
-    # TODO:  So we roll our own dplyr based aggregation
-    
-    data <-
-      pat$data %>%
-      dplyr::select("datetime", "pm25_A", "pm25_B")
-    
-    # Create a binIndex column
-    firstTime <- aggregatedTimeAxis[1]
-    elapsedSeconds <- as.numeric(difftime(data$datetime, firstTime, units = "secs"))
-    data$binIndex <- floor(elapsedSeconds / periodSeconds) + 1
-    
-    dataList <- 
-      data %>%
-      dplyr::group_split(.data$binIndex)
-    
-    # NOTE:  T-tests should only be used when n < 30. Any larger, the 
-    # NOTE:  distribution approches normal -> should use Z test when n > 30.
-    # NOTE:  n > 30 ~ period = 30 min 
-    
-    t_score <-  p_value <- df_value <-  list()
-    
-    for ( i in seq_along(dataList) ) { 
+    # Internal t.test function to handle too many missing values if applicable
+    .ttest <- function(x,y) {
       
-      result <- 
-        try({
-          htest <- 
-            t.test(
-              dataList[[i]]$pm25_A, 
-              dataList[[i]]$pm25_B, 
-              paired = FALSE
-            )}, 
-          silent = TRUE
-        )
-      
-      if ( "try-error" %in% class(result) ) {
-        
-        t_score[[i]] <- NA
-        p_value[[i]] <- NA 
-        df_value[[i]] <- NA
-        
+      if ( length(na.omit(x)) > 2 && length(na.omit(y)) > 2 ) {
+        return(t.test(x, y, paired = FALSE))
       } else {
-        
-        t_score[[i]] <- as.numeric(htest$statistic)
-        p_value[[i]] <- as.numeric(htest$p.value)
-        df_value[[i]] <- as.numeric(htest$parameter)
-        
+        return(t.test(c(0,0,0), c(0,0,0)))
       }
       
     }
     
-    tbl <- 
-      dplyr::tibble(
-        datetime = aggregatedTimeAxis, 
-        pm25_t = unlist(t_score), 
-        pm25_p = unlist(p_value),
-        pm25_df = unlist(df_value)
+    # Map/Reduce t.test() to nested bins in matrix rows 
+    tt <- 
+      apply(
+        X = zoo::coredata(zagg), 
+        MARGIN = 1, 
+        FUN = function(x) Reduce(.ttest, x)
       )
     
-    # TODO: Z - Test
+    # Create and fill stats lists 
+    t_score <-  p_value <- df_value <- vector("list", length(names(tt)))
     
-    options(warn=0)
+    for ( i in names(tt) ) {
+      
+      val <- tt[[i]]
+      ind <- which(names(tt) == i)
+      
+      t_score[[ind]] <- val[["statistic"]]
+      p_value[[ind]] <- val[["p.value"]]
+      df_value[[ind]] <- val[["parameter"]]
+      
+    } 
+    
+    # Bind unlisted stats -> 
+    # Create zoo with aggregated datetime index -> 
+    # Fortify to data.frame 
+    tbl <- 
+      zoo::fortify.zoo(
+        zoo::zoo(
+          cbind(
+            "pm25_t" = unlist(t_score),
+            "pm25_p" = unlist(p_value), 
+            "pm25_df" = unlist(df_value)
+          ), 
+          order.by = zoo::index(zagg)
+        ), 
+        names = "datetime" 
+      ) 
     
     return(tbl)
     
   }
   
 }
-
-

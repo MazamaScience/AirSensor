@@ -1,3 +1,11 @@
+# AirSensor 0.3.10
+
+* Added `sensor_videoFrame()` function to create a single frame map for a
+network of sensors. These can be used to create videos showing the evolution
+of PM2.5 levels over several days.
+* Added `local_executables/createVideo_exec.R` script to generate mp4 videos.
+* Added `ylim` argument to `pat_multiplot().
+
 # AirSensor 0.3.9
 
 * Added `sensor_filter()`, `sensor_filterDate()` and `sensor_filterMeta()`.
@@ -8,7 +16,8 @@ from ThinkSpeak.
 # AirSensor 0.3.8 
 
 * Added `pat_aggregateOutlierCounts()` to count outliers per aggregation
-period.
+period. 
+* Revamped `pat_aggregate()` to fix warnings and optimize
 
 # AirSensor 0.3.7 
 

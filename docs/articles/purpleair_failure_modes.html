@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.10</span>
       </span>
     </div>
 
@@ -59,7 +59,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/AirSensorOverview.html">AirSensor Package Overview</a>
+      <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
     </li>
     <li>
       <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
@@ -116,17 +116,17 @@
 
     
     
-<p>This vignette gives a surface-level examination of identified failure modes found in PurpleAir (PA-II) sensors.</p>
-<div id="channel-a-noise-1" class="section level2">
+<p>This vignette examines different failure modes we have found in the data from PurpleAir (PA-II) sensors.</p>
+<div id="channel-a-moderate-noise" class="section level2">
 <h2 class="hasAnchor">
-<a href="#channel-a-noise-1" class="anchor"></a>Channel A Noise (1)</h2>
+<a href="#channel-a-moderate-noise" class="anchor"></a>Channel A Moderate Noise</h2>
 <p>The A channel readings are moderately more noisy than those of the B channel.</p>
 <p><img src="purpleair_failure_modes_files/figure-html/channel_a_noise_1-1.png" width="672"></p>
 <p>Channel A here often measures above B at the same moment in time, as shown by the scatterplot with the vertical clump near the origin instead of along the angled regression line.</p>
 </div>
-<div id="channel-a-noise-2" class="section level2">
+<div id="channel-a-extreme-noise" class="section level2">
 <h2 class="hasAnchor">
-<a href="#channel-a-noise-2" class="anchor"></a>Channel A Noise (2)</h2>
+<a href="#channel-a-extreme-noise" class="anchor"></a>Channel A Extreme Noise</h2>
 <p>Channel A readings show extreme levels of noise.</p>
 <p><img src="purpleair_failure_modes_files/figure-html/channel_a_noise_2-1.png" width="672"></p>
 <p>While a small amount of noise is natural when measuring particulate matter, sometimes the noise level goes far beyond what is allowable. Here we see the A channel looks like a cloud of points compared to the much more consistent channel B. A faint wave pattern can still be identified, however.</p>
@@ -134,9 +134,9 @@
 <div id="channel-a-jumps" class="section level2">
 <h2 class="hasAnchor">
 <a href="#channel-a-jumps" class="anchor"></a>Channel A Jumps</h2>
-<p>A sudden, but short-lived jump in channel A PM2.5 readings.</p>
+<p>Channel A shows a sudden, but short-lived jump in PM2.5 readings.</p>
 <p><img src="purpleair_failure_modes_files/figure-html/channel_a_jump-1.png" width="672"></p>
-<p>This particular plot shows a jump that seems to retain a consistent wave pattern for a while rather than just being random noise. This could possibly be a short-term version of the next failure mode.</p>
+<p>This plot shows a jump that seems to retain a consistent wave pattern for a while rather than just being random noise. This could possibly be a temporary mix of the “Matches Humidity” failure mode.</p>
 </div>
 <div id="channel-a-matches-humidity" class="section level2">
 <h2 class="hasAnchor">
@@ -146,21 +146,21 @@
 <p>You can see in the multiplot the clear disconnect between the two PM2.5 channels. Both sensors appear to agree with each other until channel A suddenly jumps into the thousands and starts tracing the trend of the humidity data (plotted directly below).</p>
 <p><img src="purpleair_failure_modes_files/figure-html/channel_a_humidity_scatter-1.png" width="672"></p>
 <p>A glance at these scatterplots gives a us another look at just how uncorrelated the A and B channels are, while the relationships for channel A with temperature and humidity are abnormally well-defined. It’s actually not very clear which of the auxillary sensors the A channel is reflecting since temperature and relative humidity are naturally correlated themselves.</p>
-<p>A more in-depth analysis of this issue is provided in the <code>bikesgv_story.Rmd</code> report.</p>
+<p>A more in-depth analysis of this issue is provided in <code>local_examples/bikesgv_story.Rmd</code> .</p>
 </div>
 <div id="channel-a-magic-number" class="section level2">
 <h2 class="hasAnchor">
 <a href="#channel-a-magic-number" class="anchor"></a>Channel A Magic Number</h2>
-<p>The A channel is centered around a particular level but is sometimes effected by humidity when it goes past a certain threshold.</p>
+<p>The A channel is centered around a particular level but is sometimes affected by humidity when it goes past a certain threshold.</p>
 <p><img src="purpleair_failure_modes_files/figure-html/unnamed-chunk-1-1.png" width="672"></p>
-<p>The multiplot shows the A and B channels have very different readings, similar the previous failure mode. The strange thing here though is that the A channel is mostly flat, with only the occasional spike when the humidity measures very high. Let’s see what number it is centered around:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(pat<span class="op">$</span>data<span class="op">$</span>datetime, pat<span class="op">$</span>data<span class="op">$</span>pm25_A, </a>
-<a class="sourceLine" id="cb1-2" title="2">     <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">3325</span>, <span class="dv">3340</span>), </a>
-<a class="sourceLine" id="cb1-3" title="3">     <span class="dt">pch =</span> <span class="dv">15</span>, <span class="dt">cex =</span> <span class="fl">0.6</span>, <span class="dt">col=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/adjustcolor">adjustcolor</a></span>(<span class="st">"black"</span>, <span class="fl">0.2</span>),</a>
-<a class="sourceLine" id="cb1-4" title="4">     <span class="dt">xlab =</span> <span class="st">"2019"</span>, <span class="dt">ylab =</span> <span class="st">"PM2.5 A"</span>)</a></code></pre></div>
+<p>The multiplot shows the A and B channels have very different readings, similar the “Matches Humidity” failure mode. The strange thing here though is that the A channel is mostly flat, with only the occasional spike when the humidity measures very high. Let’s see what number it is centered around:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(pat<span class="op">$</span>data<span class="op">$</span>datetime, pat<span class="op">$</span>data<span class="op">$</span>pm25_A, 
+     <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">3325</span>, <span class="dv">3340</span>), 
+     <span class="dt">pch =</span> <span class="dv">15</span>, <span class="dt">cex =</span> <span class="fl">0.6</span>, <span class="dt">col=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/adjustcolor">adjustcolor</a></span>(<span class="st">"black"</span>, <span class="fl">0.2</span>),
+     <span class="dt">xlab =</span> <span class="st">"2019"</span>, <span class="dt">ylab =</span> <span class="st">"PM2.5 A"</span>)</code></pre></div>
 <p><img src="purpleair_failure_modes_files/figure-html/unnamed-chunk-2-1.png" width="672"></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">temp &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/table">table</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/vector">as.vector</a></span>(pat<span class="op">$</span>data<span class="op">$</span>pm25_A))</a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"Mode value: "</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(temp)[temp <span class="op">==</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">max</a></span>(temp)]))</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">temp &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/table">table</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/vector">as.vector</a></span>(pat<span class="op">$</span>data<span class="op">$</span>pm25_A))
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"Mode value: "</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(temp)[temp <span class="op">==</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">max</a></span>(temp)]))</code></pre></div>
 <pre><code>## [1] "Mode value: 3333"</code></pre>
 <p>Although there is plenty of noise between 3325 and 3340 ug/m3, a very clear, very straight line of points is visible at exactly 3333.0 ug/m3.</p>
 </div>
@@ -176,7 +176,7 @@
 ## 4 2019-07-01 07:05:00  11.83      0
 ## 5 2019-07-01 07:06:00  12.22      0
 ## 6 2019-07-01 07:07:00  11.19      0</code></pre>
-<p>This would certainly be good news if it was more believable, especially if the A channel had similar low readings.</p>
+<p>In this case one may wish to work with the A channel data only</p>
 </div>
   </div>
 
@@ -185,8 +185,8 @@
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#channel-a-noise-1">Channel A Noise (1)</a></li>
-      <li><a href="#channel-a-noise-2">Channel A Noise (2)</a></li>
+<li><a href="#channel-a-moderate-noise">Channel A Moderate Noise</a></li>
+      <li><a href="#channel-a-extreme-noise">Channel A Extreme Noise</a></li>
       <li><a href="#channel-a-jumps">Channel A Jumps</a></li>
       <li><a href="#channel-a-matches-humidity">Channel A Matches Humidity</a></li>
       <li><a href="#channel-a-magic-number">Channel A Magic Number</a></li>

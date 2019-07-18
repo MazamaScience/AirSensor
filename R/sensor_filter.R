@@ -42,7 +42,7 @@ sensor_filter <- function(
   # ----- Filter meta ----------------------------------------------------------
   
   sensor$data <-
-    dplyr::filter(sensor$data,...)
+    dplyr::filter(sensor$data, ...)
   
   return(sensor)
   
