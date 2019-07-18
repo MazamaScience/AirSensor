@@ -40,6 +40,9 @@ vignettes/*.R
 rsconnect/
 .Rproj.user
 
+# PNG frames for animations
+local_animations/
+
 ################################################################################
 # Additional Mazama Science items
 

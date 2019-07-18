@@ -10,13 +10,13 @@ end   <- lubridate::parse_date_time(20190705, orders = "ymd",
 movieData <- sensor_filterDate(sensor, startdate = 20190704, enddate = 20190705)
 
 tickSkip <- 6
-tRange <- movieData$data$datetime
-tRange[(lubridate::hour(tRange) - 1) %% tickSkip == 0 & 
-            lubridate::minute(tRange) == 0]
-tTicks <- tRange[(lubridate::hour(tRange) - 1) %% tickSkip == 0 & 
-                         lubridate::minute(tRange) == 0]
+tAxis <- movieData$data$datetime
+tAxis[(lubridate::hour(tAxis) - 1) %% tickSkip == 0 & 
+            lubridate::minute(tAxis) == 0]
+tTicks <- tAxis[(lubridate::hour(tAxis) - 1) %% tickSkip == 0 & 
+                         lubridate::minute(tAxis) == 0]
 tLabels <- strftime(tTicks, "%l %P")
-tInfo <- PWFSLSmoke::timeInfo(tRange, -118.082, 33.767)
+tInfo <- PWFSLSmoke::timeInfo(tAxis, -118.082, 33.767)
 
 communityRegion <- "Seal Beach"
 staticMap <- PWFSLSmoke::staticmap_getStamenmapBrick(centerLon = -118.083,
@@ -25,25 +25,25 @@ staticMap <- PWFSLSmoke::staticmap_getStamenmapBrick(centerLon = -118.083,
                                                      width = 770,
                                                      height = 495)
 
-folder <- "sealbeach_video_frames"
+folder <- opt$folder
 #dir.create(folder)
 
 # Generate individual frames
-for (i in 1:length(tRange)) {
-  ft <- tRange[i]
+for (i in 1:length(tAxis)) {
+  fTime <- tAxis[i]
   number <- stringr::str_pad(i, 3, 'left', '0')
   fileName <- paste0("sealbeach_video_", number, ".png")
   filePath <- file.path(folder, fileName)
   png(filePath, width = 1280, height = 720, units = "px")
   sensor_videoFrame(sensor,
                     communityRegion = "Seal Beach",
-                    frameTime = ft,
+                    frameTime = fTime,
                     timeInfo = tInfo,
-                    timeRange = tRange,
+                    timeRange = tAxis,
                     timeTicks = tTicks,
                     timeLabels = tLabels,
                     map = staticMap)
-  print(strftime(ft, "%b %d %H:%M"))
+  print(strftime(fTime, "%b %d %H:%M"))
   dev.off()
 }
 
