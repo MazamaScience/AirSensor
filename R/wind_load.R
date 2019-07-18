@@ -1,6 +1,6 @@
 #' @title Load wind data
 #'
-#' @param monitorID A monitor ID
+#' @param monitorID A monitor ID.
 #' @param startdate Desired start datetime (ISO 8601)
 #' @param enddate Desired end datetime (ISO 8601).
 #' @param days Number of days of data to include.
@@ -8,9 +8,10 @@
 #' @param baseUrl Base URL for synoptic data.
 #' 
 #' @description Load pre-generated wind data for the given interval. Archived 
-#' data for SCAQMD sensors go back to January, 2018. 
+#' data appropriate for use with SCAQMD sensors go back to January, 2018. 
 #' 
-#' @return a data frame
+#' @return A data frame with columns \code{"date", "wd", "ws"}.
+#' 
 #' @export
 #'
 #' @examples

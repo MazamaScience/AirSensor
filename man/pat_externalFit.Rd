@@ -59,7 +59,7 @@ from the closest PWFSL monitor.
 A diagnostic plot is produced if `showPlot = TRUE`.
 }
 \examples{
-\dontrun{
+\donttest{
 pat <- pat_load("SCAH_22")
 pat_externalFit(pat)
 }

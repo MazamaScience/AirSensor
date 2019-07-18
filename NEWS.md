@@ -1,5 +1,9 @@
 # AirSensor 0.3.10
 
+* Added `sensor_videoFrame()` function to create a single frame map for a
+network of sensors. These can be used to create videos showing the evolution
+of PM2.5 levels over several days.
+* Added `local_executables/createVideo_exec.R` script to generate mp4 videos.
 * Added `ylim` argument to `pat_multiplot().
 
 # AirSensor 0.3.9

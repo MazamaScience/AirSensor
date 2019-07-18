@@ -12,8 +12,8 @@
 # docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/pwfslsmoke /app/createMonthlyWind_exec.R
 #
 
-# ---- . ---- . AirSensor 0.3.7
-VERSION = "0.0.5" 
+# ---- . ---- . AirSensor 0.3.9, datestamped logs
+VERSION = "0.0.6" 
 
 suppressPackageStartupMessages({
   library(MazamaCoreUtils)
@@ -52,7 +52,7 @@ if ( interactive() ) {
       help="Output directory for generated .log file [default=\"%default\"]"
     ),
     
-    make_option(
+    optparse::make_option(
       c("-s","--spatialDataDir"), 
       default="/home/mazama/data/Spatial", 
       help="Directory containing spatial datasets used by MazamaSpatialUtils [default=\"%default\"]"
@@ -103,17 +103,27 @@ if ( !dir.exists(opt$logDir) )
 if ( !dir.exists(opt$spatialDataDir) ) 
   stop(paste0("spatialDataDir not found:  ",opt$spatialDataDir))
 
+# Default to the current month
+now <- lubridate::now(opt$timezone)
+if ( opt$datestamp == "" ) {
+  opt$datestamp <- strftime(now, "%Y%m01", tz = opt$timezone)
+}
+
+# Handle the case where the day is already specified
+datestamp <- stringr::str_sub(paste0(opt$datestamp,"01"), 1, 8)
+monthstamp <- stringr::str_sub(datestamp, 1, 6)
+
 # ----- Set up logging ---------------------------------------------------------
 
 logger.setup(
-  traceLog = file.path(opt$logDir, "createMonthlyWind_TRACE.log"),
-  debugLog = file.path(opt$logDir, "createMonthlyWind_DEBUG.log"), 
-  infoLog  = file.path(opt$logDir, "createMonthlyWind_INFO.log"), 
-  errorLog = file.path(opt$logDir, "createMonthlyWind_ERROR.log")
+  traceLog = file.path(opt$logDir, paste0("createMonthlyWind_",monthstamp,"_TRACE.log")),
+  debugLog = file.path(opt$logDir, paste0("createMonthlyWind_",monthstamp,"_DEBUG.log")), 
+  infoLog  = file.path(opt$logDir, paste0("createMonthlyWind_",monthstamp,"_INFO.log")),
+  errorLog = file.path(opt$logDir, paste0("createMonthlyWind_",monthstamp,"_ERROR.log"))
 )
 
 # For use at the very end
-errorLog <- file.path(opt$logDir, "createMonthlyWind_ERROR.log")
+errorLog <- file.path(opt$logDir, paste0("createMonthlyWind_",monthstamp,"_ERROR.log"))
 
 # Silence other warning messages
 options(warn=-1) # -1=ignore, 0=save/print, 1=print, 2=error
@@ -132,16 +142,6 @@ result <- try({
   MazamaSpatialUtils::loadSpatialData("NaturalEarthAdm1")
   
   now <- lubridate::now(opt$timezone)
-  
-  # Default to the current month
-  if ( opt$datestamp == "" )
-    opt$datestamp <- strftime(now, "%Y%m01", tz = opt$timezone)
-
-  # Handle the case where the day is already specified
-  datestamp <- 
-    stringr::str_sub(paste0(opt$datestamp,"01"), 1, 8)
-  monthstamp <- 
-    stringr::str_sub(datestamp, 1, 6)
   
   # Get times
   starttime <- 

@@ -9,7 +9,7 @@ wind_load(monitorID = NULL, startdate = NULL, enddate = NULL,
   baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/wind")
 }
 \arguments{
-\item{monitorID}{A monitor ID}
+\item{monitorID}{A monitor ID.}
 
 \item{startdate}{Desired start datetime (ISO 8601)}
 
@@ -22,11 +22,11 @@ wind_load(monitorID = NULL, startdate = NULL, enddate = NULL,
 \item{baseUrl}{Base URL for synoptic data.}
 }
 \value{
-a data frame
+A data frame with columns \code{"date", "wd", "ws"}.
 }
 \description{
 Load pre-generated wind data for the given interval. Archived 
-data for SCAQMD sensors go back to January, 2018.
+data appropriate for use with SCAQMD sensors go back to January, 2018.
 }
 \examples{
 \dontrun{

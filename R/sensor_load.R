@@ -30,7 +30,7 @@
 #' @seealso \link{sensor_loadMonth}
 #' 
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' sensor_load("scaqmd", 20190411, 20190521) %>%
 #'   PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
 #' }

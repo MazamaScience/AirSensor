@@ -48,7 +48,7 @@ channel A.
 A diagnostic plot is produced if `showPlot = TRUE`.
 }
 \examples{
-\dontrun{
+\donttest{
 pat_internalFit(pat = example_pat)
 }
 }

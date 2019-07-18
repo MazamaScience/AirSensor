@@ -9,7 +9,7 @@ wind_loadMonth(monitorID = NULL, datestamp = NULL,
   baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/wind")
 }
 \arguments{
-\item{monitorID}{A monitorID}
+\item{monitorID}{A monitorID.}
 
 \item{datestamp}{Date string in ym or ymd order}
 
@@ -18,11 +18,11 @@ wind_loadMonth(monitorID = NULL, datestamp = NULL,
 \item{baseUrl}{Base URL for wind data.}
 }
 \value{
-a data frame
+A data frame with columns \code{"date", "wd", "ws"}.
 }
 \description{
 Load pre-generated wind data for the given month. Archived data 
-for SCAQMD sensors go back to January, 2018.
+appropriate for use with SCAQMD sensors go back to January, 2018.
 }
 \examples{
 \dontrun{

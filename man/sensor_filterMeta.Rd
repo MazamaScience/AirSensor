@@ -26,6 +26,13 @@ are dropped.
 Filtering predicates are applied to the \code{meta} dataframe within
 the \emph{sensor} object.
 }
+\examples{
+\donttest{
+sensor_load("scaqmd", 20190411, 20190521) \%>\%
+  sensor_filterMeta(communityRegion == "Seal Beach") \%>\%
+  PWFSLSmoke::monitor_stamenmap(zoom = 12)
+}
+}
 \seealso{
 \link{sensor_filter}
 

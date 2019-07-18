@@ -33,9 +33,10 @@ Dates are interpreted to be in the local timzone for the sensor of
 interest.
 }
 \examples{
-\dontrun{
+\donttest{
 pas <- pas_load()
 pat <- pat_loadLatest(pas, "Seattle", startdate = 20180701, enddate = 20180901)
+pat_multiplot(pat)
 }
 }
 \seealso{

@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.10</span>
       </span>
     </div>
 
@@ -59,7 +59,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/AirSensorOverview.html">AirSensor Package Overview</a>
+      <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
     </li>
     <li>
       <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
@@ -116,11 +116,20 @@
 
     
     
-<p>This vignette decribes technical details of Purple Air Sensor internals.</p>
+<p>This vignette decribes some technical details of Purple Air Sensor internals.</p>
 <div id="general-description" class="section level2">
 <h2 class="hasAnchor">
 <a href="#general-description" class="anchor"></a>General Description</h2>
-<p>The PurpleAir PA-II sensor tracks real-time air quality with additional functionality for measuring temperature and humidity. The device is connected via wifi to the ThingSpeak internet-of-things platform where readings are stored and can be retrieved.</p>
+<p>The PurpleAir PA-II sensor tracks real-time atmospheric measurements including particulate matter concentrations (PM1.0, PM2.5, and PM10), temperature and humidity. The device is connected via wifi to the ThingSpeak “Internet of Things” platform which serves as the data store for sensor data.</p>
+<ul>
+<li>Useful resources:</li>
+<li>.<a href="https://www2.purpleair.com/pages/technology">PurpleAir technology overview</a>
+</li>
+<li>.<a href="https://www2.purpleair.com/community/faq">PurpleAir FAQ</a>
+</li>
+<li>.<a href="https://www.aqmd.gov/aq-spec/product/purpleair-pa-ii">AQ-SPEC evaluation</a>
+</li>
+</ul>
 </div>
 <div id="internal-hardware" class="section level2">
 <h2 class="hasAnchor">
@@ -128,14 +137,17 @@
 <div id="particle-detectors" class="section level3">
 <h3 class="hasAnchor">
 <a href="#particle-detectors" class="anchor"></a>Particle Detectors</h3>
-<p>Particulate matter (PM) levels are measured using two <a href="http://www.aqmd.gov/docs/default-source/aq-spec/resources-page/plantower-pms5003-manual_v2-3.pdf">Plantower PMS5003 Particle Detectors</a> which provide separate ‘A’ and ‘B’ reading channels. These PMS5003 units are optical particle counters that function by shining a laser through a small air inlet. The amount of light scattered by particles inside is <a href="http://www.cas.manchester.ac.uk/restools/instruments/aerosol/opc/">used to calculate</a> various PM levels.</p>
-<p>The effective range for standard PM2.5 is 0 to 500 ug/m3.</p>
+<p>PM concentration readings are provided by two <a href="http://www.aqmd.gov/docs/default-source/aq-spec/resources-page/plantower-pms5003-manual_v2-3.pdf">Plantower PMS5003 Particle Detectors</a>, each reporting on a separate data channel (A and B). These optical particle counters function by measuring the amount of light scattered by suspended particulates. A PMS5003 unit sends a laser through air sucked in by a fan, detects the light refracted, and counts the number of different-sized particles based on <a href="https://en.wikipedia.org/wiki/Mie_scattering">Mie scattering</a> algorithms. The final PM1.0, PM2.5, and PM10 concentrations are then calculated from these counts. <a href="https://www2.purpleair.com/community/faq#!hc-how-do-laser-particle-counters-work">Source</a></p>
+<p>This algorithm for calculating concentration relies on an assumed average particle density because not all particles have the same <a href="https://en.wikipedia.org/wiki/Particulates#Composition">composition</a>. This assumed particule density is noted to be a potential cause for PurpleAir monitors reading higher PM levels than federal monitors. <a href="https://www2.purpleair.com/community/faq#!hc-how-do-purpleair-sensors-compare-to-regulatory-particulate-matter-sensors">Source</a></p>
+<p>Finally, the PM2.5 AQI provided by the PurpleAir unit is averaged over ~80 seconds for firmware versions 3.00 and ~120 seconds for version 4.00 and later. Other regulatory groups often give an AQI that represents a 24 hour average, which may appear to exaggerate the PurpleAir data on comparison. <a href="https://www2.purpleair.com/community/faq#!hc-how-do-purpleair-sensors-compare-to-regulatory-particulate-matter-sensors">Source</a></p>
+<p>A Plantower particle detector’s effective range for PM2.5 lies between 0 and 500 ug/m3, even though it can still report measurements up to 1000 ug/m3 and beyond.</p>
+<p>More on optical particle counting can be found <a href="http://www.cas.manchester.ac.uk/restools/instruments/aerosol/opc/">here</a>.</p>
 </div>
 <div id="temperaturehumidity-sensor" class="section level3">
 <h3 class="hasAnchor">
 <a href="#temperaturehumidity-sensor" class="anchor"></a>Temperature/Humidity Sensor</h3>
-<p>The PurpleAir PA-II uses a single <a href="https://www.bosch-sensortec.com/bst/products/all_products/bme280">Bosch Sensortec Intergrated Environmental Sensor Unit BME280</a> to measure ambient temperature and relative humidity.</p>
-<p>Temperature ranges from -40 to 85 C. Pressure ranges from 300 to 1100 hPa.</p>
+<p>Temperature and humidity are both measured by a single <a href="https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BME280-DS002.pdf">Bosch Sensortec Intergrated Environmental Sensor Unit BME280</a>. PurpleAir notes that temperature readings may be elevated due to the sensor’s position within the monitor casing. <a href="https://www2.purpleair.com/pages/technology">Source</a></p>
+<p>The unit’s ‘operational’ temperature sensor range lies between -40°C to +85°C, but narrows its ‘full-accuracy’ to between 0°C and 65°C. The humidity sensor is operational between -40°C and 85°C, and can measure from 0 to 100 %RH.</p>
 </div>
 </div>
 <div id="internal-firmware" class="section level2">

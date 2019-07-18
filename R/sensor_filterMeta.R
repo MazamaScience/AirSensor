@@ -21,8 +21,11 @@
 #' @seealso \link{sensor_filter}
 #' @seealso \link{sensor_filterDate}
 #' 
-# TODO:  Add example using "communityRegion" after the sensor archives are
-# TODO:  regenerated with the recently added retention of pat metadata.
+#' @examples \donttest{
+#' sensor_load("scaqmd", 20190411, 20190521) %>%
+#'   sensor_filterMeta(communityRegion == "Seal Beach") %>%
+#'   PWFSLSmoke::monitor_stamenmap(zoom = 12)
+#' }
 
 sensor_filterMeta <- function(
   sensor = NULL, 
@@ -39,8 +42,8 @@ sensor_filterMeta <- function(
   
   # ----- Filter meta ----------------------------------------------------------
   
-  sensor$data <-
-    dplyr::filter(sensor$meta,...)
+  sensor$meta <-
+    dplyr::filter(sensor$meta, ...)
   
   return(sensor)
   

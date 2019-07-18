@@ -33,7 +33,7 @@ The \code{datestamp} must be in the following format:
 By default, the current month is loaded.
 }
 \examples{
-\dontrun{
+\donttest{
 may <- pat_loadMonth("SCNP_20", 201905)
 pat_multiplot(may)
 }

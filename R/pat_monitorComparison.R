@@ -27,7 +27,7 @@
 #' @return A ggplot object.
 #' 
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' pat_monitorComparison(example_pat)
 #' }
 
