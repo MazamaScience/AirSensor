@@ -37,8 +37,8 @@ if ( interactive() ) {
     ),
     make_option(
       c("-d", "--directory"),
-      default="./frames",
-      help="Path of directory to save frames to [default=\"%default\"]"
+      default="./",
+      help="Path of directory to save video to [default=\"%default\"]"
     ),
     make_option(
       c("-V","--version"), 
@@ -66,10 +66,6 @@ if (opt$community == "") {
 
 # ----- Validate parameters ----------------------------------------------------
 
-print(paste0("community: '", opt$community, "'"))
-print(paste0("startDate: '", opt$startDate, "'"))
-print(paste0("directory: '", opt$directory, "'"))
-
 if (opt$community == "Seal Beach") {
   lon <- -118.083
   lat <- 33.767
@@ -79,8 +75,8 @@ if (opt$community == "Seal Beach") {
   lat <- 34.255736
   z <- 13
 } else if (opt$community == "Sycamore Canyon") {
-  lon <- -117.306669
-  lat <- 33.949935
+  lon <- -117.307598
+  lat <- 33.947524
   z <- 15
 } else {
   stop(paste0("Community '", opt$community, "' is not one of the 12 SC communities"))
@@ -126,11 +122,6 @@ result <- try({
                                                        width = 770,
                                                        height = 495)
   
-  # Create a directory for the frames (if it doesn't already exist)
-  dirPath <- opt$directory
-  if (!dir.exists(dirPath)) {
-    dir.create(dirPath)
-  }
   communityID <- sub("\\_.*", "", dplyr::filter(sensor$meta, communityRegion == opt$community)[1, "monitorID"])
   
   # Generate individual frames
@@ -138,7 +129,7 @@ result <- try({
     ft <- tAxis[i]
     number <- stringr::str_pad(i, 3, 'left', '0')
     fileName <- paste0(communityID, number, ".png")
-    filePath <- file.path(dirPath, fileName)
+    filePath <- file.path(tempdir(), fileName)
     png(filePath, width = 1280, height = 720, units = "px")
     sensor_videoFrame(sensor,
                       communityRegion = opt$community,
@@ -164,5 +155,7 @@ if ( "try-error" %in% class(result) ) {
   #logger.info("Completed successfully!")
 }
 
-#system(paste0("cd ", dirPath))
-#system(paste0("ffmpeg -r 6 -f image2 -s 1280x720 -i ", communityID, "%03d.png -vcodec libx264 -crf 25 video.mp4"))
+# System call to combine frames from temp directory to final video
+system(paste0("cd ", tempdir(), " && 
+              ffmpeg -r 6 -f image2 -s 1280x720 -i ", communityID, "%03d.png -vcodec libx264 -crf 25 ", opt$directory, "/", communityID, ".mp4 &&
+              rm *.png"))
