@@ -30,7 +30,7 @@
 #' @references \href{https://www2.purpleair.com/products/purpleair-pa-ii}{PA-II specs}
 #' 
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' pat <- example_pat_failure_A
 #' pat %>% pat_multiplot(sampleSize = NULL)
 #' pat %>% pat_qc() %>% pat_multiplot(sampleSize = NULL)

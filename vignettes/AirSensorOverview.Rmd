@@ -1,10 +1,10 @@
 ---
-title: "AirSensor Package Overview"
+title: "AirSensor Function Overview"
 author: "Mazama Science"
 date: "5/13/2019"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{AirSensor Package Overview}
+  %\VignetteIndexEntry{AirSensor Function Overview}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -13,10 +13,10 @@ vignette: >
 
 ## Synoptic Data
 
-Purple Air Synoptic (PAS) data provides a view of their sensor network with location
-metadata and an instantaneous view of measured values. Within the **AirSensor**
-package, this data is availabe as a `pas` object. All functions beginning with
-`pas_` are designed for obtaining or working with this data. The
+Purple Air Synoptic (PAS) data provides a view of their sensor network with 
+location metadata and an instantaneous view of measured values. Within the 
+**AirSensor** package, this data is availabe as a `pas` object. All functions 
+beginning with `pas_` are designed for obtaining or working with this data. The
 following functions are the most common end-user functions:
 
 | function | params |
@@ -27,6 +27,7 @@ following functions are the most common end-user functions:
 | **Mainpulating a `pas`** |  |
 | `pas_filter()` | `pas, ...` |
 | `pas_filterArea()` | `pas, w, e, s, n` |
+| `pas_filterNear()` | `pas, longitude, latitude, radius` |
 | **Plotting a `pas`** | |
 | `pas_leaflet()` | `pas, parameter, ...` |
 | `pas_staticMap()` | `pas, parameter, ...` |
@@ -41,13 +42,15 @@ following functions are the most common end-user functions:
 | function | params |
 |:------|:-----|
 | **Loading a `pat`** |  |
-| `pas_load()` (soon) | `name ,startdate, enddate` (soon) | 
-| `pas_loadLatest()` | `pas, name, id, startdate, enddate` |
+| `pat_load()` | `label , startdate, enddate` | 
+| `pat_loadMonth()` | `label , datestamp` | 
+| `pat_loadLatest()` | `pas, name, id, startdate, enddate` |
 | **Mainpulating a `pat`** |  |
-| `pat_filterData()` | `pat, ...` |
+| `pat_filter()` | `pat, ...` |
 | `pat_filterDate()` | `pat, startdate, enddate, ...` |
 | `pat_join()` | `pat, pat, ...` |
 | `pat_outliers()` | `pat, n, thresholdMin, replace, showPlot, ...` |
+| `pat_qc()` | `pat, ...` |
 | `pat_sample()` | `pat, sampleSize` |
 | **Plotting a `pat`** | |
 | `pat_dygraph()` | `pat, parameter, sampleSize, ...` |
@@ -55,141 +58,33 @@ following functions are the most common end-user functions:
 | `pat_scatterplot()` | `pat, parameters, sampleSize, ...` |
 | **Other functions** | |
 | `pat_aggregate()` | `pat, period, stats, parameter, dataThreshold, ...` |
-| `pat_internalFit()` | `pat, parameter, ...` |
-| `pat_createASTimeseries()` | `pat, period, pm25Source, qcType, ...` |
+| `pat_externalFit()` | `pat, ...` |
+| `pat_internalFit()` | `pat, ...` |
+| `pat_MonitorComparison()` | `pat, ...` |
+| `pat_createAirSensor()` | `pat, period, parameter, channel, qc_algorithm, ...` |
 
------
+## Hourly Aggregated Data
 
-## Synoptic Function Details
+Hourly Aggregated data can be generated from `pat` objects with the
+`pat_createAirSensor()` function. Within the **AirSensor** package, this data is 
+availabe as an `airsensor` object. All functions  beginning with `sensor_` are 
+designed for obtaining or working with this data. The following functions are 
+the most common end-user functions:
 
-### `pas_load()`
+| function | params |
+|:------|:-----|
+| **Loading an `airsensor`** |  |
+| `sensor_load()` | `collection , startdate, enddate` | 
+| `sensor_loadMonth()` | `collection , datestamp` | 
+| **Mainpulating an `airsensor`** |  |
+| `sensor_filter()` | `sensor, ...` |
+| `sensor_filterMeta()` | `sensor, ...` |
+| `sensor_filterDate()` | `sensor, startdate, enddate, ...` |
+| **Plotting an `airsensor`** | |
+| `sensor_polarPlot()` | `sensor, windData, ...` |
+| `sensor_pollutionRose()` | `sensor, windData, ...` |
+| `sensor_videoFrame()` | `sensor, communityRegion, ...` |
 
-`pas_load(datestamp, baseUrl)`
-
-> Returns a pre-generated PurpleAir synoptic dataframe for all PurpleAir sensors 
-for the day of interest.
-
-### `pas_loadLatest()`
-
-`pas_loadLatest(baseUrl, countryCodes, includePWFSL, lookbackDays)`
-
-> An AirSensor fundemental function to download, parse, and enhance synoptic 
-data from PurpleAir and return the results as a useful tibble with class 
-\code{pa_synoptic}. 
-
-### `pas_filter()`
-
-`pas_filter(pas, ...)`
-
-> A generalized data filter to choose rows/cases where argument conditions are 
-valid. 
-
-### `pas_filterArea()` 
-
-`pas_filterArea(pas, w, e, s, n)` 
-
-> A filter to choose PurpleAir sensors that are contained inside a geographic 
-bounding box provided by the user. 
-
-### `pas_leaflet()` 
-
-`pas_leaflet(pas, parameter, paletteName, radius, opacity, maptype, outsideOnly)`
-
-> An interactive JavaScript map that can be used to map many PurpleAir sensors 
-and their synoptic data.
-
-### `pas_staticMap()`
-
-`pas_staticMap(pas, parameter, palette, mapTheme, mapShape, direction, minScale, maxScale, shape, size, alpha, bbuff, zoomAdjust, ...)`
-
-> Creates a thematic static map of a `pas` object containing many sensors. Can 
-be used to show various PurpleAir sensor data.
-
-## Timeseries Function Details
-
-### `pat_loadLatest()` 
-
-`pat_loadLatest(pas, name, id, startdate, enddate, baseURL)`
-
-> Retrieve and parse timeseries data from the Thingspeak API for specifically 
-targeted PurpleAir sensors.
-
-### `pat_loadLatest()` 
-
-`pat_loadLatest(pas, name, id, startdate, enddate, baseURL)`
-
-> Retrieve and parse timeseries data from the Thingspeak API for specifically 
-targeted PurpleAir sensors.
-
-### `pat_filterData()`
-
-`pat_filterData(pat, ...)`
-
-> A generalized filter function for PurpleAir time series objects to choose 
-rows/cases whre the argument conditions are valid.
-
-### `pat_filterDate()` 
-
-`pat_filterDate(pat, startdate, enddate, days, weeks, timezone)`
-
-> A date interval filter for PurpleAir time series objects. 
-
-### `pat_sample()`
-
-`pat_sample(pat, sampleSize, sampleFraction, weight, setSeed, forGraphics)`
-
-> A sampling function that reduces the size of large time series objects by 
-randomly selecting distinct rows of the users choosen size. 
-
-### `pat_scatterplot()`
-
-`pat_scatterplot(pat, parameters, sampleSize, size, shape, color, alpha)`
-
-> Creates a scatter matrix plot for comparing all variables in the PurpleAir 
-time series object. A very useful tool to quickly find relationships and sensor characteristics. 
-
-### `pat_outliers()`
-
-`pat_outliers(pat, n, thresholdMin, replace, showPlot, data_shape, data_size, data_color, data_alpha, outlier_shape, outlier_size, outlier_color, outlier_alpha)`
-
-> An outlier detection algorithm (using the hampel method) to quickly parse 
-PurpleAir time series data for flagging likely erronous data. 
-
-### `pat_dygraph()`
-
-`pat_dygraph(pat, parameter, sampleSize, title, xlab, ylab, tlim, rollPeriod, showLegend, colors)` 
-
-> Shows an interactive PurpleAir time series JavaScript graph. The function 
-accepts a number of arguments for various PurpleAir sensor data.
-
-### `pat_aggregate()`
-
-`pat_aggregate(pat, period, stats, parameter, dataThreshold, pprobs, quickStats)`
-
-> An aggregation function for PurpleAir time series data. Can flexibly aggregate 
-data frames by different time periods and calculating various functional 
-aggregation outouts. This function should be useful in many circumstances where 
-it is necessary to work with different time average data.  
-
-### `pat_internalFit()`
-
-`pat_internalFit(pat, subset, weights, showPlot, size, shape, color, alpha, xylim)`
-
-> Uses PurpleAir time series data from both Channel A and B to provide a 
-relationship between both channels and visualize any divergence. 
-
-### `pat_join()`
-
-`pat_join(..., param)`
-
-> A function to creat a union of any number of PurpleAir time series objects 
-along a non-continuous datetime axis. 
-
-### `pat_multiplot()`
-
-`pat_multiplot(pat, plottype, sampleSize, plotList, columns, a_size, a_shape, a_color, b_size, b_shape, b_color, t_size, t_shape, t_color, h_size, h_shape, h_color, alpha)`
-
->  A plotting function that uses a boiler-plate util function to display 
-multiple PurpleAir time series data in a single pane. Can be very useful for a 
-quick PurpleAir sensor overview.  
+Note that each `airsensor` object is also a `ws_monitor` object and can be
+manipulated and plotted with functions from the **PWFSLSmoke** package.
 

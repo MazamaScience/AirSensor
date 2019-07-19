@@ -36,7 +36,7 @@ Each \code{airsensor} object contains data from a named collection of
 Purple Air sensors.
 }
 \examples{
-\dontrun{
+\donttest{
 sensor_loadMonth("scaqmd", 201905) \%>\%
   PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
 }

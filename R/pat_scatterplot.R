@@ -32,8 +32,10 @@
 #' @return Multi-panel ggplot comparing all parameters.
 #' 
 #' @examples
+#' \donttest{
 #' pat <- example_pat %>% pat_filterDate(20180811,20180818)
 #' pat_scatterplot(pat, sampleSize = 1000)
+#' }
 
 pat_scatterplot <- function(
   pat = NULL,

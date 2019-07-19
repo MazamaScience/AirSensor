@@ -35,7 +35,7 @@ including either of the following recommended formats:
 }
 }
 \examples{
-\dontrun{
+\donttest{
 august <- pat_filterDate(example_pat, startdate = 20180801, enddate = 20180901)
 pat_multiplot(pat = august)
 }

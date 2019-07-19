@@ -4,7 +4,7 @@
 #' @title Comparison of Purple Air and federal monitoring data
 #' 
 #' @param pat PurpleAir Timeseries \emph{pat} object.
-#' @param ylim Vector of (lo,hi) y-axis limits used as limits. 
+#' @param ylim Vector of (lo,hi) y-axis limits. 
 #' @param replaceOutliers Logical specifying whether replace outliers in the
 #'   \emph{pat} object.
 #' @param a_size Size of pm25_A points.
@@ -27,7 +27,7 @@
 #' @return A ggplot object.
 #' 
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' pat_monitorComparison(example_pat)
 #' }
 

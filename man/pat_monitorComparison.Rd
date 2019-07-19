@@ -13,7 +13,7 @@ pat_monitorComparison(pat = NULL, ylim = NULL,
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}
 
-\item{ylim}{Vector of (lo,hi) y-axis limits used as limits.}
+\item{ylim}{Vector of (lo,hi) y-axis limits.}
 
 \item{replaceOutliers}{Logical specifying whether replace outliers in the
 \emph{pat} object.}
@@ -51,7 +51,7 @@ data, hourly aggregated \emph{pat} data and hourly data from the nearest
 federal monitor from the PWFSL database.
 }
 \examples{
-\dontrun{
+\donttest{
 pat_monitorComparison(example_pat)
 }
 }

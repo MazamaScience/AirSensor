@@ -61,7 +61,7 @@
 #'   monitorID = "060950004_01", 
 #'   startdate = "2018-08-01", 
 #'   enddate = "2018-10-01"
-#'   )
+#' )
 #' 
 #' # Plot polar plot using
 #' sensor_polarPlot(sensor, windData, resolution = "normal")

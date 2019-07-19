@@ -9,6 +9,7 @@
 #' @param sampleSize Either an integer or fraction to determine sample size.
 #' @param columns Number of columns in the plot layout. Use \code{NULL} for 
 #' defaults.
+#' @param ylim Vector of (lo,hi) y-axis limits. 
 #' @param a_size Size of pm25_A points.
 #' @param a_shape Symbol to use for pm25_A points.
 #' @param a_color Color of pm25_A points.
@@ -43,7 +44,7 @@
 #' cookbook-r.com.
 #' 
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' pat_multiplot(pat = example_pat, plottype = "pm25", alpha = 0.5)
 #' }
 
@@ -52,6 +53,7 @@ pat_multiplot <- function(
   plottype = "all", 
   sampleSize = 5000,
   columns = NULL,
+  ylim = NULL,
   a_size = 1,
   a_shape = 15,
   a_color = rgb(0.9, 0.25, 0.2),
@@ -112,8 +114,17 @@ pat_multiplot <- function(
       temp = pat$data$temperature
     )
   
-  # Use the same y limits for both plots
-  ylim <- range(c(tbl$pm25_A, tbl$pm25_B), na.rm = TRUE)
+  # Default y limits
+  if ( is.null(ylim) ) {
+    if ( plottype == "pm25_a") {
+      ylim <- range(tbl$pm25_A, na.rm = TRUE)
+    } else if ( plottype == "pm25_b" ) {
+      ylim <- range(tbl$pm25_B, na.rm = TRUE)
+    } else {
+      # Use the same y limits for both plots
+      ylim <- range(c(tbl$pm25_A, tbl$pm25_B), na.rm = TRUE)
+    }
+  }
   
   channelA <- 
     tbl %>% 

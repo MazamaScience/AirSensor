@@ -1,6 +1,6 @@
 Type: Package
 Package: AirSensor
-Version: 0.3.9
+Version: 0.3.10
 Title: Utilities to Process and Display PM2.5 data from Air Quality Sensors
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
@@ -34,6 +34,7 @@ Imports:
     plyr,
     purrr,
     PWFSLSmoke (>= 1.2.4),
+    raster,
     RColorBrewer,
     rlang,
     scales,

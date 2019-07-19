@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.10</span>
       </span>
     </div>
 
@@ -59,7 +59,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/AirSensorOverview.html">AirSensor Package Overview</a>
+      <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
     </li>
     <li>
       <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
@@ -238,16 +238,16 @@ raw_data &lt;-<span class="st"> </span>
 <span class="co"># Look at a random sample of this new dataframe</span>
 dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(raw_data, <span class="dv">10</span>)</code></pre></div>
 <pre><code>##      datetime channel  pm25
-## 1  2019061111  pm25_A  9.85
-## 2  2019061120  pm25_B 10.80
-## 3  2019061102  pm25_A  4.14
-## 4  2019061122  pm25_A 14.88
-## 5  2019061103  pm25_A  3.78
-## 6  2019061121  pm25_A 15.58
-## 7  2019061116  pm25_A  8.95
-## 8  2019061120  pm25_B 11.46
-## 9  2019061113  pm25_B  5.94
-## 10 2019061108  pm25_B 12.54</code></pre>
+## 1  2019061112  pm25_B  7.06
+## 2  2019061116  pm25_A  8.46
+## 3  2019061108  pm25_A    NA
+## 4  2019061115  pm25_B 10.38
+## 5  2019061121  pm25_A 15.44
+## 6  2019061109  pm25_B  8.84
+## 7  2019061106  pm25_B  6.40
+## 8  2019061114  pm25_A  8.39
+## 9  2019061103  pm25_A  4.43
+## 10 2019061112  pm25_B  8.66</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create a timeseries using boxplots</span>
 colors &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/rgb">rgb</a></span>(<span class="fl">0.9</span>, <span class="fl">0.25</span>, <span class="fl">0.2</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/rgb">rgb</a></span>(<span class="fl">0.2</span>, <span class="fl">0.25</span>, <span class="fl">0.9</span>))
 <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(raw_data, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(datetime, pm25, <span class="dt">color =</span> channel)) <span class="op">+</span><span class="st"> </span>
@@ -269,17 +269,17 @@ agg_data &lt;-<span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"t-test p-value"</span>)</code></pre></div>
 <p><img src="purpleair_qc_files/figure-html/AB_boxplot-2.png" width="672"></p>
 <p>And here is the same for a day with serious problems:</p>
-<pre><code>##      datetime channel  pm25
-## 1  2019061216  pm25_A  7.94
-## 2  2019061222  pm25_B 15.67
-## 3  2019061217  pm25_B 10.55
-## 4  2019061200  pm25_A 21.54
-## 5  2019061222  pm25_B 16.90
-## 6  2019061201  pm25_A 19.20
-## 7  2019061219  pm25_B 11.74
-## 8  2019061204  pm25_B 14.30
-## 9  2019061221  pm25_B 15.69
-## 10 2019061212  pm25_B 15.46</code></pre>
+<pre><code>##      datetime channel    pm25
+## 1  2019061208  pm25_A 3328.54
+## 2  2019061200  pm25_B   12.29
+## 3  2019061210  pm25_B   15.93
+## 4  2019061202  pm25_A   18.18
+## 5  2019061213  pm25_B   15.88
+## 6  2019061223  pm25_B   16.96
+## 7  2019061207  pm25_A 3326.87
+## 8  2019061203  pm25_A 3335.29
+## 9  2019061205  pm25_B   12.93
+## 10 2019061202  pm25_B   11.42</code></pre>
 <p><img src="purpleair_qc_files/figure-html/AB_boxplot_2-1.png" width="672"><img src="purpleair_qc_files/figure-html/AB_boxplot_2-2.png" width="672"></p>
 <p>We can see that the null hypothesis – the difference in means is entirely due to chance – is extremely unlikely <code>pm25_p &lt; 1e-30</code>, for example, only occur for hours where the A and B channels have hourly avergaes that are both highly precise (low std dev) and very different. We can thus use the <code>pm25_t</code> variable to flag those hours where the A and B channels disagree.</p>
 </div>

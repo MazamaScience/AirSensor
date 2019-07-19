@@ -23,7 +23,7 @@
 #' @return A subset of the given \emph{pat} object.
 #' 
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' august <- pat_filterDate(example_pat, startdate = 20180801, enddate = 20180901)
 #' pat_multiplot(pat = august)
 #' }

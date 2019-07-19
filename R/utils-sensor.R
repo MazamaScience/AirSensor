@@ -33,11 +33,18 @@ sensor_isSensor <- function(sensor = NULL) {
   
   # Test a variety of things that could go wrong
   if ( is.null(sensor) ) return(FALSE)
-  if ( !"airsensor" %in% class(sensor) ) return(FALSE)
+  
+  # NOTE:  "airsensor" objects also have class "ws_monitor" and can be 
+  # NOTE:  manipulated with PWFSLSmoke::monitor_~() functions. These may
+  # NOTE:  return objects that no longer have the "airsensor" class but they
+  # NOTE:  should always have the "ws_monitor" class.
+  
+  if ( !"ws_monitor" %in% class(sensor) ) return(FALSE)
   
   if ( !"meta" %in% names(sensor) ) return(FALSE)
   if ( !"data" %in% names(sensor) ) return(FALSE)
   
+  # Most important metadata columns
   metaParameters <- c(
     'ID', 'sensorType',
     'longitude', 'latitude', 

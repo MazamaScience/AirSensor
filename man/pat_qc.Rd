@@ -36,7 +36,7 @@ filtering is disabled by default because it can result in the invalidation
 of many potentially valid PM2.5 measurements.
 }
 \examples{
-\dontrun{
+\donttest{
 pat <- example_pat_failure_A
 pat \%>\% pat_multiplot(sampleSize = NULL)
 pat \%>\% pat_qc() \%>\% pat_multiplot(sampleSize = NULL)

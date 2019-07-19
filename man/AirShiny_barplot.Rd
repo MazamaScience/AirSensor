@@ -17,7 +17,7 @@ AirShiny_barplot(pat, period, startdate, enddate, ylim = NULL)
 
 \item{enddate}{The end date. Used to provide the Datetime domain.}
 
-\item{ylim}{A vector of upper and lower bounds.}
+\item{ylim}{Y-axis limits.}
 }
 \description{
 A barplot that bins by period and preforms an average of 

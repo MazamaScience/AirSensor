@@ -161,7 +161,7 @@ AirShiny_leaflet <- function(
 #'  precede these options followed by a space (i.e. "2 day" or "37 min").
 #' @param startdate The start date. Used to provide the Datetime domain.
 #' @param enddate The end date. Used to provide the Datetime domain.
-#' @param ylim A vector of upper and lower bounds. 
+#' @param ylim Y-axis limits. 
 #' 
 #' @description A barplot that bins by period and preforms an average of 
 #' Channel A & B, or seperately. Intended for use with the AirShiny web app.  

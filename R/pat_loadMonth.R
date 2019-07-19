@@ -25,7 +25,7 @@
 #' @seealso \link{pat_loadLatest}
 #' 
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' may <- pat_loadMonth("SCNP_20", 201905)
 #' pat_multiplot(may)
 #' }

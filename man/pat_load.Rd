@@ -41,7 +41,7 @@ recommended formats:
 By default, the current week is loaded.
 }
 \examples{
-\dontrun{
+\donttest{
 pat <- pat_load("SCNP_20", 20190411, 20190521)
 pat_multiplot(pat)
 }
