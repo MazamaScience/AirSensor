@@ -2,11 +2,12 @@
 
 # This Rscript generates a video for a South Coast community over a 3-day 
 # period. If a startDate is given, then that day and the next two are covered.
-# If no startDate is given then the last 72 hours are covered.
+# If no startDate is given then the last 72 hours are covered. Resulting video
+# is labeled by the communitiy's South Coast ID.
 #
 # Test this script from the command line with:
 #
-# ./createVideo_exec.R -c "Seal Beach" -s 20190704
+# ./createVideo_exec.R --community="Sycamore Canyon" -s 20190704 -r 4 -d ~/Desktop
 
 VERSION = "0.1.0"
 
@@ -188,6 +189,7 @@ result <- try({
                                                        width = 770,
                                                        height = 495)
   
+  # Get the community's South Coast ID for labeling the frames and video
   communityID <- sub("\\_.*", "", dplyr::filter(sensor$meta, communityRegion == opt$community)[1, "monitorID"])
   communityID <- toupper(communityID)
   
