@@ -131,6 +131,10 @@ if (opt$community == "Alhambra/Monterey Park") {
   lon <- -118.427781
   lat <- 34.023917
   z <- 15
+} else if (opt$community == "Seal Beach") {
+  lon <- -118.083
+  lat <- 33.767
+  z <- 15
 } else if (opt$community == "South Gate") {
   lon <- -118.178104
   lat <- 33.934260
@@ -159,16 +163,13 @@ result <- try({
   
   if (opt$startDate > 0) {
     start <- lubridate::parse_date_time(opt$startDate, orders = "ymd", tz = timeZone)
-    end   <- start + lubridate::days(2)
+    end   <- start + lubridate::hours(71)
   } else {
-    # Is this timezone right?
-    end   <- lubridate::now(tz = timeZone)
-    start <- end - lubridate::hours(72)
+    end <- sensor$data[nrow(sensor$data), "datetime"]
+    start <- end - lubridate::hours(71)
   }
   
-  # Can't filter by just the date
-  #movieData <- sensor_filterDate(sensor, startdate = start, enddate = end)
-  movieData <- sensor_filter(sensor, datetime >= start, datetime < end)
+  movieData <- sensor_filter(sensor, datetime >= start, datetime <= end)
   
   # Time axis data
   tickSkip <- 6
