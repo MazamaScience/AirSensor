@@ -1,3 +1,7 @@
+# AirSensor 0.3.11
+
+* Faster geodesic calculations in `pas_staticMap()` and `pas_filterNear()`.
+
 # AirSensor 0.3.10
 
 * Added `sensor_videoFrame()` function to create a single frame map for a
