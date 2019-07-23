@@ -10,7 +10,7 @@
 # ./createVideo_exec.R --communityName="Sycamore Canyon" -s 20190704 -r 4 -d ~/Desktop/ -v TRUE
 # ./createVideo_exec.R -c SCSB -d ~/Desktop/
 
-VERSION = "0.1.0"
+VERSION = "0.1.1"
 
 # The following packages are attached here so they show up in the sessionInfo
 suppressPackageStartupMessages({
@@ -26,7 +26,6 @@ if ( interactive() ) {
   # RStudio session
   opt <- list(outputDir = getwd(),
               logDir = getwd(),
-              spatialDataDir = "~/Data/Spatial",
               version = FALSE)  
   
 } else {
@@ -71,11 +70,6 @@ if ( interactive() ) {
       help="Output directory for generated .log file [default=\"%default\"]"
     ),
     make_option(
-      c("-s","--spatialDataDir"), 
-      default="/home/mazama/data/Spatial", 
-      help="Directory containing spatial datasets used by MazamaSpatialUtils [default=\"%default\"]"
-    ),
-    make_option(
       c("-V","--version"), 
       action="store_true", 
       default=FALSE, 
@@ -103,13 +97,33 @@ if (opt$communityID == "" && opt$communityName == "") {
   stop("Must define either a community name or ID")
 }
 
-if ( !dir.exists(opt$outputDir) ) 
-  stop(paste0("outputDir not found:  ",opt$outputDir))
+if (!dir.exists(opt$outputDir)) {
+  stop(paste0("outputDir not found:  ", opt$outputDir))
+}
 
-if ( !dir.exists(opt$logDir) ) 
-  stop(paste0("logDir not found:  ",opt$logDir))
+if (!dir.exists(opt$logDir)) {
+  stop(paste0("logDir not found:  ", opt$logDir))
+}
 
 # ----- Set up logging ---------------------------------------------------------
+
+logger.setup(
+  traceLog = file.path(opt$logDir, "createVideo_TRACE.log"),
+  debugLog = file.path(opt$logDir, "createVideo_DEBUG.log"), 
+  infoLog  = file.path(opt$logDir, "createVideo_INFO.log"), 
+  errorLog = file.path(opt$logDir, "createVideo_ERROR.log")
+)
+
+# For use at the very end
+errorLog <- file.path(opt$logDir, "createVideo_ERROR.log")
+
+# Silence other warning messages
+options(warn=-1) # -1=ignore, 0=save/print, 1=print, 2=error
+
+# Start logging
+logger.info("Running createVideo_exec.R version %s", VERSION)
+sessionString <- paste(capture.output(sessionInfo()), collapse="\n")
+logger.debug("R session:\n\n%s\n", sessionString)
 
 # ------ Create video frames ---------------------------------------------------
 
@@ -148,9 +162,10 @@ result <- try({
   )
   
   # Load all sensor data
+  logger.info("Loading sensor data")
   sensor <- sensor_load()
   
-  # Retreive both the community name and ID. Prioritize name over ID if they are
+  # Retrieve both the community name and ID. Prioritize name over ID if they are
   # different.
   if (opt$communityName != "") {
     communityMeta <- dplyr::filter(sensor$meta, communityRegion == opt$communityName)
@@ -174,6 +189,7 @@ result <- try({
   
   # Look forward 71 hours from startdate entry, or back 71 hours from the most 
   # recent data entry if no startdate is given
+  logger.info("Setting start and end times")
   if (opt$startDate > 0) {
     start <- lubridate::parse_date_time(opt$startDate, orders = "ymd", tz = timeZone)
     end   <- start + lubridate::hours(71)
@@ -185,6 +201,7 @@ result <- try({
   mapInfo <- communityGeoMapInfo[[opt$communityID]]
   
   # Time axis data
+  logger.info("Preparing the time axis")
   tickSkip <- 6
   movieData <- sensor_filter(sensor, datetime >= start, datetime <= end)
   tAxis <- movieData$data$datetime
@@ -196,6 +213,7 @@ result <- try({
   tInfo <- PWFSLSmoke::timeInfo(tAxis, longitude = mapInfo$lon, latitude = mapInfo$lat)
   
   # Load a static map image of the community
+  logger.info("Loading static map of community '%s'", opt$communityName)
   staticMap   <- PWFSLSmoke::staticmap_getStamenmapBrick(centerLon = mapInfo$lon,
                                                          centerLat = mapInfo$lat,
                                                          zoom = mapInfo$zoom,
@@ -203,12 +221,14 @@ result <- try({
                                                          height = 495)
   
   # Generate individual frames
+  logger.info("Generating %s video frames", length(tAxis))
   for (i in 1:length(tAxis)) {
     ft <- tAxis[i]
     number <- stringr::str_pad(i, 3, 'left', '0')
     fileName <- paste0(opt$communityID, number, ".png")
     filePath <- file.path(tempdir(), fileName)
     png(filePath, width = 1280, height = 720, units = "px")
+    logger.trace("Generating frame %s: %s", number, strftime(ft, "%b %d %H:%M"))
     sensor_videoFrame(sensor,
                       communityRegion = opt$communityName,
                       frameTime = ft,
@@ -231,6 +251,7 @@ result <- try({
   cmd_rm <- paste0("rm *.png")
   
   # Make system calls
+  logger.info("Calling ffmpeg to make video from frames")
   system(paste0(cmd_cd, " && ", cmd_ffmpeg, " && ", cmd_rm))
   
 }, silent=TRUE)
@@ -241,10 +262,11 @@ if (opt$verbose) {
 
 # Handle errors
 if ( "try-error" %in% class(result) ) {
-  msg <- paste("Error creating video frames: ", geterrmessage())
-  #logger.fatal(msg)
+  msg <- paste("Error creating video: ", geterrmessage())
+  logger.fatal(msg)
 } else {
   # Guarantee that the errorLog exists
-  #if ( !file.exists(errorLog) ) dummy <- file.create(errorLog)
-  #logger.info("Completed successfully!")
+  if ( !file.exists(errorLog) ) dummy <- file.create(errorLog)
+  logger.info("Completed successfully!")
+  logger.error("No errors")
 }
