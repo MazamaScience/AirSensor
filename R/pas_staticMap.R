@@ -67,7 +67,7 @@ pas_staticMap <- function(
   shape = 15, 
   size = 2.0, 
   alpha = 0.8, 
-  bbuff = 0.1, 
+  bbuff = 0.5, 
   zoomAdjust = 0, 
   ...
 ) {
@@ -198,7 +198,9 @@ pas_staticMap <- function(
     
     centroid <- cbind(centerLon , centerLat)
     
-    distance <- geosphere::distHaversine(centroid, coordDomain)
+    colnames(coordDomain) <- colnames(centroid) <- c("x", "y")
+    
+    distance <- diag(geodist::geodist(centroid, coordDomain))
     
     b <- geosphere::destPoint(centroid, 180, d = max(distance))
     t <- geosphere::destPoint(centroid, 0, d = max(distance))

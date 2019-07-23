@@ -62,16 +62,17 @@ pas_filterNear <- function(
   if ( tolower(r_split[,2]) == "m" ) radius_m <- as.numeric(r_split[,1])
   
   distance <- 
-    geosphere::distHaversine(
-      p1 =cbind(
-        longitude, 
-        latitude
+    geodist::geodist(
+      x = cbind(
+        "x" = longitude, 
+        "y" = latitude
       ),
-      p2 = cbind(
-        pas$longitude, 
-        pas$latitude
+      y = cbind(
+        "x" = pas$longitude, 
+        "y" = pas$latitude
       )
     )
+
   
   return(pas[which(distance <= radius_m),])
   

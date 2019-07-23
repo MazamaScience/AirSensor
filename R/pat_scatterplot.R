@@ -48,6 +48,10 @@ pat_scatterplot <- function(
   alpha = 0.25
 ) {
   
+  # ----- Disable Warning messages ---------------------------------------------
+  
+  options(warn = -1)
+  
   # ----- Validate parameters --------------------------------------------------
   
   if ( !pat_isPat(pat) )
