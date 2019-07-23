@@ -1,6 +1,2 @@
-INFO [2019-07-17 12:34:07] Running createPAS_exec.R version 0.1.4
-INFO [2019-07-17 12:34:08] Obtaining 'pas' data for 2019071719
-WARN [2019-07-17 12:34:53] Unable to load spatial data `CA_AirBasins`.
-INFO [2019-07-17 12:35:03] Writing 'pas' data to pas_2019071719.rda
-INFO [2019-07-17 12:35:03] Writing 'pas' data to pas_20190717.rda
-INFO [2019-07-17 12:35:03] Completed successfully!
+INFO [2019-07-23 13:45:41] Running createPAS_exec.R version 0.1.1
+INFO [2019-07-23 13:46:04] Completed successfully!
