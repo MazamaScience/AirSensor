@@ -37,6 +37,7 @@ Imports:
     PWFSLSmoke (>= 1.2.4),
     raster,
     RColorBrewer,
+    readr,
     rlang,
     scales,
     seismicRoll,
