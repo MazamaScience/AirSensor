@@ -1,4 +1,4 @@
-FROM mazamascience/pwfslsmoke:1.2.9
+FROM mazamascience/pwfslsmoke:1.2.100
 MAINTAINER "Jonathan Callahan" jonathan@mazamascience.com
 
 #######################################################################
@@ -6,12 +6,15 @@ MAINTAINER "Jonathan Callahan" jonathan@mazamascience.com
 
 # Install from CRAN to get all dependent packages
 RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
+    ffmpeg \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/ \
   && rm -rf /tmp/downloaded_packages/ /tmp/*.rds \
   ## Install extra/updated R packages from CRAN
   && install2.r --error -r "https://cran.rstudio.com" \
     dplyr \
+    geodist \
     GGally \
     seismicRoll
 
@@ -28,7 +31,7 @@ RUN wget -nv http://mazamascience.com/RData/Spatial/CA_AirBasins_01.RData \
 
 WORKDIR /
 
-COPY AirSensor_0.3.9.tar.gz /
+COPY AirSensor_0.3.11.tar.gz /
 
-RUN R CMD INSTALL AirSensor_0.3.9.tar.gz
+RUN R CMD INSTALL AirSensor_0.3.11.tar.gz
 
