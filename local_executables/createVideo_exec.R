@@ -245,14 +245,20 @@ result <- try({
   
   # Define system calls to ffmpeg to create video from frames
   cmd_cd <- paste0("cd ", tempdir())
-  cmd_ffmpeg <- paste0("ffmpeg -r ", opt$frameRate, " -f image2 -s 1280x720 -i ", 
+  cmd_ffmpeg <- paste0("ffmpeg -loglevel quiet -r ", 
+                       opt$frameRate, " -f image2 -s 1280x720 -i ", 
                        opt$communityID, "%03d.png -vcodec libx264 -crf 25 ", 
                        opt$outputDir, "/", opt$communityID, ".mp4")
   cmd_rm <- paste0("rm *.png")
+  cmd <- paste0(cmd_cd, " && ", cmd_ffmpeg, " && ", cmd_rm)
   
   # Make system calls
   logger.info("Calling ffmpeg to make video from frames")
-  system(paste0(cmd_cd, " && ", cmd_ffmpeg, " && ", cmd_rm))
+  logger.trace(cmd)
+
+  ffmpegString <- paste(capture.output(system(cmd)), collapse="\n")
+
+  logger.trace("ffmpeg output:\n\n%s\n", ffmpegString)
   
 }, silent=TRUE)
 
