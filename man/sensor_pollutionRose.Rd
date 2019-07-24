@@ -59,7 +59,7 @@ produce segments 0.5 * angle.}
 \item{normalize}{if TRUE each wind direction segment is normalized to equal 
 one. This is useful for showing how the concentrations (or other parameters) 
 contribute to each wind sector when the proprtion of time the wind is from 
-that direction is low. A line showing the probability that the wind}
+that direction is low. A line showing the probability that the wind.}
 }
 \value{
 a plot or a dataframe
@@ -68,20 +68,17 @@ a plot or a dataframe
 Plots a traditional wind rose plot for wind direction and PM2.5.
 }
 \examples{
-
-# Use example sensor, whose date range is 2019-08-01 to 2019-10-01
+\dontrun{
+# Use example sensor, whose date range is 2018-08-01 to 2018-10-01
 sensor <- example_sensor
 
-# Create wind data using same date range
-windData <- wind_load(
-  monitorID = "060950004_01", 
-  startdate = "20180801", 
-  enddate = "20181001"
-)
+# Load wind data from NOAA
+windData <- worldmet::importNOAA(code = "722975-53141", year = 2018)
+windData <- dplyr::select(windData, c("date", "wd", "ws"))
 
 # Plot rose using mean binning
 sensor_pollutionRose(sensor, windData, statistic = "prop.mean")
-
+}
 }
 \seealso{
 \url{http://davidcarslaw.github.io/openair/reference/windRose.html}
