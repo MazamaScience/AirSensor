@@ -29,7 +29,7 @@ Imports:
     jsonlite,
     leaflet,
     lubridate,
-    MazamaCoreUtils,
+    MazamaCoreUtils (>= 0.2.0),
     MazamaSpatialUtils (>= 0.6.1),
     openair, 
     plyr,

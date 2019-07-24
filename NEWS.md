@@ -1,7 +1,7 @@
 # AirSensor 0.3.11
 
 * Faster geodesic calculations in `pas_staticMap()` and `pas_filterNear()`.
-* Include `downloadParseSensorList()` to download archived a list of archived PurpleAir Sensors. 
+* Include `downloadParseSensorList()` to download a list of archived PurpleAir Sensors. 
 
 # AirSensor 0.3.10
 
