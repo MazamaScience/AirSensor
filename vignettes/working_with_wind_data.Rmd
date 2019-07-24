@@ -1,0 +1,51 @@
+---
+title: "Working With Wind Data"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(AirSensor)
+library(dplyr)
+library(worldmet)
+```
+
+## worldmet package
+
+AirSensor uses the `worldmet` package to gather its wind data.....
+
+```{r, echo=FALSE}
+
+start <- lubridate::ymd("2019-06-01")
+end   <- lubridate::ymd("2019-06-10")
+
+# Zoom in and pick "LOS ALAMITOS AAF AIRPORT" near Seal Beach
+getMeta(lon = -118, lat = 34, n = 25, plot = TRUE)
+sensor <- AirSensor::sensor_load(startdate = start, enddate = end)
+```
+
+lets load
+
+```{r, echo=FALSE}
+# Create an appropriate windData dataset using 2019 data
+windData <-
+  importNOAA(code = "722975-53141", year = 2019) %>%
+  dplyr::select(c("date", "wd", "ws")) %>%
+  dplyr::filter(date >= start, date < end)
+```
+
+okay, plot
+
+PollutionRose
+
+```{r}
+# Plot rose using mean binning
+sensor_pollutionRose(sensor, windData, statistic = "prop.mean")
+```
+
+PolarPlot
+
+```{r}
+# Plot rose using mean binning
+sensor_polarPlot(sensor, windData, resolution = "normal")
+```

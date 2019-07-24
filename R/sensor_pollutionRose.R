@@ -1,5 +1,6 @@
 #' @export
 #' @title Pollution rose plot
+#' 
 #' @param sensor an 'airsensor' object
 #' @param windData a dataframe containing columns "date", "ws", and "wd".
 #' @param statistic The statistic to be applied to each data bin in the plot. 
@@ -37,7 +38,8 @@
 #' @param normalize if TRUE each wind direction segment is normalized to equal 
 #' one. This is useful for showing how the concentrations (or other parameters) 
 #' contribute to each wind sector when the proprtion of time the wind is from 
-#' that direction is low. A line showing the probability that the wind 
+#' that direction is low. A line showing the probability that the wind.
+#' 
 #' @description Plots a traditional wind rose plot for wind direction and PM2.5.
 #'
 #' @return a plot or a dataframe
@@ -46,15 +48,13 @@
 #'
 #' @examples
 #' 
-#' # Use example sensor, whose date range is 2019-08-01 to 2019-10-01
+#' # Use example sensor, whose date range is 2018-08-01 to 2018-10-01
 #' sensor <- example_sensor
 #' 
-#' # Create wind data using same date range
-#' windData <- wind_load(
-#'   monitorID = "060950004_01", 
-#'   startdate = "20180801", 
-#'   enddate = "20181001"
-#' )
+#' #Load wind data from NOAA
+#' windData <- 
+#'   worldmet::importNOAA(code = "722975-53141", year = 2018) %>%
+#'   dplyr::select(c("date", "wd", "ws"))
 #' 
 #' # Plot rose using mean binning
 #' sensor_pollutionRose(sensor, windData, statistic = "prop.mean")
@@ -96,6 +96,11 @@ sensor_pollutionRose <-
         "date" = sensor$data[[1]], 
         "pm25" = sensor$data[[2]] 
       )
+    
+    # Trim wind data to the sensor's time range
+    windData <- filter(windData, 
+                       date >= min(sensor$data$datetime),
+                       date <= max(sensor$data$datetime))
     
     # Combine df's 
     data <- 

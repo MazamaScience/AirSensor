@@ -53,15 +53,13 @@
 #'
 #' @examples
 #' \donttest{
-#' # Use example sensor, whose date range is 2019-08-01 to 2019-10-01
+#' # Use example sensor, whose date range is 2018-08-01 to 2018-10-01
 #' sensor <- example_sensor
 #' 
-#' # Create wind data using same date range
-#' windData <- wind_load(
-#'   monitorID = "060950004_01", 
-#'   startdate = "2018-08-01", 
-#'   enddate = "2018-10-01"
-#' )
+#' #Load wind data from NOAA
+#' windData <- 
+#'   worldmet::importNOAA(code = "722975-53141", year = 2018) %>%
+#'   dplyr::select(c("date", "wd", "ws"))
 #' 
 #' # Plot polar plot using
 #' sensor_polarPlot(sensor, windData, resolution = "normal")
@@ -102,6 +100,11 @@ sensor_polarPlot <-
         "date" = sensor$data[[1]], 
         "pm25" = sensor$data[[2]] 
       )
+    
+    # Trim wind data to the sensor's time range
+    windData <- filter(windData, 
+                       date >= min(sensor$data$datetime),
+                       date <= max(sensor$data$datetime))
     
     # Combine df's 
     data <- 
