@@ -45,7 +45,7 @@ if ( interactive() ) {
       help="Name of the South Coast community [default=\"%default\"]"
     ),
     make_option(
-      c("-S","--startDate"), 
+      c("-s","--startDate"), 
       default=0, 
       help="Start date for the 3-day (72 hr) period [default=\"%default\"]"
     ),

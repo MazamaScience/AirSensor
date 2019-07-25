@@ -1,9 +1,9 @@
-INFO [2019-07-23 14:37:29] Running createVideo_exec.R version 0.1.1
-INFO [2019-07-23 14:37:29] Loading sensor data
-INFO [2019-07-23 14:37:30] Setting start and end times
-INFO [2019-07-23 14:37:30] Preparing the time axis
-INFO [2019-07-23 14:37:30] Loading static map of community 'SCAH'
-INFO [2019-07-23 14:37:32] Generating 72 video frames
-INFO [2019-07-23 14:37:46] Calling ffmpeg to make video from frames
-INFO [2019-07-23 14:37:48] Completed successfully!
-ERROR [2019-07-23 14:37:48] No errors
+INFO [2019-07-25 11:39:57] Running createVideo_exec.R version 0.1.1
+INFO [2019-07-25 11:39:57] Loading sensor data
+INFO [2019-07-25 11:39:58] Setting start and end times
+INFO [2019-07-25 11:39:58] Preparing the time axis
+INFO [2019-07-25 11:39:58] Loading static map of community 'Seal Beach'
+INFO [2019-07-25 11:40:00] Generating 72 video frames
+INFO [2019-07-25 11:40:13] Calling ffmpeg to make video from frames
+INFO [2019-07-25 11:40:15] Completed successfully!
+ERROR [2019-07-25 11:40:15] No errors
