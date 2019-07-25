@@ -35,7 +35,7 @@
 #' lat <- 33.767
 #' zoom <- 15
 #' 
-#' staticMap <- PWFSLSmoke::staticmap_getStamenmapBrick(
+#' map <- PWFSLSmoke::staticmap_getStamenmapBrick(
 #'   centerLon = lon,
 #'   centerLat = lat,
 #'   zoom = zoom,
@@ -209,12 +209,12 @@ sensor_videoFrame <- function(
   rect(left, bottom,  right, top)
   
   # Draw labels
-  text(left, bottom,  as.character(0),  pos = 2, cex = 1.5)
-  text(left, top,     as.character(60), pos = 2, cex = 1.5)
-  raster::text(right - (right - left) / 2, top + (usr[4] - usr[3]) / 8,
-       labels = "PM 2.5", font = 2,  cex = 2.1)
-  raster::text(right - (right - left) / 2, top + (usr[4] - usr[3]) / 16, 
-       labels = "(\U03BCg/m\U00B3)", cex = 1.4)
+  #text(left, bottom,  as.character(0),  pos = 2, cex = 1.5)
+  #text(left, top,     as.character(60), pos = 2, cex = 1.5)
+  raster::text(right - (right - left) / 2, top + (usr[4] - usr[3]) / 16,
+       labels = "PM 2.5", font = 2,  cex = 2.8)
+  #raster::text(right - (right - left) / 2, top + (usr[4] - usr[3]) / 16, 
+  #     labels = "(\U03BCg/m\U00B3)", cex = 1.4)
   
   # ----- Plot points ----------------------------------------------------------
   
@@ -236,13 +236,13 @@ sensor_videoFrame <- function(
     plot(rep(0, length(timeAxis)), -(as.numeric(timeAxis)), axes = FALSE, 
          col = 'transparent')
     
-    mtext(strftime(frameTime, "%b %e", tz = "America/Los_Angeles") , line = 2.5, 
-          cex = 1.6)
+    mtext(strftime(frameTime, "%b %e", tz = "America/Los_Angeles") , line = 2.6, 
+          cex = 2.7)
     mtext(strftime(frameTime, "%l %P", tz = "America/Los_Angeles") , line = 0.5, 
-          cex = 1.1)
+          cex = 2.0)
     
     axis(side = 2, labels = timeLabels, line = -5.5, at = -as.numeric(timeTicks), 
-         cex.axis = 1.9, las = 2, hadj = 1, cex= 2, lwd.ticks = 2.7,
+         cex.axis = 1.6, las = 2, hadj = 1, cex= 2, lwd.ticks = 2.7,
          lwd = 2.7)
     axis(side = 4, line = -3.9, at = -as.numeric(frameTime), col = 'red', 
          col.ticks = 2, lwd.ticks = 12, labels = "", tcl = -2)

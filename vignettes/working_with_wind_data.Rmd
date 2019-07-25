@@ -16,8 +16,6 @@ library(dplyr)
 library(worldmet)
 ```
 
-## The worldmet package
-
 Wind speed and direction are required to generate rose plots or polar plots for 
 PM2.5. Loading this data is made easy using the `worldmet` R package which makes
 accessible over 35,000 NOAA measurement sites, many of which are located close 
@@ -70,7 +68,9 @@ And now we can generate rose and polar plots with our wind data and a sensor
 object in the same timeframe.
 
 ```{r plot_data, echo=TRUE, warning=FALSE}
-sensor <- AirSensor::sensor_load(startdate = start, enddate = end)
+sensor <- 
+  AirSensor::sensor_load(startdate = start, enddate = end) %>%
+  AirSensor::sensor_filterMeta(communityRegion == "Seal Beach")
 
 AirSensor::sensor_pollutionRose(sensor, windData, statistic = "prop.mean")
 AirSensor::sensor_polarPlot(sensor, windData, resolution = "normal")

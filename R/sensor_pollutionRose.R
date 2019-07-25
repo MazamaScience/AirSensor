@@ -84,11 +84,18 @@ sensor_pollutionRose <-
     if ( PWFSLSmoke::monitor_isEmpty(sensor) ) 
       stop("Required parameter 'sensor' has no data.")
     
-    if ( is.null(windData) ) 
-      stop("Required parameter 'windData' is NULL")
-    
     if ( !all((c("wd", "ws") %in% names(windData))) ) 
       stop("Parameter 'windData' does not contain necessary columns")
+    
+    
+    # Find closest NOAA site wind data if none is provided
+    if ( is.null(windData) ) {
+      
+    }
+    
+    
+    
+    
 
     # Data must be the same length
     pollutantData <- 
