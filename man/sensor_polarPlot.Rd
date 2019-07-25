@@ -72,12 +72,13 @@ Function for plotting PM2.5 concentration in polar coordinates
 showing concentration by wind speed and direction.
 }
 \examples{
-\dontrun{
+\donttest{
 # Use example sensor, whose date range is 2018-08-01 to 2018-10-01
 sensor <- example_sensor
 
 # Load wind data from NOAA
-windData <- worldmet::importNOAA(code = "722975-53141", year = 2018)
+windData <- worldmet::importNOAA(code = "722975-53141", year = 2018, 
+                                 parallel = FALSE)
 windData <- dplyr::select(windData, c("date", "wd", "ws"))
 
 # Plot polar plot using
