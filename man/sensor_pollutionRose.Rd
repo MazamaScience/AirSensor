@@ -4,7 +4,7 @@
 \alias{sensor_pollutionRose}
 \title{Pollution rose plot}
 \usage{
-sensor_pollutionRose(sensor, windData, statistic = "prop.count",
+sensor_pollutionRose(sensor, windData = NULL, statistic = "prop.count",
   key = TRUE, keyPosition = "right", annotate = TRUE, angle = 30,
   angleScale = 315, gridLine = NULL, breaks = 6, paddle = FALSE,
   seg = 0.9, normalize = FALSE)
@@ -69,11 +69,11 @@ Plots a traditional wind rose plot for wind direction and PM2.5.
 }
 \examples{
 \donttest{
-# Use example sensor, whose date range is 2018-08-01 to 2018-10-01
-sensor <- example_sensor
+sensor <- sensor_load(startdate = 20190601, enddate = 20190630)
+sensor <- sensor_filterMeta(sensor, monitorID == "SCSB_02")
 
-# Load wind data from NOAA. 'parallel' cannot be true in examples.
-windData <- worldmet::importNOAA(code = "722975-53141", year = 2018, 
+# Load wind data from NOAA
+windData <- worldmet::importNOAA(code = "722975-53141", year = 2019, 
                                  parallel = FALSE)
 windData <- dplyr::select(windData, c("date", "wd", "ws"))
 

@@ -4,7 +4,7 @@
 \alias{sensor_polarPlot}
 \title{Plot bivariate polar plots with guassian smoothing}
 \usage{
-sensor_polarPlot(sensor, windData, statistic = "mean",
+sensor_polarPlot(sensor, windData = NULL, statistic = "mean",
   resolution = "fine", colors = "default", alpha = 1,
   angleScale = 315, normalize = FALSE, key = TRUE,
   keyPosition = "right", ws_spread = 15, wd_spread = 4)
@@ -73,11 +73,11 @@ showing concentration by wind speed and direction.
 }
 \examples{
 \donttest{
-# Use example sensor, whose date range is 2018-08-01 to 2018-10-01
-sensor <- example_sensor
+sensor <- sensor_load(startdate = 20190601, enddate = 20190630)
+sensor <- sensor_filterMeta(sensor, monitorID == "SCSB_02")
 
 # Load wind data from NOAA
-windData <- worldmet::importNOAA(code = "722975-53141", year = 2018, 
+windData <- worldmet::importNOAA(code = "722975-53141", year = 2019, 
                                  parallel = FALSE)
 windData <- dplyr::select(windData, c("date", "wd", "ws"))
 

@@ -51,7 +51,7 @@ lon <- -118.083
 lat <- 33.767
 zoom <- 15
 
-staticMap <- PWFSLSmoke::staticmap_getStamenmapBrick(
+map <- PWFSLSmoke::staticmap_getStamenmapBrick(
   centerLon = lon,
   centerLat = lat,
   zoom = zoom,

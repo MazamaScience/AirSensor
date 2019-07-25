@@ -1,5 +1,5 @@
-INFO [2019-07-25 11:53:33] Running createVideo_exec.R version 0.1.1
-DEBUG [2019-07-25 11:53:33] R session:
+INFO [2019-07-25 15:00:32] Running createVideo_exec.R version 0.1.1
+DEBUG [2019-07-25 15:00:32] R session:
 
 R version 3.5.2 (2018-12-20)
 Platform: x86_64-apple-darwin15.6.0 (64-bit)
@@ -30,83 +30,83 @@ loaded via a namespace (and not attached):
 [22] futile.options_1.0.1 glue_1.3.1           compiler_3.5.2      
 [25] pillar_1.3.1         scales_1.0.0         pkgconfig_2.0.2     
 
-INFO [2019-07-25 11:53:33] Loading sensor data
-INFO [2019-07-25 11:53:34] Setting start and end times
-INFO [2019-07-25 11:53:34] Preparing the time axis
-INFO [2019-07-25 11:53:34] Loading static map of community 'Seal Beach'
-INFO [2019-07-25 11:53:36] Generating 72 video frames
-TRACE [2019-07-25 11:53:36] Generating frame 001: Jul 22 05:00
-TRACE [2019-07-25 11:53:36] Generating frame 002: Jul 22 06:00
-TRACE [2019-07-25 11:53:37] Generating frame 003: Jul 22 07:00
-TRACE [2019-07-25 11:53:37] Generating frame 004: Jul 22 08:00
-TRACE [2019-07-25 11:53:37] Generating frame 005: Jul 22 09:00
-TRACE [2019-07-25 11:53:37] Generating frame 006: Jul 22 10:00
-TRACE [2019-07-25 11:53:37] Generating frame 007: Jul 22 11:00
-TRACE [2019-07-25 11:53:38] Generating frame 008: Jul 22 12:00
-TRACE [2019-07-25 11:53:38] Generating frame 009: Jul 22 13:00
-TRACE [2019-07-25 11:53:38] Generating frame 010: Jul 22 14:00
-TRACE [2019-07-25 11:53:38] Generating frame 011: Jul 22 15:00
-TRACE [2019-07-25 11:53:38] Generating frame 012: Jul 22 16:00
-TRACE [2019-07-25 11:53:39] Generating frame 013: Jul 22 17:00
-TRACE [2019-07-25 11:53:39] Generating frame 014: Jul 22 18:00
-TRACE [2019-07-25 11:53:39] Generating frame 015: Jul 22 19:00
-TRACE [2019-07-25 11:53:39] Generating frame 016: Jul 22 20:00
-TRACE [2019-07-25 11:53:39] Generating frame 017: Jul 22 21:00
-TRACE [2019-07-25 11:53:39] Generating frame 018: Jul 22 22:00
-TRACE [2019-07-25 11:53:40] Generating frame 019: Jul 22 23:00
-TRACE [2019-07-25 11:53:40] Generating frame 020: Jul 23 00:00
-TRACE [2019-07-25 11:53:40] Generating frame 021: Jul 23 01:00
-TRACE [2019-07-25 11:53:40] Generating frame 022: Jul 23 02:00
-TRACE [2019-07-25 11:53:40] Generating frame 023: Jul 23 03:00
-TRACE [2019-07-25 11:53:40] Generating frame 024: Jul 23 04:00
-TRACE [2019-07-25 11:53:41] Generating frame 025: Jul 23 05:00
-TRACE [2019-07-25 11:53:41] Generating frame 026: Jul 23 06:00
-TRACE [2019-07-25 11:53:41] Generating frame 027: Jul 23 07:00
-TRACE [2019-07-25 11:53:41] Generating frame 028: Jul 23 08:00
-TRACE [2019-07-25 11:53:41] Generating frame 029: Jul 23 09:00
-TRACE [2019-07-25 11:53:41] Generating frame 030: Jul 23 10:00
-TRACE [2019-07-25 11:53:42] Generating frame 031: Jul 23 11:00
-TRACE [2019-07-25 11:53:42] Generating frame 032: Jul 23 12:00
-TRACE [2019-07-25 11:53:42] Generating frame 033: Jul 23 13:00
-TRACE [2019-07-25 11:53:42] Generating frame 034: Jul 23 14:00
-TRACE [2019-07-25 11:53:42] Generating frame 035: Jul 23 15:00
-TRACE [2019-07-25 11:53:42] Generating frame 036: Jul 23 16:00
-TRACE [2019-07-25 11:53:43] Generating frame 037: Jul 23 17:00
-TRACE [2019-07-25 11:53:43] Generating frame 038: Jul 23 18:00
-TRACE [2019-07-25 11:53:43] Generating frame 039: Jul 23 19:00
-TRACE [2019-07-25 11:53:43] Generating frame 040: Jul 23 20:00
-TRACE [2019-07-25 11:53:43] Generating frame 041: Jul 23 21:00
-TRACE [2019-07-25 11:53:43] Generating frame 042: Jul 23 22:00
-TRACE [2019-07-25 11:53:44] Generating frame 043: Jul 23 23:00
-TRACE [2019-07-25 11:53:44] Generating frame 044: Jul 24 00:00
-TRACE [2019-07-25 11:53:44] Generating frame 045: Jul 24 01:00
-TRACE [2019-07-25 11:53:44] Generating frame 046: Jul 24 02:00
-TRACE [2019-07-25 11:53:44] Generating frame 047: Jul 24 03:00
-TRACE [2019-07-25 11:53:45] Generating frame 048: Jul 24 04:00
-TRACE [2019-07-25 11:53:45] Generating frame 049: Jul 24 05:00
-TRACE [2019-07-25 11:53:45] Generating frame 050: Jul 24 06:00
-TRACE [2019-07-25 11:53:45] Generating frame 051: Jul 24 07:00
-TRACE [2019-07-25 11:53:45] Generating frame 052: Jul 24 08:00
-TRACE [2019-07-25 11:53:45] Generating frame 053: Jul 24 09:00
-TRACE [2019-07-25 11:53:46] Generating frame 054: Jul 24 10:00
-TRACE [2019-07-25 11:53:46] Generating frame 055: Jul 24 11:00
-TRACE [2019-07-25 11:53:46] Generating frame 056: Jul 24 12:00
-TRACE [2019-07-25 11:53:46] Generating frame 057: Jul 24 13:00
-TRACE [2019-07-25 11:53:46] Generating frame 058: Jul 24 14:00
-TRACE [2019-07-25 11:53:46] Generating frame 059: Jul 24 15:00
-TRACE [2019-07-25 11:53:46] Generating frame 060: Jul 24 16:00
-TRACE [2019-07-25 11:53:47] Generating frame 061: Jul 24 17:00
-TRACE [2019-07-25 11:53:47] Generating frame 062: Jul 24 18:00
-TRACE [2019-07-25 11:53:47] Generating frame 063: Jul 24 19:00
-TRACE [2019-07-25 11:53:47] Generating frame 064: Jul 24 20:00
-TRACE [2019-07-25 11:53:47] Generating frame 065: Jul 24 21:00
-TRACE [2019-07-25 11:53:48] Generating frame 066: Jul 24 22:00
-TRACE [2019-07-25 11:53:48] Generating frame 067: Jul 24 23:00
-TRACE [2019-07-25 11:53:48] Generating frame 068: Jul 25 00:00
-TRACE [2019-07-25 11:53:48] Generating frame 069: Jul 25 01:00
-TRACE [2019-07-25 11:53:48] Generating frame 070: Jul 25 02:00
-TRACE [2019-07-25 11:53:48] Generating frame 071: Jul 25 03:00
-TRACE [2019-07-25 11:53:49] Generating frame 072: Jul 25 04:00
-INFO [2019-07-25 11:53:49] Calling ffmpeg to make video from frames
-INFO [2019-07-25 11:53:50] Completed successfully!
-ERROR [2019-07-25 11:53:50] No errors
+INFO [2019-07-25 15:00:32] Loading sensor data
+INFO [2019-07-25 15:00:33] Setting start and end times
+INFO [2019-07-25 15:00:33] Preparing the time axis
+INFO [2019-07-25 15:00:33] Loading static map of community 'Temescal Valley'
+INFO [2019-07-25 15:00:35] Generating 72 video frames
+TRACE [2019-07-25 15:00:35] Generating frame 001: Jul 22 05:00
+TRACE [2019-07-25 15:00:36] Generating frame 002: Jul 22 06:00
+TRACE [2019-07-25 15:00:36] Generating frame 003: Jul 22 07:00
+TRACE [2019-07-25 15:00:37] Generating frame 004: Jul 22 08:00
+TRACE [2019-07-25 15:00:37] Generating frame 005: Jul 22 09:00
+TRACE [2019-07-25 15:00:37] Generating frame 006: Jul 22 10:00
+TRACE [2019-07-25 15:00:38] Generating frame 007: Jul 22 11:00
+TRACE [2019-07-25 15:00:38] Generating frame 008: Jul 22 12:00
+TRACE [2019-07-25 15:00:38] Generating frame 009: Jul 22 13:00
+TRACE [2019-07-25 15:00:38] Generating frame 010: Jul 22 14:00
+TRACE [2019-07-25 15:00:39] Generating frame 011: Jul 22 15:00
+TRACE [2019-07-25 15:00:39] Generating frame 012: Jul 22 16:00
+TRACE [2019-07-25 15:00:39] Generating frame 013: Jul 22 17:00
+TRACE [2019-07-25 15:00:40] Generating frame 014: Jul 22 18:00
+TRACE [2019-07-25 15:00:40] Generating frame 015: Jul 22 19:00
+TRACE [2019-07-25 15:00:40] Generating frame 016: Jul 22 20:00
+TRACE [2019-07-25 15:00:41] Generating frame 017: Jul 22 21:00
+TRACE [2019-07-25 15:00:41] Generating frame 018: Jul 22 22:00
+TRACE [2019-07-25 15:00:41] Generating frame 019: Jul 22 23:00
+TRACE [2019-07-25 15:00:42] Generating frame 020: Jul 23 00:00
+TRACE [2019-07-25 15:00:42] Generating frame 021: Jul 23 01:00
+TRACE [2019-07-25 15:00:42] Generating frame 022: Jul 23 02:00
+TRACE [2019-07-25 15:00:42] Generating frame 023: Jul 23 03:00
+TRACE [2019-07-25 15:00:43] Generating frame 024: Jul 23 04:00
+TRACE [2019-07-25 15:00:43] Generating frame 025: Jul 23 05:00
+TRACE [2019-07-25 15:00:43] Generating frame 026: Jul 23 06:00
+TRACE [2019-07-25 15:00:44] Generating frame 027: Jul 23 07:00
+TRACE [2019-07-25 15:00:44] Generating frame 028: Jul 23 08:00
+TRACE [2019-07-25 15:00:44] Generating frame 029: Jul 23 09:00
+TRACE [2019-07-25 15:00:45] Generating frame 030: Jul 23 10:00
+TRACE [2019-07-25 15:00:45] Generating frame 031: Jul 23 11:00
+TRACE [2019-07-25 15:00:45] Generating frame 032: Jul 23 12:00
+TRACE [2019-07-25 15:00:46] Generating frame 033: Jul 23 13:00
+TRACE [2019-07-25 15:00:46] Generating frame 034: Jul 23 14:00
+TRACE [2019-07-25 15:00:46] Generating frame 035: Jul 23 15:00
+TRACE [2019-07-25 15:00:47] Generating frame 036: Jul 23 16:00
+TRACE [2019-07-25 15:00:47] Generating frame 037: Jul 23 17:00
+TRACE [2019-07-25 15:00:47] Generating frame 038: Jul 23 18:00
+TRACE [2019-07-25 15:00:47] Generating frame 039: Jul 23 19:00
+TRACE [2019-07-25 15:00:48] Generating frame 040: Jul 23 20:00
+TRACE [2019-07-25 15:00:48] Generating frame 041: Jul 23 21:00
+TRACE [2019-07-25 15:00:48] Generating frame 042: Jul 23 22:00
+TRACE [2019-07-25 15:00:49] Generating frame 043: Jul 23 23:00
+TRACE [2019-07-25 15:00:49] Generating frame 044: Jul 24 00:00
+TRACE [2019-07-25 15:00:49] Generating frame 045: Jul 24 01:00
+TRACE [2019-07-25 15:00:50] Generating frame 046: Jul 24 02:00
+TRACE [2019-07-25 15:00:50] Generating frame 047: Jul 24 03:00
+TRACE [2019-07-25 15:00:50] Generating frame 048: Jul 24 04:00
+TRACE [2019-07-25 15:00:50] Generating frame 049: Jul 24 05:00
+TRACE [2019-07-25 15:00:51] Generating frame 050: Jul 24 06:00
+TRACE [2019-07-25 15:00:51] Generating frame 051: Jul 24 07:00
+TRACE [2019-07-25 15:00:51] Generating frame 052: Jul 24 08:00
+TRACE [2019-07-25 15:00:52] Generating frame 053: Jul 24 09:00
+TRACE [2019-07-25 15:00:52] Generating frame 054: Jul 24 10:00
+TRACE [2019-07-25 15:00:52] Generating frame 055: Jul 24 11:00
+TRACE [2019-07-25 15:00:53] Generating frame 056: Jul 24 12:00
+TRACE [2019-07-25 15:00:53] Generating frame 057: Jul 24 13:00
+TRACE [2019-07-25 15:00:53] Generating frame 058: Jul 24 14:00
+TRACE [2019-07-25 15:00:54] Generating frame 059: Jul 24 15:00
+TRACE [2019-07-25 15:00:54] Generating frame 060: Jul 24 16:00
+TRACE [2019-07-25 15:00:54] Generating frame 061: Jul 24 17:00
+TRACE [2019-07-25 15:00:54] Generating frame 062: Jul 24 18:00
+TRACE [2019-07-25 15:00:55] Generating frame 063: Jul 24 19:00
+TRACE [2019-07-25 15:00:55] Generating frame 064: Jul 24 20:00
+TRACE [2019-07-25 15:00:55] Generating frame 065: Jul 24 21:00
+TRACE [2019-07-25 15:00:56] Generating frame 066: Jul 24 22:00
+TRACE [2019-07-25 15:00:56] Generating frame 067: Jul 24 23:00
+TRACE [2019-07-25 15:00:56] Generating frame 068: Jul 25 00:00
+TRACE [2019-07-25 15:00:57] Generating frame 069: Jul 25 01:00
+TRACE [2019-07-25 15:00:57] Generating frame 070: Jul 25 02:00
+TRACE [2019-07-25 15:00:57] Generating frame 071: Jul 25 03:00
+TRACE [2019-07-25 15:00:57] Generating frame 072: Jul 25 04:00
+INFO [2019-07-25 15:00:58] Calling ffmpeg to make video from frames
+INFO [2019-07-25 15:01:00] Completed successfully!
+ERROR [2019-07-25 15:01:00] No errors

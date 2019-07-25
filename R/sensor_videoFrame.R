@@ -73,7 +73,8 @@ sensor_videoFrame <- function(
   timeAxis = NULL,
   timeTicks = NULL,
   timeLabels = NULL,
-  map = NULL
+  map = NULL,
+  logo = png::readPNG("~/Desktop/ms_logo.png")
 ) {
   
   # ----- Validate parameters --------------------------------------------------
@@ -107,9 +108,8 @@ sensor_videoFrame <- function(
   
   # ----- Subset data ----------------------------------------------------------
   
-  commReg <- communityRegion
-  community <- dplyr::filter(sensor$meta,
-                             .data$communityRegion == commReg)
+  community <- 
+    dplyr::filter(sensor$meta, .data$communityRegion == communityRegion)
   monitorId <- community$monitorID
   longitude <- community$longitude
   latitude <- community$latitude
@@ -209,12 +209,13 @@ sensor_videoFrame <- function(
   rect(left, bottom,  right, top)
   
   # Draw labels
-  #text(left, bottom,  as.character(0),  pos = 2, cex = 1.5)
-  #text(left, top,     as.character(60), pos = 2, cex = 1.5)
   raster::text(right - (right - left) / 2, top + (usr[4] - usr[3]) / 16,
-       labels = "PM 2.5", font = 2,  cex = 2.8)
+               labels = "PM 2.5", font = 2,  cex = 2.8)
+  # Disabled to keep units ambiguous
   #raster::text(right - (right - left) / 2, top + (usr[4] - usr[3]) / 16, 
   #     labels = "(\U03BCg/m\U00B3)", cex = 1.4)
+  #text(left, bottom,  as.character(0),  pos = 2, cex = 1.5)
+  #text(left, top,     as.character(60), pos = 2, cex = 1.5)
   
   # ----- Plot points ----------------------------------------------------------
   
@@ -246,6 +247,32 @@ sensor_videoFrame <- function(
          lwd = 2.7)
     axis(side = 4, line = -3.9, at = -as.numeric(frameTime), col = 'red', 
          col.ticks = 2, lwd.ticks = 12, labels = "", tcl = -2)
+  }
+  
+  # ----- Plot logo ------------------------------------------------------------
+  
+  if ( !is.null(logo) ) {
+    # Center position 
+    x = right - (right - left) * 1.25
+    y = top + (usr[4] - usr[3]) * 0.3
+    
+    # Width and height
+    degreesPerInchEW <- (usr[2] - usr[1]) %% 360 / par("pin")[1]
+    degreesPerInchNS <- (usr[4] - usr[3]) %% 360 / par("pin")[2]
+    
+    # Estimate conversion from inch to pixel (assuming dpi ~ 96)
+    degreesPerPixelEW <- degreesPerInchEW / 96
+    degreesPerPixelNS <- degreesPerInchNS / 96
+    
+    width <- degreesPerPixelEW * dim(logo)[2]*1
+    height <- degreesPerPixelNS * dim(logo)[1]*1
+    
+    l <- x - width / 2
+    r <- x + width / 2
+    b <- y - height / 2
+    t <- y + height / 2
+    
+    graphics::rasterImage(logo, l, b, r, t)
   }
   
 }
