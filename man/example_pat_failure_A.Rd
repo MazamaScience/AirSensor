@@ -13,7 +13,7 @@ This dataset was was generated on 2019-07-06 by running:
 \preformatted{
   pas <- pas_load()
   example_pat_failure_A <- 
-    pat_loadLatest(pas, name = "SCNP_20",
+    pat_createNew(pas, name = "SCNP_20",
                    startdate = "2019-04-01",
                    enddate = "2019-04-18")
 }

@@ -5,26 +5,29 @@
 \title{Load PurpleAir synoptic data}
 \usage{
 pas_load(datestamp = strftime(lubridate::today("America/Los_Angeles"),
-  "\%Y\%m\%d"),
-  baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/pas/2019",
-  retries = 10)
+  "\%Y\%m\%d", tz = "America/Los_Angeles"),
+  baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/pas/",
+  retries = 10, timezone = "America/Los_Angeles")
 }
 \arguments{
-\item{datestamp}{Date string in ymd order.}
+\item{datestamp}{Local date string in ymd order.}
 
 \item{baseUrl}{Base URL for synoptic data.}
 
 \item{retries}{Max number of days to go back and try to load if requested 
 date cannot be retrieved.}
+
+\item{timezone}{Timezone used to interpret \code{datestamp}.}
 }
 \value{
 A PurpleAir Synoptic \emph{pas} object.
 }
 \description{
 A pre-generated \emph{pa_synoptic} object will be loaded for
-  the given date. These files are generated each day at 4am California time
-  and provide a record of all currently installed Purple Air sensors for the
-  day of interest.
+  the given date. These files are generated throughout each day and provide
+  a record of all currently installed Purple Air sensors for the day of 
+  interest. The default will always load data associated with the most
+  recent pre-generated file -- typically less than one hour old.
 
   The \code{datestamp} can be anything that is understood by 
   \code{lubrdiate::ymd()} including either of the following recommended 

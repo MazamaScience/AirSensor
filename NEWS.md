@@ -1,3 +1,13 @@
+# AirSensor 0.3.12
+
+* Renamed `pas_loadLatest()` to `pas_createNew()`.
+* Renamed `pat_loadLatest()` to `pat_createNew()`.
+* Added "Too Many Requests" error messages to `download~()` functions.
+* Added `timezone` parameter to `pas_load()`.
+* Included `timezone` information in every internal function call where it can
+be specified so that R's default "system local timezone" does not accidentally 
+get used.
+
 # AirSensor 0.3.11
 
 * Faster geodesic calculations in `pas_staticMap()` and `pas_filterNear()`.

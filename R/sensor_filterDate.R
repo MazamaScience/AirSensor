@@ -60,14 +60,14 @@ sensor_filterDate <- function(
     days <- 7 # default
   }
   
-  tlim <- .dateRange(startdate, enddate, days, timezone = timezone)
+  dateRange <- MazamaCoreUtils::dateRange(startdate, enddate, days, timezone)
   
   # Subset the "sensor" object ----------------------------------------------------
   
   data <- 
     sensor$data %>%
-    dplyr::filter(.data$datetime >= tlim[1]) %>%
-    dplyr::filter(.data$datetime < tlim[2])
+    dplyr::filter(.data$datetime >= dateRange[1]) %>%
+    dplyr::filter(.data$datetime < dateRange[2])
   
   sensor$data <- data
   

@@ -8,8 +8,8 @@
 #' @param pas Purple Air 'enhanced' synoptic data
 #' @param name Purple Air 'label'
 #' @param id Purple Air 'ID'
-#' @param startdate desired start datetime (ISO 8601)
-#' @param enddate desired end datetime (ISO 8601)
+#' @param startdate Desired UTC start time (ISO 8601)
+#' @param enddate Desired UTC end time (ISO 8601)
 #' @param baseURL Base URL for Thingspeak API
 #' @return The monitor time series given broken up into metadata and readings data
 #' @description Timeseries data from a specific PurpleAir can be retrieved from the Thingspeak API .
@@ -25,26 +25,33 @@ downloadParseTimeseriesData <- function(
 ) {
   
   # Default to the most recent week of data
-  if ( is.null(startdate) || is.null(enddate)) {
-    enddate <- lubridate::floor_date(lubridate::now("UTC"), unit = "minute")
-    startdate <- lubridate::floor_date(enddate - lubridate::ddays(7))
-  } else {
-    startdate <- 
-      lubridate::parse_date_time(
-        startdate,
-        c("ymd", "ymd_H", "ymd_HM", "ymd_HMS"),
-        tz = "UTC"
-      )
-    enddate <- 
-      lubridate::parse_date_time(
-        enddate,
-        c("ymd", "ymd_H", "ymd_HM", "ymd_HMS"),
-        tz = "UTC"
-      )
-  }
+  dateRange <- MazamaCoreUtils::dateRange(
+    startdate, 
+    enddate, 
+    days = 7, 
+    timezone = "UTC", 
+    unit = "min"
+  )
+  # if ( is.null(startdate) || is.null(enddate)) {
+  #   enddate <- lubridate::floor_date(lubridate::now("UTC"), unit = "minute")
+  #   startdate <- lubridate::floor_date(enddate - lubridate::ddays(7))
+  # } else {
+  #   startdate <- 
+  #     lubridate::parse_date_time(
+  #       startdate,
+  #       c("ymd", "ymd_H", "ymd_HM", "ymd_HMS"),
+  #       tz = "UTC"
+  #     )
+  #   enddate <- 
+  #     lubridate::parse_date_time(
+  #       enddate,
+  #       c("ymd", "ymd_H", "ymd_HM", "ymd_HMS"),
+  #       tz = "UTC"
+  #     )
+  # }
   
-  startString <- strftime(startdate, "%Y-%m-%dT%H:%M:%S", tz = "UTC")
-  endString <- strftime(enddate, "%Y-%m-%dT%H:%M:%S", tz = "UTC")
+  startString <- strftime(dateRange[1], "%Y-%m-%dT%H:%M:%S", tz = "UTC")
+  endString <- strftime(dateRange[2], "%Y-%m-%dT%H:%M:%S", tz = "UTC")
   
   # Prefer to use the monitor's name over it's ID
   if ( !is.null(name) ) {
@@ -149,7 +156,12 @@ downloadParseTimeseriesData <- function(
   if ( httr::http_error(r) ) { # web service failed to respond
     
     # https://digitalocean.com/community/tutorials/how-to-troubleshoot-common-http-error-codes
-    if ( httr::status_code(r) == 500 ) {
+    if ( httr::status_code(r) == 429 ) {
+      err_msg <- paste0(
+        "web service error 429: Too Many Requests from ",
+        webserviceUrl
+      )
+    } else if ( httr::status_code(r) == 500 ) {
       err_msg <- paste0(
         "web service error 500: Internal Server Error from ",
         webserviceUrl
@@ -208,7 +220,12 @@ downloadParseTimeseriesData <- function(
   if ( httr::http_error(r)) { # web service failed to respond
     
     # https://digitalocean.com/community/tutorials/how-to-troubleshoot-common-http-error-codes
-    if ( httr::status_code(r) == 500 ) {
+    if ( httr::status_code(r) == 429 ) {
+      err_msg <- paste0(
+        "web service error 429: Too Many Requests from ",
+        webserviceUrl
+      )
+    } else if ( httr::status_code(r) == 500 ) {
       err_msg <- paste0(
         "web service error 500: Internal Server Error from ",
         webserviceUrl
@@ -305,7 +322,7 @@ downloadParseTimeseriesData <- function(
   )
   
   # Convert to proper types
-  data$datetime <- lubridate::ymd_hms(data$datetime)
+  data$datetime <- lubridate::ymd_hms(data$datetime, tz="UTC")
   data$entry_id <- as.character(data$entry_id)
   for (name in numeric_columns) {
     data[[name]] <- as.numeric(data[[name]])
@@ -327,6 +344,7 @@ downloadParseTimeseriesData <- function(
   pat <- list(meta = meta, data = data)
   
   return(pat)
+  
 }
 
 # TODO:  Probably have an internal function to create an empty "pat" object.

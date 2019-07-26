@@ -43,7 +43,10 @@ downloadParseSynopticData <- function(
     # TODO:  Find a package with  web servivce status codes
     
     # https://digitalocean.com/community/tutorials/how-to-troubleshoot-common-http-error-codes
-    if ( httr::status_code(r) == 500 ) {
+    if ( httr::status_code(r) == 429 ) {
+      err_msg <- paste0("web service error 429: Too Many Requests from ",
+                        webserviceUrl)
+    } else if ( httr::status_code(r) == 500 ) {
       err_msg <- paste0("web service error 500: Internal Server Error from ",
                         webserviceUrl)
     } else if ( httr::status_code(r) == 502 ) {
@@ -59,7 +62,7 @@ downloadParseSynopticData <- function(
       err_msg <- paste0('web service error ', httr::status_code(r), " from ", 
                         webserviceUrl)
     }
-
+    
     logger.error("Web service failed to respond: %s", webserviceUrl)
     logger.error(err_msg)
     stop(err_msg, call.=TRUE)
@@ -128,7 +131,7 @@ downloadParseSynopticData <- function(
 
   # ----- END convert results$Stats --------------------------------------------
 
-  # Now create a new dataframe using the important columsn from results and stats
+  # Now create a new dataframe using the important columns from results and stats
 
   # > names(resultsDF)
   # [1] "ID"                               "ParentID"                         "Label"

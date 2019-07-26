@@ -15,9 +15,9 @@ downloadParseTimeseriesData(pas = NULL, name = NULL, id = NULL,
 
 \item{id}{Purple Air 'ID'}
 
-\item{startdate}{desired start datetime (ISO 8601)}
+\item{startdate}{Desired UTC start time (ISO 8601)}
 
-\item{enddate}{desired end datetime (ISO 8601)}
+\item{enddate}{Desired UTC end time (ISO 8601)}
 
 \item{baseURL}{Base URL for Thingspeak API}
 }

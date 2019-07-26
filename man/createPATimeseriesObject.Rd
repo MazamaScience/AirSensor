@@ -7,7 +7,7 @@
 createPATimeseriesObject(pat_raw = NULL)
 }
 \arguments{
-\item{pat_raw}{raw Purple Air timeseries data from \code{downloadParseTimeseriesData()}}
+\item{pat_raw}{Raw Purple Air timeseries data from \code{downloadParseTimeseriesData()}}
 }
 \value{
 List with original \code{meta} and restructured \code{data} elements

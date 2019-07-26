@@ -25,7 +25,7 @@
 #' 
 #' @return An object of class "pa_timeseries".
 #' 
-#' @seealso \link{pat_loadLatest}
+#' @seealso \link{pat_createNew}
 #' 
 #' @examples
 #' \donttest{

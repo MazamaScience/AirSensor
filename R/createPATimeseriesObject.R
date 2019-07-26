@@ -4,7 +4,7 @@
 #' 
 #' @title Create a Purple Air Timeseries object
 #' 
-#' @param pat_raw raw Purple Air timeseries data from \code{downloadParseTimeseriesData()}
+#' @param pat_raw Raw Purple Air timeseries data from \code{downloadParseTimeseriesData()}
 #' 
 #' @return List with original \code{meta} and restructured \code{data} elements
 #' 

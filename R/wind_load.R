@@ -39,7 +39,7 @@ wind_load <-
     if ( is.null(monitorID) ) 
       stop("Required parameter 'label' is missing.")
     
-    dateRange <- .dateRange(startdate, enddate, days, timezone)
+    dateRange <- MazamaCoreUtils::dateRange(startdate, enddate, days, timezone)
     
     # ----- Asssemble monthly archive files ------------------------------------
     

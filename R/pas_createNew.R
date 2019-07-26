@@ -44,20 +44,20 @@
 #' @examples
 #' \dontrun{
 #' initializeMazamaSpatialUtils()
-#' pas <- pas_loadLatest()
+#' pas <- pas_createNew()
 #' pas %>% 
 #'   pas_filter(stateCode == "CA") %>%
 #'   pas_leaflet()
 #' }
 
-pas_loadLatest <- function(
+pas_createNew <- function(
   baseUrl = 'https://www.purpleair.com/json',
   countryCodes = c('US'),
   includePWFSL = TRUE,
   lookbackDays = 1
 ) {
   
-  logger.debug("----- pas_loadLatest() -----")
+  logger.debug("----- pas_createNew() -----")
   
   # Validate parameters --------------------------------------------------------
   

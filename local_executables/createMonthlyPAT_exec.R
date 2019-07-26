@@ -150,9 +150,9 @@ result <- try({
     # Try block so we keep chugging if one sensor fails
     result <- try({
       
-      logger.debug("pat_loadLatest(pas, '%s', %s, %s)", 
+      logger.debug("pat_createNew(pas, '%s', %s, %s)", 
                    label, startdate, enddate)
-      pat <- pat_loadLatest(pas, label,
+      pat <- pat_createNew(pas, label,
                             startdate = startdate,
                             enddate = enddate)
       

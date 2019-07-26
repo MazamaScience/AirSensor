@@ -20,16 +20,16 @@
 #' By default, the current week is loaded.
 #'
 #' @param label PurpleAir sensor 'label'.
-#' @param startdate Desired start datetime (ISO 8601).
-#' @param enddate Desired end datetime (ISO 8601).
+#' @param startdate Desired start time (ISO 8601).
+#' @param enddate Desired end time (ISO 8601).
 #' @param days Number of days of data to include.
-#' @param timezone Timezone used to interpret datestamp.
+#' @param timezone Timezone used to interpret \code{datestamp}.
 #' @param baseUrl Base URL for synoptic data.
 #' 
 #' @return A PurpleAir Timeseries \emph{pat} object.
 #' 
 #' @seealso \link{pat_loadMonth}
-#' @seealso \link{.dateRange}
+#' @seealso \link{pat_createNew}
 #' 
 #' @examples
 #' \donttest{
@@ -53,7 +53,7 @@ pat_load <- function(
   if ( is.null(label) ) 
     stop("Required parameter 'label' is missing.")
   
-  dateRange <- .dateRange(startdate, enddate, days, timezone)
+  dateRange <- MazamaCoreUtils::dateRange(startdate, enddate, days, timezone)
   
   # Asssemble monthly archive files --------------------------------------------
   
@@ -66,7 +66,8 @@ pat_load <- function(
             dateRange[2],
             by = "days"
           ), 
-          format = "%Y%m"
+          format = "%Y%m",
+          tz = timezone
         )
       )
     )

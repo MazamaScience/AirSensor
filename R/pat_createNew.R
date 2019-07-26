@@ -7,8 +7,8 @@
 #' @param pas PurpleAir Synoptic \emph{pas} object.
 #' @param name PurpleAir sensor 'label'.
 #' @param id PurpleAir sensor 'ID'.
-#' @param startdate Desired start datetime (ISO 8601).
-#' @param enddate Desired end datetime (ISO 8601).
+#' @param startdate Desired UTC start time (ISO 8601).
+#' @param enddate Desired UTC end time (ISO 8601).
 #' @param baseURL Base URL for Thingspeak API.
 #' 
 #' @return A PurpleAir Timeseries \emph{pat} object.
@@ -24,11 +24,11 @@
 #' @examples
 #' \donttest{
 #' pas <- pas_load()
-#' pat <- pat_loadLatest(pas, "Seattle", startdate = 20180701, enddate = 20180901)
+#' pat <- pat_createNew(pas, "Seattle", startdate = 20180701, enddate = 20180901)
 #' pat_multiplot(pat)
 #' }
 
-pat_loadLatest <- function(
+pat_createNew <- function(
   pas = NULL,
   name = NULL,
   id = NULL,
@@ -37,7 +37,7 @@ pat_loadLatest <- function(
   baseURL = "https://api.thingspeak.com/channels/"
 ) {
   
-  logger.debug("----- pat_loadLatest() -----")
+  logger.debug("----- pat_createNew() -----")
   
   # ----- Validate parameters --------------------------------------------------
   
@@ -61,7 +61,7 @@ pat_loadLatest <- function(
     pull(.data$timezone)
   
   # Guarantee a valid date range
-  dateRange <- .dateRange(startdate, enddate, timezone = timezone, unit = "sec")
+  dateRange <- MazamaCoreUtils::dateRange(startdate, enddate, timezone = timezone)
   
   # Create a sequence of weekly POSIXct times
   dateSeq <- seq(dateRange[1], dateRange[2], by = lubridate::ddays(7))

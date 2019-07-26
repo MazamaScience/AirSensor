@@ -12,7 +12,7 @@ This dataset was was generated on 2019-07-06 by running:
 
 \preformatted{
   pas <- pas_load()
-  example_pat <- pat_loadLatest(pas, name = "Seattle",
+  example_pat <- pat_createNew(pas, name = "Seattle",
                                 startdate = "2018-07-01",
                                 enddate = "2018-09-01")
 }

@@ -11,13 +11,13 @@ pat_load(label = NULL, startdate = NULL, enddate = NULL, days = 7,
 \arguments{
 \item{label}{PurpleAir sensor 'label'.}
 
-\item{startdate}{Desired start datetime (ISO 8601).}
+\item{startdate}{Desired start time (ISO 8601).}
 
-\item{enddate}{Desired end datetime (ISO 8601).}
+\item{enddate}{Desired end time (ISO 8601).}
 
 \item{days}{Number of days of data to include.}
 
-\item{timezone}{Timezone used to interpret datestamp.}
+\item{timezone}{Timezone used to interpret \code{datestamp}.}
 
 \item{baseUrl}{Base URL for synoptic data.}
 }
@@ -48,6 +48,4 @@ pat_multiplot(pat)
 }
 \seealso{
 \link{pat_loadMonth}
-
-\link{.dateRange}
 }
