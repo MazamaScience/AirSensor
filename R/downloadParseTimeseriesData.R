@@ -28,28 +28,11 @@ downloadParseTimeseriesData <- function(
   dateRange <- MazamaCoreUtils::dateRange(
     startdate, 
     enddate, 
-    days = 7, 
     timezone = "UTC", 
+    days = 7, 
     unit = "min"
   )
-  # if ( is.null(startdate) || is.null(enddate)) {
-  #   enddate <- lubridate::floor_date(lubridate::now("UTC"), unit = "minute")
-  #   startdate <- lubridate::floor_date(enddate - lubridate::ddays(7))
-  # } else {
-  #   startdate <- 
-  #     lubridate::parse_date_time(
-  #       startdate,
-  #       c("ymd", "ymd_H", "ymd_HM", "ymd_HMS"),
-  #       tz = "UTC"
-  #     )
-  #   enddate <- 
-  #     lubridate::parse_date_time(
-  #       enddate,
-  #       c("ymd", "ymd_H", "ymd_HM", "ymd_HMS"),
-  #       tz = "UTC"
-  #     )
-  # }
-  
+
   startString <- strftime(dateRange[1], "%Y-%m-%dT%H:%M:%S", tz = "UTC")
   endString <- strftime(dateRange[2], "%Y-%m-%dT%H:%M:%S", tz = "UTC")
   

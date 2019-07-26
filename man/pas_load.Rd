@@ -49,5 +49,5 @@ pas \%>\%
 }
 }
 \seealso{
-\link{pas_loadLatest}
+\link{pas_createNew}
 }

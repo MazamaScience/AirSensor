@@ -60,8 +60,11 @@ pat_createNew <- function(
     filter(.data$label == name) %>% 
     pull(.data$timezone)
   
+  # Default to a week if startdate or enddate is missing
+  days <- 7 
+  
   # Guarantee a valid date range
-  dateRange <- MazamaCoreUtils::dateRange(startdate, enddate, timezone = timezone)
+  dateRange <- MazamaCoreUtils::dateRange(startdate, enddate, timezone, days)
   
   # Create a sequence of weekly POSIXct times
   dateSeq <- seq(dateRange[1], dateRange[2], by = lubridate::ddays(7))

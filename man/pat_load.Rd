@@ -48,4 +48,6 @@ pat_multiplot(pat)
 }
 \seealso{
 \link{pat_loadMonth}
+
+\link{pat_createNew}
 }

@@ -35,7 +35,7 @@ wind_loadMonth <-
     if ( is.null(datestamp) || datestamp == "" ) {
       
       now <- lubridate::now(timezone)
-      datestamp <- strftime(now, "%Y%m%d")
+      datestamp <- strftime(now, "%Y%m%d", tz = timezone)
       
     }
     

@@ -58,7 +58,7 @@ pat_filterDate <- function(
     days <- 7 # default
   }
   
-  dateRange <- MazamaCoreUtils::dateRange(startdate, enddate, days, timezone)
+  dateRange <- MazamaCoreUtils::dateRange(startdate, enddate, timezone, days)
   
   # Subset the "pat" object ----------------------------------------------------
   
