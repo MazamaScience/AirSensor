@@ -88,11 +88,11 @@ if ( FALSE ) {
 
 if ( FALSE ) {
   
-  files <- list.files("local_executables", full.names = TRUE)
+  files <- list.files("R", full.names = TRUE)
   for ( file in files ) {
     
     result <- try({
-      test_usesArgument(readr::read_file(file), "strptime", "tz")
+      test_usesArgument(readr::read_file(file), "lubridate::ymd_h", "tz")
     }, silent = TRUE)
     if ( "try-error" %in% class(result) ) {
       cat(file)

@@ -6,7 +6,7 @@
 \usage{
 sensor_videoFrame(sensor = sensor_load(), communityRegion = NULL,
   frameTime = NULL, timeInfo = NULL, timeAxis = NULL,
-  timeTicks = NULL, timeLabels = NULL, map = NULL)
+  timeTicks = NULL, timeLabels = NULL, map = NULL, logo = NULL)
 }
 \arguments{
 \item{sensor}{An AirSensor object.}
@@ -24,6 +24,8 @@ sensor_videoFrame(sensor = sensor_load(), communityRegion = NULL,
 \item{timeLabels}{Movie time labels.}
 
 \item{map}{A pre-generated basemap image.}
+
+\item{logo}{A PNG image to be placed near the upper right of the image.}
 }
 \value{
 A plot is generated. Nothing is returned.
@@ -77,7 +79,8 @@ sensor_videoFrame(
   timeAxis = timeAxis,
   timeTicks = timeTicks,
   timeLabels = timeLabels,
-  map = map
+  map = map,
+  logo = png::readPNG("~/Desktop/ms_logo.png")
 )
 }
 }

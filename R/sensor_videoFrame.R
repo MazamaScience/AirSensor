@@ -10,6 +10,7 @@
 #' @param timeTicks Movie time ticks.
 #' @param timeLabels Movie time labels.
 #' @param map A pre-generated basemap image.
+#' @param logo A PNG image to be placed near the upper right of the image.
 #' 
 #' @description desc
 #' 
@@ -61,7 +62,8 @@
 #'   timeAxis = timeAxis,
 #'   timeTicks = timeTicks,
 #'   timeLabels = timeLabels,
-#'   map = map
+#'   map = map,
+#'   logo = png::readPNG("~/Desktop/ms_logo.png")
 #' )
 #' }
 
@@ -74,7 +76,7 @@ sensor_videoFrame <- function(
   timeTicks = NULL,
   timeLabels = NULL,
   map = NULL,
-  logo = png::readPNG("~/Desktop/ms_logo.png")
+  logo = NULL
 ) {
   
   # ----- Validate parameters --------------------------------------------------
@@ -102,6 +104,8 @@ sensor_videoFrame <- function(
   
   if ( is.null(map) )
     stop("Required parameter 'map' is missing.")
+  
+  # logo is optional
   
   # Round frameTime to closest hour
   frameTime <- lubridate::round_date(frameTime, unit = "hour")

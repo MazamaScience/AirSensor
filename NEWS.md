@@ -7,6 +7,8 @@
 * Included `timezone` information in every internal function call where it can
 be specified so that R's default "system local timezone" does not accidentally 
 get used.
+* When no wind data is provided, use nearest *worldmet* met station in 
+`sensor_polarplot()` and `sensor_pollutionRose()`.
 
 # AirSensor 0.3.11
 
