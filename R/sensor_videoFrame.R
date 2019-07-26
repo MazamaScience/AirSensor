@@ -196,10 +196,10 @@ sensor_videoFrame <- function(
                                                 "#cc3702"))(30)
   colorBins <- c(seq(0, 60, length = 24), 300)
   usr <- par("usr")
-  top    <- usr[4] - (usr[4] - usr[3]) / 3
-  bottom <- usr[3] + (usr[4] - usr[3]) / 8
-  left   <- usr[2] - (usr[2] - usr[1]) / 6
-  right  <- usr[2] - (usr[2] - usr[1]) / 8
+  top    <- usr[4] - (usr[4] - usr[3]) * 0.4
+  bottom <- usr[3] + (usr[4] - usr[3]) * 0.08
+  left   <- usr[2] - (usr[2] - usr[1]) * 0.15
+  right  <- usr[2] - (usr[2] - usr[1]) * 0.1
   
   # Draw gradient
   colorCount <- length(colorPalette)
@@ -209,8 +209,8 @@ sensor_videoFrame <- function(
   rect(left, bottom,  right, top)
   
   # Draw labels
-  raster::text(right - (right - left) / 2, top + (usr[4] - usr[3]) / 16,
-               labels = "PM 2.5", font = 2,  cex = 2.8)
+  raster::text(right - (right - left) / 2, top + (usr[4] - usr[3]) * 0.05,
+               labels = "PM 2.5", font = 2,  cex = 4.4)
   # Disabled to keep units ambiguous
   #raster::text(right - (right - left) / 2, top + (usr[4] - usr[3]) / 16, 
   #     labels = "(\U03BCg/m\U00B3)", cex = 1.4)
@@ -230,31 +230,12 @@ sensor_videoFrame <- function(
          pch = 16, 
          cex = 7)
   
-  # ----- Plot time axis -------------------------------------------------------
-  
-  if (!is.null(timeAxis) && !is.null(timeTicks) && !is.null(timeLabels)) {
-    par(mar = c(0.5, 0.5, 6, 0.5))
-    plot(rep(0, length(timeAxis)), -(as.numeric(timeAxis)), axes = FALSE, 
-         col = 'transparent')
-    
-    mtext(strftime(frameTime, "%b %e", tz = "America/Los_Angeles") , line = 2.6, 
-          cex = 2.7)
-    mtext(strftime(frameTime, "%l %P", tz = "America/Los_Angeles") , line = 0.5, 
-          cex = 2.0)
-    
-    axis(side = 2, labels = timeLabels, line = -5.5, at = -as.numeric(timeTicks), 
-         cex.axis = 1.6, las = 2, hadj = 1, cex= 2, lwd.ticks = 2.7,
-         lwd = 2.7)
-    axis(side = 4, line = -3.9, at = -as.numeric(frameTime), col = 'red', 
-         col.ticks = 2, lwd.ticks = 12, labels = "", tcl = -2)
-  }
-  
   # ----- Plot logo ------------------------------------------------------------
   
   if ( !is.null(logo) ) {
     # Center position 
-    x = right - (right - left) * 1.25
-    y = top + (usr[4] - usr[3]) * 0.3
+    x = left + (right - left) * 0.5
+    y = top + (usr[4] - usr[3]) * 0.23
     
     # Width and height
     degreesPerInchEW <- (usr[2] - usr[1]) %% 360 / par("pin")[1]
@@ -274,5 +255,27 @@ sensor_videoFrame <- function(
     
     graphics::rasterImage(logo, l, b, r, t)
   }
+  
+  # ----- Plot time axis -------------------------------------------------------
+  
+  # To the left of the map, draw an invisible plot with a visible axis
+  par(mar = c(0.5, 0.5, 6, 0.5))
+  plot(rep(0, length(timeAxis)), -(as.numeric(timeAxis)), axes = FALSE, 
+       col = 'transparent')
+  
+  # Upper-left date/time stamp
+  mtext(strftime(frameTime, "%b %e", tz = "America/Los_Angeles") , line = 2.3, 
+        cex = 3.2)
+  mtext(strftime(frameTime, "%l %P", tz = "America/Los_Angeles") , line = 0.3, 
+        cex = 2.3)
+  
+  # Time axis with 6 hour ticks
+  axis(side = 2, labels = timeLabels, line = -5.5, at = -as.numeric(timeTicks), 
+       cex.axis = 1.6, las = 2, hadj = 1, cex= 2, lwd.ticks = 2.7,
+       lwd = 2.7)
+  
+  # Red 'current time' marker
+  axis(side = 4, line = -3.9, at = -as.numeric(frameTime), col = 'red', 
+       col.ticks = 2, lwd.ticks = 12, labels = "", tcl = -2)
   
 }
