@@ -113,6 +113,9 @@
     <li>
       <a href="../articles/purpleair_sensors.html">Purple Air Sensors</a>
     </li>
+    <li>
+      <a href="../articles/working_with_wind_data.html">Working With Wind Data</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -233,7 +236,7 @@ produce segments 0.5 * angle.</p></td>
       <td><p>if TRUE each wind direction segment is normalized to equal 
 one. This is useful for showing how the concentrations (or other parameters) 
 contribute to each wind sector when the proprtion of time the wind is from 
-that direction is low. A line showing the probability that the wind</p></td>
+that direction is low. A line showing the probability that the wind.</p></td>
     </tr>
     </table>
     
@@ -247,20 +250,16 @@ that direction is low. A line showing the probability that the wind</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'># Use example sensor, whose date range is 2019-08-01 to 2019-10-01</span>
+    <pre class="examples"><div class='input'><span class='co'># Use example sensor, whose date range is 2018-08-01 to 2018-10-01</span>
 <span class='no'>sensor</span> <span class='kw'>&lt;-</span> <span class='no'>example_sensor</span>
 
-<span class='co'># Create wind data using same date range</span>
-<span class='no'>windData</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='wind_load.html'>wind_load</a></span>(
-  <span class='kw'>monitorID</span> <span class='kw'>=</span> <span class='st'>"060950004_01"</span>,
-  <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='st'>"20180801"</span>,
-  <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='st'>"20181001"</span>
-)
+<span class='co'># Load wind data from NOAA. 'parallel' cannot be true in examples.</span>
+<span class='no'>windData</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>worldmet</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/worldmet/topics/importNOAA'>importNOAA</a></span>(<span class='kw'>code</span> <span class='kw'>=</span> <span class='st'>"722975-53141"</span>, <span class='kw'>year</span> <span class='kw'>=</span> <span class='fl'>2018</span>,
+                                 <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='no'>windData</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>windData</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"date"</span>, <span class='st'>"wd"</span>, <span class='st'>"ws"</span>))
 
 <span class='co'># Plot rose using mean binning</span>
-<span class='fu'>sensor_pollutionRose</span>(<span class='no'>sensor</span>, <span class='no'>windData</span>, <span class='kw'>statistic</span> <span class='kw'>=</span> <span class='st'>"prop.mean"</span>)</div><div class='img'><img src='sensor_pollutionRose-1.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></pre>
+<span class='fu'>sensor_pollutionRose</span>(<span class='no'>sensor</span>, <span class='no'>windData</span>, <span class='kw'>statistic</span> <span class='kw'>=</span> <span class='st'>"prop.mean"</span>)</div><div class='img'><img src='sensor_pollutionRose-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

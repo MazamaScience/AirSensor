@@ -45,6 +45,7 @@ Imports:
     stringr,
     tidyr,
     magrittr,
+    worldmet,
     xts,
     zoo
 Suggests:

@@ -7,8 +7,8 @@
 #
 # Test this script from the command line with:
 #
-# ./createVideo_exec.R --communityName="Sycamore Canyon" -s 20190704 -r 4 -d ~/Desktop/ -v TRUE
-# ./createVideo_exec.R -c SCSB -d ~/Desktop/
+# ./createVideo_exec.R --communityName="Sycamore Canyon" -s 20190704 -r 4 -o ~/Desktop/ -v TRUE
+# ./createVideo_exec.R -c SCSB -o ~/Desktop/
 
 VERSION = "0.1.1"
 
@@ -45,7 +45,7 @@ if ( interactive() ) {
       help="Name of the South Coast community [default=\"%default\"]"
     ),
     make_option(
-      c("-S","--startDate"), 
+      c("-s","--startDate"), 
       default=0, 
       help="Start date for the 3-day (72 hr) period [default=\"%default\"]"
     ),

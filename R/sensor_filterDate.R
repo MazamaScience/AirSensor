@@ -27,7 +27,7 @@
 #' 
 #' @examples
 #' \dontrun{
-#' august <- pat_filterDate(example_sensor, startdate = 20180801, enddate = 20180831)
+#' august <- sensor_filterDate(example_sensor, startdate = 20180801, enddate = 20180831)
 #' }
 
 sensor_filterDate <- function(

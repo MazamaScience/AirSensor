@@ -79,6 +79,9 @@
     <li>
       <a href="../articles/purpleair_sensors.html">Purple Air Sensors</a>
     </li>
+    <li>
+      <a href="../articles/working_with_wind_data.html">Working With Wind Data</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -154,13 +157,13 @@
 <p>The A channel is centered around a particular level but is sometimes affected by humidity when it goes past a certain threshold.</p>
 <p><img src="purpleair_failure_modes_files/figure-html/unnamed-chunk-1-1.png" width="672"></p>
 <p>The multiplot shows the A and B channels have very different readings, similar the “Matches Humidity” failure mode. The strange thing here though is that the A channel is mostly flat, with only the occasional spike when the humidity measures very high. Let’s see what number it is centered around:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(pat<span class="op">$</span>data<span class="op">$</span>datetime, pat<span class="op">$</span>data<span class="op">$</span>pm25_A, 
-     <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">3325</span>, <span class="dv">3340</span>), 
-     <span class="dt">pch =</span> <span class="dv">15</span>, <span class="dt">cex =</span> <span class="fl">0.6</span>, <span class="dt">col=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/adjustcolor">adjustcolor</a></span>(<span class="st">"black"</span>, <span class="fl">0.2</span>),
-     <span class="dt">xlab =</span> <span class="st">"2019"</span>, <span class="dt">ylab =</span> <span class="st">"PM2.5 A"</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(pat<span class="op">$</span>data<span class="op">$</span>datetime, pat<span class="op">$</span>data<span class="op">$</span>pm25_A, </a>
+<a class="sourceLine" id="cb1-2" title="2">     <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">3325</span>, <span class="dv">3340</span>), </a>
+<a class="sourceLine" id="cb1-3" title="3">     <span class="dt">pch =</span> <span class="dv">15</span>, <span class="dt">cex =</span> <span class="fl">0.6</span>, <span class="dt">col=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/adjustcolor">adjustcolor</a></span>(<span class="st">"black"</span>, <span class="fl">0.2</span>),</a>
+<a class="sourceLine" id="cb1-4" title="4">     <span class="dt">xlab =</span> <span class="st">"2019"</span>, <span class="dt">ylab =</span> <span class="st">"PM2.5 A"</span>)</a></code></pre></div>
 <p><img src="purpleair_failure_modes_files/figure-html/unnamed-chunk-2-1.png" width="672"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">temp &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/table">table</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/vector">as.vector</a></span>(pat<span class="op">$</span>data<span class="op">$</span>pm25_A))
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"Mode value: "</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(temp)[temp <span class="op">==</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">max</a></span>(temp)]))</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">temp &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/table">table</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/vector">as.vector</a></span>(pat<span class="op">$</span>data<span class="op">$</span>pm25_A))</a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"Mode value: "</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(temp)[temp <span class="op">==</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">max</a></span>(temp)]))</a></code></pre></div>
 <pre><code>## [1] "Mode value: 3333"</code></pre>
 <p>Although there is plenty of noise between 3325 and 3340 ug/m3, a very clear, very straight line of points is visible at exactly 3333.0 ug/m3.</p>
 </div>
