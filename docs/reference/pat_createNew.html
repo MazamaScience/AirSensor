@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Rectangle area filtering for PurpleAir Synoptic objects — pas_filterArea • AirSensor</title>
+<title>Load latest PurpleAir time series data — pat_createNew • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,9 +37,10 @@
 
 
 
-<meta property="og:title" content="Rectangle area filtering for PurpleAir Synoptic objects — pas_filterArea" />
+<meta property="og:title" content="Load latest PurpleAir time series data — pat_createNew" />
 
-<meta property="og:description" content="Filters pas object sensors based on a bounding box." />
+<meta property="og:description" content="Retrieve and parse timeseries data from the Thingspeak API for 
+specific PurpleAir sensors." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -142,18 +143,21 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Rectangle area filtering for PurpleAir Synoptic objects</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pas_filterArea.R'><code>R/pas_filterArea.R</code></a></small>
-    <div class="hidden name"><code>pas_filterArea.Rd</code></div>
+    <h1>Load latest PurpleAir time series data</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_createNew.R'><code>R/pat_createNew.R</code></a></small>
+    <div class="hidden name"><code>pat_createNew.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Filters <em>pas</em> object sensors based on a bounding box.</p>
+    <p>Retrieve and parse timeseries data from the Thingspeak API for 
+specific PurpleAir sensors.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pas_filterArea</span>(<span class='no'>pas</span>, <span class='kw'>w</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>e</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>s</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>pat_createNew</span>(<span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>baseURL</span> <span class='kw'>=</span> <span class='st'>"https://api.thingspeak.com/channels/"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -163,44 +167,45 @@
       <td><p>PurpleAir Synoptic <em>pas</em> object.</p></td>
     </tr>
     <tr>
-      <th>w</th>
-      <td><p>West edge of area bounding box (deg E).</p></td>
+      <th>label</th>
+      <td><p>PurpleAir sensor 'label'.</p></td>
     </tr>
     <tr>
-      <th>e</th>
-      <td><p>East edge of area bounding box (deg E).</p></td>
+      <th>id</th>
+      <td><p>PurpleAir sensor 'ID'.</p></td>
     </tr>
     <tr>
-      <th>s</th>
-      <td><p>South edge of area bounding box (deg N).</p></td>
+      <th>startdate</th>
+      <td><p>Desired UTC start time (ISO 8601).</p></td>
     </tr>
     <tr>
-      <th>n</th>
-      <td><p>North edge of area bounding box (deg N).</p></td>
+      <th>enddate</th>
+      <td><p>Desired UTC end time (ISO 8601).</p></td>
+    </tr>
+    <tr>
+      <th>baseURL</th>
+      <td><p>Base URL for Thingspeak API.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A subset of the given <em>pas</em> object.</p>
+    <p>A PurpleAir Timeseries <em>pat</em> object.</p>
+    
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>Dates are interpreted to be in the local timzone for the sensor of 
+interest.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='pas_filter.html'>pas_filter</a>, <a href='pas_filterNear.html'>pas_filterNear</a></p></div>
+    <div class='dont-index'><p><a href='downloadParseTimeseriesData.html'>downloadParseTimeseriesData</a></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='no'>example_pas</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/range'>range</a></span>(<span class='no'>pas</span>$<span class='no'>longitude</span>)</div><div class='output co'>#&gt; [1] -159.46837  -70.19411</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/range'>range</a></span>(<span class='no'>pas</span>$<span class='no'>latitude</span>)</div><div class='output co'>#&gt; [1] 19.01930 71.28894</div><div class='input'><span class='no'>scsb</span> <span class='kw'>&lt;-</span>
-  <span class='no'>pas</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>pas_filterArea</span>(<span class='kw'>w</span> <span class='kw'>=</span> -<span class='fl'>118.10</span>,
-                 <span class='kw'>e</span> <span class='kw'>=</span> -<span class='fl'>118.07</span>,
-                 <span class='kw'>s</span> <span class='kw'>=</span> <span class='fl'>33.75</span>,
-                 <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>33.78</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/range'>range</a></span>(<span class='no'>scsb</span>$<span class='no'>longitude</span>)</div><div class='output co'>#&gt; [1] -118.0945 -118.0782</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/range'>range</a></span>(<span class='no'>scsb</span>$<span class='no'>latitude</span>)</div><div class='output co'>#&gt; [1] 33.75989 33.77767</div><div class='input'>
-</div><span class='co'># NOT RUN {</span>
-<span class='fu'><a href='pas_leaflet.html'>pas_leaflet</a></span>(<span class='no'>scsb</span>)
-<span class='co'># }</span></pre>
+    <pre class="examples"><div class='input'><span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pas_load.html'>pas_load</a></span>()
+<span class='no'>pat</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_createNew</span>(<span class='no'>pas</span>, <span class='st'>"Seattle"</span>, <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fl'>20180701</span>, <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='fl'>20180901</span>)
+<span class='fu'><a href='pat_multiplot.html'>pat_multiplot</a></span>(<span class='no'>pat</span>)</div><div class='img'><img src='pat_createNew-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -208,6 +213,8 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#note">Note</a></li>
 
       <li><a href="#see-also">See also</a></li>
       

@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.12</span>
       </span>
     </div>
 
@@ -157,13 +157,13 @@
 <p>The A channel is centered around a particular level but is sometimes affected by humidity when it goes past a certain threshold.</p>
 <p><img src="purpleair_failure_modes_files/figure-html/unnamed-chunk-1-1.png" width="672"></p>
 <p>The multiplot shows the A and B channels have very different readings, similar the “Matches Humidity” failure mode. The strange thing here though is that the A channel is mostly flat, with only the occasional spike when the humidity measures very high. Let’s see what number it is centered around:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(pat<span class="op">$</span>data<span class="op">$</span>datetime, pat<span class="op">$</span>data<span class="op">$</span>pm25_A, </a>
-<a class="sourceLine" id="cb1-2" title="2">     <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">3325</span>, <span class="dv">3340</span>), </a>
-<a class="sourceLine" id="cb1-3" title="3">     <span class="dt">pch =</span> <span class="dv">15</span>, <span class="dt">cex =</span> <span class="fl">0.6</span>, <span class="dt">col=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/adjustcolor">adjustcolor</a></span>(<span class="st">"black"</span>, <span class="fl">0.2</span>),</a>
-<a class="sourceLine" id="cb1-4" title="4">     <span class="dt">xlab =</span> <span class="st">"2019"</span>, <span class="dt">ylab =</span> <span class="st">"PM2.5 A"</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(pat<span class="op">$</span>data<span class="op">$</span>datetime, pat<span class="op">$</span>data<span class="op">$</span>pm25_A, 
+     <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">3325</span>, <span class="dv">3340</span>), 
+     <span class="dt">pch =</span> <span class="dv">15</span>, <span class="dt">cex =</span> <span class="fl">0.6</span>, <span class="dt">col=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/adjustcolor">adjustcolor</a></span>(<span class="st">"black"</span>, <span class="fl">0.2</span>),
+     <span class="dt">xlab =</span> <span class="st">"2019"</span>, <span class="dt">ylab =</span> <span class="st">"PM2.5 A"</span>)</code></pre></div>
 <p><img src="purpleair_failure_modes_files/figure-html/unnamed-chunk-2-1.png" width="672"></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">temp &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/table">table</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/vector">as.vector</a></span>(pat<span class="op">$</span>data<span class="op">$</span>pm25_A))</a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"Mode value: "</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(temp)[temp <span class="op">==</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">max</a></span>(temp)]))</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">temp &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/table">table</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/vector">as.vector</a></span>(pat<span class="op">$</span>data<span class="op">$</span>pm25_A))
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"Mode value: "</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(temp)[temp <span class="op">==</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">max</a></span>(temp)]))</code></pre></div>
 <pre><code>## [1] "Mode value: 3333"</code></pre>
 <p>Although there is plenty of noise between 3325 and 3340 ug/m3, a very clear, very straight line of points is visible at exactly 3333.0 ug/m3.</p>
 </div>
@@ -173,12 +173,12 @@
 <p>Channel B measures no particulate matter at all.</p>
 <p><img src="purpleair_failure_modes_files/figure-html/channel_b_zero-1.png" width="672"></p>
 <pre><code>##              datetime pm25_A pm25_B
-## 1 2019-07-01 07:01:00  11.57      0
-## 2 2019-07-01 07:02:00  13.60      0
-## 3 2019-07-01 07:03:00  12.59      0
-## 4 2019-07-01 07:05:00  11.83      0
-## 5 2019-07-01 07:06:00  12.22      0
-## 6 2019-07-01 07:07:00  11.19      0</code></pre>
+## 1 2019-07-01 14:10:00     NA      0
+## 2 2019-07-01 14:11:00  17.02      0
+## 3 2019-07-01 14:13:00  17.49      0
+## 4 2019-07-01 14:14:00  17.40      0
+## 5 2019-07-01 14:15:00  17.02      0
+## 6 2019-07-01 14:17:00  16.04      0</code></pre>
 <p>In this case one may wish to work with the A channel data only</p>
 </div>
   </div>
