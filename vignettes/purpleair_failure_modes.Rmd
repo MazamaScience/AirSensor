@@ -36,8 +36,8 @@ angled regression line.
 Channel A readings show extreme levels of noise.
 
 ```{r channel_a_noise_2, echo=FALSE}
-pat_a_noisy_2 <- pat_load(pas, label = "SCAP_14", 
-                          startdate = 20190701, enddate = 20190708)
+pat_a_noisy_2 <- pat_createNew(pas, label = "SCAP_14", 
+                               startdate = 20190701, enddate = 20190708)
 pat_multiplot(pat_a_noisy_2, plottype = "pm25_over")
 ```
 
@@ -66,7 +66,7 @@ levels.
 
 ```{r channel_a_humidity_multi, echo=FALSE, warning=FALSE}
 pat_a_humidity <- pat_createNew(pas, "BikeSGV - West Pasadena", 
-                                 startdate="2019-04-16", enddate="2019-04-24")
+                                startdate="2019-04-16", enddate="2019-04-24")
 pat_multiplot(pat_a_humidity)
 ```
 
@@ -122,7 +122,7 @@ Channel B measures no particulate matter at all.
 
 ```{r channel_b_zero, echo=FALSE}
 pat_b_zero <- pat_createNew(pas, "SCAP_46", 
-                             startdate="2019-07-01", enddate="2019-07-08")
+                            startdate="2019-07-01", enddate="2019-07-08")
 pat_multiplot(pat_b_zero, sampleSize = NULL)
 
 simple <- dplyr::select(pat_b_zero$data, datetime, pm25_A, pm25_B)

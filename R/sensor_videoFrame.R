@@ -62,8 +62,8 @@
 #'   timeAxis = timeAxis,
 #'   timeTicks = timeTicks,
 #'   timeLabels = timeLabels,
-#'   map = map,
-#'   logo = png::readPNG("~/Desktop/ms_logo.png")
+#'   map = map
+#'   # logo = png::readPNG("~/Desktop/ms_logo.png")
 #' )
 #' }
 
@@ -223,10 +223,10 @@ sensor_videoFrame <- function(
   
   # ----- Plot points ----------------------------------------------------------
   
-  colors = PWFSLSmoke::aqiColors(data$pm25, 
-                                 palette = colorPalette, 
-                                 domain = c(0, 250),
-                                 bins = colorBins)
+  colors <- PWFSLSmoke::aqiColors(data$pm25, 
+                                  palette = colorPalette, 
+                                  domain = c(0, 250),
+                                  bins = colorBins)
   
   points(x = data$longitude,
          y = data$latitude,
@@ -238,8 +238,8 @@ sensor_videoFrame <- function(
   
   if ( !is.null(logo) ) {
     # Center position 
-    x = left + (right - left) * 0.5
-    y = top + (usr[4] - usr[3]) * 0.23
+    x <- left + (right - left) * 0.5
+    y <- top + (usr[4] - usr[3]) * 0.23
     
     # Width and height
     degreesPerInchEW <- (usr[2] - usr[1]) %% 360 / par("pin")[1]

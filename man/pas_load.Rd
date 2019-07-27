@@ -7,7 +7,7 @@
 pas_load(datestamp = strftime(lubridate::today("America/Los_Angeles"),
   "\%Y\%m\%d", tz = "America/Los_Angeles"),
   baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/pas/",
-  retries = 10, timezone = "America/Los_Angeles")
+  retries = 10, timezone = "America/Los_Angeles", archival = FALSE)
 }
 \arguments{
 \item{datestamp}{Local date string in ymd order.}
@@ -18,6 +18,9 @@ pas_load(datestamp = strftime(lubridate::today("America/Los_Angeles"),
 date cannot be retrieved.}
 
 \item{timezone}{Timezone used to interpret \code{datestamp}.}
+
+\item{archival}{Logical specifying whether a version should be loaded that
+includes sensors that have stopped reporting.}
 }
 \value{
 A PurpleAir Synoptic \emph{pas} object.

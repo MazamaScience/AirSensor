@@ -14,6 +14,7 @@ VERSION = "0.1.1"
 
 # The following packages are attached here so they show up in the sessionInfo
 suppressPackageStartupMessages({
+  library(futile.logger)
   library(AirSensor)
   library(MazamaCoreUtils)
   library(MazamaSpatialUtils)
@@ -184,14 +185,19 @@ result <- try({
     stop("Must provide a South Coast community name or ID")
   }
   
-  timeZone <- dplyr::filter(sensor$meta, 
-                            communityRegion == opt$communityName)[1, "timezone"]
+  # Get the timezone
+  timezone <-
+    sensor %>%
+    sensor_extractMeta() %>%
+    dplyr::filter(communityRegion == opt$communityName) %>%
+    dplyr::slice(1) %>%
+    dplyr::pull(timezone)
   
   # Look forward 71 hours from startdate entry, or back 71 hours from the most 
   # recent data entry if no startdate is given
   logger.info("Setting start and end times")
   if (opt$startDate > 0) {
-    start <- lubridate::parse_date_time(opt$startDate, orders = "ymd", tz = timeZone)
+    start <- lubridate::parse_date_time(opt$startDate, orders = "ymd", tz = timezone)
     end   <- start + lubridate::hours(71)
   } else {
     end <- sensor$data[nrow(sensor$data), "datetime"]
@@ -209,7 +215,7 @@ result <- try({
            lubridate::minute(tAxis) == 0]
   tTicks <- tAxis[(lubridate::hour(tAxis) - 1) %% tickSkip == 0 & 
                      lubridate::minute(tAxis) == 0]
-  tLabels <- strftime(tTicks, "%l %P")
+  tLabels <- strftime(tTicks, "%l %P", tz = timezone)
   tInfo <- PWFSLSmoke::timeInfo(tAxis, longitude = mapInfo$lon, latitude = mapInfo$lat)
   
   # Load a static map image of the community
@@ -223,32 +229,40 @@ result <- try({
   # Generate individual frames
   logger.info("Generating %s video frames", length(tAxis))
   for (i in 1:length(tAxis)) {
-    ft <- tAxis[i]
+    frameTime <- tAxis[i]
     number <- stringr::str_pad(i, 3, 'left', '0')
     fileName <- paste0(opt$communityID, number, ".png")
     filePath <- file.path(tempdir(), fileName)
     png(filePath, width = 1280, height = 720, units = "px")
-    logger.trace("Generating frame %s: %s", number, strftime(ft, "%b %d %H:%M"))
-    sensor_videoFrame(sensor,
-                      communityRegion = opt$communityName,
-                      frameTime = ft,
-                      timeInfo = tInfo,
-                      timeAxis = tAxis,
-                      timeTicks = tTicks,
-                      timeLabels = tLabels,
-                      map = staticMap)
+    logger.trace("Generating frame %s: %s", number, strftime(frameTime, "%b %d %H:%M", tz = timezone))
+    sensor_videoFrame(
+      sensor,
+      communityRegion = opt$communityName,
+      frameTime = frameTime,
+      timeInfo = tInfo,
+      timeAxis = tAxis,
+      timeTicks = tTicks,
+      timeLabels = tLabels,
+      map = staticMap
+    )
     if (opt$verbose) {
-      print(strftime(ft, "%b %d %H:%M"))
+      print(strftime(frameTime, "%b %d %H:%M", tz = timezone))
     }
     dev.off()
   }
   
+  # Create a file name timestamped with the last frame in UTC
+  fileName <- paste0(
+    opt$communityID, "_",
+    strftime(frameTime, "%Y%m%d%H", tz = "UTC"), ".mp4"
+  )
+
   # Define system calls to ffmpeg to create video from frames
   cmd_cd <- paste0("cd ", tempdir())
   cmd_ffmpeg <- paste0("ffmpeg -loglevel quiet -r ", 
                        opt$frameRate, " -f image2 -s 1280x720 -i ", 
                        opt$communityID, "%03d.png -vcodec libx264 -crf 25 ", 
-                       opt$outputDir, "/", opt$communityID, ".mp4")
+                       opt$outputDir, "/", fileName)
   cmd_rm <- paste0("rm *.png")
   cmd <- paste0(cmd_cd, " && ", cmd_ffmpeg, " && ", cmd_rm)
   

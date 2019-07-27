@@ -6,7 +6,7 @@
 #' @title Download Purple Air timeseries data
 #'
 #' @param pas Purple Air 'enhanced' synoptic data
-#' @param name Purple Air 'label'
+#' @param label Purple Air 'label'
 #' @param id Purple Air 'ID'
 #' @param startdate Desired UTC start time (ISO 8601)
 #' @param enddate Desired UTC end time (ISO 8601)
@@ -17,7 +17,7 @@
 
 downloadParseTimeseriesData <- function(
   pas = NULL,
-  name = NULL,
+  label = NULL,
   id = NULL,
   startdate = NULL,
   enddate = NULL,
@@ -36,11 +36,11 @@ downloadParseTimeseriesData <- function(
   startString <- strftime(dateRange[1], "%Y-%m-%dT%H:%M:%S", tz = "UTC")
   endString <- strftime(dateRange[2], "%Y-%m-%dT%H:%M:%S", tz = "UTC")
   
-  # Prefer to use the monitor's name over it's ID
-  if ( !is.null(name) ) {
-    requested_meta <- dplyr::filter(pas, .data$label == name)
+  # Prefer to use the monitor's label over it's ID
+  if ( !is.null(label) ) {
+    requested_meta <- dplyr::filter(pas, .data$label == !!label)
   } else if ( !is.null(id) ) {
-    requested_meta <- dplyr::filter(pas, .data$ID == id)
+    requested_meta <- dplyr::filter(pas, .data$ID == !!id)
   }
   
   # Determine which channel was given and access the other channel from it
@@ -175,6 +175,7 @@ downloadParseTimeseriesData <- function(
     
     A_list <- err_list
     A_data <- err_data
+    
   } else { # Response successful
     
     A_list <- 
@@ -186,6 +187,7 @@ downloadParseTimeseriesData <- function(
         flatten = FALSE
       )
     A_data <- A_list$feeds
+    
   }
   
   # ----- Request B channel data from Thingspeak -------------------------------
@@ -200,7 +202,7 @@ downloadParseTimeseriesData <- function(
   status_code <- httr::status_code(r)
   content <- httr::content(r, as = "text") # don't interpret the JSONw
   
-  if ( httr::http_error(r)) { # web service failed to respond
+  if ( httr::http_error(r) ) { # web service failed to respond
     
     # https://digitalocean.com/community/tutorials/how-to-troubleshoot-common-http-error-codes
     if ( httr::status_code(r) == 429 ) {
@@ -241,7 +243,8 @@ downloadParseTimeseriesData <- function(
     B_data <- err_data
     
   } else {
-  # Response successful
+    
+    # Response successful
     
     B_list <- 
       jsonlite::fromJSON(
@@ -252,6 +255,7 @@ downloadParseTimeseriesData <- function(
         flatten = FALSE
       )
     B_data <- B_list$feeds
+    
   }
   
   # Sanity check for data -> fill if empty to avoid error DL 
@@ -259,17 +263,17 @@ downloadParseTimeseriesData <- function(
     A_data <- err_data
     B_data <- err_data
     warning(
-     paste0(name,": A & B channels for the requested time period do not exist.")
+     paste0(label,": A & B channels for the requested time period do not exist.")
     )
   } else if ( length(A_data) == 0) {
     A_data <- err_data
     warning(
-      paste0(name,": A channel for the requested time period do not exist.")
+      paste0(label,": A channel for the requested time period do not exist.")
     )
   } else if ( length(B_data) == 0) {
     B_data <- err_data
     warning(
-      paste0(name,": B channel for the requested time period do not exist")
+      paste0(label,": B channel for the requested time period do not exist")
     )
   }
   
@@ -307,8 +311,8 @@ downloadParseTimeseriesData <- function(
   # Convert to proper types
   data$datetime <- lubridate::ymd_hms(data$datetime, tz="UTC")
   data$entry_id <- as.character(data$entry_id)
-  for (name in numeric_columns) {
-    data[[name]] <- as.numeric(data[[name]])
+  for (columnName in numeric_columns) {
+    data[[columnName]] <- as.numeric(data[[columnName]])
   }
   
   # Round values to reflect resolution as specified in
@@ -340,8 +344,8 @@ if ( FALSE ) {
   
   pas_raw <- downloadParseSynopticData()
   pas <- enhanceSynopticData(pas_raw)
-  name <- "MV Clean Air Ambassador @ Winthrop Library"
-  pat_raw <- downloadParseTimeseriesData(pas, name)
+  label <- "MV Clean Air Ambassador @ Winthrop Library"
+  pat_raw <- downloadParseTimeseriesData(pas, label)
   pat <- createPATimeseriesObject(pat_raw)
   
 }

@@ -16,7 +16,8 @@ RUN apt-get update \
     dplyr \
     geodist \
     GGally \
-    seismicRoll
+    seismicRoll \
+    worldmet
 
 ################################################################################
 # For MazamaSpatialUtils
@@ -25,13 +26,23 @@ RUN apt-get update \
 RUN wget -nv http://mazamascience.com/RData/Spatial/CA_AirBasins_01.RData \
   -O /home/mazama/data/Spatial/CA_AirBasins_01.RData
 
+################################################################################
+# For Latest improvements
+
+## Update dplyr and dependent packages
+#RUN R --vanilla -e 'update.packages(repos="https://cran.rstudio.com", oldPkgs="dplyr", ask=FALSE)'
+
+# Install latest development versions of packages
+RUN installGithub.r \
+    MazamaScience/MazamaCoreUtils
+
 
 #######################################################################
 # For AirSensor (while the Github repo is private)
 
 WORKDIR /
 
-COPY AirSensor_0.3.11.tar.gz /
+COPY AirSensor_0.3.12.tar.gz /
 
-RUN R CMD INSTALL AirSensor_0.3.11.tar.gz
+RUN R CMD INSTALL AirSensor_0.3.12.tar.gz
 

@@ -53,21 +53,21 @@ pat_monitorComparison <- function(
   
   if ( FALSE ) {
 
-    pat = pat_load("SCPR_19", 20190618, 20190629)
-    ylim = NULL
-    replaceOutliers = TRUE
-    a_size = 1
-    a_shape = 15
-    a_color = "gray80"
-    b_size = 1
-    b_shape = 15
-    b_color = "gray80"
-    ab_alpha = 0.5
-    hourly_size = 2
-    hourly_shape = 1
-    hourly_stroke = 0.6
-    pa_color = "purple"
-    pwfsl_color = "black"
+    pat <- pat_load("SCPR_19", 20190618, 20190629)
+    ylim <- NULL
+    replaceOutliers <- TRUE
+    a_size <- 1
+    a_shape <- 15
+    a_color <- "gray80"
+    b_size <- 1
+    b_shape <- 15
+    b_color <- "gray80"
+    ab_alpha <- 0.5
+    hourly_size <- 2
+    hourly_shape <- 1
+    hourly_stroke <- 0.6
+    pa_color <- "purple"
+    pwfsl_color <- "black"
     
   }
 
@@ -95,7 +95,7 @@ pat_monitorComparison <- function(
   tlim <- range(paHourly_data$datetime)
   
   # Get the PWFSL monitor data
-  monitorID = pat$meta$pwfsl_closestMonitorID
+  monitorID <- pat$meta$pwfsl_closestMonitorID
   pwfsl_data <-
     PWFSLSmoke::monitor_load(tlim[1], tlim[2], monitorIDs = monitorID) %>%
     PWFSLSmoke::monitor_subset(tlim = tlim) %>%

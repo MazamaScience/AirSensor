@@ -26,7 +26,7 @@ readings by loading a PurpleAir Timeseries *pat* object using the same label:
 
 ```{r load_pat_and_multiplot, warning=FALSE}
 pat_bikesgv <- pat_createNew(pas, "BikeSGV - West Pasadena", 
-                              startdate="2019-06-18", enddate="2019-06-25")
+                            startdate="2019-06-18", enddate="2019-06-25")
 pat_multiplot(pat_bikesgv)
 ```
 
@@ -80,7 +80,7 @@ hundred feet away, that is not experiencing this issue:
 
 ```{r normal_scatterplot, warning=FALSE, message=FALSE}
 pat_normal <- pat_createNew(pas, "AQMD_NASA_33", 
-                             startdate="2019-06-18", enddate="2019-06-25")
+                            startdate="2019-06-18", enddate="2019-06-25")
 pat_scatterplot(pat_normal)
 ```
 
@@ -174,7 +174,7 @@ this year:
 
 ```{r april_dygraph, warning=FALSE}
 pat_april <- pat_createNew(pas, "BikeSGV - West Pasadena", 
-                              startdate="2019-04-05", enddate="2019-04-22")
+                           startdate="2019-04-05", enddate="2019-04-22")
 pat_dygraph(pat_april)
 ```
 

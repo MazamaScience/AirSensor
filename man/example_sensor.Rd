@@ -13,9 +13,9 @@ This dataset was was generated on 2019-07-06 by running:
 \preformatted{
   pas <- pas_load()
   example_sensor <- 
-    pat_createNew(pas, name = "SCAN_14",
-                   startdate = "2018-08-14",
-                   enddate = "2018-09-07") %>%
+    pat_createNew(pas, label = "SCAN_14",
+                  startdate = "2018-08-14",
+                  enddate = "2018-09-07") %>%
     pat_createAirSensor(period = "1 hour")
 }
 }

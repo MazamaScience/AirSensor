@@ -4,14 +4,14 @@
 \alias{downloadParseTimeseriesData}
 \title{Download Purple Air timeseries data}
 \usage{
-downloadParseTimeseriesData(pas = NULL, name = NULL, id = NULL,
+downloadParseTimeseriesData(pas = NULL, label = NULL, id = NULL,
   startdate = NULL, enddate = NULL,
   baseURL = "https://api.thingspeak.com/channels/")
 }
 \arguments{
 \item{pas}{Purple Air 'enhanced' synoptic data}
 
-\item{name}{Purple Air 'label'}
+\item{label}{Purple Air 'label'}
 
 \item{id}{Purple Air 'ID'}
 

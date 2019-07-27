@@ -27,6 +27,8 @@
 #' @param retries Max number of days to go back and try to load if requested 
 #'   date cannot be retrieved.
 #' @param timezone Timezone used to interpret \code{datestamp}.
+#' @param archival Logical specifying whether a version should be loaded that
+#' includes sensors that have stopped reporting.
 #' 
 #' @return A PurpleAir Synoptic \emph{pas} object.
 #' 
@@ -46,7 +48,8 @@ pas_load <- function(
                        tz = "America/Los_Angeles"),
   baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/pas/",
   retries = 10,
-  timezone = "America/Los_Angeles"
+  timezone = "America/Los_Angeles",
+  archival = FALSE
 ) {
   
   logger.debug("----- pas_load() -----")
@@ -76,7 +79,11 @@ pas_load <- function(
   while (!successful && tries < retries) {
     yearstamp <- strftime(localDate, "%Y", tz = "UTC")
     datestamp <- strftime(localDate, "%Y%m%d", tz = "UTC")
-    filename <- paste0("pas_", datestamp, ".rda")
+    if ( archival ) {
+      filename <- paste0("pas_", datestamp, "_archival.rda")
+    } else {
+      filename <- paste0("pas_", datestamp, ".rda")
+    }
     filepath <- paste0(baseUrl, '/', yearstamp, '/', filename)
     
     # Define a 'connection' object so we can close it no matter what happens

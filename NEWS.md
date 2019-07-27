@@ -9,11 +9,21 @@ be specified so that R's default "system local timezone" does not accidentally
 get used.
 * When no wind data is provided, use nearest *worldmet* met station in 
 `sensor_polarplot()` and `sensor_pollutionRose()`.
+* Added `PurpleAirQC_algorithm` to `sensor` objects created by
+`pat_createAirSensor()` so that they self-document how they were created.
+* Included an `archival` argument to `pas_load()`. When `archival = TRUE` a
+`pas` object will be loaded that contains metadata for all PurpleAir sensors
+including those that have ceased reporting.
+* Removed unneeded `downloadParseSensorList()`.
+* Changed argument `name` to `label` in `pat_createNew()` and 
+`downloadParseTimeseriesData()`.
+* Updated all scripts in `local_executables/` to work with the latest release.
 
 # AirSensor 0.3.11
 
 * Faster geodesic calculations in `pas_staticMap()` and `pas_filterNear()`.
-* Include `downloadParseSensorList()` to download a list of archived PurpleAir Sensors. 
+* Include `downloadParseSensorList()` to download a list of archived PurpleAir 
+sensors. 
 
 # AirSensor 0.3.10
 

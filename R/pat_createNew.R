@@ -5,7 +5,7 @@
 #' @title Load latest PurpleAir time series data
 #' 
 #' @param pas PurpleAir Synoptic \emph{pas} object.
-#' @param name PurpleAir sensor 'label'.
+#' @param label PurpleAir sensor 'label'.
 #' @param id PurpleAir sensor 'ID'.
 #' @param startdate Desired UTC start time (ISO 8601).
 #' @param enddate Desired UTC end time (ISO 8601).
@@ -30,7 +30,7 @@
 
 pat_createNew <- function(
   pas = NULL,
-  name = NULL,
+  label = NULL,
   id = NULL,
   startdate = NULL,
   enddate = NULL,
@@ -44,22 +44,23 @@ pat_createNew <- function(
   if ( is.null(pas) )
     stop("Required parameter 'pas' is missing.")
   
-  if ( is.null(name) )
-    stop("Required parameter 'name' is missing.")
+  if ( is.null(label) )
+    stop("Required parameter 'label' is missing.")
   
-  if ( !name %in% pas$label )
-    stop(paste0("'", name, "' is not found in the 'pas' object"))
+  if ( !label %in% pas$label )
+    stop(paste0("'", label, "' is not found in the 'pas' object"))
   
   # ----- Determine date sequence ----------------------------------------------
   
   # Only one week of data can be loaded at a time. If over one week has been
   # requested, loop over weeks to download all of it
   
-  timezone <- 
-    pas %>% 
-    filter(.data$label == name) %>% 
-    pull(.data$timezone)
-  
+  # TODO:  Read "programming with dplyr" to understand this better
+  timezone <-
+    pas %>%
+    dplyr::filter(.data$label == !!label) %>%
+    dplyr::pull(.data$timezone)
+
   # Default to a week if startdate or enddate is missing
   days <- 7 
   
@@ -77,7 +78,7 @@ pat_createNew <- function(
   # ----- Load data from URL ---------------------------------------------------
   
   pat_raw <- downloadParseTimeseriesData(pas,
-                                         name,
+                                         label,
                                          id,
                                          dateSeq[1],
                                          dateSeq[2],
@@ -87,7 +88,7 @@ pat_createNew <- function(
     
     for ( i in 2:(length(dateSeq) - 1) ) {
       new_pat_raw <- downloadParseTimeseriesData(pas, 
-                                                 name,
+                                                 label,
                                                  id,
                                                  dateSeq[i],
                                                  dateSeq[i+1],
@@ -119,5 +120,18 @@ pat_createNew <- function(
   pat <- createPATimeseriesObject(pat_raw)
   
   return(pat)
+  
+}
+
+# ===== DEBUGGING ==============================================================
+
+if ( FALSE ) {
+  
+  pas <- pas_load()
+  label <- "SCAP_14"
+  id <- NULL
+  startdate <- 20190701
+  enddate <- 20190708
+  baseURL <- "https://api.thingspeak.com/channels/"
   
 }

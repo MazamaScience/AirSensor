@@ -1,6 +1,5 @@
 #' @export
 #' @importFrom rlang .data
-#' @importFrom dplyr filter
 #' @importFrom MazamaCoreUtils logger.debug
 #' 
 #' @title Load latest PurpleAir synoptic data

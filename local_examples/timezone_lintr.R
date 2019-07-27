@@ -92,7 +92,7 @@ if ( FALSE ) {
   for ( file in files ) {
     
     result <- try({
-      test_usesArgument(readr::read_file(file), "lubridate::ymd_h", "tz")
+      test_usesArgument(readr::read_file(file), "strftime", "tz")
     }, silent = TRUE)
     if ( "try-error" %in% class(result) ) {
       cat(file)

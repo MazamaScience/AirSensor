@@ -79,8 +79,8 @@ sensor_videoFrame(
   timeAxis = timeAxis,
   timeTicks = timeTicks,
   timeLabels = timeLabels,
-  map = map,
-  logo = png::readPNG("~/Desktop/ms_logo.png")
+  map = map
+  # logo = png::readPNG("~/Desktop/ms_logo.png")
 )
 }
 }

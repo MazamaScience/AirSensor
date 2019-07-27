@@ -11,11 +11,12 @@
 # docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/airsensor /app/createPAS_exec.R 
 #
 
-#  --- . --- . AirSensor 0.3.7
-VERSION = "0.1.4"
+#  --- . --- . AirSensor 0.3.12
+VERSION = "0.1.5"
 
 # The following packages are attached here so they show up in the sessionInfo
 suppressPackageStartupMessages({
+  library(futile.logger)
   library(MazamaCoreUtils)
   library(AirSensor)
 })
@@ -116,7 +117,12 @@ result <- try({
   filepath <- file.path(opt$outputDir, filename)
   
   logger.info("Obtaining 'pas' data for %s", timestamp)
-  pas <- pas_createNew()
+  pas <- pas_createNew(
+    baseUrl = 'https://www.purpleair.com/json',
+    countryCodes = c('US'),
+    includePWFSL = TRUE,
+    lookbackDays = 1
+  )
   
   logger.info("Writing 'pas' data to %s", filename)
   save(list="pas", file=filepath)  
