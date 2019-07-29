@@ -60,16 +60,6 @@ AirShiny_leaflet <- function(
   
   cols <- colorInfo$colors
   
-  # Create popupText
-  pas$popupText <- 
-    paste0(
-      "<b>", pas$label, "</b><br/>",
-      pas$statsLastModifiedDate, "<br/>",
-      "PM2.5 = ", round(pas$pm25_1day, 1), " \U00B5g/m3<br/>",
-      "Temperature = ", round(pas$temperature, 0), " F<br/>",
-      "Humidity = ", round(pas$humidity, 0), "%<br/>"
-    )
-  
   # Extract view information
   lonRange <- range(pas$longitude, na.rm = TRUE)
   latRange <- range(pas$latitude, na.rm = TRUE)
@@ -143,7 +133,6 @@ AirShiny_leaflet <- function(
       fillColor=cols,
       fillOpacity=opacity,
       stroke=FALSE,
-      popup=pas$popupText,
       layerId = pas$label
     )
   
