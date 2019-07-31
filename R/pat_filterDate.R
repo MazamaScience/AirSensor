@@ -58,14 +58,14 @@ pat_filterDate <- function(
     days <- 7 # default
   }
   
-  dateRange <- MazamaCoreUtils::dateRange(startdate, enddate, timezone, days)
+  tlim <- .dateRange(startdate, enddate, days, timezone = timezone)
   
   # Subset the "pat" object ----------------------------------------------------
   
   data <- 
     pat$data %>%
-    filter(.data$datetime >= dateRange[1]) %>%
-    filter(.data$datetime < dateRange[2])
+    filter(.data$datetime >= tlim[1]) %>%
+    filter(.data$datetime < tlim[2])
   
   pat$data <- data
   

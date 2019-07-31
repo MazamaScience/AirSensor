@@ -44,9 +44,9 @@ a pa_timeseries object for practicing and code examples.
 This dataset was was generated on 2019-07-06 by running:
 
   pas &amp;lt;- pas_load()
-  example_pat &amp;lt;- pat_createNew(pas, label = &quot;Seattle&quot;,
-                               startdate = &quot;2018-07-01&quot;,
-                               enddate = &quot;2018-09-01&quot;)
+  example_pat &amp;lt;- pat_loadLatest(pas, name = &quot;Seattle&quot;,
+                                startdate = &quot;2018-07-01&quot;,
+                                enddate = &quot;2018-09-01&quot;)
 " />
 <meta name="twitter:card" content="summary" />
 
@@ -78,7 +78,7 @@ This dataset was was generated on 2019-07-06 by running:
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.10</span>
       </span>
     </div>
 
@@ -121,9 +121,6 @@ This dataset was was generated on 2019-07-06 by running:
     <li>
       <a href="../articles/purpleair_sensors.html">Purple Air Sensors</a>
     </li>
-    <li>
-      <a href="../articles/working_with_wind_data.html">Working With Wind Data</a>
-    </li>
   </ul>
 </li>
 <li>
@@ -162,9 +159,9 @@ a <em>pa_timeseries</em> object for practicing and code examples.
 This dataset was was generated on 2019-07-06 by running:</p>
 <pre>
   pas &lt;- pas_load()
-  example_pat &lt;- pat_createNew(pas, label = "Seattle",
-                               startdate = "2018-07-01",
-                               enddate = "2018-09-01")
+  example_pat &lt;- pat_loadLatest(pas, name = "Seattle",
+                                startdate = "2018-07-01",
+                                enddate = "2018-09-01")
 </pre>
     
     </div>

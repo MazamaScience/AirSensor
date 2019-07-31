@@ -276,9 +276,6 @@ and B means is high (e.g. > 20)
   (pm25 < 100) & (mean_diff > 20)
 ```
 
-This combination of QC steps is used in when the `pat_createAirSensor()` 
-function is run with `qc_algorithm = "hourly_AB_01"`.
-
 As a test of the overall effect, here are some simple, hourly barplots for a 
 single week of data for each of the three examples we started with:
 

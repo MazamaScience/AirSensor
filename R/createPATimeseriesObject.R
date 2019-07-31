@@ -4,7 +4,7 @@
 #' 
 #' @title Create a Purple Air Timeseries object
 #' 
-#' @param pat_raw Raw Purple Air timeseries data from \code{downloadParseTimeseriesData()}
+#' @param pat_raw raw Purple Air timeseries data from \code{downloadParseTimeseriesData()}
 #' 
 #' @return List with original \code{meta} and restructured \code{data} elements
 #' 
@@ -25,8 +25,7 @@
 #' \dontrun{
 #' initializeMazamaSpatialUtils()
 #' pas <- pas_load()
-#' pat_raw <- downloadParseTimeseriesData(pas, label = 'North Bend Weather', 
-#'                                        startdate = 20180908)
+#' pat_raw <- downloadParseTimeseriesData(pas, name ='North Bend Weather', startdate = 20181908)
 #' pat <- createPATimeseriesObject(pat_raw)
 #' }
 

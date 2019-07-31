@@ -49,12 +49,12 @@ pat_createAirSensor <- function(
 
   if ( FALSE ) {
     
-    pat <- example_pat
-    period <- "1 hour"
-    parameter <- "pm25"
-    channel <- "ab"
-    qc_algorithm <- "hourly_AB_01"
-    min_count <- 20
+    pat = example_pat
+    period = "1 hour"
+    parameter = "pm25"
+    channel = "ab"
+    qc_algorithm = "hourly_AB_01"
+    min_count = 20
     
   }  
   
@@ -179,20 +179,7 @@ pat_createAirSensor <- function(
   # NOTE:  As of 2019-05-14, the PWFSLSmoke meta dataframe still has rownames
   rownames(meta) <- colnames(data)[-1]
   
-  qcString <- paste0(
-    "qc_algorithm = ", qc_algorithm,
-    "; period = ", period,
-    "; parameter = ", parameter,
-    "; channel = ", channel,
-    "; min_count = ", min_count
-  )
-  
-  as_object <- list(
-    meta = meta, 
-    data = data,
-    PurpleAirQC_algorithm = qcString
-  )
-  
+  as_object <- list(meta = meta, data = data)
   class(as_object) <- c("airsensor", "ws_monitor")
   
   return(as_object)

@@ -52,10 +52,10 @@ PurpleAirQC_validationPlot <- function(
   
   if ( FALSE ) {
     
-    pat <- example_pat
-    period <- "1 hour"
-    qc_algorithm <- "hourly_AB_01"
-    min_count <- 20
+    pat = example_pat
+    period = "1 hour"
+    qc_algorithm = "hourly_AB_01"
+    min_count = 20
     
   }  
   

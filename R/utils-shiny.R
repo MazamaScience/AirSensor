@@ -144,7 +144,7 @@ AirShiny_leaflet <- function(
 #' @export
 #' @title Bar plot for AirShiny
 #' 
-#' @param pat PurpleAir Timeseries "pat" object from \code{pat_createNew()}
+#' @param pat PurpleAir Timeseries "pat" object from \code{pat_loadLatest()}
 #' @param period The time period to average to. Can be "sec", "min", "hour", 
 #' "day", "DSTday", "week", "month", "quarter" or "year". A number can also
 #'  precede these options followed by a space (i.e. "2 day" or "37 min").

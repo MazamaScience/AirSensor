@@ -13,9 +13,9 @@ This dataset was was generated on 2019-07-06 by running:
 \preformatted{
   pas <- pas_load()
   example_pat_failure_B <- 
-    pat_createNew(pas, label = "SCTV_16",
-                  startdate = "2019-06-01",
-                  enddate = "2019-06-18")
+    pat_loadLatest(pas, name = "SCTV_16",
+                   startdate = "2019-06-01",
+                   enddate = "2019-06-18")
 }
 }
 \seealso{

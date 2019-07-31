@@ -10,7 +10,6 @@
 #' @param timeTicks Movie time ticks.
 #' @param timeLabels Movie time labels.
 #' @param map A pre-generated basemap image.
-#' @param logo A PNG image to be placed near the upper right of the image.
 #' 
 #' @description desc
 #' 
@@ -36,7 +35,7 @@
 #' lat <- 33.767
 #' zoom <- 15
 #' 
-#' map <- PWFSLSmoke::staticmap_getStamenmapBrick(
+#' staticMap <- PWFSLSmoke::staticmap_getStamenmapBrick(
 #'   centerLon = lon,
 #'   centerLat = lat,
 #'   zoom = zoom,
@@ -63,7 +62,6 @@
 #'   timeTicks = timeTicks,
 #'   timeLabels = timeLabels,
 #'   map = map
-#'   # logo = png::readPNG("~/Desktop/ms_logo.png")
 #' )
 #' }
 
@@ -75,8 +73,7 @@ sensor_videoFrame <- function(
   timeAxis = NULL,
   timeTicks = NULL,
   timeLabels = NULL,
-  map = NULL,
-  logo = NULL
+  map = NULL
 ) {
   
   # ----- Validate parameters --------------------------------------------------
@@ -105,15 +102,14 @@ sensor_videoFrame <- function(
   if ( is.null(map) )
     stop("Required parameter 'map' is missing.")
   
-  # logo is optional
-  
   # Round frameTime to closest hour
   frameTime <- lubridate::round_date(frameTime, unit = "hour")
   
   # ----- Subset data ----------------------------------------------------------
   
-  community <- 
-    dplyr::filter(sensor$meta, .data$communityRegion == communityRegion)
+  commReg <- communityRegion
+  community <- dplyr::filter(sensor$meta,
+                             .data$communityRegion == commReg)
   monitorId <- community$monitorID
   longitude <- community$longitude
   latitude <- community$latitude
@@ -200,10 +196,10 @@ sensor_videoFrame <- function(
                                                 "#cc3702"))(30)
   colorBins <- c(seq(0, 60, length = 24), 300)
   usr <- par("usr")
-  top    <- usr[4] - (usr[4] - usr[3]) * 0.4
-  bottom <- usr[3] + (usr[4] - usr[3]) * 0.08
-  left   <- usr[2] - (usr[2] - usr[1]) * 0.15
-  right  <- usr[2] - (usr[2] - usr[1]) * 0.1
+  top    <- usr[4] - (usr[4] - usr[3]) / 3
+  bottom <- usr[3] + (usr[4] - usr[3]) / 8
+  left   <- usr[2] - (usr[2] - usr[1]) / 6
+  right  <- usr[2] - (usr[2] - usr[1]) / 8
   
   # Draw gradient
   colorCount <- length(colorPalette)
@@ -213,20 +209,19 @@ sensor_videoFrame <- function(
   rect(left, bottom,  right, top)
   
   # Draw labels
-  raster::text(right - (right - left) / 2, top + (usr[4] - usr[3]) * 0.05,
-               labels = "PM 2.5", font = 2,  cex = 4.4)
-  # Disabled to keep units ambiguous
-  #raster::text(right - (right - left) / 2, top + (usr[4] - usr[3]) / 16, 
-  #     labels = "(\U03BCg/m\U00B3)", cex = 1.4)
-  #text(left, bottom,  as.character(0),  pos = 2, cex = 1.5)
-  #text(left, top,     as.character(60), pos = 2, cex = 1.5)
+  text(left, bottom,  as.character(0),  pos = 2, cex = 1.5)
+  text(left, top,     as.character(60), pos = 2, cex = 1.5)
+  raster::text(right - (right - left) / 2, top + (usr[4] - usr[3]) / 8,
+       labels = "PM 2.5", font = 2,  cex = 2.1)
+  raster::text(right - (right - left) / 2, top + (usr[4] - usr[3]) / 16, 
+       labels = "(\U03BCg/m\U00B3)", cex = 1.4)
   
   # ----- Plot points ----------------------------------------------------------
   
-  colors <- PWFSLSmoke::aqiColors(data$pm25, 
-                                  palette = colorPalette, 
-                                  domain = c(0, 250),
-                                  bins = colorBins)
+  colors = PWFSLSmoke::aqiColors(data$pm25, 
+                                 palette = colorPalette, 
+                                 domain = c(0, 250),
+                                 bins = colorBins)
   
   points(x = data$longitude,
          y = data$latitude,
@@ -234,52 +229,23 @@ sensor_videoFrame <- function(
          pch = 16, 
          cex = 7)
   
-  # ----- Plot logo ------------------------------------------------------------
-  
-  if ( !is.null(logo) ) {
-    # Center position 
-    x <- left + (right - left) * 0.5
-    y <- top + (usr[4] - usr[3]) * 0.23
-    
-    # Width and height
-    degreesPerInchEW <- (usr[2] - usr[1]) %% 360 / par("pin")[1]
-    degreesPerInchNS <- (usr[4] - usr[3]) %% 360 / par("pin")[2]
-    
-    # Estimate conversion from inch to pixel (assuming dpi ~ 96)
-    degreesPerPixelEW <- degreesPerInchEW / 96
-    degreesPerPixelNS <- degreesPerInchNS / 96
-    
-    width <- degreesPerPixelEW * dim(logo)[2]*1
-    height <- degreesPerPixelNS * dim(logo)[1]*1
-    
-    l <- x - width / 2
-    r <- x + width / 2
-    b <- y - height / 2
-    t <- y + height / 2
-    
-    graphics::rasterImage(logo, l, b, r, t)
-  }
-  
   # ----- Plot time axis -------------------------------------------------------
   
-  # To the left of the map, draw an invisible plot with a visible axis
-  par(mar = c(0.5, 0.5, 6, 0.5))
-  plot(rep(0, length(timeAxis)), -(as.numeric(timeAxis)), axes = FALSE, 
-       col = 'transparent')
-  
-  # Upper-left date/time stamp
-  mtext(strftime(frameTime, "%b %e", tz = "America/Los_Angeles") , line = 2.3, 
-        cex = 3.2)
-  mtext(strftime(frameTime, "%l %P", tz = "America/Los_Angeles") , line = 0.3, 
-        cex = 2.3)
-  
-  # Time axis with 6 hour ticks
-  axis(side = 2, labels = timeLabels, line = -5.5, at = -as.numeric(timeTicks), 
-       cex.axis = 1.6, las = 2, hadj = 1, cex= 2, lwd.ticks = 2.7,
-       lwd = 2.7)
-  
-  # Red 'current time' marker
-  axis(side = 4, line = -3.9, at = -as.numeric(frameTime), col = 'red', 
-       col.ticks = 2, lwd.ticks = 12, labels = "", tcl = -2)
+  if (!is.null(timeAxis) && !is.null(timeTicks) && !is.null(timeLabels)) {
+    par(mar = c(0.5, 0.5, 6, 0.5))
+    plot(rep(0, length(timeAxis)), -(as.numeric(timeAxis)), axes = FALSE, 
+         col = 'transparent')
+    
+    mtext(strftime(frameTime, "%b %e", tz = "America/Los_Angeles") , line = 2.5, 
+          cex = 1.6)
+    mtext(strftime(frameTime, "%l %P", tz = "America/Los_Angeles") , line = 0.5, 
+          cex = 1.1)
+    
+    axis(side = 2, labels = timeLabels, line = -5.5, at = -as.numeric(timeTicks), 
+         cex.axis = 1.9, las = 2, hadj = 1, cex= 2, lwd.ticks = 2.7,
+         lwd = 2.7)
+    axis(side = 4, line = -3.9, at = -as.numeric(frameTime), col = 'red', 
+         col.ticks = 2, lwd.ticks = 12, labels = "", tcl = -2)
+  }
   
 }

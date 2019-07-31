@@ -7,7 +7,7 @@
 AirShiny_barplot(pat, period, startdate, enddate, ylim = NULL)
 }
 \arguments{
-\item{pat}{PurpleAir Timeseries "pat" object from \code{pat_createNew()}}
+\item{pat}{PurpleAir Timeseries "pat" object from \code{pat_loadLatest()}}
 
 \item{period}{The time period to average to. Can be "sec", "min", "hour", 
 "day", "DSTday", "week", "month", "quarter" or "year". A number can also

@@ -7,7 +7,7 @@
 pas_staticMap(pas, parameter = "pm25_1hr", palette = "Purples",
   mapTheme = "terrain", mapShape = "sq", direction = 1,
   minScale = 0, maxScale = 150, shape = 15, size = 2,
-  alpha = 0.8, bbuff = 0.5, zoomAdjust = 0, ...)
+  alpha = 0.8, bbuff = 0.1, zoomAdjust = 0, ...)
 }
 \arguments{
 \item{pas}{PurpleAir Synoptic \emph{pas} object.}

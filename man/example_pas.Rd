@@ -15,7 +15,7 @@ This dataset was generatedon 2019-07-06 by running:
 
 \preformatted{
   initializeMazamaSpatialUtils()
-  example_pas <- pas_createNew()
+  example_pas <- pas_loadLatest()
 }
 }
 \seealso{

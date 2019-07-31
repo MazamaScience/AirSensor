@@ -25,8 +25,8 @@ measurements happen to display something very strange. We can gather these
 readings by loading a PurpleAir Timeseries *pat* object using the same label:
 
 ```{r load_pat_and_multiplot, warning=FALSE}
-pat_bikesgv <- pat_createNew(pas, "BikeSGV - West Pasadena", 
-                            startdate="2019-06-18", enddate="2019-06-25")
+pat_bikesgv <- pat_loadLatest(pas, "BikeSGV - West Pasadena", 
+                              startdate="2019-06-18", enddate="2019-06-25")
 pat_multiplot(pat_bikesgv)
 ```
 
@@ -79,8 +79,8 @@ Just for reference, this is the scatterplot for a different sensor, only a few
 hundred feet away, that is not experiencing this issue:
 
 ```{r normal_scatterplot, warning=FALSE, message=FALSE}
-pat_normal <- pat_createNew(pas, "AQMD_NASA_33", 
-                            startdate="2019-06-18", enddate="2019-06-25")
+pat_normal <- pat_loadLatest(pas, "AQMD_NASA_33", 
+                             startdate="2019-06-18", enddate="2019-06-25")
 pat_scatterplot(pat_normal)
 ```
 
@@ -173,8 +173,8 @@ sensor always been acting this way? Lets load and view readings from earlier
 this year:
 
 ```{r april_dygraph, warning=FALSE}
-pat_april <- pat_createNew(pas, "BikeSGV - West Pasadena", 
-                           startdate="2019-04-05", enddate="2019-04-22")
+pat_april <- pat_loadLatest(pas, "BikeSGV - West Pasadena", 
+                              startdate="2019-04-05", enddate="2019-04-22")
 pat_dygraph(pat_april)
 ```
 

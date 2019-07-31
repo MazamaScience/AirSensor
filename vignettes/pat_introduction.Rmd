@@ -42,23 +42,23 @@ monitor of interests label.
 library(MazamaCoreUtils)
 library(AirSensor)
 pas <- pas_load()
-pat <- pat_createNew(pas, "Seattle", startdate = 20180701, enddate = 20180901)
+pat <- pat_loadLatest(pas, "Seattle", startdate = 20180701, enddate = 20180901)
 ```
 
-Notice that when passing our synoptic dataframe "`pas`" to `pat_createNew()`, 
+Notice that when passing our synoptic dataframe "`pas`" to `pat_loadLatest()`, 
 we also supply a unique identification label and date-interval. In this case, our 
 monitor-of-interest (MOI) is a sensor named "Seattle" and our dates-of-interest
 are 2018-07-01 to 2018-09-01. 
 
-**Note:** You must provide a label to `pat_createNew()` in 
+**Note:** You must provide a label to `pat_loadLatest()` in 
 order to supply ThingSpeak with the necessary metadata to access the sensors 
 database. A time range on the other hand is optional; by default not providing 
-`pat_createNew()` with a start and end date will return  the most recent week 
+`pat_loadLatest()` with a start and end date will return  the most recent week 
 of time series data.
 
 ## The PurpleAirTimeseries ("pat") Data Model
 Let's begin by exploring the attributes of the dataframe returned by the 
-`pat_createNew()` function. 
+`pat_loadLatest()` function. 
 
 ```{r names}
 pat %>%

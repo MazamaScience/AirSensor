@@ -4,7 +4,7 @@
 \alias{sensor_pollutionRose}
 \title{Pollution rose plot}
 \usage{
-sensor_pollutionRose(sensor, windData = NULL, statistic = "prop.count",
+sensor_pollutionRose(sensor, windData, statistic = "prop.count",
   key = TRUE, keyPosition = "right", annotate = TRUE, angle = 30,
   angleScale = 315, gridLine = NULL, breaks = 6, paddle = FALSE,
   seg = 0.9, normalize = FALSE)
@@ -59,7 +59,7 @@ produce segments 0.5 * angle.}
 \item{normalize}{if TRUE each wind direction segment is normalized to equal 
 one. This is useful for showing how the concentrations (or other parameters) 
 contribute to each wind sector when the proprtion of time the wind is from 
-that direction is low. A line showing the probability that the wind.}
+that direction is low. A line showing the probability that the wind}
 }
 \value{
 a plot or a dataframe
@@ -68,18 +68,20 @@ a plot or a dataframe
 Plots a traditional wind rose plot for wind direction and PM2.5.
 }
 \examples{
-\donttest{
-sensor <- sensor_load(startdate = 20190601, enddate = 20190630)
-sensor <- sensor_filterMeta(sensor, monitorID == "SCSB_02")
 
-# Load wind data from NOAA
-windData <- worldmet::importNOAA(code = "722975-53141", year = 2019, 
-                                 parallel = FALSE)
-windData <- dplyr::select(windData, c("date", "wd", "ws"))
+# Use example sensor, whose date range is 2019-08-01 to 2019-10-01
+sensor <- example_sensor
+
+# Create wind data using same date range
+windData <- wind_load(
+  monitorID = "060950004_01", 
+  startdate = "20180801", 
+  enddate = "20181001"
+)
 
 # Plot rose using mean binning
 sensor_pollutionRose(sensor, windData, statistic = "prop.mean")
-}
+
 }
 \seealso{
 \url{http://davidcarslaw.github.io/openair/reference/windRose.html}

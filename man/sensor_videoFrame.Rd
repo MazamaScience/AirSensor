@@ -6,7 +6,7 @@
 \usage{
 sensor_videoFrame(sensor = sensor_load(), communityRegion = NULL,
   frameTime = NULL, timeInfo = NULL, timeAxis = NULL,
-  timeTicks = NULL, timeLabels = NULL, map = NULL, logo = NULL)
+  timeTicks = NULL, timeLabels = NULL, map = NULL)
 }
 \arguments{
 \item{sensor}{An AirSensor object.}
@@ -24,8 +24,6 @@ sensor_videoFrame(sensor = sensor_load(), communityRegion = NULL,
 \item{timeLabels}{Movie time labels.}
 
 \item{map}{A pre-generated basemap image.}
-
-\item{logo}{A PNG image to be placed near the upper right of the image.}
 }
 \value{
 A plot is generated. Nothing is returned.
@@ -53,7 +51,7 @@ lon <- -118.083
 lat <- 33.767
 zoom <- 15
 
-map <- PWFSLSmoke::staticmap_getStamenmapBrick(
+staticMap <- PWFSLSmoke::staticmap_getStamenmapBrick(
   centerLon = lon,
   centerLat = lat,
   zoom = zoom,
@@ -80,7 +78,6 @@ sensor_videoFrame(
   timeTicks = timeTicks,
   timeLabels = timeLabels,
   map = map
-  # logo = png::readPNG("~/Desktop/ms_logo.png")
 )
 }
 }

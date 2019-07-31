@@ -1,29 +1,7 @@
-# AirSensor 0.3.12
-
-* Renamed `pas_loadLatest()` to `pas_createNew()`.
-* Renamed `pat_loadLatest()` to `pat_createNew()`.
-* Added "Too Many Requests" error messages to `download~()` functions.
-* Added `timezone` parameter to `pas_load()`.
-* Included `timezone` information in every internal function call where it can
-be specified so that R's default "system local timezone" does not accidentally 
-get used.
-* When no wind data is provided, use nearest *worldmet* met station in 
-`sensor_polarplot()` and `sensor_pollutionRose()`.
-* Added `PurpleAirQC_algorithm` to `sensor` objects created by
-`pat_createAirSensor()` so that they self-document how they were created.
-* Included an `archival` argument to `pas_load()`. When `archival = TRUE` a
-`pas` object will be loaded that contains metadata for all PurpleAir sensors
-including those that have ceased reporting.
-* Removed unneeded `downloadParseSensorList()`.
-* Changed argument `name` to `label` in `pat_createNew()` and 
-`downloadParseTimeseriesData()`.
-* Updated all scripts in `local_executables/` to work with the latest release.
-
 # AirSensor 0.3.11
 
 * Faster geodesic calculations in `pas_staticMap()` and `pas_filterNear()`.
-* Include `downloadParseSensorList()` to download a list of archived PurpleAir 
-sensors. 
+* Include `downloadParseSensorList()` to download archived a list of archived PurpleAir Sensors. 
 
 # AirSensor 0.3.10
 
@@ -31,7 +9,7 @@ sensors.
 network of sensors. These can be used to create videos showing the evolution
 of PM2.5 levels over several days.
 * Added `local_executables/createVideo_exec.R` script to generate mp4 videos.
-* Added `ylim` argument to `pat_multiplot()`.
+* Added `ylim` argument to `pat_multiplot().
 
 # AirSensor 0.3.9
 

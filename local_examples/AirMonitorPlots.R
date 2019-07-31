@@ -26,20 +26,6 @@ ggplot_pm25Diurnal(scnp,
 
 # ----- Plotting pre-generated "sensor" objects --------------------------------
 
-if ( FALSE ) {
- 
-  # Create sensor objects from data downloads
-  scap <-
-    pas_load() %>%
-    dplyr::filter(stringr::str_detect(label, "^[Ss][Cc][Aa][Pp]_..$")) %>%
-    pull(label) %>%
-    purrr::map(pat_loadMonth, "201907") %>%
-    purrr::map(pat_createAirSensor) %>%
-    monitor_combine() %>%
-    monitor_subset(tlim=c(20190702,20190706), timezone = "America/Los_Angeles")
-  
-}
-
 # Download hourly data and use PWFSLSmoke routines to manipulate it
 scap_hourly <-
   sensor_load() %>%

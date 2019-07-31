@@ -70,7 +70,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.10</span>
       </span>
     </div>
 
@@ -113,9 +113,6 @@
     <li>
       <a href="../articles/purpleair_sensors.html">Purple Air Sensors</a>
     </li>
-    <li>
-      <a href="../articles/working_with_wind_data.html">Working With Wind Data</a>
-    </li>
   </ul>
 </li>
 <li>
@@ -155,7 +152,7 @@
 
     <pre class="usage"><span class='fu'>sensor_videoFrame</span>(<span class='kw'>sensor</span> <span class='kw'>=</span> <span class='fu'><a href='sensor_load.html'>sensor_load</a></span>(), <span class='kw'>communityRegion</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>frameTime</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>timeInfo</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>timeAxis</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>timeTicks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>timeLabels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>map</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>logo</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+  <span class='kw'>timeTicks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>timeLabels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>map</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -192,10 +189,6 @@
       <th>map</th>
       <td><p>A pre-generated basemap image.</p></td>
     </tr>
-    <tr>
-      <th>logo</th>
-      <td><p>A PNG image to be placed near the upper right of the image.</p></td>
-    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -223,7 +216,7 @@
 <span class='no'>lat</span> <span class='kw'>&lt;-</span> <span class='fl'>33.767</span>
 <span class='no'>zoom</span> <span class='kw'>&lt;-</span> <span class='fl'>15</span>
 
-<span class='no'>map</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>PWFSLSmoke</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/PWFSLSmoke/topics/staticmap_getStamenmapBrick'>staticmap_getStamenmapBrick</a></span>(
+<span class='no'>staticMap</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>PWFSLSmoke</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/PWFSLSmoke/topics/staticmap_getStamenmapBrick'>staticmap_getStamenmapBrick</a></span>(
   <span class='kw'>centerLon</span> <span class='kw'>=</span> <span class='no'>lon</span>,
   <span class='kw'>centerLat</span> <span class='kw'>=</span> <span class='no'>lat</span>,
   <span class='kw'>zoom</span> <span class='kw'>=</span> <span class='no'>zoom</span>,
@@ -250,7 +243,6 @@
   <span class='kw'>timeTicks</span> <span class='kw'>=</span> <span class='no'>timeTicks</span>,
   <span class='kw'>timeLabels</span> <span class='kw'>=</span> <span class='no'>timeLabels</span>,
   <span class='kw'>map</span> <span class='kw'>=</span> <span class='no'>map</span>
-  <span class='co'># logo = png::readPNG("~/Desktop/ms_logo.png")</span>
 )
 <span class='co'># }</span></pre>
   </div>

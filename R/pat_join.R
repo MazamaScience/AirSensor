@@ -46,7 +46,7 @@ pat_join <- function(
   dataList <- list()
   metaList <- list()
   
-  for( i in seq_along(patList) ) {
+  for( i in 1:length(patList) ) {
     
     # Check parameters
     if( !pat_isPat(patList[[i]]) )

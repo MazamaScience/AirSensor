@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.10</span>
       </span>
     </div>
 
@@ -110,9 +110,6 @@
     <li>
       <a href="../articles/purpleair_sensors.html">Purple Air Sensors</a>
     </li>
-    <li>
-      <a href="../articles/working_with_wind_data.html">Working With Wind Data</a>
-    </li>
   </ul>
 </li>
 <li>
@@ -143,38 +140,13 @@
       <small>Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="airsensor-0-3-12" class="section level1">
-<h1 class="page-header">
-<a href="#airsensor-0-3-12" class="anchor"></a>AirSensor 0.3.12</h1>
-<ul>
-<li>Renamed <code>pas_loadLatest()</code> to <code><a href="../reference/pas_createNew.html">pas_createNew()</a></code>.</li>
-<li>Renamed <code>pat_loadLatest()</code> to <code><a href="../reference/pat_createNew.html">pat_createNew()</a></code>.</li>
-<li>Added “Too Many Requests” error messages to <code>download~()</code> functions.</li>
-<li>Added <code>timezone</code> parameter to <code><a href="../reference/pas_load.html">pas_load()</a></code>.</li>
-<li>Included <code>timezone</code> information in every internal function call where it can be specified so that R’s default “system local timezone” does not accidentally get used.</li>
-<li>When no wind data is provided, use nearest <em>worldmet</em> met station in <code>sensor_polarplot()</code> and <code><a href="../reference/sensor_pollutionRose.html">sensor_pollutionRose()</a></code>.</li>
-<li>Added <code>PurpleAirQC_algorithm</code> to <code>sensor</code> objects created by <code><a href="../reference/pat_createAirSensor.html">pat_createAirSensor()</a></code> so that they self-document how they were created.</li>
-<li>Included an <code>archival</code> argument to <code><a href="../reference/pas_load.html">pas_load()</a></code>. When <code>archival = TRUE</code> a <code>pas</code> object will be loaded that contains metadata for all PurpleAir sensors including those that have ceased reporting.</li>
-<li>Removed unneeded <code>downloadParseSensorList()</code>.</li>
-<li>Changed argument <code>name</code> to <code>label</code> in <code><a href="../reference/pat_createNew.html">pat_createNew()</a></code> and <code><a href="../reference/downloadParseTimeseriesData.html">downloadParseTimeseriesData()</a></code>.</li>
-<li>Updated all scripts in <code>local_executables/</code> to work with the latest release.</li>
-</ul>
-</div>
-    <div id="airsensor-0-3-11" class="section level1">
-<h1 class="page-header">
-<a href="#airsensor-0-3-11" class="anchor"></a>AirSensor 0.3.11</h1>
-<ul>
-<li>Faster geodesic calculations in <code><a href="../reference/pas_staticMap.html">pas_staticMap()</a></code> and <code><a href="../reference/pas_filterNear.html">pas_filterNear()</a></code>.</li>
-<li>Include <code>downloadParseSensorList()</code> to download a list of archived PurpleAir sensors.</li>
-</ul>
-</div>
     <div id="airsensor-0-3-10" class="section level1">
 <h1 class="page-header">
 <a href="#airsensor-0-3-10" class="anchor"></a>AirSensor 0.3.10</h1>
 <ul>
 <li>Added <code><a href="../reference/sensor_videoFrame.html">sensor_videoFrame()</a></code> function to create a single frame map for a network of sensors. These can be used to create videos showing the evolution of PM2.5 levels over several days.</li>
 <li>Added <code>local_executables/createVideo_exec.R</code> script to generate mp4 videos.</li>
-<li>Added <code>ylim</code> argument to <code><a href="../reference/pat_multiplot.html">pat_multiplot()</a></code>.</li>
+<li>Added <code>ylim</code> argument to `pat_multiplot().</li>
 </ul>
 </div>
     <div id="airsensor-0-3-9" class="section level1">
@@ -198,8 +170,8 @@
 <h1 class="page-header">
 <a href="#airsensor-0-3-7" class="anchor"></a>AirSensor 0.3.7</h1>
 <ul>
-<li>Added <code>wind_loadMonth()</code> to load pre-generated monthly wind data</li>
-<li>Added <code>wind_load()</code> to load pre-generated wind data from timestamps</li>
+<li>Added <code><a href="../reference/wind_loadMonth.html">wind_loadMonth()</a></code> to load pre-generated monthly wind data</li>
+<li>Added <code><a href="../reference/wind_load.html">wind_load()</a></code> to load pre-generated wind data from timestamps</li>
 <li>Updated <code><a href="../reference/sensor_pollutionRose.html">sensor_pollutionRose()</a></code> to accept new wind data model</li>
 <li>Added <code><a href="../reference/sensor_polarPlot.html">sensor_polarPlot()</a></code> to plot bivariate polar plots</li>
 <li>Renamed <code>airsensor_load~()</code> to <code>sensor_load~()</code>.</li>
@@ -339,7 +311,7 @@
 <h1 class="page-header">
 <a href="#airsensor-0-2-14" class="anchor"></a>AirSensor 0.2.14</h1>
 <ul>
-<li>Remove out-of-time-range records in <code>pat_loadLatest()</code>
+<li>Remove out-of-time-range records in <code><a href="../reference/pat_loadLatest.html">pat_loadLatest()</a></code>
 </li>
 <li>Corrected default date calculation in <code>createMonthlyPAT_exec.R</code>
 </li>
@@ -387,7 +359,7 @@
 <h1 class="page-header">
 <a href="#airsensor-0-2-10" class="anchor"></a>AirSensor 0.2.10</h1>
 <ul>
-<li>renamed <code><a href="../reference/pat_load.html">pat_load()</a></code> to <code>pat_loadLatest()</code>
+<li>renamed <code><a href="../reference/pat_load.html">pat_load()</a></code> to <code><a href="../reference/pat_loadLatest.html">pat_loadLatest()</a></code>
 </li>
 <li>removed <code>subset</code> and <code>weights</code> parameters from <code><a href="../reference/pat_internalFit.html">pat_internalFit()</a></code>
 </li>
@@ -539,10 +511,10 @@
 <ul>
 <li>
 <code>pat_subdate()</code> has been renamed to <code><a href="../reference/pat_filterDate.html">pat_filterDate()</a></code> and defaults to the <code>America/Los_Angeles</code> timezone</li>
-<li>improved handling of date ranges in <code>pat_loadLatest()</code> – all requests are assumed to be in the sensor’s local timezone</li>
+<li>improved handling of date ranges in <code><a href="../reference/pat_loadLatest.html">pat_loadLatest()</a></code> – all requests are assumed to be in the sensor’s local timezone</li>
 <li>
 <code><a href="../reference/pas_load.html">pas_load()</a></code> function now downloads pre-generated <code>pas</code> objects</li>
-<li>a new <code>pas_loadLatest()</code> function downloads raw synoptic data from Purple Air and generates a <code>pas</code> object</li>
+<li>a new <code><a href="../reference/pas_loadLatest.html">pas_loadLatest()</a></code> function downloads raw synoptic data from Purple Air and generates a <code>pas</code> object</li>
 <li>simplified docker image usage</li>
 </ul>
 </div>
@@ -625,8 +597,6 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#airsensor-0-3-12">0.3.12</a></li>
-        <li><a href="#airsensor-0-3-11">0.3.11</a></li>
         <li><a href="#airsensor-0-3-10">0.3.10</a></li>
         <li><a href="#airsensor-0-3-9">0.3.9</a></li>
         <li><a href="#airsensor-0-3-8">0.3.8</a></li>

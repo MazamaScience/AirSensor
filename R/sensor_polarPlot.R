@@ -53,13 +53,15 @@
 #'
 #' @examples
 #' \donttest{
-#' sensor <- sensor_load(startdate = 20190601, enddate = 20190630)
-#' sensor <- sensor_filterMeta(sensor, monitorID == "SCSB_02")
+#' # Use example sensor, whose date range is 2019-08-01 to 2019-10-01
+#' sensor <- example_sensor
 #' 
-#' # Load wind data from NOAA
-#' windData <- worldmet::importNOAA(code = "722975-53141", year = 2019, 
-#'                                  parallel = FALSE)
-#' windData <- dplyr::select(windData, c("date", "wd", "ws"))
+#' # Create wind data using same date range
+#' windData <- wind_load(
+#'   monitorID = "060950004_01", 
+#'   startdate = "2018-08-01", 
+#'   enddate = "2018-10-01"
+#' )
 #' 
 #' # Plot polar plot using
 #' sensor_polarPlot(sensor, windData, resolution = "normal")
@@ -68,7 +70,7 @@
 sensor_polarPlot <- 
   function(
     sensor, 
-    windData = NULL, 
+    windData, 
     statistic = "mean", 
     resolution = "fine",
     colors = "default", 
@@ -88,28 +90,11 @@ sensor_polarPlot <-
     if ( PWFSLSmoke::monitor_isEmpty(sensor) ) 
       stop("Required parameter 'sensor' has no data.")
     
-    if ( nrow(sensor$meta) == 0 )
-      stop("Parameter 'sensor' contains no SC sensors")
+    if ( is.null(windData) ) 
+      stop("Required parameter 'windData' is NULL")
     
-    if ( nrow(sensor$meta) > 1 )
-      stop("Parameter 'sensor' contains more than one SC sensor")
-    
-    # Find wind data readings from the closest NOAA site if none are provided
-    if ( is.null(windData) ) {
-      # Using only the first entry's datetime for the year will be problematic 
-      # if the timeframe spans more than one year...
-      year <- lubridate::year(sensor$data$datetime[1])
-      lon <- sensor$meta$longitude[1]
-      lat <- sensor$meta$latitude[1]
-      
-      closestSite <- worldmet::getMeta(lon = lon, lat = lat, n = 1, 
-                                       plot = FALSE)[1,]
-      siteCode <- paste0(closestSite$USAF, "-", closestSite$WBAN)
-      
-      siteData <- worldmet::importNOAA(code = siteCode, year = year, 
-                                       parallel = FALSE)
-      windData <- dplyr::select(siteData, c("date", "wd", "ws"))
-    }
+    if ( !all((c("wd", "ws") %in% names(windData))) ) 
+      stop("Parameter 'windData' does not contain necessary columns")
     
     # PM2.5 df 
     pollutantData <- 
@@ -117,11 +102,6 @@ sensor_polarPlot <-
         "date" = sensor$data[[1]], 
         "pm25" = sensor$data[[2]] 
       )
-    
-    # Trim wind data to the sensor's time range
-    windData <- dplyr::filter(windData, 
-                              date >= min(sensor$data$datetime),
-                              date <= max(sensor$data$datetime))
     
     # Combine df's 
     data <- 

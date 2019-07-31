@@ -12,14 +12,13 @@
 # docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --pattern=^SCNP_..$
 #
 
-#  --- . --- . AirSensor 0.3.12
-VERSION = "0.3.6" 
+#  --- . --- . AirSensor 0.3.9, datestamped logs
+VERSION = "0.3.5" 
 
 library(optparse)      # to parse command line flags
 
 # The following packages are attached here so they show up in the sessionInfo
 suppressPackageStartupMessages({
-  library(futile.logger)
   library(MazamaCoreUtils)
   library(AirSensor)
 })
@@ -139,7 +138,6 @@ result <- try({
   # Find the labels of interest
   labels <-
     pas %>%
-    pas_filter(is.na(parentID)) %>%
     pas_filter(stringr::str_detect(label, opt$pattern)) %>%
     dplyr::pull(label)
   
@@ -155,13 +153,7 @@ result <- try({
       
       airSensorList[[label]] <- 
         pat_loadMonth(label, monthstamp, opt$timezone) %>%
-        pat_createAirSensor(
-          period = "1 hour",
-          parameter = "pm25",
-          channel = "ab",
-          qc_algorithm = "hourly_AB_01",
-          min_count = 20
-        )
+        pat_createAirSensor(period = "1 hour")
       
     }, silent = TRUE)
     if ( "try-error" %in% class(result) ) {

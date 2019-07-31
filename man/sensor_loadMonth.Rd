@@ -42,5 +42,5 @@ sensor_loadMonth("scaqmd", 201905) \%>\%
 }
 }
 \seealso{
-\link{pat_createNew}
+\link{pat_loadLatest}
 }

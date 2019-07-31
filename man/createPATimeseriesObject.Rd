@@ -7,7 +7,7 @@
 createPATimeseriesObject(pat_raw = NULL)
 }
 \arguments{
-\item{pat_raw}{Raw Purple Air timeseries data from \code{downloadParseTimeseriesData()}}
+\item{pat_raw}{raw Purple Air timeseries data from \code{downloadParseTimeseriesData()}}
 }
 \value{
 List with original \code{meta} and restructured \code{data} elements
@@ -28,8 +28,7 @@ In the process, the following columns of data are omitted:
 \dontrun{
 initializeMazamaSpatialUtils()
 pas <- pas_load()
-pat_raw <- downloadParseTimeseriesData(pas, label = 'North Bend Weather', 
-                                       startdate = 20180908)
+pat_raw <- downloadParseTimeseriesData(pas, name ='North Bend Weather', startdate = 20181908)
 pat <- createPATimeseriesObject(pat_raw)
 }
 }
