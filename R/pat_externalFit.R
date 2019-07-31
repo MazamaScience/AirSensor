@@ -88,7 +88,7 @@ pat_externalFit <- function(
   names(paHourly_data) <- c("datetime", "pa_pm25")
   
   # Get the PWFSL monitor data
-  monitorID = pat$meta$pwfsl_closestMonitorID
+  monitorID <- pat$meta$pwfsl_closestMonitorID
   tlim <- range(paHourly_data$datetime)
   pwfsl_data <-
     PWFSLSmoke::monitor_load(tlim[1], tlim[2], monitorIDs = monitorID) %>%

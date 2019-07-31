@@ -11,11 +11,12 @@
 # docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/airsensor /app/createPAS_exec.R 
 #
 
-#  --- . --- . AirSensor 0.3.7
-VERSION = "0.1.4"
+#  --- . --- . AirSensor 0.3.12
+VERSION = "0.1.5"
 
 # The following packages are attached here so they show up in the sessionInfo
 suppressPackageStartupMessages({
+  library(futile.logger)
   library(MazamaCoreUtils)
   library(AirSensor)
 })
@@ -25,10 +26,12 @@ suppressPackageStartupMessages({
 if ( interactive() ) {
   
   # RStudio session
-  opt <- list(outputDir = getwd(),
-              logDir = getwd(),
-              spatialDataDir = "~/Data/Spatial",
-              version = FALSE)  
+  opt <- list(
+    outputDir = getwd(),
+    logDir = getwd(),
+    spatialDataDir = "~/Data/Spatial",
+    version = FALSE
+  )  
   
 } else {
   
@@ -108,13 +111,18 @@ result <- try({
   # Set up MazamaSpatialUtils
   AirSensor::initializeMazamaSpatialUtils(opt$spatialDataDir)
   
-  # Save it with the YYYYmmddHH stamp
+  # Save it with the UTC YYYYmmddHH stamp
   timestamp <- strftime(lubridate::now("UTC"), "%Y%m%d%H", tz="UTC")
   filename <- paste0("pas_", timestamp, ".rda")
   filepath <- file.path(opt$outputDir, filename)
   
   logger.info("Obtaining 'pas' data for %s", timestamp)
-  pas <- pas_loadLatest()
+  pas <- pas_createNew(
+    baseUrl = 'https://www.purpleair.com/json',
+    countryCodes = c('US'),
+    includePWFSL = TRUE,
+    lookbackDays = 1
+  )
   
   logger.info("Writing 'pas' data to %s", filename)
   save(list="pas", file=filepath)  

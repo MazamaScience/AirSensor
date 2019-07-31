@@ -29,7 +29,7 @@ NULL
 #' 
 #' \preformatted{
 #'   initializeMazamaSpatialUtils()
-#'   example_pas <- pas_loadLatest()
+#'   example_pas <- pas_createNew()
 #' }
 #' 
 #' @seealso example_pas_raw
@@ -70,9 +70,9 @@ NULL
 #' 
 #' \preformatted{
 #'   pas <- pas_load()
-#'   example_pat <- pat_loadLatest(pas, name = "Seattle",
-#'                                 startdate = "2018-07-01",
-#'                                 enddate = "2018-09-01")
+#'   example_pat <- pat_createNew(pas, label = "Seattle",
+#'                                startdate = "2018-07-01",
+#'                                enddate = "2018-09-01")
 #' }
 #' @seealso example_pat_failure_A
 #' @seealso example_pat_failure_B
@@ -90,9 +90,9 @@ NULL
 #' \preformatted{
 #'   pas <- pas_load()
 #'   example_pat_failure_A <- 
-#'     pat_loadLatest(pas, name = "SCNP_20",
-#'                    startdate = "2019-04-01",
-#'                    enddate = "2019-04-18")
+#'     pat_createNew(pas, label = "SCNP_20",
+#'                   startdate = "2019-04-01",
+#'                   enddate = "2019-04-18")
 #' }
 #' @seealso example_pat
 #' @seealso example_pat_failure_B
@@ -110,9 +110,9 @@ NULL
 #' \preformatted{
 #'   pas <- pas_load()
 #'   example_pat_failure_B <- 
-#'     pat_loadLatest(pas, name = "SCTV_16",
-#'                    startdate = "2019-06-01",
-#'                    enddate = "2019-06-18")
+#'     pat_createNew(pas, label = "SCTV_16",
+#'                   startdate = "2019-06-01",
+#'                   enddate = "2019-06-18")
 #' }
 #' @seealso example_pat
 #' @seealso example_pat_failure_A
@@ -130,9 +130,9 @@ NULL
 #' \preformatted{
 #'   pas <- pas_load()
 #'   example_sensor <- 
-#'     pat_loadLatest(pas, name = "SCAN_14",
-#'                    startdate = "2018-08-14",
-#'                    enddate = "2018-09-07") %>%
+#'     pat_createNew(pas, label = "SCAN_14",
+#'                   startdate = "2018-08-14",
+#'                   enddate = "2018-09-07") %>%
 #'     pat_createAirSensor(period = "1 hour")
 #' }
 NULL

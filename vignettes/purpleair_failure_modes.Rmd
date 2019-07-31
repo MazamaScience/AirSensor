@@ -36,8 +36,8 @@ angled regression line.
 Channel A readings show extreme levels of noise.
 
 ```{r channel_a_noise_2, echo=FALSE}
-pat_a_noisy_2 <- pat_load(pas, label = "SCAP_14", 
-                          startdate = 20190701, enddate = 20190708)
+pat_a_noisy_2 <- pat_createNew(pas, label = "SCAP_14", 
+                               startdate = 20190701, enddate = 20190708)
 pat_multiplot(pat_a_noisy_2, plottype = "pm25_over")
 ```
 
@@ -65,8 +65,8 @@ The A channel PM2.5 sensor starts reflecting humidity readings instead of PM
 levels.
 
 ```{r channel_a_humidity_multi, echo=FALSE, warning=FALSE}
-pat_a_humidity <- pat_loadLatest(pas, "BikeSGV - West Pasadena", 
-                                 startdate="2019-04-16", enddate="2019-04-24")
+pat_a_humidity <- pat_createNew(pas, "BikeSGV - West Pasadena", 
+                                startdate="2019-04-16", enddate="2019-04-24")
 pat_multiplot(pat_a_humidity)
 ```
 
@@ -94,7 +94,7 @@ The A channel is centered around a particular level but is sometimes affected
 by humidity when it goes past a certain threshold.
 
 ```{r, echo=FALSE, warning=FALSE}
-pat <- pat_loadLatest(pas, "SCEM_05", startdate = 20190701, enddate = 20190710)
+pat <- pat_createNew(pas, "SCEM_05", startdate = 20190701, enddate = 20190710)
 pat_multiplot(pat)
 ```
 
@@ -121,8 +121,8 @@ very straight line of points is visible at exactly 3333.0 ug/m3.
 Channel B measures no particulate matter at all.
 
 ```{r channel_b_zero, echo=FALSE}
-pat_b_zero <- pat_loadLatest(pas, "SCAP_46", 
-                             startdate="2019-07-01", enddate="2019-07-08")
+pat_b_zero <- pat_createNew(pas, "SCAP_46", 
+                            startdate="2019-07-01", enddate="2019-07-08")
 pat_multiplot(pat_b_zero, sampleSize = NULL)
 
 simple <- dplyr::select(pat_b_zero$data, datetime, pm25_A, pm25_B)

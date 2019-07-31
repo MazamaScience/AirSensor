@@ -11,11 +11,12 @@
 # docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --pattern=^SCNP_..$
 #
 
-#  --- . --- . AirSensor 0.3.9, datestamped logs
-VERSION = "0.1.6"
+#  --- . --- . AirSensor 0.3.12
+VERSION = "0.1.7"
 
 # The following packages are attached here so they show up in the sessionInfo
 suppressPackageStartupMessages({
+  library(futile.logger)
   library(MazamaCoreUtils)
   library(AirSensor)
 })
@@ -131,15 +132,18 @@ result <- try({
   endtime <- lubridate::ceiling_date(starttime + lubridate::ddays(20), unit="month")
   
   # Get strings
-  startdate <- strftime(starttime, "%Y-%m-%d", tz = opt$timezone)
-  enddate <- strftime(endtime, "%Y-%m-%d", tz = opt$timezone)
+  # startdate <- strftime(starttime, "%Y-%m-%d", tz = opt$timezone)
+  # enddate <- strftime(endtime, "%Y-%m-%d", tz = opt$timezone)
+  startdate <- strftime(starttime, "%Y%m%d", tz = opt$timezone)
+  enddate <- strftime(endtime, "%Y%m%d", tz = opt$timezone)
   
   logger.info("Loading PA Synoptic data")
   pas <- pas_load()
   
-  # Find the labels of interest
+  # Find the labels of interest, only one per sensor
   labels <-
     pas %>%
+    pas_filter(is.na(parentID)) %>%
     pas_filter(stringr::str_detect(label, opt$pattern)) %>%
     dplyr::pull(label)
   
@@ -150,11 +154,16 @@ result <- try({
     # Try block so we keep chugging if one sensor fails
     result <- try({
       
-      logger.debug("pat_loadLatest(pas, '%s', %s, %s)", 
+      logger.debug("pat_createNew(pas, '%s', '%s', '%s')", 
                    label, startdate, enddate)
-      pat <- pat_loadLatest(pas, label,
-                            startdate = startdate,
-                            enddate = enddate)
+
+      pat <- pat_createNew(
+        pas,
+        label,
+        startdate = startdate,
+        enddate = enddate,
+        baseURL = "https://api.thingspeak.com/channels/"
+      )
       
       filename <- paste0("pat_", label, "_", monthstamp, ".rda")
       filepath <- file.path(opt$outputDir, filename)

@@ -45,9 +45,9 @@ This dataset was was generated on 2019-07-06 by running:
 
   pas &amp;lt;- pas_load()
   example_pat_failure_B &amp;lt;- 
-    pat_loadLatest(pas, name = &quot;SCTV_16&quot;,
-                   startdate = &quot;2019-06-01&quot;,
-                   enddate = &quot;2019-06-18&quot;)
+    pat_createNew(pas, label = &quot;SCTV_16&quot;,
+                  startdate = &quot;2019-06-01&quot;,
+                  enddate = &quot;2019-06-18&quot;)
 " />
 <meta name="twitter:card" content="summary" />
 
@@ -79,7 +79,7 @@ This dataset was was generated on 2019-07-06 by running:
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.12</span>
       </span>
     </div>
 
@@ -122,6 +122,9 @@ This dataset was was generated on 2019-07-06 by running:
     <li>
       <a href="../articles/purpleair_sensors.html">Purple Air Sensors</a>
     </li>
+    <li>
+      <a href="../articles/working_with_wind_data.html">Working With Wind Data</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -161,9 +164,9 @@ This dataset was was generated on 2019-07-06 by running:</p>
 <pre>
   pas &lt;- pas_load()
   example_pat_failure_B &lt;- 
-    pat_loadLatest(pas, name = "SCTV_16",
-                   startdate = "2019-06-01",
-                   enddate = "2019-06-18")
+    pat_createNew(pas, label = "SCTV_16",
+                  startdate = "2019-06-01",
+                  enddate = "2019-06-18")
 </pre>
     
     </div>

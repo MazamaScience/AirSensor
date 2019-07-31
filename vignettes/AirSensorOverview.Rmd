@@ -23,7 +23,7 @@ following functions are the most common end-user functions:
 |:------|:-----|
 | **Loading a `pas`** |  |
 | `pas_load()` | _none_ | 
-| `pas_loadLatest()` | `baseUrl, countryCodes, includePWFSL, lookbackDays` |
+| `pas_createNew()` | `baseUrl, countryCodes, includePWFSL, lookbackDays` |
 | **Mainpulating a `pas`** |  |
 | `pas_filter()` | `pas, ...` |
 | `pas_filterArea()` | `pas, w, e, s, n` |
@@ -44,7 +44,7 @@ following functions are the most common end-user functions:
 | **Loading a `pat`** |  |
 | `pat_load()` | `label , startdate, enddate` | 
 | `pat_loadMonth()` | `label , datestamp` | 
-| `pat_loadLatest()` | `pas, name, id, startdate, enddate` |
+| `pat_createNew()` | `pas, name, id, startdate, enddate` |
 | **Mainpulating a `pat`** |  |
 | `pat_filter()` | `pat, ...` |
 | `pat_filterDate()` | `pat, startdate, enddate, ...` |

@@ -86,7 +86,7 @@
     
     flagged <- which(df[[outlierFlagName]])
     
-    df[[outlierFlagName]] = NULL
+    df[[outlierFlagName]] <- NULL
     
     df[[parameter]][flagged] <- 
       roll_med(df[[parameter]], medWin)[flagged]
