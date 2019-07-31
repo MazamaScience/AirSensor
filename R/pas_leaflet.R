@@ -132,7 +132,7 @@ pas_leaflet <- function(
         colors <- colorInfo$key[,2]
         labels <- colorInfo$key[,1]
         legendTitle <- 'AQI'
-        value <- round(pas$pm25_1hr, 1)
+        value <- round(pas[[parameter]], 1)
         unit <- '\U00B5g/m3'
         
       } else { # Other Palettes
