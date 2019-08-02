@@ -32,7 +32,7 @@ if ( FALSE ) {
   scap <-
     pas_load() %>%
     dplyr::filter(stringr::str_detect(label, "^[Ss][Cc][Aa][Pp]_..$")) %>%
-    pull(label) %>%
+    dplyr::pull(label) %>%
     purrr::map(pat_loadMonth, "201907") %>%
     purrr::map(pat_createAirSensor) %>%
     monitor_combine() %>%

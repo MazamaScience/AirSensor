@@ -257,7 +257,7 @@ pas_palette <- function(
     
     labels <- PWFSLSmoke::AQI$names
     
-    sensorColor <- colorFunc(pas$pm25_1hr)
+    sensorColor <- colorFunc(pas[[parameter]])
     
   } else if ( tolower(paletteName) == "distance" ) { # DISTANCE
     
