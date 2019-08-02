@@ -40,9 +40,10 @@
 <meta property="og:title" content="Load PurpleAir synoptic data — pas_load" />
 
 <meta property="og:description" content="A pre-generated pa_synoptic object will be loaded for
-  the given date. These files are generated each day at 4am California time
-  and provide a record of all currently installed Purple Air sensors for the
-  day of interest.
+  the given date. These files are generated throughout each day and provide
+  a record of all currently installed Purple Air sensors for the day of 
+  interest. The default will always load data associated with the most
+  recent pre-generated file -- typically less than one hour old.
 The datestamp can be anything that is understood by 
   lubrdiate::ymd() including either of the following recommended 
   formats:
@@ -82,7 +83,7 @@ The datestamp can be anything that is understood by
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.12</span>
       </span>
     </div>
 
@@ -125,6 +126,9 @@ The datestamp can be anything that is understood by
     <li>
       <a href="../articles/purpleair_sensors.html">Purple Air Sensors</a>
     </li>
+    <li>
+      <a href="../articles/working_with_wind_data.html">Working With Wind Data</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -159,9 +163,10 @@ The datestamp can be anything that is understood by
     <div class="ref-description">
     
     <p>A pre-generated <em>pa_synoptic</em> object will be loaded for
-  the given date. These files are generated each day at 4am California time
-  and provide a record of all currently installed Purple Air sensors for the
-  day of interest.</p>
+  the given date. These files are generated throughout each day and provide
+  a record of all currently installed Purple Air sensors for the day of 
+  interest. The default will always load data associated with the most
+  recent pre-generated file -- typically less than one hour old.</p>
 <p>The <code>datestamp</code> can be anything that is understood by 
   <code>lubrdiate::ymd()</code> including either of the following recommended 
   formats:</p>
@@ -175,16 +180,16 @@ The datestamp can be anything that is understood by
     </div>
 
     <pre class="usage"><span class='fu'>pas_load</span>(<span class='kw'>datestamp</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>strftime</a></span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/today.html'>today</a></span>(<span class='st'>"America/Los_Angeles"</span>),
-  <span class='st'>"%Y%m%d"</span>),
-  <span class='kw'>baseUrl</span> <span class='kw'>=</span> <span class='st'>"http://smoke.mazamascience.com/data/PurpleAir/pas/2019"</span>,
-  <span class='kw'>retries</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
+  <span class='st'>"%Y%m%d"</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"America/Los_Angeles"</span>),
+  <span class='kw'>baseUrl</span> <span class='kw'>=</span> <span class='st'>"http://smoke.mazamascience.com/data/PurpleAir/pas/"</span>,
+  <span class='kw'>retries</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='st'>"America/Los_Angeles"</span>, <span class='kw'>archival</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>datestamp</th>
-      <td><p>Date string in ymd order.</p></td>
+      <td><p>Local date string in ymd order.</p></td>
     </tr>
     <tr>
       <th>baseUrl</th>
@@ -195,6 +200,15 @@ The datestamp can be anything that is understood by
       <td><p>Max number of days to go back and try to load if requested 
 date cannot be retrieved.</p></td>
     </tr>
+    <tr>
+      <th>timezone</th>
+      <td><p>Timezone used to interpret <code>datestamp</code>.</p></td>
+    </tr>
+    <tr>
+      <th>archival</th>
+      <td><p>Logical specifying whether a version should be loaded that
+includes sensors that have stopped reporting.</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -203,7 +217,7 @@ date cannot be retrieved.</p></td>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='pas_loadLatest.html'>pas_loadLatest</a></p></div>
+    <div class='dont-index'><p><a href='pas_createNew.html'>pas_createNew</a></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

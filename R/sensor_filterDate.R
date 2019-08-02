@@ -27,7 +27,7 @@
 #' 
 #' @examples
 #' \dontrun{
-#' august <- pat_filterDate(example_sensor, startdate = 20180801, enddate = 20180831)
+#' august <- sensor_filterDate(example_sensor, startdate = 20180801, enddate = 20180831)
 #' }
 
 sensor_filterDate <- function(
@@ -60,14 +60,14 @@ sensor_filterDate <- function(
     days <- 7 # default
   }
   
-  tlim <- .dateRange(startdate, enddate, days, timezone = timezone)
+  dateRange <- MazamaCoreUtils::dateRange(startdate, enddate, timezone, days)
   
   # Subset the "sensor" object ----------------------------------------------------
   
   data <- 
     sensor$data %>%
-    dplyr::filter(.data$datetime >= tlim[1]) %>%
-    dplyr::filter(.data$datetime < tlim[2])
+    dplyr::filter(.data$datetime >= dateRange[1]) %>%
+    dplyr::filter(.data$datetime < dateRange[2])
   
   sensor$data <- data
   

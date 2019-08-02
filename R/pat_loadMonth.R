@@ -22,7 +22,7 @@
 #' 
 #' @return A PurpleAir Timeseries \emph{pat} object.
 #' 
-#' @seealso \link{pat_loadLatest}
+#' @seealso \link{pat_createNew}
 #' 
 #' @examples
 #' \donttest{
@@ -47,7 +47,7 @@ pat_loadMonth <- function(
   # Default to the current month
   if ( is.null(datestamp) || datestamp == "" ) {
     now <- lubridate::now(timezone)
-    datestamp <- strftime(now, "%Y%m%d")
+    datestamp <- strftime(now, "%Y%m%d", tz = timezone)
   }
   
   # Handle the case where the day is already specified

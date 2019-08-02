@@ -60,6 +60,16 @@ AirShiny_leaflet <- function(
   
   cols <- colorInfo$colors
   
+  # Create popupText
+  pas$popupText <- 
+    paste0(
+      "<b>", pas$label, "</b><br/>",
+      pas$statsLastModifiedDate, "<br/>",
+      "PM2.5 = ", round(pas$pm25_1day, 1), " \U00B5g/m3<br/>",
+      "Temperature = ", round(pas$temperature, 0), " F<br/>",
+      "Humidity = ", round(pas$humidity, 0), "%<br/>"
+    )
+  
   # Extract view information
   lonRange <- range(pas$longitude, na.rm = TRUE)
   latRange <- range(pas$latitude, na.rm = TRUE)
@@ -133,6 +143,7 @@ AirShiny_leaflet <- function(
       fillColor=cols,
       fillOpacity=opacity,
       stroke=FALSE,
+      popup=pas$popupText,
       layerId = pas$label
     )
   
@@ -144,7 +155,7 @@ AirShiny_leaflet <- function(
 #' @export
 #' @title Bar plot for AirShiny
 #' 
-#' @param pat PurpleAir Timeseries "pat" object from \code{pat_loadLatest()}
+#' @param pat PurpleAir Timeseries "pat" object from \code{pat_createNew()}
 #' @param period The time period to average to. Can be "sec", "min", "hour", 
 #' "day", "DSTday", "week", "month", "quarter" or "year". A number can also
 #'  precede these options followed by a space (i.e. "2 day" or "37 min").

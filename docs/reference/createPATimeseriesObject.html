@@ -76,7 +76,7 @@ pm10_atm
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.12</span>
       </span>
     </div>
 
@@ -118,6 +118,9 @@ pm10_atm
     </li>
     <li>
       <a href="../articles/purpleair_sensors.html">Purple Air Sensors</a>
+    </li>
+    <li>
+      <a href="../articles/working_with_wind_data.html">Working With Wind Data</a>
     </li>
   </ul>
 </li>
@@ -169,7 +172,7 @@ In the process, the following columns of data are omitted:</p><ul>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pat_raw</th>
-      <td><p>raw Purple Air timeseries data from <code><a href='downloadParseTimeseriesData.html'>downloadParseTimeseriesData()</a></code></p></td>
+      <td><p>Raw Purple Air timeseries data from <code><a href='downloadParseTimeseriesData.html'>downloadParseTimeseriesData()</a></code></p></td>
     </tr>
     </table>
     
@@ -187,7 +190,8 @@ In the process, the following columns of data are omitted:</p><ul>
     <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='fu'><a href='initializeMazamaSpatialUtils.html'>initializeMazamaSpatialUtils</a></span>()
 <span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pas_load.html'>pas_load</a></span>()
-<span class='no'>pat_raw</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='downloadParseTimeseriesData.html'>downloadParseTimeseriesData</a></span>(<span class='no'>pas</span>, <span class='kw'>name</span> <span class='kw'>=</span><span class='st'>'North Bend Weather'</span>, <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fl'>20181908</span>)
+<span class='no'>pat_raw</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='downloadParseTimeseriesData.html'>downloadParseTimeseriesData</a></span>(<span class='no'>pas</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>'North Bend Weather'</span>,
+                                       <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fl'>20180908</span>)
 <span class='no'>pat</span> <span class='kw'>&lt;-</span> <span class='fu'>createPATimeseriesObject</span>(<span class='no'>pat_raw</span>)
 <span class='co'># }</span></pre>
   </div>

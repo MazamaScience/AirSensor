@@ -61,7 +61,7 @@ pat_scatterplot <- function(
     stop("Parameter 'pat' has no data.") 
   
   if ( !is.null(sampleFraction) )
-    sampleSize = NULL # Disable one 
+    sampleSize <- NULL # Disable one 
   
   # For easier access
   meta <- pat$meta
