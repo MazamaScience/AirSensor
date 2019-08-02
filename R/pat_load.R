@@ -92,7 +92,8 @@ pat_load <- function(
     pat_filterDate(
       pat = pat_join(patList),
       startdate = dateRange[1], 
-      enddate = dateRange[2]
+      enddate = dateRange[2],
+      timezone = timezone
     )
   
   return(patObj)
