@@ -5,8 +5,8 @@
 
 AirSensor_tarball:
 	cd ..; R CMD build .
-	mv ../AirSensor_0.3.12.tar.gz .
+	mv ../AirSensor_0.3.14.tar.gz .
 
 production_build:
-	docker build --no-cache -t mazamascience/airsensor:0.3.12 -t mazamascience/airsensor:latest .
+	docker build --no-cache -t mazamascience/airsensor:0.3.14 -t mazamascience/airsensor:latest .
 
