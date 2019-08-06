@@ -8,8 +8,9 @@
 #' @description A pre-generated \emph{pa_synoptic} object will be loaded for
 #'   the given date. These files are generated throughout each day and provide
 #'   a record of all currently installed Purple Air sensors for the day of 
-#'   interest. The default will always load data associated with the most
-#'   recent pre-generated file -- typically less than one hour old.
+#'   interest. With default arguments, this function will always load data 
+#'   associated with the most recent pre-generated file -- typically less than 
+#'   one hour old.
 #' 
 #'   The \code{datestamp} can be anything that is understood by 
 #'   \code{lubrdiate::ymd()} including either of the following recommended 
@@ -21,9 +22,12 @@
 #' }
 #' 
 #' By default, today's date is used.
+#' 
+#' The \emph{pas} object for a specific hour may be loaded by specifying 
+#' \code{datestamp = "YYYYmmddHH"}.
 #'
 #' @param datestamp Local date string in ymd order.
-#' @param baseUrl Base URL for synoptic data.
+#' @param baseUrl Base URL for \emph{pat} data.
 #' @param retries Max number of days to go back and try to load if requested 
 #'   date cannot be retrieved.
 #' @param timezone Timezone used to interpret \code{datestamp}.

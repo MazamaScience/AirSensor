@@ -47,7 +47,7 @@ as <-
 }
 }
 \seealso{
-PurpleAirQC_hourly_AB_00
+\link{PurpleAirQC_hourly_AB_00}
 
-PurpleAirQC_hourly_AB_01
+\link{PurpleAirQC_hourly_AB_01}
 }

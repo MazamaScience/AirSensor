@@ -25,8 +25,8 @@
 #'
 #' @return An "airsensor" object of aggregated PurpleAir Timeseries data.
 #' 
-#' @seealso PurpleAirQC_hourly_AB_00
-#' @seealso PurpleAirQC_hourly_AB_01
+#' @seealso \link{PurpleAirQC_hourly_AB_00}
+#' @seealso \link{PurpleAirQC_hourly_AB_01}
 #' 
 #' @examples 
 #' \dontrun{
@@ -177,9 +177,11 @@ pat_createAirSensor <- function(
   # ----- Return ---------------------------------------------------------------
   
   # NOTE:  As of 2019-05-14, the PWFSLSmoke meta dataframe still has rownames
+  # There should only be a single row in meta
   rownames(meta) <- colnames(data)[-1]
   
-  qcString <- paste0(
+  # Add QC algorithm to metadata
+  meta$PurpleAirQC_algorithm <- paste0(
     "qc_algorithm = ", qc_algorithm,
     "; period = ", period,
     "; parameter = ", parameter,
@@ -189,8 +191,7 @@ pat_createAirSensor <- function(
   
   as_object <- list(
     meta = meta, 
-    data = data,
-    PurpleAirQC_algorithm = qcString
+    data = data
   )
   
   class(as_object) <- c("airsensor", "ws_monitor")
