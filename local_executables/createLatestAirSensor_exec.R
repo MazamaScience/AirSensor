@@ -109,10 +109,6 @@ logger.debug("R session:\n\n%s\n", sessionString)
 
 result <- try({
   
-  # Get times
-  starttime <- lubridate::now(tzone = "UTC")
-  endtime <- starttime - lubridate::ddays(8) # to get 7 full days
-  
   logger.info("Loading PA Synoptic data")
   pas <- pas_load()
   
@@ -152,9 +148,6 @@ result <- try({
   
   airsensor <- PWFSLSmoke::monitor_combine(airSensorList)
   class(airsensor) <- c("airsensor", "ws_monitor", "list")
-  
-  # Guarantee we don't end up with "2000" dates
-  airsensor <- PWFSLSmoke::monitor_subset(airsensor, tlim=c(starttime, endtime))
   
   filename <- paste0("airsensor_scaqmd_latest7.rda")
   filepath <- file.path(opt$outputDir, filename)
