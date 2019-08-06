@@ -4,8 +4,9 @@
 #' 
 #' @title Load PurpleAir time series data for a month
 #' 
-#' @description A pre-generated PurpleAir Timeseries \emph{pat} object will be loaded for
-#' the given month. Archived data for SCAQMD sensors go back to January, 2018.
+#' @description A pre-generated PurpleAir Timeseries \emph{pat} object will be 
+#' loaded for the given month. Archived data for SCAQMD sensors go back to 
+#' January, 2018.
 #' 
 #' The \code{datestamp} must be in the following format:
 #' 
@@ -18,7 +19,7 @@
 #' @param label Purple Air sensor 'label'
 #' @param datestamp Date string in ymd order.
 #' @param timezone Timezone used to interpret datestamp.
-#' @param baseUrl Base URL for synoptic data.
+#' @param baseUrl Base URL for \emph{pat} data.
 #' 
 #' @return A PurpleAir Timeseries \emph{pat} object.
 #' 
@@ -61,6 +62,7 @@ pat_loadMonth <- function(
   
   filename <- paste0("pat_", label, "_", monthstamp, ".rda")
   filepath <- paste0(baseUrl, '/', yearstamp, '/', filename)
+  
   # Define a 'connection' object so we can close it no matter what happens
   conn <- url(filepath)
   result <- try({
@@ -73,8 +75,10 @@ pat_loadMonth <- function(
   # NOTE:  loading might fail.
   
   if ( "try-error" %in% class(result) ) {
-    # Log the error if logging is enabled. Fail silently otherwise.
-    try({ logger.error("%s", geterrmessage()) }, silent = TRUE)
+    # TODO:  Restore logging when we stop generating "futile.logger" errors
+    # TODO:  when logging has not been initialized.
+    # # Log the error if logging is enabled. Fail silently otherwise.
+    # try({ logger.error("%s", geterrmessage()) }, silent = TRUE)
     stop(paste0("Data file could not be loaded: ", filepath), call.=FALSE)
   }
   

@@ -2,7 +2,7 @@
 % Please edit documentation in R/sensor_loadLatest.R
 \name{sensor_loadLatest}
 \alias{sensor_loadLatest}
-\title{Load hourly-aggregated Purple Air data}
+\title{Load hourly-aggregated Purple Air data for a week}
 \usage{
 sensor_loadLatest(collection = "scaqmd",
   baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/airsensor")
@@ -10,7 +10,7 @@ sensor_loadLatest(collection = "scaqmd",
 \arguments{
 \item{collection}{Name associated with the collection.}
 
-\item{baseUrl}{Base URL for synoptic data.}
+\item{baseUrl}{Base URL for \emph{airsensor} data.}
 }
 \value{
 An object of class "pa_timeseries".

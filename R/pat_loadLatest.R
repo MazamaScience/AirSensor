@@ -2,13 +2,13 @@
 #' @importFrom rlang .data
 #' @importFrom MazamaCoreUtils logger.debug
 #' 
-#' @title Load PurpleAir time series data
+#' @title Load PurpleAir time series data for a week
 #' 
 #' @description A pre-generated PurpleAir Timeseries \emph{pat} object will be 
 #' loaded containing data for the most recent 7-day interval.
 #' 
 #' @param label PurpleAir sensor 'label'.
-#' @param baseUrl Base URL for synoptic data.
+#' @param baseUrl Base URL for \emph{pat} data.
 #' 
 #' @return A PurpleAir Timeseries \emph{pat} object.
 #' 
@@ -51,8 +51,10 @@ pat_loadLatest <- function(
   # NOTE:  loading might fail.
   
   if ( "try-error" %in% class(result) ) {
-    # Log the error if logging is enabled. Fail silently otherwise.
-    try({ logger.error("%s", geterrmessage()) }, silent = TRUE)
+    # TODO:  Restore logging when we stop generating "futile.logger" errors
+    # TODO:  when logging has not been initialized.
+    # # Log the error if logging is enabled. Fail silently otherwise.
+    # try({ logger.error("%s", geterrmessage()) }, silent = TRUE)
     stop(paste0("Data file could not be loaded: ", filepath), call.=FALSE)
   }
   

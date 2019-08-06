@@ -2,11 +2,11 @@
 #' @importFrom rlang .data
 #' @importFrom MazamaCoreUtils logger.debug
 #' 
-#' @title Load PurpleAir time series data
+#' @title Load PurpleAir time series data for a time period
 #' 
-#' @description A pre-generated PurpleAir Timeseries \emph{pat} object will be loaded for
-#' the given time interval. Archived data for SCAQMD sensors go back to 
-#' January, 2018.
+#' @description A pre-generated PurpleAir Timeseries \emph{pat} object will be 
+#' loaded for the given time interval. Archived data for SCAQMD sensors go back 
+#' to January, 2018.
 #' 
 #' Dates can be anything that is understood by 
 #' \code{lubrdiate::parse_date_time()} including either of the following 
@@ -24,10 +24,11 @@
 #' @param enddate Desired end time (ISO 8601).
 #' @param days Number of days of data to include.
 #' @param timezone Timezone used to interpret \code{datestamp}.
-#' @param baseUrl Base URL for synoptic data.
+#' @param baseUrl Base URL for \emph{pat} data.
 #' 
 #' @return A PurpleAir Timeseries \emph{pat} object.
 #' 
+#' @seealso \link{pat_loadLatest}
 #' @seealso \link{pat_loadMonth}
 #' @seealso \link{pat_createNew}
 #' 

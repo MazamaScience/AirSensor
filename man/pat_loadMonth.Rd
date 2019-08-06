@@ -15,14 +15,15 @@ pat_loadMonth(label = NULL, datestamp = NULL,
 
 \item{timezone}{Timezone used to interpret datestamp.}
 
-\item{baseUrl}{Base URL for synoptic data.}
+\item{baseUrl}{Base URL for \emph{pat} data.}
 }
 \value{
 A PurpleAir Timeseries \emph{pat} object.
 }
 \description{
-A pre-generated PurpleAir Timeseries \emph{pat} object will be loaded for
-the given month. Archived data for SCAQMD sensors go back to January, 2018.
+A pre-generated PurpleAir Timeseries \emph{pat} object will be 
+loaded for the given month. Archived data for SCAQMD sensors go back to 
+January, 2018.
 
 The \code{datestamp} must be in the following format:
 

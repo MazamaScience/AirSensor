@@ -1,7 +1,7 @@
 #' @export
 #' @importFrom rlang .data
 #' 
-#' @title Load hourly-aggregated Purple Air data
+#' @title Load hourly-aggregated Purple Air data for a month
 #' 
 #' @description A pre-generated \code{airsensor} object will be loaded for
 #' the given month. Archived data for SCAQMD sensors go back to January, 2018.
@@ -20,7 +20,7 @@
 #' @param collection Name associated with the collection.
 #' @param datestamp A date string in ymd order.
 #' @param timezone Timezone used to interpret datestamp.
-#' @param baseUrl Base URL for synoptic data.
+#' @param baseUrl Base URL for \emph{airsensor} data.
 #' 
 #' @return An object of class "pa_timeseries".
 #' 
@@ -61,6 +61,7 @@ sensor_loadMonth <- function(
   
   filename <- paste0("airsensor_", collection, "_", monthstamp, ".rda")
   filepath <- paste0(baseUrl, '/', yearstamp, '/', filename)
+  
   # Define a 'connection' object so we can close it no matter what happens
   conn <- url(filepath)
   result <- try({
@@ -73,6 +74,10 @@ sensor_loadMonth <- function(
   # NOTE:  loading might fail.
   
   if ( "try-error" %in% class(result) ) {
+    # TODO:  Restore logging when we stop generating "futile.logger" errors
+    # TODO:  when logging has not been initialized.
+    # # Log the error if logging is enabled. Fail silently otherwise.
+    # try({ logger.error("%s", geterrmessage()) }, silent = TRUE)
     stop(paste0("Data file could not be loaded: ", filepath), call.=FALSE)
   }
   

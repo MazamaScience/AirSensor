@@ -2,7 +2,7 @@
 % Please edit documentation in R/pat_load.R
 \name{pat_load}
 \alias{pat_load}
-\title{Load PurpleAir time series data}
+\title{Load PurpleAir time series data for a time period}
 \usage{
 pat_load(label = NULL, startdate = NULL, enddate = NULL, days = 7,
   timezone = "America/Los_Angeles",
@@ -19,15 +19,15 @@ pat_load(label = NULL, startdate = NULL, enddate = NULL, days = 7,
 
 \item{timezone}{Timezone used to interpret \code{datestamp}.}
 
-\item{baseUrl}{Base URL for synoptic data.}
+\item{baseUrl}{Base URL for \emph{pat} data.}
 }
 \value{
 A PurpleAir Timeseries \emph{pat} object.
 }
 \description{
-A pre-generated PurpleAir Timeseries \emph{pat} object will be loaded for
-the given time interval. Archived data for SCAQMD sensors go back to 
-January, 2018.
+A pre-generated PurpleAir Timeseries \emph{pat} object will be 
+loaded for the given time interval. Archived data for SCAQMD sensors go back 
+to January, 2018.
 
 Dates can be anything that is understood by 
 \code{lubrdiate::parse_date_time()} including either of the following 
@@ -47,6 +47,8 @@ pat_multiplot(pat)
 }
 }
 \seealso{
+\link{pat_loadLatest}
+
 \link{pat_loadMonth}
 
 \link{pat_createNew}
