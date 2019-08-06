@@ -1,66 +1,45 @@
 #' @export
 #' @importFrom rlang .data
+#' @importFrom MazamaCoreUtils logger.debug
 #' 
 #' @title Load hourly-aggregated Purple Air data
 #' 
-#' @description A pre-generated \code{airsensor} object will be loaded for
-#' the given month. Archived data for SCAQMD sensors go back to January, 2018.
+#' @description A pre-generated \code{airsensor} object will be loaded 
+#' containing data for the most recent 7-day interval.
 #' 
-#' The \code{datestamp} can must be in the following format:
-#' 
-#' \itemize{
-#' \item{\code{"YYYYmm"}}
-#' }
-#' 
-#' By default, the current month is loaded.
-#'
 #' Each \code{airsensor} object contains data from a named collection of 
 #' Purple Air sensors.
 #' 
 #' @param collection Name associated with the collection.
-#' @param datestamp A date string in ymd order.
-#' @param timezone Timezone used to interpret datestamp.
 #' @param baseUrl Base URL for synoptic data.
 #' 
 #' @return An object of class "pa_timeseries".
 #' 
-#' @seealso \link{pat_createNew}
+#' @seealso \link{sensor_load}
+#' @seealso \link{sensor_loadMonth}
+#' @seealso \link{pat_createAirSensor}
 #' 
 #' @examples
 #' \donttest{
-#' sensor_loadMonth("scaqmd", 201905) %>%
+#' sensor_loadLatest("scaqmd", 201905) %>%
 #'   PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
 #' }
 
-sensor_loadMonth <- function(
+sensor_loadLatest <- function(
   collection = "scaqmd",
-  datestamp = NULL,
-  timezone = "America/Los_Angeles",
   baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/airsensor"
 ) {
   
   # Validate parameters --------------------------------------------------------
   
-  # TODO: Work with lubridate to support all formats
-  
   if ( is.null(collection) )
     stop("Required parameter 'collection' is missing.")
 
-  # Default to the current month
-  if ( is.null(datestamp) || datestamp == "" ) {
-    now <- lubridate::now(timezone)
-    datestamp <- strftime(now, "%Y%m%d", tz = timezone)
-  }
-  
-  # Handle the case where the day is already specified
-  datestamp <- stringr::str_sub(paste0(datestamp,"01"), 1, 8)
-  monthstamp <- stringr::str_sub(datestamp, 1, 6)
-  yearstamp <- stringr::str_sub(datestamp, 1, 4)
-  
   # Load data from URL ---------------------------------------------------------
   
-  filename <- paste0("airsensor_", collection, "_", monthstamp, ".rda")
-  filepath <- paste0(baseUrl, '/', yearstamp, '/', filename)
+  filename <- paste0("airsensor_", collection, "_latest7.rda")
+  filepath <- paste0(baseUrl, '/latest/', filename)
+  
   # Define a 'connection' object so we can close it no matter what happens
   conn <- url(filepath)
   result <- try({
@@ -73,6 +52,8 @@ sensor_loadMonth <- function(
   # NOTE:  loading might fail.
   
   if ( "try-error" %in% class(result) ) {
+    # Log the error if logging is enabled. Fail silently otherwise.
+    try({ logger.error("%s", geterrmessage()) }, silent = TRUE)
     stop(paste0("Data file could not be loaded: ", filepath), call.=FALSE)
   }
   

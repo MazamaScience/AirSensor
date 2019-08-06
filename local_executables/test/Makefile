@@ -28,6 +28,9 @@ createPAS_archival:
 ################################################################################
 # PAT objects
 
+createLatestPAT:
+	docker run --rm -v $(BASE_PATH):/app -v $(BASE_PATH)/output:/app/output -v $(BASE_PATH)/logs:/app/logs -w /app mazamascience/airsensor:latest /app/createLatestPAT_exec.R --outputDir=/app/output --logDir=/app/logs --pattern=^SCNP_..$
+
 createMonthlyPAT:
 	docker run --rm -v $(BASE_PATH):/app -v $(BASE_PATH)/output:/app/output -v $(BASE_PATH)/logs:/app/logs -w /app mazamascience/airsensor:latest /app/createMonthlyPAT_exec.R --outputDir=/app/output --logDir=/app/logs --pattern=^SCNP_..$
 

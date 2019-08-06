@@ -1,3 +1,9 @@
+# AirSensor 0.3.14
+
+* Removed Shiny app related functions.
+* Added `pat_loadLatest()` to always get the most recent 7 days.
+* Added `pat_loadSensor()` to always get the most recent 7 days.
+
 # AirSensor 0.3.13
 
 * Removed popups from `AirShiny_leaflet()`

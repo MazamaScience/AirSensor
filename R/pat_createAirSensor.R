@@ -25,8 +25,8 @@
 #'
 #' @return An "airsensor" object of aggregated PurpleAir Timeseries data.
 #' 
-#' @seealso PurpleAirQC_hourly_AB_00
-#' @seealso PurpleAirQC_hourly_AB_01
+#' @seealso \link{PurpleAirQC_hourly_AB_00}
+#' @seealso \link{PurpleAirQC_hourly_AB_01}
 #' 
 #' @examples 
 #' \dontrun{

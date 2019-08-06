@@ -39,5 +39,9 @@ pat_multiplot(may)
 }
 }
 \seealso{
+\link{pat_load}
+
+\link{pat_loadLatest}
+
 \link{pat_createNew}
 }

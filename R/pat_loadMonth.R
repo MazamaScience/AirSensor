@@ -1,6 +1,6 @@
 #' @export
 #' @importFrom rlang .data
-#' @importFrom dplyr filter
+#' @importFrom MazamaCoreUtils logger.debug
 #' 
 #' @title Load PurpleAir time series data for a month
 #' 
@@ -22,6 +22,8 @@
 #' 
 #' @return A PurpleAir Timeseries \emph{pat} object.
 #' 
+#' @seealso \link{pat_load}
+#' @seealso \link{pat_loadLatest}
 #' @seealso \link{pat_createNew}
 #' 
 #' @examples
