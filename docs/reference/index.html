@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.14</span>
       </span>
     </div>
 
@@ -163,18 +163,6 @@
           <p><code><a href="AirSensor.html">AirSensor</a></code> </p>
         </td>
         <td><p>Data access and analysis functions for Purple Air sensor data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="AirShiny_barplot.html">AirShiny_barplot()</a></code> </p>
-        </td>
-        <td><p>Bar plot for AirShiny</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="AirShiny_leaflet.html">AirShiny_leaflet()</a></code> </p>
-        </td>
-        <td><p>Leaflet interactive map for use with AirShiny</p></td>
       </tr><tr>
         
         <td>
@@ -438,7 +426,13 @@
         <td>
           <p><code><a href="pat_load.html">pat_load()</a></code> </p>
         </td>
-        <td><p>Load PurpleAir time series data</p></td>
+        <td><p>Load PurpleAir time series data for a time period</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="pat_loadLatest.html">pat_loadLatest()</a></code> </p>
+        </td>
+        <td><p>Load PurpleAir time series data for a week</p></td>
       </tr><tr>
         
         <td>
@@ -544,9 +538,15 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="sensor_loadLatest.html">sensor_loadLatest()</a></code> </p>
+        </td>
+        <td><p>Load hourly-aggregated Purple Air data for a week</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="sensor_loadMonth.html">sensor_loadMonth()</a></code> </p>
         </td>
-        <td><p>Load hourly-aggregated Purple Air data</p></td>
+        <td><p>Load hourly-aggregated Purple Air data for a month</p></td>
       </tr><tr>
         
         <td>
@@ -565,6 +565,12 @@
           <p><code><a href="sensor_videoFrame.html">sensor_videoFrame()</a></code> </p>
         </td>
         <td><p>Generate video frames</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="timeRange.html">timeRange()</a></code> </p>
+        </td>
+        <td><p>Create a POSIXct time range</p></td>
       </tr>
     </tbody>
     </table>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Load PurpleAir time series data — pat_load • AirSensor</title>
+<title>Load PurpleAir time series data for a time period — pat_load • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,11 +37,11 @@
 
 
 
-<meta property="og:title" content="Load PurpleAir time series data — pat_load" />
+<meta property="og:title" content="Load PurpleAir time series data for a time period — pat_load" />
 
-<meta property="og:description" content="A pre-generated PurpleAir Timeseries pat object will be loaded for
-the given time interval. Archived data for SCAQMD sensors go back to 
-January, 2018.
+<meta property="og:description" content="A pre-generated PurpleAir Timeseries pat object will be 
+loaded for the given time interval. Archived data for SCAQMD sensors go back 
+to January, 2018.
 Dates can be anything that is understood by 
 lubrdiate::parse_date_time() including either of the following 
 recommended formats:
@@ -81,7 +81,7 @@ recommended formats:
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.14</span>
       </span>
     </div>
 
@@ -153,16 +153,16 @@ recommended formats:
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Load PurpleAir time series data</h1>
+    <h1>Load PurpleAir time series data for a time period</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_load.R'><code>R/pat_load.R</code></a></small>
     <div class="hidden name"><code>pat_load.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>A pre-generated PurpleAir Timeseries <em>pat</em> object will be loaded for
-the given time interval. Archived data for SCAQMD sensors go back to 
-January, 2018.</p>
+    <p>A pre-generated PurpleAir Timeseries <em>pat</em> object will be 
+loaded for the given time interval. Archived data for SCAQMD sensors go back 
+to January, 2018.</p>
 <p>Dates can be anything that is understood by 
 <code>lubrdiate::parse_date_time()</code> including either of the following 
 recommended formats:</p>
@@ -200,11 +200,11 @@ recommended formats:</p>
     </tr>
     <tr>
       <th>timezone</th>
-      <td><p>Timezone used to interpret <code>datestamp</code>.</p></td>
+      <td><p>Timezone used to interpret start and end dates.</p></td>
     </tr>
     <tr>
       <th>baseUrl</th>
-      <td><p>Base URL for synoptic data.</p></td>
+      <td><p>Base URL for <em>pat</em> data.</p></td>
     </tr>
     </table>
     
@@ -214,7 +214,8 @@ recommended formats:</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='pat_loadMonth.html'>pat_loadMonth</a></p>
+    <div class='dont-index'><p><a href='pat_loadLatest.html'>pat_loadLatest</a></p>
+<p><a href='pat_loadMonth.html'>pat_loadMonth</a></p>
 <p><a href='pat_createNew.html'>pat_createNew</a></p></div>
     
 

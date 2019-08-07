@@ -17,7 +17,7 @@ sensor_load(collection = "scaqmd", startdate = NULL, enddate = NULL,
 
 \item{days}{Number of days of data to include.}
 
-\item{timezone}{Timezone used to interpret datestamp.}
+\item{timezone}{Timezone used to interpret start and end dates.}
 
 \item{baseUrl}{Base URL for the \code{airsensor} data archive.}
 }

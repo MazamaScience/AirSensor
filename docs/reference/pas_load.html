@@ -42,8 +42,9 @@
 <meta property="og:description" content="A pre-generated pa_synoptic object will be loaded for
   the given date. These files are generated throughout each day and provide
   a record of all currently installed Purple Air sensors for the day of 
-  interest. The default will always load data associated with the most
-  recent pre-generated file -- typically less than one hour old.
+  interest. With default arguments, this function will always load data 
+  associated with the most recent pre-generated file -- typically less than 
+  one hour old.
 The datestamp can be anything that is understood by 
   lubrdiate::ymd() including either of the following recommended 
   formats:
@@ -52,7 +53,9 @@ The datestamp can be anything that is understood by
 &quot;YYYY-mm-dd&quot;
 " />
 
-<meta property="og:description" content="By default, today's date is used." />
+<meta property="og:description" content="By default, today's date is used.
+The pas object for a specific hour may be loaded by specifying 
+datestamp = &quot;YYYYmmddHH&quot;." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -83,7 +86,7 @@ The datestamp can be anything that is understood by
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.14</span>
       </span>
     </div>
 
@@ -165,8 +168,9 @@ The datestamp can be anything that is understood by
     <p>A pre-generated <em>pa_synoptic</em> object will be loaded for
   the given date. These files are generated throughout each day and provide
   a record of all currently installed Purple Air sensors for the day of 
-  interest. The default will always load data associated with the most
-  recent pre-generated file -- typically less than one hour old.</p>
+  interest. With default arguments, this function will always load data 
+  associated with the most recent pre-generated file -- typically less than 
+  one hour old.</p>
 <p>The <code>datestamp</code> can be anything that is understood by 
   <code>lubrdiate::ymd()</code> including either of the following recommended 
   formats:</p>
@@ -176,6 +180,8 @@ The datestamp can be anything that is understood by
 </ul>
 
     <p>By default, today's date is used.</p>
+<p>The <em>pas</em> object for a specific hour may be loaded by specifying 
+<code>datestamp = "YYYYmmddHH"</code>.</p>
     
     </div>
 
@@ -193,7 +199,7 @@ The datestamp can be anything that is understood by
     </tr>
     <tr>
       <th>baseUrl</th>
-      <td><p>Base URL for synoptic data.</p></td>
+      <td><p>Base URL for <em>pat</em> data.</p></td>
     </tr>
     <tr>
       <th>retries</th>

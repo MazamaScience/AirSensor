@@ -13,7 +13,7 @@ pat_loadMonth(label = NULL, datestamp = NULL,
 
 \item{datestamp}{Date string in ymd order.}
 
-\item{timezone}{Timezone used to interpret datestamp.}
+\item{timezone}{Timezone used to interpret \code{datestamp}.}
 
 \item{baseUrl}{Base URL for \emph{pat} data.}
 }

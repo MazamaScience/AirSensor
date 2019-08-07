@@ -24,7 +24,7 @@ Purple Air sensors.
 }
 \examples{
 \donttest{
-sensor_loadLatest("scaqmd", 201905) \%>\%
+sensor_loadLatest("scaqmd") \%>\%
   PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
 }
 }

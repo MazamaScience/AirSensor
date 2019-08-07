@@ -23,7 +23,7 @@
 #' @param startdate Desired start time (ISO 8601).
 #' @param enddate Desired end time (ISO 8601).
 #' @param days Number of days of data to include.
-#' @param timezone Timezone used to interpret \code{datestamp}.
+#' @param timezone Timezone used to interpret start and end dates.
 #' @param baseUrl Base URL for \emph{pat} data.
 #' 
 #' @return A PurpleAir Timeseries \emph{pat} object.

@@ -5,7 +5,7 @@
 \title{Load latest PurpleAir time series data}
 \usage{
 pat_createNew(pas = NULL, label = NULL, id = NULL,
-  startdate = NULL, enddate = NULL,
+  startdate = NULL, enddate = NULL, timezone = NULL,
   baseURL = "https://api.thingspeak.com/channels/")
 }
 \arguments{
@@ -19,6 +19,8 @@ pat_createNew(pas = NULL, label = NULL, id = NULL,
 
 \item{enddate}{Desired UTC end time (ISO 8601).}
 
+\item{timezone}{Timezone used to interpret start and end dates.}
+
 \item{baseURL}{Base URL for Thingspeak API.}
 }
 \value{
@@ -29,8 +31,8 @@ Retrieve and parse timeseries data from the Thingspeak API for
 specific PurpleAir sensors.
 }
 \note{
-Dates are interpreted to be in the local timzone for the sensor of 
-interest.
+When \code{timezone = NULL}, the default, dates are interpreted to be 
+in the local timezone for the sensor of interest.
 }
 \examples{
 \donttest{
