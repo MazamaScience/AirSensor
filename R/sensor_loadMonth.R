@@ -19,7 +19,7 @@
 #' 
 #' @param collection Name associated with the collection.
 #' @param datestamp A date string in ymd order.
-#' @param timezone Timezone used to interpret datestamp.
+#' @param timezone Timezone used to interpret \code{datestamp}.
 #' @param baseUrl Base URL for \emph{airsensor} data.
 #' 
 #' @return An object of class "pa_timeseries".

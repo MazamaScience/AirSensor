@@ -22,7 +22,7 @@
 #' @param startdate Desired start datetime (ISO 8601).
 #' @param enddate Desired end datetime (ISO 8601).
 #' @param days Number of days of data to include.
-#' @param timezone Timezone used to interpret datestamp.
+#' @param timezone Timezone used to interpret start and end dates.
 #' @param baseUrl Base URL for the \code{airsensor} data archive.
 #' 
 #' @return An object of class "airsensor".

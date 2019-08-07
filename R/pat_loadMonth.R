@@ -18,7 +18,7 @@
 #'
 #' @param label Purple Air sensor 'label'
 #' @param datestamp Date string in ymd order.
-#' @param timezone Timezone used to interpret datestamp.
+#' @param timezone Timezone used to interpret \code{datestamp}.
 #' @param baseUrl Base URL for \emph{pat} data.
 #' 
 #' @return A PurpleAir Timeseries \emph{pat} object.

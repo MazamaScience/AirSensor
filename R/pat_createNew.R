@@ -9,6 +9,7 @@
 #' @param id PurpleAir sensor 'ID'.
 #' @param startdate Desired UTC start time (ISO 8601).
 #' @param enddate Desired UTC end time (ISO 8601).
+#' @param timezone Timezone used to interpret start and end dates.
 #' @param baseURL Base URL for Thingspeak API.
 #' 
 #' @return A PurpleAir Timeseries \emph{pat} object.
@@ -16,8 +17,8 @@
 #' @description Retrieve and parse timeseries data from the Thingspeak API for 
 #' specific PurpleAir sensors.
 #' 
-#' @note Dates are interpreted to be in the local timzone for the sensor of 
-#' interest.
+#' @note When \code{timezone = NULL}, the default, dates are interpreted to be 
+#' in the local timezone for the sensor of interest.
 #'
 #' @seealso \link{downloadParseTimeseriesData}
 #' 
@@ -34,6 +35,7 @@ pat_createNew <- function(
   id = NULL,
   startdate = NULL,
   enddate = NULL,
+  timezone = NULL,
   baseURL = "https://api.thingspeak.com/channels/"
 ) {
   
@@ -56,17 +58,23 @@ pat_createNew <- function(
   # requested, loop over weeks to download all of it
   
   # TODO:  Read "programming with dplyr" to understand this better
-  timezone <-
-    pas %>%
-    dplyr::filter(.data$label == !!label) %>%
-    dplyr::pull(.data$timezone)
+  if ( is.null(timezone) ) {
+    timezone <-
+      pas %>%
+      dplyr::filter(.data$label == !!label) %>%
+      dplyr::pull(.data$timezone)
+  }
 
-  # Default to a week if startdate or enddate is missing
-  days <- 7 
-  
-  # Guarantee a valid date range
-  dateRange <- MazamaCoreUtils::dateRange(startdate, enddate, timezone, days)
-  
+  # Create a valid dateRange
+  if ( !is.null(startdate) && !is.null(enddate) ) {
+    # TODO:  Switch to MazamaCoreUtils version when available
+    # Don't require day boundaries
+    dateRange <- timeRange(startdate, enddate, timezone = timezone)
+  } else {
+    # Default to 7 days with day boundaries
+    dateRange <- MazamaCoreUtils::dateRange(startdate, enddate, timezone, days = 7)
+  }
+
   # Create a sequence of weekly POSIXct times
   dateSeq <- seq(dateRange[1], dateRange[2], by = lubridate::ddays(7))
   
@@ -130,8 +138,9 @@ if ( FALSE ) {
   pas <- pas_load()
   label <- "SCAP_14"
   id <- NULL
-  startdate <- 20190701
-  enddate <- 20190708
+  startdate <- lubridate::now("UTC")
+  enddate <- startdate - lubridate::ddays(7)
+  timezonne <- "UTC"
   baseURL <- "https://api.thingspeak.com/channels/"
   
 }

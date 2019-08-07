@@ -160,6 +160,7 @@ result <- try({
         label,
         startdate = startdate,
         enddate = enddate,
+        timezone = opt$timzeone,
         baseURL = "https://api.thingspeak.com/channels/"
       )
       

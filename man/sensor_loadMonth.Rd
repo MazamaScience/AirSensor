@@ -13,7 +13,7 @@ sensor_loadMonth(collection = "scaqmd", datestamp = NULL,
 
 \item{datestamp}{A date string in ymd order.}
 
-\item{timezone}{Timezone used to interpret datestamp.}
+\item{timezone}{Timezone used to interpret \code{datestamp}.}
 
 \item{baseUrl}{Base URL for \emph{airsensor} data.}
 }

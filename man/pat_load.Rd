@@ -17,7 +17,7 @@ pat_load(label = NULL, startdate = NULL, enddate = NULL, days = 7,
 
 \item{days}{Number of days of data to include.}
 
-\item{timezone}{Timezone used to interpret \code{datestamp}.}
+\item{timezone}{Timezone used to interpret start and end dates.}
 
 \item{baseUrl}{Base URL for \emph{pat} data.}
 }

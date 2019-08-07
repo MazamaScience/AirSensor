@@ -3,6 +3,8 @@
 * Removed Shiny app related functions.
 * Added `pat_loadLatest()` to always get the most recent 7 days.
 * Added `pat_loadSensor()` to always get the most recent 7 days.
+* Added `timezone` argument to `pat_createNew()`.
+* `pat_createNew()` now accepts start and end points not on date boundaries.
 
 # AirSensor 0.3.13
 

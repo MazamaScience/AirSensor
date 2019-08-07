@@ -107,7 +107,7 @@ result <- try({
   
   # Get times
   starttime <- lubridate::now(tzone = "UTC")
-  endtime <- starttime - lubridate::ddays(8) # to get 7 full days
+  endtime <- starttime - lubridate::ddays(7)
   
   # Get strings
   startdate <- strftime(starttime, "%Y-%m-%d %H:%M:%S", tz = "UTC")
@@ -138,6 +138,7 @@ result <- try({
         label,
         startdate = startdate,
         enddate = enddate,
+        timezone = "UTC",
         baseURL = "https://api.thingspeak.com/channels/"
       )
       
