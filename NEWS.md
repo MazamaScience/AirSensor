@@ -11,7 +11,8 @@
 * Removed popups from `AirShiny_leaflet()`
 * Fixed `pas_leaflet()` coloring issue.pwd
 * Fixed bug in `pat_load()` which didn't trim data to date boundaries when a
-local timezone was passed in.
+local timezone was passed in. 
+* Added `pat_calendarPlot()` to plot annual daily heat map. 
 
 # AirSensor 0.3.12
 
