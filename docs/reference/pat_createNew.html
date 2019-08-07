@@ -71,7 +71,7 @@ specific PurpleAir sensors." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.14</span>
       </span>
     </div>
 
@@ -156,7 +156,7 @@ specific PurpleAir sensors.</p>
     </div>
 
     <pre class="usage"><span class='fu'>pat_createNew</span>(<span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>baseURL</span> <span class='kw'>=</span> <span class='st'>"https://api.thingspeak.com/channels/"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -183,6 +183,10 @@ specific PurpleAir sensors.</p>
       <td><p>Desired UTC end time (ISO 8601).</p></td>
     </tr>
     <tr>
+      <th>timezone</th>
+      <td><p>Timezone used to interpret start and end dates.</p></td>
+    </tr>
+    <tr>
       <th>baseURL</th>
       <td><p>Base URL for Thingspeak API.</p></td>
     </tr>
@@ -194,8 +198,8 @@ specific PurpleAir sensors.</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>Dates are interpreted to be in the local timzone for the sensor of 
-interest.</p>
+    <p>When <code>timezone = NULL</code>, the default, dates are interpreted to be 
+in the local timezone for the sensor of interest.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 

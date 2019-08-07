@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Join PurpleAir time series data — pat_join • AirSensor</title>
+<title>Load hourly-aggregated Purple Air data for a week — sensor_loadLatest • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,10 +37,12 @@
 
 
 
-<meta property="og:title" content="Join PurpleAir time series data — pat_join" />
+<meta property="og:title" content="Load hourly-aggregated Purple Air data for a week — sensor_loadLatest" />
 
-<meta property="og:description" content="Create a union of any number of pat objects along a 
-non-continuous datetime axis." />
+<meta property="og:description" content="A pre-generated airsensor object will be loaded 
+containing data for the most recent 7-day interval.
+Each airsensor object contains data from a named collection of 
+Purple Air sensors." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -143,49 +145,50 @@ non-continuous datetime axis." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Join PurpleAir time series data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_join.R'><code>R/pat_join.R</code></a></small>
-    <div class="hidden name"><code>pat_join.Rd</code></div>
+    <h1>Load hourly-aggregated Purple Air data for a week</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/sensor_loadLatest.R'><code>R/sensor_loadLatest.R</code></a></small>
+    <div class="hidden name"><code>sensor_loadLatest.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Create a union of any number of <em>pat</em> objects along a 
-non-continuous datetime axis.</p>
+    <p>A pre-generated <code>airsensor</code> object will be loaded 
+containing data for the most recent 7-day interval.</p>
+<p>Each <code>airsensor</code> object contains data from a named collection of 
+Purple Air sensors.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pat_join</span>(<span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>sensor_loadLatest</span>(<span class='kw'>collection</span> <span class='kw'>=</span> <span class='st'>"scaqmd"</span>,
+  <span class='kw'>baseUrl</span> <span class='kw'>=</span> <span class='st'>"http://smoke.mazamascience.com/data/PurpleAir/airsensor"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
-      <td><p>Any number of valid PurpleAir Time series <em>pat</em> objects.</p></td>
+      <th>collection</th>
+      <td><p>Name associated with the collection.</p></td>
+    </tr>
+    <tr>
+      <th>baseUrl</th>
+      <td><p>Base URL for <em>airsensor</em> data.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A PurpleAir Time series <em>pat</em> object.</p>
+    <p>An object of class "pa_timeseries".</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='sensor_load.html'>sensor_load</a></p>
+<p><a href='sensor_loadMonth.html'>sensor_loadMonth</a></p>
+<p><a href='pat_createAirSensor.html'>pat_createAirSensor</a></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>pat</span> <span class='kw'>&lt;-</span> <span class='no'>example_pat</span>
-
-<span class='no'>jul01_15</span> <span class='kw'>&lt;-</span>
-  <span class='no'>pat</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='pat_filterDate.html'>pat_filterDate</a></span>(<span class='fl'>20180701</span>, <span class='fl'>20180715</span>)
-
-<span class='no'>aug09_22</span> <span class='kw'>&lt;-</span>
-  <span class='no'>pat</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='pat_filterDate.html'>pat_filterDate</a></span>(<span class='fl'>20180809</span>, <span class='fl'>20180822</span>)
-
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_join</span>(<span class='no'>jul01_15</span>, <span class='no'>aug09_22</span>)
-<span class='co'># }</span><div class='input'>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>sensor_loadLatest</span>(<span class='st'>"scaqmd"</span>) <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>PWFSLSmoke</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/PWFSLSmoke/topics/monitor_timeseriesPlot'>monitor_timeseriesPlot</a></span>(<span class='kw'>style</span> <span class='kw'>=</span> <span class='st'>'gnats'</span>)</div><div class='img'><img src='sensor_loadLatest-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -193,6 +196,8 @@ non-continuous datetime axis.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
