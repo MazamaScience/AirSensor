@@ -32,7 +32,7 @@ An "airsensor" object of aggregated PurpleAir Timeseries data.
 Aggregates data from a \emph{pat} object into an \emph{airsensor} 
 object that has appropriate metadata to be used with the *PWFSLSmoke* package.
 
-Current QC algorithms exist for \code{channe = "ab"} and include:
+Current QC algorithms exist for \code{channel = "ab"} and include:
 \itemize{
 \item{\code{hourly_AB_00}}
 \item{\code{hourly_AB_01}}

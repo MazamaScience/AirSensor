@@ -42,3 +42,7 @@ this function), which will force \code{POSIXct} inputs into a new timezone,
 altering the physical moment of time the input represents.
 }
 
+\examples{
+timeRange("2019-01-08 10:12:15", "20190109101215", timezone = "UTC")
+
+}

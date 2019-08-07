@@ -33,7 +33,8 @@
 #' @return A vector of two \code{POSIXct}s.
 #'
 #' @examples
-#' timeRange("2019-01-08 10:12:15", "20190109101215, timezone = "UTC")
+#' timeRange("2019-01-08 10:12:15", "20190109101215", timezone = "UTC")
+#' 
 timeRange <- function(
   starttime = NULL,
   endtime = NULL,

@@ -1,3 +1,7 @@
+# AirSensor 0.3.15
+
+* New `pat_calendarPlot()` tailored to full-year calendar heatmaps.
+
 # AirSensor 0.3.14
 
 * Removed Shiny app related functions.

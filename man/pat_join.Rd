@@ -2,7 +2,7 @@
 % Please edit documentation in R/pat_join.R
 \name{pat_join}
 \alias{pat_join}
-\title{Join PurpleAir time series data}
+\title{Join PurpleAir time series data for a single sensor}
 \usage{
 pat_join(...)
 }
@@ -13,8 +13,13 @@ pat_join(...)
 A PurpleAir Time series \emph{pat} object.
 }
 \description{
-Create a union of any number of \emph{pat} objects along a 
-non-continuous datetime axis.
+Create a merged timeseries using of any number of \emph{pat} 
+objects for a single sensor. If \emph{pat} objects are non-contiguous, the 
+resulting \emph{pat} will have gaps.
+}
+\note{
+An error is generated if the incoming \emph{pat} objects have 
+non-identical metadata.
 }
 \examples{
 \dontrun{

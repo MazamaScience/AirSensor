@@ -49,14 +49,14 @@ pat_load <- function(
   
   logger.debug("----- pat_load() -----")
   
-  # Validate parameters --------------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
   
   if ( is.null(label) ) 
     stop("Required parameter 'label' is missing.")
   
   dateRange <- MazamaCoreUtils::dateRange(startdate, enddate, timezone, days)
   
-  # Asssemble monthly archive files --------------------------------------------
+  # ----- Asssemble monthly archive files --------------------------------------
   
   datestamps <-
     sort(
@@ -87,15 +87,20 @@ pat_load <- function(
     
   } 
   
-  # Return ---------------------------------------------------------------------
+  # ----- Combine and pat objects ----------------------------------------------
   
+  pat <- pat_join(patList)
+  
+  # Trim to requested dateRange
   patObj <- 
     pat_filterDate(
-      pat = pat_join(patList),
+      pat,
       startdate = dateRange[1], 
       enddate = dateRange[2],
       timezone = timezone
     )
+  
+  # ----- Return ---------------------------------------------------------------
   
   return(patObj)
   
