@@ -342,10 +342,16 @@ downloadParseTimeseriesData <- function(
 
 if ( FALSE ) {
   
-  pas_raw <- downloadParseSynopticData()
-  pas <- enhanceSynopticData(pas_raw)
-  label <- "MV Clean Air Ambassador @ Winthrop Library"
-  pat_raw <- downloadParseTimeseriesData(pas, label)
+  pat_raw <- downloadParseTimeseriesData(
+    pas = pas_load(),
+    label = "SCAP_28",
+    id = NULL,
+    startdate = 20190701,
+    enddate = 20190805,
+    baseURL = "https://api.thingspeak.com/channels/"
+  )
+  
   pat <- createPATimeseriesObject(pat_raw)
   
+
 }
