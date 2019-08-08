@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Join PurpleAir time series data — pat_join • AirSensor</title>
+<title>Join PurpleAir time series data for a single sensor — pat_join • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,10 +37,11 @@
 
 
 
-<meta property="og:title" content="Join PurpleAir time series data — pat_join" />
+<meta property="og:title" content="Join PurpleAir time series data for a single sensor — pat_join" />
 
-<meta property="og:description" content="Create a union of any number of pat objects along a 
-non-continuous datetime axis." />
+<meta property="og:description" content="Create a merged timeseries using of any number of pat 
+objects for a single sensor. If pat objects are non-contiguous, the 
+resulting pat will have gaps." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -71,7 +72,7 @@ non-continuous datetime axis." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.14</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.15</span>
       </span>
     </div>
 
@@ -143,15 +144,16 @@ non-continuous datetime axis." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Join PurpleAir time series data</h1>
+    <h1>Join PurpleAir time series data for a single sensor</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_join.R'><code>R/pat_join.R</code></a></small>
     <div class="hidden name"><code>pat_join.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Create a union of any number of <em>pat</em> objects along a 
-non-continuous datetime axis.</p>
+    <p>Create a merged timeseries using of any number of <em>pat</em> 
+objects for a single sensor. If <em>pat</em> objects are non-contiguous, the 
+resulting <em>pat</em> will have gaps.</p>
     
     </div>
 
@@ -169,6 +171,11 @@ non-continuous datetime axis.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A PurpleAir Time series <em>pat</em> object.</p>
+    
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>An error is generated if the incoming <em>pat</em> objects have 
+non-identical metadata.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -193,6 +200,8 @@ non-continuous datetime axis.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#note">Note</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

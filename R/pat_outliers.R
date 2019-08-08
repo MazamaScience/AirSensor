@@ -72,25 +72,6 @@ pat_outliers <- function(
   outlier_alpha = 1.0
 ) {
   
-  # ===== DEBUGGING ============================================================
-  
-  if ( FALSE ) {
-    
-    windowSize <- 23
-    thresholdMin <- 8
-    replace <- FALSE
-    showPlot <- TRUE
-    # data_shape <- 18 
-    # data_size <- 1
-    # data_color <- "black"
-    # data_alpha <- 0.5
-    # outlier_shape <- 8 
-    # outlier_size <- 1
-    # outlier_color <- "red"
-    # outlier_alpha <- 1.0
-     
-  }
-  
   # ----- Validate parameters --------------------------------------------------
   
   if ( !pat_isPat(pat) )
@@ -98,6 +79,9 @@ pat_outliers <- function(
   
   if ( pat_isEmpty(pat) )
     stop("Parameter 'pat' has no data.")
+  
+  # Remove any duplicate data records
+  pat <- pat_distinct(pat)
   
   # ----- Prepare separate A/B subsets -----------------------------------------
   
@@ -239,6 +223,28 @@ pat_outliers <- function(
   pat <- list(meta = pat$meta, data = data)
   class(pat) <- c("pa_timeseries", class(pat))
   
+  # Remove any duplicate data records
+  pat <- pat_distinct(pat)
+  
   return(invisible(pat))
+  
+}
+
+# ===== DEBUGGING ============================================================
+
+if ( FALSE ) {
+  
+  windowSize <- 23
+  thresholdMin <- 8
+  replace <- FALSE
+  showPlot <- TRUE
+  # data_shape <- 18 
+  # data_size <- 1
+  # data_color <- "black"
+  # data_alpha <- 0.5
+  # outlier_shape <- 8 
+  # outlier_size <- 1
+  # outlier_color <- "red"
+  # outlier_alpha <- 1.0
   
 }

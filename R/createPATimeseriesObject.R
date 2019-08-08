@@ -33,9 +33,12 @@
 createPATimeseriesObject <- function(
   pat_raw = NULL
 ) {
+
+  # Remove any duplicate data records
+  pat_raw$data <- dplyr::distinct(pat_raw$data)
   
   # ----- Simplify meta --------------------------------------------------------
-  
+
   meta <- 
     pat_raw$meta %>%
     dplyr::filter(is.na(.data$parentID)) %>%
@@ -123,6 +126,9 @@ createPATimeseriesObject <- function(
   # Combine meta and data dataframes into a list
   pat <- list(meta = meta, data = data)
   class(pat) <- c("pa_timeseries", class(pat))
+  
+  # Remove any duplicate data records
+  pat <- pat_distinct(pat)
   
   return(pat)
   

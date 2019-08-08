@@ -91,6 +91,9 @@ pat_load <- function(
   
   pat <- pat_join(patList)
   
+  # Remove any duplicate data records
+  pat <- pat_distinct(pat)
+  
   # Trim to requested dateRange
   patObj <- 
     pat_filterDate(

@@ -75,6 +75,9 @@ pat_join <- function(
   pat <- list(meta = meta, data = data)
   class(pat) <- c("pa_timeseries", class(pat))
   
+  # Remove any duplicate data records
+  pat <- pat_distinct(pat)
+  
   return(invisible(pat))
   
 }

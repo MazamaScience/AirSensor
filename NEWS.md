@@ -1,6 +1,9 @@
 # AirSensor 0.3.15
 
 * New `pat_calendarPlot()` tailored to full-year calendar heatmaps.
+* Added `pat_distinct()` to remove duplicate data records.
+* All `pat_~()` functions now remove duplicate records to guarantee proper
+functioning of chained functions.
 
 # AirSensor 0.3.14
 

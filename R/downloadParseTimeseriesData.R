@@ -328,9 +328,12 @@ downloadParseTimeseriesData <- function(
   # data$pm2.5_cf1 <- round(data$pm2.5_cf1)
   
   # Combine meta and data dataframes into a list
-  pat <- list(meta = meta, data = data)
+  pat_raw <- list(meta = meta, data = data)
   
-  return(pat)
+  # Remove any duplicate data records
+  pat_raw$data <- dplyr::distinct(pat_raw$data)
+  
+  return(pat_raw)
   
 }
 

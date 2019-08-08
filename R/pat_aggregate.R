@@ -68,6 +68,9 @@ pat_aggregate <- function(
   if ( pat_isEmpty(pat) )
     stop("Required parameter 'pat' has no data.") 
   
+  # Remove any duplicate data records
+  pat <- pat_distinct(pat)
+  
   # ----- Convert period to seconds --------------------------------------------
   
   periodParts <- strsplit(period, " ", fixed = TRUE)[[1]]

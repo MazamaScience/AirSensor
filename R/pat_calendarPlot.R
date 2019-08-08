@@ -61,6 +61,9 @@ pat_calendarPlot <- function(
   if ( pat_isEmpty(pat) )
     stop("Parameter 'pat' has no data.") 
   
+  # Remove any duplicate data records
+  pat <- pat_distinct(pat)
+  
   # ----- Create hourly aggregated data ----------------------------------------
   
   airsensor <- 

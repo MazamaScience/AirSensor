@@ -61,6 +61,9 @@ pat_sample <- function(
   if ( pat_isEmpty(pat) )
     stop("Parameter 'pat' has no data.")
   
+  # Remove any duplicate data records
+  pat <- pat_distinct(pat)
+  
   if ( is.null(sampleSize) && is.null(sampleFraction) )
     sampleSize <- 5000
   
@@ -188,6 +191,9 @@ pat_sample <- function(
   # Combine meta and data dataframes into a list
   pat <- list(meta = pat$meta, data = data)
   class(pat) <- c("pa_timeseries", class(pat))
+  
+  # Remove any duplicate data records
+  pat <- pat_distinct(pat)
   
   return(invisible(pat))
   

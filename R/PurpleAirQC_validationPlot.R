@@ -48,17 +48,6 @@ PurpleAirQC_validationPlot <- function(
   min_count = 20
 ) {
   
-  # ===== DEBUG ================================================================
-  
-  if ( FALSE ) {
-    
-    pat <- example_pat
-    period <- "1 hour"
-    qc_algorithm <- "hourly_AB_01"
-    min_count <- 20
-    
-  }  
-  
   # ----- Validate Parameters --------------------------------------------------
   
   period <- tolower(period)
@@ -68,6 +57,9 @@ PurpleAirQC_validationPlot <- function(
   
   if ( pat_isEmpty(pat) )
     stop("Required parameter 'pat' has no data.") 
+  
+  # Remove any duplicate data records
+  pat <- pat_distinct(pat)
   
   if ( !qc_algorithm %in% c("hourly_AB_00", "hourly_AB_01") ) {
     stop("Required parameter 'qc_algorithm' must be one of 'hourly_AB_00' or 'hourly_AB_01'")
@@ -143,3 +135,14 @@ PurpleAirQC_validationPlot <- function(
   )
   
 }
+
+# ===== DEBUG ================================================================
+
+if ( FALSE ) {
+  
+  pat <- example_pat
+  period <- "1 hour"
+  qc_algorithm <- "hourly_AB_01"
+  min_count <- 20
+  
+}  

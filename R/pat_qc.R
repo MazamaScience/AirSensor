@@ -51,6 +51,9 @@ pat_qc <- function(
   if ( !is.logical(removeOutOfSpec) )
     stop("Parameter 'removeOutOfSpec' must be logical.")
   
+  # Remove any duplicate data records
+  pat <- pat_distinct(pat)
+  
   if ( !is.null(max_humidity) ) {
     if ( !is.numeric(max_humidity) ) {
       stop("Parameter 'max_humidity' must be numeric")
@@ -102,6 +105,9 @@ pat_qc <- function(
   }
   
   # Return ---------------------------------------------------------------------
+  
+  # Remove any duplicate data records
+  pat <- pat_distinct(pat)
   
   return(pat)
   

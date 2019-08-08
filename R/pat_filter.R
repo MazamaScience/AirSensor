@@ -35,10 +35,16 @@ pat_filter <- function(
   if ( pat_isEmpty(pat) )
     stop("Parameter 'pat' has no data.")
   
+  # Remove any duplicate data records
+  pat <- pat_distinct(pat)
+  
   # ----- Filter data ----------------------------------------------------------
   
   pat$data <- 
     dplyr::filter(pat$data,...)
+  
+  # Remove any duplicate data records
+  pat <- pat_distinct(pat)
   
   return(pat)
   

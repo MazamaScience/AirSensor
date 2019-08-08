@@ -127,6 +127,9 @@ pat_createNew <- function(
   
   pat <- createPATimeseriesObject(pat_raw)
   
+  # Remove any duplicate data records
+  pat <- pat_distinct(pat)
+  
   return(pat)
   
 }

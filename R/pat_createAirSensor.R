@@ -70,6 +70,9 @@ pat_createAirSensor <- function(
   if ( pat_isEmpty(pat) )
     stop("Required parameter 'pat' has no data.") 
   
+  # Remove any duplicate data records
+  pat <- pat_distinct(pat)
+  
   if ( !parameter %in% c("pm25", "humidity", "temperature") )
     stop("Required parameter 'parameter' must be one of 'pm25', 'humidity' or 'temperature'")
   

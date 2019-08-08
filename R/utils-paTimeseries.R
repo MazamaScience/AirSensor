@@ -79,6 +79,24 @@ pat_isEmpty <- function(pat) {
 }
 
 
+#' @export
+#' 
+#' @title Retain only distinct data records in pat$data
+#' 
+#' @param pat \emph{pat} object
+#' 
+#' @return A \emph{pat} object with no duplicated data records.
+#' 
+#' @description Convenience wrapper for 
+#' \code{pat$data <- dplyr::distinct(pat$data)}.
+#' 
+pat_distinct <- function(pat) {
+  if (!pat_isPat(pat)) stop("Not a valid 'pat' object.")
+  pat$data <- dplyr::distinct(pat$data)
+  return( pat )
+}
+
+
 #' @title Extract dataframes from \emph{pat} objects
 #'
 #' @description

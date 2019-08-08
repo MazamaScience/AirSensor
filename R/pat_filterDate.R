@@ -45,6 +45,9 @@ pat_filterDate <- function(
   if ( pat_isEmpty(pat) )
     stop("Parameter 'pat' has no data.")
   
+  # Remove any duplicate data records
+  pat <- pat_distinct(pat)
+  
   if ( is.null(startdate) && !is.null(enddate) )
     stop("At least one of 'startdate' or 'enddate' must be specified")
   
@@ -68,6 +71,9 @@ pat_filterDate <- function(
     filter(.data$datetime < dateRange[2])
   
   pat$data <- data
+  
+  # Remove any duplicate data records
+  pat <- pat_distinct(pat)
   
   return(pat)
   

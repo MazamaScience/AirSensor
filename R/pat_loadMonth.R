@@ -82,6 +82,9 @@ pat_loadMonth <- function(
     stop(paste0("Data file could not be loaded: ", filepath), call.=FALSE)
   }
   
+  # Remove any duplicate data records
+  pat <- pat_distinct(pat)
+  
   return(invisible(pat))
   
 }

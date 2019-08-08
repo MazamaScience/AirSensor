@@ -60,6 +60,9 @@ pat_scatterplot <- function(
   if ( pat_isEmpty(pat) )
     stop("Parameter 'pat' has no data.") 
   
+  # Remove any duplicate data records
+  pat <- pat_distinct(pat)
+  
   if ( !is.null(sampleFraction) )
     sampleSize <- NULL # Disable one 
   

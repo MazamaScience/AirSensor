@@ -56,6 +56,9 @@ pat_dygraph <- function(
   if ( pat_isEmpty(pat) )
     stop("Parameter 'pat' has no data.")
   
+  # Remove any duplicate data records
+  pat <- pat_distinct(pat)
+  
   # ----- Reduce large datasets by sampling ------------------------------------
   
   if ( !is.null(sampleSize) ) { 
