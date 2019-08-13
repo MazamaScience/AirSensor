@@ -138,7 +138,7 @@ pat_calendarPlot <- function(
   
   # ----- Create plot ----------------------------------------------------------
   
-  ggplot <- 
+  gg <- 
     ggplot2::ggplot(
       df, 
       ggplot2::aes(
@@ -177,7 +177,7 @@ pat_calendarPlot <- function(
       aspect.ratio = 4/5
     ) 
   
-  return(ggplot)
+  return(gg)
   
 }    
 

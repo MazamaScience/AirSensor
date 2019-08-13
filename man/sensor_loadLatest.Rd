@@ -4,13 +4,10 @@
 \alias{sensor_loadLatest}
 \title{Load hourly-aggregated Purple Air data for a week}
 \usage{
-sensor_loadLatest(collection = "scaqmd",
-  baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/airsensor")
+sensor_loadLatest(collection = "scaqmd")
 }
 \arguments{
 \item{collection}{Name associated with the collection.}
-
-\item{baseUrl}{Base URL for \emph{airsensor} data.}
 }
 \value{
 An object of class "pa_timeseries".
@@ -24,6 +21,7 @@ Purple Air sensors.
 }
 \examples{
 \donttest{
+setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 sensor_loadLatest("scaqmd") \%>\%
   PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
 }

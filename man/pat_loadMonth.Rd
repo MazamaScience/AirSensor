@@ -5,8 +5,7 @@
 \title{Load PurpleAir time series data for a month}
 \usage{
 pat_loadMonth(label = NULL, datestamp = NULL,
-  timezone = "America/Los_Angeles",
-  baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/pat")
+  timezone = "America/Los_Angeles")
 }
 \arguments{
 \item{label}{Purple Air sensor 'label'}
@@ -14,8 +13,6 @@ pat_loadMonth(label = NULL, datestamp = NULL,
 \item{datestamp}{Date string in ymd order.}
 
 \item{timezone}{Timezone used to interpret \code{datestamp}.}
-
-\item{baseUrl}{Base URL for \emph{pat} data.}
 }
 \value{
 A PurpleAir Timeseries \emph{pat} object.
@@ -35,6 +32,7 @@ By default, the current month is loaded.
 }
 \examples{
 \donttest{
+setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 may <- pat_loadMonth("SCNP_20", 201905)
 pat_multiplot(may)
 }

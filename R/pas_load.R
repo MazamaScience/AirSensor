@@ -27,7 +27,6 @@
 #' \code{datestamp = "YYYYmmddHH"}.
 #'
 #' @param datestamp Local date string in ymd order.
-#' @param baseUrl Base URL for \emph{pat} data.
 #' @param retries Max number of days to go back and try to load if requested 
 #'   date cannot be retrieved.
 #' @param timezone Timezone used to interpret \code{datestamp}.
@@ -40,6 +39,7 @@
 #' 
 #' @examples
 #' \dontrun{
+#' setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 #' pas <- pas_load()
 #' pas %>% 
 #'   pas_filter(stateCode == "CA") %>%
@@ -50,7 +50,6 @@ pas_load <- function(
   datestamp = strftime(lubridate::today("America/Los_Angeles"),
                        "%Y%m%d",
                        tz = "America/Los_Angeles"),
-  baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/pas/",
   retries = 10,
   timezone = "America/Los_Angeles",
   archival = FALSE
@@ -71,6 +70,9 @@ pas_load <- function(
   
   # Load data from URL ---------------------------------------------------------
   
+  # Use package internal URL
+  baseUrl <- getArchiveBaseUrl()
+  
   result <- NULL
   successful <- FALSE
   tries <- 0
@@ -88,7 +90,7 @@ pas_load <- function(
     } else {
       filename <- paste0("pas_", datestamp, ".rda")
     }
-    filepath <- paste0(baseUrl, '/', yearstamp, '/', filename)
+    filepath <- paste0(baseUrl, '/pas/', yearstamp, '/', filename)
     
     # Define a 'connection' object so we can close it no matter what happens
     conn <- url(filepath)

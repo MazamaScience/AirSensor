@@ -5,14 +5,11 @@
 \title{Load PurpleAir synoptic data}
 \usage{
 pas_load(datestamp = strftime(lubridate::today("America/Los_Angeles"),
-  "\%Y\%m\%d", tz = "America/Los_Angeles"),
-  baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/pas/",
-  retries = 10, timezone = "America/Los_Angeles", archival = FALSE)
+  "\%Y\%m\%d", tz = "America/Los_Angeles"), retries = 10,
+  timezone = "America/Los_Angeles", archival = FALSE)
 }
 \arguments{
 \item{datestamp}{Local date string in ymd order.}
-
-\item{baseUrl}{Base URL for \emph{pat} data.}
 
 \item{retries}{Max number of days to go back and try to load if requested 
 date cannot be retrieved.}
@@ -49,6 +46,7 @@ The \emph{pas} object for a specific hour may be loaded by specifying
 }
 \examples{
 \dontrun{
+setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 pas <- pas_load()
 pas \%>\% 
   pas_filter(stateCode == "CA") \%>\%

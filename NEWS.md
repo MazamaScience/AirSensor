@@ -1,3 +1,14 @@
+# AirSensor 0.4.0
+
+* New `setArchiveBaseUrl()` and `getArchiveBaseUrl()` functions allow per 
+session specification of the location of pre-generated data files.
+* Removed `baseUrl` parameter from all data loading functions. Now users must
+begin a session with `setArchiveBaseUrl()`.
+* Modified behavior of `sensor_load()` to trim data to the requested time
+range.
+* Fixed bug in `pat_scatterplot()` that generated an error when the number of
+records in the `pat` object was fewer than the `sampleSize` parameter.
+
 # AirSensor 0.3.15
 
 * New `pat_calendarPlot()` tailored to full-year calendar heatmaps.

@@ -8,7 +8,6 @@
 #' loaded containing data for the most recent 7-day interval.
 #' 
 #' @param label PurpleAir sensor 'label'.
-#' @param baseUrl Base URL for \emph{pat} data.
 #' 
 #' @return A PurpleAir Timeseries \emph{pat} object.
 #' 
@@ -18,13 +17,13 @@
 #' 
 #' @examples
 #' \donttest{
+#' setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 #' pat <- pat_loadLatest("SCNP_20")
 #' pat_multiplot(pat)
 #' }
 
 pat_loadLatest <- function(
-  label = NULL, 
-  baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/pat"
+  label = NULL
 ) {
   
   logger.debug("----- pat_loadLatest() -----")
@@ -36,8 +35,11 @@ pat_loadLatest <- function(
   
   # Load data from URL ---------------------------------------------------------
   
+  # Use package internal URL
+  baseUrl <- getArchiveBaseUrl()
+  
   filename <- paste0("pat_", label, "_latest7.rda")
-  filepath <- paste0(baseUrl, '/latest/', filename)
+  filepath <- paste0(baseUrl, '/pat/latest/', filename)
   
   # Define a 'connection' object so we can close it no matter what happens
   conn <- url(filepath)

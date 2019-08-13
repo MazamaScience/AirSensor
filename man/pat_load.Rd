@@ -5,8 +5,7 @@
 \title{Load PurpleAir time series data for a time period}
 \usage{
 pat_load(label = NULL, startdate = NULL, enddate = NULL, days = 7,
-  timezone = "America/Los_Angeles",
-  baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/pat")
+  timezone = "America/Los_Angeles")
 }
 \arguments{
 \item{label}{PurpleAir sensor 'label'.}
@@ -18,8 +17,6 @@ pat_load(label = NULL, startdate = NULL, enddate = NULL, days = 7,
 \item{days}{Number of days of data to include.}
 
 \item{timezone}{Timezone used to interpret start and end dates.}
-
-\item{baseUrl}{Base URL for \emph{pat} data.}
 }
 \value{
 A PurpleAir Timeseries \emph{pat} object.
@@ -42,6 +39,7 @@ By default, the current week is loaded.
 }
 \examples{
 \donttest{
+setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 pat <- pat_load("SCNP_20", 20190411, 20190521)
 pat_multiplot(pat)
 }

@@ -19,7 +19,6 @@
 #' @param label Purple Air sensor 'label'
 #' @param datestamp Date string in ymd order.
 #' @param timezone Timezone used to interpret \code{datestamp}.
-#' @param baseUrl Base URL for \emph{pat} data.
 #' 
 #' @return A PurpleAir Timeseries \emph{pat} object.
 #' 
@@ -29,6 +28,7 @@
 #' 
 #' @examples
 #' \donttest{
+#' setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 #' may <- pat_loadMonth("SCNP_20", 201905)
 #' pat_multiplot(may)
 #' }
@@ -36,8 +36,7 @@
 pat_loadMonth <- function(
   label = NULL,
   datestamp = NULL,
-  timezone = "America/Los_Angeles",
-  baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/pat"
+  timezone = "America/Los_Angeles"
 ) {
   
   # Validate parameters --------------------------------------------------------
@@ -60,8 +59,11 @@ pat_loadMonth <- function(
   
   # Load data from URL ---------------------------------------------------------
   
+  # Use package internal URL
+  baseUrl <- getArchiveBaseUrl()
+  
   filename <- paste0("pat_", label, "_", monthstamp, ".rda")
-  filepath <- paste0(baseUrl, '/', yearstamp, '/', filename)
+  filepath <- paste0(baseUrl, '/pat/', yearstamp, '/', filename)
   
   # Define a 'connection' object so we can close it no matter what happens
   conn <- url(filepath)

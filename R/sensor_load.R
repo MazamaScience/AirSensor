@@ -23,7 +23,6 @@
 #' @param enddate Desired end datetime (ISO 8601).
 #' @param days Number of days of data to include.
 #' @param timezone Timezone used to interpret start and end dates.
-#' @param baseUrl Base URL for the \code{airsensor} data archive.
 #' 
 #' @return An object of class "airsensor".
 #' 
@@ -31,6 +30,7 @@
 #' 
 #' @examples
 #' \donttest{
+#' setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 #' sensor_load("scaqmd", 20190411, 20190521) %>%
 #'   PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
 #' }
@@ -41,8 +41,7 @@ sensor_load <-
     startdate = NULL, 
     enddate = NULL, 
     days = 7, 
-    timezone = "America/Los_Angeles",
-    baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/airsensor"
+    timezone = "America/Los_Angeles"
     ) {
     
     # Validate parameters ------------------------------------------------------
@@ -77,8 +76,7 @@ sensor_load <-
         sensor_loadMonth(
           collection = collection, 
           datestamp = datestamp, 
-          timezone = timezone,
-          baseUrl = baseUrl
+          timezone = timezone
         )
       
     } 
@@ -113,6 +111,8 @@ sensor_load <-
     
     airsensor$data <- data
     
+    # Trim to the requested time range
+    airsensor <- PWFSLSmoke::monitor_subset(airsensor, tlim = dateRange)
 
     # Return -------------------------------------------------------------------
     

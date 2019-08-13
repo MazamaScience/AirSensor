@@ -1,3 +1,5 @@
+# ----- Package Data -----------------------------------------------------------
+
 #' @docType package
 #' @name AirSensor
 #' @title Data access and analysis functions for Purple Air sensor data
@@ -151,3 +153,79 @@ NULL
 #'     sensor_load("scaqmd", startdate = 20190701, enddate = 20190708)
 #' }
 NULL
+
+# ----- Internal Package State -------------------------------------------------
+
+airsensorEnv <- new.env(parent = emptyenv())
+airsensorEnv$archiveBaseUrl <- NULL
+
+#' @docType data
+#' @keywords environment
+#' @name ArchiveBaseUrl
+#' @title Base URL for pre-generated data
+#' @format URL string.
+#' @description This package maintains an internal URL which users can set
+#' using \code{setArchiveBaseUrl()}. Package functions that load pre-generated
+#' data files use this. These functions include:
+#' 
+#' \itemize{
+#' \item{\code{pas_load()}}
+#' \item{\code{pat_load()}}
+#' \item{\code{pat_loadLatest()}}
+#' \item{\code{pat_loadMonth()}}
+#' \item{\code{sensor_load()}}
+#' \item{\code{sensor_loadLatest()}}
+#' \item{\code{sensor_loadMonth()}}
+#' }
+#' 
+#' @seealso getArchiveBaseUrl
+#' @seealso setArchiveBaseUrl
+NULL
+
+#' @keywords environment
+#' @export
+#' @import sp
+#' @title Get data archive base URL
+#' @description Returns the package base URL pointing to an archive of
+#' pre-generated data files.
+#' @return URL string.
+#' @seealso archiveBaseUrl
+#' @seealso setArchiveBaseUrl
+getArchiveBaseUrl <- function() {
+  if (is.null(airsensorEnv$archiveBaseUrl)) {
+    stop('No URL. Please set a base URL with setArchiveBaseUrl("BASE_URL").', call.=FALSE)
+  } else {
+    return(airsensorEnv$archiveBaseUrl)    
+  }
+}
+
+#' @keywords environment
+#' @export
+#' @title Set data archive base URL
+#' @param archiveBaseUrl Base URL pointing to an archive of pre-generated data files.
+#' @description Sets the package base URL pointing to an archive of
+#' pre-generated data files.
+#' @return Silently returns previous value of base URL.
+#' @seealso ArchiveBaseUrl
+#' @seealso getArchiveBaseUrl
+setArchiveBaseUrl <- function(archiveBaseUrl) {
+  old <- airsensorEnv$archiveBaseUrl
+  airsensorEnv$archiveBaseUrl <- stringr::str_remove(archiveBaseUrl, "/$")
+  return(invisible(old))
+}
+
+#' @keywords environment
+#' @keywords internal
+#' @export
+#' @title Remove data archive base URL
+#' @description Resets the data archive base URL to NULL. Used for internal 
+#' testing. 
+#' @return Silently returns previous value of the base URL.
+#' @seealso ArchiveBaseUrl
+#' @seealso getArchiveBaseUrl
+#' @seealso setArchiveBaseUrl
+removeArchiveBaseUrl <- function() {
+  old <- airsensorEnv$archiveBaseUrl
+  airsensorEnv$archiveBaseUrl <- NULL
+}
+

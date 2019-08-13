@@ -11,7 +11,6 @@
 #' Purple Air sensors.
 #' 
 #' @param collection Name associated with the collection.
-#' @param baseUrl Base URL for \emph{airsensor} data.
 #' 
 #' @return An object of class "pa_timeseries".
 #' 
@@ -21,13 +20,13 @@
 #' 
 #' @examples
 #' \donttest{
+#' setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 #' sensor_loadLatest("scaqmd") %>%
 #'   PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
 #' }
 
 sensor_loadLatest <- function(
-  collection = "scaqmd",
-  baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/airsensor"
+  collection = "scaqmd"
 ) {
   
   # Validate parameters --------------------------------------------------------
@@ -37,8 +36,11 @@ sensor_loadLatest <- function(
 
   # Load data from URL ---------------------------------------------------------
   
+  # Use package internal URL
+  baseUrl <- getArchiveBaseUrl()
+  
   filename <- paste0("airsensor_", collection, "_latest7.rda")
-  filepath <- paste0(baseUrl, '/latest/', filename)
+  filepath <- paste0(baseUrl, '/airsensor/latest/', filename)
   
   # Define a 'connection' object so we can close it no matter what happens
   conn <- url(filepath)

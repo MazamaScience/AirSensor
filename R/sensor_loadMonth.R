@@ -20,7 +20,6 @@
 #' @param collection Name associated with the collection.
 #' @param datestamp A date string in ymd order.
 #' @param timezone Timezone used to interpret \code{datestamp}.
-#' @param baseUrl Base URL for \emph{airsensor} data.
 #' 
 #' @return An object of class "pa_timeseries".
 #' 
@@ -28,6 +27,7 @@
 #' 
 #' @examples
 #' \donttest{
+#' setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 #' sensor_loadMonth("scaqmd", 201905) %>%
 #'   PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
 #' }
@@ -35,8 +35,7 @@
 sensor_loadMonth <- function(
   collection = "scaqmd",
   datestamp = NULL,
-  timezone = "America/Los_Angeles",
-  baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/airsensor"
+  timezone = "America/Los_Angeles"
 ) {
   
   # Validate parameters --------------------------------------------------------
@@ -59,8 +58,11 @@ sensor_loadMonth <- function(
   
   # Load data from URL ---------------------------------------------------------
   
+  # Use package internal URL
+  baseUrl <- getArchiveBaseUrl()
+  
   filename <- paste0("airsensor_", collection, "_", monthstamp, ".rda")
-  filepath <- paste0(baseUrl, '/', yearstamp, '/', filename)
+  filepath <- paste0(baseUrl, '/airsensor/', yearstamp, '/', filename)
   
   # Define a 'connection' object so we can close it no matter what happens
   conn <- url(filepath)
