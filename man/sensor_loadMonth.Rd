@@ -5,8 +5,7 @@
 \title{Load hourly-aggregated Purple Air data for a month}
 \usage{
 sensor_loadMonth(collection = "scaqmd", datestamp = NULL,
-  timezone = "America/Los_Angeles",
-  baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/airsensor")
+  timezone = "America/Los_Angeles")
 }
 \arguments{
 \item{collection}{Name associated with the collection.}
@@ -14,8 +13,6 @@ sensor_loadMonth(collection = "scaqmd", datestamp = NULL,
 \item{datestamp}{A date string in ymd order.}
 
 \item{timezone}{Timezone used to interpret \code{datestamp}.}
-
-\item{baseUrl}{Base URL for \emph{airsensor} data.}
 }
 \value{
 An object of class "pa_timeseries".
@@ -37,6 +34,7 @@ Purple Air sensors.
 }
 \examples{
 \donttest{
+setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 sensor_loadMonth("scaqmd", 201905) \%>\%
   PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
 }

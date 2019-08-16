@@ -70,6 +70,7 @@ Additional map tile info found at:
 }
 \examples{
 \donttest{
+setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 LA_basin <- 
   pas_load() \%>\% 
   pas_filterArea(-118.5, -117.5, 33.5, 34.5)

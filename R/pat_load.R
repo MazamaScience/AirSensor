@@ -24,7 +24,6 @@
 #' @param enddate Desired end time (ISO 8601).
 #' @param days Number of days of data to include.
 #' @param timezone Timezone used to interpret start and end dates.
-#' @param baseUrl Base URL for \emph{pat} data.
 #' 
 #' @return A PurpleAir Timeseries \emph{pat} object.
 #' 
@@ -34,6 +33,7 @@
 #' 
 #' @examples
 #' \donttest{
+#' setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 #' pat <- pat_load("SCNP_20", 20190411, 20190521)
 #' pat_multiplot(pat)
 #' }
@@ -43,8 +43,7 @@ pat_load <- function(
   startdate = NULL, 
   enddate = NULL, 
   days = 7, 
-  timezone = "America/Los_Angeles",
-  baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/pat"
+  timezone = "America/Los_Angeles"
 ) {
   
   logger.debug("----- pat_load() -----")
@@ -81,8 +80,7 @@ pat_load <- function(
       pat_loadMonth(
         label = label, 
         datestamp = datestamp, 
-        timezone = timezone,
-        baseUrl = baseUrl
+        timezone = timezone
       )
     
   } 

@@ -1,6 +1,6 @@
 
 
-# AirSensor R Package <img src="man/figures/hex_sm.png" align="right"/>
+# AirSensor R Package
 
 `Utilities to process and display PM2.5 data from PurpleAir`
 

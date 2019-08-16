@@ -31,13 +31,15 @@ quality sensors.
 PurpleAir sensor readings are uploaded to the cloud every 80 seconds or so 
 where they are stored for download and display on the PurpleAir website. In 
 order to capture and download the latest synoptic dataset, begin by importing 
-the required Mazama Science packages and load the PurpleAir Synoptic ("`pas`") 
-data.   
+the required Mazama Science packages, setting the location of pre-generated
+archive files and loading the most recent PurpleAir Synoptic ("`pas`") data.   
 
 ```{r, eval=FALSE}
 library(AirSensor)
 library(dplyr)
 library(ggplot2)
+
+setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 
 pas <- pas_load()
 ```

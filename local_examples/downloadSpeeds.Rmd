@@ -17,6 +17,8 @@ speed of 1 hour to 24 hour downloads. We will be using the 'Seattle' PurpleAir
 monitor for all requests and each test will be run 20 times.
 
 ```{r hour-benchmark-tests, echo=FALSE}
+setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+
 pas <- AirSensor::pas_load()
 
 hour_speeds <- microbenchmark::microbenchmark(

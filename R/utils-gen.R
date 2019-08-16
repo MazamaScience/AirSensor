@@ -25,10 +25,13 @@
     
     if ( !is.null(setSeed) ) set.seed(setSeed)
     
-    if ( !is.null(sampleSize) && 
-         sampleSize <= nrow(data)  ) { 
+    if ( !is.null(sampleSize) ) {
       
-      sz <- sampleSize
+      if ( sampleSize <= nrow(data) ) {
+        sz <- sampleSize
+      } else {
+        sz <- nrow(data)
+      }
       
     } else  if ( !is.null(sampleFraction) &&
                  sampleFraction <= 1 && 
@@ -38,7 +41,7 @@
       
     } else {
       
-      stop("Invlaid sampleSize or sampleFraction.")
+      stop("Invalid sampleSize or sampleFraction.")
       
     }
     

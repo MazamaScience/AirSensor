@@ -4,13 +4,10 @@
 \alias{pat_loadLatest}
 \title{Load PurpleAir time series data for a week}
 \usage{
-pat_loadLatest(label = NULL,
-  baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/pat")
+pat_loadLatest(label = NULL)
 }
 \arguments{
 \item{label}{PurpleAir sensor 'label'.}
-
-\item{baseUrl}{Base URL for \emph{pat} data.}
 }
 \value{
 A PurpleAir Timeseries \emph{pat} object.
@@ -21,6 +18,7 @@ loaded containing data for the most recent 7-day interval.
 }
 \examples{
 \donttest{
+setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 pat <- pat_loadLatest("SCNP_20")
 pat_multiplot(pat)
 }

@@ -5,8 +5,7 @@
 \title{Load hourly-aggregated Purple Air data}
 \usage{
 sensor_load(collection = "scaqmd", startdate = NULL, enddate = NULL,
-  days = 7, timezone = "America/Los_Angeles",
-  baseUrl = "http://smoke.mazamascience.com/data/PurpleAir/airsensor")
+  days = 7, timezone = "America/Los_Angeles")
 }
 \arguments{
 \item{collection}{Name associated with the collection.}
@@ -18,8 +17,6 @@ sensor_load(collection = "scaqmd", startdate = NULL, enddate = NULL,
 \item{days}{Number of days of data to include.}
 
 \item{timezone}{Timezone used to interpret start and end dates.}
-
-\item{baseUrl}{Base URL for the \code{airsensor} data archive.}
 }
 \value{
 An object of class "airsensor".
@@ -42,6 +39,7 @@ By default, the current week is loaded.
 }
 \examples{
 \donttest{
+setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 sensor_load("scaqmd", 20190411, 20190521) \%>\%
   PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
 }

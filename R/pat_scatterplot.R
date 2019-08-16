@@ -87,7 +87,7 @@ pat_scatterplot <- function(
 
   # ----- Create plot ----------------------------------------------------------
   
-  gg_scatterplot <- 
+  gg <- 
     scatterplot(
       data = data, 
       size = size,
@@ -100,7 +100,7 @@ pat_scatterplot <- function(
   
   # ----- Return ---------------------------------------------------------------
   
-  return(gg_scatterplot)
+  return(gg)
   
 }
 

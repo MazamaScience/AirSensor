@@ -1,6 +1,8 @@
 library(AirSensor)
 library(MazamaSpatialUtils)
 
+setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+
 sensor <- sensor_load()
 
 start <- lubridate::parse_date_time(20190703, orders = "ymd", 

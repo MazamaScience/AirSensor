@@ -22,6 +22,8 @@ suppressPackageStartupMessages({
   library(futile.logger)
   library(MazamaCoreUtils)
   library(AirSensor)
+  
+  setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 })
 
 # ----- Get command line arguments ---------------------------------------------

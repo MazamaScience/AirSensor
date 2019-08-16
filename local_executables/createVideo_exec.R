@@ -18,6 +18,8 @@ suppressPackageStartupMessages({
   library(AirSensor)
   library(MazamaCoreUtils)
   library(MazamaSpatialUtils)
+  
+  setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 })
 
 # ----- Get command line arguments ---------------------------------------------
