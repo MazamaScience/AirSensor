@@ -42,7 +42,7 @@ RUN installGithub.r \
 
 WORKDIR /
 
-COPY AirSensor_0.3.15.tar.gz /
+COPY AirSensor_0.4.0.tar.gz /
 
-RUN R CMD INSTALL AirSensor_0.3.15.tar.gz
+RUN R CMD INSTALL AirSensor_0.4.0.tar.gz
 
