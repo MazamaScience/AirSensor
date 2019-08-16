@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Load PurpleAir time series data for a month — pat_loadMonth • AirSensor</title>
+<title>Base URL for pre-generated data — ArchiveBaseUrl • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,17 +37,20 @@
 
 
 
-<meta property="og:title" content="Load PurpleAir time series data for a month — pat_loadMonth" />
+<meta property="og:title" content="Base URL for pre-generated data — ArchiveBaseUrl" />
 
-<meta property="og:description" content="A pre-generated PurpleAir Timeseries pat object will be 
-loaded for the given month. Archived data for SCAQMD sensors go back to 
-January, 2018.
-The datestamp must be in the following format:
+<meta property="og:description" content="This package maintains an internal URL which users can set
+using setArchiveBaseUrl(). Package functions that load pre-generated
+data files use this. These functions include:
 
-&quot;YYYYmm&quot;
+pas_load()
+pat_load()
+pat_loadLatest()
+pat_loadMonth()
+sensor_load()
+sensor_loadLatest()
+sensor_loadMonth()
 " />
-
-<meta property="og:description" content="By default, the current month is loaded." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -150,72 +153,48 @@ The datestamp must be in the following format:
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Load PurpleAir time series data for a month</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_loadMonth.R'><code>R/pat_loadMonth.R</code></a></small>
-    <div class="hidden name"><code>pat_loadMonth.Rd</code></div>
+    <h1>Base URL for pre-generated data</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/AirSensor.R'><code>R/AirSensor.R</code></a></small>
+    <div class="hidden name"><code>ArchiveBaseUrl.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>A pre-generated PurpleAir Timeseries <em>pat</em> object will be 
-loaded for the given month. Archived data for SCAQMD sensors go back to 
-January, 2018.</p>
-<p>The <code>datestamp</code> must be in the following format:</p>
+    <p>This package maintains an internal URL which users can set
+using <code><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl()</a></code>. Package functions that load pre-generated
+data files use this. These functions include:</p>
 <ul>
-<li><p><code>"YYYYmm"</code></p></li>
+<li><p><code><a href='pas_load.html'>pas_load()</a></code></p></li>
+<li><p><code><a href='pat_load.html'>pat_load()</a></code></p></li>
+<li><p><code><a href='pat_loadLatest.html'>pat_loadLatest()</a></code></p></li>
+<li><p><code><a href='pat_loadMonth.html'>pat_loadMonth()</a></code></p></li>
+<li><p><code><a href='sensor_load.html'>sensor_load()</a></code></p></li>
+<li><p><code><a href='sensor_loadLatest.html'>sensor_loadLatest()</a></code></p></li>
+<li><p><code><a href='sensor_loadMonth.html'>sensor_loadMonth()</a></code></p></li>
 </ul>
-
-    <p>By default, the current month is loaded.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pat_loadMonth</span>(<span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>datestamp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='st'>"America/Los_Angeles"</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>label</th>
-      <td><p>Purple Air sensor 'label'</p></td>
-    </tr>
-    <tr>
-      <th>datestamp</th>
-      <td><p>Date string in ymd order.</p></td>
-    </tr>
-    <tr>
-      <th>timezone</th>
-      <td><p>Timezone used to interpret <code>datestamp</code>.</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+        
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>A PurpleAir Timeseries <em>pat</em> object.</p>
+    <p>URL string.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='pat_load.html'>pat_load</a></p>
-<p><a href='pat_loadLatest.html'>pat_loadLatest</a></p>
-<p><a href='pat_createNew.html'>pat_createNew</a></p></div>
+    <div class='dont-index'><p>getArchiveBaseUrl</p>
+<p>setArchiveBaseUrl</p></div>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl</a></span>(<span class='st'>"http://smoke.mazamascience.com/data/PurpleAir"</span>)
-<span class='no'>may</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_loadMonth</span>(<span class='st'>"SCNP_20"</span>, <span class='fl'>201905</span>)
-<span class='fu'><a href='pat_multiplot.html'>pat_multiplot</a></span>(<span class='no'>may</span>)</div><div class='img'><img src='pat_loadMonth-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#value">Value</a></li>
+      <li><a href="#format">Format</a></li>
 
       <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>

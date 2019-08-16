@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.15</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -143,6 +143,16 @@
       <small>Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="airsensor-0-4-0" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-4-0" class="anchor"></a>AirSensor 0.4.0</h1>
+<ul>
+<li>New <code><a href="../reference/setArchiveBaseUrl.html">setArchiveBaseUrl()</a></code> and <code><a href="../reference/getArchiveBaseUrl.html">getArchiveBaseUrl()</a></code> functions allow per session specification of the location of pre-generated data files.</li>
+<li>Removed <code>baseUrl</code> parameter from all data loading functions. Now users must begin a session with <code><a href="../reference/setArchiveBaseUrl.html">setArchiveBaseUrl()</a></code>.</li>
+<li>Modified behavior of <code><a href="../reference/sensor_load.html">sensor_load()</a></code> to trim data to the requested time range.</li>
+<li>Fixed bug in <code><a href="../reference/pat_scatterplot.html">pat_scatterplot()</a></code> that generated an error when the number of records in the <code>pat</code> object was fewer than the <code>sampleSize</code> parameter.</li>
+</ul>
+</div>
     <div id="airsensor-0-3-15" class="section level1">
 <h1 class="page-header">
 <a href="#airsensor-0-3-15" class="anchor"></a>AirSensor 0.3.15</h1>
@@ -657,6 +667,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#airsensor-0-4-0">0.4.0</a></li>
         <li><a href="#airsensor-0-3-15">0.3.15</a></li>
         <li><a href="#airsensor-0-3-14">0.3.14</a></li>
         <li><a href="#airsensor-0-3-13">0.3.13</a></li>
