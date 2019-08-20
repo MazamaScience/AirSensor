@@ -1,3 +1,7 @@
+# AirSensor 0.4.1
+
+* Minor documentation tweaks
+
 # AirSensor 0.4.0
 
 * New `setArchiveBaseUrl()` and `getArchiveBaseUrl()` functions allow per 

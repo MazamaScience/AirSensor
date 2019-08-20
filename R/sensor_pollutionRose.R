@@ -48,6 +48,9 @@
 #'
 #' @examples
 #' \donttest{
+#' # Set default location of pre-generated data files
+#' setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+#' 
 #' sensor <- sensor_load(startdate = 20190601, enddate = 20190630)
 #' sensor <- sensor_filterMeta(sensor, monitorID == "SCSB_02")
 #' 
@@ -77,7 +80,8 @@ sensor_pollutionRose <-
     normalize = FALSE
   ) {
     
-    # Validate Parameters
+    # ----- Validate parameters ------------------------------------------------
+    
     if ( !PWFSLSmoke::monitor_isMonitor(sensor) )
       stop("Parameter 'sensor' is not a valid 'airsensor' object.") 
     
@@ -89,6 +93,8 @@ sensor_pollutionRose <-
     
     if ( nrow(sensor$meta) > 1 )
       stop("Parameter 'sensor' contains more than one SC sensor")
+    
+    # ----- Get wind data ------------------------------------------------------
     
     # Find wind data readings from the closest NOAA site if none are provided
     if ( is.null(windData) ) {
