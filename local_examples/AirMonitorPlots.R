@@ -3,6 +3,8 @@ library(PWFSLSmoke)
 library(AirSensor)
 library(AirMonitorPlots)
 
+setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+
 # ----- Using purr::map() to work with lists of PAT objects --------------------
 
 # Create a list of Nipomo "pat"s and convert them into "sensor"s

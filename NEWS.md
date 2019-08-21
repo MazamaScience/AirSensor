@@ -1,6 +1,8 @@
 # AirSensor 0.4.1
 
-* Minor documentation tweaks
+* Minor documentation tweaks.
+* Updated usage of `MazamaCoreUtils::dateRange()` to reflect change from "end of
+enddate" to "start of enddate".
 
 # AirSensor 0.4.0
 

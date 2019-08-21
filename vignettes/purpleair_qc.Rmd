@@ -173,7 +173,7 @@ library(ggplot2)
 # Grab a 1-day subset of the data
 raw_data <- 
   example_pat_failure_B %>%
-  pat_filterDate(20190611,20190611) %>%
+  pat_filterDate(20190611,20190612) %>%
   pat_extractData() %>%
   dplyr::select(datetime, pm25_A, pm25_B) %>%
   # Convert datetime to an hourly timestamp to use as a factor
@@ -196,7 +196,7 @@ ggplot(raw_data, aes(datetime, pm25, color = channel)) +
 # Compare the t-statistic for that day
 agg_data <- 
   example_pat_failure_B %>%
-  pat_filterDate(20190611,20190611) %>%
+  pat_filterDate(20190611,20190612) %>%
   pat_aggregate()
 
 ggplot(agg_data, aes(datetime, pm25_p)) +
@@ -213,7 +213,7 @@ library(ggplot2)
 # Grab a 1-day subset of the data
 raw_data <- 
   example_pat_failure_B %>%
-  pat_filterDate(20190612,20190612) %>%
+  pat_filterDate(20190612,20190613) %>%
   pat_extractData() %>%
   dplyr::select(datetime, pm25_A, pm25_B) %>%
   # Convert datetime to an hourly timestamp to use as a factor
@@ -236,7 +236,7 @@ ggplot(raw_data, aes(datetime, pm25, color = channel)) +
 # Compare the t-statistic for that day
 agg_data <- 
   example_pat_failure_B %>%
-  pat_filterDate(20190612,20190612) %>%
+  pat_filterDate(20190612,20190613) %>%
   pat_aggregate()
 
 ggplot(agg_data, aes(datetime, pm25_p)) +

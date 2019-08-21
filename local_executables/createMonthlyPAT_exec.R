@@ -11,8 +11,8 @@
 # docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --pattern=^SCNP_..$
 #
 
-#  --- . --- . AirSensor 0.3.12
-VERSION = "0.1.7"
+#  --- . --- . AirSensor 0.4.1
+VERSION = "0.1.8"
 
 # The following packages are attached here so they show up in the sessionInfo
 suppressPackageStartupMessages({
@@ -115,7 +115,7 @@ logger.setup(
 )
 
 # For use at the very end
-errorLog <- file.path(opt$logDir, paste0("createMonthlyPAT_",datestamp,"_ERROR.log"))
+errorLog <- file.path(opt$logDir, paste0("createMonthlyPAT_",monthstamp,"_ERROR.log"))
 
 # Silence other warning messages
 options(warn=-1) # -1=ignore, 0=save/print, 1=print, 2=error

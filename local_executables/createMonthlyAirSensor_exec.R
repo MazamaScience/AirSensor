@@ -12,8 +12,8 @@
 # docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --pattern=^SCNP_..$
 #
 
-#  --- . --- . AirSensor 0.3.12
-VERSION = "0.3.6" 
+#  --- . --- . AirSensor 0.4.1
+VERSION = "0.3.7" 
 
 library(optparse)      # to parse command line flags
 

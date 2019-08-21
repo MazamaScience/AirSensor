@@ -69,6 +69,9 @@ Plots a traditional wind rose plot for wind direction and PM2.5.
 }
 \examples{
 \donttest{
+# Set default location of pre-generated data files
+setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+
 sensor <- sensor_load(startdate = 20190601, enddate = 20190630)
 sensor <- sensor_filterMeta(sensor, monitorID == "SCSB_02")
 
