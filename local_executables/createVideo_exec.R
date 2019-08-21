@@ -1,8 +1,8 @@
 #!/usr/local/bin/Rscript
 
 # This Rscript generates a video for a South Coast community over a 3-day 
-# period. If a startDate is given, then that day and the next two are covered.
-# If no startDate is given then the last 72 hours are covered. Resulting video
+# period. If an endDate is given, then that day and the previous two are covered.
+# If no endDate is given then the last 72 hours are covered. Resulting video
 # is labeled by the communitiy's South Coast ID.
 #
 # Test this script from the command line with:
@@ -10,7 +10,8 @@
 # ./createVideo_exec.R --communityName="Sycamore Canyon" -s 20190704 -r 4 -o ~/Desktop/ -v TRUE
 # ./createVideo_exec.R -c SCSB -o ~/Desktop/
 
-VERSION = "0.1.1"
+# ---- . ---- . AirSensor 0.4.1
+VERSION = "0.1.2"
 
 # The following packages are attached here so they show up in the sessionInfo
 suppressPackageStartupMessages({
@@ -39,44 +40,44 @@ if ( interactive() ) {
   option_list <- list(
     make_option(
       c("-c","--communityID"), 
-      default="", 
-      help="ID of the South Coast community [default=\"%default\"]"
+      default = "", 
+      help = "ID of the South Coast community [default=\"%default\"]"
     ),
     make_option(
       c("-C","--communityName"), 
-      default="", 
-      help="Name of the South Coast community [default=\"%default\"]"
+      default = "", 
+      help = "Name of the South Coast community [default=\"%default\"]"
     ),
     make_option(
-      c("-s","--startDate"), 
-      default=0, 
-      help="Start date for the 3-day (72 hr) period [default=\"%default\"]"
+      c("-s","--endDate"), 
+      default = NULL, 
+      help = "End date for the 3-day (72 hr) period [default=\"%default\"]"
     ),
     make_option(
       c("-r", "--frameRate"),
-      default=6,
+      default = 6,
       help="Frames per second [default=\"%default\"]"
     ),
     make_option(
       c("-v","--verbose"), 
-      default=FALSE, 
+      default = FALSE, 
       help="Print out generated frame files [default=\"%default\"]"
     ),
     make_option(
       c("-o","--outputDir"), 
-      default=getwd(), 
+      default = getwd(), 
       help="Output directory for generated video file [default=\"%default\"]"
     ),
     make_option(
       c("-l","--logDir"), 
-      default=getwd(), 
+      default = getwd(), 
       help="Output directory for generated .log file [default=\"%default\"]"
     ),
     make_option(
       c("-V","--version"), 
-      action="store_true", 
-      default=FALSE, 
-      help="Print out version number [default=\"%default\"]"
+      action = "store_true", 
+      default = FALSE, 
+      help = "Print out version number [default=\"%default\"]"
     )
   )
   
@@ -195,15 +196,15 @@ result <- try({
     dplyr::slice(1) %>%
     dplyr::pull(timezone)
   
-  # Look forward 71 hours from startdate entry, or back 71 hours from the most 
-  # recent data entry if no startdate is given
+  # Look back 71 hours from endDate entry, or back 71 hours from the most 
+  # recent data entry if no endDate is given
   logger.info("Setting start and end times")
-  if (opt$startDate > 0) {
-    start <- lubridate::parse_date_time(opt$startDate, orders = "ymd", tz = timezone)
-    end   <- start + lubridate::hours(71)
+  if ( !is.null(opt$endDate) ) {
+    endtime <- lubridate::parse_date_time(opt$endDate, orders = "ymd", tz = timezone)
+    starttime   <- endtime - lubridate::hours(71)
   } else {
-    end <- sensor$data[nrow(sensor$data), "datetime"]
-    start <- end - lubridate::hours(71)
+    endtime <- sensor$data[nrow(sensor$data), "datetime"]
+    starttime <- endtime - lubridate::hours(71)
   }
   
   mapInfo <- communityGeoMapInfo[[opt$communityID]]
@@ -211,7 +212,7 @@ result <- try({
   # Time axis data
   logger.info("Preparing the time axis")
   tickSkip <- 6
-  movieData <- sensor_filter(sensor, datetime >= start, datetime <= end)
+  movieData <- sensor_filter(sensor, datetime >= starttime, datetime <= endtime)
   tAxis <- movieData$data$datetime
   tAxis[(lubridate::hour(tAxis) - 1) %% tickSkip == 0 & 
            lubridate::minute(tAxis) == 0]
@@ -253,10 +254,11 @@ result <- try({
     dev.off()
   }
   
-  # Create a file name timestamped with the last frame in UTC
+  # Create a file name timestamped with the final frameTime in the
+  # "America/Los_Angeles" timezone
   fileName <- paste0(
     opt$communityID, "_",
-    strftime(frameTime, "%Y%m%d%H", tz = "UTC"), ".mp4"
+    strftime(frameTime, "%Y%m%d", tz = "America/Los_Angeles"), ".mp4"
   )
 
   # Define system calls to ffmpeg to create video from frames

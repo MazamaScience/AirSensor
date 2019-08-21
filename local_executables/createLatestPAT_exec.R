@@ -11,8 +11,8 @@
 # docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/airsensor /app/createLatestPAT_exec.R --pattern=^SCNP_..$
 #
 
-#  --- . --- . AirSensor 0.3.14
-VERSION = "0.1.0"
+#  --- . --- . AirSensor 0.4.1
+VERSION = "0.1.1"
 
 # The following packages are attached here so they show up in the sessionInfo
 suppressPackageStartupMessages({
@@ -108,8 +108,8 @@ logger.debug("R session:\n\n%s\n", sessionString)
 result <- try({
   
   # Get times
-  starttime <- lubridate::now(tzone = "UTC")
-  endtime <- starttime - lubridate::ddays(7)
+  endtime <- lubridate::now(tzone = "UTC")
+  starttime <- endtime - lubridate::ddays(7)
   
   # Get strings
   startdate <- strftime(starttime, "%Y-%m-%d %H:%M:%S", tz = "UTC")

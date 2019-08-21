@@ -16,7 +16,7 @@ PurpleAir (PA-II) sensors.
 knitr::opts_chunk$set(fig.width=7, fig.height=5)
 library(AirSensor)
 setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
-pas <- pas_load()
+pas <- pas_load(archival = TRUE)
 ```
 
 ## Channel A Moderate Noise
@@ -107,8 +107,8 @@ pat_multiplot(pat)
 ```
 
 The multiplot shows the A and B channels have very different readings, similar 
-the "Matches Humidity" failure mode. The strange thing here though is that the 
-A channel is mostly flat, with only the occasional spike when the humidity 
+to the "Matches Humidity" failure mode. The strange thing here though is that 
+the A channel is mostly flat, with only the occasional spike when the humidity 
 measures very high. Let's see what number it is centered around:
 
 ```{r}

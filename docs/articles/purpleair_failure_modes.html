@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -156,7 +156,7 @@
 <a href="#channel-a-magic-number" class="anchor"></a>Channel A Magic Number</h2>
 <p>The A channel is centered around a particular level but is sometimes affected by humidity when it goes past a certain threshold.</p>
 <p><img src="purpleair_failure_modes_files/figure-html/unnamed-chunk-1-1.png" width="672"></p>
-<p>The multiplot shows the A and B channels have very different readings, similar the “Matches Humidity” failure mode. The strange thing here though is that the A channel is mostly flat, with only the occasional spike when the humidity measures very high. Let’s see what number it is centered around:</p>
+<p>The multiplot shows the A and B channels have very different readings, similar to the “Matches Humidity” failure mode. The strange thing here though is that the A channel is mostly flat, with only the occasional spike when the humidity measures very high. Let’s see what number it is centered around:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(pat<span class="op">$</span>data<span class="op">$</span>datetime, pat<span class="op">$</span>data<span class="op">$</span>pm25_A, 
      <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">3325</span>, <span class="dv">3340</span>), 
      <span class="dt">pch =</span> <span class="dv">15</span>, <span class="dt">cex =</span> <span class="fl">0.6</span>, <span class="dt">col=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/adjustcolor">adjustcolor</a></span>(<span class="st">"black"</span>, <span class="fl">0.2</span>),
