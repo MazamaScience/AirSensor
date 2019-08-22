@@ -1,3 +1,13 @@
+# AirSensor 0.4.2
+
+* `pat_createAirSensor()` now uses `pat$meta$label` to populate 
+`sensor$meta$siteName`.
+* New `sensor_calendarPlot()`.
+* Added `aspectRatio` argument to `~calendarPlot()` functions.
+* Updated requirements: MazamaCoreUtils (>= 0.3.1), PWFSLSmoke (>= 1.2.100)
+* `sensor_load()` no longer stops when monthly files cannot be found. This helps
+when asking for the current year's worth of data for a calendar plot.
+
 # AirSensor 0.4.1
 
 * Minor documentation tweaks.

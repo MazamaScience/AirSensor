@@ -5,7 +5,8 @@
 \title{Calendar Heat Map Plot}
 \usage{
 pat_calendarPlot(pat = NULL, palette = NULL, ncol = 3,
-  channel = "ab", qc_algorithm = "hourly_AB_01", min_count = 20)
+  aspectRatio = 4/5, channel = "ab", qc_algorithm = "hourly_AB_01",
+  min_count = 20)
 }
 \arguments{
 \item{pat}{a pat object}
@@ -13,6 +14,8 @@ pat_calendarPlot(pat = NULL, palette = NULL, ncol = 3,
 \item{palette}{a palette}
 
 \item{ncol}{columns of plot}
+
+\item{aspectRatio}{aspect ratio of the plot}
 
 \item{channel}{Data channel to use for PM2.5 -- one of "a", "b or "ab".}
 

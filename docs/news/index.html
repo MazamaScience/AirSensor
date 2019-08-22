@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -143,6 +143,19 @@
       <small>Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="airsensor-0-4-2" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-4-2" class="anchor"></a>AirSensor 0.4.2</h1>
+<ul>
+<li>
+<code><a href="../reference/pat_createAirSensor.html">pat_createAirSensor()</a></code> now uses <code>pat$meta$label</code> to populate <code>sensor$meta$siteName</code>.</li>
+<li>New <code><a href="../reference/sensor_calendarPlot.html">sensor_calendarPlot()</a></code>.</li>
+<li>Added <code>aspectRatio</code> argument to <code>~calendarPlot()</code> functions.</li>
+<li>Updated requirements: MazamaCoreUtils (&gt;= 0.3.1), PWFSLSmoke (&gt;= 1.2.100)</li>
+<li>
+<code><a href="../reference/sensor_load.html">sensor_load()</a></code> no longer stops when monthly files cannot be found. This helps when asking for the current year’s worth of data for a calendar plot.</li>
+</ul>
+</div>
     <div id="airsensor-0-4-1" class="section level1">
 <h1 class="page-header">
 <a href="#airsensor-0-4-1" class="anchor"></a>AirSensor 0.4.1</h1>
@@ -675,6 +688,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#airsensor-0-4-2">0.4.2</a></li>
         <li><a href="#airsensor-0-4-1">0.4.1</a></li>
         <li><a href="#airsensor-0-4-0">0.4.0</a></li>
         <li><a href="#airsensor-0-3-15">0.3.15</a></li>

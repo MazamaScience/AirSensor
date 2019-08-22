@@ -51,5 +51,11 @@ createMonthlyAirSensor:
 createVideo:
 	docker run --rm -v $(BASE_PATH):/app -v $(BASE_PATH)/output:/app/output -v $(BASE_PATH)/logs:/app/logs -w /app mazamascience/airsensor:latest /app/createVideo_exec.R --outputDir=/app/output --logDir=/app/logs --communityID=SCSB
 
+################################################################################
+# Calendar plots
+
+createCalendarPlot:
+	docker run --rm -v $(BASE_PATH):/app -v $(BASE_PATH)/output:/app/output -v $(BASE_PATH)/logs:/app/logs -w /app mazamascience/airsensor:latest /app/createCalendarPlot_exec.R --outputDir=/app/output --logDir=/app/logs --pattern=^SCNP_..$
+
 
 

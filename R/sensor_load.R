@@ -72,12 +72,26 @@ sensor_load <-
     
     for ( datestamp in datestamps ) { 
       
-      airsensorList[[datestamp]] <- 
-        sensor_loadMonth(
-          collection = collection, 
-          datestamp = datestamp, 
-          timezone = timezone
-        )
+      # Ignore "no data file" errors (likely for future months)
+      result <- try({
+        
+        airsensorList[[datestamp]] <- 
+          sensor_loadMonth(
+            collection = collection, 
+            datestamp = datestamp, 
+            timezone = timezone
+          )
+        
+      }, silent = TRUE)
+      
+      if ( "try-error" %in% class(result) ) {
+        err_msg <- geterrmessage()
+        if ( stringr::str_detect(err_msg, "file could not be loaded") ) {
+          # Ignore
+        } else {
+          stop(err_msg)
+        }
+      }
       
     } 
     

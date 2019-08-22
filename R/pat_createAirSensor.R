@@ -165,7 +165,7 @@ pat_createAirSensor <- function(
   
   # Add metadata found in PWFSLSmoke ws_monitor objects
   meta$elevation <- as.numeric(NA)
-  meta$siteName <- meta$label
+  meta$siteName <- meta$monitorID
   meta$countyName <- as.character(NA)
   meta$msaName <- as.character(NA)
   meta$monitorType <- meta$sensorType
