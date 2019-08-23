@@ -7,7 +7,8 @@
 #' @param palette a palette
 #' @param ncol columns of plot
 #' @param aspectRatio aspect ratio of the plot
-#' 
+#' @param discrete a boolean to determine if color breaks will be discrete by a 
+#' predefined scale, or continous based on the data domain.
 #' @description Plot a calendar heat map of daily PM2.5 average.
 #' 
 #' @note This function is currently optimized for annual time periods. 
@@ -25,7 +26,8 @@ sensor_calendarPlot <- function(
   sensor = NULL, 
   palette = NULL, 
   ncol = 3,
-  aspectRatio = 4/5
+  aspectRatio = 4/5, 
+  discrete = TRUE
 ) {
   
   # ===== DEBUGGING ============================================================
@@ -35,6 +37,8 @@ sensor_calendarPlot <- function(
     sensor <- example_sensor 
     palette <- NULL 
     ncol <- 3
+    aspectRatio <- 4/5
+    discrete = TRUE
 
   }
   
@@ -106,6 +110,18 @@ sensor_calendarPlot <- function(
     sensor$meta$monitorID
   )
   
+  # Determine fill type 
+  if ( discrete ){
+    fill <- 
+      cut(
+        df$pm25, 
+        breaks = c(0,12, 35, 55, 75, 6000), 
+        labels = c("0-12", "12-35", "35-55", "55-75", ">75")
+      )
+  } else {
+    fill = df$pm25
+  }
+  
   # ----- Create plot ----------------------------------------------------------
   
   gg <- 
@@ -114,8 +130,8 @@ sensor_calendarPlot <- function(
       ggplot2::aes(
         stats::reorder(monthweek, dplyr::desc(.data$monthweek)), 
         .data$weekd, 
-        fill = df$pm25
-      )
+        fill = fill
+        )
     ) + 
     ggplot2::geom_tile(color = "grey88", size=0.5) + 
     ggplot2::facet_wrap(drop = F, ncol = ncol, dir = "h",
@@ -123,7 +139,7 @@ sensor_calendarPlot <- function(
     ) +
     ggplot2::labs(
       title = title,
-      fill="PM2.5") + 
+      fill="PM2.5 (\u03bcg / m\u00b3)") + 
     ggplot2::geom_text(
       ggplot2::aes(label=.data$day), 
       size = 3, 
@@ -131,11 +147,6 @@ sensor_calendarPlot <- function(
     ) +
     ggplot2::theme_classic() + 
     ggplot2::coord_flip() + 
-    ggplot2::scale_fill_viridis_c(
-      alpha = 0.8, 
-      direction = 1, 
-      begin = 0.15
-    ) + 
     ggplot2::theme(
       axis.title.y = ggplot2::element_blank(),
       axis.text.y = ggplot2::element_blank(), 

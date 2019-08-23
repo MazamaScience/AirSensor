@@ -10,6 +10,8 @@
 #' @param channel Data channel to use for PM2.5 -- one of "a", "b or "ab".
 #' @param qc_algorithm Named QC algorithm to apply to hourly aggregation stats.
 #' @param min_count Aggregation bins with fewer than `min_count` measurements
+#' @param discrete a boolean to determine if color breaks will be discrete by a 
+#' predefined scale, or continous based on the data domain.
 #' will be marked as `NA`.
 #' 
 #' @description Plot a calendar heat map of daily PM2.5 average.
@@ -39,7 +41,8 @@ pat_calendarPlot <- function(
   aspectRatio = 4/5,
   channel = "ab", 
   qc_algorithm = "hourly_AB_01",
-  min_count = 20
+  min_count = 20, 
+  discrete = TRUE
 ) {
   
   # ===== DEBUGGING ============================================================
@@ -80,7 +83,7 @@ pat_calendarPlot <- function(
   
   # ----- Create plot ----------------------------------------------------------
   
-  gg <- sensor_calendarPlot(sensor, palette, ncol)
+  gg <- sensor_calendarPlot(sensor, palette, ncol, discrete = discrete)
   
   return(gg)
   
