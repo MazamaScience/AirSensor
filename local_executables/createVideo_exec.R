@@ -10,8 +10,8 @@
 # ./createVideo_exec.R --communityName="Sycamore Canyon" -s 20190704 -r 4 -o ~/Desktop/ -v TRUE
 # ./createVideo_exec.R -c SCSB -o ~/Desktop/
 
-# ---- . ---- . AirSensor 0.4.1
-VERSION = "0.1.2"
+# ---- . ---- . mp4 format works on Firefox
+VERSION = "0.1.3"
 
 # The following packages are attached here so they show up in the sessionInfo
 suppressPackageStartupMessages({
@@ -266,6 +266,8 @@ result <- try({
   cmd_ffmpeg <- paste0("ffmpeg -loglevel quiet -r ", 
                        opt$frameRate, " -f image2 -s 1280x720 -i ", 
                        opt$communityID, "%03d.png -vcodec libx264 -crf 25 ", 
+                       # https://bugzilla.mozilla.org/show_bug.cgi?id=1368063#c7
+                       "-pix_fmt yuv420p ",
                        opt$outputDir, "/", fileName)
   cmd_rm <- paste0("rm *.png")
   cmd <- paste0(cmd_cd, " && ", cmd_ffmpeg, " && ", cmd_rm)
