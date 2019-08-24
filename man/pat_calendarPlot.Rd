@@ -5,7 +5,8 @@
 \title{Calendar Heat Map Plot}
 \usage{
 pat_calendarPlot(pat = NULL, palette = NULL, ncol = 3,
-  channel = "ab", qc_algorithm = "hourly_AB_01", min_count = 20)
+  aspectRatio = 4/5, channel = "ab", qc_algorithm = "hourly_AB_01",
+  min_count = 20, discrete = TRUE)
 }
 \arguments{
 \item{pat}{a pat object}
@@ -14,11 +15,16 @@ pat_calendarPlot(pat = NULL, palette = NULL, ncol = 3,
 
 \item{ncol}{columns of plot}
 
+\item{aspectRatio}{aspect ratio of the plot}
+
 \item{channel}{Data channel to use for PM2.5 -- one of "a", "b or "ab".}
 
 \item{qc_algorithm}{Named QC algorithm to apply to hourly aggregation stats.}
 
-\item{min_count}{Aggregation bins with fewer than `min_count` measurements
+\item{min_count}{Aggregation bins with fewer than `min_count` measurements}
+
+\item{discrete}{a boolean to determine if color breaks will be discrete by a 
+predefined scale, or continous based on the data domain.
 will be marked as `NA`.}
 }
 \value{
