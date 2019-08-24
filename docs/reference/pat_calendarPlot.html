@@ -74,7 +74,7 @@ hourly_AB_01
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
       </span>
     </div>
 
@@ -163,7 +163,7 @@ hourly_AB_01
 
     <pre class="usage"><span class='fu'>pat_calendarPlot</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>3</span>,
   <span class='kw'>aspectRatio</span> <span class='kw'>=</span> <span class='fl'>4</span>/<span class='fl'>5</span>, <span class='kw'>channel</span> <span class='kw'>=</span> <span class='st'>"ab"</span>, <span class='kw'>qc_algorithm</span> <span class='kw'>=</span> <span class='st'>"hourly_AB_01"</span>,
-  <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>20</span>)</pre>
+  <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>discrete</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -194,7 +194,12 @@ hourly_AB_01
     </tr>
     <tr>
       <th>min_count</th>
-      <td><p>Aggregation bins with fewer than `min_count` measurements
+      <td><p>Aggregation bins with fewer than `min_count` measurements</p></td>
+    </tr>
+    <tr>
+      <th>discrete</th>
+      <td><p>a boolean to determine if color breaks will be discrete by a 
+predefined scale, or continous based on the data domain.
 will be marked as `NA`.</p></td>
     </tr>
     </table>

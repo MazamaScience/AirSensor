@@ -1,3 +1,8 @@
+# AirSensor 0.4.3
+
+* Updated `pat_calendarPlot()` and `sensor_calendarPlot()` to handle discrete
+color scales.
+
 # AirSensor 0.4.2
 
 * `pat_createAirSensor()` now uses `pat$meta$label` to populate 

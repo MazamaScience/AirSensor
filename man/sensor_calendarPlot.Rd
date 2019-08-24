@@ -5,7 +5,7 @@
 \title{Calendar Heat Map Plot}
 \usage{
 sensor_calendarPlot(sensor = NULL, palette = NULL, ncol = 3,
-  aspectRatio = 4/5)
+  aspectRatio = 4/5, discrete = TRUE)
 }
 \arguments{
 \item{sensor}{an 'airsensor' object}
@@ -15,6 +15,9 @@ sensor_calendarPlot(sensor = NULL, palette = NULL, ncol = 3,
 \item{ncol}{columns of plot}
 
 \item{aspectRatio}{aspect ratio of the plot}
+
+\item{discrete}{a boolean to determine if color breaks will be discrete by a 
+predefined scale, or continous based on the data domain.}
 }
 \value{
 ggobject

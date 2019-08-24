@@ -70,7 +70,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
       </span>
     </div>
 
@@ -154,7 +154,7 @@
     </div>
 
     <pre class="usage"><span class='fu'>sensor_calendarPlot</span>(<span class='kw'>sensor</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>aspectRatio</span> <span class='kw'>=</span> <span class='fl'>4</span>/<span class='fl'>5</span>)</pre>
+  <span class='kw'>aspectRatio</span> <span class='kw'>=</span> <span class='fl'>4</span>/<span class='fl'>5</span>, <span class='kw'>discrete</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -174,6 +174,11 @@
     <tr>
       <th>aspectRatio</th>
       <td><p>aspect ratio of the plot</p></td>
+    </tr>
+    <tr>
+      <th>discrete</th>
+      <td><p>a boolean to determine if color breaks will be discrete by a 
+predefined scale, or continous based on the data domain.</p></td>
     </tr>
     </table>
     
