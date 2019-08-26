@@ -39,7 +39,7 @@ sensor_calendarPlot <- function(
     ncol <- 3
     aspectRatio <- 4/5
     discrete = TRUE
-
+    
   }
   
   # ----- Validate parameters --------------------------------------------------
@@ -50,8 +50,25 @@ sensor_calendarPlot <- function(
   if ( sensor_isEmpty(sensor) )
     stop("Parameter 'sensor' has no data.") 
   
-  # Creat data frame
+  # Create data frame
   df <- sensor$data
+  
+  # Fill missing dates 
+  df <-
+    tidyr::complete(
+      data = df,
+      datetime = seq(
+        as.POSIXct(
+          paste0(
+            strftime(df$datetime, format = "%Y")[1],
+            "-01-01"
+          ) , 
+          tz = strftime(df$datetime, format = "%Z")[1]
+        ),
+        to = tail(df$datetime, n=1),
+        by = "1 day"
+      )
+    )
   
   # ----- Prepare plot data ----------------------------------------------------
   
@@ -76,11 +93,11 @@ sensor_calendarPlot <- function(
                                               "Fri", 
                                               "Sat", 
                                               "Sun"
-                                              ) 
-                                           )
-                      )
+  ) 
+  )
+  )
   df$monthweek <- as.numeric(NA) # placeholder
-
+  
   # Compute week number for each month                                          
   df <- 
     df %>%
@@ -128,13 +145,13 @@ sensor_calendarPlot <- function(
     ggplot2::ggplot(
       df, 
       ggplot2::aes(
-        stats::reorder(monthweek, dplyr::desc(.data$monthweek)), 
+        stats::reorder(.data$monthweek, dplyr::desc(.data$monthweek)), 
         .data$weekd, 
         fill = fill
-        )
+      )
     ) + 
     ggplot2::geom_tile(color = "grey88", size=0.5) + 
-    ggplot2::facet_wrap(drop = F, ncol = ncol, dir = "h",
+    ggplot2::facet_wrap(drop = TRUE, ncol = ncol, dir = "h",
                         factor(monthf, levels = month.abb) ~ .
     ) +
     ggplot2::labs(
@@ -156,9 +173,9 @@ sensor_calendarPlot <- function(
       axis.line.y = ggplot2::element_blank(),
       legend.position = "bottom",
       aspect.ratio = aspectRatio
-    ) 
+    ) + 
+    ggplot2::scale_fill_discrete(na.value="white")
   
   return(gg)
   
 }    
-
