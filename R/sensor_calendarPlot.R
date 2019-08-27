@@ -53,19 +53,32 @@ sensor_calendarPlot <- function(
   # Create data frame
   df <- sensor$data
   
-  # Fill missing dates 
+  # Fill missing dates # CHECK IF LUBRIDATE CAN BE USED
   df <-
     tidyr::complete(
       data = df,
       datetime = seq(
-        as.POSIXct(
+        from = as.POSIXct(
           paste0(
-            strftime(df$datetime, format = "%Y")[1],
+            strftime(
+              df$datetime, 
+              format = "%Y", 
+              tz = sensor$meta$timezone)[2],
             "-01-01"
           ) , 
-          tz = strftime(df$datetime, format = "%Z")[1]
+          tz = strftime(
+            df$datetime, 
+            format = "%Z", 
+            tz = sensor$meta$timezone)[1]
         ),
-        to = tail(df$datetime, n=1),
+        to = as.POSIXct(
+          paste0(
+            strftime(
+              df$datetime, 
+              format = "%Y", 
+              tz = sensor$meta$timezone)[2], 
+            "-12-31")
+        ),
         by = "1 day"
       )
     )
@@ -86,16 +99,17 @@ sensor_calendarPlot <- function(
   df$monthf <- months.Date(df$datetime, abbreviate = TRUE)
   df$weekdayf <- weekdays.Date(df$datetime, abbreviate = TRUE)
   df$weekday <- as.numeric(strftime(df$datetime, format = "%d"))
-  df$weekd <- ordered(df$weekdayf, levels=(c( "Mon", 
-                                              "Tue", 
-                                              "Wed", 
-                                              "Thu", 
-                                              "Fri", 
-                                              "Sat", 
-                                              "Sun"
-  ) 
-  )
-  )
+  df$weekd <- ordered(df$weekdayf, 
+                      levels=(
+                        c( "Mon", 
+                           "Tue", 
+                           "Wed", 
+                           "Thu", 
+                           "Fri", 
+                           "Sat", 
+                           "Sun" ) 
+                      )
+                    )
   df$monthweek <- as.numeric(NA) # placeholder
   
   # Compute week number for each month                                          
