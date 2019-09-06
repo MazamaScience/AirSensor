@@ -12,8 +12,8 @@
 # docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/airsensor /app/createMonthlyAirSensor_exec.R --pattern=^SCNP_..$
 #
 
-#  --- . --- . AirSensor 0.4.1
-VERSION = "0.3.7" 
+#  --- . --- . MazamaCoreUtils 0.3.5
+VERSION = "0.3.8" 
 
 library(optparse)      # to parse command line flags
 
@@ -98,7 +98,7 @@ if ( !dir.exists(opt$logDir) )
   stop(paste0("logDir not found:  ",opt$logDir))
 
 # Default to the current month
-now <- lubridate::now(opt$timezone)
+now <- lubridate::now(tzone = opt$timezone)
 if ( opt$datestamp == "" ) {
   opt$datestamp <- strftime(now, "%Y%m01", tz = opt$timezone)
 }

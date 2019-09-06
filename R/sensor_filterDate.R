@@ -60,7 +60,10 @@ sensor_filterDate <- function(
     days <- 7 # default
   }
   
-  dateRange <- MazamaCoreUtils::dateRange(startdate, enddate, timezone, days)
+  dateRange <- MazamaCoreUtils::dateRange(startdate, 
+                                          enddate, 
+                                          timezone, 
+                                          days = days)
   
   # Subset the "sensor" object ----------------------------------------------------
   

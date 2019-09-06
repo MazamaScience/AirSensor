@@ -48,7 +48,7 @@ pat_loadMonth <- function(
 
   # Default to the current month
   if ( is.null(datestamp) || datestamp == "" ) {
-    now <- lubridate::now(timezone)
+    now <- lubridate::now(tzone = timezone)
     datestamp <- strftime(now, "%Y%m%d", tz = timezone)
   }
   

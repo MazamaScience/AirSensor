@@ -110,7 +110,7 @@ pat_multiplot <- function(
   # Create a tibble
   tbl <- 
     dplyr::tibble(
-      datetime = lubridate::with_tz(pat$data$datetime, timezone),
+      datetime = lubridate::with_tz(pat$data$datetime, tzone = timezone),
       pm25_A = pat$data$pm25_A, 
       pm25_B = pat$data$pm25_B, 
       humidity = pat$data$humidity, 

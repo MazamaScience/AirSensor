@@ -53,7 +53,10 @@ pat_load <- function(
   if ( is.null(label) ) 
     stop("Required parameter 'label' is missing.")
   
-  dateRange <- MazamaCoreUtils::dateRange(startdate, enddate, timezone, days)
+  dateRange <- MazamaCoreUtils::dateRange(startdate, 
+                                          enddate, 
+                                          timezone, 
+                                          days = days)
   
   # ----- Asssemble monthly archive files --------------------------------------
   
