@@ -54,6 +54,8 @@ pat_filter <- function(
   pat$data <- 
     dplyr::filter(pat$data,...)
   
+  # ----- Return ---------------------------------------------------------------
+  
   # Remove any duplicate data records
   pat <- pat_distinct(pat)
   

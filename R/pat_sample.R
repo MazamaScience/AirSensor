@@ -194,6 +194,8 @@ pat_sample <- function(
   pat <- list(meta = pat$meta, data = data)
   class(pat) <- c("pa_timeseries", class(pat))
   
+  # ----- Return ---------------------------------------------------------------
+  
   # Remove any duplicate data records
   pat <- pat_distinct(pat)
   

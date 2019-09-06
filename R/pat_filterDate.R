@@ -20,6 +20,10 @@
 #' \item{\code{"YYYY-mm-dd"}}
 #' }
 #' 
+#' @note The returned data will run from the beginning of \code{startdate} until
+#' the \strong{beginning} of \code{enddate} -- \emph{i.e.} no values associated
+#' with \code{enddate} will be returned.
+#' 
 #' @return A subset of the given \emph{pat} object.
 #' 
 #' @examples
@@ -37,7 +41,9 @@ pat_filterDate <- function(
   timezone = "America/Los_Angeles"
 ) {
   
-  # Validate parameters --------------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
+  
+  MazamaCoreUtils::stopIfNull(pat)
   
   if ( !pat_isPat(pat) )
     stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")
@@ -51,7 +57,7 @@ pat_filterDate <- function(
   if ( is.null(startdate) && !is.null(enddate) )
     stop("At least one of 'startdate' or 'enddate' must be specified")
   
-  # Get the start and end times ------------------------------------------------
+  # ----- Get the start and end times ------------------------------------------
   
   if ( !is.null(days) ) {
     days <- days
@@ -66,7 +72,7 @@ pat_filterDate <- function(
                                           timezone, 
                                           days = days)
   
-  # Subset the "pat" object ----------------------------------------------------
+  # ----- Subset the "pat" object ----------------------------------------------
   
   data <- 
     pat$data %>%
@@ -74,6 +80,8 @@ pat_filterDate <- function(
     filter(.data$datetime < dateRange[2])
   
   pat$data <- data
+  
+  # ----- Return ---------------------------------------------------------------
   
   # Remove any duplicate data records
   pat <- pat_distinct(pat)

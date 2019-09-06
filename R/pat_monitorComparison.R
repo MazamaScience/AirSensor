@@ -49,28 +49,6 @@ pat_monitorComparison <- function(
   pwfsl_color = "black"
 ) {
   
-  # ===== DEBUGGING ============================================================
-  
-  if ( FALSE ) {
-
-    pat <- pat_load("SCPR_19", 20190618, 20190629)
-    ylim <- NULL
-    replaceOutliers <- TRUE
-    a_size <- 1
-    a_shape <- 15
-    a_color <- "gray80"
-    b_size <- 1
-    b_shape <- 15
-    b_color <- "gray80"
-    ab_alpha <- 0.5
-    hourly_size <- 2
-    hourly_shape <- 1
-    hourly_stroke <- 0.6
-    pa_color <- "purple"
-    pwfsl_color <- "black"
-    
-  }
-
   # ----- Validate parameters --------------------------------------------------
 
   MazamaCoreUtils::stopIfNull(pat)
@@ -101,13 +79,19 @@ pat_monitorComparison <- function(
   
   # Get the PWFSL monitor data
   monitorID <- pat$meta$pwfsl_closestMonitorID
-  pwfsl_data <-
+  pwfsl_monitor <-
     PWFSLSmoke::monitor_load(tlim[1], tlim[2], monitorIDs = monitorID) %>%
-    PWFSLSmoke::monitor_subset(tlim = tlim) %>%
+    PWFSLSmoke::monitor_subset(tlim = tlim)
+  pwfsl_data <-
+    pwfsl_monitor %>%
     PWFSLSmoke::monitor_extractData()
 
   names(pwfsl_data) <- c("datetime", "PWFSL")
 
+  # Get monitor names for labeling
+  pwfsl_siteName <- pwfsl_monitor$meta$siteName
+  pwfsl_agencyName <- pwfsl_monitor$meta$agencyName
+  
   # Create a tidy dataframe appropriate for ggplot
   tidy_data <-
     dplyr::full_join(paHourly_data, pwfsl_data, by = "datetime") %>%
@@ -127,15 +111,20 @@ pat_monitorComparison <- function(
   timezone <- pat$meta$timezone[1]
   year <- strftime(pat$data$datetime[1], "%Y", tz=timezone)
   title <- paste0(
-    "Sensor / Monitor comparison -- PurpleAir ",
+    "Sensor / Monitor comparison -- PurpleAir: \"",
     pat$meta$label,
-    " is ",
+    "\" is ",
     round((pat$meta$pwfsl_closestDistance/1000),1),
-    " km from PWFSL ",
-    monitorID
+    " km from PWFSL: \"",
+    pwfsl_siteName,
+    "\""
   )
   
   # ----- Construct plot -------------------------------------------------------
+  
+  # Set time axis to sensor local time
+  pat$data$datetime <- lubridate::with_tz(pat$data$datetime, timezone)
+  tidy_data$datetime <- lubridate::with_tz(tidy_data$datetime, timezone)
   
   pm25_plot <-
     pat$data %>%
@@ -168,5 +157,27 @@ pat_monitorComparison <- function(
   
   return(pm25_plot)
 
+}
+
+# ===== DEBUGGING ============================================================
+
+if ( FALSE ) {
+  
+  pat <- pat_load("SCPR_19", 20190618, 20190629)
+  ylim <- NULL
+  replaceOutliers <- TRUE
+  a_size <- 1
+  a_shape <- 15
+  a_color <- "gray80"
+  b_size <- 1
+  b_shape <- 15
+  b_color <- "gray80"
+  ab_alpha <- 0.5
+  hourly_size <- 2
+  hourly_shape <- 1
+  hourly_stroke <- 0.6
+  pa_color <- "purple"
+  pwfsl_color <- "black"
+  
 }
 

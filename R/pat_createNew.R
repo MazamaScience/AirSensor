@@ -68,7 +68,9 @@ pat_createNew <- function(
   if ( !is.null(startdate) && !is.null(enddate) ) {
     # TODO:  Switch to MazamaCoreUtils version when available
     # Don't require day boundaries
-    dateRange <- timeRange(startdate, enddate, timezone = timezone)
+    dateRange <- MazamaCoreUtils::timeRange(startdate, 
+                                            enddate, 
+                                            timezone = timezone)
   } else {
     # Default to 7 days with day boundaries
     dateRange <- MazamaCoreUtils::dateRange(startdate, 
@@ -143,9 +145,9 @@ if ( FALSE ) {
   pas <- pas_load()
   label <- "SCAP_14"
   id <- NULL
-  startdate <- lubridate::now(tzone = "UTC")
-  enddate <- startdate - lubridate::ddays(7)
-  timezonne <- "UTC"
+  startdate <- 20180728
+  enddate <- 20180803
+  timezone <- NULL
   baseURL <- "https://api.thingspeak.com/channels/"
   
 }

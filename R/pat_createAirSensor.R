@@ -30,10 +30,11 @@
 #' 
 #' @examples 
 #' \dontrun{
-#' as <- 
+#' sensor <- 
 #'   example_pat %>%
 #'   pat_filterDate(20180701, 20180901) %>%
 #'   pat_createAirSensor()
+#' PWFSLSmoke::monitor_dailyBarplot(sensor)
 #' }
 
 pat_createAirSensor <- function(
@@ -44,19 +45,6 @@ pat_createAirSensor <- function(
   qc_algorithm = "hourly_AB_01",
   min_count = 20
 ) {
-  
-  # ===== DEBUG ================================================================
-
-  if ( FALSE ) {
-    
-    pat <- example_pat
-    period <- "1 hour"
-    parameter <- "pm25"
-    channel <- "ab"
-    qc_algorithm <- "hourly_AB_01"
-    min_count <- 20
-    
-  }  
   
   # ----- Validate Parameters --------------------------------------------------
 
@@ -204,3 +192,17 @@ pat_createAirSensor <- function(
   return(as_object)
   
 }
+
+# ===== DEBUG ================================================================
+
+if ( FALSE ) {
+  
+  pat <- example_pat
+  period <- "1 hour"
+  parameter <- "pm25"
+  channel <- "ab"
+  qc_algorithm <- "hourly_AB_01"
+  min_count <- 20
+  
+}  
+

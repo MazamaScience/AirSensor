@@ -58,13 +58,16 @@ ggplot objects in a single pane. Can either be passed individual ggplot
 objects OR a pat object and a plot type. 
 Typical usage would be to supply \code{pat} and use the \code{plottype} 
 argument to quickly display preformatted plots. 
+
+Available \code{plottype} options include:
+
 \itemize{
-\item{"all": pm25_A, pm25_B, temperature, humidity}
-\item{"pm25_a": PM2.5 from channel A only}
-\item{"pm25_b": PM2.5 from channel B only}
-\item{"pm25": PM2.5 from channels A and B in separate plots}
-\item{"pm25_over": PM2.5 from channels A and B in the same plot}
-\item{"aux": auxillary data (temperature, humidity)}
+\item{\code{"all"} -- pm25_A, pm25_B, temperature, humidity}
+\item{\code{"pm25_a"} -- PM2.5 from channel A only}
+\item{\code{"pm25_b"} -- PM2.5 from channel B only}
+\item{\code{"pm25"} -- PM2.5 from channels A and B in separate plots}
+\item{\code{"pm25_over"} -- PM2.5 from channels A and B in the same plot}
+\item{\code{"aux"} -- auxillary data (temperature, humidity)}
 }
 }
 \note{

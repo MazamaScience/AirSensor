@@ -32,7 +32,7 @@ pat_loadLatest <- function(
   
   MazamaCoreUtils::stopIfNull(label)
   
-  # Load data from URL ---------------------------------------------------------
+  # ----- Load data from URL ---------------------------------------------------
   
   # Use package internal URL
   baseUrl <- getArchiveBaseUrl()
@@ -58,6 +58,8 @@ pat_loadLatest <- function(
     # try({ logger.error("%s", geterrmessage()) }, silent = TRUE)
     stop(paste0("Data file could not be loaded: ", filepath), call.=FALSE)
   }
+
+  # ----- Return ---------------------------------------------------------------
   
   # Remove any duplicate data records
   pat <- pat_distinct(pat)

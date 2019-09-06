@@ -93,7 +93,7 @@ Setting outsideOnly = TRUE will return only those records marked as
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.6</span>
       </span>
     </div>
 
@@ -241,6 +241,8 @@ map.</p>
 <span class='fu'><a href='initializeMazamaSpatialUtils.html'>initializeMazamaSpatialUtils</a></span>()
 <span class='no'>pas_raw</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='downloadParseSynopticData.html'>downloadParseSynopticData</a></span>()
 <span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='fu'>enhanceSynopticData</span>(<span class='no'>pas_raw</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sets'>setdiff</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/names'>names</a></span>(<span class='no'>pas</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/names'>names</a></span>(<span class='no'>pas_raw</span>))
+<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/View'>View</a></span>(<span class='no'>pas</span>[<span class='fl'>1</span>:<span class='fl'>100</span>,])
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

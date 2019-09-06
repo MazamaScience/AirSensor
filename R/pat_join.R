@@ -26,6 +26,8 @@
 #'   pat_filterDate(20180809, 20180822)
 #'   
 #' x <- pat_join(jul01_15, aug09_22)
+#' 
+#' pat_multiplot(x, plottype = "pm25")
 #' }
 #' 
 
@@ -40,9 +42,9 @@ pat_join <- function(
   
   suppressWarnings({ # checks class type to see if already a list
     
-  if( class(patList[[1]]) != c("pa_timeseries", "list") ) {
-    patList <- patList[[1]]
-  }
+    if( class(patList[[1]]) != c("pa_timeseries", "list") ) {
+      patList <- patList[[1]]
+    }
     
   })
   
@@ -74,6 +76,8 @@ pat_join <- function(
   
   pat <- list(meta = meta, data = data)
   class(pat) <- c("pa_timeseries", class(pat))
+  
+  # ----- Return ---------------------------------------------------------------
   
   # Remove any duplicate data records
   pat <- pat_distinct(pat)

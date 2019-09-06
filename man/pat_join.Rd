@@ -34,6 +34,8 @@ aug09_22 <-
   pat_filterDate(20180809, 20180822)
   
 x <- pat_join(jul01_15, aug09_22)
+
+pat_multiplot(x, plottype = "pm25")
 }
 
 }

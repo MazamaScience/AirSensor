@@ -162,6 +162,11 @@ pat_outliers <- function(
   
   if ( showPlot ) {
     
+    # Set time axis to sensor local time
+    timezone <- pat$meta$timezone
+    A_flagged$datetime <- lubridate::with_tz(A_flagged$datetime, timezone)
+    B_flagged$datetime <- lubridate::with_tz(B_flagged$datetime, timezone)
+    
     # Use the same y limits for both plots
     ylim <- range(c(A_data$pm25_A, B_data$pm25_B), na.rm = TRUE)
     ylim[1] <- min(0, ylim[1]) # always zero unless ylim[1] is neg (possible???)

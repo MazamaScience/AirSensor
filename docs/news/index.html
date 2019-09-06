@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.6</span>
       </span>
     </div>
 
@@ -143,6 +143,19 @@
       <small>Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="airsensor-0-4-6" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-4-6" class="anchor"></a>AirSensor 0.4.6</h1>
+<ul>
+<li>Fixed bug where <code><a href="../reference/pat_createNew.html">pat_createNew()</a></code> created time ranges that ended (UTC - local) hours short of the requested <code>enddate</code>.</li>
+<li>Plots generated with <code><a href="../reference/pat_externalFit.html">pat_externalFit()</a></code>, <code><a href="../reference/pat_internalFit.html">pat_internalFit()</a></code>, <code><a href="../reference/pat_monitorComparison.html">pat_monitorComparison()</a></code> and <code><a href="../reference/pat_outliers.html">pat_outliers()</a></code> now have time axes with sensor local time rather than UTC.</li>
+<li>
+<code><a href="../reference/pat_externalFit.html">pat_externalFit()</a></code> and <code><a href="../reference/pat_monitorComparison.html">pat_monitorComparison()</a></code> labeling now includes PWFSL monitor <code>siteName</code>
+</li>
+<li>Documentation improvements.</li>
+<li>Internal refactoring for consistency.</li>
+</ul>
+</div>
     <div id="airsensor-0-4-5" class="section level1">
 <h1 class="page-header">
 <a href="#airsensor-0-4-5" class="anchor"></a>AirSensor 0.4.5</h1>
@@ -712,6 +725,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#airsensor-0-4-6">0.4.6</a></li>
         <li><a href="#airsensor-0-4-5">0.4.5</a></li>
         <li><a href="#airsensor-0-4-4">0.4.4</a></li>
         <li><a href="#airsensor-0-4-3">0.4.3</a></li>

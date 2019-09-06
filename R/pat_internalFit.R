@@ -52,6 +52,8 @@ pat_internalFit <- function(
   
   # ----- Validate parameters --------------------------------------------------
   
+  MazamaCoreUtils::stopIfNull(pat)
+  
   if ( !pat_isPat(pat) )
     stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")
   
@@ -130,21 +132,8 @@ pat_internalFit <- function(
       ggplot2::coord_fixed() +    # square aspect ratio
       equationLabel
     
-    # # RH pm25_over plot
-    # # TODO: Fix printing on ggmultiplot
-    # pm25_plot <- invisible(pat_multiplot(pat = pat, 
-    #                                      plottype = "pm25_over") )
-    
-    # Copied from pat_multiplot
-    
-    # TODO:  Do we need to do this to get local timezones?
-    # # Create a tibble
-    # tbl <- 
-    #   dplyr::tibble(datetime = lubridate::with_tz(pat$data$datetime, timezone),
-    #                 pm25_A = pat$data$pm25_A, 
-    #                 pm25_B = pat$data$pm25_B, 
-    #                 humidity = pat$data$humidity, 
-    #                 temp = pat$data$temperature)
+    # Set time axis to sensor local time
+    tidy_data$datetime <- lubridate::with_tz(tidy_data$datetime, timezone)
     
     ts_plot <-
       tidy_data %>%
@@ -172,8 +161,12 @@ pat_internalFit <- function(
     
     plot <- gridExtra::grid.arrange(bannerGrob, lr_plot, ts_plot, 
                                     ncol = 1, heights = c(1, 6, 3))
+    
   }
   
+  # ----- Return ---------------------------------------------------------------
+  
   return(invisible(model))
+  
 }
 

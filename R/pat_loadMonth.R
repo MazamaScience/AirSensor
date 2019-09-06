@@ -39,7 +39,7 @@ pat_loadMonth <- function(
   timezone = "America/Los_Angeles"
 ) {
   
-  # Validate parameters --------------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------------
   
   # TODO: Work with lubridate to support all formats
   
@@ -56,7 +56,7 @@ pat_loadMonth <- function(
   monthstamp <- stringr::str_sub(datestamp, 1, 6)
   yearstamp <- stringr::str_sub(datestamp, 1, 4)
   
-  # Load data from URL ---------------------------------------------------------
+  # ----- Load data from URL ---------------------------------------------------
   
   # Use package internal URL
   baseUrl <- getArchiveBaseUrl()
@@ -82,6 +82,8 @@ pat_loadMonth <- function(
     # try({ logger.error("%s", geterrmessage()) }, silent = TRUE)
     stop(paste0("Data file could not be loaded: ", filepath), call.=FALSE)
   }
+  
+  # ----- Return ---------------------------------------------------------------
   
   # Remove any duplicate data records
   pat <- pat_distinct(pat)

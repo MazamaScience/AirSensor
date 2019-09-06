@@ -62,7 +62,7 @@ pat_qc <- function(
     }
   }
   
-  # Invalidate out-of-spec values ----------------------------------------------
+  # ----- Invalidate out-of-spec values ----------------------------------------
   
   if ( removeOutOfSpec ) {
 
@@ -90,7 +90,7 @@ pat_qc <- function(
     
   }
   
-  # Invalidate hi-humidity pm25 values -----------------------------------------
+  # ----- Invalidate hi-humidity pm25 values -----------------------------------
   
   if ( !is.null(max_humidity) ) {
     
@@ -106,7 +106,7 @@ pat_qc <- function(
     
   }
   
-  # Return ---------------------------------------------------------------------
+  # ----- Return ---------------------------------------------------------------
   
   # Remove any duplicate data records
   pat <- pat_distinct(pat)

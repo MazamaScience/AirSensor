@@ -48,11 +48,7 @@ pat_scatterplot <- function(
   alpha = 0.25
 ) {
   
-  # ----- Disable Warning messages ---------------------------------------------
-  
-  # TODO:  Should probably execute problematic code in suppressWarningMessages()
-  # TODO:  rather than just turn them off.
-  
+  # Suppress warnings until the end of this function
   options(warn = -1)
   
   # ----- Validate parameters --------------------------------------------------
@@ -105,6 +101,8 @@ pat_scatterplot <- function(
   
   # ----- Return ---------------------------------------------------------------
   
+  options(warn=0)
+
   return(gg)
   
 }

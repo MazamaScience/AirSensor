@@ -30,11 +30,14 @@ downloadParseTimeseriesData <- function(
 
   # ----- Create download URLs -------------------------------------------------
   
+  # Get timezone from incoming startdate
+  timezone <- lubridate::tz(startdate)
+  
   # Default to the most recent week of data
   dateRange <- MazamaCoreUtils::dateRange(
     startdate, 
     enddate, 
-    timezone = "UTC", 
+    timezone = timezone, 
     days = 7, 
     unit = "min"
   )

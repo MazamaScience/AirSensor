@@ -147,7 +147,7 @@
   
   df_ind <- which(df[[col_flag]])
   
-  
+  # Create the outliers first (just for fun)
   df_outliers <-   
     ggplot2::geom_point(
       data =  df[df_ind,],
@@ -158,6 +158,7 @@
       alpha = outlier_alpha
     )
   
+  # Now create the entire plot, adding outliers at the end
   df_plot <- 
     ggplot2::ggplot(
       data = df,
@@ -186,9 +187,11 @@
     ) + 
     ggplot2::theme(
       plot.title = ggplot2::element_text(size = 11),
-      plot.subtitle = ggplot2::element_text(size = 8),
+      plot.subtitle = ggplot2::element_text(size = 8)
     ) + 
     df_outliers
+  
+  # ----- Return ---------------------------------------------------------------
   
   return(df_plot) # No sampling will occur
   

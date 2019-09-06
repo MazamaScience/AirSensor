@@ -30,9 +30,12 @@
 #' 
 #' @examples
 #' \dontrun{
-#' nb <- pat_createNew(example_pas, "North Bend Weather", startdate = 20180801, enddate = 20180901)
+#' nb <- pat_createNew(example_pas, 
+#'                     "North Bend Weather", 
+#'                     startdate = 20180801, 
+#'                     enddate = 20180901)
 #' subset_nb <- pat_sample(pat=nb, sampleSize = 1000, setSeed = 1)
-#' pat_dygraph(pat = subset_nb, xlab = "2018", rollPeriod = 7)
+#' pat_dygraph(pat = subset_nb, xlab = "2018", rollPeriod = 6)
 #' }
 
 pat_dygraph <- function(
@@ -77,6 +80,8 @@ pat_dygraph <- function(
     
   }
   
+  # ----- Prepare data ---------------------------------------------------------
+  
   # Convert tlim to POSIXct
   if ( !is.null(tlim) ) {
     dateWindow <- PWFSLSmoke::parseDatetime(tlim)
@@ -93,36 +98,13 @@ pat_dygraph <- function(
     tzone <- unique(pat$meta$timezone)
   }
   
-  # Access time
+  # Pull out variables
   datetime <- pat$data$datetime
   pm25_A <- pat$data$pm25_A
   pm25_B <- pat$data$pm25_B
   temperature <- pat$data$temperature
   humidity <- pat$data$humidity
   label <- pat$meta$label
-  
-  # TODO:  Make this a separate, internal function?
-  
-  # Create dygraph
-  
-  makeGraph <- function(timeseriesMatrix, 
-                        colors) {
-    
-    if ( is.null(title) )( title <- label )
-    
-    show <- ifelse(showLegend, "always", "never")
-    
-    graph <- 
-      dygraphs::dygraph(timeseriesMatrix, main = title, xlab = xlab, ylab = ylab) %>%
-      dygraphs::dyOptions(useDataTimezone = TRUE) %>% # Always show local time
-      dygraphs::dyLegend(show = show, width = 250, labelsSeparateLines = TRUE) %>%
-      dygraphs::dyRangeSelector(dateWindow = dateWindow) %>%
-      dygraphs::dyRoller(rollPeriod = rollPeriod) %>%
-      dygraphs::dyOptions(colors = colors)
-    
-    return(graph)
-    
-  }
   
   # Create an xts from all data columns except the first which is 'datetime'
   
@@ -158,8 +140,22 @@ pat_dygraph <- function(
     
   }
   
+  # ----- Make graph -----------------------------------------------------------
+  
+  if ( is.null(title) ) title <- label
+  
+  show <- ifelse(showLegend, "always", "never")
+  
+  graph <- 
+    dygraphs::dygraph(timeseriesMatrix, main = title, xlab = xlab, ylab = ylab) %>%
+    dygraphs::dyOptions(useDataTimezone = TRUE) %>% # Always show local time
+    dygraphs::dyLegend(show = show, width = 250, labelsSeparateLines = TRUE) %>%
+    dygraphs::dyRangeSelector(dateWindow = dateWindow) %>%
+    dygraphs::dyRoller(rollPeriod = rollPeriod) %>%
+    dygraphs::dyOptions(colors = colors)
+  
   # ----- Return ---------------------------------------------------------------
   
-  return( makeGraph(timeseriesMatrix, colors = colors) )
+  return( graph )
   
 }

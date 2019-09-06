@@ -35,57 +35,57 @@
 #' @examples
 #' timeRange("2019-01-08 10:12:15", "20190109101215", timezone = "UTC")
 #' 
-timeRange <- function(
-  starttime = NULL,
-  endtime = NULL,
-  timezone = NULL
-) {
-
-  # ----- Validate parameters --------------------------------------------------
-
-  MazamaCoreUtils::stopIfNull(starttime)
-  MazamaCoreUtils::stopIfNull(endtime)
-  MazamaCoreUtils::stopIfNull(timezone)
-  
-  if ( !timezone %in% base::OlsonNames() )
-    stop(paste0("Timezone '", timezone, "' is not recognized."))
-
-  # ----- Prepare POSIXct inputs -----------------------------------------------
-
-  ## NOTE on hadling POSIXct inputs:
-  #  When given a POSIXct time `lubridate::parse_date_time()` forces the time
-  #  into the timezone given to `lubridate::parse_date_time()`. This alters the
-  #  physical instant in time the original POSIXct represents, so we must
-  #  properly convert a POSIXct start or end date to the proper timezone before
-  #  passing it to `lubridate::parse_date_time()`
-
-  if ( lubridate::is.POSIXct(starttime) )
-    starttime <- lubridate::with_tz(starttime, tzone = timezone)
-
-  if ( lubridate::is.POSIXct(endtime) )
-    endtime <- lubridate::with_tz(endtime, tzone = timezone)
-
-  # ----- Parse inputs ---------------------------------------------------------
-
-  orders <- c("Ymd", "YmdH", "YmdHM", "YmdHMS")
-
-  endtime <-
-    endtime %>%
-    lubridate::parse_date_time(orders = orders, tz = timezone)
-  
-  starttime <-
-    starttime %>%
-    lubridate::parse_date_time(orders = orders, tz = timezone)
-  
-  # ----- Order output time limits ---------------------------------------------
-
-  if ( starttime < endtime ) {
-    tlim <- c(starttime, endtime)
-  } else {
-    # just in case
-    tlim <- c(endtime, starttime)
-  }
-
-  return(tlim)
-
-}
+# timeRange <- function(
+#   starttime = NULL,
+#   endtime = NULL,
+#   timezone = NULL
+# ) {
+# 
+#   # ----- Validate parameters --------------------------------------------------
+# 
+#   MazamaCoreUtils::stopIfNull(starttime)
+#   MazamaCoreUtils::stopIfNull(endtime)
+#   MazamaCoreUtils::stopIfNull(timezone)
+#   
+#   if ( !timezone %in% base::OlsonNames() )
+#     stop(paste0("Timezone '", timezone, "' is not recognized."))
+# 
+#   # ----- Prepare POSIXct inputs -----------------------------------------------
+# 
+#   ## NOTE on hadling POSIXct inputs:
+#   #  When given a POSIXct time `lubridate::parse_date_time()` forces the time
+#   #  into the timezone given to `lubridate::parse_date_time()`. This alters the
+#   #  physical instant in time the original POSIXct represents, so we must
+#   #  properly convert a POSIXct start or end date to the proper timezone before
+#   #  passing it to `lubridate::parse_date_time()`
+# 
+#   if ( lubridate::is.POSIXct(starttime) )
+#     starttime <- lubridate::with_tz(starttime, tzone = timezone)
+# 
+#   if ( lubridate::is.POSIXct(endtime) )
+#     endtime <- lubridate::with_tz(endtime, tzone = timezone)
+# 
+#   # ----- Parse inputs ---------------------------------------------------------
+# 
+#   orders <- c("Ymd", "YmdH", "YmdHM", "YmdHMS")
+# 
+#   endtime <-
+#     endtime %>%
+#     lubridate::parse_date_time(orders = orders, tz = timezone)
+#   
+#   starttime <-
+#     starttime %>%
+#     lubridate::parse_date_time(orders = orders, tz = timezone)
+#   
+#   # ----- Order output time limits ---------------------------------------------
+# 
+#   if ( starttime < endtime ) {
+#     tlim <- c(starttime, endtime)
+#   } else {
+#     # just in case
+#     tlim <- c(endtime, starttime)
+#   }
+# 
+#   return(tlim)
+# 
+# }

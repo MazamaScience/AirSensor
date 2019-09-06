@@ -1,3 +1,15 @@
+# AirSensor 0.4.6
+
+* Fixed bug where `pat_createNew()` created time ranges that ended (UTC - local)
+hours short of the requested `enddate`.
+* Plots generated with `pat_externalFit()`, `pat_internalFit()`, 
+`pat_monitorComparison()` and `pat_outliers()` 
+now have time axes with sensor local time rather than UTC.
+* `pat_externalFit()` and `pat_monitorComparison()` labeling now includes PWFSL 
+monitor `siteName`
+* Documentation improvements.
+* Internal refactoring for consistency.
+
 # AirSensor 0.4.5
 
 * Using `MazamaCoreUtil::stopIfNull()` throughout.

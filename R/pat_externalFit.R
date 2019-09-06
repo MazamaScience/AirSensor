@@ -77,7 +77,7 @@ pat_externalFit <- function(
   meta <- pat$meta
   data <- pat$data
   
-  # ----- Assemble data ---------------------------------------------
+  # ----- Assemble data --------------------------------------------------------
   
   if ( replaceOutliers )
     pat <- pat_outliers(pat, showPlot = FALSE, replace = TRUE)
@@ -95,11 +95,17 @@ pat_externalFit <- function(
   # Get the PWFSL monitor data
   monitorID <- pat$meta$pwfsl_closestMonitorID
   tlim <- range(paHourly_data$datetime)
-  pwfsl_data <-
+  pwfsl_monitor <-
     PWFSLSmoke::monitor_load(tlim[1], tlim[2], monitorIDs = monitorID) %>%
-    PWFSLSmoke::monitor_subset(tlim = tlim) %>%
+    PWFSLSmoke::monitor_subset(tlim = tlim)
+  pwfsl_data <-
+    pwfsl_monitor %>%
     PWFSLSmoke::monitor_extractData()
   names(pwfsl_data) <- c("datetime", "pwfsl_pm25")
+  
+  # Get monitor names for labeling
+  pwfsl_siteName <- pwfsl_monitor$meta$siteName
+  pwfsl_agencyName <- pwfsl_monitor$meta$agencyName
   
   # Combine data from both monitors into one dataframe
   both_data <- dplyr::full_join(paHourly_data, pwfsl_data, by = "datetime")
@@ -156,12 +162,15 @@ pat_externalFit <- function(
                            method = "lm", size = lr_lwd) + 
       ggplot2::labs(title = "Correlation", 
                     x = paste0("PurpleAir: \"", pat$meta$label, "\""),
-                    y = paste0("PWFSL: ", monitorID)) + 
+                    y = paste0("PWFSL: \"", pwfsl_siteName, "\"")) + 
       ggplot2::theme_bw() + 
       ggplot2::xlim(xylim) +
       ggplot2::ylim(xylim) +
       ggplot2::coord_fixed() +    # square aspect ratio
       equationLabel
+    
+    # Set time axis to sensor local time
+    tidy_data$datetime <- lubridate::with_tz(tidy_data$datetime, timezone)
     
     # Time series PM 2.5 plot
     ts_plot <-
@@ -191,9 +200,13 @@ pat_externalFit <- function(
     
     plot <- gridExtra::grid.arrange(bannerGrob, lr_plot, ts_plot, 
                                     ncol = 1, heights = c(1, 6, 3))
+    
   }
   
+  # ----- Return ---------------------------------------------------------------
+  
   return(invisible(model))
+  
 }
 
 

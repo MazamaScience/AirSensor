@@ -40,10 +40,11 @@ Current QC algorithms exist for \code{channel = "ab"} and include:
 }
 \examples{
 \dontrun{
-as <- 
+sensor <- 
   example_pat \%>\%
   pat_filterDate(20180701, 20180901) \%>\%
   pat_createAirSensor()
+PWFSLSmoke::monitor_dailyBarplot(sensor)
 }
 }
 \seealso{

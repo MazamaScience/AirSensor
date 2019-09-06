@@ -29,13 +29,16 @@
 #' objects OR a pat object and a plot type. 
 #' Typical usage would be to supply \code{pat} and use the \code{plottype} 
 #' argument to quickly display preformatted plots. 
+#' 
+#' Available \code{plottype} options include:
+#' 
 #' \itemize{
-#' \item{"all": pm25_A, pm25_B, temperature, humidity}
-#' \item{"pm25_a": PM2.5 from channel A only}
-#' \item{"pm25_b": PM2.5 from channel B only}
-#' \item{"pm25": PM2.5 from channels A and B in separate plots}
-#' \item{"pm25_over": PM2.5 from channels A and B in the same plot}
-#' \item{"aux": auxillary data (temperature, humidity)}
+#' \item{\code{"all"} -- pm25_A, pm25_B, temperature, humidity}
+#' \item{\code{"pm25_a"} -- PM2.5 from channel A only}
+#' \item{\code{"pm25_b"} -- PM2.5 from channel B only}
+#' \item{\code{"pm25"} -- PM2.5 from channels A and B in separate plots}
+#' \item{\code{"pm25_over"} -- PM2.5 from channels A and B in the same plot}
+#' \item{\code{"aux"} -- auxillary data (temperature, humidity)}
 #' } 
 #' 
 #' @return A ggplot object.
@@ -69,6 +72,7 @@ pat_multiplot <- function(
   alpha = 0.5
 ) {
   
+  # Suppress warnings until the end of this function
   options(warn = -1)
   
   # ----- Validate parameters --------------------------------------------------
@@ -103,7 +107,6 @@ pat_multiplot <- function(
   }
   
   # ----- Create plots ---------------------------------------------------------
-  
   
   # Labels
   timezone <- pat$meta$timezone[1]
@@ -149,7 +152,7 @@ pat_multiplot <- function(
     ) + 
     ggplot2::theme(
       plot.title = ggplot2::element_text(size = 11),
-      plot.subtitle = ggplot2::element_text(size = 8),
+      plot.subtitle = ggplot2::element_text(size = 8)
     )
   
   channelB <-   
@@ -170,7 +173,7 @@ pat_multiplot <- function(
     ) + 
     ggplot2::theme(
       plot.title = ggplot2::element_text(size = 11),
-      plot.subtitle = ggplot2::element_text(size = 8),
+      plot.subtitle = ggplot2::element_text(size = 8)
     )
   
   channelAB <- 
@@ -199,7 +202,7 @@ pat_multiplot <- function(
     ) + 
     ggplot2::theme(
       plot.title = ggplot2::element_text(size = 11),
-      plot.subtitle = ggplot2::element_text(size = 8),
+      plot.subtitle = ggplot2::element_text(size = 8)
     )
   
   temperature <-   
@@ -219,7 +222,7 @@ pat_multiplot <- function(
     ) + 
     ggplot2::theme(
       plot.title = ggplot2::element_text(size = 11),
-      plot.subtitle = ggplot2::element_text(size = 8),
+      plot.subtitle = ggplot2::element_text(size = 8)
     )
   
   humidity <-   
@@ -309,6 +312,8 @@ pat_multiplot <- function(
     }
     
   }
+  
+  # ----- Return ---------------------------------------------------------------
   
   options(warn=0)
   

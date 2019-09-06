@@ -34,6 +34,11 @@ including either of the following recommended formats:
 \item{\code{"YYYY-mm-dd"}}
 }
 }
+\note{
+The returned data will run from the beginning of \code{startdate} until
+the \strong{beginning} of \code{enddate} -- \emph{i.e.} no values associated
+with \code{enddate} will be returned.
+}
 \examples{
 \donttest{
 august <- pat_filterDate(example_pat, startdate = 20180801, enddate = 20180901)
