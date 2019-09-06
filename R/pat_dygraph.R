@@ -48,7 +48,9 @@ pat_dygraph <- function(
   colors = NULL
 ) {
   
-  # Validate parameters --------------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
+  
+  MazamaCoreUtils::stopIfNull(pat)
   
   if ( !pat_isPat(pat) )
     stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")
@@ -98,6 +100,8 @@ pat_dygraph <- function(
   temperature <- pat$data$temperature
   humidity <- pat$data$humidity
   label <- pat$meta$label
+  
+  # TODO:  Make this a separate, internal function?
   
   # Create dygraph
   
@@ -153,6 +157,8 @@ pat_dygraph <- function(
     stop("Required parameter 'parameter' is not recognized")  
     
   }
+  
+  # ----- Return ---------------------------------------------------------------
   
   return( makeGraph(timeseriesMatrix, colors = colors) )
   

@@ -34,6 +34,8 @@ initializeMazamaSpatialUtils <- function(
   logLevel = WARN
 ) {
   
+  # ----- Validate Parameters --------------------------------------------------
+  
   # TODO:  When it becomes available, switch to using "logger.isInitialized()".
   
   # Set up logging if already set up

@@ -33,14 +33,16 @@
 #' }
 
 pas_filterArea <- function(
-  pas,
+  pas = NULL,
   w = NULL,
   e = NULL,
   s = NULL,
   n = NULL
 ) { 
   
-  # Validate parameters --------------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
+  
+  MazamaCoreUtils::stopIfNull(pas)
   
   if ( !pas_isPas(pas) )
     stop("Required parameter 'pas' is not a valid 'pa_synoptic' object.")
@@ -53,12 +55,14 @@ pas_filterArea <- function(
   if ( is.null(s) ) s <- min(pas$latitude, na.rm = TRUE)
   if ( is.null(n) ) n <- max(pas$latitude, na.rm = TRUE)
   
-  # Filter the tibble ----------------------------------------------------------
+  # ----- Filter the tibble ----------------------------------------------------
   
   pas <- 
     pas %>% 
     dplyr::filter(.data$longitude >= w & .data$longitude <= e) %>%
     dplyr::filter(.data$latitude >= s & .data$latitude <= n)
+  
+  # ----- Return ---------------------------------------------------------------
   
   return(pas)
   

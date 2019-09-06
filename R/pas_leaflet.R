@@ -85,11 +85,13 @@ pas_leaflet <- function(
   
   # ----- Validate parameters --------------------------------------------------
   
-  if ( !("data.frame" %in% class(pas)) ) 
-    stop(paste0("First argument is not of class 'data.frame'."))
+  MazamaCoreUtils::stopIfNull(pas)
   
-  if ( nrow(pas) == 0 || ncol(pas) == 0 )
-    stop(paste0("One or both dimensions of the pa_synoptic object has length 0."))
+  if ( !pas_isPas(pas) )
+    stop("Required parameter 'pas' is not a valid 'pa_synoptic' object.")
+  
+  if ( pas_isEmpty(pas) )
+    stop("Required parameter 'pas' has no data.") 
   
   if ( !(parameter %in% c('pm25_current', 
                           'pm25_10min', 
@@ -345,6 +347,8 @@ pas_leaflet <- function(
       labels=rev(labels),  # show low levels at the bottom
       opacity = 1,
       title=legendTitle)
+  
+  # ----- Return ---------------------------------------------------------------
   
   return(m)
   

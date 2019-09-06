@@ -29,12 +29,11 @@ sensor_loadLatest <- function(
   collection = "scaqmd"
 ) {
   
-  # Validate parameters --------------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
   
-  if ( is.null(collection) )
-    stop("Required parameter 'collection' is missing.")
-
-  # Load data from URL ---------------------------------------------------------
+  MazamaCoreUtils::stopIfNull(collection)
+  
+  # ----- Load data from URL ---------------------------------------------------
   
   # Use package internal URL
   baseUrl <- getArchiveBaseUrl()

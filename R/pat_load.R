@@ -50,8 +50,7 @@ pat_load <- function(
   
   # ----- Validate parameters --------------------------------------------------
   
-  if ( is.null(label) ) 
-    stop("Required parameter 'label' is missing.")
+  MazamaCoreUtils::stopIfNull(label)
   
   dateRange <- MazamaCoreUtils::dateRange(startdate, 
                                           enddate, 

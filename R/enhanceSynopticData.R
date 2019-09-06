@@ -55,6 +55,8 @@
 #' initializeMazamaSpatialUtils()
 #' pas_raw <- downloadParseSynopticData()
 #' pas <- enhanceSynopticData(pas_raw)
+#' setdiff(names(pas), names(pas_raw))
+#' View(pas[1:100,])
 #' }
 
 enhanceSynopticData <- function(
@@ -67,6 +69,8 @@ enhanceSynopticData <- function(
   
   # ----- Validate Parameters --------------------------------------------------
   
+  MazamaCoreUtils::stopIfNull(pas_raw)
+
   if ( !('data.frame' %in% class(pas_raw)) )
     stop("parameter 'pas_raw' parameter is not a dataframe")
   

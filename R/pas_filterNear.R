@@ -31,13 +31,15 @@
 #'}
 
 pas_filterNear <- function(
-  pas,
+  pas = NULL,
   latitude = NULL, 
   longitude = NULL, 
   radius = "1 km"
-  ) {
+) {
   
-  # Validate parameters --------------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
+  
+  MazamaCoreUtils::stopIfNull(pas)
   
   if ( !pas_isPas(pas) )
     stop("Required parameter 'pas' is not a valid 'pa_synoptic' object.")
@@ -50,7 +52,7 @@ pas_filterNear <- function(
   
   if ( !stringr::str_ends(radius, "[ km]") )
     stop("Radius requires a unit and format (i.e '1 m' or '1 km')")
-   
+  
   r_split <- 
     stringr::str_split(
       string = radius, 
@@ -60,6 +62,8 @@ pas_filterNear <- function(
   
   if ( tolower(r_split[,2]) == "km" ) radius_m <- as.numeric(r_split[,1])*1000
   if ( tolower(r_split[,2]) == "m" ) radius_m <- as.numeric(r_split[,1])
+  
+  # ----- Calculate distances --------------------------------------------------
   
   distance <- 
     geodist::geodist(
@@ -72,8 +76,10 @@ pas_filterNear <- function(
         "y" = pas$latitude
       )
     )
-
+  
+  
+  # ----- Return ---------------------------------------------------------------
   
   return(pas[which(distance <= radius_m),])
   
-  }
+}

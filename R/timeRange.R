@@ -41,21 +41,16 @@ timeRange <- function(
   timezone = NULL
 ) {
 
-  # Validate parameters --------------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
 
-  if ( is.null(starttime) )
-    stop("Required parameter 'starttime' is missing.")
-  
-  if ( is.null(endtime) )
-    stop("Required parameter 'endtime' is missing.")
-  
-  if ( is.null(timezone) )
-    stop("Required parameter 'timezone' is missing.")
+  MazamaCoreUtils::stopIfNull(starttime)
+  MazamaCoreUtils::stopIfNull(endtime)
+  MazamaCoreUtils::stopIfNull(timezone)
   
   if ( !timezone %in% base::OlsonNames() )
     stop(paste0("Timezone '", timezone, "' is not recognized."))
 
-  # * Prepare POSIXct inputs ---------------------------------------------------
+  # ----- Prepare POSIXct inputs -----------------------------------------------
 
   ## NOTE on hadling POSIXct inputs:
   #  When given a POSIXct time `lubridate::parse_date_time()` forces the time
@@ -70,7 +65,7 @@ timeRange <- function(
   if ( lubridate::is.POSIXct(endtime) )
     endtime <- lubridate::with_tz(endtime, tzone = timezone)
 
-  # * Parse inputs -------------------------------------------------------------
+  # ----- Parse inputs ---------------------------------------------------------
 
   orders <- c("Ymd", "YmdH", "YmdHM", "YmdHMS")
 
@@ -82,7 +77,7 @@ timeRange <- function(
     starttime %>%
     lubridate::parse_date_time(orders = orders, tz = timezone)
   
-  # Order output time limits ---------------------------------------------------
+  # ----- Order output time limits ---------------------------------------------
 
   if ( starttime < endtime ) {
     tlim <- c(starttime, endtime)

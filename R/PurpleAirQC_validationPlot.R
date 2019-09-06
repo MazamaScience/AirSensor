@@ -52,6 +52,8 @@ PurpleAirQC_validationPlot <- function(
   
   period <- tolower(period)
 
+  MazamaCoreUtils::stopIfNull(pat)
+  
   if ( !pat_isPat(pat) )
     stop("Required parameter 'pat' is not a valid 'pa_timeseries' object.")
   

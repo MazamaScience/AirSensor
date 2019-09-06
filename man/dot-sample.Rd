@@ -25,3 +25,4 @@ This is a wrapper around sample() to make it easy to select
 random rows from a table. Supports both integer (sampleSize) and fractional 
 (sampleFraction) N row sampling. For reproducible debugging, set a hash seed.
 }
+\keyword{internal}

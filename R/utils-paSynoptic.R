@@ -34,9 +34,12 @@
 #' pas_isPas(example_pas)
 #' pas_isPas(1:10)
 
-pas_isPas <- function(pas) {
+pas_isPas <- function(
+  pas = NULL
+) {
   
   # Test a variety of things that could go wrong
+  if ( is.null(pas) ) return(FALSE)
   if ( !"pa_synoptic" %in% class(pas) ) return(FALSE)
   
   parameters <- c(
