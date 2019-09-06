@@ -186,7 +186,8 @@ sensor_calendarPlot <- function(
       axis.title.x = ggplot2::element_blank(),
       axis.line.y = ggplot2::element_blank(),
       legend.position = "bottom",
-      aspect.ratio = aspectRatio
+      aspect.ratio = aspectRatio, 
+      legend.text = ggplot2::element_text(size="8")
     ) + 
     ggplot2::scale_fill_discrete(na.value="white")
   
