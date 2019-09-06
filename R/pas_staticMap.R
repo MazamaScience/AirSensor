@@ -57,7 +57,7 @@
 #' }
 
 pas_staticMap <- function(
-  pas, 
+  pas = NULL, 
   parameter = "pm25_1hr",
   palette = "Purples", 
   mapTheme = "terrain",
@@ -74,6 +74,10 @@ pas_staticMap <- function(
 ) {
   
   # ----- Validate parameters --------------------------------------------------
+  
+  parameter <- tolower(parameter)
+  
+  MazamaCoreUtils::stopIfNull(pas)
   
   if ( pas_isEmpty(pas) ) {
     stop("Required parameter 'pas' is empty.")
@@ -303,6 +307,8 @@ pas_staticMap <- function(
     paSensors + 
     colorScale + 
     ggplot2::theme_void()
+  
+  # ----- Return ---------------------------------------------------------------
   
   return(staticMap)
   

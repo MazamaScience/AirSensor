@@ -58,8 +58,8 @@ pas_createNew <- function(
   
   logger.debug("----- pas_createNew() -----")
   
-  # Validate parameters --------------------------------------------------------
-  
+  # ----- Validate parameters --------------------------------------------------
+
   # Guarantee uppercase codes
   countryCodes <- toupper(countryCodes)
   if ( any(!(countryCodes %in% countrycode::codelist$iso2c)) ) 
@@ -73,7 +73,7 @@ pas_createNew <- function(
   if ( lookbackDays < 1 )
     stop("parameter 'lookbackDays' is less than one")
   
-  # Load data ------------------------------------------------------------------
+  # ----- Load data ------------------------------------------------------------
   
   # Download, parse and enhance synoptic data
   pas_raw <- downloadParseSynopticData(baseUrl)
@@ -82,6 +82,8 @@ pas_createNew <- function(
   # Filter for age
   starttime <- lubridate::now(tzone = "UTC") - lubridate::ddays(lookbackDays)
   pas <- dplyr::filter(pas, .data$lastSeenDate >= starttime)
+  
+  # ----- Return ---------------------------------------------------------------
   
   # Add a class name
   class(pas) <- c('pa_synoptic', class(pas))

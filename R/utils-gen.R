@@ -1,4 +1,5 @@
 
+#' @keywords internal
 #' @title General table row sampling
 #' 
 #' @description This is a wrapper around sample() to make it easy to select 
@@ -22,6 +23,10 @@
     sampleFraction = 1, 
     setSeed = NULL
   ) { 
+    
+    # ----- Validate parameters --------------------------------------------------
+    
+    MazamaCoreUtils::stopIfNull(data)
     
     if ( !is.null(setSeed) ) set.seed(setSeed)
     

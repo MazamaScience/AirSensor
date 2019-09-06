@@ -4,7 +4,8 @@
 \alias{pas_filterArea}
 \title{Rectangle area filtering for PurpleAir Synoptic objects}
 \usage{
-pas_filterArea(pas, w = NULL, e = NULL, s = NULL, n = NULL)
+pas_filterArea(pas = NULL, w = NULL, e = NULL, s = NULL,
+  n = NULL)
 }
 \arguments{
 \item{pas}{PurpleAir Synoptic \emph{pas} object.}

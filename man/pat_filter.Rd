@@ -4,7 +4,7 @@
 \alias{pat_filter}
 \title{General purpose data filtering for PurpleAir Timeseries objects}
 \usage{
-pat_filter(pat = NULL, ...)
+pat_filter(pat, ...)
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}

@@ -43,16 +43,15 @@ pat_createNew <- function(
   
   # ----- Validate parameters --------------------------------------------------
   
-  if ( is.null(pas) )
-    stop("Required parameter 'pas' is missing.")
-  
-  if ( is.null(label) )
-    stop("Required parameter 'label' is missing.")
+  MazamaCoreUtils::stopIfNull(pas)
+  MazamaCoreUtils::stopIfNull(label)
   
   if ( !label %in% pas$label )
     stop(paste0("'", label, "' is not found in the 'pas' object"))
   
   # ----- Determine date sequence ----------------------------------------------
+  
+  # TODO:  Add support for coming in with only 'id' specified.
   
   # Only one week of data can be loaded at a time. If over one week has been
   # requested, loop over weeks to download all of it

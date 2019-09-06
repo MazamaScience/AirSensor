@@ -62,6 +62,8 @@ pat_externalFit <- function(
   
   # ----- Validate parameters --------------------------------------------------
   
+  MazamaCoreUtils::stopIfNull(pat)
+  
   if ( !pat_isPat(pat) )
     stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")
   

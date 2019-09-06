@@ -54,13 +54,15 @@
 #' }
 
 pat_aggregate <- function(
-  pat, 
+  pat = NULL, 
   period = "1 hour"
 ) {
   
   # ----- Validate parameters --------------------------------------------------
+
+  period <- tolower(period)
   
-  tolower(period) -> period
+  MazamaCoreUtils::stopIfNull(pat)
   
   if ( !pat_isPat(pat) )
     stop("Required parameter 'pat' is not a valid 'pa_timeseries' object.")
@@ -134,6 +136,8 @@ pat_aggregate <- function(
 
 # ===== INTERNAL FUNCTION ======================================================
 
+#' @keywords internal
+#' 
 .pat_agg <- function(pat, stat, periodSeconds, parameters) {
   
   options(warn = -1) # Ignore all warnings

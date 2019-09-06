@@ -63,6 +63,8 @@ map.
 initializeMazamaSpatialUtils()
 pas_raw <- downloadParseSynopticData()
 pas <- enhanceSynopticData(pas_raw)
+setdiff(names(pas), names(pas_raw))
+View(pas[1:100,])
 }
 }
 \seealso{

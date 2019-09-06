@@ -32,114 +32,117 @@
 #' }
 #' 
 
-pat_aggregateOutlierCounts <- 
-  function(
-    pat,
-    period = "1 hour",
-    windowSize = 23,
-    thresholdMin = 8
-  ) { 
-    
-    # ----- Validate parameters --------------------------------------------------
-    
-    tolower(period) -> period
-    
-    if ( !pat_isPat(pat) )
-      stop("Required parameter 'pat' is not a valid 'pa_timeseries' object.")
-    
-    if ( pat_isEmpty(pat) )
-      stop("Required parameter 'pat' has no data.") 
-    
-    # Remove any duplicate data records
-    pat <- pat_distinct(pat)
+pat_aggregateOutlierCounts <- function(
+  pat = NULL,
+  period = "1 hour",
+  windowSize = 23,
+  thresholdMin = 8
+) { 
+  
+  # ----- Validate parameters --------------------------------------------------
 
-    # ----- Convert period to seconds --------------------------------------------
-    
-    periodParts <- strsplit(period, " ", fixed = TRUE)[[1]]
-    
-    if ( length(periodParts) == 1 ) {
-      periodCount <- 1
-      units <- periodParts[1]
-    } else {
-      periodCount <- as.numeric(periodParts[1])
-      units <- periodParts[2]
-    }
-    
-    if ( units == "sec"     ) unitSecs <- 1
-    if ( units == "min"     ) unitSecs <- 60
-    if ( units == "hour"    ) unitSecs <- 3600
-    if ( units == "day"     ) unitSecs <- 3600 * 24
-    if ( units == "week"    ) unitSecs <- 3600 * 24 * 7
-    if ( units == "month"   ) unitSecs <- 3600 * 24 * 31
-    if ( units == "quarter" ) unitSecs <- 3600 * 24 * 31 * 3
-    if ( units == "year"    ) unitSecs <- 3600 * 8784 
-    
-    periodSeconds <- periodCount * unitSecs 
-    
-    # Name of applicable vectors
-    names2count <- 
-      list(
-        "pm25_A", 
-        "pm25_B", 
-        "humidity", 
-        "temperature"
-      )
-    
-    # Create df to use functionally
-    df2count <- 
-      list(
-        data.frame("pm25_A" = pat$data$pm25_A), 
-        data.frame("pm25_B" = pat$data$pm25_B), 
-        data.frame("humidity" = pat$data$humidity),
-        data.frame("temperature" = pat$data$temperature)
-      )
-    
-    # map .flagOutliers to all applicable vectors
-    flagged_outliers<-
-      purrr::map2(
-        df2count, 
-        names2count, 
-        .flagOutliers, 
-        windowSize, 
-        thresholdMin
-      )
-    # lapply function to grab flag vectors -> binds columns
-    flags <- 
-      do.call(
-        "cbind",
-        lapply(
-          flagged_outliers, 
-          FUN = function(x) x[2]
-        )
-      )
-    
-    pat[["data"]] <- cbind(pat[["data"]], flags)
-    
-    counts <- 
-      .pat_agg(
-        pat = pat, 
-        stat = "sum", 
-        periodSeconds = periodSeconds, 
-        parameters = 
-          names(pat[["data"]])
-            [which(stringr::str_detect(names(pat[["data"]]), "flag_outliers_"))]
-      )
-    
-    # Rename 
-    names(counts) <- 
-      c("datetime", 
-        "pm25_A_outlierCount",
-        "pm25_B_outlierCount",
-        "humidity_outlierCount", 
-        "temperature_outlierCount")
-    
-    agg <- 
-      dplyr::left_join(
-        pat_aggregate(pat, period), 
-        counts, 
-        by = "datetime"
-      )
-    
-    return(agg)
-    
+  period <- tolower(period)
+  
+  MazamaCoreUtils::stopIfNull(pat)
+  
+  if ( !pat_isPat(pat) )
+    stop("Required parameter 'pat' is not a valid 'pa_timeseries' object.")
+  
+  if ( pat_isEmpty(pat) )
+    stop("Required parameter 'pat' has no data.") 
+  
+  # Remove any duplicate data records
+  pat <- pat_distinct(pat)
+  
+  # ----- Convert period to seconds --------------------------------------------
+  
+  periodParts <- strsplit(period, " ", fixed = TRUE)[[1]]
+  
+  if ( length(periodParts) == 1 ) {
+    periodCount <- 1
+    units <- periodParts[1]
+  } else {
+    periodCount <- as.numeric(periodParts[1])
+    units <- periodParts[2]
   }
+  
+  if ( units == "sec"     ) unitSecs <- 1
+  if ( units == "min"     ) unitSecs <- 60
+  if ( units == "hour"    ) unitSecs <- 3600
+  if ( units == "day"     ) unitSecs <- 3600 * 24
+  if ( units == "week"    ) unitSecs <- 3600 * 24 * 7
+  if ( units == "month"   ) unitSecs <- 3600 * 24 * 31
+  if ( units == "quarter" ) unitSecs <- 3600 * 24 * 31 * 3
+  if ( units == "year"    ) unitSecs <- 3600 * 8784 
+  
+  periodSeconds <- periodCount * unitSecs 
+  
+  # Name of applicable vectors
+  names2count <- 
+    list(
+      "pm25_A", 
+      "pm25_B", 
+      "humidity", 
+      "temperature"
+    )
+  
+  # Create df to use functionally
+  df2count <- 
+    list(
+      data.frame("pm25_A" = pat$data$pm25_A), 
+      data.frame("pm25_B" = pat$data$pm25_B), 
+      data.frame("humidity" = pat$data$humidity),
+      data.frame("temperature" = pat$data$temperature)
+    )
+  
+  # map .flagOutliers to all applicable vectors
+  flagged_outliers<-
+    purrr::map2(
+      df2count, 
+      names2count, 
+      .flagOutliers, 
+      windowSize, 
+      thresholdMin
+    )
+  # lapply function to grab flag vectors -> binds columns
+  flags <- 
+    do.call(
+      "cbind",
+      lapply(
+        flagged_outliers, 
+        FUN = function(x) x[2]
+      )
+    )
+  
+  pat[["data"]] <- cbind(pat[["data"]], flags)
+  
+  counts <- 
+    .pat_agg(
+      pat = pat, 
+      stat = "sum", 
+      periodSeconds = periodSeconds, 
+      parameters = 
+        names(pat[["data"]])
+      [which(stringr::str_detect(names(pat[["data"]]), "flag_outliers_"))]
+    )
+  
+  # Rename 
+  names(counts) <- 
+    c("datetime", 
+      "pm25_A_outlierCount",
+      "pm25_B_outlierCount",
+      "humidity_outlierCount", 
+      "temperature_outlierCount")
+  
+  agg <- 
+    dplyr::left_join(
+      pat_aggregate(pat, period), 
+      counts, 
+      by = "datetime"
+    )
+  
+  # ----- Return ---------------------------------------------------------------
+  
+  return(agg)
+  
+}

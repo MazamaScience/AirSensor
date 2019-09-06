@@ -4,7 +4,7 @@
 \alias{sensor_polarPlot}
 \title{Plot bivariate polar plots with guassian smoothing}
 \usage{
-sensor_polarPlot(sensor, windData = NULL, statistic = "mean",
+sensor_polarPlot(sensor = NULL, windData = NULL, statistic = "mean",
   resolution = "fine", colors = "default", alpha = 1,
   angleScale = 315, normalize = FALSE, key = TRUE,
   keyPosition = "right", ws_spread = 15, wd_spread = 4)

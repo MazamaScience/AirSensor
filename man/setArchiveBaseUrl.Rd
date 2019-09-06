@@ -15,6 +15,11 @@ Silently returns previous value of base URL.
 \description{
 Sets the package base URL pointing to an archive of
 pre-generated data files.
+
+Known base URLs include:
+\itemize{
+\item{http://smoke.mazamascience.com/data/PurpleAir}
+}
 }
 \seealso{
 ArchiveBaseUrl

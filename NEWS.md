@@ -1,3 +1,7 @@
+# AirSensor 0.4.5
+
+* Using `MazamaCoreUtil::stopIfNull()` throughout.
+
 # AirSensor 0.4.4
 
 * Updated requirements: MazamaCoreUtils (>= 0.3.5).

@@ -50,9 +50,14 @@ pat_scatterplot <- function(
   
   # ----- Disable Warning messages ---------------------------------------------
   
+  # TODO:  Should probably execute problematic code in suppressWarningMessages()
+  # TODO:  rather than just turn them off.
+  
   options(warn = -1)
   
   # ----- Validate parameters --------------------------------------------------
+  
+  MazamaCoreUtils::stopIfNull(pat)
   
   if ( !pat_isPat(pat) )
     stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")

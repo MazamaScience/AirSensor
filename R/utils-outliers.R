@@ -19,35 +19,36 @@
 #' @return A dataframe with an additional column identifying outliers.
 #' 
 
-.flagOutliers <- 
-  function(
-    df, 
-    parameter = NULL,
-    windowSize = 23,
-    thresholdMin = 8
-  ) {
-    
-    if ( is.null(parameter) ) 
-      stop("Missing parameter")
-    
-    data <- df[[parameter]]
-    outlierFlagName <- paste0("flag_outliers_", parameter)
-    
-    # Identify outliers
-    outlierIndices <- 
-      seismicRoll::findOutliers(
-        x = data, 
-        n = windowSize,
-        thresholdMin = thresholdMin
-      )
-    
-    # Make a new logical column
-    df[[outlierFlagName]] <- FALSE 
-    df[[outlierFlagName]][outlierIndices] <- TRUE
-    
-    return(df)
-    
-  }
+.flagOutliers <- function(
+  df = NULL, 
+  parameter = NULL,
+  windowSize = 23,
+  thresholdMin = 8
+) {
+  
+  # ----- Validate parameters --------------------------------------------------
+  
+  MazamaCoreUtils::stopIfNull(df)
+  MazamaCoreUtils::stopIfNull(parameter)
+  
+  data <- df[[parameter]]
+  outlierFlagName <- paste0("flag_outliers_", parameter)
+  
+  # Identify outliers
+  outlierIndices <- 
+    seismicRoll::findOutliers(
+      x = data, 
+      n = windowSize,
+      thresholdMin = thresholdMin
+    )
+  
+  # Make a new logical column
+  df[[outlierFlagName]] <- FALSE 
+  df[[outlierFlagName]][outlierIndices] <- TRUE
+  
+  return(df)
+  
+}
 
 #' @title Replace outliers with rolling median
 #' 
@@ -63,37 +64,38 @@
 #' @return A \code{data.frame} with replaced outliers
 #' 
 
-.replaceOutliers <- 
-  function(
-    df,
-    parameter = NULL, 
-    medWin = 7,
+.replaceOutliers <- function(
+  df = NULL,
+  parameter = NULL, 
+  medWin = 7,
+  ...
+) { 
+  
+  # ----- Validate parameters --------------------------------------------------
+  
+  MazamaCoreUtils::stopIfNull(df)
+  MazamaCoreUtils::stopIfNull(parameter)
+  
+  df <- .flagOutliers(
+    df = df, 
+    parameter = parameter,
     ...
-  ) { 
-    
-    df <- .flagOutliers(
-      df = df, 
-      parameter = parameter,
-      ...
-    )
-    
-    if ( is.null(parameter) ) 
-      stop("Missing parameter")
-    
-    outlierFlagName <- paste0("flag_outliers_", parameter)
-    
-    roll_med <- function(x, n) seismicRoll::roll_median(x, n)
-    
-    flagged <- which(df[[outlierFlagName]])
-    
-    df[[outlierFlagName]] <- NULL
-    
-    df[[parameter]][flagged] <- 
-      roll_med(df[[parameter]], medWin)[flagged]
-    
-    return(df)
-    
-  }
+  )
+  
+  outlierFlagName <- paste0("flag_outliers_", parameter)
+  
+  roll_med <- function(x, n) seismicRoll::roll_median(x, n)
+  
+  flagged <- which(df[[outlierFlagName]])
+  
+  df[[outlierFlagName]] <- NULL
+  
+  df[[parameter]][flagged] <- 
+    roll_med(df[[parameter]], medWin)[flagged]
+  
+  return(df)
+  
+}
 
 
 #' @title Plot flagged outliers
@@ -118,30 +120,33 @@
 #'
 #' @return gg object
 #' 
-.plotOutliers <- 
-  function(
-    df, 
-    parameter = "pm25",
-    ylim = NULL,
-    xlab = "Date", 
-    ylab = "\u03bcg / m\u00b3", 
-    title = "default", 
-    subtitle = NULL,
-    data_shape = 18, 
-    data_size = 1, 
-    data_color = "black",
-    data_alpha = 0.5,
-    outlier_shape = 8, 
-    outlier_size = 1, 
-    outlier_color = "red",
-    outlier_alpha = 1.0
-  ) {
-    
-    col_flag <- names(df)[which(stringr::str_detect(names(df), "flag_outliers_"))]
-    col_param <- names(df)[which(stringr::str_detect(names(df), parameter))][1]
-    
-    df_ind <- which(df[[col_flag]])
-        
+.plotOutliers <- function(
+  df = NULL, 
+  parameter = "pm25",
+  ylim = NULL,
+  xlab = "Date", 
+  ylab = "\u03bcg / m\u00b3", 
+  title = "default", 
+  subtitle = NULL,
+  data_shape = 18, 
+  data_size = 1, 
+  data_color = "black",
+  data_alpha = 0.5,
+  outlier_shape = 8, 
+  outlier_size = 1, 
+  outlier_color = "red",
+  outlier_alpha = 1.0
+) {
+  
+  # ----- Validate parameters --------------------------------------------------
+  
+  MazamaCoreUtils::stopIfNull(df)
+
+  col_flag <- names(df)[which(stringr::str_detect(names(df), "flag_outliers_"))]
+  col_param <- names(df)[which(stringr::str_detect(names(df), parameter))][1]
+  
+  df_ind <- which(df[[col_flag]])
+  
   
   df_outliers <-   
     ggplot2::geom_point(

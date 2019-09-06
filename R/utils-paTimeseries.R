@@ -28,7 +28,9 @@
 #' @examples
 #' pat_isPat(example_pat)
 #'
-pat_isPat <- function(pat = NULL) {
+pat_isPat <- function(
+  pat = NULL
+) {
   
   # Test a variety of things that could go wrong
   if ( is.null(pat) ) return(FALSE)

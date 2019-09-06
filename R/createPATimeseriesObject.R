@@ -25,17 +25,22 @@
 #' \dontrun{
 #' initializeMazamaSpatialUtils()
 #' pas <- pas_load()
-#' pat_raw <- downloadParseTimeseriesData(pas, label = 'North Bend Weather', 
-#'                                        startdate = 20180908)
+#' pat_raw <- downloadParseTimeseriesData(
+#'   pas, 
+#'   label = 'North Bend Weather', 
+#'   startdate = 20180908
+#' )
 #' pat <- createPATimeseriesObject(pat_raw)
+#' pat_multiplot(pat)
 #' }
 
 createPATimeseriesObject <- function(
   pat_raw = NULL
 ) {
 
-  # Remove any duplicate data records
-  pat_raw$data <- dplyr::distinct(pat_raw$data)
+  # ---- Validate parameters ---------------------------------------------------
+  
+  MazamaCoreUtils::stopIfNull(pat_raw)
   
   # ----- Simplify meta --------------------------------------------------------
 
@@ -61,6 +66,9 @@ createPATimeseriesObject <- function(
                   .data$communityRegion)
   
   # ----- Simplify data --------------------------------------------------------
+  
+  # Remove any duplicate data records
+  pat_raw$data <- dplyr::distinct(pat_raw$data)
   
   # NOTE:  The incoming pat_raw has the following structure with 
   # NOTE:  a 'meta' dataframe and a 'data' dataframe:
@@ -129,6 +137,8 @@ createPATimeseriesObject <- function(
   
   # Remove any duplicate data records
   pat <- pat_distinct(pat)
+  
+  # ----- Return ---------------------------------------------------------------
   
   return(pat)
   
