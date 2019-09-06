@@ -60,6 +60,10 @@ pat_calendarPlot <- function(
   
   # ----- Validate parameters --------------------------------------------------
   
+  channel <- tolower(channel)
+  
+  MazamaCoreUtils::stopIfNull(pat)
+  
   if ( !pat_isPat(pat) )
     stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")
   
@@ -84,6 +88,8 @@ pat_calendarPlot <- function(
   # ----- Create plot ----------------------------------------------------------
   
   gg <- sensor_calendarPlot(sensor, palette, ncol, discrete = discrete)
+  
+  # ----- Return ---------------------------------------------------------------
   
   return(gg)
   

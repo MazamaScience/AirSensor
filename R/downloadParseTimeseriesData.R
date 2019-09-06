@@ -24,6 +24,12 @@ downloadParseTimeseriesData <- function(
   baseURL = "https://api.thingspeak.com/channels/"
 ) {
   
+  # ----- Validate parameters --------------------------------------------------
+  
+  MazamaCoreUtils::stopIfNull(pas)
+
+  # ----- Create download URLs -------------------------------------------------
+  
   # Default to the most recent week of data
   dateRange <- MazamaCoreUtils::dateRange(
     startdate, 
@@ -41,6 +47,8 @@ downloadParseTimeseriesData <- function(
     requested_meta <- dplyr::filter(pas, .data$label == !!label)
   } else if ( !is.null(id) ) {
     requested_meta <- dplyr::filter(pas, .data$ID == !!id)
+  } else {
+    stop("Either 'label' or 'id' must be specified.")
   }
   
   # Determine which channel was given and access the other channel from it
@@ -332,6 +340,8 @@ downloadParseTimeseriesData <- function(
   
   # Remove any duplicate data records
   pat_raw$data <- dplyr::distinct(pat_raw$data)
+  
+  # ----- Return ---------------------------------------------------------------
   
   return(pat_raw)
   

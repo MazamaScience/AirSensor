@@ -43,16 +43,15 @@ pat_createNew <- function(
   
   # ----- Validate parameters --------------------------------------------------
   
-  if ( is.null(pas) )
-    stop("Required parameter 'pas' is missing.")
-  
-  if ( is.null(label) )
-    stop("Required parameter 'label' is missing.")
+  MazamaCoreUtils::stopIfNull(pas)
+  MazamaCoreUtils::stopIfNull(label)
   
   if ( !label %in% pas$label )
     stop(paste0("'", label, "' is not found in the 'pas' object"))
   
   # ----- Determine date sequence ----------------------------------------------
+  
+  # TODO:  Add support for coming in with only 'id' specified.
   
   # Only one week of data can be loaded at a time. If over one week has been
   # requested, loop over weeks to download all of it
@@ -72,7 +71,10 @@ pat_createNew <- function(
     dateRange <- timeRange(startdate, enddate, timezone = timezone)
   } else {
     # Default to 7 days with day boundaries
-    dateRange <- MazamaCoreUtils::dateRange(startdate, enddate, timezone, days = 7)
+    dateRange <- MazamaCoreUtils::dateRange(startdate, 
+                                            enddate, 
+                                            timezone, 
+                                            days = 7)
   }
 
   # Create a sequence of weekly POSIXct times
@@ -141,7 +143,7 @@ if ( FALSE ) {
   pas <- pas_load()
   label <- "SCAP_14"
   id <- NULL
-  startdate <- lubridate::now("UTC")
+  startdate <- lubridate::now(tzone = "UTC")
   enddate <- startdate - lubridate::ddays(7)
   timezonne <- "UTC"
   baseURL <- "https://api.thingspeak.com/channels/"

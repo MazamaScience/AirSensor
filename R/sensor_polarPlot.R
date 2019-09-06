@@ -65,90 +65,92 @@
 #' sensor_polarPlot(sensor, windData, resolution = "normal")
 #' }
 
-sensor_polarPlot <- 
-  function(
-    sensor, 
-    windData = NULL, 
-    statistic = "mean", 
-    resolution = "fine",
-    colors = "default", 
-    alpha = 1, 
-    angleScale = 315,
-    normalize = FALSE,
-    key = TRUE, 
-    keyPosition = "right", 
-    ws_spread = 15, 
-    wd_spread = 4
-  ) {
+sensor_polarPlot <- function(
+  sensor = NULL, 
+  windData = NULL, 
+  statistic = "mean", 
+  resolution = "fine",
+  colors = "default", 
+  alpha = 1, 
+  angleScale = 315,
+  normalize = FALSE,
+  key = TRUE, 
+  keyPosition = "right", 
+  ws_spread = 15, 
+  wd_spread = 4
+) {
+  
+  # ----- Validate parameters --------------------------------------------------
+  
+  MazamaCoreUtils::stopIfNull(sensor)
+  
+  if ( !PWFSLSmoke::monitor_isMonitor(sensor) )
+    stop("Parameter 'sensor' is not a valid 'airsensor' object.") 
+  
+  if ( PWFSLSmoke::monitor_isEmpty(sensor) ) 
+    stop("Required parameter 'sensor' has no data.")
+  
+  if ( nrow(sensor$meta) == 0 )
+    stop("Parameter 'sensor' contains no SC sensors")
+  
+  if ( nrow(sensor$meta) > 1 )
+    stop("Parameter 'sensor' contains more than one SC sensor")
+  
+  # Find wind data readings from the closest NOAA site if none are provided
+  if ( is.null(windData) ) {
+    # Using only the first entry's datetime for the year will be problematic 
+    # if the timeframe spans more than one year...
+    year <- lubridate::year(sensor$data$datetime[1])
+    lon <- sensor$meta$longitude[1]
+    lat <- sensor$meta$latitude[1]
     
-    # Validate Parameters
-    if ( !PWFSLSmoke::monitor_isMonitor(sensor) )
-      stop("Parameter 'sensor' is not a valid 'airsensor' object.") 
+    closestSite <- worldmet::getMeta(lon = lon, lat = lat, n = 1, 
+                                     plot = FALSE)[1,]
+    siteCode <- paste0(closestSite$USAF, "-", closestSite$WBAN)
     
-    if ( PWFSLSmoke::monitor_isEmpty(sensor) ) 
-      stop("Required parameter 'sensor' has no data.")
-    
-    if ( nrow(sensor$meta) == 0 )
-      stop("Parameter 'sensor' contains no SC sensors")
-    
-    if ( nrow(sensor$meta) > 1 )
-      stop("Parameter 'sensor' contains more than one SC sensor")
-    
-    # Find wind data readings from the closest NOAA site if none are provided
-    if ( is.null(windData) ) {
-      # Using only the first entry's datetime for the year will be problematic 
-      # if the timeframe spans more than one year...
-      year <- lubridate::year(sensor$data$datetime[1])
-      lon <- sensor$meta$longitude[1]
-      lat <- sensor$meta$latitude[1]
-      
-      closestSite <- worldmet::getMeta(lon = lon, lat = lat, n = 1, 
-                                       plot = FALSE)[1,]
-      siteCode <- paste0(closestSite$USAF, "-", closestSite$WBAN)
-      
-      siteData <- worldmet::importNOAA(code = siteCode, year = year, 
-                                       parallel = FALSE)
-      windData <- dplyr::select(siteData, c("date", "wd", "ws"))
-    }
-    
-    # PM2.5 df 
-    pollutantData <- 
-      dplyr::tibble(
-        "date" = sensor$data[[1]], 
-        "pm25" = sensor$data[[2]] 
-      )
-    
-    # Trim wind data to the sensor's time range
-    windData <- dplyr::filter(windData, 
-                              date >= min(sensor$data$datetime),
-                              date <= max(sensor$data$datetime))
-    
-    # Combine df's 
-    data <- 
-      dplyr::left_join(
-        x = windData, 
-        y = pollutantData, 
-        by = "date"
-      )
-    
-    # Polar Plot
-    return({
-      
-      openair::polarPlot(
-        mydata = data,
-        pollutant = "pm25",
-        statistic = statistic, 
-        resolution = resolution,
-        cols = colors, 
-        alpha = alpha, 
-        angle.scale = angleScale,
-        normalise = normalize,
-        key = key, 
-        key.position = keyPosition, 
-        ws_spread = ws_spread, 
-        wd_spread = wd_spread
-      )
-      
-    })
-    
+    siteData <- worldmet::importNOAA(code = siteCode, year = year, 
+                                     parallel = FALSE)
+    windData <- dplyr::select(siteData, c("date", "wd", "ws"))
   }
+  
+  # PM2.5 df 
+  pollutantData <- 
+    dplyr::tibble(
+      "date" = sensor$data[[1]], 
+      "pm25" = sensor$data[[2]] 
+    )
+  
+  # Trim wind data to the sensor's time range
+  windData <- dplyr::filter(windData, 
+                            date >= min(sensor$data$datetime),
+                            date <= max(sensor$data$datetime))
+  
+  # Combine df's 
+  data <- 
+    dplyr::left_join(
+      x = windData, 
+      y = pollutantData, 
+      by = "date"
+    )
+  
+  # Polar Plot
+  return({
+    
+    openair::polarPlot(
+      mydata = data,
+      pollutant = "pm25",
+      statistic = statistic, 
+      resolution = resolution,
+      cols = colors, 
+      alpha = alpha, 
+      angle.scale = angleScale,
+      normalise = normalize,
+      key = key, 
+      key.position = keyPosition, 
+      ws_spread = ws_spread, 
+      wd_spread = wd_spread
+    )
+    
+  })
+  
+}

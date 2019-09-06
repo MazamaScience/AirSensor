@@ -4,7 +4,7 @@
 \alias{.replaceOutliers}
 \title{Replace outliers with rolling median}
 \usage{
-.replaceOutliers(df, parameter = NULL, medWin = 7, ...)
+.replaceOutliers(df = NULL, parameter = NULL, medWin = 7, ...)
 }
 \arguments{
 \item{df}{A data frame.}

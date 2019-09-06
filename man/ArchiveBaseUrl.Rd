@@ -6,9 +6,16 @@
 \title{Base URL for pre-generated data}
 \format{URL string.}
 \description{
-This package maintains an internal URL which users can set
-using \code{setArchiveBaseUrl()}. Package functions that load pre-generated
-data files use this. These functions include:
+This package maintains an internal archive base URL which users 
+must set using \code{setArchiveBaseUrl()}.
+
+Known base URLs include:
+\itemize{
+\item{http://smoke.mazamascience.com/data/PurpleAir}
+}
+
+Package functions that load pre-generated data files download data from this
+URL. These functions include:
 
 \itemize{
 \item{\code{pas_load()}}

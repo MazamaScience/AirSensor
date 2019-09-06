@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.5</span>
       </span>
     </div>
 
@@ -227,6 +227,9 @@ pat &lt;-<span class="st"> </span>example_pat_failure_B
 <p>A picture may help. Below we display hourly boxplots for the A and B channels during a day when they largely agree:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)
 
+<span class="co"># Always specify a timezone wherever possible!</span>
+timezone &lt;-<span class="st"> "America/Los_Angeles"</span>
+
 <span class="co"># Grab a 1-day subset of the data</span>
 raw_data &lt;-<span class="st"> </span>
 <span class="st">  </span>example_pat_failure_B <span class="op">%&gt;%</span>
@@ -234,23 +237,23 @@ raw_data &lt;-<span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/pat_extractDataFrame.html">pat_extractData</a></span>() <span class="op">%&gt;%</span>
 <span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(datetime, pm25_A, pm25_B) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="co"># Convert datetime to an hourly timestamp to use as a factor</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">datetime =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/strptime">strftime</a></span>(datetime, <span class="st">"%Y%m%d%H"</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">datetime =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/strptime">strftime</a></span>(datetime, <span class="st">"%Y%m%d%H"</span>, <span class="dt">tz =</span> timezone)) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="co"># Convert from wide to "tidy" so we can use channel as a factor</span>
 <span class="st">  </span>tidyr<span class="op">::</span><span class="kw"><a href="https://tidyr.tidyverse.org/reference/gather.html">gather</a></span>(<span class="st">"channel"</span>, <span class="st">"pm25"</span>, <span class="op">-</span>datetime)
 
 <span class="co"># Look at a random sample of this new dataframe</span>
 dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(raw_data, <span class="dv">10</span>)</code></pre></div>
 <pre><code>##      datetime channel  pm25
-## 1  2019061104  pm25_A  6.25
-## 2  2019061114  pm25_A  9.94
-## 3  2019061118  pm25_A 10.39
-## 4  2019061119  pm25_B  8.73
-## 5  2019061102  pm25_B  4.67
-## 6  2019061114  pm25_A  8.31
-## 7  2019061122  pm25_A 15.77
-## 8  2019061105  pm25_A  7.77
-## 9  2019061118  pm25_A 10.36
-## 10 2019061114  pm25_A  7.57</code></pre>
+## 1  2019061114  pm25_B  6.98
+## 2  2019061102  pm25_B  5.01
+## 3  2019061114  pm25_B  7.34
+## 4  2019061122  pm25_A 15.63
+## 5  2019061121  pm25_A 16.03
+## 6  2019061118  pm25_A 11.16
+## 7  2019061103  pm25_A  4.36
+## 8  2019061115  pm25_B 10.68
+## 9  2019061122  pm25_B 13.41
+## 10 2019061101  pm25_B  6.03</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create a timeseries using boxplots</span>
 colors &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/rgb">rgb</a></span>(<span class="fl">0.9</span>, <span class="fl">0.25</span>, <span class="fl">0.2</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/rgb">rgb</a></span>(<span class="fl">0.2</span>, <span class="fl">0.25</span>, <span class="fl">0.9</span>))
 <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(raw_data, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(datetime, pm25, <span class="dt">color =</span> channel)) <span class="op">+</span><span class="st"> </span>
@@ -272,17 +275,17 @@ agg_data &lt;-<span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"t-test p-value"</span>)</code></pre></div>
 <p><img src="purpleair_qc_files/figure-html/AB_boxplot-2.png" width="672"></p>
 <p>And here is the same for a day with serious problems:</p>
-<pre><code>##      datetime channel    pm25
-## 1  2019061221  pm25_A 3328.84
-## 2  2019061211  pm25_A   19.38
-## 3  2019061210  pm25_B   16.25
-## 4  2019061200  pm25_B   14.68
-## 5  2019061212  pm25_A   17.93
-## 6  2019061204  pm25_B   15.79
-## 7  2019061221  pm25_B   12.85
-## 8  2019061223  pm25_A 3335.45
-## 9  2019061217  pm25_A      NA
-## 10 2019061201  pm25_B   14.27</code></pre>
+<pre><code>##      datetime channel  pm25
+## 1  2019061202  pm25_B 12.75
+## 2  2019061218  pm25_A 12.59
+## 3  2019061209  pm25_A 32.39
+## 4  2019061208  pm25_B 18.26
+## 5  2019061203  pm25_B 12.31
+## 6  2019061215  pm25_B 10.90
+## 7  2019061219  pm25_A 17.67
+## 8  2019061204  pm25_B 13.90
+## 9  2019061216  pm25_A 12.58
+## 10 2019061209  pm25_B 15.88</code></pre>
 <p><img src="purpleair_qc_files/figure-html/AB_boxplot_2-1.png" width="672"><img src="purpleair_qc_files/figure-html/AB_boxplot_2-2.png" width="672"></p>
 <p>We can see that the null hypothesis – the difference in means is entirely due to chance – is extremely unlikely <code>pm25_p &lt; 1e-30</code>, for example, only occur for hours where the A and B channels have hourly avergaes that are both highly precise (low std dev) and very different. We can thus use the <code>pm25_t</code> variable to flag those hours where the A and B channels disagree.</p>
 </div>

@@ -63,95 +63,96 @@
 #' sensor_pollutionRose(sensor, windData, statistic = "prop.mean")
 #' }
 
-sensor_pollutionRose <- 
-  function(
-    sensor, 
-    windData = NULL,
-    statistic = "prop.count",
-    key = TRUE, 
-    keyPosition = "right",
-    annotate = TRUE,
-    angle = 30,
-    angleScale = 315,
-    gridLine = NULL,
-    breaks = 6, 
-    paddle = FALSE, 
-    seg = 0.9, 
-    normalize = FALSE
-  ) {
-    
-    # ----- Validate parameters ------------------------------------------------
-    
-    if ( !PWFSLSmoke::monitor_isMonitor(sensor) )
-      stop("Parameter 'sensor' is not a valid 'airsensor' object.") 
-    
-    if ( PWFSLSmoke::monitor_isEmpty(sensor) ) 
-      stop("Required parameter 'sensor' has no data.")
-    
-    if ( nrow(sensor$meta) == 0 )
-      stop("Parameter 'sensor' contains no SC sensors")
-    
-    if ( nrow(sensor$meta) > 1 )
-      stop("Parameter 'sensor' contains more than one SC sensor")
-    
-    # ----- Get wind data ------------------------------------------------------
-    
-    # Find wind data readings from the closest NOAA site if none are provided
-    if ( is.null(windData) ) {
-      # Using only the first entry's datetime for the year will be problematic 
-      # if the timeframe spans more than one year...
-      year <- lubridate::year(sensor$data$datetime[1])
-      lon <- sensor$meta$longitude[1]
-      lat <- sensor$meta$latitude[1]
-      
-      closestSite <- worldmet::getMeta(lon = lon, lat = lat, n = 1, 
-                                       plot = FALSE)[1,]
-      siteCode <- paste0(closestSite$USAF, "-", closestSite$WBAN)
-      
-      siteData <- worldmet::importNOAA(code = siteCode, year = year, 
-                                       parallel = FALSE)
-      windData <- dplyr::select(siteData, c("date", "wd", "ws"))
-    }
-
-    # Data must be the same length
-    pollutantData <- 
-      dplyr::tibble(
-        "date" = sensor$data[[1]], 
-        "pm25" = sensor$data[[2]] 
-      )
-    
-    # Trim wind data to the sensor's time range
-    windData <- dplyr::filter(windData, 
-                              date >= min(sensor$data$datetime),
-                              date <= max(sensor$data$datetime))
-    
-    # Combine df's 
-    data <- 
-      dplyr::left_join(
-        x = windData, 
-        y = pollutantData, 
-        by = "date"
-      )
-    
-    # Pollution Rose
-    return({
-      
-      openair::pollutionRose(
-        mydata = data,
-        pollutant = "pm25",
-        key.position = keyPosition,
-        key = key,
-        annotate = annotate,
-        breaks = breaks,
-        paddle= paddle,
-        seg = seg,
-        normalise = normalize,
-        angle = angle,
-        angle.scale = angleScale,
-        statistic = statistic,
-        grid.line = gridLine
-      )
-    
-    })
+sensor_pollutionRose <- function(
+  sensor = NULL, 
+  windData = NULL,
+  statistic = "prop.count",
+  key = TRUE, 
+  keyPosition = "right",
+  annotate = TRUE,
+  angle = 30,
+  angleScale = 315,
+  gridLine = NULL,
+  breaks = 6, 
+  paddle = FALSE, 
+  seg = 0.9, 
+  normalize = FALSE
+) {
   
+  # ----- Validate parameters --------------------------------------------------
+  
+  MazamaCoreUtils::stopIfNull(sensor)
+  
+  if ( !PWFSLSmoke::monitor_isMonitor(sensor) )
+    stop("Parameter 'sensor' is not a valid 'airsensor' object.") 
+  
+  if ( PWFSLSmoke::monitor_isEmpty(sensor) ) 
+    stop("Required parameter 'sensor' has no data.")
+  
+  if ( nrow(sensor$meta) == 0 )
+    stop("Parameter 'sensor' contains no SC sensors")
+  
+  if ( nrow(sensor$meta) > 1 )
+    stop("Parameter 'sensor' contains more than one SC sensor")
+  
+  # ----- Get wind data --------------------------------------------------------
+  
+  # Find wind data readings from the closest NOAA site if none are provided
+  if ( is.null(windData) ) {
+    # Using only the first entry's datetime for the year will be problematic 
+    # if the timeframe spans more than one year...
+    year <- lubridate::year(sensor$data$datetime[1])
+    lon <- sensor$meta$longitude[1]
+    lat <- sensor$meta$latitude[1]
+    
+    closestSite <- worldmet::getMeta(lon = lon, lat = lat, n = 1, 
+                                     plot = FALSE)[1,]
+    siteCode <- paste0(closestSite$USAF, "-", closestSite$WBAN)
+    
+    siteData <- worldmet::importNOAA(code = siteCode, year = year, 
+                                     parallel = FALSE)
+    windData <- dplyr::select(siteData, c("date", "wd", "ws"))
   }
+  
+  # Data must be the same length
+  pollutantData <- 
+    dplyr::tibble(
+      "date" = sensor$data[[1]], 
+      "pm25" = sensor$data[[2]] 
+    )
+  
+  # Trim wind data to the sensor's time range
+  windData <- dplyr::filter(windData, 
+                            date >= min(sensor$data$datetime),
+                            date <= max(sensor$data$datetime))
+  
+  # Combine df's 
+  data <- 
+    dplyr::left_join(
+      x = windData, 
+      y = pollutantData, 
+      by = "date"
+    )
+  
+  # Pollution Rose
+  return({
+    
+    openair::pollutionRose(
+      mydata = data,
+      pollutant = "pm25",
+      key.position = keyPosition,
+      key = key,
+      annotate = annotate,
+      breaks = breaks,
+      paddle= paddle,
+      seg = seg,
+      normalise = normalize,
+      angle = angle,
+      angle.scale = angleScale,
+      statistic = statistic,
+      grid.line = gridLine
+    )
+    
+  })
+  
+}

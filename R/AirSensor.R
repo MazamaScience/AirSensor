@@ -164,9 +164,16 @@ airsensorEnv$archiveBaseUrl <- NULL
 #' @name ArchiveBaseUrl
 #' @title Base URL for pre-generated data
 #' @format URL string.
-#' @description This package maintains an internal URL which users can set
-#' using \code{setArchiveBaseUrl()}. Package functions that load pre-generated
-#' data files use this. These functions include:
+#' @description This package maintains an internal archive base URL which users 
+#' must set using \code{setArchiveBaseUrl()}.
+#' 
+#' Known base URLs include:
+#' \itemize{
+#' \item{http://smoke.mazamascience.com/data/PurpleAir}
+#' }
+#' 
+#' Package functions that load pre-generated data files download data from this
+#' URL. These functions include:
 #' 
 #' \itemize{
 #' \item{\code{pas_load()}}
@@ -192,11 +199,16 @@ NULL
 #' @seealso archiveBaseUrl
 #' @seealso setArchiveBaseUrl
 getArchiveBaseUrl <- function() {
-  if (is.null(airsensorEnv$archiveBaseUrl)) {
-    stop('No URL. Please set a base URL with setArchiveBaseUrl("BASE_URL").', call.=FALSE)
-  } else {
-    return(airsensorEnv$archiveBaseUrl)    
-  }
+  MazamaCoreUtils::stopIfNull(
+    target = airsensorEnv$archiveBaseUrl,
+    msg = paste0(
+      'No BASE_URL set. Please set one with setArchiveBaseUrl("BASE_URL").',
+      "\n\nKnown options include:\n\n",
+      "  setArchiveBaseUrl(\"http://smoke.mazamascience.com/data/PurpleAir\")"
+    )
+  )
+  return(airsensorEnv$archiveBaseUrl)    
+
 }
 
 #' @keywords environment
@@ -205,6 +217,12 @@ getArchiveBaseUrl <- function() {
 #' @param archiveBaseUrl Base URL pointing to an archive of pre-generated data files.
 #' @description Sets the package base URL pointing to an archive of
 #' pre-generated data files.
+#' 
+#' Known base URLs include:
+#' \itemize{
+#' \item{http://smoke.mazamascience.com/data/PurpleAir}
+#' }
+#' 
 #' @return Silently returns previous value of base URL.
 #' @seealso ArchiveBaseUrl
 #' @seealso getArchiveBaseUrl

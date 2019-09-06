@@ -11,8 +11,8 @@
 # docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/airsensor /app/createCalendarPlot_exec.R --pattern=^SCNP_..$
 #
 
-#  --- . --- . AirSensor 0.4.2
-VERSION = "0.1.0"
+#  --- . --- . MazamaCoreUtils 0.3.5
+VERSION = "0.1.1"
 
 # The following packages are attached here so they show up in the sessionInfo
 suppressPackageStartupMessages({
@@ -96,7 +96,7 @@ if ( !dir.exists(opt$logDir) )
   stop(paste0("logDir not found:  ",opt$logDir))
 
 # Default to the current year
-now <- lubridate::now(opt$timezone)
+now <- lubridate::now(tzone = opt$timezone)
 if ( opt$datestamp == "" ) {
   opt$datestamp <- strftime(now, "%Y", tz = opt$timezone)
 }

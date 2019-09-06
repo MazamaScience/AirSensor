@@ -4,7 +4,7 @@
 \alias{pas_isPas}
 \title{Test for correct structure in a \emph{pa_synoptic} object}
 \usage{
-pas_isPas(pas)
+pas_isPas(pas = NULL)
 }
 \arguments{
 \item{pas}{A \emph{pa_synoptic} object.}

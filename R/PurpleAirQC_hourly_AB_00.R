@@ -39,10 +39,14 @@
 #' }
 
 PurpleAirQC_hourly_AB_00 <- function(
-  aggregationStats,
+  aggregationStats = NULL,
   min_count = 20,
   returnAllColumns = FALSE
 ) {
+  
+  # ----- Validate parameters --------------------------------------------------
+  
+  MazamaCoreUtils::stopIfNull(aggregationStats)
   
   # ----- hourly_AB_01 ---------------------------------------------------------
   

@@ -57,7 +57,7 @@ pas_load <- function(
   
   logger.debug("----- pas_load() -----")
   
-  # Validate parameters --------------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
   
   if ( datestamp <= "20190404" ) 
     stop("No 'pas' data is available prior to April 5, 2019.")
@@ -68,7 +68,7 @@ pas_load <- function(
   if ( datestamp > strftime(tomorrow, "%Y%m%d", tz = timezone) )
     stop("No data is available for future dates.")
   
-  # Load data from URL ---------------------------------------------------------
+  # ----- Load data from URL ---------------------------------------------------
   
   # Use package internal URL
   baseUrl <- getArchiveBaseUrl()
@@ -117,5 +117,8 @@ pas_load <- function(
          call.=FALSE)
   }
   
+  # ----- Return ---------------------------------------------------------------
+  
   return(invisible(pas))
+  
 }

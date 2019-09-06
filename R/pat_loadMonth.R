@@ -43,12 +43,11 @@ pat_loadMonth <- function(
   
   # TODO: Work with lubridate to support all formats
   
-  if ( is.null(label) )
-    stop("Required parameter 'label' is missing.")
-
+  MazamaCoreUtils::stopIfNull(label)
+  
   # Default to the current month
   if ( is.null(datestamp) || datestamp == "" ) {
-    now <- lubridate::now(timezone)
+    now <- lubridate::now(tzone = timezone)
     datestamp <- strftime(now, "%Y%m%d", tz = timezone)
   }
   

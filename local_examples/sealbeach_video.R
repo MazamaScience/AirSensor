@@ -17,7 +17,7 @@ tAxis[(lubridate::hour(tAxis) - 1) %% tickSkip == 0 &
             lubridate::minute(tAxis) == 0]
 tTicks <- tAxis[(lubridate::hour(tAxis) - 1) %% tickSkip == 0 & 
                          lubridate::minute(tAxis) == 0]
-tLabels <- strftime(tTicks, "%l %P")
+tLabels <- strftime(tTicks, "%l %P", tz = "America/Los_Angeles")
 tInfo <- PWFSLSmoke::timeInfo(tAxis, -118.082, 33.767)
 
 communityRegion <- "Seal Beach"
@@ -45,7 +45,7 @@ for (i in 1:length(tAxis)) {
                     timeTicks = tTicks,
                     timeLabels = tLabels,
                     map = staticMap)
-  print(strftime(fTime, "%b %d %H:%M"))
+  print(strftime(fTime, "%b %d %H:%M", tz = "America/Los_Angeles"))
   dev.off()
 }
 

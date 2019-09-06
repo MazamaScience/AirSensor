@@ -64,6 +64,8 @@ pat_createAirSensor <- function(
   parameter <- tolower(parameter)
   channel <- tolower(channel)
   
+  MazamaCoreUtils::stopIfNull(pat)
+  
   if ( !pat_isPat(pat) )
     stop("Required parameter 'pat' is not a valid 'pa_timeseries' object.")
   

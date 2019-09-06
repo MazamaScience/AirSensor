@@ -28,6 +28,10 @@ scatterplot <- function(
   alpha = 0.5
 ) {
   
+  # ----- Validate parameters --------------------------------------------------
+  
+  MazamaCoreUtils::stopIfNull(data)
+  
   # ----- Allow parameter selection --------------------------------------------
   
   if ( !is.null(parameters) ) {
@@ -98,7 +102,12 @@ scatterplot <- function(
 #' @note Additional documentation of the multiplot algorithm is available at 
 #' cookbook-r.com.
 
-multi_ggplot <- function(..., plotList = NULL, cols = 1, layout = NULL) {
+multi_ggplot <- function(
+  ..., 
+  plotList = NULL, 
+  cols = 1, 
+  layout = NULL
+) {
   
   plots <- c(list(...), plotList)
   numPlots <- length(plots)
@@ -158,13 +167,14 @@ pas_palette <- function(
   options(warn = -1)
   
   # ----- Validate parameters --------------------------------------------------
+
+  MazamaCoreUtils::stopIfNull(pas)
   
   validPaletteNames <- c("aqi", "humidity", "temperature", "distance")
   
   if ( (!tolower(paletteName) %in% validPaletteNames) && is.null(parameter) ) {
     stop("Parameter 'parameter' is required for generic palette names.")
   }
-  
   
   # ----- Create color/legend info ---------------------------------------------
   

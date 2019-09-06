@@ -4,7 +4,7 @@
 \alias{pat_aggregate}
 \title{Aggregation statistics for PurpleAir Timeseries objects}
 \usage{
-pat_aggregate(pat, period = "1 hour")
+pat_aggregate(pat = NULL, period = "1 hour")
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}

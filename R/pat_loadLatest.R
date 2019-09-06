@@ -28,10 +28,9 @@ pat_loadLatest <- function(
   
   logger.debug("----- pat_loadLatest() -----")
   
-  # Validate parameters --------------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
   
-  if ( is.null(label) ) 
-    stop("Required parameter 'label' is missing.")
+  MazamaCoreUtils::stopIfNull(label)
   
   # Load data from URL ---------------------------------------------------------
   

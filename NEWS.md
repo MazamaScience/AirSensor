@@ -1,3 +1,16 @@
+# AirSensor 0.4.5
+
+* Using `MazamaCoreUtil::stopIfNull()` throughout.
+
+# AirSensor 0.4.4
+
+* Updated requirements: MazamaCoreUtils (>= 0.3.5).
+* All time-related functions now specify a timezone explicitly so as to avoid
+confusion related to the default `base::Sys.timezone()`.
+* `enhanceSynopticData()` now handles presence or absence of `State` column
+in raw data obtained from PurpleAir. This was apparently removed some time 
+during the summer of 2019.
+
 # AirSensor 0.4.3
 
 * Updated `pat_calendarPlot()` and `sensor_calendarPlot()` to handle discrete

@@ -35,7 +35,10 @@
 #' pas_leaflet(scsb, maptype = "satellite")
 #' }
 
-pas_filter <- function(pas, ...) { 
+pas_filter <- function(
+  pas, 
+  ...
+) { 
 
   # ----- Validate parameters --------------------------------------------------
   
@@ -58,6 +61,8 @@ pas_filter <- function(pas, ...) {
   pas <- 
     pas %>% 
     dplyr::filter(...)
+  
+  # ----- Return ---------------------------------------------------------------
   
   return(pas)
   

@@ -23,6 +23,7 @@ includes both metadata and recent PM2.5 averages for each deployed monitor.
 \dontrun{
 initializeMazamaSpatialUtils()
 pas_raw <- downloadParseSynopticData()
+View(pas_raw[1:100,])
 }
 }
 \references{

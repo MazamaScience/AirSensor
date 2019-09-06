@@ -23,14 +23,25 @@
 #' }
 
 pat_filter <- function(
-  pat = NULL, 
+  pat, 
   ...
 ) {
   
   # ----- Validate parameters --------------------------------------------------
   
-  if ( !pat_isPat(pat) )
-    stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")
+  # A little involved to catch the case where the user forgets to pass in 'pat'
+  
+  result <- try({
+    if ( !pat_isPat(pat) )
+      stop("First argument is not of class 'pat'.")
+  }, silent = TRUE)
+  
+  if ( class(result) %in% "try-error" ) {
+    err_msg <- geterrmessage()
+    if ( stringr::str_detect(err_msg, "object .* not found") ) {
+      stop(paste0(err_msg, "\n(Did you forget to pass in the 'pat' object?)"))
+    }
+  }
   
   if ( pat_isEmpty(pat) )
     stop("Parameter 'pat' has no data.")

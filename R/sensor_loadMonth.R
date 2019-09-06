@@ -38,16 +38,15 @@ sensor_loadMonth <- function(
   timezone = "America/Los_Angeles"
 ) {
   
-  # Validate parameters --------------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
+  
+  MazamaCoreUtils::stopIfNull(collection)
   
   # TODO: Work with lubridate to support all formats
   
-  if ( is.null(collection) )
-    stop("Required parameter 'collection' is missing.")
-
   # Default to the current month
   if ( is.null(datestamp) || datestamp == "" ) {
-    now <- lubridate::now(timezone)
+    now <- lubridate::now(tzone = timezone)
     datestamp <- strftime(now, "%Y%m%d", tz = timezone)
   }
   
@@ -56,7 +55,7 @@ sensor_loadMonth <- function(
   monthstamp <- stringr::str_sub(datestamp, 1, 6)
   yearstamp <- stringr::str_sub(datestamp, 1, 4)
   
-  # Load data from URL ---------------------------------------------------------
+  # ----- Load data from URL ---------------------------------------------------
   
   # Use package internal URL
   baseUrl <- getArchiveBaseUrl()
@@ -82,6 +81,8 @@ sensor_loadMonth <- function(
     # try({ logger.error("%s", geterrmessage()) }, silent = TRUE)
     stop(paste0("Data file could not be loaded: ", filepath), call.=FALSE)
   }
+  
+  # ----- Return ---------------------------------------------------------------
   
   return(invisible(airsensor))
   

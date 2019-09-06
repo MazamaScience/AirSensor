@@ -28,9 +28,13 @@ In the process, the following columns of data are omitted:
 \dontrun{
 initializeMazamaSpatialUtils()
 pas <- pas_load()
-pat_raw <- downloadParseTimeseriesData(pas, label = 'North Bend Weather', 
-                                       startdate = 20180908)
+pat_raw <- downloadParseTimeseriesData(
+  pas, 
+  label = 'North Bend Weather', 
+  startdate = 20180908
+)
 pat <- createPATimeseriesObject(pat_raw)
+pat_multiplot(pat)
 }
 }
 \seealso{

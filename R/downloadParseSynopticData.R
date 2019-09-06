@@ -16,6 +16,7 @@
 #' \dontrun{
 #' initializeMazamaSpatialUtils()
 #' pas_raw <- downloadParseSynopticData()
+#' View(pas_raw[1:100,])
 #' }
 
 downloadParseSynopticData <- function(
@@ -24,6 +25,8 @@ downloadParseSynopticData <- function(
 
   logger.debug("----- downloadParseSynopticData() -----")
 
+  # ----- Download raw data ----------------------------------------------------
+  
   # Strip off any final '/'
   baseUrl <- stringr::str_replace(baseUrl,'/$','')
 
@@ -150,6 +153,8 @@ downloadParseSynopticData <- function(
   tbl <- dplyr::bind_cols(resultsTbl, statsTbl)
   tbl$Stats <- NULL
 
+  # ----- Return ---------------------------------------------------------------
+  
   return(tbl)
 
 }

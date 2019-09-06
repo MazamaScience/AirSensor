@@ -39,9 +39,14 @@
 
 <meta property="og:title" content="Base URL for pre-generated data — ArchiveBaseUrl" />
 
-<meta property="og:description" content="This package maintains an internal URL which users can set
-using setArchiveBaseUrl(). Package functions that load pre-generated
-data files use this. These functions include:
+<meta property="og:description" content="This package maintains an internal archive base URL which users 
+must set using setArchiveBaseUrl().
+Known base URLs include:
+http://smoke.mazamascience.com/data/PurpleAir
+" />
+
+<meta property="og:description" content="Package functions that load pre-generated data files download data from this
+URL. These functions include:
 
 pas_load()
 pat_load()
@@ -81,7 +86,7 @@ sensor_loadMonth()
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.5</span>
       </span>
     </div>
 
@@ -160,9 +165,14 @@ sensor_loadMonth()
 
     <div class="ref-description">
     
-    <p>This package maintains an internal URL which users can set
-using <code><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl()</a></code>. Package functions that load pre-generated
-data files use this. These functions include:</p>
+    <p>This package maintains an internal archive base URL which users 
+must set using <code><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl()</a></code>.</p>
+<p>Known base URLs include:</p><ul>
+<li><p>http://smoke.mazamascience.com/data/PurpleAir</p></li>
+</ul>
+
+    <p>Package functions that load pre-generated data files download data from this
+URL. These functions include:</p>
 <ul>
 <li><p><code><a href='pas_load.html'>pas_load()</a></code></p></li>
 <li><p><code><a href='pat_load.html'>pat_load()</a></code></p></li>
