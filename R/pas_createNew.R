@@ -79,9 +79,8 @@ pas_createNew <- function(
   pas_raw <- downloadParseSynopticData(baseUrl)
   pas <- enhanceSynopticData(pas_raw, countryCodes, includePWFSL)
   
-  
   # Filter for age
-  starttime <- lubridate::now("UTC") - lubridate::ddays(lookbackDays)
+  starttime <- lubridate::now(tzone = "UTC") - lubridate::ddays(lookbackDays)
   pas <- dplyr::filter(pas, .data$lastSeenDate >= starttime)
   
   # Add a class name
@@ -90,3 +89,15 @@ pas_createNew <- function(
   return(pas)
   
 }
+
+# ===== DEBUGGING ============================================================
+
+if ( FALSE ) {
+  
+  baseUrl <- 'https://www.purpleair.com/json'
+  countryCodes <- c('US')
+  includePWFSL <- TRUE
+  lookbackDays <- 1
+  
+}
+

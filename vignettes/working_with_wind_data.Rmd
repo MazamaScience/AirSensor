@@ -42,9 +42,12 @@ readings by providing the site code we just found and the year of interest.
 false to run in the vignette)
 
 ```{r load_site_data, warning=FALSE}
+# Always specify a timezone wherever possible!
+timezone <- "America/Los_Angeles"
+
 # Define the timeframe.
-start <- lubridate::ymd("2019-06-01")
-end   <- lubridate::ymd("2019-06-30")
+start <- lubridate::ymd("2019-06-01", tz = timezone)
+end   <- lubridate::ymd("2019-06-30", tz = timezone)
 
 # Load Los Alamitos Airport site data for the timeframe.
 siteData <- worldmet::importNOAA(code = "722975-53141",

@@ -72,7 +72,10 @@ pat_createNew <- function(
     dateRange <- timeRange(startdate, enddate, timezone = timezone)
   } else {
     # Default to 7 days with day boundaries
-    dateRange <- MazamaCoreUtils::dateRange(startdate, enddate, timezone, days = 7)
+    dateRange <- MazamaCoreUtils::dateRange(startdate, 
+                                            enddate, 
+                                            timezone, 
+                                            days = 7)
   }
 
   # Create a sequence of weekly POSIXct times
@@ -141,7 +144,7 @@ if ( FALSE ) {
   pas <- pas_load()
   label <- "SCAP_14"
   id <- NULL
-  startdate <- lubridate::now("UTC")
+  startdate <- lubridate::now(tzone = "UTC")
   enddate <- startdate - lubridate::ddays(7)
   timezonne <- "UTC"
   baseURL <- "https://api.thingspeak.com/channels/"

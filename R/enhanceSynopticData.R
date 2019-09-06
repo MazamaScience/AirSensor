@@ -80,43 +80,40 @@ enhanceSynopticData <- function(
   
   logger.debug("----- enhanceSynopticData() -----")
   
-  # > names(pas_raw)
-  # [1] "ID"                               "ParentID"                         "Label"
-  # [4] "DEVICE_LOCATIONTYPE"              "THINGSPEAK_PRIMARY_ID"            "THINGSPEAK_PRIMARY_ID_READ_KEY"
-  # [7] "THINGSPEAK_SECONDARY_ID"          "THINGSPEAK_SECONDARY_ID_READ_KEY" "Lat"
-  # [10] "Lon"                              "PM2_5Value"                       "LastSeen"
-  # [13] "State"                            "Type"                             "Hidden"
-  # [16] "Flag"                             "isOwner"                          "A_H"
-  # [19] "temp_f"                           "humidity"                         "pressure"
-  # [22] "AGE"                              "v"                                "v1"
-  # [25] "v2"                               "v3"                               "v4"
-  # [28] "v5"                               "v6"                               "pm"
-  # [31] "lastModified"                     "timeSinceModified"
+  # On 2019-09-05, the data columns look like this:
+  #
+  # > sort(names(pas_raw))
+  # [1] "A_H"                              "AGE"                              "DEVICE_LOCATIONTYPE"             
+  # [4] "Flag"                             "Hidden"                           "humidity"                        
+  # [7] "ID"                               "isOwner"                          "Label"                           
+  # [10] "lastModified"                     "LastSeen"                         "Lat"                             
+  # [13] "Lon"                              "ParentID"                         "pm"                              
+  # [16] "PM2_5Value"                       "pressure"                         "temp_f"                          
+  # [19] "THINGSPEAK_PRIMARY_ID"            "THINGSPEAK_PRIMARY_ID_READ_KEY"   "THINGSPEAK_SECONDARY_ID"         
+  # [22] "THINGSPEAK_SECONDARY_ID_READ_KEY" "timeSinceModified"                "Type"                            
+  # [25] "v"                                "v1"                               "v2"                              
+  # [28] "v3"                               "v4"                               "v5"                              
+  # [31] "v6"                              
   
-  # NOTE:  On 2019-05-06 the order of columns changed so we can no longer
-  # NOTE:  assume a static column order. Use dplyr::rename to handle this.
   
-  # newNames <- c(
-  #   "ID", "parentID", "label",
-  #   "DEVICE_LOCATIONTYPE", "THINGSPEAK_PRIMARY_ID", "THINGSPEAK_PRIMARY_ID_READ_KEY",
-  #   "THINGSPEAK_SECONDARY_ID", "THINGSPEAK_SECONDARY_ID_READ_KEY", "latitude",
-  #   "longitude", "pm25", "lastSeenDate",
-  #   DROPPED, "sensorType" , "flag_hidden",
-  #   "flag_highValue" , "isOwner", "flag_attenuation_hardware",
-  #   "temperature", "humidity", "pressure",
-  #   "age", "pm25_current", "pm25_10min",
-  #   "pm25_30min", "pm25_1hr", "pm25_6hr",
-  #   "pm25_1day", "pm25_1week", DROPPED,
-  #   "statsLastModifiedDate", "statsLastModifiedInterval"
-  # )
-  # 
-  # names(pas) <- newNames
+  # ----- Discard unwanted columns ---------------------------------------------
+  
+  # NOTE:  A previously existing "State" column has been removed. (2019-09-05)
+  
+  if ( "State" %in% names(pas_raw) ) {
+    pas_raw$State <- NULL
+  }
+  
+  if ( "pm" %in% names(pas_raw) ) {
+    pas_raw$pm <- NULL
+  }
+  
+  # ----- Rename columns -------------------------------------------------------
   
   # Rename some things to have consistent lowerCamelCase and better human names
   # based on the information in the document "Using Purple Air Data".
   pas <-
     pas_raw %>%
-    select(-.data$State, -.data$pm) %>%
     dplyr::rename(
       parentID = .data$ParentID,
       label = .data$Label,
@@ -219,9 +216,11 @@ enhanceSynopticData <- function(
   # ----- Convert times to POSIXct ---------------------------------------------
   
   pas$lastSeenDate <- as.POSIXct(pas$lastSeenDate,
+                                 tz = "UTC",
                                  origin = lubridate::origin)
   
   pas$statsLastModifiedDate <- as.POSIXct(pas$statsLastModifiedDate / 1000,
+                                          tz = "UTC",
                                           origin = lubridate::origin)
   
   # ----- Convert to proper type -----------------------------------------------

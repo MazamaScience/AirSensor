@@ -50,8 +50,14 @@ sensor_calendarPlot <- function(
   if ( sensor_isEmpty(sensor) )
     stop("Parameter 'sensor' has no data.") 
   
+  if ( nrow(sensor$meta) > 1 ) 
+    stop("Parameter 'sensor' must contain data for only one sensor.")
+  
   # Creat data frame
   df <- sensor$data
+  
+  # Always specify local timezones!
+  timezone <- sensor$meta$timezone
   
   # ----- Prepare plot data ----------------------------------------------------
   
@@ -59,16 +65,16 @@ sensor_calendarPlot <- function(
   names(df)[2] <- "pm25"
   
   # Create calendar plot handler data frame 
-  df$datetime <- zoo::as.Date(df$datetime)  # format date
-  df$day <- as.numeric(strftime(df$datetime, format = "%d"))
+  df$datetime <- zoo::as.Date(df$datetime, tz = timezone)  # format date
+  df$day <- as.numeric(strftime(df$datetime, format = "%d", tz = timezone))
   df$yearmonth <- zoo::as.yearmon(df$datetime)
   df$yearmonthf <- factor(df$yearmonth)
-  df$week <- as.numeric(strftime(df$datetime, format = "%W"))
-  df$year <- as.numeric(strftime(df$datetime, format = "%Y"))
-  df$month <- as.numeric(strftime(df$datetime, format = "%m"))
+  df$week <- as.numeric(strftime(df$datetime, format = "%W", tz = timezone))
+  df$year <- as.numeric(strftime(df$datetime, format = "%Y", tz = timezone))
+  df$month <- as.numeric(strftime(df$datetime, format = "%m", tz = timezone))
   df$monthf <- months.Date(df$datetime, abbreviate = TRUE)
   df$weekdayf <- weekdays.Date(df$datetime, abbreviate = TRUE)
-  df$weekday <- as.numeric(strftime(df$datetime, format = "%d"))
+  df$weekday <- as.numeric(strftime(df$datetime, format = "%d", tz = timezone))
   df$weekd <- ordered(df$weekdayf, levels=(c( "Mon", 
                                               "Tue", 
                                               "Wed", 

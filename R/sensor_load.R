@@ -49,7 +49,10 @@ sensor_load <-
     if ( is.null(collection) ) 
       stop("Required parameter 'collection' is missing.")
     
-    dateRange <- MazamaCoreUtils::dateRange(startdate, enddate, timezone, days)
+    dateRange <- MazamaCoreUtils::dateRange(startdate, 
+                                            enddate, 
+                                            timezone, 
+                                            days = days)
     
     # Asssemble monthly archive files ------------------------------------------
     

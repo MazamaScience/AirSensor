@@ -11,8 +11,8 @@
 # docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/airsensor /app/createPAS_exec.R 
 #
 
-#  --- . --- . AirSensor 0.3.12
-VERSION = "0.1.5"
+#  --- . --- . MazamaCoreUtils 0.3.5
+VERSION = "0.1.6"
 
 # The following packages are attached here so they show up in the sessionInfo
 suppressPackageStartupMessages({
@@ -114,7 +114,7 @@ result <- try({
   AirSensor::initializeMazamaSpatialUtils(opt$spatialDataDir)
   
   # Save it with the UTC YYYYmmddHH stamp
-  timestamp <- strftime(lubridate::now("UTC"), "%Y%m%d%H", tz="UTC")
+  timestamp <- strftime(lubridate::now(tzone = "UTC"), "%Y%m%d%H", tz="UTC")
   filename <- paste0("pas_", timestamp, ".rda")
   filepath <- file.path(opt$outputDir, filename)
   
@@ -130,7 +130,7 @@ result <- try({
   save(list="pas", file=filepath)  
   
   # Save it with the YYYYmmdd stamp
-  timestamp <- strftime(lubridate::now("UTC"), "%Y%m%d", tz="UTC")
+  timestamp <- strftime(lubridate::now(tzone = "UTC"), "%Y%m%d", tz="UTC")
   filename <- paste0("pas_", timestamp, ".rda")
   filepath <- file.path(opt$outputDir, filename)
   

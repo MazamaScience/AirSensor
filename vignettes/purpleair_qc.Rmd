@@ -170,6 +170,9 @@ during a day when they largely agree:
 ```{r AB_boxplot}
 library(ggplot2)
 
+# Always specify a timezone wherever possible!
+timezone <- "America/Los_Angeles"
+
 # Grab a 1-day subset of the data
 raw_data <- 
   example_pat_failure_B %>%
@@ -177,7 +180,7 @@ raw_data <-
   pat_extractData() %>%
   dplyr::select(datetime, pm25_A, pm25_B) %>%
   # Convert datetime to an hourly timestamp to use as a factor
-  dplyr::mutate(datetime = strftime(datetime, "%Y%m%d%H")) %>%
+  dplyr::mutate(datetime = strftime(datetime, "%Y%m%d%H", tz = timezone)) %>%
   # Convert from wide to "tidy" so we can use channel as a factor
   tidyr::gather("channel", "pm25", -datetime)
 
@@ -217,7 +220,7 @@ raw_data <-
   pat_extractData() %>%
   dplyr::select(datetime, pm25_A, pm25_B) %>%
   # Convert datetime to an hourly timestamp to use as a factor
-  dplyr::mutate(datetime = strftime(datetime, "%Y%m%d%H")) %>%
+  dplyr::mutate(datetime = strftime(datetime, "%Y%m%d%H", tz = timezone)) %>%
   # Convert from wide to "tidy" so we can use channel as a factor
   tidyr::gather("channel", "pm25", -datetime)
 
