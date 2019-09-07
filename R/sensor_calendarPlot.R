@@ -39,7 +39,7 @@ sensor_calendarPlot <- function(
     ncol <- 3
     aspectRatio <- 4/5
     discrete = TRUE
-
+    
   }
   
   # ----- Validate parameters --------------------------------------------------
@@ -53,11 +53,42 @@ sensor_calendarPlot <- function(
   if ( nrow(sensor$meta) > 1 ) 
     stop("Parameter 'sensor' must contain data for only one sensor.")
   
-  # Creat data frame
-  df <- sensor$data
-  
   # Always specify local timezones!
   timezone <- sensor$meta$timezone
+
+  # Create data frame
+  df <- sensor$data
+  
+  # Fill missing dates # CHECK IF LUBRIDATE CAN BE USED
+  df <-
+    tidyr::complete(
+      data = df,
+      datetime = seq(
+        from = as.POSIXct(
+          paste0(
+            strftime(
+              df$datetime, 
+              format = "%Y", 
+
+              tz = timezone)[2],
+            "-01-01"
+          ) , 
+          tz = strftime(
+            df$datetime, 
+            format = "%Z", 
+            tz = timezone)[1]
+        ),
+        to = as.POSIXct(
+          paste0(
+            strftime(
+              df$datetime, 
+              format = "%Y", 
+              tz = timezone)[2], 
+            "-12-31")
+        ),
+        by = "1 day"
+      )
+    )
   
   # ----- Prepare plot data ----------------------------------------------------
   
@@ -65,28 +96,28 @@ sensor_calendarPlot <- function(
   names(df)[2] <- "pm25"
   
   # Create calendar plot handler data frame 
-  df$datetime <- zoo::as.Date(df$datetime, tz = timezone)  # format date
-  df$day <- as.numeric(strftime(df$datetime, format = "%d", tz = timezone))
+  df$datetime <- zoo::as.Date(df$datetime)  # format date
+  df$day <- as.numeric(strftime(df$datetime, format = "%d"))
   df$yearmonth <- zoo::as.yearmon(df$datetime)
   df$yearmonthf <- factor(df$yearmonth)
-  df$week <- as.numeric(strftime(df$datetime, format = "%W", tz = timezone))
-  df$year <- as.numeric(strftime(df$datetime, format = "%Y", tz = timezone))
-  df$month <- as.numeric(strftime(df$datetime, format = "%m", tz = timezone))
+  df$week <- as.numeric(strftime(df$datetime, format = "%W"))
+  df$year <- as.numeric(strftime(df$datetime, format = "%Y"))
+  df$month <- as.numeric(strftime(df$datetime, format = "%m"))
   df$monthf <- months.Date(df$datetime, abbreviate = TRUE)
   df$weekdayf <- weekdays.Date(df$datetime, abbreviate = TRUE)
-  df$weekday <- as.numeric(strftime(df$datetime, format = "%d", tz = timezone))
-  df$weekd <- ordered(df$weekdayf, levels=(c( "Mon", 
-                                              "Tue", 
-                                              "Wed", 
-                                              "Thu", 
-                                              "Fri", 
-                                              "Sat", 
-                                              "Sun"
-                                              ) 
-                                           )
+  df$weekday <- as.numeric(strftime(df$datetime, format = "%d"))
+  df$weekd <- ordered(df$weekdayf, 
+                      levels= c( "Mon", 
+                       "Tue", 
+                       "Wed", 
+                       "Thu", 
+                       "Fri", 
+                       "Sat", 
+                       "Sun" ) 
                       )
+  
   df$monthweek <- as.numeric(NA) # placeholder
-
+  
   # Compute week number for each month                                          
   df <- 
     df %>%
@@ -134,13 +165,13 @@ sensor_calendarPlot <- function(
     ggplot2::ggplot(
       df, 
       ggplot2::aes(
-        stats::reorder(monthweek, dplyr::desc(.data$monthweek)), 
+        stats::reorder(.data$monthweek, dplyr::desc(.data$monthweek)), 
         .data$weekd, 
         fill = fill
-        )
+      )
     ) + 
     ggplot2::geom_tile(color = "grey88", size=0.5) + 
-    ggplot2::facet_wrap(drop = F, ncol = ncol, dir = "h",
+    ggplot2::facet_wrap(drop = TRUE, ncol = ncol, dir = "h",
                         factor(monthf, levels = month.abb) ~ .
     ) +
     ggplot2::labs(
@@ -161,10 +192,13 @@ sensor_calendarPlot <- function(
       axis.title.x = ggplot2::element_blank(),
       axis.line.y = ggplot2::element_blank(),
       legend.position = "bottom",
-      aspect.ratio = aspectRatio
-    ) 
+      aspect.ratio = aspectRatio, 
+      legend.text = ggplot2::element_text(size="8")
+    ) + 
+    ggplot2::scale_fill_discrete(na.value="white")
   
   return(gg)
   
+
 }    
 
