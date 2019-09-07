@@ -1,5 +1,6 @@
 # AirSensor 0.4.6
 
+* `pas_load()` default `retries` was increased from 10 to 30.
 * Fixed bug where `pat_createNew()` created time ranges that ended (UTC - local)
 hours short of the requested `enddate`.
 * Plots generated with `pat_externalFit()`, `pat_internalFit()`, 

@@ -50,7 +50,7 @@ pas_load <- function(
   datestamp = strftime(lubridate::today("America/Los_Angeles"),
                        "%Y%m%d",
                        tz = "America/Los_Angeles"),
-  retries = 10,
+  retries = 30,
   timezone = "America/Los_Angeles",
   archival = FALSE
 ) {
