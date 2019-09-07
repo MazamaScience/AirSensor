@@ -1,3 +1,4 @@
+#' @keywords internal
 #' @title Flag outliers in vectorized data
 #' 
 #' @description This function uses Hampel filter outlier detection to flag
@@ -50,6 +51,7 @@
   
 }
 
+#' @keywords internal
 #' @title Replace outliers with rolling median
 #' 
 #' @description Perform smoothing by replacing outliers with the window median 
@@ -98,6 +100,7 @@
 }
 
 
+#' @keywords internal
 #' @title Plot flagged outliers
 #' 
 #' @description An internal capability to quickly plot outlier data. 

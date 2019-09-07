@@ -31,3 +31,4 @@ detected for the chosen \code{parameter}.
 
 See \code{seismicRoll::findOutliers} for further details.
 }
+\keyword{internal}

@@ -16,49 +16,48 @@
 #' @return A data.frame
 #' 
 
-.sample <- 
-  function(
-    data,
-    sampleSize = NULL,
-    sampleFraction = 1, 
-    setSeed = NULL
-  ) { 
+.sample <- function(
+  data,
+  sampleSize = NULL,
+  sampleFraction = 1, 
+  setSeed = NULL
+) { 
+  
+  # ----- Validate parameters --------------------------------------------------
+  
+  MazamaCoreUtils::stopIfNull(data)
+  
+  if ( !is.null(setSeed) ) set.seed(setSeed)
+  
+  if ( !is.null(sampleSize) ) {
     
-    # ----- Validate parameters --------------------------------------------------
-    
-    MazamaCoreUtils::stopIfNull(data)
-    
-    if ( !is.null(setSeed) ) set.seed(setSeed)
-    
-    if ( !is.null(sampleSize) ) {
-      
-      if ( sampleSize <= nrow(data) ) {
-        sz <- sampleSize
-      } else {
-        sz <- nrow(data)
-      }
-      
-    } else  if ( !is.null(sampleFraction) &&
-                 sampleFraction <= 1 && 
-                 sampleFraction > 0  ) { 
-      
-      sz <- nrow(data) * sampleFraction
-      
+    if ( sampleSize <= nrow(data) ) {
+      sz <- sampleSize
     } else {
-      
-      stop("Invalid sampleSize or sampleFraction.")
-      
+      sz <- nrow(data)
     }
     
-    subset <- 
-      data[
-        base::sample(
-          x = nrow(data), 
-          size = sz, 
-          replace = FALSE,
-          prob = NULL
-        ),]
+  } else  if ( !is.null(sampleFraction) &&
+               sampleFraction <= 1 && 
+               sampleFraction > 0  ) { 
     
-    return(subset)
+    sz <- nrow(data) * sampleFraction
+    
+  } else {
+    
+    stop("Invalid sampleSize or sampleFraction.")
     
   }
+  
+  subset <- 
+    data[
+      base::sample(
+        x = nrow(data), 
+        size = sz, 
+        replace = FALSE,
+        prob = NULL
+      ),]
+  
+  return(subset)
+  
+}

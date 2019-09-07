@@ -327,11 +327,14 @@ pas_palette <- function(
     
   }
   
-  # ----- Return colorInfo -----------------------------------------------------
+  # ----- Return ---------------------------------------------------------------
+  
+  colorInfo <- list(
+    key = cbind(labels, colorBreaks),  
+    colors = sensorColor
+  )
   
   options(warn = 0)
-  
-  colorInfo <- list(key = cbind(labels, colorBreaks),  colors = sensorColor)
   
   return(colorInfo)
   

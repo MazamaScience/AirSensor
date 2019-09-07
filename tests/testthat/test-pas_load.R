@@ -9,7 +9,7 @@ test_that("loads correct class", {
   skip_on_cran()
   skip_on_travis()
   setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
-  expect_true(pas_isPas(pas_load()))
+  expect_true(pas_isPas(pas_load(retries = 30)))
   # expect_true(pas_isPas(pas_createNew()))
 })
 

@@ -15,7 +15,7 @@ sensor_videoFrame(sensor = sensor_load(), communityRegion = NULL,
 
 \item{frameTime}{POSIXct specifying the time to use.}
 
-\item{timeInfo}{???.}
+\item{timeInfo}{Dataframe created with \code{PWFSLSmoke::timeInfo()}.}
 
 \item{timeAxis}{Movie time axis.}
 
@@ -31,7 +31,9 @@ sensor_videoFrame(sensor = sensor_load(), communityRegion = NULL,
 A plot is generated. Nothing is returned.
 }
 \description{
-desc
+Create a plot to be used as a single "frame" in a timeseries
+video. This function is tailored to communities working with the South Coast
+Air Quality Management District.
 }
 \examples{
 \dontrun{

@@ -32,9 +32,20 @@ sensor_filter <- function(
 ) {
   
   # ----- Validate parameters --------------------------------------------------
+
+  # A little involved to catch the case where the user forgets to pass in 'sensor'
   
-  if ( !PWFSLSmoke::monitor_isMonitor(sensor) )
-    stop("Parameter 'sensor' is not a valid 'airsensor' object.") 
+  result <- try({
+    if ( !PWFSLSmoke::monitor_isMonitor(sensor) )
+      stop("First argument is not of class 'airsensor' or 'ws_monitor'.")
+  }, silent = TRUE)
+  
+  if ( class(result) %in% "try-error" ) {
+    err_msg <- geterrmessage()
+    if ( stringr::str_detect(err_msg, "object .* not found") ) {
+      stop(paste0(err_msg, "\n(Did you forget to pass in the 'sensor' object?)"))
+    }
+  }
   
   if ( PWFSLSmoke::monitor_isEmpty(sensor) ) 
     stop("Parameter 'sensor' has no data.")

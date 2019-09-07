@@ -5,14 +5,16 @@
 #' @param sensor An AirSensor object.
 #' @param communityRegion The area to display.
 #' @param frameTime POSIXct specifying the time to use.
-#' @param timeInfo ???.
+#' @param timeInfo Dataframe created with \code{PWFSLSmoke::timeInfo()}.
 #' @param timeAxis Movie time axis.
 #' @param timeTicks Movie time ticks.
 #' @param timeLabels Movie time labels.
 #' @param map A pre-generated basemap image.
 #' @param logo A PNG image to be placed near the upper right of the image.
 #' 
-#' @description desc
+#' @description Create a plot to be used as a single "frame" in a timeseries
+#' video. This function is tailored to communities working with the South Coast
+#' Air Quality Management District.
 #' 
 #' @return A plot is generated. Nothing is returned.
 #' 
@@ -81,31 +83,20 @@ sensor_videoFrame <- function(
   
   # ----- Validate parameters --------------------------------------------------
   
+  MazamaCoreUtils::stopIfNull(communityRegion)
+  MazamaCoreUtils::stopIfNull(frameTime)
+  MazamaCoreUtils::stopIfNull(timeInfo)
+  MazamaCoreUtils::stopIfNull(timeAxis)
+  MazamaCoreUtils::stopIfNull(timeTicks)
+  MazamaCoreUtils::stopIfNull(timeLabels)
+  MazamaCoreUtils::stopIfNull(map)
+  # logo is optional
+  
   if ( !sensor_isSensor(sensor) ) 
     stop("Required parameter 'sensor' is not an airsensor object.")
   
   if ( sensor_isEmpty(sensor) )
     stop("Required parameter 'sensor' is empty.")
-  
-  if ( is.null(frameTime) )
-    stop("Required parameter 'frameTime' is missing.")
-  
-  if ( is.null(timeInfo) )
-    stop("Required parameter 'timeInfo' is missing.")
-  
-  if ( is.null(timeAxis) )
-    stop("Required parameter 'timeAxis' is missing.")
-  
-  if ( is.null(timeTicks) )
-    stop("Required parameter 'timeTicks' is missing.")
-  
-  if ( is.null(timeLabels) )
-    stop("Required parameter 'timeLabels' is missing.")
-  
-  if ( is.null(map) )
-    stop("Required parameter 'map' is missing.")
-  
-  # logo is optional
   
   # Round frameTime to closest hour
   frameTime <- lubridate::round_date(frameTime, unit = "hour")

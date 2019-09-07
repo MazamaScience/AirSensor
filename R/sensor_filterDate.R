@@ -41,6 +41,8 @@ sensor_filterDate <- function(
   
   # Validate parameters --------------------------------------------------------
   
+  MazamaCoreUtils::stopIfNull(sensor)
+  
   if ( !PWFSLSmoke::monitor_isMonitor(sensor) )
     stop("Parameter 'sensor' is not a valid 'airsensor' object.") 
   

@@ -72,6 +72,8 @@ PurpleAirQC_hourly_AB_00 <- function(
       dplyr::select(.data$datetime, .data$pm25)
   }
   
+  # ----- Return ---------------------------------------------------------------
+  
   return(hourlyData)
   
 }

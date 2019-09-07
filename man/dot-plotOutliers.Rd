@@ -47,3 +47,4 @@ gg object
 \description{
 An internal capability to quickly plot outlier data.
 }
+\keyword{internal}

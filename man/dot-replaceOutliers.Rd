@@ -23,3 +23,4 @@ Perform smoothing by replacing outliers with the window median
 value. Using this technique, you can create an highly smoothed, artificial 
 dataset by setting \code{thresholdMin = 1} or lower (but always above zero).
 }
+\keyword{internal}

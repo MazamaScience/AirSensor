@@ -30,18 +30,6 @@ sensor_calendarPlot <- function(
   discrete = TRUE
 ) {
   
-  # ===== DEBUGGING ============================================================
-  
-  if ( FALSE ) {
-    
-    sensor <- example_sensor 
-    palette <- NULL 
-    ncol <- 3
-    aspectRatio <- 4/5
-    discrete = TRUE
-    
-  }
-  
   # ----- Validate parameters --------------------------------------------------
   
   if ( sensor_isEmpty(sensor) )
@@ -197,8 +185,21 @@ sensor_calendarPlot <- function(
     ) + 
     ggplot2::scale_fill_discrete(na.value="white")
   
+  # ----- Return ---------------------------------------------------------------
+  
   return(gg)
   
-
 }    
+
+# ===== DEBUGGING ============================================================
+
+if ( FALSE ) {
+  
+  sensor <- example_sensor 
+  palette <- NULL 
+  ncol <- 3
+  aspectRatio <- 4/5
+  discrete = TRUE
+  
+}
 

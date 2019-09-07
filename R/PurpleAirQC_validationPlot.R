@@ -136,6 +136,8 @@ PurpleAirQC_validationPlot <- function(
     gg_pm25_qc
   )
   
+  # NOTE:  No return as multi_ggplot() explicitly calls print()
+  
 }
 
 # ===== DEBUG ================================================================

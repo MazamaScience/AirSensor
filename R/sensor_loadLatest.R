@@ -60,6 +60,8 @@ sensor_loadLatest <- function(
     stop(paste0("Data file could not be loaded: ", filepath), call.=FALSE)
   }
   
+  # ----- Return ---------------------------------------------------------------
+  
   return(invisible(airsensor))
   
 }
