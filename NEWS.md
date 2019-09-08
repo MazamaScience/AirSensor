@@ -1,3 +1,10 @@
+# AirSensor 0.4.7
+
+* Added `timezone` argument to `downloadParseTimeseriesData()`.
+* Improved logging in `local_executables/crontab~` files.
+* Fixed implementation of `downloadParseTimeseriesData()` to avoid using day
+boundaries when explicit times are specified.
+
 # AirSensor 0.4.6
 
 * `pas_load()` default `retries` was increased from 10 to 30.

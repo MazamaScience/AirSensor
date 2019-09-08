@@ -1,7 +1,7 @@
 ---
 title: "AirSensor Function Overview"
 author: "Mazama Science"
-date: "5/13/2019"
+date: "9/08/2019"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{AirSensor Function Overview}
@@ -10,6 +10,8 @@ vignette: >
 ---
 
 # Function Overview
+
+This document has been updated to reflect functions in AirSensor version 0.4.7.
 
 ## Synoptic Data
 
@@ -21,9 +23,10 @@ following functions are the most common end-user functions:
 
 | function | params |
 |:------|:-----|
-| **Loading a `pas`** |  |
-| `pas_load()` | _none_ | 
+| **Creating a `pas`** |  |
 | `pas_createNew()` | `baseUrl, countryCodes, includePWFSL, lookbackDays` |
+| **Loading a `pas`** |  |
+| `pas_load()` | `datestamp, retries, timezone, archival` | 
 | **Mainpulating a `pas`** |  |
 | `pas_filter()` | `pas, ...` |
 | `pas_filterArea()` | `pas, w, e, s, n` |
@@ -41,15 +44,17 @@ following functions are the most common end-user functions:
 
 | function | params |
 |:------|:-----|
+| **Creating a `pat`** |  |
+| `pat_createNew()` | `pas, label, id, startdate, enddate, timezone` |
 | **Loading a `pat`** |  |
-| `pat_load()` | `label , startdate, enddate` | 
-| `pat_loadMonth()` | `label , datestamp` | 
-| `pat_createNew()` | `pas, name, id, startdate, enddate` |
+| `pat_load()` | `label, startdate, enddate, days, timezone` | 
+| `pat_loadLatest()` | `label` | 
+| `pat_loadMonth()` | `label, datestamp, timezone` | 
 | **Mainpulating a `pat`** |  |
 | `pat_filter()` | `pat, ...` |
 | `pat_filterDate()` | `pat, startdate, enddate, ...` |
 | `pat_join()` | `pat, pat, ...` |
-| `pat_outliers()` | `pat, n, thresholdMin, replace, showPlot, ...` |
+| `pat_outliers()` | `pat, windowSize, thresholdMin, replace, showPlot, ...` |
 | `pat_qc()` | `pat, ...` |
 | `pat_sample()` | `pat, sampleSize` |
 | **Plotting a `pat`** | |
@@ -57,11 +62,10 @@ following functions are the most common end-user functions:
 | `pat_multiplot()` | `pat, plottype, sampleSize, ...` |
 | `pat_scatterplot()` | `pat, parameters, sampleSize, ...` |
 | **Other functions** | |
-| `pat_aggregate()` | `pat, period, stats, parameter, dataThreshold, ...` |
+| `pat_aggregate()` | `pat, period` |
 | `pat_externalFit()` | `pat, ...` |
 | `pat_internalFit()` | `pat, ...` |
-| `pat_MonitorComparison()` | `pat, ...` |
-| `pat_createAirSensor()` | `pat, period, parameter, channel, qc_algorithm, ...` |
+| `pat_monitorComparison()` | `pat, ...` |
 
 ## Hourly Aggregated Data
 
@@ -73,9 +77,12 @@ the most common end-user functions:
 
 | function | params |
 |:------|:-----|
+| **Creating an `airsensor`** |  |
+| `pat_createAirSensor()` | `pat, period, parameter, channel, qc_algorithm, ...` |
 | **Loading an `airsensor`** |  |
-| `sensor_load()` | `collection , startdate, enddate` | 
-| `sensor_loadMonth()` | `collection , datestamp` | 
+| `sensor_load()` | `collection, startdate, enddate, days, timezone` | 
+| `sensor_loadLatest()` | `collection` | 
+| `sensor_loadMonth()` | `collection, datestamp, timezone` | 
 | **Mainpulating an `airsensor`** |  |
 | `sensor_filter()` | `sensor, ...` |
 | `sensor_filterMeta()` | `sensor, ...` |

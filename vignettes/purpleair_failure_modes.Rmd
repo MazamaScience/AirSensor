@@ -37,7 +37,8 @@ angled regression line.
 Channel A readings show extreme levels of noise.
 
 ```{r channel_a_noise_2, echo=FALSE}
-pat_a_noisy_2 <- pat_createNew(pas, label = "SCAP_14", 
+pat_a_noisy_2 <- pat_createNew(pas, 
+                               label = "SCAP_14", 
                                startdate = 20190701, 
                                enddate = 20190708,
                                timezone = "America/Los_Angeles")

@@ -5,7 +5,7 @@
 \title{Download Purple Air timeseries data}
 \usage{
 downloadParseTimeseriesData(pas = NULL, label = NULL, id = NULL,
-  startdate = NULL, enddate = NULL,
+  startdate = NULL, enddate = NULL, timezone = NULL,
   baseURL = "https://api.thingspeak.com/channels/")
 }
 \arguments{
@@ -18,6 +18,8 @@ downloadParseTimeseriesData(pas = NULL, label = NULL, id = NULL,
 \item{startdate}{Desired UTC start time (ISO 8601)}
 
 \item{enddate}{Desired UTC end time (ISO 8601)}
+
+\item{timezone}{Timezone used to interpret start and end dates.}
 
 \item{baseURL}{Base URL for Thingspeak API}
 }

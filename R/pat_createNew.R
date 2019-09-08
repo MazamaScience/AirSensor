@@ -56,7 +56,7 @@ pat_createNew <- function(
   # Only one week of data can be loaded at a time. If over one week has been
   # requested, loop over weeks to download all of it
   
-  # TODO:  Read "programming with dplyr" to understand this better
+  # Get the timezone associated with this sensor
   if ( is.null(timezone) ) {
     timezone <-
       pas %>%
@@ -66,7 +66,6 @@ pat_createNew <- function(
 
   # Create a valid dateRange
   if ( !is.null(startdate) && !is.null(enddate) ) {
-    # TODO:  Switch to MazamaCoreUtils version when available
     # Don't require day boundaries
     dateRange <- MazamaCoreUtils::timeRange(startdate, 
                                             enddate, 
@@ -94,6 +93,7 @@ pat_createNew <- function(
                                          id,
                                          dateSeq[1],
                                          dateSeq[2],
+                                         timezone = timezone,
                                          baseURL)
   
   if ( length(dateSeq) > 2 ) {
@@ -104,6 +104,7 @@ pat_createNew <- function(
                                                  id,
                                                  dateSeq[i],
                                                  dateSeq[i+1],
+                                                 timezone = timezone,
                                                  baseURL)
       pat_raw$data <- dplyr::bind_rows(pat_raw$data, new_pat_raw$data)
     }

@@ -113,8 +113,8 @@ result <- try({
   # Set up MazamaSpatialUtils
   AirSensor::initializeMazamaSpatialUtils(opt$spatialDataDir)
   
-  # Save it with the UTC YYYYmmddHH stamp
-  timestamp <- strftime(lubridate::now(tzone = "UTC"), "%Y%m%d%H", tz="UTC")
+  # Save it with the YYYYmmdd stamp
+  timestamp <- strftime(lubridate::now(tzone = "UTC"), "%Y%m%d", tz="UTC")
   filename <- paste0("pas_", timestamp, ".rda")
   filepath <- file.path(opt$outputDir, filename)
   
@@ -125,14 +125,6 @@ result <- try({
     includePWFSL = TRUE,
     lookbackDays = 1
   )
-  
-  logger.info("Writing 'pas' data to %s", filename)
-  save(list="pas", file=filepath)  
-  
-  # Save it with the YYYYmmdd stamp
-  timestamp <- strftime(lubridate::now(tzone = "UTC"), "%Y%m%d", tz="UTC")
-  filename <- paste0("pas_", timestamp, ".rda")
-  filepath <- file.path(opt$outputDir, filename)
   
   logger.info("Writing 'pas' data to %s", filename)
   save(list="pas", file=filepath)  

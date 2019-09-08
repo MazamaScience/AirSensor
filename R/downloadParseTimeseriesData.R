@@ -10,6 +10,7 @@
 #' @param id Purple Air 'ID'
 #' @param startdate Desired UTC start time (ISO 8601)
 #' @param enddate Desired UTC end time (ISO 8601)
+#' @param timezone Timezone used to interpret start and end dates.
 #' @param baseURL Base URL for Thingspeak API
 #' @return The monitor time series given broken up into metadata and readings data
 #' @description Timeseries data from a specific PurpleAir can be retrieved from the Thingspeak API .
@@ -21,27 +22,45 @@ downloadParseTimeseriesData <- function(
   id = NULL,
   startdate = NULL,
   enddate = NULL,
+  timezone = NULL,
   baseURL = "https://api.thingspeak.com/channels/"
 ) {
   
   # ----- Validate parameters --------------------------------------------------
   
   MazamaCoreUtils::stopIfNull(pas)
-
-  # ----- Create download URLs -------------------------------------------------
+  MazamaCoreUtils::stopIfNull(label)
   
-  # Get timezone from incoming startdate
-  timezone <- lubridate::tz(startdate)
+  if ( !label %in% pas$label )
+    stop(paste0("'", label, "' is not found in the 'pas' object"))
   
-  # Default to the most recent week of data
-  dateRange <- MazamaCoreUtils::dateRange(
-    startdate, 
-    enddate, 
-    timezone = timezone, 
-    days = 7, 
-    unit = "min"
-  )
-
+  # ----- Determine date sequence ----------------------------------------------
+  
+  # TODO:  Add support for coming in with only 'id' specified.
+  
+  # Get the timezone associated with this sensor
+  if ( is.null(timezone) ) {
+    timezone <-
+      pas %>%
+      dplyr::filter(.data$label == !!label) %>%
+      dplyr::pull(.data$timezone)
+  }
+  
+  # Create a valid dateRange
+  if ( !is.null(startdate) && !is.null(enddate) ) {
+    # Don't require day boundaries
+    dateRange <- MazamaCoreUtils::timeRange(startdate, 
+                                            enddate, 
+                                            timezone = timezone)
+  } else {
+    # Default to 7 days with day boundaries
+    dateRange <- MazamaCoreUtils::dateRange(startdate, 
+                                            enddate, 
+                                            timezone, 
+                                            days = 7,
+                                            unit = "min")
+  }
+  
   startString <- strftime(dateRange[1], "%Y-%m-%dT%H:%M:%S", tz = "UTC")
   endString <- strftime(dateRange[2], "%Y-%m-%dT%H:%M:%S", tz = "UTC")
   

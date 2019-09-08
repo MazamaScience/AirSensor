@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.7</span>
       </span>
     </div>
 
@@ -110,7 +110,7 @@
       <h1>AirSensor Function Overview</h1>
                         <h4 class="author">Mazama Science</h4>
             
-            <h4 class="date">5/13/2019</h4>
+            <h4 class="date">9/08/2019</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/MazamaScience/AirSensor/blob/master/vignettes/AirSensorOverview.Rmd"><code>vignettes/AirSensorOverview.Rmd</code></a></small>
       <div class="hidden name"><code>AirSensorOverview.Rmd</code></div>
@@ -122,6 +122,7 @@
 <div id="function-overview" class="section level1">
 <h1 class="hasAnchor">
 <a href="#function-overview" class="anchor"></a>Function Overview</h1>
+<p>This document has been updated to reflect functions in AirSensor version 0.4.7.</p>
 <div id="synoptic-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#synoptic-data" class="anchor"></a>Synoptic Data</h2>
@@ -133,42 +134,46 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
+<td align="left"><strong>Creating a <code>pas</code></strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code><a href="../reference/pas_createNew.html">pas_createNew()</a></code></td>
+<td align="left"><code>baseUrl, countryCodes, includePWFSL, lookbackDays</code></td>
+</tr>
+<tr class="odd">
 <td align="left"><strong>Loading a <code>pas</code></strong></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left"><code><a href="../reference/pas_load.html">pas_load()</a></code></td>
-<td align="left"><em>none</em></td>
+<td align="left"><code>datestamp, retries, timezone, archival</code></td>
 </tr>
 <tr class="odd">
-<td align="left"><code><a href="../reference/pas_createNew.html">pas_createNew()</a></code></td>
-<td align="left"><code>baseUrl, countryCodes, includePWFSL, lookbackDays</code></td>
-</tr>
-<tr class="even">
 <td align="left"><strong>Mainpulating a <code>pas</code></strong></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code><a href="../reference/pas_filter.html">pas_filter()</a></code></td>
 <td align="left"><code>pas, ...</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code><a href="../reference/pas_filterArea.html">pas_filterArea()</a></code></td>
 <td align="left"><code>pas, w, e, s, n</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code><a href="../reference/pas_filterNear.html">pas_filterNear()</a></code></td>
 <td align="left"><code>pas, longitude, latitude, radius</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>Plotting a <code>pas</code></strong></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code><a href="../reference/pas_leaflet.html">pas_leaflet()</a></code></td>
 <td align="left"><code>pas, parameter, ...</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code><a href="../reference/pas_staticMap.html">pas_staticMap()</a></code></td>
 <td align="left"><code>pas, parameter, ...</code></td>
 </tr>
@@ -186,20 +191,28 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
+<td align="left"><strong>Creating a <code>pat</code></strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code><a href="../reference/pat_createNew.html">pat_createNew()</a></code></td>
+<td align="left"><code>pas, label, id, startdate, enddate, timezone</code></td>
+</tr>
+<tr class="odd">
 <td align="left"><strong>Loading a <code>pat</code></strong></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left"><code><a href="../reference/pat_load.html">pat_load()</a></code></td>
-<td align="left"><code>label , startdate, enddate</code></td>
+<td align="left"><code>label, startdate, enddate, days, timezone</code></td>
 </tr>
 <tr class="odd">
-<td align="left"><code><a href="../reference/pat_loadMonth.html">pat_loadMonth()</a></code></td>
-<td align="left"><code>label , datestamp</code></td>
+<td align="left"><code><a href="../reference/pat_loadLatest.html">pat_loadLatest()</a></code></td>
+<td align="left"><code>label</code></td>
 </tr>
 <tr class="even">
-<td align="left"><code><a href="../reference/pat_createNew.html">pat_createNew()</a></code></td>
-<td align="left"><code>pas, name, id, startdate, enddate</code></td>
+<td align="left"><code><a href="../reference/pat_loadMonth.html">pat_loadMonth()</a></code></td>
+<td align="left"><code>label, datestamp, timezone</code></td>
 </tr>
 <tr class="odd">
 <td align="left"><strong>Mainpulating a <code>pat</code></strong></td>
@@ -219,7 +232,7 @@
 </tr>
 <tr class="odd">
 <td align="left"><code><a href="../reference/pat_outliers.html">pat_outliers()</a></code></td>
-<td align="left"><code>pat, n, thresholdMin, replace, showPlot, ...</code></td>
+<td align="left"><code>pat, windowSize, thresholdMin, replace, showPlot, ...</code></td>
 </tr>
 <tr class="even">
 <td align="left"><code><a href="../reference/pat_qc.html">pat_qc()</a></code></td>
@@ -251,7 +264,7 @@
 </tr>
 <tr class="odd">
 <td align="left"><code><a href="../reference/pat_aggregate.html">pat_aggregate()</a></code></td>
-<td align="left"><code>pat, period, stats, parameter, dataThreshold, ...</code></td>
+<td align="left"><code>pat, period</code></td>
 </tr>
 <tr class="even">
 <td align="left"><code><a href="../reference/pat_externalFit.html">pat_externalFit()</a></code></td>
@@ -262,12 +275,8 @@
 <td align="left"><code>pat, ...</code></td>
 </tr>
 <tr class="even">
-<td align="left"><code>pat_MonitorComparison()</code></td>
+<td align="left"><code><a href="../reference/pat_monitorComparison.html">pat_monitorComparison()</a></code></td>
 <td align="left"><code>pat, ...</code></td>
-</tr>
-<tr class="odd">
-<td align="left"><code><a href="../reference/pat_createAirSensor.html">pat_createAirSensor()</a></code></td>
-<td align="left"><code>pat, period, parameter, channel, qc_algorithm, ...</code></td>
 </tr>
 </tbody>
 </table>
@@ -283,46 +292,58 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
+<td align="left"><strong>Creating an <code>airsensor</code></strong></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code><a href="../reference/pat_createAirSensor.html">pat_createAirSensor()</a></code></td>
+<td align="left"><code>pat, period, parameter, channel, qc_algorithm, ...</code></td>
+</tr>
+<tr class="odd">
 <td align="left"><strong>Loading an <code>airsensor</code></strong></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left"><code><a href="../reference/sensor_load.html">sensor_load()</a></code></td>
-<td align="left"><code>collection , startdate, enddate</code></td>
+<td align="left"><code>collection, startdate, enddate, days, timezone</code></td>
 </tr>
 <tr class="odd">
-<td align="left"><code><a href="../reference/sensor_loadMonth.html">sensor_loadMonth()</a></code></td>
-<td align="left"><code>collection , datestamp</code></td>
+<td align="left"><code><a href="../reference/sensor_loadLatest.html">sensor_loadLatest()</a></code></td>
+<td align="left"><code>collection</code></td>
 </tr>
 <tr class="even">
+<td align="left"><code><a href="../reference/sensor_loadMonth.html">sensor_loadMonth()</a></code></td>
+<td align="left"><code>collection, datestamp, timezone</code></td>
+</tr>
+<tr class="odd">
 <td align="left"><strong>Mainpulating an <code>airsensor</code></strong></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code><a href="../reference/sensor_filter.html">sensor_filter()</a></code></td>
 <td align="left"><code>sensor, ...</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code><a href="../reference/sensor_filterMeta.html">sensor_filterMeta()</a></code></td>
 <td align="left"><code>sensor, ...</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code><a href="../reference/sensor_filterDate.html">sensor_filterDate()</a></code></td>
 <td align="left"><code>sensor, startdate, enddate, ...</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>Plotting an <code>airsensor</code></strong></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code><a href="../reference/sensor_polarPlot.html">sensor_polarPlot()</a></code></td>
 <td align="left"><code>sensor, windData, ...</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code><a href="../reference/sensor_pollutionRose.html">sensor_pollutionRose()</a></code></td>
 <td align="left"><code>sensor, windData, ...</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code><a href="../reference/sensor_videoFrame.html">sensor_videoFrame()</a></code></td>
 <td align="left"><code>sensor, communityRegion, ...</code></td>
 </tr>
