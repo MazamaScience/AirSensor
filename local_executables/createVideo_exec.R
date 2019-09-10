@@ -10,7 +10,7 @@
 # ./createVideo_exec.R --communityName="Sycamore Canyon" -s 20190704 -r 4 -o ~/Desktop/ -v TRUE
 # ./createVideo_exec.R -c SCSB -o ~/Desktop/
 
-# ---- . ---- . mp4 format works on Firefox
+# ----- . 7-day, smaller, scqamd colors . -----
 VERSION = "0.1.3"
 
 # The following packages are attached here so they show up in the sessionInfo
@@ -28,9 +28,18 @@ suppressPackageStartupMessages({
 if ( interactive() ) {
   
   # RStudio session
-  opt <- list(outputDir = getwd(),
-              logDir = getwd(),
-              version = FALSE)  
+  opt <- list(
+    communityID = "SCSB",
+    communityName = "",
+    datestamp = NULL,
+    timezone = "America/Los_Angeles",
+    days = 7,
+    frameRate = 6,
+    verbose = FALSE,
+    outputDir = getwd(),
+    logDir = getwd(),
+    version = FALSE
+  )  
   
 } else {
   
@@ -49,29 +58,39 @@ if ( interactive() ) {
       help = "Name of the South Coast community [default=\"%default\"]"
     ),
     make_option(
-      c("-s","--endDate"), 
-      default = NULL, 
-      help = "End date for the 3-day (72 hr) period [default=\"%default\"]"
+      c("-d","--datestamp"), 
+      default = "", 
+      help = "Datestamp specifying the date [default=today]"
     ),
     make_option(
-      c("-r", "--frameRate"),
-      default = 6,
-      help="Frames per second [default=\"%default\"]"
+      c("-t","--timezone"), 
+      default = "America/Los_Angeles", 
+      help = "Timezone used to interpret datestamp  [default=\"%default\"]"
+    ),
+    make_option(
+      c("-y","--days"), 
+      default = "7", 
+      help = "Days covered by the video  [default=\"%default\"]"
+    ),
+    make_option(
+      c("-r","--frameRate"), 
+      default = 6, 
+      help = "Frames per second [default=\"%default\"]"
     ),
     make_option(
       c("-v","--verbose"), 
       default = FALSE, 
-      help="Print out generated frame files [default=\"%default\"]"
+      help = "Print out generated frame files [default=\"%default\"]"
     ),
     make_option(
       c("-o","--outputDir"), 
       default = getwd(), 
-      help="Output directory for generated video file [default=\"%default\"]"
+      help = "Output directory for generated video file [default=\"%default\"]"
     ),
     make_option(
       c("-l","--logDir"), 
       default = getwd(), 
-      help="Output directory for generated .log file [default=\"%default\"]"
+      help = "Output directory for generated .log file [default=\"%default\"]"
     ),
     make_option(
       c("-V","--version"), 
@@ -129,45 +148,61 @@ logger.info("Running createVideo_exec.R version %s", VERSION)
 sessionString <- paste(capture.output(sessionInfo()), collapse="\n")
 logger.debug("R session:\n\n%s\n", sessionString)
 
-# ------ Create video frames ---------------------------------------------------
+# ----- Set up community regions -----------------------------------------------
+
+# SCAP --- Alhambra/Monterey Park
+# SCBB --- Big Bear Lake
+# SCEM --- El Monte
+# SCIV --- Imperial Valley
+# SCNP --- Nipomo
+# SCPR --- Paso Robles
+# SCSJ --- San Jacinto
+# SCSB --- Seal Beach
+# SCAH --- SCAH
+# SCAN --- SCAN
+# SCUV --- SCUV
+# SCSG --- South Gate
+# SCHS --- Sycamore Canyon
+# SCTV --- Temescal Valley
+
+communityGeoMapInfo <- list(
+  SCAP = list(lon = -118.132324, lat = 34.072205, zoom = 13),
+  SCBB = list(lon = -116.898568, lat = 34.255736, zoom = 13),
+  SCEM = list(lon = -118.034595, lat = 34.069292, zoom = 12),
+  SCIV = list(lon = -115.551228, lat = 32.980878, zoom = 14),
+  SCNP = list(lon = -120.555047, lat = 35.061590, zoom = 12),
+  SCPR = list(lon = -120.668946, lat = 35.513530, zoom = 10),
+  SCSJ = list(lon = -116.958228, lat = 33.765083, zoom = 14),
+  SCSB = list(lon = -118.083084, lat = 33.767033, zoom = 15),
+  SCAH = list(lon = -122.139473, lat = 37.662620, zoom = 10),
+  SCAN = list(lon = -122.307492, lat = 37.964949, zoom = 12),
+  SCUV = list(lon = -118.427781, lat = 34.023917, zoom = 15),
+  SCSG = list(lon = -118.178104, lat = 33.934260, zoom = 13),
+  SCHS = list(lon = -117.307598, lat = 33.947524, zoom = 15),
+  SCTV = list(lon = -117.481278, lat = 33.753517, zoom = 12)
+)
+
+# ----- Create videos ----------------------------------------------------------
 
 result <- try({
   
-  # SCAP --- Alhambra/Monterey Park
-  # SCBB --- Big Bear Lake
-  # SCEM --- El Monte
-  # SCIV --- Imperial Valley
-  # SCNP --- Nipomo
-  # SCPR --- Paso Robles
-  # SCSJ --- San Jacinto
-  # SCSB --- Seal Beach
-  # SCAH --- SCAH
-  # SCAN --- SCAN
-  # SCUV --- SCUV
-  # SCSG --- South Gate
-  # SCHS --- Sycamore Canyon
-  # SCTV --- Temescal Valley
-  
-  communityGeoMapInfo <- list(
-    SCAP = list(lon = -118.132324, lat = 34.072205, zoom = 13),
-    SCBB = list(lon = -116.898568, lat = 34.255736, zoom = 13),
-    SCEM = list(lon = -118.034595, lat = 34.069292, zoom = 12),
-    SCIV = list(lon = -115.551228, lat = 32.980878, zoom = 14),
-    SCNP = list(lon = -120.555047, lat = 35.061590, zoom = 12),
-    SCPR = list(lon = -120.668946, lat = 35.513530, zoom = 10),
-    SCSJ = list(lon = -116.958228, lat = 33.765083, zoom = 14),
-    SCSB = list(lon = -118.083084, lat = 33.767033, zoom = 15),
-    SCAH = list(lon = -122.139473, lat = 37.662620, zoom = 10),
-    SCAN = list(lon = -122.307492, lat = 37.964949, zoom = 12),
-    SCUV = list(lon = -118.427781, lat = 34.023917, zoom = 15),
-    SCSG = list(lon = -118.178104, lat = 33.934260, zoom = 13),
-    SCHS = list(lon = -117.307598, lat = 33.947524, zoom = 15),
-    SCTV = list(lon = -117.481278, lat = 33.753517, zoom = 12)
+  # Get date range 
+  # NOTE:  We use 'ceilingEnd' here because sensorLoad() trims to day boundaries
+  # NOTE:  and ends just before 'enddate'.
+  dateRange <- MazamaCoreUtils::dateRange(
+    enddate = opt$datestamp,
+    timezone = opt$timezone,
+    ceilingEnd = TRUE,
+    days = opt$days
   )
   
-  # Load all sensor data
+  # Load sensor data
   logger.info("Loading sensor data")
-  sensor <- sensor_load()
+  sensor <- sensor_load(
+    collection = "scaqmd",
+    startdate = dateRange[1], 
+    enddate = dateRange[2]
+  )
   
   # Retrieve both the community name and ID. Prioritize name over ID if they are
   # different.
@@ -188,37 +223,27 @@ result <- try({
     stop("Must provide a South Coast community name or ID")
   }
   
-  # Get the timezone
-  timezone <-
-    sensor %>%
-    sensor_extractMeta() %>%
-    dplyr::filter(communityRegion == opt$communityName) %>%
-    dplyr::slice(1) %>%
-    dplyr::pull(timezone)
-  
-  # Look back 71 hours from endDate entry, or back 71 hours from the most 
-  # recent data entry if no endDate is given
-  logger.info("Setting start and end times")
-  if ( !is.null(opt$endDate) ) {
-    endtime <- lubridate::parse_date_time(opt$endDate, orders = "ymd", tz = timezone)
-    starttime   <- endtime - lubridate::hours(71)
-  } else {
-    endtime <- sensor$data[nrow(sensor$data), "datetime"]
-    starttime <- endtime - lubridate::hours(71)
-  }
-  
   mapInfo <- communityGeoMapInfo[[opt$communityID]]
   
   # Time axis data
   logger.info("Preparing the time axis")
-  tickSkip <- 6
-  movieData <- sensor_filter(sensor, datetime >= starttime, datetime <= endtime)
+  if ( opt$days <= 3 ) {
+    tickSkip <- 6
+  } else if ( opt$days <= 7 ) {
+    tickSkip <- 12
+  } else {
+    tickSkip <- 24
+  }
+  
+  # Option to manipulate the data here
+  movieData <- sensor
+  
   tAxis <- movieData$data$datetime
   tAxis[(lubridate::hour(tAxis) - 1) %% tickSkip == 0 & 
            lubridate::minute(tAxis) == 0]
   tTicks <- tAxis[(lubridate::hour(tAxis) - 1) %% tickSkip == 0 & 
                      lubridate::minute(tAxis) == 0]
-  tLabels <- strftime(tTicks, "%l %P", tz = timezone)
+  tLabels <- strftime(tTicks, "%l %P", tz = opt$timezone)
   tInfo <- PWFSLSmoke::timeInfo(tAxis, longitude = mapInfo$lon, latitude = mapInfo$lat)
   
   # Load a static map image of the community
@@ -228,7 +253,7 @@ result <- try({
                                                          zoom = mapInfo$zoom,
                                                          width = 770,
                                                          height = 495)
-  
+
   # Generate individual frames
   logger.info("Generating %s video frames", length(tAxis))
   for (i in 1:length(tAxis)) {
@@ -236,8 +261,12 @@ result <- try({
     number <- stringr::str_pad(i, 3, 'left', '0')
     fileName <- paste0(opt$communityID, number, ".png")
     filePath <- file.path(tempdir(), fileName)
-    png(filePath, width = 1280, height = 720, units = "px")
-    logger.trace("Generating frame %s: %s", number, strftime(frameTime, "%b %d %H:%M", tz = timezone))
+    ###png(filePath, width = 1280, height = 720, units = "px")
+    par(cex = 0.75)
+    png(filePath, width = 960, height = 540, units = "px")
+    logger.trace("Generating frame %s: %s", 
+                 number, 
+                 strftime(frameTime, "%b %d %H:%M", tz = opt$timezone))
     sensor_videoFrame(
       sensor,
       communityRegion = opt$communityName,
@@ -249,8 +278,9 @@ result <- try({
       map = staticMap
     )
     if (opt$verbose) {
-      print(strftime(frameTime, "%b %d %H:%M", tz = timezone))
+      print(strftime(frameTime, "%b %d %H:%M", tz = opt$timezone))
     }
+    par(cex = 1)
     dev.off()
   }
   
@@ -258,13 +288,15 @@ result <- try({
   # "America/Los_Angeles" timezone
   fileName <- paste0(
     opt$communityID, "_",
-    strftime(frameTime, "%Y%m%d", tz = "America/Los_Angeles"), ".mp4"
+    strftime(dateRange[2], "%Y%m%d", tz = opt$timezone),
+    ".mp4"
   )
 
   # Define system calls to ffmpeg to create video from frames
   cmd_cd <- paste0("cd ", tempdir())
-  cmd_ffmpeg <- paste0("ffmpeg -loglevel quiet -r ", 
-                       opt$frameRate, " -f image2 -s 1280x720 -i ", 
+  cmd_ffmpeg <- paste0("ffmpeg -y -loglevel quiet -r ", 
+                       ###opt$frameRate, " -f image2 -s 1280x720 -i ", 
+                       opt$frameRate, " -f image2 -s 960x540 -i ", 
                        opt$communityID, "%03d.png -vcodec libx264 -crf 25 ", 
                        # https://bugzilla.mozilla.org/show_bug.cgi?id=1368063#c7
                        "-pix_fmt yuv420p ",
