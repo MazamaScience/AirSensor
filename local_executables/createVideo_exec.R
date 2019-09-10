@@ -59,7 +59,7 @@ if ( interactive() ) {
     ),
     make_option(
       c("-d","--datestamp"), 
-      default = "", 
+      default = NULL, 
       help = "Datestamp specifying the date [default=today]"
     ),
     make_option(
@@ -69,7 +69,7 @@ if ( interactive() ) {
     ),
     make_option(
       c("-y","--days"), 
-      default = "7", 
+      default = 7, 
       help = "Days covered by the video  [default=\"%default\"]"
     ),
     make_option(
