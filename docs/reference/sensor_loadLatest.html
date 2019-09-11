@@ -40,7 +40,7 @@
 <meta property="og:title" content="Load hourly-aggregated Purple Air data for a week — sensor_loadLatest" />
 
 <meta property="og:description" content="A pre-generated airsensor object will be loaded 
-containing data for the most recent 7-day interval.
+containing data for the most recent 7 or 45-day interval.
 Each airsensor object contains data from a named collection of 
 Purple Air sensors." />
 <meta name="twitter:card" content="summary" />
@@ -73,7 +73,7 @@ Purple Air sensors." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.8</span>
       </span>
     </div>
 
@@ -153,13 +153,13 @@ Purple Air sensors." />
     <div class="ref-description">
     
     <p>A pre-generated <code>airsensor</code> object will be loaded 
-containing data for the most recent 7-day interval.</p>
+containing data for the most recent 7 or 45-day interval.</p>
 <p>Each <code>airsensor</code> object contains data from a named collection of 
 Purple Air sensors.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>sensor_loadLatest</span>(<span class='kw'>collection</span> <span class='kw'>=</span> <span class='st'>"scaqmd"</span>)</pre>
+    <pre class="usage"><span class='fu'>sensor_loadLatest</span>(<span class='kw'>collection</span> <span class='kw'>=</span> <span class='st'>"scaqmd"</span>, <span class='kw'>days</span> <span class='kw'>=</span> <span class='fl'>45</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -167,6 +167,10 @@ Purple Air sensors.</p>
     <tr>
       <th>collection</th>
       <td><p>Name associated with the collection.</p></td>
+    </tr>
+    <tr>
+      <th>days</th>
+      <td><p>file identifer, either 7 or 45</p></td>
     </tr>
     </table>
     
