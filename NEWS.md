@@ -1,5 +1,7 @@
+
 # AirSensor 0.4.7
 
+* Improved `local_executables/` scripts.
 * Added `timezone` argument to `downloadParseTimeseriesData()`.
 * Improved logging in `local_executables/crontab~` files.
 * Fixed implementation of `downloadParseTimeseriesData()` to avoid using day

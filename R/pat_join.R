@@ -42,6 +42,7 @@ pat_join <- function(
   
   suppressWarnings({ # checks class type to see if already a list
     
+    # TODO:  refactor this logic
     if( class(patList[[1]]) != c("pa_timeseries", "list") ) {
       patList <- patList[[1]]
     }
@@ -70,7 +71,7 @@ pat_join <- function(
     stop("`pat` objects must be of the same monitor")
   
   meta <- patList[[1]]$meta
-  data <- do.call(rbind, dataList)
+  data <- do.call(rbind, dataList) # duplicates removed below
   
   # ----- Create the Purple Air Timeseries (pat) object ------------------------
   

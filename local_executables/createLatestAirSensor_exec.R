@@ -12,8 +12,8 @@
 # docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/airsensor /app/createLatestAirSensor_exec.R --pattern=^SCNP_..$
 #
 
-#  --- . --- . AirSensor 0.4.1
-VERSION = "0.3.7" 
+#  --- . --- . also create latest45
+VERSION = "0.3.8" 
 
 library(optparse)      # to parse command line flags
 
@@ -112,14 +112,19 @@ logger.debug("R session:\n\n%s\n", sessionString)
 result <- try({
   
   logger.info("Loading PA Synoptic data")
-  pas <- pas_load()
+  
+  # Big time window just to filter the "pas" 
+  endtime <- lubridate::now(tzone = "UTC")
+  starttime <- lubridate::floor_date(endtime) - lubridate::ddays(45)
+  
+  # Start with all sensors and filter based on A channel, date and pattern
+  pas <- pas_load(archival = TRUE) %>%
+    pas_filter(is.na(parentID)) %>%
+    pas_filter(lastSeenDate > starttime) %>%
+    pas_filter(stringr::str_detect(label, opt$pattern))
   
   # Find the labels of interest
-  labels <-
-    pas %>%
-    pas_filter(is.na(parentID)) %>%
-    pas_filter(stringr::str_detect(label, opt$pattern)) %>%
-    dplyr::pull(label)
+  labels <- pas$label
   
   logger.info("Loading PAT data for %d sensors", length(labels))
   
@@ -152,6 +157,48 @@ result <- try({
   class(airsensor) <- c("airsensor", "ws_monitor", "list")
   
   filename <- paste0("airsensor_scaqmd_latest7.rda")
+  filepath <- file.path(opt$outputDir, filename)
+  
+  logger.info("Writing 'airsensor' data to %s", filename)
+  save(list="airsensor", file = filepath)
+  
+  # ----- Create latest45 ------------------------------------------------------
+  
+  latestDatetime <-
+    airsensor$data %>%
+    dplyr::slice(dplyr::n()) %>%
+    dplyr::pull(datetime)
+  
+  lastMonthDatetime <-
+    latestDatetime %>%
+    lubridate::floor_date(unit = "month") - lubridate::ddays(15)
+    
+  thisMonthStamp <- strftime(latestDatetime, 
+                             "%Y%m", 
+                             tz = "America/Los_Angeles")
+  
+  lastMonthStamp <- strftime(lastMonthDatetime, 
+                             "%Y%m", 
+                             tz = "America/Los_Angeles")
+  
+  # Monthly sensor objects
+  thisMonth <- sensor_loadMonth("scaqmd", thisMonthStamp)
+  lastMonth <- sensor_loadMonth("scaqmd", lastMonthStamp)
+
+  # 45 day time range
+  endtime <- latestDatetime
+  starttime <- lubridate::floor_date(endtime) - lubridate::ddays(45)
+  
+  # Join and trim
+  airsensor <-
+    PWFSLSmoke::monitor_join(lastMonth, thisMonth) %>%
+    PWFSLSmoke::monitor_join(airsensor) %>%
+    PWFSLSmoke::monitor_subset(tlim = c(starttime, endtime))
+  
+  # Restore "airsensor" class that got stripped off
+  class(airsensor) <- c("airsensor", "ws_monitor", "list")
+  
+  filename <- paste0("airsensor_scaqmd_latest45.rda")
   filepath <- file.path(opt$outputDir, filename)
   
   logger.info("Writing 'airsensor' data to %s", filename)

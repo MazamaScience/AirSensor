@@ -14,47 +14,51 @@ clean:
 	-rm -rf $(BASE_PATH)/output
 	-rm -rf $(BASE_PATH)/logs
 	
+setup: clean
+	mkdir -p $(BASE_PATH)/output
+	mkdir -p $(BASE_PATH)/logs
+	touch $(BASE_PATH)/logs/cron_log.txt
 
 ################################################################################
 # PAS objects
 
-createPAS:
+createPAS: setup
 	docker run --rm -v $(BASE_PATH):/app -v $(BASE_PATH)/output:/app/output -v $(BASE_PATH)/logs:/app/logs -w /app mazamascience/airsensor:latest /app/createPAS_exec.R --outputDir=/app/output --logDir=/app/logs >> $(BASE_PATH)/logs/cron_log.txt 2>&1 
 
-createPAS_archival:
+createPAS_archival: setup
 	docker run --rm -v $(BASE_PATH):/app -v $(BASE_PATH)/output:/app/output -v $(BASE_PATH)/logs:/app/logs -w /app mazamascience/airsensor:latest /app/createPAS_archival_exec.R --outputDir=/app/output --logDir=/app/logs >> $(BASE_PATH)/logs/cron_log.txt 2>&1 
 
 
 ################################################################################
 # PAT objects
 
-createLatestPAT:
+createLatestPAT: setup
 	docker run --rm -v $(BASE_PATH):/app -v $(BASE_PATH)/output:/app/output -v $(BASE_PATH)/logs:/app/logs -w /app mazamascience/airsensor:latest /app/createLatestPAT_exec.R --outputDir=/app/output --logDir=/app/logs --pattern=^SCNP_..$ >> $(BASE_PATH)/logs/cron_log.txt 2>&1 
 
-createMonthlyPAT:
+createMonthlyPAT: setup
 	docker run --rm -v $(BASE_PATH):/app -v $(BASE_PATH)/output:/app/output -v $(BASE_PATH)/logs:/app/logs -w /app mazamascience/airsensor:latest /app/createMonthlyPAT_exec.R --outputDir=/app/output --logDir=/app/logs --pattern=^SCNP_..$ >> $(BASE_PATH)/logs/cron_log.txt 2>&1 
 
 
 ################################################################################
 # AirSensor objects
 
-createLatestAirSensor:
+createLatestAirSensor: setup
 	docker run --rm -v $(BASE_PATH):/app -v $(BASE_PATH)/output:/app/output -v $(BASE_PATH)/logs:/app/logs -w /app mazamascience/airsensor:latest /app/createLatestAirSensor_exec.R --outputDir=/app/output --logDir=/app/logs --pattern=^SCNP_..$ >> $(BASE_PATH)/logs/cron_log.txt 2>&1 
 
-createMonthlyAirSensor:
+createMonthlyAirSensor: setup
 	docker run --rm -v $(BASE_PATH):/app -v $(BASE_PATH)/output:/app/output -v $(BASE_PATH)/logs:/app/logs -w /app mazamascience/airsensor:latest /app/createMonthlyAirSensor_exec.R --outputDir=/app/output --logDir=/app/logs --pattern=^SCNP_..$ >> $(BASE_PATH)/logs/cron_log.txt 2>&1 
 
 
 ################################################################################
 # Videos
 
-createVideo:
+createVideo: setup
 	docker run --rm -v $(BASE_PATH):/app -v $(BASE_PATH)/output:/app/output -v $(BASE_PATH)/logs:/app/logs -w /app mazamascience/airsensor:latest /app/createVideo_exec.R --outputDir=/app/output --logDir=/app/logs --communityID=SCSB >> $(BASE_PATH)/logs/cron_log.txt 2>&1 
 
 ################################################################################
 # Calendar plots
 
-createCalendarPlot:
+createCalendarPlot: setup
 	docker run --rm -v $(BASE_PATH):/app -v $(BASE_PATH)/output:/app/output -v $(BASE_PATH)/logs:/app/logs -w /app mazamascience/airsensor:latest /app/createCalendarPlot_exec.R --outputDir=/app/output --logDir=/app/logs --pattern=^SCNP_..$ >> $(BASE_PATH)/logs/cron_log.txt 2>&1 
 
 
