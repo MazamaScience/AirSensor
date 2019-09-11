@@ -172,7 +172,11 @@ result <- try({
   lastMonthDatetime <-
     latestDatetime %>%
     lubridate::floor_date(unit = "month") - lubridate::ddays(15)
-    
+  
+  previousMonthDatetime <-
+    latestDatetime %>%
+    lubridate::floor_date(unit = "month") - lubridate::ddays(45)
+  
   thisMonthStamp <- strftime(latestDatetime, 
                              "%Y%m", 
                              tz = "America/Los_Angeles")
@@ -181,17 +185,23 @@ result <- try({
                              "%Y%m", 
                              tz = "America/Los_Angeles")
   
+  previousMonthStamp <- strftime(previousMonthDatetime, 
+                             "%Y%m", 
+                             tz = "America/Los_Angeles")
+  
   # Monthly sensor objects
   thisMonth <- sensor_loadMonth("scaqmd", thisMonthStamp)
   lastMonth <- sensor_loadMonth("scaqmd", lastMonthStamp)
-
+  previousMonth <- sensor_loadMonth("scaqmd", previousMonthStamp)
+  
   # 45 day time range
   endtime <- latestDatetime
-  starttime <- lubridate::floor_date(endtime) - lubridate::ddays(45)
+  starttime <- lubridate::floor_date(endtime, unit = "day") - lubridate::ddays(45)
   
   # Join and trim
   airsensor <-
-    PWFSLSmoke::monitor_join(lastMonth, thisMonth) %>%
+    PWFSLSmoke::monitor_join(previousMonth, lastMonth) %>%
+    PWFSLSmoke::monitor_join(thisMonth) %>%
     PWFSLSmoke::monitor_join(airsensor) %>%
     PWFSLSmoke::monitor_subset(tlim = c(starttime, endtime))
   
