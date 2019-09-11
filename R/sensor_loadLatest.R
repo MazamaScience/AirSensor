@@ -5,12 +5,13 @@
 #' @title Load hourly-aggregated Purple Air data for a week
 #' 
 #' @description A pre-generated \code{airsensor} object will be loaded 
-#' containing data for the most recent 7-day interval.
+#' containing data for the most recent 7 or 45-day interval.
 #' 
 #' Each \code{airsensor} object contains data from a named collection of 
 #' Purple Air sensors.
 #' 
 #' @param collection Name associated with the collection.
+#' @param days file identifer, either 7 or 45
 #' 
 #' @return An object of class "pa_timeseries".
 #' 
@@ -26,7 +27,8 @@
 #' }
 
 sensor_loadLatest <- function(
-  collection = "scaqmd"
+  collection = "scaqmd",
+  days = 45
 ) {
   
   # ----- Validate parameters --------------------------------------------------
@@ -38,7 +40,7 @@ sensor_loadLatest <- function(
   # Use package internal URL
   baseUrl <- getArchiveBaseUrl()
   
-  filename <- paste0("airsensor_", collection, "_latest7.rda")
+  filename <- paste0("airsensor_", collection, "_latest", days, ".rda")
   filepath <- paste0(baseUrl, '/airsensor/latest/', filename)
   
   # Define a 'connection' object so we can close it no matter what happens

@@ -4,17 +4,19 @@
 \alias{sensor_loadLatest}
 \title{Load hourly-aggregated Purple Air data for a week}
 \usage{
-sensor_loadLatest(collection = "scaqmd")
+sensor_loadLatest(collection = "scaqmd", days = 45)
 }
 \arguments{
 \item{collection}{Name associated with the collection.}
+
+\item{days}{file identifer, either 7 or 45}
 }
 \value{
 An object of class "pa_timeseries".
 }
 \description{
 A pre-generated \code{airsensor} object will be loaded 
-containing data for the most recent 7-day interval.
+containing data for the most recent 7 or 45-day interval.
 
 Each \code{airsensor} object contains data from a named collection of 
 Purple Air sensors.

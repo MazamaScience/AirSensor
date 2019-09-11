@@ -1,4 +1,9 @@
 
+# AirSensor 0.4.8
+
+* `sensor_loadLatest()` no supports a `days` argument and defaults to loading
+a 45-day file.
+
 # AirSensor 0.4.7
 
 * Improved `local_executables/` scripts.
