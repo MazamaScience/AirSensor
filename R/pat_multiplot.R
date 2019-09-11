@@ -79,20 +79,18 @@ pat_multiplot <- function(
   
   MazamaCoreUtils::stopIfNull(pat)
   
-  if ( !is.null(pat) ) {
-    if ( !pat_isPat(pat) )
-      stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")
-    
-    if ( pat_isEmpty(pat) )
-      stop("Parameter 'pat' has no data.")
-  }
+  if ( !pat_isPat(pat) )
+    stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")
+  
+  if ( pat_isEmpty(pat) )
+    stop("Parameter 'pat' has no data.")
   
   # Remove any duplicate data records
   pat <- pat_distinct(pat)
   
   # ----- Reduce large datasets by sampling ------------------------------------
   
-  if ( !is.null(pat) && !is.null(sampleSize) ) { 
+  if ( !is.null(sampleSize) ) { 
     
     if ( sampleSize > 1 ) {
       pat <- 
@@ -318,5 +316,32 @@ pat_multiplot <- function(
   options(warn=0)
   
   return(invisible(gg)) # TODO:  What should pat_multiplot() return?
+  
+}
+
+# ===== DEBUGGING ==============================================================
+
+if ( FALSE ) {
+  
+  setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+  
+  pat <- pat_loadLatest("SCNP_05")
+  plottype <- "all"
+  sampleSize <- 5000
+  columns <- NULL
+  ylim <- NULL
+  a_size <- 1
+  a_shape <- 15
+  a_color <- rgb(0.9, 0.25, 0.2)
+  b_size <- 1
+  b_shape <- 15
+  b_color <- rgb(0.2, 0.25, 0.9)
+  t_size <- 1
+  t_shape <- 15
+  t_color <- "black"
+  h_size <- 1
+  h_shape <- 15
+  h_color <- "black"
+  alpha <- 0.5
   
 }

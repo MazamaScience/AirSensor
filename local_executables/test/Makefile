@@ -14,10 +14,10 @@ clean:
 	-rm -rf $(BASE_PATH)/output
 	-rm -rf $(BASE_PATH)/logs
 	
-setup: clean
-	mkdir -p $(BASE_PATH)/output
-	mkdir -p $(BASE_PATH)/logs
-	touch $(BASE_PATH)/logs/cron_log.txt
+setup:
+	-mkdir -p $(BASE_PATH)/output
+	-mkdir -p $(BASE_PATH)/logs
+	-touch $(BASE_PATH)/logs/cron_log.txt
 
 ################################################################################
 # PAS objects
@@ -37,6 +37,9 @@ createLatestPAT: setup
 
 createMonthlyPAT: setup
 	docker run --rm -v $(BASE_PATH):/app -v $(BASE_PATH)/output:/app/output -v $(BASE_PATH)/logs:/app/logs -w /app mazamascience/airsensor:latest /app/createMonthlyPAT_exec.R --outputDir=/app/output --logDir=/app/logs --pattern=^SCNP_..$ >> $(BASE_PATH)/logs/cron_log.txt 2>&1 
+
+createAprilPAT: setup
+	docker run --rm -v $(BASE_PATH):/app -v $(BASE_PATH)/output:/app/output -v $(BASE_PATH)/logs:/app/logs -w /app mazamascience/airsensor:latest /app/createMonthlyPAT_exec.R --outputDir=/app/output --logDir=/app/logs --datestamp=201904 --pattern=^SCNP_..$ >> $(BASE_PATH)/logs/cron_log.txt 2>&1 
 
 
 ################################################################################

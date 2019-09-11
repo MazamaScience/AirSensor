@@ -11,8 +11,8 @@
 # docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --pattern=^SCNP_..$
 #
 
-#  --- . --- . MazamaCoreUtils 0.3.5
-VERSION = "0.1.9"
+#  --- . --- . archival = TRUE
+VERSION = "0.1.10"
 
 # The following packages are attached here so they show up in the sessionInfo
 suppressPackageStartupMessages({
@@ -137,8 +137,9 @@ result <- try({
   startdate <- strftime(starttime, "%Y%m%d", tz = opt$timezone)
   enddate <- strftime(endtime, "%Y%m%d", tz = opt$timezone)
   
-  logger.info("Loading PA Synoptic data")
-  pas <- pas_load()
+  logger.info("Loading PA Synoptic data for %s ", opt$pattern)
+  
+  pas <- pas_load(archival = TRUE)
   
   # Find the labels of interest, only one per sensor
   labels <-
