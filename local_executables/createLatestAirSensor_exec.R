@@ -117,6 +117,10 @@ result <- try({
   endtime <- lubridate::now(tzone = "UTC")
   starttime <- lubridate::floor_date(endtime) - lubridate::ddays(45)
   
+  # Get strings
+  startdate <- strftime(starttime, "%Y-%m-%d %H:%M:%S", tz = "UTC")
+  enddate <- strftime(endtime, "%Y-%m-%d %H:%M:%S", tz = "UTC")
+  
   logger.trace("startdate = %s, enddate = %s", startdate, enddate)
   
   logger.info("Loading PAS data for %s ", opt$pattern)
