@@ -137,7 +137,7 @@ result <- try({
   startdate <- strftime(starttime, "%Y%m%d", tz = opt$timezone)
   enddate <- strftime(endtime, "%Y%m%d", tz = opt$timezone)
   
-  logger.info("Loading 'airsensor' data")
+  logger.info("Loading sensor data")
   sensor <- sensor_load(startdate = startdate, enddate = enddate)
   
   # Find the monitorIDs of interest, only one per sensor

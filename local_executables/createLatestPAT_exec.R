@@ -11,8 +11,8 @@
 # docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/airsensor /app/createLatestPAT_exec.R --pattern=^SCNP_..$
 #
 
-#  --- . --- . archival = TRUE
-VERSION = "0.1.3"
+#  --- . --- . fixed pas filtering
+VERSION = "0.1.4"
 
 # The following packages are attached here so they show up in the sessionInfo
 suppressPackageStartupMessages({
@@ -115,18 +115,22 @@ result <- try({
   startdate <- strftime(starttime, "%Y-%m-%d %H:%M:%S", tz = "UTC")
   enddate <- strftime(endtime, "%Y-%m-%d %H:%M:%S", tz = "UTC")
   
-  logger.info("Loading PA Synoptic data")
+  logger.trace("startdate = %s, enddate = %s", startdate, enddate)
   
-  # Start with all sensors and filter based on A channel, date and pattern
+  logger.info("Loading PAS data")
+  
+  # Start with all sensors and filter based on date.
   pas <- pas_load(archival = TRUE) %>%
-    pas_filter(is.na(parentID)) %>%
-    pas_filter(lastSeenDate > startdate) %>%
-    pas_filter(stringr::str_detect(label, opt$pattern))
+    pas_filter(lastSeenDate > starttime)
     
-  # Find the labels of interest
-  labels <- pas$label
+  # Find the labels of interest, only one per sensor
+  labels <-
+    pas %>%
+    pas_filter(is.na(parentID)) %>%
+    pas_filter(stringr::str_detect(label, opt$pattern)) %>%
+    dplyr::pull(label)
 
-  logger.info("Loading PA Timeseries data for %d sensors", length(labels))
+  logger.info("Loading PAT data for %d sensors", length(labels))
   
   for ( label in labels ) {
     

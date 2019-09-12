@@ -12,8 +12,8 @@
 # docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/airsensor /app/createLatestAirSensor_exec.R --pattern=^SCNP_..$
 #
 
-#  --- . --- . also create latest45
-VERSION = "0.3.8" 
+#  --- . --- . fixed pas filtering
+VERSION = "0.3.9" 
 
 library(optparse)      # to parse command line flags
 
@@ -111,20 +111,26 @@ logger.debug("R session:\n\n%s\n", sessionString)
 
 result <- try({
   
-  logger.info("Loading PA Synoptic data")
+  logger.info("Loading PAS data")
   
   # Big time window just to filter the "pas" 
   endtime <- lubridate::now(tzone = "UTC")
   starttime <- lubridate::floor_date(endtime) - lubridate::ddays(45)
   
-  # Start with all sensors and filter based on A channel, date and pattern
-  pas <- pas_load(archival = TRUE) %>%
-    pas_filter(is.na(parentID)) %>%
-    pas_filter(lastSeenDate > starttime) %>%
-    pas_filter(stringr::str_detect(label, opt$pattern))
+  logger.trace("startdate = %s, enddate = %s", startdate, enddate)
   
-  # Find the labels of interest
-  labels <- pas$label
+  logger.info("Loading PAS data for %s ", opt$pattern)
+  
+  # Start with all sensors and filter based on date.
+  pas <- pas_load(archival = TRUE) %>%
+    pas_filter(lastSeenDate > starttime)
+  
+  # Find the labels of interest, only one per sensor
+  labels <-
+    pas %>%
+    pas_filter(is.na(parentID)) %>%
+    pas_filter(stringr::str_detect(label, opt$pattern)) %>%
+    dplyr::pull(label)
   
   logger.info("Loading PAT data for %d sensors", length(labels))
   
