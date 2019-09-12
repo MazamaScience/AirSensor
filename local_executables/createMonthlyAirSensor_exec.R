@@ -131,14 +131,24 @@ logger.debug("R session:\n\n%s\n", sessionString)
 
 result <- try({
   
-  # Get times
-  starttime <- lubridate::ymd(datestamp, tz=opt$timezone)
+  # Get times that extend one day earlier and one day later to ensure we get
+  # have a least a full month, regardless of timezone. This overlap is OK 
+  # because PWFSLSmoke::monitor_join() will remove duplicate records.
+  starttime <- lubridate::ymd(datestamp, tz=timezone)
   endtime <- lubridate::ceiling_date(starttime + lubridate::ddays(20), unit="month")
   
-  logger.info("Loading PA Synoptic data")
-  pas <- pas_load()
+  starttime <- starttime - lubridate::ddays(1)
+  endtime <- endtime + lubridate::ddays(1)
   
-  # Find the labels of interest
+  logger.trace("startdate = %s, enddate = %s", startdate, enddate)
+  
+  logger.info("Loading PAS data for %s ", opt$pattern)
+  
+  # Start with all sensors and filter based on date.
+  pas <- pas_load(archival = TRUE) %>%
+    pas_filter(lastSeenDate > starttime)
+  
+  # Find the labels of interest, only one per sensor
   labels <-
     pas %>%
     pas_filter(is.na(parentID)) %>%

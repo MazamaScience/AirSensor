@@ -11,8 +11,8 @@
 # docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/airsensor /app/createMonthlyPAT_exec.R --pattern=^SCNP_..$
 #
 
-#  --- . --- . archival = TRUE
-VERSION = "0.1.10"
+#  --- . --- . fixed pas filtering
+VERSION = "0.1.11"
 
 # The following packages are attached here so they show up in the sessionInfo
 suppressPackageStartupMessages({
@@ -32,7 +32,7 @@ if ( interactive() ) {
     outputDir = getwd(),
     logDir = getwd(),
     datestamp = "",
-    timezone = "America/Los_Angeles",
+    # timezone = "America/Los_Angeles",
     pattern = "^SCNP_..$",
     version = FALSE
   )  
@@ -58,11 +58,11 @@ if ( interactive() ) {
       default="", 
       help="Datestamp specifying the year and month as YYYYMM [default=current month]"
     ),
-    make_option(
-      c("-t","--timezone"), 
-      default="America/Los_Angeles", 
-      help="timezone used to interpret datestamp  [default=\"%default\"]"
-    ),
+    # make_option(
+    #   c("-t","--timezone"), 
+    #   default="America/Los_Angeles", 
+    #   help="timezone used to interpret datestamp  [default=\"%default\"]"
+    # ),
     make_option(
       c("-p","--pattern"), 
       default="^[Ss][Cc].._..$", 
@@ -89,6 +89,9 @@ if ( opt$version ) {
 
 # ----- Validate parameters ----------------------------------------------------
 
+# Create month files based on UTC months
+timezone <- "UTC"
+
 if ( !dir.exists(opt$outputDir) ) 
   stop(paste0("outputDir not found:  ",opt$outputDir))
 
@@ -96,9 +99,9 @@ if ( !dir.exists(opt$logDir) )
   stop(paste0("logDir not found:  ",opt$logDir))
 
 # Default to the current month
-now <- lubridate::now(tzone = opt$timezone)
+now <- lubridate::now(tzone = timezone)
 if ( opt$datestamp == "" ) {
-  opt$datestamp <- strftime(now, "%Y%m01", tz = opt$timezone)
+  opt$datestamp <- strftime(now, "%Y%m01", tz = timezone)
 }
 
 # Handle the case where the day is already specified
@@ -129,17 +132,27 @@ logger.debug("R session:\n\n%s\n", sessionString)
 
 result <- try({
   
-  # Get times
-  starttime <- lubridate::ymd(datestamp, tz=opt$timezone)
+  # Get times that extend one day earlier and one day later to ensure we get
+  # have a least a full month, regardless of timezone. This overlap is OK 
+  # because the pat_join() function uses pat_distinct() to remove duplicate 
+  # records.
+  starttime <- lubridate::ymd(datestamp, tz=timezone)
   endtime <- lubridate::ceiling_date(starttime + lubridate::ddays(20), unit="month")
   
+  starttime <- starttime - lubridate::ddays(1)
+  endtime <- endtime + lubridate::ddays(1)
+  
   # Get strings
-  startdate <- strftime(starttime, "%Y%m%d", tz = opt$timezone)
-  enddate <- strftime(endtime, "%Y%m%d", tz = opt$timezone)
+  startdate <- strftime(starttime, "%Y%m%d", tz = timezone)
+  enddate <- strftime(endtime, "%Y%m%d", tz = timezone)
   
-  logger.info("Loading PA Synoptic data for %s ", opt$pattern)
+  logger.trace("startdate = %s, enddate = %s", startdate, enddate)
   
-  pas <- pas_load(archival = TRUE)
+  logger.info("Loading PAS data for %s ", opt$pattern)
+  
+  # Start with all sensors and filter based on date.
+  pas <- pas_load(archival = TRUE) %>%
+    pas_filter(lastSeenDate > starttime)
   
   # Find the labels of interest, only one per sensor
   labels <-
@@ -148,7 +161,7 @@ result <- try({
     pas_filter(stringr::str_detect(label, opt$pattern)) %>%
     dplyr::pull(label)
   
-  logger.info("Loading PA Timeseries data for %d sensors", length(labels))
+  logger.info("Loading PAT data for %d sensors", length(labels))
   
   for ( label in labels ) {
     
@@ -163,7 +176,7 @@ result <- try({
         label,
         startdate = startdate,
         enddate = enddate,
-        timezone = opt$timzeone,
+        timezone = timezone,
         baseURL = "https://api.thingspeak.com/channels/"
       )
       
