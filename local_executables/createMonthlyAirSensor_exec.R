@@ -140,6 +140,10 @@ result <- try({
   starttime <- starttime - lubridate::ddays(1)
   endtime <- endtime + lubridate::ddays(1)
   
+  # Get strings
+  startdate <- strftime(starttime, "%Y-%m-%d %H:%M:%S", tz = "UTC")
+  enddate <- strftime(endtime, "%Y-%m-%d %H:%M:%S", tz = "UTC")
+  
   logger.trace("startdate = %s, enddate = %s", startdate, enddate)
   
   logger.info("Loading PAS data for %s ", opt$pattern)
