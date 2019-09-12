@@ -82,29 +82,43 @@ pat_sample <- function(
     dplyr::filter(pat$data, !is.na(.data$pm25_B)) %>% 
     dplyr::select(.data$datetime, .data$pm25_B, .data$datetime_B)
   
+  allBad_A <- nrow(A_data) == 0
+  allBad_B <- nrow(B_data) == 0
+  
+  if ( allBad_A && allBad_B ) {
+    stop("A and B channels contain only missing values.")  
+  }
   
   if ( keepOutliers == TRUE ) {
     
     # Find outliers 
-    outlierIndex_A <- 
-      which(
-        .flagOutliers(
-          df = A_data, 
-          parameter = "pm25_A",
-          windowSize = 23,
-          thresholdMin = 8
-        )[,ncol(A_data) + 1]
-      )
+    if ( !allBad_A ) {
+      outlierIndex_A <- 
+        which(
+          .flagOutliers(
+            df = A_data, 
+            parameter = "pm25_A",
+            windowSize = 23,
+            thresholdMin = 8
+          )[,ncol(A_data) + 1]
+        )
+    } else {
+      outlierIndex_A <- c(1)
+    }
     
-    outlierIndex_B <- 
-      which(
-        .flagOutliers(
-          df = B_data, 
-          parameter = "pm25_B",
-          windowSize = 23,
-          thresholdMin = 8
-        )[,ncol(B_data) + 1]
-      )
+    if ( !allBad_B ) {
+      outlierIndex_B <- 
+        which(
+          .flagOutliers(
+            df = B_data, 
+            parameter = "pm25_B",
+            windowSize = 23,
+            thresholdMin = 8
+          )[,ncol(B_data) + 1]
+        )
+    } else {
+      outlierIndex_B <- c(1)
+    }
     
     # Can't have an index of zero
     if ( length(outlierIndex_A) == 0 ) outlierIndex_A <- c(1)

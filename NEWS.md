@@ -1,4 +1,11 @@
 
+# AirSensor 0.4.9
+
+* Updated `sensor_videoFrame()` with new arguments and new defaults for 
+`colorPalette` and `colorBins`.
+* Updated `pat_sample()` to handle cases where the A or B channel contains
+only missing values.
+
 # AirSensor 0.4.8
 
 * `sensor_loadLatest()` no supports a `days` argument and defaults to loading

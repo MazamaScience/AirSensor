@@ -10,8 +10,8 @@
 # ./createVideo_exec.R --communityName="Sycamore Canyon" -s 20190704 -r 4 -o ~/Desktop/ -v TRUE
 # ./createVideo_exec.R -c SCSB -o ~/Desktop/
 
-# ----- . 7-day, smaller, scqamd colors . -----
-VERSION = "0.1.3"
+# ----- . 7-day, smaller, scqamd colors . add colors
+VERSION = "0.2.1"
 
 # The following packages are attached here so they show up in the sessionInfo
 suppressPackageStartupMessages({
@@ -181,6 +181,14 @@ communityGeoMapInfo <- list(
   SCHS = list(lon = -117.307598, lat = 33.947524, zoom = 15),
   SCTV = list(lon = -117.481278, lat = 33.753517, zoom = 12)
 )
+
+# c(
+#   ">75 \u03bcg / m\u00b3" = "#6A367A",
+#   "55-75 \u03bcg / m\u00b3" = "#8659A5",
+#   "35-55 \u03bcg / m\u00b3" = "#286096",
+#   "12-35 \u03bcg / m\u00b3" ="#118CBA",
+#   "0-12 \u03bcg / m\u00b3" = "#abe3f4"
+# )
 
 # ----- Create videos ----------------------------------------------------------
 

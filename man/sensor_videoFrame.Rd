@@ -6,7 +6,8 @@
 \usage{
 sensor_videoFrame(sensor = sensor_load(), communityRegion = NULL,
   frameTime = NULL, timeInfo = NULL, timeAxis = NULL,
-  timeTicks = NULL, timeLabels = NULL, map = NULL, logo = NULL)
+  timeTicks = NULL, timeLabels = NULL, map = NULL, logo = NULL,
+  colorPalette = NULL, colorBins = NULL)
 }
 \arguments{
 \item{sensor}{An AirSensor object.}
@@ -26,6 +27,10 @@ sensor_videoFrame(sensor = sensor_load(), communityRegion = NULL,
 \item{map}{A pre-generated basemap image.}
 
 \item{logo}{A PNG image to be placed near the upper right of the image.}
+
+\item{colorPalette}{Vector of colors to use.}
+
+\item{colorBins}{Vector of numeric breaks used to map pm25 values to colors}
 }
 \value{
 A plot is generated. Nothing is returned.

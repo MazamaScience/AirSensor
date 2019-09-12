@@ -11,6 +11,8 @@
 #' @param timeLabels Movie time labels.
 #' @param map A pre-generated basemap image.
 #' @param logo A PNG image to be placed near the upper right of the image.
+#' @param colorPalette Vector of colors to use.
+#' @param colorBins Vector of numeric breaks used to map pm25 values to colors
 #' 
 #' @description Create a plot to be used as a single "frame" in a timeseries
 #' video. This function is tailored to communities working with the South Coast
@@ -78,7 +80,9 @@ sensor_videoFrame <- function(
   timeTicks = NULL,
   timeLabels = NULL,
   map = NULL,
-  logo = NULL
+  logo = NULL,
+  colorPalette = NULL,
+  colorBins = NULL
 ) {
   
   # ----- Validate parameters --------------------------------------------------
@@ -100,6 +104,22 @@ sensor_videoFrame <- function(
   
   # Round frameTime to closest hour
   frameTime <- lubridate::round_date(frameTime, unit = "hour")
+  
+  # Default bins
+  if ( is.null(colorBins) ) {
+    colorBins <- c(0,
+                   seq(0,12,length.out=5)[-1],
+                   seq(12,35,length.out=5)[-1],
+                   seq(35,55,length.out=5)[-1],
+                   seq(55,75,length.out=5)[-1],
+                   100,200,500,1000)
+  }
+  
+  # Default colors
+  if ( is.null(colorPalette) ) {
+    colors <- c("#abe3f4", "#118cba", "#286096", "#8659a5", "#6a367a")
+    colorPalette <- grDevices::colorRampPalette(colors)(length(colorBins))
+  }
   
   # ----- Subset data ----------------------------------------------------------
   
@@ -186,10 +206,10 @@ sensor_videoFrame <- function(
   
   # ----- Plot legend ----------------------------------------------------------
   
-  colorPalette <- grDevices::colorRampPalette(c("#22f777", "yellow", "gold",
-                                                "#f19100", "#f15800", 
-                                                "#cc3702"))(30)
-  colorBins <- c(seq(0, 60, length = 24), 300)
+  # colorPalette <- grDevices::colorRampPalette(c("#22f777", "yellow", "gold",
+  #                                               "#f19100", "#f15800", 
+  #                                               "#cc3702"))(30)
+  # colorBins <- c(seq(0, 60, length = 24), 300)
   usr <- par("usr")
   top    <- usr[4] - (usr[4] - usr[3]) * 0.4
   bottom <- usr[3] + (usr[4] - usr[3]) * 0.08
@@ -216,7 +236,7 @@ sensor_videoFrame <- function(
   
   colors <- PWFSLSmoke::aqiColors(data$pm25, 
                                   palette = colorPalette, 
-                                  domain = c(0, 250),
+                                  domain = c(0, 500),
                                   bins = colorBins)
   
   points(x = data$longitude,
@@ -272,5 +292,90 @@ sensor_videoFrame <- function(
   # Red 'current time' marker
   axis(side = 4, line = -3.9, at = -as.numeric(frameTime), col = 'red', 
        col.ticks = 2, lwd.ticks = 12, labels = "", tcl = -2)
+  
+}
+
+# ===== DEBUGGING ==============================================================
+
+if ( FALSE ) {
+
+  library(MazamaSpatialUtils) # for timeInfo()
+  
+  setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+  
+  # Get dates
+  dateRange <- MazamaCoreUtils::dateRange(
+    startdate = "2019-07-04",
+    days = 7,
+    timezone = "America/Los_Angeles"
+  )
+
+  # Get data
+  sensor <- sensor_load("scaqmd", dateRange[1], dateRange[2])
+
+  movieData <-
+    sensor %>%
+    sensor_filterMeta(communityRegion == "Seal Beach") %>%
+    sensor_filterDate(dateRange[1], dateRange[2])
+
+  # Seal Beach map
+  lon <- -118.083
+  lat <- 33.767
+  zoom <- 15
+
+  map <- PWFSLSmoke::staticmap_getStamenmapBrick(
+    centerLon = lon,
+    centerLat = lat,
+    zoom = zoom,
+    width = 770,
+    height = 495
+  )
+
+  tickSkip <- 24
+  timeAxis <- movieData$data$datetime
+  timeTicks <- timeAxis[(lubridate::hour(timeAxis) - 1) %% tickSkip == 0 &
+                   lubridate::minute(timeAxis) == 0]
+  timeLabels <- strftime(timeTicks, "%l %P")
+  timeInfo <- PWFSLSmoke::timeInfo(timeAxis, longitude = lon, latitude = lat)
+
+  frameTime <- MazamaCoreUtils::parseDatetime("2019-07-04 21", 
+                                              timezone = "America/Los_Angeles")
+  timeInfo <- PWFSLSmoke::timeInfo(frameTime, lon, lat)
+  
+  # Original colors and bins:
+  # colorPalette = grDevices::colorRampPalette(c("#22f777", "yellow", "gold",
+  #                                              "#f19100", "#f15800", 
+  #                                              "#cc3702"))(30)
+  # colorBins = c(seq(0, 60, length = 24), 300)
+  
+  colors <- c("#abe3f4", "#118cba", "#286096", "#8659a5", "#6a367a")
+  
+  # Few bins
+  colorPalette <- colors
+  colorBins <- c(0, 12, 35, 55, 75, 1000)
+  
+  # Many bins
+  colorBins <- c(0,
+                 seq(0,12,length.out=5)[-1],
+                 seq(12,35,length.out=5)[-1],
+                 seq(35,55,length.out=5)[-1],
+                 seq(55,75,length.out=5)[-1],
+                 100,200,500,1000)
+  colorPalette <- grDevices::colorRampPalette(colors)(length(colorBins))
+  
+  
+  sensor_videoFrame(
+    sensor = sensor,
+    communityRegion = "Seal Beach",
+    frameTime = frameTime,
+    timeInfo = timeInfo,
+    timeAxis = timeAxis,
+    timeTicks = timeTicks,
+    timeLabels = timeLabels,
+    map = map,
+    colorPalette = NULL,
+    colorBins = colorBins
+    # logo = png::readPNG("~/Desktop/ms_logo.png")
+  )
   
 }

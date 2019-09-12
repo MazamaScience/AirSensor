@@ -35,7 +35,7 @@ if ( interactive() ) {
     outputDir = getwd(),
     logDir = getwd(),
     datestamp = "",
-    timezone = "America/Los_Angeles",
+    # timezone = "America/Los_Angeles",
     pattern = "^SCNP_..$"
   )  
   
@@ -60,11 +60,11 @@ if ( interactive() ) {
       default="", 
       help="Datestamp specifying the year and month as YYYYMM [default=current month]"
     ),
-    make_option(
-      c("-t","--timezone"), 
-      default="America/Los_Angeles", 
-      help="timezone used to interpret datestamp  [default=\"%default\"]"
-    ),
+    # make_option(
+    #   c("-t","--timezone"), 
+    #   default="America/Los_Angeles", 
+    #   help="timezone used to interpret datestamp  [default=\"%default\"]"
+    # ),
     make_option(
       c("-p","--pattern"), 
       default="^[Ss][Cc].._..$", 
@@ -91,6 +91,9 @@ if ( opt$version ) {
 
 # ----- Validate parameters ----------------------------------------------------
 
+# Create month files based on UTC months
+timezone <- "UTC"
+
 if ( !dir.exists(opt$outputDir) ) 
   stop(paste0("outputDir not found:  ",opt$outputDir))
 
@@ -98,9 +101,9 @@ if ( !dir.exists(opt$logDir) )
   stop(paste0("logDir not found:  ",opt$logDir))
 
 # Default to the current month
-now <- lubridate::now(tzone = opt$timezone)
+now <- lubridate::now(tzone = timezone)
 if ( opt$datestamp == "" ) {
-  opt$datestamp <- strftime(now, "%Y%m01", tz = opt$timezone)
+  opt$datestamp <- strftime(now, "%Y%m01", tz = timezone)
 }
 
 # Handle the case where the day is already specified
@@ -131,14 +134,28 @@ logger.debug("R session:\n\n%s\n", sessionString)
 
 result <- try({
   
-  # Get times
-  starttime <- lubridate::ymd(datestamp, tz=opt$timezone)
+  # Get times that extend one day earlier and one day later to ensure we get
+  # have a least a full month, regardless of timezone. This overlap is OK 
+  # because PWFSLSmoke::monitor_join() will remove duplicate records.
+  starttime <- lubridate::ymd(datestamp, tz=timezone)
   endtime <- lubridate::ceiling_date(starttime + lubridate::ddays(20), unit="month")
   
-  logger.info("Loading PA Synoptic data")
-  pas <- pas_load()
+  starttime <- starttime - lubridate::ddays(1)
+  endtime <- endtime + lubridate::ddays(1)
   
-  # Find the labels of interest
+  # Get strings
+  startdate <- strftime(starttime, "%Y-%m-%d %H:%M:%S", tz = "UTC")
+  enddate <- strftime(endtime, "%Y-%m-%d %H:%M:%S", tz = "UTC")
+  
+  logger.trace("startdate = %s, enddate = %s", startdate, enddate)
+  
+  logger.info("Loading PAS data for %s ", opt$pattern)
+  
+  # Start with all sensors and filter based on date.
+  pas <- pas_load(archival = TRUE) %>%
+    pas_filter(lastSeenDate > starttime)
+  
+  # Find the labels of interest, only one per sensor
   labels <-
     pas %>%
     pas_filter(is.na(parentID)) %>%
@@ -156,7 +173,7 @@ result <- try({
     result <- try({
       
       airSensorList[[label]] <- 
-        pat_loadMonth(label, monthstamp, opt$timezone) %>%
+        pat_loadMonth(label, monthstamp, timezone) %>%
         pat_createAirSensor(
           period = "1 hour",
           parameter = "pm25",

@@ -72,7 +72,7 @@ Air Quality Management District." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.9</span>
       </span>
     </div>
 
@@ -159,7 +159,8 @@ Air Quality Management District.</p>
 
     <pre class="usage"><span class='fu'>sensor_videoFrame</span>(<span class='kw'>sensor</span> <span class='kw'>=</span> <span class='fu'><a href='sensor_load.html'>sensor_load</a></span>(), <span class='kw'>communityRegion</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>frameTime</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>timeInfo</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>timeAxis</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>timeTicks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>timeLabels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>map</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>logo</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+  <span class='kw'>timeTicks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>timeLabels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>map</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>logo</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>colorPalette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>colorBins</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -199,6 +200,14 @@ Air Quality Management District.</p>
     <tr>
       <th>logo</th>
       <td><p>A PNG image to be placed near the upper right of the image.</p></td>
+    </tr>
+    <tr>
+      <th>colorPalette</th>
+      <td><p>Vector of colors to use.</p></td>
+    </tr>
+    <tr>
+      <th>colorBins</th>
+      <td><p>Vector of numeric breaks used to map pm25 values to colors</p></td>
     </tr>
     </table>
     
