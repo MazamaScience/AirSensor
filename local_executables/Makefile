@@ -2,16 +2,41 @@
 # Makefile for configuring scripts in local_executables
 #
 
-hell whoami A little Makefile magic from:  https://www.gnu.org/software/make/manual/html_node/Flavors.html#Flavors
+ARCHIVE_BASE_URL:="http://smoke.mazamascience.com/data/PurpleAir"
+
+# A little Makefile magic from:  https://www.gnu.org/software/make/manual/html_node/Flavors.html#Flavors
 USER_NAME:=$(shell whoami)
 
 # And a target to test it
 show_user_name:
-	echo $(USER_NAME)
+	@echo ${USER_NAME}
 
 ################################################################################
-# PAS objects
+# Create new crontab files and executable scripts
+#
+# NOTE:  Use "%" as the sed delimiter to avoid conflict with "/" in the ARCHIVE_BASE_URL
 
-configure:
-	sed 's/__USER_NAME__/${USER_NAME}/g' __crontab_daily.txt > crontab_daily.txt
+configure_crontabs:
+	sed 's%__USER_NAME__%${USER_NAME}%g' __crontab_daily.txt > crontab_daily.txt
+	sed 's%__USER_NAME__%${USER_NAME}%g' __crontab_archive.txt > crontab_archive.txt
 
+configure_scripts:
+	sed 's%__ARCHIVE_BASE_URL__%${ARCHIVE_BASE_URL}%g' __createCalendarPlot_exec.R > createCalendarPlot_exec.R
+	sed 's%__ARCHIVE_BASE_URL__%${ARCHIVE_BASE_URL}%g' __createLatestAirSensor_exec.R > createLatestAirSensor_exec.R
+	sed 's%__ARCHIVE_BASE_URL__%${ARCHIVE_BASE_URL}%g' __createLatestPAT_exec.R > createLatestPAT_exec.R
+	sed 's%__ARCHIVE_BASE_URL__%${ARCHIVE_BASE_URL}%g' __createMonthlyAirSensor_exec.R > createMonthlyAirSensor_exec.R
+	sed 's%__ARCHIVE_BASE_URL__%${ARCHIVE_BASE_URL}%g' __createMonthlyPAT_exec.R > createMonthlyPAT_exec.R
+	sed 's%__ARCHIVE_BASE_URL__%${ARCHIVE_BASE_URL}%g' __createPAS_archival_exec.R > createPAS_archival_exec.R
+	sed 's%__ARCHIVE_BASE_URL__%${ARCHIVE_BASE_URL}%g' __createPAS_exec.R > createPAS_exec.R
+	sed 's%__ARCHIVE_BASE_URL__%${ARCHIVE_BASE_URL}%g' __createVideo_exec.R > createVideo_exec.R
+	chmod +x createCalendarPlot_exec.R
+	chmod +x createLatestAirSensor_exec.R
+	chmod +x createLatestPAT_exec.R
+	chmod +x createMonthlyAirSensor_exec.R
+	chmod +x createMonthlyPAT_exec.R
+	chmod +x createPAS_archival_exec.R
+	chmod +x createPAS_exec.R
+	chmod +x createVideo_exec.R
+
+configure: configure_crontabs configure_scripts
+	
