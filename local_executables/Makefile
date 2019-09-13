@@ -2,23 +2,20 @@
 # Makefile for configuring scripts in local_executables
 #
 
-ARCHIVE_BASE_URL:="http://smoke.mazamascience.com/data/PurpleAir"
+# Set variables
+ARCHIVE_BASE_URL:="http://40.117.96.252/data/PurpleAir"
 
-# A little Makefile magic from:  https://www.gnu.org/software/make/manual/html_node/Flavors.html#Flavors
-USER_NAME:=$(shell whoami)
+EXEC_DIR:=/home/jonathan/AirSensor/local_executables
 
-# And a target to test it
-show_user_name:
-	@echo ${USER_NAME}
 
 ################################################################################
 # Create new crontab files and executable scripts
 #
-# NOTE:  Use "%" as the sed delimiter to avoid conflict with "/" in the ARCHIVE_BASE_URL
+# NOTE:  Use "%" as the sed delimiter to avoid conflict with "/"
 
 configure_crontabs:
-	sed 's%__USER_NAME__%${USER_NAME}%g' __crontab_daily.txt > crontab_daily.txt
-	sed 's%__USER_NAME__%${USER_NAME}%g' __crontab_archive.txt > crontab_archive.txt
+	sed 's%__EXEC_DIR__%${EXEC_DIR}%g' __crontab_daily.txt > crontab_daily.txt
+	sed 's%__EXEC_DIR__%${EXEC_DIR}%g' __crontab_archive.txt > crontab_archive.txt
 
 configure_scripts:
 	sed 's%__ARCHIVE_BASE_URL__%${ARCHIVE_BASE_URL}%g' __createCalendarPlot_exec.R > createCalendarPlot_exec.R
