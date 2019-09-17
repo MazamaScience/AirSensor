@@ -1,4 +1,10 @@
 
+# AirSensor 0.4.10
+
+* Fixed bug in `sensor_filterMeta()` where filtering the number of rows in
+`sensor$meta` did not also filter columns in `sensor$data`.
+
+
 # AirSensor 0.4.9
 
 * Updated `sensor_videoFrame()` with new arguments and new defaults for 
