@@ -60,11 +60,6 @@ if ( interactive() ) {
       default="", 
       help="Datestamp specifying the year and month as YYYYMM [default=current month]"
     ),
-    # make_option(
-    #   c("-t","--timezone"), 
-    #   default="America/Los_Angeles", 
-    #   help="timezone used to interpret datestamp  [default=\"%default\"]"
-    # ),
     make_option(
       c("-p","--pattern"), 
       default="^[Ss][Cc].._..$", 
