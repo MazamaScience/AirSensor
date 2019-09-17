@@ -40,10 +40,17 @@ sensor_filterMeta <- function(
   if ( PWFSLSmoke::monitor_isEmpty(sensor) ) 
     stop("Parameter 'sensor' has no data.")
   
-  # ----- Filter meta ----------------------------------------------------------
+  # ----- Filter based on metadata ---------------------------------------------
   
+  # FILTER meta rows
   sensor$meta <-
-    dplyr::filter(sensor$meta, ...)
+    sensor$meta %>%
+    dplyr::filter(...)
+  
+  # SELECT data columns
+  sensor$data <-
+    sensor$data %>%
+    dplyr::select(c('datetime', sensor$meta$monitorID))
   
   return(sensor)
   

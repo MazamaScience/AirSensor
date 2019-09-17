@@ -156,3 +156,47 @@ sensor_pollutionRose <- function(
   })
   
 }
+
+# ===== DEBUGGING ==============================================================
+
+if ( FALSE ) {
+  
+  sensor <- NULL 
+  windData <- NULL
+  statistic <- "prop.mean"
+  key <- TRUE 
+  keyPosition <- "right"
+  annotate <- TRUE
+  angle <- 30
+  angleScale <- 315
+  gridLine <- NULL
+  breaks <- 6 
+  paddle <- FALSE 
+  seg <- 0.9 
+  normalize <- FALSE
+ 
+  sensor <- 
+    sensor_load(startdate = 20180901, enddate = 20180930) %>%
+    sensor_filterMeta(monitorID == "SCUV_09")
+  
+  windsite <- 
+    worldmet::getMeta(lat = sensor$meta$latitude, lon = sensor$meta$longitude, n = 3, plot = FALSE)
+  
+  windData <- 
+    worldmet::importNOAA(code = windsite$code[1], year = 2018, parallel = FALSE) %>%
+    dplyr::select(windData, c("date", "wd", "ws"))
+  
+  sensor_pollutionRose(sensor, windData, statistic = "prop.mean")
+  
+  
+  #####
+  # Compare with
+  #####
+  
+  tempdata <- data.frame(sensor$data$datetime, sensor$data$SCUV_09)
+  colnames(tempdata) <- c("date", "SCUV_09")
+  tempdata <- merge(tempdata, windData, by = "date")
+  
+  pollutionRose(tempdata, pollutant = "SCUV_09", statistic = "prop.mean")
+  
+}
