@@ -82,8 +82,6 @@ enhanceSynopticData <- function(
   if ( !is.logical(includePWFSL) )
     stop("parameter 'includePWFSL' is not a logical value")
   
-  logger.debug("----- enhanceSynopticData() -----")
-  
   # On 2019-09-05, the data columns look like this:
   #
   # > sort(names(pas_raw))
