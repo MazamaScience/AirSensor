@@ -1,4 +1,8 @@
 
+# AirSensor 0.5.0
+
+* Version bump.
+
 # AirSensor 0.4.10
 
 * Fixed bug in `sensor_filterMeta()` where filtering the number of rows in
