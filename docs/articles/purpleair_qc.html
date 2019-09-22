@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -244,16 +244,16 @@ raw_data &lt;-<span class="st"> </span>
 <span class="co"># Look at a random sample of this new dataframe</span>
 dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(raw_data, <span class="dv">10</span>)</code></pre></div>
 <pre><code>##      datetime channel  pm25
-## 1  2019061118  pm25_B  8.97
-## 2  2019061112  pm25_A  7.47
-## 3  2019061116  pm25_A  9.28
-## 4  2019061117  pm25_A  8.83
-## 5  2019061118  pm25_B    NA
-## 6  2019061117  pm25_B  4.51
-## 7  2019061123  pm25_B 12.00
-## 8  2019061113  pm25_A  7.29
-## 9  2019061106  pm25_A  7.03
-## 10 2019061121  pm25_A 16.45</code></pre>
+## 1  2019061116  pm25_A  6.86
+## 2  2019061112  pm25_B  7.55
+## 3  2019061122  pm25_A 14.89
+## 4  2019061100  pm25_B  5.13
+## 5  2019061116  pm25_B  6.44
+## 6  2019061117  pm25_A  6.82
+## 7  2019061110  pm25_B  8.72
+## 8  2019061115  pm25_A 10.48
+## 9  2019061104  pm25_A  6.58
+## 10 2019061115  pm25_A  8.13</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create a timeseries using boxplots</span>
 colors &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/rgb">rgb</a></span>(<span class="fl">0.9</span>, <span class="fl">0.25</span>, <span class="fl">0.2</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/rgb">rgb</a></span>(<span class="fl">0.2</span>, <span class="fl">0.25</span>, <span class="fl">0.9</span>))
 <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(raw_data, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(datetime, pm25, <span class="dt">color =</span> channel)) <span class="op">+</span><span class="st"> </span>
@@ -275,17 +275,17 @@ agg_data &lt;-<span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"t-test p-value"</span>)</code></pre></div>
 <p><img src="purpleair_qc_files/figure-html/AB_boxplot-2.png" width="672"></p>
 <p>And here is the same for a day with serious problems:</p>
-<pre><code>##      datetime channel    pm25
-## 1  2019061213  pm25_A   18.60
-## 2  2019061204  pm25_B   13.81
-## 3  2019061210  pm25_A   19.62
-## 4  2019061201  pm25_A   21.18
-## 5  2019061203  pm25_A 3311.63
-## 6  2019061210  pm25_B   15.24
-## 7  2019061207  pm25_A 3326.87
-## 8  2019061217  pm25_A   12.07
-## 9  2019061207  pm25_B   15.17
-## 10 2019061200  pm25_B   13.33</code></pre>
+<pre><code>##      datetime channel   pm25
+## 1  2019061211  pm25_B  15.88
+## 2  2019061203  pm25_B  13.61
+## 3  2019061218  pm25_A  11.89
+## 4  2019061208  pm25_B  18.17
+## 5  2019061210  pm25_B  15.59
+## 6  2019061206  pm25_B  12.46
+## 7  2019061209  pm25_A  20.51
+## 8  2019061205  pm25_A 236.91
+## 9  2019061211  pm25_A  21.59
+## 10 2019061218  pm25_B  12.04</code></pre>
 <p><img src="purpleair_qc_files/figure-html/AB_boxplot_2-1.png" width="672"><img src="purpleair_qc_files/figure-html/AB_boxplot_2-2.png" width="672"></p>
 <p>We can see that the null hypothesis – the difference in means is entirely due to chance – is extremely unlikely <code>pm25_p &lt; 1e-30</code>, for example, only occur for hours where the A and B channels have hourly avergaes that are both highly precise (low std dev) and very different. We can thus use the <code>pm25_t</code> variable to flag those hours where the A and B channels disagree.</p>
 </div>
