@@ -40,7 +40,11 @@
 <meta property="og:title" content="Base URL for pre-generated data — ArchiveBaseUrl" />
 
 <meta property="og:description" content="This package maintains an internal archive base URL which users 
-must set using setArchiveBaseUrl().
+can set using setArchiveBaseUrl(). Alternatively, if an archive of 
+pre-generated data files is availalbe locally, users can set the location of 
+this directory withsetArchiveBaseDir().
+To avoid internet latency, specification of BASE_DIR will always take 
+precedence over specification of BASE_URL.
 Known base URLs include:
 http://smoke.mazamascience.com/data/PurpleAir
 " />
@@ -86,7 +90,7 @@ sensor_loadMonth()
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -166,8 +170,12 @@ sensor_loadMonth()
     <div class="ref-description">
     
     <p>This package maintains an internal archive base URL which users 
-must set using <code><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl()</a></code>.</p>
-<p>Known base URLs include:</p><ul>
+can set using <code><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl()</a></code>. Alternatively, if an archive of 
+pre-generated data files is availalbe locally, users can set the location of 
+this directory with<code><a href='setArchiveBaseDir.html'>setArchiveBaseDir()</a></code>.</p>
+<p>To avoid internet latency, specification of BASE_DIR will always take 
+precedence over specification of BASE_URL.
+Known base URLs include:</p><ul>
 <li><p>http://smoke.mazamascience.com/data/PurpleAir</p></li>
 </ul>
 
@@ -193,7 +201,8 @@ URL. These functions include:</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>getArchiveBaseUrl</p>
-<p>setArchiveBaseUrl</p></div>
+<p>setArchiveBaseUrl</p>
+<p>setArchiveBaseDIR</p></div>
     
 
   </div>

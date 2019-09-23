@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -143,9 +143,22 @@
       <small>Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="airsensor-0-5-1" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-5-1" class="anchor"></a>AirSensor 0.5.1</h1>
+<ul>
+<li>Upudated data loding to allow for loading data from a local archive. New functions include: <code><a href="../reference/loadDataFile.html">loadDataFile()</a></code>, <code><a href="../reference/getArchiveBaseDir.html">getArchiveBaseDir()</a></code>, <code><a href="../reference/setArchiveBaseDir.html">setArchiveBaseDir()</a></code>.</li>
+<li>All <code>~_load()</code> and <code>~_loadLatest()</code> functions now call <code><a href="../reference/loadDataFile.html">loadDataFile()</a></code>
+</li>
+<li>
+<code><a href="../reference/pat_load.html">pat_load()</a></code> now continues working in the face of missing data files. under the hood and will work with data archives found at <code>archiveBaseDir</code>.</li>
+<li>Removed <code>pat_calendarPlot()</code> and <code>sensor_calendarPlot()</code> from the packge. These work-in-progress functions are now found in <code>local_R/</code>. We anticipate including calendar plotting functionality in the <strong>AirMonitorPlots</strong> package.</li>
+</ul>
+</div>
     <div id="airsensor-0-5-0" class="section level1">
 <h1 class="page-header">
 <a href="#airsensor-0-5-0" class="anchor"></a>AirSensor 0.5.0</h1>
+<p>Version 0.5.x represents the version of the package that is ready for public release.</p>
 <ul>
 <li>Version bump.</li>
 </ul>
@@ -219,7 +232,7 @@
 <h1 class="page-header">
 <a href="#airsensor-0-4-3" class="anchor"></a>AirSensor 0.4.3</h1>
 <ul>
-<li>Updated <code><a href="../reference/pat_calendarPlot.html">pat_calendarPlot()</a></code> and <code><a href="../reference/sensor_calendarPlot.html">sensor_calendarPlot()</a></code> to handle discrete color scales.</li>
+<li>Updated <code>pat_calendarPlot()</code> and <code>sensor_calendarPlot()</code> to handle discrete color scales.</li>
 </ul>
 </div>
     <div id="airsensor-0-4-2" class="section level1">
@@ -228,7 +241,7 @@
 <ul>
 <li>
 <code><a href="../reference/pat_createAirSensor.html">pat_createAirSensor()</a></code> now uses <code>pat$meta$label</code> to populate <code>sensor$meta$siteName</code>.</li>
-<li>New <code><a href="../reference/sensor_calendarPlot.html">sensor_calendarPlot()</a></code>.</li>
+<li>New <code>sensor_calendarPlot()</code>.</li>
 <li>Added <code>aspectRatio</code> argument to <code>~calendarPlot()</code> functions.</li>
 <li>Updated requirements: MazamaCoreUtils (&gt;= 0.3.1), PWFSLSmoke (&gt;= 1.2.100)</li>
 <li>
@@ -257,7 +270,7 @@
 <h1 class="page-header">
 <a href="#airsensor-0-3-15" class="anchor"></a>AirSensor 0.3.15</h1>
 <ul>
-<li>New <code><a href="../reference/pat_calendarPlot.html">pat_calendarPlot()</a></code> tailored to full-year calendar heatmaps.</li>
+<li>New <code>pat_calendarPlot()</code> tailored to full-year calendar heatmaps.</li>
 <li>Added <code><a href="../reference/pat_distinct.html">pat_distinct()</a></code> to remove duplicate data records.</li>
 <li>All <code>pat_~()</code> functions now remove duplicate records to guarantee proper functioning of chained functions.</li>
 </ul>
@@ -282,7 +295,7 @@
 </li>
 <li>Fixed <code><a href="../reference/pas_leaflet.html">pas_leaflet()</a></code> coloring issue.pwd</li>
 <li>Fixed bug in <code><a href="../reference/pat_load.html">pat_load()</a></code> which didn’t trim data to date boundaries when a local timezone was passed in.</li>
-<li>Added <code><a href="../reference/pat_calendarPlot.html">pat_calendarPlot()</a></code> to plot annual daily heat map.</li>
+<li>Added <code>pat_calendarPlot()</code> to plot annual daily heat map.</li>
 </ul>
 </div>
     <div id="airsensor-0-3-12" class="section level1">
@@ -767,6 +780,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#airsensor-0-5-1">0.5.1</a></li>
         <li><a href="#airsensor-0-5-0">0.5.0</a></li>
         <li><a href="#airsensor-0-4-10">0.4.10</a></li>
         <li><a href="#airsensor-0-4-9">0.4.9</a></li>

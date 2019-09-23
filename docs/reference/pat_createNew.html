@@ -71,7 +71,7 @@ specific PurpleAir sensors." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -207,7 +207,8 @@ in the local timezone for the sensor of interest.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pas_load.html'>pas_load</a></span>()
+    <pre class="examples"><div class='input'><span class='fu'><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl</a></span>(<span class='st'>"http://smoke.mazamascience.com/data/PurpleAir"</span>)
+<span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pas_load.html'>pas_load</a></span>()
 <span class='no'>pat</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_createNew</span>(<span class='no'>pas</span>, <span class='st'>"Seattle"</span>, <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fl'>20180701</span>, <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='fl'>20180901</span>)
 <span class='fu'><a href='pat_multiplot.html'>pat_multiplot</a></span>(<span class='no'>pat</span>)</div><div class='img'><img src='pat_createNew-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
