@@ -139,7 +139,89 @@ NULL
 # ----- Internal Package State -------------------------------------------------
 
 airsensorEnv <- new.env(parent = emptyenv())
+airsensorEnv$archiveBaseDir <- NULL
 airsensorEnv$archiveBaseUrl <- NULL
+
+#' @docType data
+#' @keywords environment
+#' @name ArchiveBaseDir
+#' @title Base directory for pre-generated data
+#' @format Directory string.
+#' @description If an archive of pre-generated data files is availalbe locally,
+#' users can set the location of this directory with\code{setArchiveBaseDir()}.
+#' Otherwise, users must specify an external source of pre-generated datafiles 
+#' with \code{setArchiveBaseUrl()}.
+#' 
+#' To avoid internet latency, specification of BASE_DIR will always take 
+#' precedence over specification of BASE_URL.
+#' 
+#' Package functions that load pre-generated data files will load data from this
+#' directory. These functions include:
+#' 
+#' \itemize{
+#' \item{\code{pas_load()}}
+#' \item{\code{pat_load()}}
+#' \item{\code{pat_loadLatest()}}
+#' \item{\code{pat_loadMonth()}}
+#' \item{\code{sensor_load()}}
+#' \item{\code{sensor_loadLatest()}}
+#' \item{\code{sensor_loadMonth()}}
+#' }
+#' 
+#' @seealso getArchiveBaseDir
+#' @seealso setArchiveBaseDir
+#' @seealso setArchiveBaseUrl
+NULL
+
+#' @keywords environment
+#' @export
+#' @title Get data archive base directory
+#' @description Returns the package base directory pointing to an archive of
+#' pre-generated data files.
+#' @return directory string.
+#' @seealso archiveBaseDir
+#' @seealso setArchiveBaseDir
+getArchiveBaseDir <- function() {
+  MazamaCoreUtils::stopIfNull(
+    target = airsensorEnv$archiveBaseDir,
+    msg = paste0(
+      'No BASE_DIR set. Please set one with setArchiveBaseDir("BASE_DIR).'
+    )
+  )
+  return(airsensorEnv$archiveBaseDir)    
+}
+
+#' @keywords environment
+#' @export
+#' @title Set data archive base directory
+#' @param archiveBaseDir Base directory pointing to an archive of pre-generated 
+#' data files.
+#' @description Sets the package base directory pointing to an archive of
+#' pre-generated data files.
+#' 
+#' @return Silently returns previous value of base directory.
+#' @seealso ArchiveBaseDir
+#' @seealso getArchiveBaseDir
+setArchiveBaseDir <- function(archiveBaseDir) {
+  old <- airsensorEnv$archiveBaseDir
+  airsensorEnv$archiveBaseDir <- stringr::str_remove(archiveBaseDir, "/$")
+  return(invisible(old))
+}
+
+#' @keywords environment
+#' @keywords internal
+#' @export
+#' @title Remove data archive base directory
+#' @description Resets the data archive base directory to NULL. Used for internal 
+#' testing. 
+#' @return Silently returns previous value of the base directory.
+#' @seealso ArchiveBaseDir
+#' @seealso getArchiveBaseDir
+#' @seealso setArchiveBaseDir
+removeArchiveBaseDir <- function() {
+  old <- airsensorEnv$archiveBaseDir
+  airsensorEnv$archiveBaseDir <- NULL
+}
 
 #' @docType data
 #' @keywords environment
@@ -147,8 +229,13 @@ airsensorEnv$archiveBaseUrl <- NULL
 #' @title Base URL for pre-generated data
 #' @format URL string.
 #' @description This package maintains an internal archive base URL which users 
-#' must set using \code{setArchiveBaseUrl()}.
+#' can set using \code{setArchiveBaseUrl()}. Alternatively, if an archive of 
+#' pre-generated data files is availalbe locally, users can set the location of 
+#' this directory with\code{setArchiveBaseDir()}.
 #' 
+#' To avoid internet latency, specification of BASE_DIR will always take 
+#' precedence over specification of BASE_URL.
+
 #' Known base URLs include:
 #' \itemize{
 #' \item{http://smoke.mazamascience.com/data/PurpleAir}
@@ -169,11 +256,11 @@ airsensorEnv$archiveBaseUrl <- NULL
 #' 
 #' @seealso getArchiveBaseUrl
 #' @seealso setArchiveBaseUrl
+#' @seealso setArchiveBaseDIR
 NULL
 
 #' @keywords environment
 #' @export
-#' @import sp
 #' @title Get data archive base URL
 #' @description Returns the package base URL pointing to an archive of
 #' pre-generated data files.
@@ -190,7 +277,7 @@ getArchiveBaseUrl <- function() {
     )
   )
   return(airsensorEnv$archiveBaseUrl)    
-
+  
 }
 
 #' @keywords environment

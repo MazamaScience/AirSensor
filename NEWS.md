@@ -1,4 +1,10 @@
 
+# AirSensor 0.5.1
+
+*  Upudated data loding to allow for loading data from a local archive. New
+functions include: `loadDataFile()`, `getArchiveBaseDir()`,
+`setArchiveBaseDir()`.
+
 # AirSensor 0.5.0
 
 * Version bump.

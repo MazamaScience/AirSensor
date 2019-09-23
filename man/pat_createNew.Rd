@@ -36,6 +36,7 @@ in the local timezone for the sensor of interest.
 }
 \examples{
 \donttest{
+setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 pas <- pas_load()
 pat <- pat_createNew(pas, "Seattle", startdate = 20180701, enddate = 20180901)
 pat_multiplot(pat)

@@ -7,8 +7,12 @@
 \format{URL string.}
 \description{
 This package maintains an internal archive base URL which users 
-must set using \code{setArchiveBaseUrl()}.
+can set using \code{setArchiveBaseUrl()}. Alternatively, if an archive of 
+pre-generated data files is availalbe locally, users can set the location of 
+this directory with\code{setArchiveBaseDir()}.
 
+To avoid internet latency, specification of BASE_DIR will always take 
+precedence over specification of BASE_URL.
 Known base URLs include:
 \itemize{
 \item{http://smoke.mazamascience.com/data/PurpleAir}
@@ -31,5 +35,7 @@ URL. These functions include:
 getArchiveBaseUrl
 
 setArchiveBaseUrl
+
+setArchiveBaseDIR
 }
 \keyword{environment}
