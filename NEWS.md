@@ -1,6 +1,9 @@
 
 # AirSensor 0.5.0
 
+Version 0.5.x represents the version of the package that is  ready for public 
+release.
+
 * Version bump.
 
 # AirSensor 0.4.10
