@@ -1,6 +1,6 @@
 #' @export
 #' @importFrom rlang .data
-#' @importFrom MazamaCoreUtils logger.debug
+#' @importFrom MazamaCoreUtils logger.isInitialized logger.error
 #' 
 #' @title Load PurpleAir time series data for a month
 #' 
@@ -39,14 +39,14 @@ pat_loadMonth <- function(
   timezone = "America/Los_Angeles"
 ) {
   
-  # ----- Validate parameters --------------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
   
   # TODO: Work with lubridate to support all formats
   
   MazamaCoreUtils::stopIfNull(label)
   
   # Default to the current month
-  if ( is.null(datestamp) || datestamp == "" ) {
+  if ( is.null(datestamp) || is.na(datestamp) || datestamp == "" ) {
     now <- lubridate::now(tzone = timezone)
     datestamp <- strftime(now, "%Y%m%d", tz = timezone)
   }
@@ -56,31 +56,40 @@ pat_loadMonth <- function(
   monthstamp <- stringr::str_sub(datestamp, 1, 6)
   yearstamp <- stringr::str_sub(datestamp, 1, 4)
   
-  # ----- Load data from URL ---------------------------------------------------
+  # ----- Load data from URL or directory --------------------------------------
   
   # Use package internal URL
+  baseDir <- getArchiveBaseDir()
   baseUrl <- getArchiveBaseUrl()
   
   filename <- paste0("pat_", label, "_", monthstamp, ".rda")
-  filepath <- paste0(baseUrl, '/pat/', yearstamp, '/', filename)
+  dataUrl <- paste0(baseUrl, '/pat/', yearstamp)
   
-  # Define a 'connection' object so we can close it no matter what happens
-  conn <- url(filepath)
+  # dataDir should be NULL if baseDir is NULL
+  if ( is.null(baseDir) ) {
+    dataDir <- NULL
+  } else {
+    dataDir <- paste0(baseDir, '/pat/', yearstamp)
+  }
+  
+  # Get data from URL or directory
   result <- try({
-    suppressWarnings(pat <- get(load(conn)))
-  }, silent=TRUE )
-  close(conn)
-    
+    suppressWarnings( pat <- loadDataFile(filename, dataUrl, dataDir) )
+  }, silent = TRUE)
+  
   # NOTE:  We used suppressWarnings() above so that we can have a more
   # NOTE:  uniform error response for the large variety of reasons that
   # NOTE:  loading might fail.
   
   if ( "try-error" %in% class(result) ) {
-    # TODO:  Restore logging when we stop generating "futile.logger" errors
-    # TODO:  when logging has not been initialized.
-    # # Log the error if logging is enabled. Fail silently otherwise.
-    # try({ logger.error("%s", geterrmessage()) }, silent = TRUE)
-    stop(paste0("Data file could not be loaded: ", filepath), call.=FALSE)
+    if ( logger.isInitialized() ) {
+      logger.error("%s", geterrmessage())
+    }
+    if ( is.null(baseDir) ) {
+      stop(paste0("Data file could not be loaded from: ", baseUrl), call.=FALSE)
+    } else {
+      stop(paste0("Data file could not be loaded from: ", baseDir), call.=FALSE)
+    }
   }
   
   # ----- Return ---------------------------------------------------------------
@@ -88,6 +97,6 @@ pat_loadMonth <- function(
   # Remove any duplicate data records
   pat <- pat_distinct(pat)
   
-  return(invisible(pat))
+  return(pat)
   
 }

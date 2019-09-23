@@ -36,10 +36,8 @@ initializeMazamaSpatialUtils <- function(
   
   # ----- Validate Parameters --------------------------------------------------
   
-  # TODO:  When it becomes available, switch to using "logger.isInitialized()".
-  
-  # Set up logging if already set up
-  if ( ! 'futile.logger' %in% loadedNamespaces() ) {
+  # Set up logging if not already set up
+  if ( !MazamaCoreUtils::logger.isInitialized() ) {
     MazamaCoreUtils::logger.setup()
     MazamaCoreUtils::logger.setLevel(logLevel)
   }

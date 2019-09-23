@@ -1,13 +1,19 @@
 
 # AirSensor 0.5.1
 
-*  Upudated data loding to allow for loading data from a local archive. New
+* Upudated data loding to allow for loading data from a local archive. New
 functions include: `loadDataFile()`, `getArchiveBaseDir()`,
 `setArchiveBaseDir()`.
+* All `~_load()` and `~_loadLatest()` functions now call `loadDataFile()` 
+* `pat_load()` now continues working in the face of missing data files.
+under the hood and will work with data archives found at `archiveBaseDir`.
+* Removed `pat_calendarPlot()` and `sensor_calendarPlot()` from the packge.
+These work-in-progress functions are now found in `local_R/`. We anticipate
+including calendar plotting functionality in the **AirMonitorPlots** package.
 
 # AirSensor 0.5.0
 
-Version 0.5.x represents the version of the package that is  ready for public 
+Version 0.5.x represents the version of the package that is ready for public 
 release.
 
 * Version bump.

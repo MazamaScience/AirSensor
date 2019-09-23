@@ -1,7 +1,7 @@
 #' @export
 #' @importFrom rlang .data
 #' @importFrom dplyr filter
-#' @importFrom MazamaCoreUtils logger.debug logger.error
+#' @importFrom MazamaCoreUtils logger.isInitialized logger.error
 #' 
 #' @title Load PurpleAir synoptic data
 #' 
@@ -55,8 +55,6 @@ pas_load <- function(
   archival = FALSE
 ) {
   
-  logger.debug("----- pas_load() -----")
-  
   # ----- Validate parameters --------------------------------------------------
   
   if ( datestamp <= "20190404" ) 
@@ -82,8 +80,9 @@ pas_load <- function(
   # NOTE:  files are created with UTC timestamps.
   
   # Keep looking back for a valid data file until all tries are used
-  while (!successful && tries < retries) {
+  while ( !successful && tries < retries ) {
     
+    # Create directory structure and filename
     yearstamp <- strftime(localDate, "%Y", tz = "UTC")
     datestamp <- strftime(localDate, "%Y%m%d", tz = "UTC")
     if ( archival ) {
@@ -93,7 +92,7 @@ pas_load <- function(
     }
     dataUrl <- paste0(baseUrl, '/pas/', yearstamp)
     
-    # dataDir must be NULL if baseDir is NULL
+    # dataDir should be NULL if baseDir is NULL
     if ( is.null(baseDir) ) {
       dataDir <- NULL
     } else {
@@ -104,13 +103,6 @@ pas_load <- function(
     result <- try({
       suppressWarnings( pas <- loadDataFile(filename, dataUrl, dataDir) )
     }, silent = TRUE)
-    
-    # # Define a 'connection' object so we can close it no matter what happens
-    # conn <- url(filepath)
-    # result <- try({
-    #   suppressWarnings(pas <- get(load(conn)))
-    # }, silent=TRUE )
-    # close(conn)
     
     successful <- !("try-error" %in% class(result))
     localDate <- localDate - lubridate::days(1)
@@ -123,12 +115,8 @@ pas_load <- function(
   # NOTE:  loading might fail.
   
   if ( "try-error" %in% class(result) ) {
-    # TODO:  Restore logging when we stop generating "futile.logger" errors
-    # TODO:  when logging has not been initialized.
-    # # Log the error if logging is enabled. Fail silently otherwise.
-    # try({ logger.error("%s", geterrmessage()) }, silent = TRUE)
     if ( logger.isInitialized() ) {
-      logger.error("%s", geterrmessa)
+      logger.error("%s", geterrmessage())
     }
     stop(paste0("Data file could not be loaded after ", retries, " tries"), 
          call.=FALSE)
@@ -136,6 +124,6 @@ pas_load <- function(
   
   # ----- Return ---------------------------------------------------------------
   
-  return(invisible(pas))
+  return(pas)
   
 }

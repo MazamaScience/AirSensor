@@ -34,12 +34,15 @@ loadDataFile <- function(
   # ----- Load the data --------------------------------------------------------
 
   # Always check for dataDir first
-  if ( !is.null(dataDir) && !is.na(dataDir) && dir.exists(dataDir) ) {
-
+  if ( 
+    !is.null(dataDir) && 
+    !is.na(dataDir) && 
+    dir.exists(path.expand(dataDir)) 
+  ) {
+    
     # Load from a file
     filepath <- file.path(path.expand(dataDir), filename)
-    ###logger.trace("filepath = %s", filepath)
-    
+
     result <- try({
       suppressWarnings(loadedData <- get(load(filepath)))
     }, silent = TRUE)
@@ -48,7 +51,6 @@ loadDataFile <- function(
 
     # Load from a URL
     filepath <- paste0(dataUrl, '/', filename)
-    ###logger.trace("filepath = %s", filepath)
 
     # Define a 'connection' object so we can close it no matter what happens
     conn <- url(filepath)

@@ -1,6 +1,5 @@
 #' @export
 #' @importFrom rlang .data
-#' @importFrom MazamaCoreUtils logger.debug
 #' 
 #' @title Load PurpleAir time series data for a time period
 #' 
@@ -46,8 +45,6 @@ pat_load <- function(
   timezone = "America/Los_Angeles"
 ) {
   
-  logger.debug("----- pat_load() -----")
-  
   # ----- Validate parameters --------------------------------------------------
   
   MazamaCoreUtils::stopIfNull(label)
@@ -78,12 +75,26 @@ pat_load <- function(
   
   for ( datestamp in datestamps ) { 
     
-    patList[[datestamp]] <- 
-      pat_loadMonth(
-        label = label, 
-        datestamp = datestamp, 
-        timezone = timezone
-      )
+    # Ignore "no data file" errors (sometimes entire months are missing)
+    result <- try({
+      
+      patList[[datestamp]] <- 
+        pat_loadMonth(
+          label = label, 
+          datestamp = datestamp, 
+          timezone = timezone
+        )
+      
+    }, silent = TRUE)
+    
+    if ( "try-error" %in% class(result) ) {
+      err_msg <- geterrmessage()
+      if ( stringr::str_detect(err_msg, "file could not be loaded") ) {
+        # Ignore
+      } else {
+        stop(err_msg)
+      }
+    }
     
   } 
   

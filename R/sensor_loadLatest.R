@@ -1,6 +1,6 @@
 #' @export
 #' @importFrom rlang .data
-#' @importFrom MazamaCoreUtils logger.debug
+#' @importFrom MazamaCoreUtils logger.isInitialized logger.error
 #' 
 #' @title Load hourly-aggregated Purple Air data for a week
 #' 
@@ -35,35 +35,48 @@ sensor_loadLatest <- function(
   
   MazamaCoreUtils::stopIfNull(collection)
   
-  # ----- Load data from URL ---------------------------------------------------
+  if ( !as.numeric(days) %in% c(7, 45) ) {
+    stop("Parameter 'days' must be either 7 or 45")
+  }
+  
+  # ----- Load data from URL or directory --------------------------------------
   
   # Use package internal URL
+  baseDir <- getArchiveBaseDir()
   baseUrl <- getArchiveBaseUrl()
   
   filename <- paste0("airsensor_", collection, "_latest", days, ".rda")
-  filepath <- paste0(baseUrl, '/airsensor/latest/', filename)
+  dataUrl <- paste0(baseUrl, '/airsensor/latest')
   
-  # Define a 'connection' object so we can close it no matter what happens
-  conn <- url(filepath)
+  # dataDir should be NULL if baseDir is NULL
+  if ( is.null(baseDir) ) {
+    dataDir <- NULL
+  } else {
+    dataDir <- paste0(baseDir, '/airsensor/latest')
+  }
+  
+  # Get data from URL or directory
   result <- try({
-    suppressWarnings(airsensor <- get(load(conn)))
-  }, silent=TRUE )
-  close(conn)
-    
+    suppressWarnings( sensor <- loadDataFile(filename, dataUrl, dataDir) )
+  }, silent = TRUE)
+  
   # NOTE:  We used suppressWarnings() above so that we can have a more
   # NOTE:  uniform error response for the large variety of reasons that
   # NOTE:  loading might fail.
   
   if ( "try-error" %in% class(result) ) {
-    # TODO:  Restore logging when we stop generating "futile.logger" errors
-    # TODO:  when logging has not been initialized.
-    # # Log the error if logging is enabled. Fail silently otherwise.
-    # try({ logger.error("%s", geterrmessage()) }, silent = TRUE)
-    stop(paste0("Data file could not be loaded: ", filepath), call.=FALSE)
+    if ( logger.isInitialized() ) {
+      logger.error("%s", geterrmessage())
+    }
+    if ( is.null(baseDir) ) {
+      stop(paste0("Data file could not be loaded from: ", baseUrl), call.=FALSE)
+    } else {
+      stop(paste0("Data file could not be loaded from: ", baseDir), call.=FALSE)
+    }
   }
   
   # ----- Return ---------------------------------------------------------------
   
-  return(invisible(airsensor))
+  return(sensor)
   
 }
