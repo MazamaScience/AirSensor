@@ -182,12 +182,7 @@ NULL
 #' @seealso archiveBaseDir
 #' @seealso setArchiveBaseDir
 getArchiveBaseDir <- function() {
-  MazamaCoreUtils::stopIfNull(
-    target = airsensorEnv$archiveBaseDir,
-    msg = paste0(
-      'No BASE_DIR set. Please set one with setArchiveBaseDir("BASE_DIR).'
-    )
-  )
+  # NULL is an acceptable value
   return(airsensorEnv$archiveBaseDir)    
 }
 
@@ -221,6 +216,7 @@ setArchiveBaseDir <- function(archiveBaseDir) {
 removeArchiveBaseDir <- function() {
   old <- airsensorEnv$archiveBaseDir
   airsensorEnv$archiveBaseDir <- NULL
+  return(invisible(old))
 }
 
 #' @docType data
@@ -314,5 +310,6 @@ setArchiveBaseUrl <- function(archiveBaseUrl) {
 removeArchiveBaseUrl <- function() {
   old <- airsensorEnv$archiveBaseUrl
   airsensorEnv$archiveBaseUrl <- NULL
+  return(invisible(old))
 }
 

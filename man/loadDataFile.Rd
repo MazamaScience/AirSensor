@@ -4,12 +4,12 @@
 \alias{loadDataFile}
 \title{Load data from URL or local file}
 \usage{
-loadDataFile(filename = NULL, baseUrl = NULL, dataDir = NULL)
+loadDataFile(filename = NULL, dataUrl = NULL, dataDir = NULL)
 }
 \arguments{
 \item{filename}{Name of the data file to be loaded.}
 
-\item{baseUrl}{Base URL for data files.}
+\item{dataUrl}{Remote URL directory for data files.}
 
 \item{dataDir}{Local directory containing data files.}
 }
@@ -17,12 +17,12 @@ loadDataFile(filename = NULL, baseUrl = NULL, dataDir = NULL)
 A data object.
 }
 \description{
-Loads pre-generated .rda RData files from a URL or a local
+Loads pre-generated .rda files from a URL or a local
 directory. This function is intended to be called by other \code{~_load()}
 functions and can remove internet latencies when local versions of daata are
 available.
 
 For this reason, specification of \code{dataDir} always takes precedence over 
-\code{baseUrl}.
+\code{dataUrl}.
 }
 \keyword{internal}

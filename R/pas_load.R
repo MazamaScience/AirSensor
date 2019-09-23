@@ -68,9 +68,9 @@ pas_load <- function(
   if ( datestamp > strftime(tomorrow, "%Y%m%d", tz = timezone) )
     stop("No data is available for future dates.")
   
-  # ----- Load data from URL ---------------------------------------------------
+  # ----- Load data from URL or directory --------------------------------------
   
-  # Use package internal URL
+  baseDir <- getArchiveBaseDir()
   baseUrl <- getArchiveBaseUrl()
   
   result <- NULL
@@ -83,6 +83,7 @@ pas_load <- function(
   
   # Keep looking back for a valid data file until all tries are used
   while (!successful && tries < retries) {
+    
     yearstamp <- strftime(localDate, "%Y", tz = "UTC")
     datestamp <- strftime(localDate, "%Y%m%d", tz = "UTC")
     if ( archival ) {
@@ -90,18 +91,31 @@ pas_load <- function(
     } else {
       filename <- paste0("pas_", datestamp, ".rda")
     }
-    filepath <- paste0(baseUrl, '/pas/', yearstamp, '/', filename)
+    dataUrl <- paste0(baseUrl, '/pas/', yearstamp)
     
-    # Define a 'connection' object so we can close it no matter what happens
-    conn <- url(filepath)
+    # dataDir must be NULL if baseDir is NULL
+    if ( is.null(baseDir) ) {
+      dataDir <- NULL
+    } else {
+      dataDir <- paste0(baseDir, '/pas/', yearstamp)
+    }
+    
+    # Get data from URL or directory
     result <- try({
-      suppressWarnings(pas <- get(load(conn)))
-    }, silent=TRUE )
-    close(conn)
+      suppressWarnings( pas <- loadDataFile(filename, dataUrl, dataDir) )
+    }, silent = TRUE)
+    
+    # # Define a 'connection' object so we can close it no matter what happens
+    # conn <- url(filepath)
+    # result <- try({
+    #   suppressWarnings(pas <- get(load(conn)))
+    # }, silent=TRUE )
+    # close(conn)
     
     successful <- !("try-error" %in% class(result))
     localDate <- localDate - lubridate::days(1)
     tries <- tries + 1
+    
   }
   
   # NOTE:  We used suppressWarnings() above so that we can have a more
@@ -113,6 +127,9 @@ pas_load <- function(
     # TODO:  when logging has not been initialized.
     # # Log the error if logging is enabled. Fail silently otherwise.
     # try({ logger.error("%s", geterrmessage()) }, silent = TRUE)
+    if ( logger.isInitialized() ) {
+      logger.error("%s", geterrmessa)
+    }
     stop(paste0("Data file could not be loaded after ", retries, " tries"), 
          call.=FALSE)
   }
