@@ -14,7 +14,7 @@ Functions for downloading and enhancing sensor data return one of two types
 of object:
 \itemize{
 \item{\code{pas} -- PurpleAirSynoptic dataframe of uniformly named properties}
-\item{\code{pat} -- PurpleAirTimeseries list of dataframes containg
+\item{\code{pat} -- PurpleAirTimeseries list of dataframes containing
 sensor metadata and data}
 }
 
