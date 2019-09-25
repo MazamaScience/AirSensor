@@ -6,7 +6,7 @@
 #' @title Validation plot for QC algorithms
 #' 
 #' @param pat PurpleAir Timeseries \emph{pat} object.
-#' @param period Time period to average to. Can be "sec", "min", "hour", 
+#' @param period Time period to average over. Can be "sec", "min", "hour", 
 #' "day", "DSTday", "week", "month", "quarter" or "year". A number can also
 #'  precede these options followed by a space (i.e. "2 day" or "37 min").
 #' @param qc_algorithm Named QC algorithm to apply to hourly aggregation stats.

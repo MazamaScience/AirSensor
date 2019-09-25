@@ -1,7 +1,7 @@
 #' @title Aggreagte data with count of outliers in each bin 
 #'
 #' @param pat a PurpleAir Timeseries \emph{pat} object.
-#' @param period time period to average to. Can be "sec", "min", "hour", 
+#' @param period time period to average over. Can be "sec", "min", "hour", 
 #' "day", "DSTday", "week", "month", "quarter" or "year". A number can also
 #'  precede these options followed by a space (i.e. "2 day" or "37 min").
 #' @param windowSize the size of the rolling window

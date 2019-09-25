@@ -11,7 +11,7 @@ pat_createAirSensor(pat = NULL, period = "1 hour",
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}
 
-\item{period}{Time period to average to. Can be "sec", "min", "hour", 
+\item{period}{Time period to average over. Can be "sec", "min", "hour", 
 "day", "DSTday", "week", "month", "quarter" or "year". A number can also
  precede these options followed by a space (i.e. "2 day" or "37 min").}
 

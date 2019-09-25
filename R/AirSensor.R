@@ -9,7 +9,7 @@
 #' of object:
 #' \itemize{
 #' \item{\code{pas} -- PurpleAirSynoptic dataframe of uniformly named properties}
-#' \item{\code{pat} -- PurpleAirTimeseries lost of dataframes containg
+#' \item{\code{pat} -- PurpleAirTimeseries list of dataframes containing
 #' sensor metadata and data}
 #' }
 #'
@@ -27,7 +27,7 @@ NULL
 #' @format A tibble with 12657 rows and 32 columns of data.
 #' @description The \code{example_pas_raw} dataset provides a quickly loadable
 #' version of raw Purple Air synoptic data JSON for practicing and code
-#' examples This dataset was was generated on 2019-07-06 by running:
+#' examples. This dataset was was generated on 2019-07-06 by running:
 #' 
 #' \preformatted{
 #'   example_pas_raw <- downloadParseSynopticData()
