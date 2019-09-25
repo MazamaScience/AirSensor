@@ -138,8 +138,8 @@ one_week %>%
   pat_internalFit()
 ```
 
-The high R^2^ value says that the two channels are highly correlated while a slope
-of ~0.9 says that slight relative bias in the measurements. (Perfect alignment
+The high R^2^ value indicates that the two channels are highly correlated while a slope
+of ~0.9 suggests a slight relative bias in the measurements. (Perfect alignment
 would have a slope of 1.0.)
 
 ## Comparison with Federal Monitors
