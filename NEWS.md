@@ -1,4 +1,9 @@
 
+# AirSensor 0.5.2
+
+* Fixed bug in `pat_dygraph()` which referenced `PWFSLSmoke::parseDatetime()`
+which is now deprecated in favor of `MazamaCoreUtils::parseDatetime()`.
+
 # AirSensor 0.5.1
 
 * Upudated data loding to allow for loading data from a local archive. New
