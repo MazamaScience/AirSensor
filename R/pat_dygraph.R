@@ -84,7 +84,7 @@ pat_dygraph <- function(
   
   # Convert tlim to POSIXct
   if ( !is.null(tlim) ) {
-    dateWindow <- PWFSLSmoke::parseDatetime(tlim)
+    dateWindow <- MazamaCoreUtils::parseDatetime(tlim)
   } else {
     dateWindow <- NULL
   }
