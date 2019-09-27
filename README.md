@@ -17,6 +17,8 @@ The initial development of this package was funded by the South Coast Air Qualit
 
 Additional funding was provided by the US Forest Service in support of the Interagency Wildland Fire Air Quality Response Program.
 
+[Mazama Science](https://mazamascience.com) develops and maintains the package as part of its ongoing relationships with federal, state and local air quality agencies.
+
 ## Installation
 
 This package is designed to be used with [R](https://cran.r-project.org) (>= 3.3) and
