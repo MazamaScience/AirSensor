@@ -19,15 +19,6 @@ r:
   - release
   # - devel
 
-# Commented out until we have time to address the suggestions
-#r_github_packages:
-#  - jimhester/lintr
-
-after_success:
-#  - R CMD INSTALL $PKG_TARBALL
-#  - Rscript -e 'lintr::lint_package()'
-  - R --vanilla -e "devtools::install_github('mazamascience/MazamaCoreUtils')"
-
 addons:
   apt:
     packages:
@@ -41,4 +32,12 @@ addons:
       - libudunits2-dev
       - libv8-dev
       - protobuf-compiler
+
+# Latest updates from GitHub
+r_github_packages:
+  - mazamascience/MazamaCoreUtils
+
+#after_success:
+#  - R CMD INSTALL $PKG_TARBALL
+#  - Rscript -e 'lintr::lint_package()'
 
