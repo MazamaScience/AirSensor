@@ -1,6 +1,7 @@
 library(AirSensor)
 library(dplyr)
 library(tidyr)
+library(ggplot2)
 
 setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 
@@ -17,7 +18,7 @@ agg <- pat_aggregateOutlierCounts(pat)
 # ---- Plot aggregation statistics ---------------------------------------------
 
 # Convert from "wide" to "long" (aka "tidy")
-data_long <- data %>%
+data_long <- agg %>%
   gather(param, value, -datetime)
 
 # Create plot
