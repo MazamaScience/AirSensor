@@ -23,9 +23,10 @@ r:
 #r_github_packages:
 #  - jimhester/lintr
 
-#after_success:
+after_success:
 #  - R CMD INSTALL $PKG_TARBALL
 #  - Rscript -e 'lintr::lint_package()'
+  - R --vanilla -e "devtools::install_github('mazamascience/MazamaCoreUtils')"
 
 addons:
   apt:
