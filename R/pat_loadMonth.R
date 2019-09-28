@@ -41,20 +41,21 @@ pat_loadMonth <- function(
   
   # ----- Validate parameters --------------------------------------------------
   
-  # TODO: Work with lubridate to support all formats
-  
   MazamaCoreUtils::stopIfNull(label)
+  
+  # TODO: Work with lubridate to support all formats
   
   # Default to the current month
   if ( is.null(datestamp) || is.na(datestamp) || datestamp == "" ) {
-    now <- lubridate::now(tzone = timezone)
-    datestamp <- strftime(now, "%Y%m%d", tz = timezone)
+    datetime <- lubridate::now(tzone = timezone)
+  } else {
+    datetime <- MazamaCoreUtils::parseDatetime(datestamp, timezone = timezone)
   }
-  
-  # Handle the case where the day is already specified
-  datestamp <- stringr::str_sub(paste0(datestamp,"01"), 1, 8)
-  monthstamp <- stringr::str_sub(datestamp, 1, 6)
-  yearstamp <- stringr::str_sub(datestamp, 1, 4)
+
+  # Filename timestamps are always in UTC
+  datestamp <- strftime(datetime, "%Y%m%d", tz = "UTC")
+  monthtamp <- strftime(datetime, "%Y%m", tz = "UTC")
+  yearstamp <- strftime(datetime, "%Y", tz = "UTC")
   
   # ----- Load data from URL or directory --------------------------------------
   

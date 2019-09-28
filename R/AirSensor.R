@@ -150,14 +150,6 @@ NULL
 #' @seealso archiveBaseUrl
 #' @seealso setArchiveBaseUrl
 getArchiveBaseUrl <- function() {
-  # MazamaCoreUtils::stopIfNull(
-  #   target = airsensorEnv$archiveBaseUrl,
-  #   msg = paste0(
-  #     'No BASE_URL set. Please set one with setArchiveBaseUrl("BASE_URL").',
-  #     "\n\nKnown options include:\n\n",
-  #     "  setArchiveBaseUrl(\"http://smoke.mazamascience.com/data/PurpleAir\")"
-  #   )
-  # )
   # Check for archiveBaseDir
   if ( is.null(airsensorEnv$archiveBaseDir) &&
        is.null(airsensorEnv$archiveBaseUrl) ) {
