@@ -32,6 +32,8 @@ pat_isPat <- function(
   pat = NULL
 ) {
   
+  # ----- Validate parameters --------------------------------------------------
+  
   # Test a variety of things that could go wrong
   if ( is.null(pat) ) return(FALSE)
   if ( !"pa_timeseries" %in% class(pat) ) return(FALSE)

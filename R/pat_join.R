@@ -35,7 +35,10 @@ pat_join <- function(
   ...
 ) {
 
-  logger.debug("----- pat_join() -----")
+  # ----- Validate parameters --------------------------------------------------
+  
+  
+  # ----- Join (concaenate) timeseries -----------------------------------------
   
   # Accept any number of pat objects
   patList <- list(...)  
@@ -57,9 +60,9 @@ pat_join <- function(
     
     # Check parameters
     if( !pat_isPat(patList[[i]]) )
-      stop("argument contains a non-`pat` object")
+      stop("argument contains a non-'pat' object")
     if( pat_isEmpty(patList[[i]]) )
-      stop("argument contains an empty `pat` object")
+      stop("argument contains an empty 'pat' object")
     
     dataList[[i]] <- patList[[i]]$data
     metaList[[i]] <- patList[[i]]$meta

@@ -41,8 +41,6 @@ pat_aggregateOutlierCounts <- function(
   
   # ----- Validate parameters --------------------------------------------------
 
-  period <- tolower(period)
-  
   MazamaCoreUtils::stopIfNull(pat)
   
   if ( !pat_isPat(pat) )
@@ -53,6 +51,8 @@ pat_aggregateOutlierCounts <- function(
   
   # Remove any duplicate data records
   pat <- pat_distinct(pat)
+  
+  period <- tolower(period)
   
   # ----- Convert period to seconds --------------------------------------------
   
