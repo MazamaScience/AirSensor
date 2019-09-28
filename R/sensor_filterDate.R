@@ -39,7 +39,7 @@ sensor_filterDate <- function(
   timezone = "America/Los_Angeles"
 ) {
   
-  # Validate parameters --------------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
   
   MazamaCoreUtils::stopIfNull(sensor)
   
@@ -52,7 +52,7 @@ sensor_filterDate <- function(
   if ( is.null(startdate) && !is.null(enddate) )
     stop("At least one of 'startdate' or 'enddate' must be specified")
   
-  # Get the start and end times ------------------------------------------------
+  # ----- Get start and end times ----------------------------------------------
   
   if ( !is.null(days) ) {
     days <- days
@@ -67,7 +67,7 @@ sensor_filterDate <- function(
                                           timezone, 
                                           days = days)
   
-  # Subset the "sensor" object ----------------------------------------------------
+  # ----- Subset the "sensor" object -------------------------------------------
   
   data <- 
     sensor$data %>%

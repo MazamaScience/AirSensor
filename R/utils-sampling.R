@@ -1,4 +1,3 @@
-
 #' @keywords internal
 #' @title General table row sampling
 #' 

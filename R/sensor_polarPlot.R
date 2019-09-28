@@ -96,6 +96,8 @@ sensor_polarPlot <- function(
   if ( nrow(sensor$meta) > 1 )
     stop("Parameter 'sensor' contains more than one SC sensor")
   
+  # ----- Download wind data ---------------------------------------------------
+  
   # Find wind data readings from the closest NOAA site if none are provided
   if ( is.null(windData) ) {
     # Using only the first entry's datetime for the year will be problematic 
@@ -112,6 +114,8 @@ sensor_polarPlot <- function(
                                      parallel = FALSE)
     windData <- dplyr::select(siteData, c("date", "wd", "ws"))
   }
+  
+  # ----- Assemble data --------------------------------------------------------
   
   # PM2.5 df 
   pollutantData <- 
@@ -133,7 +137,8 @@ sensor_polarPlot <- function(
       by = "date"
     )
   
-  # Polar Plot
+  # ----- Create plot ----------------------------------------------------------
+  
   return({
     
     openair::polarPlot(

@@ -16,9 +16,21 @@
 #' 
 #' By default, the current month is loaded.
 #'
+#' @note Many Purple Air sensor labels have spaces and other special characters
+#' which make for awkward file names. Best practices would suggest creating
+#' file names without special characters by running the \code{label} string
+#' through \code{make.names()} first.
+#'  
+#' This function defaults to generating file names in this manner but allows
+#' users to override this in case some users have a compelling reason to create 
+#' filenames that exactly match the \code{pat$label} of the \emph{pat} object
+#' they contain.
+#' 
 #' @param label Purple Air sensor 'label'
 #' @param datestamp Date string in ymd order.
 #' @param timezone Timezone used to interpret \code{datestamp}.
+#' @param make.names Logical specifying whether to run 
+#' \code{make.names(label)} when assembilng the file path.
 #' 
 #' @return A PurpleAir Timeseries \emph{pat} object.
 #' 
@@ -36,14 +48,18 @@
 pat_loadMonth <- function(
   label = NULL,
   datestamp = NULL,
-  timezone = "America/Los_Angeles"
+  timezone = "America/Los_Angeles",
+  make.names = TRUE
 ) {
   
   # ----- Validate parameters --------------------------------------------------
   
   MazamaCoreUtils::stopIfNull(label)
   
-  # TODO: Work with lubridate to support all formats
+  if ( make.names ) 
+    label <- make.names(label)
+  
+  # ----- Load data from URL or directory --------------------------------------
   
   # Default to the current month
   if ( is.null(datestamp) || is.na(datestamp) || datestamp == "" ) {
@@ -54,7 +70,7 @@ pat_loadMonth <- function(
 
   # Filename timestamps are always in UTC
   datestamp <- strftime(datetime, "%Y%m%d", tz = "UTC")
-  monthtamp <- strftime(datetime, "%Y%m", tz = "UTC")
+  monthstamp <- strftime(datetime, "%Y%m", tz = "UTC")
   yearstamp <- strftime(datetime, "%Y", tz = "UTC")
   
   # ----- Load data from URL or directory --------------------------------------
