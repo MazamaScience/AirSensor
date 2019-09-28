@@ -1,6 +1,6 @@
 # AirSensor 0.5.3
 
-* Udated `README.md`
+* Added `make.names` argument to `pat_loadMonth()` and `pat_loadLatest()`.
 
 # AirSensor 0.5.2
 
