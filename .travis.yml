@@ -33,6 +33,11 @@ addons:
       - libv8-dev
       - protobuf-compiler
 
+# R packages
+r_packages:
+ - rmarkdown
+ - webshot
+
 # Latest updates from GitHub
 r_github_packages:
   - mazamascience/MazamaCoreUtils

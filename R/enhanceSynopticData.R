@@ -65,7 +65,8 @@ enhanceSynopticData <- function(
   includePWFSL = TRUE
 ) {
   
-  logger.debug("----- enhanceSynopticData() -----")
+  if ( MazamaCoreUtils::logger.isInitialized() )
+    logger.debug("----- enhanceSynopticData() -----")
   
   # ----- Validate Parameters --------------------------------------------------
   
@@ -82,6 +83,8 @@ enhanceSynopticData <- function(
   if ( !is.logical(includePWFSL) )
     stop("parameter 'includePWFSL' is not a logical value")
   
+  # ----- Discard unwanted columns ---------------------------------------------
+  
   # On 2019-09-05, the data columns look like this:
   #
   # > sort(names(pas_raw))
@@ -97,8 +100,6 @@ enhanceSynopticData <- function(
   # [28] "v3"                               "v4"                               "v5"                              
   # [31] "v6"                              
   
-  
-  # ----- Discard unwanted columns ---------------------------------------------
   
   # NOTE:  A previously existing "State" column has been removed. (2019-09-05)
   

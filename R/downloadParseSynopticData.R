@@ -23,7 +23,8 @@ downloadParseSynopticData <- function(
   baseUrl = 'https://www.purpleair.com/json'
 ) {
 
-  logger.debug("----- downloadParseSynopticData() -----")
+  if ( MazamaCoreUtils::logger.isInitialized() )
+    logger.debug("----- downloadParseSynopticData() -----")
 
   # ----- Download raw data ----------------------------------------------------
   

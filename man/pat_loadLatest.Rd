@@ -4,10 +4,13 @@
 \alias{pat_loadLatest}
 \title{Load PurpleAir time series data for a week}
 \usage{
-pat_loadLatest(label = NULL)
+pat_loadLatest(label = NULL, make.names = TRUE)
 }
 \arguments{
 \item{label}{PurpleAir sensor 'label'.}
+
+\item{make.names}{Logical specifying whether to run 
+\code{make.names(label)} when assembilng the file path.}
 }
 \value{
 A PurpleAir Timeseries \emph{pat} object.
@@ -15,6 +18,17 @@ A PurpleAir Timeseries \emph{pat} object.
 \description{
 A pre-generated PurpleAir Timeseries \emph{pat} object will be 
 loaded containing data for the most recent 7-day interval.
+}
+\note{
+Many Purple Air sensor labels have spaces and other special characters
+which make for awkward file names. Best practices would suggest creating
+file names without special characters by running the \code{label} string
+through \code{make.names()} first.
+ 
+This function defaults to generating file names in this manner but allows
+users to override this in case some users have a compelling reason to create 
+filenames that exactly match the \code{pat$label} of the \emph{pat} object
+they contain.
 }
 \examples{
 \donttest{

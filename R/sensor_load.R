@@ -52,7 +52,7 @@ sensor_load <- function(
                                           timezone, 
                                           days = days)
   
-  # Asssemble monthly archive files --------------------------------------------
+  # ----- Asssemble monthly archive files --------------------------------------
   
   datestamps <-
     sort(
@@ -96,7 +96,7 @@ sensor_load <- function(
     
   } 
   
-  # Join monthly objects -------------------------------------------------------
+  # ----- Join monthly objects -------------------------------------------------
   
   for ( i in seq_along(airsensorList) ) {
     
@@ -129,7 +129,7 @@ sensor_load <- function(
   # Trim to the requested time range
   airsensor <- PWFSLSmoke::monitor_subset(airsensor, tlim = dateRange)
   
-  # Return ---------------------------------------------------------------------
+  # ----- Return ---------------------------------------------------------------
   
   return(airsensor)
   

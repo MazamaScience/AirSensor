@@ -5,7 +5,7 @@
 \title{Load PurpleAir time series data for a month}
 \usage{
 pat_loadMonth(label = NULL, datestamp = NULL,
-  timezone = "America/Los_Angeles")
+  timezone = "America/Los_Angeles", make.names = TRUE)
 }
 \arguments{
 \item{label}{Purple Air sensor 'label'}
@@ -13,6 +13,9 @@ pat_loadMonth(label = NULL, datestamp = NULL,
 \item{datestamp}{Date string in ymd order.}
 
 \item{timezone}{Timezone used to interpret \code{datestamp}.}
+
+\item{make.names}{Logical specifying whether to run 
+\code{make.names(label)} when assembilng the file path.}
 }
 \value{
 A PurpleAir Timeseries \emph{pat} object.
@@ -29,6 +32,17 @@ The \code{datestamp} must be in the following format:
 }
 
 By default, the current month is loaded.
+}
+\note{
+Many Purple Air sensor labels have spaces and other special characters
+which make for awkward file names. Best practices would suggest creating
+file names without special characters by running the \code{label} string
+through \code{make.names()} first.
+ 
+This function defaults to generating file names in this manner but allows
+users to override this in case some users have a compelling reason to create 
+filenames that exactly match the \code{pat$label} of the \emph{pat} object
+they contain.
 }
 \examples{
 \donttest{

@@ -56,7 +56,8 @@ pas_createNew <- function(
   lookbackDays = 1
 ) {
   
-  logger.debug("----- pas_createNew() -----")
+  if ( MazamaCoreUtils::logger.isInitialized() )
+    logger.debug("----- pas_createNew() -----")
   
   # ----- Validate parameters --------------------------------------------------
 
