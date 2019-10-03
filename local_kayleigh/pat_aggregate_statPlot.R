@@ -1,39 +1,29 @@
-library(AirSensor)
-library(dplyr)
-library(tidyr)
-library(ggplot2)
-library(forcats)
-library(stringr)
+#' @export
+#' @importFrom rlang .data
+#' @importFrom grDevices rgb 
+#' 
+#' @title Plot the output from the pat_aggregateOutlierCounts() function
+#' 
+#' @param pat PurpleAir Timeseries \emph{pat} object.
+#' @param plottype Quick-reference plot types: "all", "humidity", "pm25_A", 
+#' "pm25_B", "temperature" 
+#' @param ylim Either "free_y" which scales automatically for each plot or 
+#' "fixed" where the y limits of each plot are identical
+#' 
+#' @description A plotting function that uses ggplot2 to display a plot of each 
+#' output category from the pat_aggregateOutlierCounts() function. Created to 
+#' have a quick look at all the stats to help identify necessary quality control
+#' methods on PurpleAir Timeseries \emph{pat} objects.
+#' 
 
 
-#----- Set up dataset for testing plot
-setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
-
-# Get pas for Louisiana
-pas <- pas_load()
-pas_la <- pas %>% pas_filter(stateCode == "LA")
-
-# Get the pat of interest
-pat_la <- pat_createNew(pas_la, label = "Island Park")
-
-# Check out the data
-# pat_multiplot(pat_la, plottype = "aux")
-# pat_dygraph(pat_la)
-# pat_scatterplot(pat_la)
-
-# Create hourly aggregation statistics
-pat <- pat_aggregateOutlierCounts(pat_la)
-# agg <- pat_aggregate(pat_la)
-
-
-#----- Function begins
-pat_aggregatePlot <- function(
+pat_aggregate_statPlot <- function(
   pat = NULL, 
   plottype = "all",
   ylim = "fixed"
   
 ) {
-
+  
   #------ Sorting names for plot order
   a <- sort(names(pat))
   a <- a[!a %in% c("pm25_df", "pm25_p", "pm25_t")]
@@ -88,24 +78,17 @@ pat_aggregatePlot <- function(
     scales <- "free_y"
   }
   
-  
   #------ Plot
   gg <- ggplot(data_long, aes(x = datetime, y = value)) +
     geom_line() +
     labs(title="Aggregation Statistics") +
     #facet_wrap(~param, scales = "free_y")
     #facet_wrap(param, nrow = nrow, scales = "free_y" )
-    facet_wrap(param, nrow = nrow, scales = scales )
+    facet_wrap(param, nrow = nrow, scales = scales ) 
   
   #------ Return, what do we return here?
   return(gg)
   
-
+  
 }
-
-
-
-
-
-
 
