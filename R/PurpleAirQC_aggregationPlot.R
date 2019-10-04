@@ -5,16 +5,30 @@
 #' @title Plot the output from the pat_aggregateOutlierCounts() function
 #' 
 #' @param aggregationStats PurpleAir Timeseries \emph{aggregationStats} object.
-#' @param parameterGroup Quick-reference plot types: "all", "humidity", 
-#' "pm25_A", "pm25_B", "temperature" 
-#' @param ylim Either "free_y" which scales automatically for each plot or 
-#' "fixed" where the y limits of each plot are identical
+#' @param parameterGroup Quick-reference plot types based on a group of 
+#' parameters: "all", "humidity", "pm25_A", "pm25_B", or "temperature"
+#' @param parameters Custom vector of aggregation parameters to view
+#' @param ylim Either "free_y", which scales the y axis automatically for each 
+#' plot or "fixed" where the y limits of each plot are identical
 #' 
 #' @description A plotting function that uses ggplot2 to display a plot of each 
 #' output category from the pat_aggregateOutlierCounts() function. Created to 
 #' have a quick look at all the stats to help identify necessary quality control
-#' methods on PurpleAir Timeseries \emph{aggregationStats} objects.
+#' methods for PurpleAir Timeseries \emph{aggregationStats} objects.
 #' 
+#' @examples 
+#' \dontrun{
+#' nb <- pat_createNew(example_pas, 
+#'                     "North Bend Weather", 
+#'                     startdate = 20180801, 
+#'                     enddate = 20180901)
+#' aggregationStats <- pat_aggregateOutlierCounts(nb)
+#' PurpleAirQC_aggregationPlot(aggregationStats, 
+#'                             parameterGroup = "humidity", 
+#'                             ylim = "free_y")
+#' }
+#' 
+
 
 
 PurpleAirQC_aggregationPlot <- function(
@@ -31,7 +45,7 @@ PurpleAirQC_aggregationPlot <- function(
   
   if ( is.null(parameters) ) {
     
-  #------ Separate by groups of wanted data:
+  #------ Separate by groups of wanted data:------------------------------------
   if (parameterGroup == "all"){
 
     #------ Sorting names for plot order
@@ -75,7 +89,7 @@ PurpleAirQC_aggregationPlot <- function(
     param <- factor(data_long$param, levels = parameters)
   } 
   
-  #------ Custom parameter viewing
+  #------ Custom parameter viewing ---------------------------------------------
   
   else if (length(setdiff(parameters, names(aggregationStats))) == 0) {
     parameters <- unique(c("datetime", parameters))
@@ -86,7 +100,7 @@ PurpleAirQC_aggregationPlot <- function(
     nrow <- length(parameters)
   }
   
-  #------ Ylim assignments
+  #------ Ylim assignments -----------------------------------------------------
   if (ylim == "fixed") {
     scales <- "fixed"
     
@@ -94,15 +108,13 @@ PurpleAirQC_aggregationPlot <- function(
     scales <- "free_y"
   }
   
-  #------ Plot
+  #------ Plot -----------------------------------------------------------------
   gg <- ggplot(data_long, aes(x = datetime, y = value)) +
     geom_line() +
     labs(title="Aggregation Statistics") +
-    #facet_wrap(~param, scales = "free_y")
-    #facet_wrap(param, nrow = nrow, scales = "free_y" )
     facet_wrap(param, nrow = nrow, scales = scales ) 
   
-  #------ Return, what do we return here?
+  #------ Return, what do we return here? --------------------------------------
   return(gg)
   
   
