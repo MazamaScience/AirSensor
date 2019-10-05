@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.4</span>
       </span>
     </div>
 
@@ -149,9 +149,6 @@
 <p>The A channel PM2.5 sensor starts reflecting humidity readings instead of PM levels.</p>
 <p><img src="purpleair_failure_modes_files/figure-html/channel_a_humidity_multi-1.png" width="672"></p>
 <p>You can see in the multiplot the clear disconnect between the two PM2.5 channels. Both sensors appear to agree with each other until channel A suddenly jumps into the thousands and starts tracing the trend of the humidity data (plotted directly below).</p>
-<pre><code>## Registered S3 method overwritten by 'GGally':
-##   method from   
-##   +.gg   ggplot2</code></pre>
 <p><img src="purpleair_failure_modes_files/figure-html/channel_a_humidity_scatter-1.png" width="672"></p>
 <p>A glance at these scatterplots gives a us another look at just how uncorrelated the A and B channels are, while the relationships for channel A with temperature and humidity are abnormally well-defined. It’s actually not very clear which of the auxillary sensors the A channel is reflecting since temperature and relative humidity are naturally correlated themselves.</p>
 <p>A more in-depth analysis of this issue is provided in <code>local_examples/bikesgv_story.Rmd</code> .</p>
@@ -162,13 +159,13 @@
 <p>The A channel is centered around a particular level but is sometimes affected by humidity when it goes past a certain threshold.</p>
 <p><img src="purpleair_failure_modes_files/figure-html/unnamed-chunk-1-1.png" width="672"></p>
 <p>The multiplot shows the A and B channels have very different readings, similar to the “Matches Humidity” failure mode. The strange thing here though is that the A channel is mostly flat, with only the occasional spike when the humidity measures very high. Let’s see what number it is centered around:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(pat<span class="op">$</span>data<span class="op">$</span>datetime, pat<span class="op">$</span>data<span class="op">$</span>pm25_A, </a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">     <span class="dt">ylim =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">3325</span>, <span class="dv">3340</span>), </a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">     <span class="dt">pch =</span> <span class="dv">15</span>, <span class="dt">cex =</span> <span class="fl">0.6</span>, <span class="dt">col=</span><span class="kw"><a href="https://rdrr.io/r/grDevices/adjustcolor.html">adjustcolor</a></span>(<span class="st">"black"</span>, <span class="fl">0.2</span>),</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">     <span class="dt">xlab =</span> <span class="st">"2019"</span>, <span class="dt">ylab =</span> <span class="st">"PM2.5 A"</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(pat<span class="op">$</span>data<span class="op">$</span>datetime, pat<span class="op">$</span>data<span class="op">$</span>pm25_A, 
+     <span class="dt">ylim =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">3325</span>, <span class="dv">3340</span>), 
+     <span class="dt">pch =</span> <span class="dv">15</span>, <span class="dt">cex =</span> <span class="fl">0.6</span>, <span class="dt">col=</span><span class="kw"><a href="https://rdrr.io/r/grDevices/adjustcolor.html">adjustcolor</a></span>(<span class="st">"black"</span>, <span class="fl">0.2</span>),
+     <span class="dt">xlab =</span> <span class="st">"2019"</span>, <span class="dt">ylab =</span> <span class="st">"PM2.5 A"</span>)</code></pre></div>
 <p><img src="purpleair_failure_modes_files/figure-html/unnamed-chunk-2-1.png" width="672"></p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">temp &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/vector.html">as.vector</a></span>(pat<span class="op">$</span>data<span class="op">$</span>pm25_A))</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"Mode value: "</span>, <span class="kw"><a href="https://rdrr.io/r/base/names.html">names</a></span>(temp)[temp <span class="op">==</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(temp)]))</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">temp &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/vector.html">as.vector</a></span>(pat<span class="op">$</span>data<span class="op">$</span>pm25_A))
+<span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"Mode value: "</span>, <span class="kw"><a href="https://rdrr.io/r/base/names.html">names</a></span>(temp)[temp <span class="op">==</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(temp)]))</code></pre></div>
 <pre><code>## [1] "Mode value: 3333"</code></pre>
 <p>Although there is plenty of noise between 3325 and 3340 ug/m3, a very clear, very straight line of points is visible at exactly 3333.0 ug/m3.</p>
 </div>

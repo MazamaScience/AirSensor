@@ -1,15 +1,15 @@
 #' @export
 #' @importFrom rlang .data
-#' @importFrom grDevices rgb 
+#' @importFrom ggplot2 ggplot aes_ geom_line labs facet_wrap 
 #' 
-#' @title Plot the output from the pat_aggregateOutlierCounts() function
+#' @title Faceted plot of aggregation statistics 
 #' 
 #' @param aggregationStats PurpleAir Timeseries \emph{aggregationStats} object.
-#' @param parameterGroup Quick-reference plot types based on a group of 
-#' parameters: "all", "humidity", "pm25_A", "pm25_B", or "temperature"
-#' @param parameters Custom vector of aggregation parameters to view
-#' @param ylim Either "free_y", which scales the y axis automatically for each 
-#' plot or "fixed" where the y limits of each plot are identical
+#' @param parameterPattern Pattern used to match groups of parameters.
+#' @param parameters Custom vector of aggregation parameters to view.
+#' @param nrow Number of rows in the faceted plot.
+#' @param autoRange Logical specifying whether to scale the y axis separately
+#' for each plot or to use a common y axis.
 #' 
 #' @description A plotting function that uses ggplot2 to display a plot of each 
 #' output category from the pat_aggregateOutlierCounts() function. Created to 
@@ -17,106 +17,85 @@
 #' methods for PurpleAir Timeseries \emph{aggregationStats} objects.
 #' 
 #' @examples 
-#' \dontrun{
-#' nb <- pat_createNew(example_pas, 
-#'                     "North Bend Weather", 
-#'                     startdate = 20180801, 
-#'                     enddate = 20180901)
-#' aggregationStats <- pat_aggregateOutlierCounts(nb)
+#' \donttest{
+#' aggregationStats <- pat_aggregateOutlierCounts(example_pat_failure_A)
 #' PurpleAirQC_aggregationPlot(aggregationStats, 
-#'                             parameterGroup = "humidity", 
-#'                             ylim = "free_y")
+#'                             parameterPattern = "humidity_m|temperature_m", 
+#'                             nrow = 2)
 #' }
-#' 
-
-
 
 PurpleAirQC_aggregationPlot <- function(
   aggregationStats = NULL, 
-  parameterGroup = "all",
+  parameterPattern = NULL,
   parameters = NULL,
-  ylim = "fixed"
-  
+  nrow = 5,
+  autoRange = TRUE
 ) {
   
-  # ----- Validate paramters ---------------------------------------------------
+  # ----- Validate parameters --------------------------------------------------
   
   MazamaCoreUtils::stopIfNull(aggregationStats)
   
+  if ( !is.null(parameters) ) {
+    unknownParameters <- setdiff(parameters, names(aggregationStats))
+    if ( length(unknownParameters) > 0 ) {
+      parameterString <- paste0(unknownParameters, collapse = ", ")
+      err_msg <- paste0("Parameters not found in aggregationStats:\n\t",
+                        parameterString)
+      stop(err_msg)
+    }
+  }
+  
+  # ----- Determine parameters to plot -----------------------------------------
+  
   if ( is.null(parameters) ) {
     
-  #------ Separate by groups of wanted data:------------------------------------
-  if (parameterGroup == "all"){
-
-    #------ Sorting names for plot order
+    # Start by sorting names alphabetically but put pm25_~ at the end
     parameters <- sort(names(aggregationStats))
     parameters <- parameters[!parameters %in% c("pm25_df", "pm25_p", "pm25_t")]
     parameters <- append(parameters, c("pm25_df", "pm25_p", "pm25_t"))
-    nrow <- 5
     
+    # Subset if requested
+    if ( !is.null(parameterPattern) ) {
+      parameters <- stringr::str_subset(parameters, parameterPattern)
+    }
     
-  } else if (parameterGroup == "humidity") {
-    parameters <- c("humidity_count", "humidity_max", "humidity_mean", 
-                    "humidity_median", "humidity_min", "humidity_outlierCount", 
-                    "humidity_sd")
-    nrow <- 3
-
-    
-  } else if (parameterGroup == "pm25_A") {
-    parameters <- c( "pm25_A_count", "pm25_A_max", "pm25_A_mean",
-                     "pm25_A_median", "pm25_A_min", "pm25_A_outlierCount", 
-                     "pm25_A_sd")
-    nrow <- 3
-
-    
-  } else if (parameterGroup == "pm25_B") {
-    parameters <- c("pm25_B_count", "pm25_B_max", "pm25_B_mean", 
-                    "pm25_B_median", "pm25_B_min", "pm25_B_outlierCount", 
-                    "pm25_B_sd")
-    nrow <- 3
-
-  } else if (parameterGroup == "temperature") {
-    parameters <- c( "temperature_count", "temperature_max", "temperature_mean", 
-                    "temperature_median", "temperature_min", 
-                    "temperature_outlierCount", "temperature_sd")
-    nrow <- 3
-  }
-    
-    parameters <- unique(c("datetime", parameters))
-    subset <- aggregationStats[,parameters]
-    data_long <- subset %>%
-      gather(param, value, -datetime) 
-    param <- factor(data_long$param, levels = parameters)
-  } 
-  
-  #------ Custom parameter viewing ---------------------------------------------
-  
-  else if (length(setdiff(parameters, names(aggregationStats))) == 0) {
-    parameters <- unique(c("datetime", parameters))
-    subset <- aggregationStats[,parameters]
-    data_long <- subset %>%
-      gather(param, value, -datetime)
-    param <- factor(data_long$param)
-    nrow <- length(parameters)
   }
   
-  #------ Ylim assignments -----------------------------------------------------
-  if (ylim == "fixed") {
-    scales <- "fixed"
-    
-  }else if ( ylim == "free_y"){
+  # Otherwise just use the incoming parameters
+  
+  # Make sure 'datetime' is included, but only once
+  parameters <- unique(c("datetime", parameters))
+
+  tidyData <- 
+    aggregationStats[,parameters] %>%
+    tidyr::gather("parameter", "value", -.data$datetime)
+  
+  # ----- Create plot ----------------------------------------------------------
+  
+  # Y axis
+  if ( autoRange ) {
     scales <- "free_y"
+  } else {
+    scales <- "fixed"
   }
   
-  #------ Plot -----------------------------------------------------------------
-  gg <- ggplot(data_long, aes(x = datetime, y = value)) +
+  # Facets
+  facets <- factor(tidyData$parameter, levels = parameters)
+  
+  # NOTE:  Using ggplot in a package requires special attention:
+  # NOTE:    https://ggplot2.tidyverse.org/reference/aes_.html
+  # NOTE:    https://bookdown.org/rdpeng/RProgDA/non-standard-evaluation.html
+  
+  gg <- 
+    ggplot(tidyData, aes_(x = ~datetime, y = ~value)) +
     geom_line() +
     labs(title="Aggregation Statistics") +
-    facet_wrap(param, nrow = nrow, scales = scales ) 
+    facet_wrap(facets, nrow = nrow, scales = scales ) 
   
-  #------ Return, what do we return here? --------------------------------------
+  # ----- Return ---------------------------------------------------------------
+  
   return(gg)
-  
   
 }
 

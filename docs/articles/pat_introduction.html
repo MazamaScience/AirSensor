@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.4</span>
       </span>
     </div>
 
@@ -138,52 +138,52 @@ pat &lt;- pat_createNew(pas, "Seattle", startdate = 20180701, enddate = 20180901
 <h2 class="hasAnchor">
 <a href="#the-purpleairtimeseries-pat-data-model" class="anchor"></a>The PurpleAirTimeseries (“pat”) Data Model</h2>
 <p>Let’s begin by exploring the attributes of the dataframe returned by the <code><a href="../reference/pat_createNew.html">pat_createNew()</a></code> function.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">pat <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/base/names.html">names</a></span>()</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pat <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/base/names.html">names</a></span>()</code></pre></div>
 <pre><code>## [1] "meta" "data"</code></pre>
 <p><code>pat</code> contains <em>two</em> dataframes, <code>meta</code> and <code>data</code>.</p>
 <p>The <code>meta</code> dataframe contains metadata of the selected PurpleAir sensor – this includes non-time series data such as location information, labels, etc. The <code>data</code> dataframe contains datestamped sensor readings of PM2.5, temperature, humidity, and other pertinent sensor data.</p>
 <p>We’ll start by plotting PurpleAir’s raw sensor data. We can quickly display the time series data by using <code><a href="../reference/pat_multiplot.html">pat_multiplot()</a></code> and passing in our raw <code>pat</code> and desired plot type (“<code>all</code>” sensor data).</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">pat <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(<span class="dt">plottype =</span> <span class="st">"all"</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pat <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(<span class="dt">plottype =</span> <span class="st">"all"</span>)</code></pre></div>
 <p><img src="pat_introduction_files/figure-html/allPlot-1.png" width="672"></p>
 </div>
 <div id="exploring-time-series-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#exploring-time-series-data" class="anchor"></a>Exploring Time Series Data</h2>
 <p>Our <code>pat</code> dataframe spans two months. While this provides a great overview of PM2.5, it is unwieldy to analyze if we are only interested in anomalous air quality. We can use <code><a href="../reference/pat_filterDate.html">pat_filterDate()</a></code> to subset our <code>pat</code> dates. In this case, we’ll reduce our time range to 2018-08-01 - 2018-09-01.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">pat_august &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span>pat <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/pat_filterDate.html">pat_filterDate</a></span>(<span class="dt">startdate =</span> <span class="dv">20180801</span>, <span class="dt">enddate =</span> <span class="dv">20180901</span>)</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">pat_august <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(<span class="dt">plottype =</span> <span class="st">"pm25_over"</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pat_august &lt;-<span class="st"> </span>
+<span class="st">  </span>pat <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/pat_filterDate.html">pat_filterDate</a></span>(<span class="dt">startdate =</span> <span class="dv">20180801</span>, <span class="dt">enddate =</span> <span class="dv">20180901</span>)
+
+pat_august <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(<span class="dt">plottype =</span> <span class="st">"pm25_over"</span>)</code></pre></div>
 <p><img src="pat_introduction_files/figure-html/augustPlot-1.png" width="672"></p>
 <p>We can look for correlations in the raw data with <code><a href="../reference/pat_scatterplot.html">pat_scatterplot()</a></code>. When a sensor is properly functioning, the only correlations will be a strong positive one between between the A and B channels (<code>pm25_A:pm25_B</code>) and a strong negative one between temperature and humidity.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">  pat_august <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="../reference/pat_scatterplot.html">pat_scatterplot</a></span>()</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  pat_august <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="../reference/pat_scatterplot.html">pat_scatterplot</a></span>()</code></pre></div>
 <p><img src="pat_introduction_files/figure-html/scatterplot-1.png" width="672"></p>
 </div>
 <div id="outlier-detection" class="section level2">
 <h2 class="hasAnchor">
 <a href="#outlier-detection" class="anchor"></a>Outlier Detection</h2>
 <p>Our <code>pat_august</code> “pat” object displays some intermittent sensor errors that appear as spikes in the data. In order to identify and remove PM2.5 outliers like these we can use <code><a href="../reference/pat_outliers.html">pat_outliers()</a></code>. By default, this function will create a plot of the raw data with outliers marked with a red asterisk. It can also be used to replace outliers with window median values.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">pat_august_filtered &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span>pat_august <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/pat_outliers.html">pat_outliers</a></span>(<span class="dt">replace =</span> <span class="ot">TRUE</span>, <span class="dt">showPlot =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pat_august_filtered &lt;-<span class="st"> </span>
+<span class="st">  </span>pat_august <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/pat_outliers.html">pat_outliers</a></span>(<span class="dt">replace =</span> <span class="ot">TRUE</span>, <span class="dt">showPlot =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><img src="pat_introduction_files/figure-html/outlierPlot-1.png" width="672"></p>
 </div>
 <div id="ab-channel-comparison" class="section level2">
 <h2 class="hasAnchor">
 <a href="#ab-channel-comparison" class="anchor"></a>A/B Channel Comparison</h2>
 <p>Now that we have a filtered dataset we can subset the data further and examine it in more detail. The <code><a href="../reference/pat_internalFit.html">pat_internalFit()</a></code> function will compare PM2.5 data from the A and B channels to verify that the sensor is functioning properly.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">one_week &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">  </span>pat_august <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/pat_filterDate.html">pat_filterDate</a></span>(<span class="dt">startdate =</span> <span class="dv">20180813</span>, <span class="dt">days =</span> <span class="dv">7</span>)</a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co"># Channel A/B comparison</span></a>
-<a class="sourceLine" id="cb8-6" data-line-number="6">one_week <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="../reference/pat_internalFit.html">pat_internalFit</a></span>()</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">one_week &lt;-<span class="st"> </span>
+<span class="st">  </span>pat_august <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/pat_filterDate.html">pat_filterDate</a></span>(<span class="dt">startdate =</span> <span class="dv">20180813</span>, <span class="dt">days =</span> <span class="dv">7</span>)
+
+<span class="co"># Channel A/B comparison</span>
+one_week <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/pat_internalFit.html">pat_internalFit</a></span>()</code></pre></div>
 <p><img src="pat_introduction_files/figure-html/internalFit-1.png" width="672"></p>
 <p>The high R<sup>2</sup> value indicates that the two channels are highly correlated while a slope of ~0.9 suggests a slight relative bias in the measurements. (Perfect alignment would have a slope of 1.0.)</p>
 </div>
@@ -191,9 +191,9 @@ pat &lt;- pat_createNew(pas, "Seattle", startdate = 20180701, enddate = 20180901
 <h2 class="hasAnchor">
 <a href="#comparison-with-federal-monitors" class="anchor"></a>Comparison with Federal Monitors</h2>
 <p>For locations near federal monitors that are part of the <a href="https://tools.airfire.org/monitoring/v4">USFS Monitoring site</a>, we can also compare the sensor data with hourly data from a federal monitor</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co"># Sensor/Monitor comparison</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2">one_week <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/pat_externalFit.html">pat_externalFit</a></span>()</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Sensor/Monitor comparison</span>
+one_week <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/pat_externalFit.html">pat_externalFit</a></span>()</code></pre></div>
 <p><img src="pat_introduction_files/figure-html/externalFit-1.png" width="672"></p>
 <p>Overall, this is an excellent fit with the PurpleAir sensor capturing the temporal evolution of the wildfire smoke event impacting Seattle. The sensor data is biased a little high relative to the monitoring data but the much higher temporal resolution of the sensor provides a rich dataset to work with.</p>
 <p>This package contains many additional functions for working with PurpleAir data and users are encouraged to review the reference documentation.</p>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot the output from the pat_aggregateOutlierCounts() function — PurpleAirQC_aggregationPlot • AirSensor</title>
+<title>Faceted plot of aggregation statistics — PurpleAirQC_aggregationPlot • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,7 +42,7 @@
 
 
 
-<meta property="og:title" content="Plot the output from the pat_aggregateOutlierCounts() function — PurpleAirQC_aggregationPlot" />
+<meta property="og:title" content="Faceted plot of aggregation statistics — PurpleAirQC_aggregationPlot" />
 <meta property="og:description" content="A plotting function that uses ggplot2 to display a plot of each 
 output category from the pat_aggregateOutlierCounts() function. Created to 
 have a quick look at all the stats to help identify necessary quality control
@@ -79,7 +79,7 @@ methods for PurpleAir Timeseries aggregationStats objects." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.4</span>
       </span>
     </div>
 
@@ -151,7 +151,7 @@ methods for PurpleAir Timeseries aggregationStats objects." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plot the output from the pat_aggregateOutlierCounts() function</h1>
+    <h1>Faceted plot of aggregation statistics</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/PurpleAirQC_aggregationPlot.R'><code>R/PurpleAirQC_aggregationPlot.R</code></a></small>
     <div class="hidden name"><code>PurpleAirQC_aggregationPlot.Rd</code></div>
     </div>
@@ -164,7 +164,8 @@ methods for PurpleAir Timeseries <em>aggregationStats</em> objects.</p>
     </div>
 
     <pre class="usage"><span class='fu'>PurpleAirQC_aggregationPlot</span>(<span class='kw'>aggregationStats</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>parameterGroup</span> <span class='kw'>=</span> <span class='st'>"all"</span>, <span class='kw'>parameters</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>)</pre>
+  <span class='kw'>parameterPattern</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>parameters</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>5</span>,
+  <span class='kw'>autoRange</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -174,33 +175,32 @@ methods for PurpleAir Timeseries <em>aggregationStats</em> objects.</p>
       <td><p>PurpleAir Timeseries <em>aggregationStats</em> object.</p></td>
     </tr>
     <tr>
-      <th>parameterGroup</th>
-      <td><p>Quick-reference plot types based on a group of 
-parameters: "all", "humidity", "pm25_A", "pm25_B", or "temperature"</p></td>
+      <th>parameterPattern</th>
+      <td><p>Pattern used to match groups of parameters.</p></td>
     </tr>
     <tr>
       <th>parameters</th>
-      <td><p>Custom vector of aggregation parameters to view</p></td>
+      <td><p>Custom vector of aggregation parameters to view.</p></td>
     </tr>
     <tr>
-      <th>ylim</th>
-      <td><p>Either "free_y", which scales the y axis automatically for each 
-plot or "fixed" where the y limits of each plot are identical</p></td>
+      <th>nrow</th>
+      <td><p>Number of rows in the faceted plot.</p></td>
+    </tr>
+    <tr>
+      <th>autoRange</th>
+      <td><p>Logical specifying whether to scale the y axis separately
+for each plot or to use a common y axis.</p></td>
     </tr>
     </table>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='no'>nb</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pat_createNew.html'>pat_createNew</a></span>(<span class='no'>example_pas</span>,
-                    <span class='st'>"North Bend Weather"</span>,
-                    <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fl'>20180801</span>,
-                    <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='fl'>20180901</span>)
-<span class='no'>aggregationStats</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pat_aggregateOutlierCounts.html'>pat_aggregateOutlierCounts</a></span>(<span class='no'>nb</span>)
+    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
+<span class='no'>aggregationStats</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pat_aggregateOutlierCounts.html'>pat_aggregateOutlierCounts</a></span>(<span class='no'>example_pat_failure_A</span>)
 <span class='fu'>PurpleAirQC_aggregationPlot</span>(<span class='no'>aggregationStats</span>,
-                            <span class='kw'>parameterGroup</span> <span class='kw'>=</span> <span class='st'>"humidity"</span>,
-                            <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='st'>"free_y"</span>)
-}</div></pre>
+                            <span class='kw'>parameterPattern</span> <span class='kw'>=</span> <span class='st'>"humidity_m|temperature_m"</span>,
+                            <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='PurpleAirQC_aggregationPlot-1.png' alt='' width='700' height='433' /></div><div class='input'># }
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

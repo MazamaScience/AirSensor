@@ -1,3 +1,7 @@
+# AirSensor 0.5.4
+
+* Added `PurpleAirQC_aggregationPlot()` function.
+
 # AirSensor 0.5.3
 
 * Added `make.names` argument to `pat_loadMonth()` and `pat_loadLatest()`.

@@ -2,21 +2,23 @@
 % Please edit documentation in R/PurpleAirQC_aggregationPlot.R
 \name{PurpleAirQC_aggregationPlot}
 \alias{PurpleAirQC_aggregationPlot}
-\title{Plot the output from the pat_aggregateOutlierCounts() function}
+\title{Faceted plot of aggregation statistics}
 \usage{
 PurpleAirQC_aggregationPlot(aggregationStats = NULL,
-  parameterGroup = "all", parameters = NULL, ylim = "fixed")
+  parameterPattern = NULL, parameters = NULL, nrow = 5,
+  autoRange = TRUE)
 }
 \arguments{
 \item{aggregationStats}{PurpleAir Timeseries \emph{aggregationStats} object.}
 
-\item{parameterGroup}{Quick-reference plot types based on a group of 
-parameters: "all", "humidity", "pm25_A", "pm25_B", or "temperature"}
+\item{parameterPattern}{Pattern used to match groups of parameters.}
 
-\item{parameters}{Custom vector of aggregation parameters to view}
+\item{parameters}{Custom vector of aggregation parameters to view.}
 
-\item{ylim}{Either "free_y", which scales the y axis automatically for each 
-plot or "fixed" where the y limits of each plot are identical}
+\item{nrow}{Number of rows in the faceted plot.}
+
+\item{autoRange}{Logical specifying whether to scale the y axis separately
+for each plot or to use a common y axis.}
 }
 \description{
 A plotting function that uses ggplot2 to display a plot of each 
@@ -25,15 +27,10 @@ have a quick look at all the stats to help identify necessary quality control
 methods for PurpleAir Timeseries \emph{aggregationStats} objects.
 }
 \examples{
-\dontrun{
-nb <- pat_createNew(example_pas, 
-                    "North Bend Weather", 
-                    startdate = 20180801, 
-                    enddate = 20180901)
-aggregationStats <- pat_aggregateOutlierCounts(nb)
+\donttest{
+aggregationStats <- pat_aggregateOutlierCounts(example_pat_failure_A)
 PurpleAirQC_aggregationPlot(aggregationStats, 
-                            parameterGroup = "humidity", 
-                            ylim = "free_y")
+                            parameterPattern = "humidity_m|temperature_m", 
+                            nrow = 2)
 }
-
 }
