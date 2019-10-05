@@ -1,7 +1,8 @@
 # AirSensor 0.5.4
 
-* Improved `datestamp` handling in `pas_load()`.
 * Added `PurpleAirQC_aggregationPlot()` function.
+* Improved `datestamp` handling in `pas_load()`.
+* More explicit use of timezones to avoid local/UTC misunderstandings.
 
 # AirSensor 0.5.3
 
