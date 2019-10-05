@@ -133,7 +133,8 @@ pat_internalFit <- function(
       equationLabel
     
     # Set time axis to sensor local time
-    tidy_data$datetime <- lubridate::with_tz(tidy_data$datetime, timezone)
+    tidy_data$datetime <- lubridate::with_tz(tidy_data$datetime, 
+                                             tzone = timezone)
     
     ts_plot <-
       tidy_data %>%

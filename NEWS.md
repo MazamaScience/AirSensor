@@ -1,5 +1,6 @@
 # AirSensor 0.5.4
 
+* Improved `datestamp` handling in `pas_load()`.
 * Added `PurpleAirQC_aggregationPlot()` function.
 
 # AirSensor 0.5.3

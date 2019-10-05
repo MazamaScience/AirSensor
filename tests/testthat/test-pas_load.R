@@ -13,9 +13,13 @@ test_that("loads correct class", {
   # expect_true(pas_isPas(pas_createNew()))
 })
 
-# test_that("pwfsl loads correct class", {
-#   skip_on_cran()
-#   skip_on_travis()
-#   expect_true(is(pwfsl_load(), "ws_monitor"))
-#   expect_true(is(pwfsl_loadLatest(), "ws_monitor"))
-# })
+test_that("bad datestamps are rejected", {
+  futureStamp <- 
+  { lubridate::now(tzone = "UTC") + lubridate::ddays(10) } %>%
+    strftime("%Y%m%d", tz = "UTC")
+  
+  expect_error(pas_load(datestamp = "abc"))
+  expect_error(pas_load(datestamp = 20190101))
+  expect_error(pas_load(datestamp = "20190101"))
+  expect_error(pas_load(datestamp = futureStamp))
+})

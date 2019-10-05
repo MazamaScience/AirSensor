@@ -335,7 +335,8 @@ if ( FALSE ) {
   timeAxis <- movieData$data$datetime
   timeTicks <- timeAxis[(lubridate::hour(timeAxis) - 1) %% tickSkip == 0 &
                    lubridate::minute(timeAxis) == 0]
-  timeLabels <- strftime(timeTicks, "%l %P")
+  timeLabels <- strftime(timeTicks, "%l %P",
+                         tz = "America/Los_Angeles")
   timeInfo <- PWFSLSmoke::timeInfo(timeAxis, longitude = lon, latitude = lat)
 
   frameTime <- MazamaCoreUtils::parseDatetime("2019-07-04 21", 
