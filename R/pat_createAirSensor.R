@@ -13,15 +13,25 @@
 #' @param qc_algorithm Named QC algorithm to apply to hourly aggregation stats.
 #' @param min_count Aggregation bins with fewer than `min_count` measurements
 #' will be marked as `NA`.
+#' @param aggregation_FUN Function used to convert a \emph{pat} object into a
+#' tibble of hourly statistics. 
 #'  
-#' @description Aggregates data from a \emph{pat} object into an \emph{airsensor} 
-#' object that has appropriate metadata to be used with the *PWFSLSmoke* package.
+#' @description Aggregates data from a \emph{pat} object into an 
+#' \emph{airsensor} object that has appropriate metadata to be used with the 
+#' *PWFSLSmoke* package.
 #'
 #' Current QC algorithms exist for \code{channel = "ab"} and include:
 #' \itemize{
 #' \item{\code{hourly_AB_00}}
 #' \item{\code{hourly_AB_01}}
 #' }
+#' 
+#' @note
+#' The \code{aggregation_FUN}, allows users to pass in custom functions that 
+#' generate new aggrregation statistics. These statistics can then be utilitized 
+#' in a custom QC algorithm function. The algorithm function applied is
+#' gnerated from the \code{qc_algorithm} parameter with 
+#' \code{paste0("PurpleAirQC_", qc_algorithm)}.
 #'
 #' @return An "airsensor" object of aggregated PurpleAir Timeseries data.
 #' 
@@ -43,7 +53,8 @@ pat_createAirSensor <- function(
   parameter = "pm25",
   channel = "ab",
   qc_algorithm = "hourly_AB_01",
-  min_count = 20
+  min_count = 20,
+  aggregation_FUN = pat_aggregate
 ) {
   
   # ----- Validate Parameters --------------------------------------------------
@@ -75,6 +86,11 @@ pat_createAirSensor <- function(
     stop("Required parameter 'qc_algorithm' must be one of 'hourly_AB_00' or 'hourly_AB_01'")
   }
   
+  if ( !rlang::is_closure(aggregation_FUN) ) {
+    stop(paste0("Parameter 'aggregation_FUN' is not a function.",
+                "(Pass in the function with no quotes and no parentheses.)"))
+  }
+  
   # ----- Raw data QC ----------------------------------------------------------
   
   # Invalidate out-of-spec values. Don't invalidate based on humidity
@@ -84,8 +100,8 @@ pat_createAirSensor <- function(
   
   # ----- Temporal aggregation -------------------------------------------------
   
-  aggregationStats <- pat_aggregate(pat,
-                                    period = period)
+  aggregationStats <- aggregation_FUN(pat,
+                                      period = period)
   
   # ----- Aggregation QC -------------------------------------------------------
   
@@ -93,6 +109,7 @@ pat_createAirSensor <- function(
 
     if ( channel == "a" ) {
       
+      # Simple min_count QC
       hourlyData <-
         aggregationStats %>%
         dplyr::mutate(pm25 = .data$pm25_A_mean) %>%
@@ -101,6 +118,7 @@ pat_createAirSensor <- function(
       
     } else if ( channel == "b" ) {
       
+      # Simple min_count QC
       hourlyData <-
         aggregationStats %>%
         dplyr::mutate(pm25 = .data$pm25_B_mean) %>%
@@ -109,9 +127,10 @@ pat_createAirSensor <- function(
       
     } else if ( channel == "ab" ) {
       
+      # Apply qc_algorithm function
       functionName <- paste0("PurpleAirQC_", qc_algorithm)
-      FUNC <- get(functionName)
-      hourlyData <- FUNC(aggregationStats)
+      FUN <- get(functionName)
+      hourlyData <- FUN(aggregationStats)
       
     }
     

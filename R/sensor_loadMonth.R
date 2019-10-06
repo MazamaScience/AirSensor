@@ -43,19 +43,22 @@ sensor_loadMonth <- function(
   
   MazamaCoreUtils::stopIfNull(collection)
   
-  # TODO: Work with lubridate to support all formats
+  # ----- Create year and month stamps -----------------------------------------
+  
+  # NOTE:  Incoming datestamps are interpreted in the local timezone.
   
   # Default to the current month
-  if ( is.null(datestamp) || datestamp == "" ) {
-    now <- lubridate::now(tzone = timezone)
-    datestamp <- strftime(now, "%Y%m%d", tz = timezone)
+  if ( is.null(datestamp) || is.na(datestamp) || datestamp == "" ) {
+    datetime <- lubridate::now(tzone = timezone)
+  } else {
+    datetime <- MazamaCoreUtils::parseDatetime(datestamp, timezone = timezone)
   }
   
-  # Handle the case where the day is already specified
-  datestamp <- stringr::str_sub(paste0(datestamp,"01"), 1, 8)
-  monthstamp <- stringr::str_sub(datestamp, 1, 6)
-  yearstamp <- stringr::str_sub(datestamp, 1, 4)
-  
+  # Filename timestamps are always in UTC
+  datestamp <- strftime(datetime, "%Y%m%d", tz = "UTC")
+  monthstamp <- strftime(datetime, "%Y%m", tz = "UTC")
+  yearstamp <- strftime(datetime, "%Y", tz = "UTC")
+
   # ----- Load data from URL or directory --------------------------------------
   
   # Use package internal URL

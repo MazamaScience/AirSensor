@@ -59,8 +59,10 @@ pat_loadMonth <- function(
   if ( make.names ) 
     label <- make.names(label)
   
-  # ----- Load data from URL or directory --------------------------------------
+  # ----- Create year and month stamps -----------------------------------------
   
+  # NOTE:  Incoming datestamps are interpreted in the local timezone.
+
   # Default to the current month
   if ( is.null(datestamp) || is.na(datestamp) || datestamp == "" ) {
     datetime <- lubridate::now(tzone = timezone)
