@@ -4,8 +4,7 @@
 \alias{pas_load}
 \title{Load PurpleAir synoptic data}
 \usage{
-pas_load(datestamp = strftime(lubridate::today("America/Los_Angeles"),
-  "\%Y\%m\%d", tz = "America/Los_Angeles"), retries = 30,
+pas_load(datestamp = NULL, retries = 30,
   timezone = "America/Los_Angeles", archival = FALSE)
 }
 \arguments{

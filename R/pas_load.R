@@ -47,9 +47,7 @@
 #' }
 
 pas_load <- function(
-  datestamp = strftime(lubridate::today("America/Los_Angeles"),
-                       "%Y%m%d",
-                       tz = "America/Los_Angeles"),
+  datestamp = NULL,
   retries = 30,
   timezone = "America/Los_Angeles",
   archival = FALSE
@@ -57,14 +55,34 @@ pas_load <- function(
   
   # ----- Validate parameters --------------------------------------------------
   
+  if ( !timezone %in% OlsonNames() ) {
+    stop(paste0("Parameter 'timezone' is not recognized: ", timezone))
+  }
+    
+  if ( is.null(datestamp) ) {
+    # All .rda archive files are saved with UTC datestamp filenames
+    datestamp <- 
+      lubridate::now(tzone = timezone) %>%
+      strftime("%Y%m%d", tz = "UTC")
+  } else {
+    datestamp <- as.character(datestamp)
+  }
+  
+  # Check for all numbers
+  if ( !stringr::str_detect(datestamp, "^[0-9]{8}$") ) {
+    stop("Parameter 'datestamp' must bee in 'YYYYmmdd' format.")
+  }
+  
   if ( datestamp <= "20190404" ) 
-    stop("No 'pas' data is available prior to April 5, 2019.")
+    stop("No 'pas' data available prior to April 5, 2019.")
   
   # Allow datestamp to be one day past today to handle timezone differences
-  tomorrow <- lubridate::today(timezone) + lubridate::ddays(1)
+  tomorrowStamp <- 
+  { lubridate::now(tzone = timezone) + lubridate::ddays(1) } %>%
+    strftime("%Y%m%d", tz = timezone)
   
-  if ( datestamp > strftime(tomorrow, "%Y%m%d", tz = timezone) )
-    stop("No data is available for future dates.")
+  if ( datestamp > tomorrowStamp )
+    stop("No data available for future dates.")
   
   # ----- Load data from URL or directory --------------------------------------
   

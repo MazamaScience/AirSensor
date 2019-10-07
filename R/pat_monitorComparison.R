@@ -123,8 +123,8 @@ pat_monitorComparison <- function(
   # ----- Construct plot -------------------------------------------------------
   
   # Set time axis to sensor local time
-  pat$data$datetime <- lubridate::with_tz(pat$data$datetime, timezone)
-  tidy_data$datetime <- lubridate::with_tz(tidy_data$datetime, timezone)
+  pat$data$datetime <- lubridate::with_tz(pat$data$datetime, tzone = timezone)
+  tidy_data$datetime <- lubridate::with_tz(tidy_data$datetime, tzone = timezone)
   
   pm25_plot <-
     pat$data %>%

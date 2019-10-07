@@ -104,6 +104,10 @@ pat_aggregate <- function(
   # Parameters for T-test 
   t_parameters <- c("pm25_A", "pm25_B")
   
+  # NOTE:  base::Reduce() is rarely seen in modern R code but the implementation
+  # NOTE:  below is remarkably fast. See ?Reduce for details on base R support
+  # NOTE:  for functional programming.
+  
   # Apply .pat_agg separately for each type of stat -> 
   # Reduce list by merging to common (datetime)
   aggregationStats <- 
@@ -161,7 +165,12 @@ pat_aggregate <- function(
   # zoo with datetime index 
   zz <- zoo::zoo(data, order.by = datetime)
   
-  # Aggregate 
+  # NOTE:  Calling aggregate() will dispatch to aggregate.zoo() because the
+  # NOTE:  argument is a "zoo" object. Unfortunately, we cannot call 
+  # NOTE:  zoo::aggregate.zoo() explicitly because this funciton is not
+  # NOTE:  exported by the zoo package.
+  
+  # Aggregate
   zagg <- 
     aggregate(
       zz, 
@@ -170,6 +179,7 @@ pat_aggregate <- function(
     )  
   
   # ----- !T-test --------------------------------------------------------------
+  
   if ( stat != "tstats" ) {
     
     # Fortify to data.frame
@@ -183,18 +193,30 @@ pat_aggregate <- function(
   }
   
   # ----- T-test ---------------------------------------------------------------
+  
   if ( stat == "tstats" ) {
     
-    # Internal t.test function to handle too many missing values if applicable
-    .ttest <- function(x,y) {
+    # Internal t.test function that will always respond, even in the face of 
+    # problematic data.
+    .ttest <- function(x, y) {
       
-      if ( length(na.omit(x)) > 2 && length(na.omit(y)) > 2 ) {
-        return(t.test(x, y, paired = FALSE))
-      } else {
+      if ( length(na.omit(x)) <= 2 || length(na.omit(y)) <= 2 ) {
+        # Not enough valid data
         return(t.test(c(0,0,0), c(0,0,0)))
+      } else if ( sd(na.omit(x)) == 0 || sd(na.omit(y)) == 0 ) {
+        # DC signal in at least one channel
+        return(t.test(c(0,0,0), c(0,0,0)))
+      } else {
+        # Looking good -- calculate t.test
+        return(t.test(x, y, paired = FALSE))
       }
-      
+
     }
+    
+    # NOTE:  X below ends up with a two-column matix where each cell contains an
+    # NOTE:  unnamed List of length one containing a numeric vector. Each
+    # NOTE:  row of the matrix thus contains a vector of pm25_A and pm25_B
+    # NOTE:  in columns 1 and 2.
     
     # Map/Reduce t.test() to nested bins in matrix rows 
     tt <- 

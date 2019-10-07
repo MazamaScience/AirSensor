@@ -64,6 +64,13 @@ pat_createNew <- function(
       dplyr::filter(.data$label == !!label) %>%
       dplyr::pull(.data$timezone)
   }
+  
+  if ( length(timezone) > 1 ) {
+    err_msg <- paste0(length(timezone),
+                      " senors share the label '",
+                      label, "'")
+    stop(err_msg)
+  }
 
   # Create a valid dateRange
   if ( !is.null(startdate) && !is.null(enddate) ) {

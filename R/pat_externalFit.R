@@ -171,7 +171,8 @@ pat_externalFit <- function(
       equationLabel
     
     # Set time axis to sensor local time
-    tidy_data$datetime <- lubridate::with_tz(tidy_data$datetime, timezone)
+    tidy_data$datetime <- lubridate::with_tz(tidy_data$datetime, 
+                                             tzone = timezone)
     
     # Time series PM 2.5 plot
     ts_plot <-

@@ -92,7 +92,7 @@ datestamp = &quot;YYYYmmddHH&quot;." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.5</span>
       </span>
     </div>
 
@@ -189,8 +189,7 @@ datestamp = &quot;YYYYmmddHH&quot;." />
 <code>datestamp = "YYYYmmddHH"</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>pas_load</span>(<span class='kw'>datestamp</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/strptime.html'>strftime</a></span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/today.html'>today</a></span>(<span class='st'>"America/Los_Angeles"</span>),
-  <span class='st'>"%Y%m%d"</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>"America/Los_Angeles"</span>), <span class='kw'>retries</span> <span class='kw'>=</span> <span class='fl'>30</span>,
+    <pre class="usage"><span class='fu'>pas_load</span>(<span class='kw'>datestamp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>retries</span> <span class='kw'>=</span> <span class='fl'>30</span>,
   <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='st'>"America/Los_Angeles"</span>, <span class='kw'>archival</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>

@@ -56,6 +56,10 @@ pat_load <- function(
   
   # ----- Asssemble monthly archive files --------------------------------------
   
+  # NOTE:  datestamps here are created with the local timezone. It is the job of
+  # NOTE:  pat_loadMonth() to convert these into UTC for use in constructing
+  # NOTE:  data file URLs.
+  
   datestamps <-
     sort(
       unique(

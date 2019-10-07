@@ -9,18 +9,18 @@ pat_qc(pat = NULL, removeOutOfSpec = TRUE, max_humidity = NULL)
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object}
 
-\item{removeOutOfSpec}{Logical specifying removal of measurements that are
-out of instrument specs.}
+\item{removeOutOfSpec}{Logical determinging whether measurements that are
+out of instrument specs should be invalidated.}
 
 \item{max_humidity}{Maximum humidity threshold above which pm25 measurements
-are invalidated.}
+are invalidated. Disabled unless explicitly set.}
 }
 \value{
 A cleaned up \emph{pat} object.
 }
 \description{
 Optionally applies QC thresholds to a \emph{pat} object
-based on the specs of the Purple Air sensor.
+based on the documented specs of the Purple Air sensor.
 
 The \code{pat_load()} function returns raw "engineering" data for a
 PurpleAir Sensor. The very first level of QC that should always be applied

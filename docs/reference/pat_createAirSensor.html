@@ -43,8 +43,9 @@
 
 
 <meta property="og:title" content="Create an Air Sensor object — pat_createAirSensor" />
-<meta property="og:description" content="Aggregates data from a pat object into an airsensor 
-object that has appropriate metadata to be used with the *PWFSLSmoke* package.
+<meta property="og:description" content="Aggregates data from a pat object into an 
+airsensor object that has appropriate metadata to be used with the 
+*PWFSLSmoke* package.
 Current QC algorithms exist for channel = &quot;ab&quot; and include:
 hourly_AB_00
 hourly_AB_01
@@ -82,7 +83,7 @@ hourly_AB_01
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.5</span>
       </span>
     </div>
 
@@ -160,8 +161,9 @@ hourly_AB_01
     </div>
 
     <div class="ref-description">
-    <p>Aggregates data from a <em>pat</em> object into an <em>airsensor</em> 
-object that has appropriate metadata to be used with the *PWFSLSmoke* package.</p>
+    <p>Aggregates data from a <em>pat</em> object into an 
+<em>airsensor</em> object that has appropriate metadata to be used with the 
+*PWFSLSmoke* package.</p>
 <p>Current QC algorithms exist for <code>channel = "ab"</code> and include:</p><ul>
 <li><p><code>hourly_AB_00</code></p></li>
 <li><p><code>hourly_AB_01</code></p></li>
@@ -171,7 +173,7 @@ object that has appropriate metadata to be used with the *PWFSLSmoke* package.</
 
     <pre class="usage"><span class='fu'>pat_createAirSensor</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>period</span> <span class='kw'>=</span> <span class='st'>"1 hour"</span>,
   <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>"pm25"</span>, <span class='kw'>channel</span> <span class='kw'>=</span> <span class='st'>"ab"</span>, <span class='kw'>qc_algorithm</span> <span class='kw'>=</span> <span class='st'>"hourly_AB_01"</span>,
-  <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>20</span>)</pre>
+  <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>aggregation_FUN</span> <span class='kw'>=</span> <span class='no'>pat_aggregate</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -204,11 +206,23 @@ object that has appropriate metadata to be used with the *PWFSLSmoke* package.</
       <td><p>Aggregation bins with fewer than `min_count` measurements
 will be marked as `NA`.</p></td>
     </tr>
+    <tr>
+      <th>aggregation_FUN</th>
+      <td><p>Function used to convert a <em>pat</em> object into a
+tibble of hourly statistics.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An "airsensor" object of aggregated PurpleAir Timeseries data.</p>
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>The <code>aggregation_FUN</code>, allows users to pass in custom functions that 
+generate new aggrregation statistics. These statistics can then be utilitized 
+in a custom QC algorithm function. The algorithm function applied is
+gnerated from the <code>qc_algorithm</code> parameter with 
+<code><a href='https://rdrr.io/r/base/paste.html'>paste0("PurpleAirQC_", qc_algorithm)</a></code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='PurpleAirQC_hourly_AB_00.html'>PurpleAirQC_hourly_AB_00</a></p>
@@ -228,6 +242,7 @@ will be marked as `NA`.</p></td>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#note">Note</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>

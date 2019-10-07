@@ -1,3 +1,17 @@
+# AirSensor 0.5.5
+
+* Now requiring **MazamaCoreUtils** 0.3.10.
+* `pat_aggregate()` non longer stops in the face of data with a DC signal on
+one of the pm25 channels.
+* Added `aggregation_FUN` argument to `pat_createAirSensor()` to allow for
+custom aggregation statistics.
+
+# AirSensor 0.5.4
+
+* Added `PurpleAirQC_aggregationPlot()` function.
+* Improved `datestamp` handling in `pas_load()`.
+* More explicit use of timezones to avoid local/UTC misunderstandings.
+
 # AirSensor 0.5.3
 
 * Added `make.names` argument to `pat_loadMonth()` and `pat_loadLatest()`.

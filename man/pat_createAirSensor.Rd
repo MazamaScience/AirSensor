@@ -6,7 +6,7 @@
 \usage{
 pat_createAirSensor(pat = NULL, period = "1 hour",
   parameter = "pm25", channel = "ab", qc_algorithm = "hourly_AB_01",
-  min_count = 20)
+  min_count = 20, aggregation_FUN = pat_aggregate)
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}
@@ -24,19 +24,30 @@ pat_createAirSensor(pat = NULL, period = "1 hour",
 
 \item{min_count}{Aggregation bins with fewer than `min_count` measurements
 will be marked as `NA`.}
+
+\item{aggregation_FUN}{Function used to convert a \emph{pat} object into a
+tibble of hourly statistics.}
 }
 \value{
 An "airsensor" object of aggregated PurpleAir Timeseries data.
 }
 \description{
-Aggregates data from a \emph{pat} object into an \emph{airsensor} 
-object that has appropriate metadata to be used with the *PWFSLSmoke* package.
+Aggregates data from a \emph{pat} object into an 
+\emph{airsensor} object that has appropriate metadata to be used with the 
+*PWFSLSmoke* package.
 
 Current QC algorithms exist for \code{channel = "ab"} and include:
 \itemize{
 \item{\code{hourly_AB_00}}
 \item{\code{hourly_AB_01}}
 }
+}
+\note{
+The \code{aggregation_FUN}, allows users to pass in custom functions that 
+generate new aggrregation statistics. These statistics can then be utilitized 
+in a custom QC algorithm function. The algorithm function applied is
+gnerated from the \code{qc_algorithm} parameter with 
+\code{paste0("PurpleAirQC_", qc_algorithm)}.
 }
 \examples{
 \dontrun{
