@@ -27,7 +27,7 @@ upgrade report data every 2 minutes or 30 measurements per hour.
 }
 \examples{
 \dontrun{
-df <- 
+tbl <- 
   example_pat \%>\%
   pat_aggregateOutlierCounts() \%>\%
   SoH_pctReporting() 
