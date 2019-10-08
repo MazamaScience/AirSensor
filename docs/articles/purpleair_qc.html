@@ -246,16 +246,16 @@
 <a class="sourceLine" id="cb11-17" data-line-number="17"><span class="co"># Look at a random sample of this new dataframe</span></a>
 <a class="sourceLine" id="cb11-18" data-line-number="18">dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(raw_data, <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>##      datetime channel  pm25
-## 1  2019061117  pm25_B  5.42
-## 2  2019061120  pm25_B 10.57
-## 3  2019061120  pm25_A 12.98
-## 4  2019061105  pm25_B  7.50
-## 5  2019061104  pm25_A  5.80
-## 6  2019061100  pm25_B  7.59
-## 7  2019061111  pm25_B 11.49
-## 8  2019061108  pm25_A 13.10
-## 9  2019061104  pm25_A  5.86
-## 10 2019061102  pm25_B  3.32</code></pre>
+## 1  2019061105  pm25_B  6.68
+## 2  2019061113  pm25_A  6.94
+## 3  2019061100  pm25_A  6.48
+## 4  2019061114  pm25_B  6.03
+## 5  2019061121  pm25_B 12.41
+## 6  2019061108  pm25_B 11.87
+## 7  2019061105  pm25_A  7.61
+## 8  2019061100  pm25_A  7.03
+## 9  2019061109  pm25_B  8.54
+## 10 2019061121  pm25_A 14.38</code></pre>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="co"># Create a timeseries using boxplots</span></a>
 <a class="sourceLine" id="cb13-2" data-line-number="2">colors &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="https://rdrr.io/r/grDevices/rgb.html">rgb</a></span>(<span class="fl">0.9</span>, <span class="fl">0.25</span>, <span class="fl">0.2</span>), <span class="kw"><a href="https://rdrr.io/r/grDevices/rgb.html">rgb</a></span>(<span class="fl">0.2</span>, <span class="fl">0.25</span>, <span class="fl">0.9</span>))</a>
 <a class="sourceLine" id="cb13-3" data-line-number="3"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(raw_data, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(datetime, pm25, <span class="dt">color =</span> channel)) <span class="op">+</span><span class="st"> </span></a>
@@ -278,16 +278,16 @@
 <p><img src="purpleair_qc_files/figure-html/AB_boxplot-2.png" width="672"></p>
 <p>And here is the same for a day with serious problems:</p>
 <pre><code>##      datetime channel    pm25
-## 1  2019061201  pm25_B   13.79
-## 2  2019061209  pm25_B   16.55
-## 3  2019061216  pm25_B      NA
-## 4  2019061203  pm25_B   13.17
-## 5  2019061209  pm25_A   18.38
-## 6  2019061200  pm25_A   33.75
-## 7  2019061202  pm25_A   15.06
-## 8  2019061205  pm25_A 1575.87
-## 9  2019061204  pm25_A 2920.94
-## 10 2019061203  pm25_A 3228.68</code></pre>
+## 1  2019061212  pm25_A   17.93
+## 2  2019061212  pm25_B   16.57
+## 3  2019061215  pm25_B   12.95
+## 4  2019061216  pm25_B    9.31
+## 5  2019061201  pm25_B   14.51
+## 6  2019061208  pm25_A 3330.99
+## 7  2019061219  pm25_B   12.58
+## 8  2019061208  pm25_A 3335.28
+## 9  2019061218  pm25_B   10.72
+## 10 2019061215  pm25_A      NA</code></pre>
 <p><img src="purpleair_qc_files/figure-html/AB_boxplot_2-1.png" width="672"><img src="purpleair_qc_files/figure-html/AB_boxplot_2-2.png" width="672"></p>
 <p>We can see that the null hypothesis – the difference in means is entirely due to chance – is extremely unlikely <code>pm25_p &lt; 1e-30</code>, for example, only occur for hours where the A and B channels have hourly avergaes that are both highly precise (low std dev) and very different. We can thus use the <code>pm25_t</code> variable to flag those hours where the A and B channels disagree.</p>
 </div>

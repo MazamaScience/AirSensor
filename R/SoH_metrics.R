@@ -34,6 +34,12 @@ SoH_pctReporting <- function(
   samplingFreq = 30
   
 ){
+  
+  # ----- Validate parameters --------------------------------------------------
+  
+  MazamaCoreUtils::stopIfNull(aggregationStats)
+  
+  # ----- SoH_pctRecording() ---------------------------------------------------
 
   samplingFreq <- 30 
   samples_perDay <- samplingFreq*24
@@ -51,5 +57,9 @@ SoH_pctReporting <- function(
     # sensor was working perfectly (30 samp/hr * 24 hr/day)*100 to make percent.
     dplyr::mutate(pct_Reporting = .data$daily_sum/samplesperDay*100)
   
+  # ----- Return ---------------------------------------------------------------
+  
   return(tbl)
 }
+
+

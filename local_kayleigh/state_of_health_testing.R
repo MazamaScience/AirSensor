@@ -50,7 +50,14 @@ tbl <-
   summarise(daily_sum = sum(pm25_A_count)) %>%
   mutate(pct_Reporting = daily_sum/samplesperDay*100)
 
-#pct_Reporting <- total_pm25ACount/samplingFreq
+# Begin SoH_pctValid()
+
+humidity_low <- 0
+humidity_high <- 100
+temp_low <- -40
+temp_high <- 185
+pm25_low <- 0
+pm25_high <- 1000
 
 
 
