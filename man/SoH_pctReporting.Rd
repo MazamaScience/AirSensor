@@ -4,11 +4,10 @@
 \alias{SoH_pctReporting}
 \title{Daily reporting percentage}
 \usage{
-SoH_pctReporting(aggregationStats = NULL, samplingFreq = 30)
+SoH_pctReporting(pat = NULL, samplingFreq = 30)
 }
 \arguments{
-\item{aggregationStats}{Dataframe of statistics as returned by
-\code{pat_aggregate()}.}
+\item{pat}{PurpleAir Timeseries \emph{pat} object.}
 
 \item{samplingFreq}{The number of samples measured per hour when the sensor 
 is operating optimally. Note that currently the sensors measure 30 samples 
@@ -26,13 +25,17 @@ Purple Air II sensors reporting after the June, 2019 firmware
 upgrade report data every 2 minutes or 30 measurements per hour.
 }
 \examples{
-\dontrun{
 tbl <- 
   example_pat \%>\%
-  pat_aggregateOutlierCounts() \%>\%
   SoH_pctReporting() 
 
-plot(tbl$day, tbl$pct_Reporting)
-}
+plot(tbl$datetime, tbl$pct_Reporting)
+
+tbl <- 
+  example_pat_failure_B \%>\%
+  SoH_pctReporting() 
+
+plot(tbl$datetime, tbl$pct_Reporting)
+
 
 }

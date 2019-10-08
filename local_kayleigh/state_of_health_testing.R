@@ -34,21 +34,22 @@ pat1 <- pat_createNew(pas_state, label = "Nickelsville Georgetown")
 # PurpleAirQC_aggregationPlot(aggregationStats[[1]], autoRange = TRUE)
 
 # agg_stats for one station for testing:
-# agg_stat_test <- pat_aggregateOutlierCounts(pat1)
+agg_stat_test <- pat_aggregateOutlierCounts(pat1)
 
 # Begin SOH_pctReporting()
 
 samplingFreq <- 30 
 samplesperDay <- samplingFreq*24
-tbl <- 
+tbl_test <- 
   pat1 %>%
-  pat_aggregateOutlierCounts( period = "day")
+  pat_aggregateOutlierCounts( period = "day") %>%
   # agg_stat_test %>%
   # mutate(day = as.Date(datetime, format="%Y-%m-%d")) %>%
   # group_by(day) %>%
   # summarise(daily_sum = sum(pm25_A_count)) %>%
-  # mutate(pct_Reporting = daily_sum/samplesperDay*100)
+  mutate(pct_Reporting = pm25_A_count/samplesperDay*100)
 
+tbl_test
 # Begin SoH_pctValid()
 
 humidity_low <- 0

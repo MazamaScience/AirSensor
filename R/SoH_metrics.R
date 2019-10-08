@@ -3,8 +3,7 @@
 #' 
 #' @title Daily reporting percentage
 #' 
-#' @param aggregationStats Dataframe of statistics as returned by
-#' \code{pat_aggregate()}.
+#' @param pat PurpleAir Timeseries \emph{pat} object.
 #' @param samplingFreq The number of samples measured per hour when the sensor 
 #' is operating optimally. Note that currently the sensors measure 30 samples 
 #' per hour but were previously sampling at a higher rate.
@@ -21,47 +20,46 @@
 #' @examples 
 #' tbl <- 
 #'   example_pat %>%
-#'   pat_aggregateOutlierCounts() %>%
 #'   SoH_pctReporting() 
 #' 
-#' plot(tbl$day, tbl$pct_Reporting)
+#' plot(tbl$datetime, tbl$pct_Reporting)
 #' 
 #' tbl <- 
 #'   example_pat_failure_B %>%
-#'   pat_aggregateOutlierCounts() %>%
 #'   SoH_pctReporting() 
 #' 
-#' plot(tbl$day, tbl$pct_Reporting)
+#' plot(tbl$datetime, tbl$pct_Reporting)
 #' 
 #' 
 
 SoH_pctReporting <- function(
-  aggregationStats = NULL,
+  pat = NULL,
   samplingFreq = 30
   
 ){
   
   # ----- Validate parameters --------------------------------------------------
   
-  MazamaCoreUtils::stopIfNull(aggregationStats)
+  MazamaCoreUtils::stopIfNull(pat)
+  
+  if ( !pat_isPat(pat) )
+    stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")
+  
+  if ( pat_isEmpty(pat) )
+    stop("Parameter 'pat' has no data.") 
+  
   
   # ----- SoH_pctRecording() ---------------------------------------------------
 
-  samplingFreq <- 30 
+  samplingFreq <- 30 # hourly sampling frequency on an optimal day
   samplesPerDay <- samplingFreq*24
   tbl <- 
-    aggregationStats %>%
-    # Create a new column that indicates the day
-    dplyr::mutate(day = as.Date(.data$datetime, format="%Y-%m-%d")) %>%
-    # Group the data by the day
-    dplyr::group_by(.data$day) %>%
-    # Sum the number of samples per hour (the count per channel) in each day and
-    # reduce the tbl down to just the grouping variable and the calculated 
-    # variable (in this case, "daily_sum")
-    dplyr::summarise(daily_sum = sum(.data$pm25_A_count)) %>%
+    pat %>%
+    # Calculate the aggregation statistics based on a day rather than hourly.
+    pat_aggregateOutlierCounts( period = "day") %>%
     # Divide the total count per day by the number of samples in a day where the
     # sensor was working perfectly (30 samp/hr * 24 hr/day)*100 to make percent.
-    dplyr::mutate(pct_Reporting = .data$daily_sum/samplesPerDay*100)
+    dplyr::mutate(pct_Reporting =.data$pm25_A_count/samplesPerDay*100)
   
   # ----- Return ---------------------------------------------------------------
   
