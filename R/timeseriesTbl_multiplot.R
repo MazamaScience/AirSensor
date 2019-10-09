@@ -2,45 +2,53 @@
 #' @importFrom rlang .data
 #' @importFrom ggplot2 ggplot aes_ geom_line labs facet_wrap 
 #' 
-#' @title Faceted plot of aggregation statistics 
+#' @title Faceted plot of a timeseries tibble 
 #' 
-#' @param aggregationStats PurpleAir Timeseries \emph{aggregationStats} object.
+#' @param tbl Tibble with a \code{datetime}.
 #' @param parameterPattern Pattern used to match groups of parameters.
 #' @param parameters Custom vector of aggregation parameters to view.
 #' @param nrow Number of rows in the faceted plot.
 #' @param autoRange Logical specifying whether to scale the y axis separately
 #' for each plot or to use a common y axis.
+#' @param ylim Vector of (lo,hi) y-axis limits. 
 #' 
-#' @description A plotting function that uses ggplot2 to display a plot of each 
-#' output category from the pat_aggregateOutlierCounts() function. Created to 
-#' have a quick look at all the stats to help identify necessary quality control
-#' methods for PurpleAir Timeseries \emph{aggregationStats} objects.
+#' @description A plotting function that uses ggplot2 to display a suite of
+#' timeseries plots all at once.
+#' 
+#' @note Specification of \code{ylim} will override the choice of 
+#' \code{autoRange}.
 #' 
 #' @examples 
 #' \donttest{
-#' aggregationStats <- pat_aggregateOutlierCounts(example_pat_failure_A)
-#' PurpleAirQC_aggregationPlot(aggregationStats, 
-#'                             parameterPattern = "humidity_m|temperature_m", 
-#'                             nrow = 2)
+#' tbl <- pat_aggregateOutlierCounts(example_pat_failure_A)
+#' timeseriesTbl_multiplot(tbl, 
+#'                         parameterPattern = "humidity_m|temperature_m", 
+#'                         nrow = 2)
 #' }
 
-PurpleAirQC_aggregationPlot <- function(
-  aggregationStats = NULL, 
+timeseriesTbl_multiplot <- function(
+  tbl = NULL, 
   parameterPattern = NULL,
   parameters = NULL,
   nrow = 5,
-  autoRange = TRUE
+  autoRange = TRUE,
+  ylim = NULL
 ) {
   
   # ----- Validate parameters --------------------------------------------------
   
-  MazamaCoreUtils::stopIfNull(aggregationStats)
+  MazamaCoreUtils::stopIfNull(tbl)
   
+  # Check for existence of "datetime"
+  if ( !"datetime" %in% names(tbl) || (!"POSIXct" %in% class(tbl$datetime)) )
+    stop("Parameter 'tbl' must have a column named 'datetime' of class 'POSIXct'.")
+  
+  # Check for existence of parameters
   if ( !is.null(parameters) ) {
-    unknownParameters <- setdiff(parameters, names(aggregationStats))
+    unknownParameters <- setdiff(parameters, names(tbl))
     if ( length(unknownParameters) > 0 ) {
       parameterString <- paste0(unknownParameters, collapse = ", ")
-      err_msg <- paste0("Parameters not found in aggregationStats:\n\t",
+      err_msg <- paste0("Parameters not found in tbl:\n\t",
                         parameterString)
       stop(err_msg)
     }
@@ -50,10 +58,14 @@ PurpleAirQC_aggregationPlot <- function(
   
   if ( is.null(parameters) ) {
     
-    # Start by sorting names alphabetically but put pm25_~ at the end
-    parameters <- sort(names(aggregationStats))
-    parameters <- parameters[!parameters %in% c("pm25_df", "pm25_p", "pm25_t")]
-    parameters <- append(parameters, c("pm25_df", "pm25_p", "pm25_t"))
+    parameters <- sort(names(tbl))
+    
+    # Special ordering for aggegationStatus
+    if ( all( c("pm25_df", "pm25_p", "pm25_t") %in% parameters ) ) {
+      # Start by sorting names alphabetically but put pm25_~ at the end
+      parameters <- parameters[!parameters %in% c("pm25_df", "pm25_p", "pm25_t")]
+      parameters <- append(parameters, c("pm25_df", "pm25_p", "pm25_t"))
+    }
     
     # Subset if requested
     if ( !is.null(parameterPattern) ) {
@@ -68,13 +80,13 @@ PurpleAirQC_aggregationPlot <- function(
   parameters <- unique(c("datetime", parameters))
 
   tidyData <- 
-    aggregationStats[,parameters] %>%
+    tbl[,parameters] %>%
     tidyr::gather("parameter", "value", -.data$datetime)
   
   # ----- Create plot ----------------------------------------------------------
   
   # Y axis
-  if ( autoRange ) {
+  if ( autoRange && is.null(ylim) ) {
     scales <- "free_y"
   } else {
     scales <- "fixed"
@@ -92,6 +104,10 @@ PurpleAirQC_aggregationPlot <- function(
     geom_line() +
     labs(title="Aggregation Statistics") +
     facet_wrap(facets, nrow = nrow, scales = scales ) 
+  
+  if ( !is.null(ylim) ) {
+    gg <- gg + ylim(ylim)
+  }
   
   # ----- Return ---------------------------------------------------------------
   
