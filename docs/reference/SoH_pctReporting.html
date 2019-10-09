@@ -44,10 +44,11 @@
 
 <meta property="og:title" content="Daily reporting percentage — SoH_pctReporting" />
 <meta property="og:description" content="The number of sensor readings recorded per hour are summed over 
-the course of a calendar day (24 hours unless a partial day is included in 
-the data), then divided by the number of samples the sensor would record in 
-an ideal day (30 samples/hour * 24 hours/day) to return a percentage of each 
-day that the sensor is performing optimally." />
+the course of a calendar day (24 hours unless the pat datetime column
+includes a partial day at the beginning or end). This ishen divided by the 
+number of samples the sensor would record in an ideal day 
+(24 * 3600 / samplingInterval) to return a percentage of each 
+day that the sensor is reporting data." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -80,7 +81,7 @@ day that the sensor is performing optimally." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.6</span>
       </span>
     </div>
 
@@ -159,13 +160,14 @@ day that the sensor is performing optimally." />
 
     <div class="ref-description">
     <p>The number of sensor readings recorded per hour are summed over 
-the course of a calendar day (24 hours unless a partial day is included in 
-the data), then divided by the number of samples the sensor would record in 
-an ideal day (30 samples/hour * 24 hours/day) to return a percentage of each 
-day that the sensor is performing optimally.</p>
+the course of a calendar day (24 hours unless the <code>pat</code> datetime column
+includes a partial day at the beginning or end). This ishen divided by the 
+number of samples the sensor would record in an ideal day 
+(<code>24 * 3600 / samplingInterval</code>) to return a percentage of each 
+day that the sensor is reporting data.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>SoH_pctReporting</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>samplingFreq</span> <span class='kw'>=</span> <span class='fl'>30</span>)</pre>
+    <pre class="usage"><span class='fu'>SoH_pctReporting</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>samplingInterval</span> <span class='kw'>=</span> <span class='fl'>120</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -175,31 +177,24 @@ day that the sensor is performing optimally.</p>
       <td><p>PurpleAir Timeseries <em>pat</em> object.</p></td>
     </tr>
     <tr>
-      <th>samplingFreq</th>
-      <td><p>The number of samples measured per hour when the sensor 
-is operating optimally. Note that currently the sensors measure 30 samples 
-per hour but were previously sampling at a higher rate.</p></td>
+      <th>samplingInterval</th>
+      <td><p>The number of seconds between samples when the sensor 
+is operating optimally.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>Purple Air II sensors reporting after the June, 2019 firmware
-upgrade report data every 2 minutes or 30 measurements per hour.</p>
+upgrade report data every 120 seconds. Prior to the upgrade, data were 
+reported every 80 seconds.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>tbl</span> <span class='kw'>&lt;-</span>
   <span class='no'>example_pat</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>SoH_pctReporting</span>()
+  <span class='fu'>SoH_pctReporting</span>(<span class='fl'>80</span>)
 
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>tbl</span>$<span class='no'>datetime</span>, <span class='no'>tbl</span>$<span class='no'>pct_Reporting</span>)</div><div class='img'><img src='SoH_pctReporting-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='no'>tbl</span> <span class='kw'>&lt;-</span>
-  <span class='no'>example_pat_failure_B</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>SoH_pctReporting</span>()
-
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>tbl</span>$<span class='no'>datetime</span>, <span class='no'>tbl</span>$<span class='no'>pct_Reporting</span>)</div><div class='img'><img src='SoH_pctReporting-2.png' alt='' width='700' height='433' /></div><div class='input'>
-
-</div></pre>
+<span class='fu'><a href='timeseriesTbl_multiplot.html'>timeseriesTbl_multiplot</a></span>(<span class='no'>tbl</span>)</div><div class='img'><img src='SoH_pctReporting-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

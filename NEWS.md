@@ -1,3 +1,9 @@
+# AirSensor 0.5.6
+
+* Enhanced `PurpleAirQC_aggregationPlot()` to work with any tibble or dataframe
+and renamed it to `tbl_multiplot()`.
+* Added a state-of-health metrics calculation function: `SoH_pctReporting()`.
+
 # AirSensor 0.5.5
 
 * Now requiring **MazamaCoreUtils** 0.3.10.

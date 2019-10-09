@@ -4,39 +4,31 @@
 #' @title Daily reporting percentage
 #' 
 #' @param pat PurpleAir Timeseries \emph{pat} object.
-#' @param samplingFreq The number of samples measured per hour when the sensor 
-#' is operating optimally. Note that currently the sensors measure 30 samples 
-#' per hour but were previously sampling at a higher rate.
+#' @param samplingInterval The number of seconds between samples when the sensor 
+#' is operating optimally.
 #' 
 #' @description The number of sensor readings recorded per hour are summed over 
-#' the course of a calendar day (24 hours unless a partial day is included in 
-#' the data), then divided by the number of samples the sensor would record in 
-#' an ideal day (30 samples/hour * 24 hours/day) to return a percentage of each 
-#' day that the sensor is performing optimally.
+#' the course of a calendar day (24 hours unless the \code{pat} datetime column
+#' includes a partial day at the beginning or end). This ishen divided by the 
+#' number of samples the sensor would record in an ideal day 
+#' (\code{24 * 3600 / samplingInterval}) to return a percentage of each 
+#' day that the sensor is reporting data.
 #' 
 #' @note Purple Air II sensors reporting after the June, 2019 firmware
-#' upgrade report data every 2 minutes or 30 measurements per hour. 
+#' upgrade report data every 120 seconds. Prior to the upgrade, data were 
+#' reported every 80 seconds.
 #' 
 #' @examples 
 #' tbl <- 
 #'   example_pat %>%
-#'   SoH_pctReporting() 
+#'   SoH_pctReporting(80) 
 #' 
-#' plot(tbl$datetime, tbl$pct_Reporting)
-#' 
-#' tbl <- 
-#'   example_pat_failure_B %>%
-#'   SoH_pctReporting() 
-#' 
-#' plot(tbl$datetime, tbl$pct_Reporting)
-#' 
-#' 
+#' timeseriesTbl_multiplot(tbl)
 
 SoH_pctReporting <- function(
   pat = NULL,
-  samplingFreq = 30
-  
-){
+  samplingInterval = 120
+) {
   
   # ----- Validate parameters --------------------------------------------------
   
@@ -51,18 +43,30 @@ SoH_pctReporting <- function(
   
   # ----- SoH_pctReporting() ---------------------------------------------------
 
+<<<<<<< HEAD:R/SoH_pctReporting.R
   samplesPerDay <- samplingFreq*24
+=======
+  samplesPerDay <- 24 * 3600 / samplingInterval
+  
+>>>>>>> jon:R/SoH_metrics.R
   tbl <- 
     pat %>%
     # Calculate the aggregation statistics based on a day rather than hourly.
-    pat_aggregateOutlierCounts( period = "day") %>%
+    pat_aggregateOutlierCounts(period = "day") %>%
     # Divide the total count per day by the number of samples in a day where the
     # sensor was working perfectly (30 samp/hr * 24 hr/day)*100 to make percent.
-    dplyr::mutate(pct_Reporting =.data$pm25_A_count/samplesPerDay*100)
-  
+    dplyr::mutate(pctReporting_pm25_A =.data$pm25_A_count/samplesPerDay*100) %>%
+    dplyr::mutate(pctReporting_pm25_B =.data$pm25_B_count/samplesPerDay*100) %>%
+    dplyr::mutate(pctReporting_humidity =.data$humidity_count/samplesPerDay*100) %>%
+    dplyr::mutate(pctReporting_temperature =.data$temperature_count/samplesPerDay*100) %>%
+    dplyr::select(.data$datetime, 
+                  .data$pctReporting_pm25_A, .data$pctReporting_pm25_B,
+                  .data$pctReporting_humidity, .data$pctReporting_temperature)
+    
   # ----- Return ---------------------------------------------------------------
   
   return(tbl)
+  
 }
 
 

@@ -4,38 +4,31 @@
 \alias{SoH_pctReporting}
 \title{Daily reporting percentage}
 \usage{
-SoH_pctReporting(pat = NULL, samplingFreq = 30)
+SoH_pctReporting(pat = NULL, samplingInterval = 120)
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}
 
-\item{samplingFreq}{The number of samples measured per hour when the sensor 
-is operating optimally. Note that currently the sensors measure 30 samples 
-per hour but were previously sampling at a higher rate.}
+\item{samplingInterval}{The number of seconds between samples when the sensor 
+is operating optimally.}
 }
 \description{
 The number of sensor readings recorded per hour are summed over 
-the course of a calendar day (24 hours unless a partial day is included in 
-the data), then divided by the number of samples the sensor would record in 
-an ideal day (30 samples/hour * 24 hours/day) to return a percentage of each 
-day that the sensor is performing optimally.
+the course of a calendar day (24 hours unless the \code{pat} datetime column
+includes a partial day at the beginning or end). This ishen divided by the 
+number of samples the sensor would record in an ideal day 
+(\code{24 * 3600 / samplingInterval}) to return a percentage of each 
+day that the sensor is reporting data.
 }
 \note{
 Purple Air II sensors reporting after the June, 2019 firmware
-upgrade report data every 2 minutes or 30 measurements per hour.
+upgrade report data every 120 seconds. Prior to the upgrade, data were 
+reported every 80 seconds.
 }
 \examples{
 tbl <- 
   example_pat \%>\%
-  SoH_pctReporting() 
+  SoH_pctReporting(80) 
 
-plot(tbl$datetime, tbl$pct_Reporting)
-
-tbl <- 
-  example_pat_failure_B \%>\%
-  SoH_pctReporting() 
-
-plot(tbl$datetime, tbl$pct_Reporting)
-
-
+timeseriesTbl_multiplot(tbl)
 }
