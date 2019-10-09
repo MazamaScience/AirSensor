@@ -36,10 +36,10 @@ pat1 <- pat_createNew(pas_state, label = "Nickelsville Georgetown")
 # agg_stats for one station for testing:
 agg_stat_test <- pat_aggregateOutlierCounts(pat1)
 
-# Begin SOH_pctReporting()
+# ----- Begin SOH_pctReporting() -----------------------------------------------
 
 samplingFreq <- 30 
-samplesperDay <- samplingFreq*24
+samplesPerDay <- samplingFreq*24
 tbl_test <- 
   pat1 %>%
   pat_aggregateOutlierCounts( period = "day") %>%
@@ -47,24 +47,37 @@ tbl_test <-
   # mutate(day = as.Date(datetime, format="%Y-%m-%d")) %>%
   # group_by(day) %>%
   # summarise(daily_sum = sum(pm25_A_count)) %>%
-  mutate(pct_Reporting = pm25_A_count/samplesperDay*100)
+  mutate(pct_Reporting = pm25_A_count/samplesPerDay*100)
 
-tbl_test
-# Begin SoH_pctValid()
-
-humidity_low <- 0
-humidity_high <- 100
-temp_low <- -40
-temp_high <- 185
-pm25_low <- 0
-pm25_high <- 1000
+# ----- Begin SoH_pctValid() ---------------------------------------------------
+# test with bad data:
+pat1 <- example_pat_failure_B
 
 samplingFreq <- 30 
-samplesperDay <- samplingFreq*24
-tbl2 <-
-  agg_stat_test %>%
-  mutate(day = as.Date(datetime, format = "%Y-%m-%d")) %>%
-  group_by(day) %>%
+samplesPerDay <- samplingFreq*24
+baseline_tbl <-
+  pat1 %>%
+  pat_aggregateOutlierCounts(period = "day")
+
+valid_tbl <-
+  pat1 %>%
+  pat_qc()%>%
+  pat_aggregateOutlierCounts(period = "day") %>%
+  mutate(pm25_A_pctValid = pm25_A_count/baseline_tbl$pm25_A_count*100) %>%
+  mutate(pm25_B_pctValid = pm25_B_count/baseline_tbl$pm25_B_count*100) %>%
+  mutate(temperature_pctValid = 
+           temperature_count/baseline_tbl$temperature_count*100) %>%
+  mutate(humidity_pctValid = humidity_count/baseline_tbl$humidity_count*100) %>%
+  select("datetime", contains("Valid"))
+
+# ----- Begin SoH_pctDC() ------------------------------------------------------
+
+pat1 <- example_pat_failure_B
+
+pct_DC_tbl <-
+  pat1 %>%
+  pat_aggregate(period = "30 min") %>%
+  filter()
 
 
 
@@ -75,8 +88,4 @@ tbl2 <-
 
 
 
-# # example for loop, works: 
-# for (i in seq_along(pat_list)) {
-#   print(names(pat_list[[i]]))
-# }
 
