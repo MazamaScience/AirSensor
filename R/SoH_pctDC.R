@@ -24,8 +24,12 @@
 #'   SoH_pctValid() 
 #' 
 
-SoH_pctValid <- function(
-  pat = NULL
+SoH_pctDC <- function(
+  pat = NULL,
+  aggregation_period = "30 min",
+  parameter_sd = NULL
+  
+  
 ){
   
   # ----- Validate parameters --------------------------------------------------
@@ -38,34 +42,36 @@ SoH_pctValid <- function(
   if ( pat_isEmpty(pat) )
     stop("Parameter 'pat' has no data.") 
   
+  # ------
   
-  # ----- SoH_pctValid() ---------------------------------------------------
+  if (aggregation_period == "30 min"){
+    hourFactor <- 2
+  }
+  else if (aggregation_period == "hour"){ 
+    hourFactor <- 1
+  }
+  else if (aggregation_period == "24 hour"){ 
+    hourFactor <- 1/24
+  }
+  
+  pct_DC_tbl <-
+    pat %>%
+    pat_aggregate(period = aggregation_period) %>%
+    dplyr::mutate(day = as.Date(.data$datetime, format="%Y-%m-%d")) %>%
+    dplyr::group_by(.data$day) %>% 
+    dplyr::tally(.data[[parameter_sd]]==0)%>%
+    dplyr::mutate(hourCount = n/hourFactor) %>%
+    dplyr::mutate(pctDC = hourCount/24*100)
+ 
+  #----- return
+  return(pct_DC_tbl)
+    
+  
 
-  # Calculate a baseline tbl that contains the count without removing entries 
-  # containing NA or out of spec values
-  baseline_tbl <-
-    pat %>%
-    pat_aggregateOutlierCounts(period = "day")
-  
-  # Calculate a tbl after removing entries containing NA and out of spec values
-  valid_tbl <-
-    pat %>%
-    pat_qc()%>%
-    pat_aggregateOutlierCounts(period = "day") %>%
-    # Add columns to the valid tbl to contain valid percentages
-    dplyr::mutate(pm25_A_pctValid = 
-             .data$pm25_A_count/baseline_tbl$pm25_A_count*100) %>%
-    dplyr::mutate(pm25_B_pctValid = 
-             .data$pm25_B_count/baseline_tbl$pm25_B_count*100) %>%
-    dplyr::mutate(temperature_pctValid = 
-             .data$temperature_count/baseline_tbl$temperature_count*100) %>%
-    dplyr::mutate(humidity_pctValid = 
-             .data$humidity_count/baseline_tbl$humidity_count*100) %>%
-    dplyr::select("datetime", contains("Valid"))
-  
-  # ----- Return ---------------------------------------------------------------
-  
-  return(valid_tbl)
 }
+
+
+
+
 
 

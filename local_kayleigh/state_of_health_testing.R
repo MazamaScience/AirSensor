@@ -72,13 +72,47 @@ valid_tbl <-
 
 # ----- Begin SoH_pctDC() ------------------------------------------------------
 
+
 pat1 <- example_pat_failure_B
+agg_test <- pat_aggregateOutlierCounts(pat1)
 
 pct_DC_tbl <-
   pat1 %>%
-  pat_aggregate(period = "30 min") %>%
-  filter()
+  pat_aggregate(period = "1 hour") %>%
+  mutate(day = as.Date(datetime, format="%Y-%m-%d")) %>%
+  group_by(day) %>% 
+  tally(pm25_A_sd==0, name = "DCSignalCount_pm25_A") %>%
+  # tally(pm25_B_sd==0, name = "DCSignalCount_pm25_B") %>%
+  # tally(temperature_sd==0, name = "DCSignalCount_temperature") %>%
+  # tally(humidity_sd==0, name = "DCSignalCount_humidity") #%>%
+  # mutate(hourCount = n/2) %>%
+  # mutate(pctDC = hourCount/24*100)
+  
 
+#QC
+test <- filter(agg_test, temperature_sd==0)
+plot(agg_test$datetime, agg_test$temperature_sd)
+points(test$datetime,test$temperature_sd, col = "red")
+
+plot(pct_DC_tbl$datetime, pct_DC_tbl$hourCount)
+points(pct_DC_tbl$datetime, pct_DC_tbl$temperature_sd, col = "red")
+
+# # For Reference, this is how to use tally() in a function:
+# SoH_pctDC <- function(
+#   pat = NULL,
+#   aggregation_period = "30 min",
+#   parameter_sd = NULL
+# ){
+#   pct_DC_tbl <-
+#     pat %>%
+#     pat_aggregate(period = aggregation_period) %>%
+#     dplyr::mutate(day = as.Date(.data$datetime, format="%Y-%m-%d")) %>%
+#     dplyr::group_by(.data$day) %>% 
+#     dplyr::tally(.data[[parameter_sd]]==0)%>%
+#     dplyr::mutate(hourCount = n/hourFactor) %>%
+#     dplyr::mutate(pctDC = hourCount/24*100)
+#   
+# }
 
 
 
