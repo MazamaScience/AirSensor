@@ -43,12 +43,8 @@ SoH_pctReporting <- function(
   
   # ----- SoH_pctReporting() ---------------------------------------------------
 
-<<<<<<< HEAD:R/SoH_pctReporting.R
-  samplesPerDay <- samplingFreq*24
-=======
   samplesPerDay <- 24 * 3600 / samplingInterval
   
->>>>>>> jon:R/SoH_metrics.R
   tbl <- 
     pat %>%
     # Calculate the aggregation statistics based on a day rather than hourly.
