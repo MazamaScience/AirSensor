@@ -25,9 +25,7 @@
 #' 
 
 SoH_pctValid <- function(
-  pat = NULL,
-  samplingFreq = 30
-  
+  pat = NULL
 ){
   
   # ----- Validate parameters --------------------------------------------------
@@ -43,7 +41,6 @@ SoH_pctValid <- function(
   
   # ----- SoH_pctReporting() ---------------------------------------------------
 
-  samplesPerDay <- samplingFreq*24
   # Calculate a baseline tbl that contains the count without removing entries 
   # containing NA or out of spec values
   baseline_tbl <-

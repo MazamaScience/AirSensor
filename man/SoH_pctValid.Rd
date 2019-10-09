@@ -4,7 +4,7 @@
 \alias{SoH_pctValid}
 \title{Daily valid percentage}
 \usage{
-SoH_pctValid(pat = NULL, samplingFreq = 30)
+SoH_pctValid(pat = NULL)
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}
