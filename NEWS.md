@@ -1,6 +1,10 @@
 # AirSensor 0.5.7
 
+* `timeseriesTbl_multiplot()` now supports a `style` paramter which can be set
+to `"point"`, `"line"` or `"area"`.
 * Improved handling of missing files in data loading functions.
+* Added state-of-health functions: `SoH_pctValid()`, `SoH_pctDC()`.
+* Harmonized naming of state-of-health metrics.
 
 # AirSensor 0.5.6
 

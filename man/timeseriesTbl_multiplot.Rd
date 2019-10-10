@@ -5,7 +5,8 @@
 \title{Faceted plot of a timeseries tibble}
 \usage{
 timeseriesTbl_multiplot(tbl = NULL, parameterPattern = NULL,
-  parameters = NULL, nrow = 5, autoRange = TRUE, ylim = NULL)
+  parameters = NULL, nrow = 5, autoRange = TRUE, ylim = NULL,
+  style = "area")
 }
 \arguments{
 \item{tbl}{Tibble with a \code{datetime}.}
@@ -20,6 +21,8 @@ timeseriesTbl_multiplot(tbl = NULL, parameterPattern = NULL,
 for each plot or to use a common y axis.}
 
 \item{ylim}{Vector of (lo,hi) y-axis limits.}
+
+\item{style}{Style of plot: ("point", "line", "area")}
 }
 \description{
 A plotting function that uses ggplot2 to display a suite of

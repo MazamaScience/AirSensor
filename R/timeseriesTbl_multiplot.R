@@ -1,6 +1,6 @@
 #' @export
 #' @importFrom rlang .data
-#' @importFrom ggplot2 ggplot aes_ geom_line labs facet_wrap 
+#' @importFrom ggplot2 ggplot aes_ geom_point geom_line geom_area labs facet_wrap 
 #' 
 #' @title Faceted plot of a timeseries tibble 
 #' 
@@ -10,7 +10,8 @@
 #' @param nrow Number of rows in the faceted plot.
 #' @param autoRange Logical specifying whether to scale the y axis separately
 #' for each plot or to use a common y axis.
-#' @param ylim Vector of (lo,hi) y-axis limits. 
+#' @param ylim Vector of (lo,hi) y-axis limits.
+#' @param style Style of plot: ("point", "line", "area") 
 #' 
 #' @description A plotting function that uses ggplot2 to display a suite of
 #' timeseries plots all at once.
@@ -32,7 +33,8 @@ timeseriesTbl_multiplot <- function(
   parameters = NULL,
   nrow = 5,
   autoRange = TRUE,
-  ylim = NULL
+  ylim = NULL,
+  style = "area"
 ) {
   
   # ----- Validate parameters --------------------------------------------------
@@ -78,7 +80,7 @@ timeseriesTbl_multiplot <- function(
   
   # Make sure 'datetime' is included, but only once
   parameters <- unique(c("datetime", parameters))
-
+  
   tidyData <- 
     tbl[,parameters] %>%
     tidyr::gather("parameter", "value", -.data$datetime)
@@ -100,9 +102,17 @@ timeseriesTbl_multiplot <- function(
   # NOTE:    https://bookdown.org/rdpeng/RProgDA/non-standard-evaluation.html
   
   gg <- 
-    ggplot(tidyData, aes_(x = ~datetime, y = ~value)) +
-    geom_line() +
-    labs(title="Aggregation Statistics") +
+    ggplot(tidyData, aes_(x = ~datetime, y = ~value))
+  
+  if ( style == "point" ) {
+    gg <- gg + geom_point()
+  } else if ( style == "line" ) {
+    gg <- gg + geom_line()
+  } else {
+    gg <- gg + geom_area()
+  }
+  
+  gg <- gg + 
     facet_wrap(facets, nrow = nrow, scales = scales ) 
   
   if ( !is.null(ylim) ) {
