@@ -2,34 +2,30 @@
 % Please edit documentation in R/SoH_pctDC.R
 \name{SoH_pctDC}
 \alias{SoH_pctDC}
-\title{Daily valid percentage}
+\title{Daily DC Signal percentage}
 \usage{
-SoH_pctDC(pat = NULL, aggregation_period = "30 min",
-  parameter_sd = NULL)
+SoH_pctDC(pat = NULL, aggregation_period = "30 min", timezone = NULL)
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}
 
-\item{samplingFreq}{The number of samples measured per hour when the sensor 
-is operating optimally. Note that currently the sensors measure 30 samples 
-per hour but were previously sampling at a higher rate.}
+\item{aggregation_period}{The period to aggregate over. Choose from "30 min",
+"1 hour", or "1 day".}
+
+\item{timezone}{Olson timezone at the location of interest}
 }
 \description{
-The number of valid (i.e., not NA or out of spec) sensor 
-readings recorded per hour are summed over the course of a calendar day (24 
-hours unless a partial day is included in the data), then divided by the 
-total number of samples the sensor actually recorded in during that day 
-(including NA and out of spec values) to return a percentage of each 
-day that the sensor recorded valid measurements.
-}
-\note{
-Purple Air II sensors reporting after the June, 2019 firmware
-upgrade report data every 2 minutes or 30 measurements per hour.
+This function calculates the daily percentage of DC signal 
+recorded by the \code{pm25_A}, \code{pm25_B}, \code{humidity}, and 
+\code{temperature} channels. The data are flagged as DC signal when the 
+standard deviation of the data from each channel equals zero over the 
+\code{aggregation_period}. The number of DC hours are summed over the day and
+a daily DC percentage is returned.
 }
 \examples{
  
 tbl <- 
   example_pat_failure_B \%>\%
-  SoH_pctValid() 
+  SoH_pctDC(aggregation_period = "30 min", timezone = "America/Los_Angeles") 
 
 }

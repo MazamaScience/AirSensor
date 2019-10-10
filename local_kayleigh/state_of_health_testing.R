@@ -43,10 +43,10 @@ samplesPerDay <- samplingFreq*24
 tbl_test <- 
   pat1 %>%
   pat_aggregateOutlierCounts( period = "day") %>%
-  # agg_stat_test %>%
-  # mutate(day = as.Date(datetime, format="%Y-%m-%d")) %>%
-  # group_by(day) %>%
-  # summarise(daily_sum = sum(pm25_A_count)) %>%
+  agg_stat_test %>%
+  mutate(day = as.Date(datetime, format="%Y-%m-%d")) %>%
+  group_by(day) %>%
+  summarise(daily_sum = sum(pm25_A_count)) %>%
   mutate(pct_Reporting = pm25_A_count/samplesPerDay*100)
 
 # ----- Begin SoH_pctValid() ---------------------------------------------------
@@ -76,15 +76,34 @@ valid_tbl <-
 pat1 <- example_pat_failure_B
 agg_test <- pat_aggregateOutlierCounts(pat1)
 
-pct_DC_tbl <-
+pat_b_zero <- pat_createNew(pas, "SCAP_46", 
+                            startdate = "2019-07-01", 
+                            enddate = "2019-07-08",
+                            timezone = "America/Los_Angeles")
+timezone<- "America/Los_Angeles"
+pat1<- pat_b_zero
+ pct_DC_tbl <-
   pat1 %>%
   pat_aggregate(period = "1 hour") %>%
-  mutate(day = as.Date(datetime, format="%Y-%m-%d")) %>%
-  group_by(day) %>% 
-  tally(pm25_A_sd==0, name = "DCSignalCount_pm25_A") %>%
-  # tally(pm25_B_sd==0, name = "DCSignalCount_pm25_B") %>%
-  # tally(temperature_sd==0, name = "DCSignalCount_temperature") %>%
-  # tally(humidity_sd==0, name = "DCSignalCount_humidity") #%>%
+  mutate(daystamp = strftime(datetime, "%Y%m%d", tz = timezone) ) %>%
+  group_by(daystamp) %>% 
+  add_tally(pm25_A_sd==0, name = "DCSignalCount_pm25_A") %>%
+  add_tally(pm25_B_sd==0, name = "DCSignalCount_pm25_B") %>%
+  add_tally(temperature_sd==0, name = "DCSignalCount_temperature") %>%
+  add_tally(humidity_sd==0, name = "DCSignalCount_humidity") %>%
+  summarise_at(.vars = c("DCSignalCount_pm25_A", "DCSignalCount_pm25_B", 
+                         "DCSignalCount_temperature", "DCSignalCount_humidity"),
+               max) %>%
+   mutate(DC_PM25_A_hourCount = DCSignalCount_pm25_A/1 ) %>%
+   mutate(DC_PM25_B_hourCount = DCSignalCount_pm25_B/1 ) %>%
+   mutate(DC_temperature_hourCount = DCSignalCount_temperature/1 ) %>%
+   mutate(DC_humidity_hourCount = DCSignalCount_humidity/1 ) %>%
+   mutate(pctDC_PM25_A = DC_PM25_A_hourCount/24*100) %>%
+   mutate(pctDC_PM25_B = DC_PM25_B_hourCount/24*100) %>%
+   mutate(pctDC_temperature = DC_temperature_hourCount/24*100) %>%
+   mutate(pctDC_humidity = DC_humidity_hourCount/24*100)%>%
+   mutate(datetime = MazamaCoreUtils::parseDatetime(daystamp, timezone = timezone))
+ 
   # mutate(hourCount = n/2) %>%
   # mutate(pctDC = hourCount/24*100)
   
@@ -94,8 +113,16 @@ test <- filter(agg_test, temperature_sd==0)
 plot(agg_test$datetime, agg_test$temperature_sd)
 points(test$datetime,test$temperature_sd, col = "red")
 
-plot(pct_DC_tbl$datetime, pct_DC_tbl$hourCount)
-points(pct_DC_tbl$datetime, pct_DC_tbl$temperature_sd, col = "red")
+#plot(pct_DC_tbl$datetime, pct_DC_tbl$temperature_sd)
+plot(pct_DC_tbl$datetime, pct_DC_tbl$DCSignalCount_temperature, col = "pink")
+points(pct_DC_tbl$datetime, pct_DC_tbl$DCSignalCount_pm25_A, col = "red")
+points(pct_DC_tbl$datetime, pct_DC_tbl$DCSignalCount_pm25_B, col = "blue")
+points(pct_DC_tbl$datetime, pct_DC_tbl$DCSignalCount_humidity, col = "green")
+
+plot(pct_DC_tbl$day, pct_DC_tbl$pctDC_temperature, col = "pink")
+points(pct_DC_tbl$day, pct_DC_tbl$pctDC_PM25_A, col = "red")
+points(pct_DC_tbl$day, pct_DC_tbl$pctDC_PM25_B, col = "blue")
+points(pct_DC_tbl$day, pct_DC_tbl$pctDC_humidity, col = "green")
 
 # # For Reference, this is how to use tally() in a function:
 # SoH_pctDC <- function(

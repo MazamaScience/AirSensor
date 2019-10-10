@@ -4,9 +4,6 @@
 #' @title Daily valid percentage
 #' 
 #' @param pat PurpleAir Timeseries \emph{pat} object.
-#' @param samplingFreq The number of samples measured per hour when the sensor 
-#' is operating optimally. Note that currently the sensors measure 30 samples 
-#' per hour but were previously sampling at a higher rate.
 #' 
 #' @description The number of valid (i.e., not NA or out of spec) sensor 
 #' readings recorded per hour are summed over the course of a calendar day (24 
@@ -15,8 +12,6 @@
 #' (including NA and out of spec values) to return a percentage of each 
 #' day that the sensor recorded valid measurements.
 #' 
-#' @note Purple Air II sensors reporting after the June, 2019 firmware
-#' upgrade report data every 2 minutes or 30 measurements per hour. 
 #' 
 #' @examples  
 #' tbl <- 

@@ -8,10 +8,6 @@ SoH_pctValid(pat = NULL)
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}
-
-\item{samplingFreq}{The number of samples measured per hour when the sensor 
-is operating optimally. Note that currently the sensors measure 30 samples 
-per hour but were previously sampling at a higher rate.}
 }
 \description{
 The number of valid (i.e., not NA or out of spec) sensor 
@@ -20,10 +16,6 @@ hours unless a partial day is included in the data), then divided by the
 total number of samples the sensor actually recorded in during that day 
 (including NA and out of spec values) to return a percentage of each 
 day that the sensor recorded valid measurements.
-}
-\note{
-Purple Air II sensors reporting after the June, 2019 firmware
-upgrade report data every 2 minutes or 30 measurements per hour.
 }
 \examples{
  

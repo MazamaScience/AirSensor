@@ -81,7 +81,7 @@ day that the sensor recorded valid measurements." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.6</span>
       </span>
     </div>
 
@@ -167,7 +167,7 @@ total number of samples the sensor actually recorded in during that day
 day that the sensor recorded valid measurements.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>SoH_pctValid</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>samplingFreq</span> <span class='kw'>=</span> <span class='fl'>30</span>)</pre>
+    <pre class="usage"><span class='fu'>SoH_pctValid</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -176,18 +176,8 @@ day that the sensor recorded valid measurements.</p>
       <th>pat</th>
       <td><p>PurpleAir Timeseries <em>pat</em> object.</p></td>
     </tr>
-    <tr>
-      <th>samplingFreq</th>
-      <td><p>The number of samples measured per hour when the sensor 
-is operating optimally. Note that currently the sensors measure 30 samples 
-per hour but were previously sampling at a higher rate.</p></td>
-    </tr>
     </table>
 
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
-
-    <p>Purple Air II sensors reporting after the June, 2019 firmware
-upgrade report data every 2 minutes or 30 measurements per hour.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
@@ -199,7 +189,6 @@ upgrade report data every 2 minutes or 30 measurements per hour.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#note">Note</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 
