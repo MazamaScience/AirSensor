@@ -34,22 +34,41 @@ downloadParseTimeseriesData <- function(
   if ( !label %in% pas$label )
     stop(paste0("'", label, "' is not found in the 'pas' object"))
   
+  timezone <- unique(timezone)
+  
   # ----- Determine date sequence ----------------------------------------------
   
-  # TODO:  Add support for coming in with only 'id' specified.
+  # Subset by label
+  if ( !is.null(label) ) {
+    pas_single <-
+      pas %>%
+      dplyr::filter(.data$label == !!label)
+  }
+  
+  # Subset by ID
+  if ( !is.null(id) ) {
+    pas_single <-
+      pas_single %>%
+      dplyr::filter(.data$ID == !!id)
+  } else {
+    if ( nrow(pas_single) > 1 ) {
+      IDString <- paste0(pas_single$ID, collapse = ", ")
+      stop(paste0("Multilpe sensors share this label.",
+                  "You must specify the 'id' parameter as one of: '",
+                  IDString, "'"))
+    }
+  }
   
   # Get the timezone associated with this sensor
   if ( is.null(timezone) ) {
     timezone <-
-      pas %>%
-      dplyr::filter(.data$label == !!label) %>%
+      pas_single %>%
       dplyr::pull(.data$timezone)
   }
   
   if ( length(timezone) > 1 ) {
     err_msg <- paste0(length(timezone),
-                      " senors share the label '",
-                      label, "'")
+                      " senors share the same label and ID")
     stop(err_msg)
   }
   
@@ -71,11 +90,11 @@ downloadParseTimeseriesData <- function(
   startString <- strftime(dateRange[1], "%Y-%m-%dT%H:%M:%S", tz = "UTC")
   endString <- strftime(dateRange[2], "%Y-%m-%dT%H:%M:%S", tz = "UTC")
   
-  # Prefer to use the monitor's label over it's ID
-  if ( !is.null(label) ) {
-    requested_meta <- dplyr::filter(pas, .data$label == !!label)
-  } else if ( !is.null(id) ) {
+  # Prefer to use the monitor's ID over label
+  if ( !is.null(id) ) {
     requested_meta <- dplyr::filter(pas, .data$ID == !!id)
+  } else if ( !is.null(label) ) {
+    requested_meta <- dplyr::filter(pas, .data$label == !!label)
   } else {
     stop("Either 'label' or 'id' must be specified.")
   }

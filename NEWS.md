@@ -1,5 +1,7 @@
 # AirSensor 0.5.6
 
+* Updated `pat_createNew()` and `downloadParseTimeseriesData()` to support the
+`id` parameter.
 * Enhanced `PurpleAirQC_aggregationPlot()` to work with any tibble or dataframe
 and renamed it to `tbl_multiplot()`.
 * Added a state-of-health metrics calculation function: `SoH_pctReporting()`.

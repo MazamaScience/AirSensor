@@ -40,7 +40,8 @@ pat_createNew <- function(
   baseURL = "https://api.thingspeak.com/channels/"
 ) {
   
-  logger.debug("----- pat_createNew() -----")
+  if ( MazamaCoreUtils::logger.isInitialized() )
+    logger.debug("----- pat_createNew() -----")
   
   # ----- Validate parameters --------------------------------------------------
   
@@ -52,26 +53,40 @@ pat_createNew <- function(
   
   # ----- Determine date sequence ----------------------------------------------
   
-  # TODO:  Add support for coming in with only 'id' specified.
+  # Subset by label
+  if ( !is.null(label) ) {
+    pas_single <-
+      pas %>%
+      dplyr::filter(.data$label == !!label)
+  }
   
-  # Only one week of data can be loaded at a time. If over one week has been
-  # requested, loop over weeks to download all of it
+  # Subset by ID
+  if ( !is.null(id) ) {
+    pas_single <-
+      pas_single %>%
+      dplyr::filter(.data$ID == !!id)
+  } else {
+    if ( nrow(pas_single) > 1 ) {
+      IDString <- paste0(pas_single$ID, collapse = ", ")
+      stop(paste0("Multilpe sensors share this label.",
+                  "You must specify the 'id' parameter as one of: '",
+                  IDString, "'"))
+    }
+  }
   
   # Get the timezone associated with this sensor
   if ( is.null(timezone) ) {
     timezone <-
-      pas %>%
-      dplyr::filter(.data$label == !!label) %>%
+      pas_single %>%
       dplyr::pull(.data$timezone)
   }
   
   if ( length(timezone) > 1 ) {
     err_msg <- paste0(length(timezone),
-                      " senors share the label '",
-                      label, "'")
+                      " senors share the same label and ID")
     stop(err_msg)
   }
-
+  
   # Create a valid dateRange
   if ( !is.null(startdate) && !is.null(enddate) ) {
     # Don't require day boundaries
@@ -152,10 +167,10 @@ pat_createNew <- function(
 if ( FALSE ) {
   
   pas <- pas_load()
-  label <- "SCAP_14"
-  id <- NULL
-  startdate <- 20180728
-  enddate <- 20180803
+  label <- "SCSB_09"
+  id <- 20071
+  startdate <- 20191001
+  enddate <- 20191008
   timezone <- NULL
   baseURL <- "https://api.thingspeak.com/channels/"
   

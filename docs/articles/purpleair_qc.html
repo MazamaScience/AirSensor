@@ -246,16 +246,16 @@ raw_data &lt;-<span class="st"> </span>
 <span class="co"># Look at a random sample of this new dataframe</span>
 dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(raw_data, <span class="dv">10</span>)</code></pre></div>
 <pre><code>##      datetime channel  pm25
-## 1  2019061123  pm25_B 12.07
-## 2  2019061108  pm25_B 11.87
-## 3  2019061100  pm25_A  5.97
-## 4  2019061111  pm25_A  9.80
-## 5  2019061116  pm25_B  8.35
-## 6  2019061114  pm25_A  7.35
-## 7  2019061115  pm25_B  9.29
-## 8  2019061123  pm25_B 13.12
-## 9  2019061118  pm25_B  9.91
-## 10 2019061114  pm25_A  8.58</code></pre>
+## 1  2019061109  pm25_B  8.19
+## 2  2019061100  pm25_B  4.75
+## 3  2019061102  pm25_A  4.14
+## 4  2019061108  pm25_A 13.46
+## 5  2019061108  pm25_A 12.57
+## 6  2019061120  pm25_A 13.70
+## 7  2019061114  pm25_A  7.35
+## 8  2019061113  pm25_A  6.94
+## 9  2019061106  pm25_B  5.46
+## 10 2019061103  pm25_A  4.44</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create a timeseries using boxplots</span>
 colors &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="https://rdrr.io/r/grDevices/rgb.html">rgb</a></span>(<span class="fl">0.9</span>, <span class="fl">0.25</span>, <span class="fl">0.2</span>), <span class="kw"><a href="https://rdrr.io/r/grDevices/rgb.html">rgb</a></span>(<span class="fl">0.2</span>, <span class="fl">0.25</span>, <span class="fl">0.9</span>))
 <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(raw_data, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(datetime, pm25, <span class="dt">color =</span> channel)) <span class="op">+</span><span class="st"> </span>
@@ -278,16 +278,16 @@ agg_data &lt;-<span class="st"> </span>
 <p><img src="purpleair_qc_files/figure-html/AB_boxplot-2.png" width="672"></p>
 <p>And here is the same for a day with serious problems:</p>
 <pre><code>##      datetime channel    pm25
-## 1  2019061215  pm25_B      NA
-## 2  2019061207  pm25_B   12.10
-## 3  2019061215  pm25_B      NA
-## 4  2019061210  pm25_A   19.06
-## 5  2019061219  pm25_B   12.27
-## 6  2019061219  pm25_B   13.04
-## 7  2019061201  pm25_A   20.34
-## 8  2019061214  pm25_B   16.45
-## 9  2019061205  pm25_A 1575.87
-## 10 2019061203  pm25_A 3136.34</code></pre>
+## 1  2019061220  pm25_A   34.34
+## 2  2019061202  pm25_A   15.22
+## 3  2019061222  pm25_B      NA
+## 4  2019061213  pm25_A   18.60
+## 5  2019061212  pm25_A   17.30
+## 6  2019061216  pm25_A      NA
+## 7  2019061205  pm25_A  529.48
+## 8  2019061204  pm25_A 2479.60
+## 9  2019061205  pm25_A  123.00
+## 10 2019061214  pm25_A   19.56</code></pre>
 <p><img src="purpleair_qc_files/figure-html/AB_boxplot_2-1.png" width="672"><img src="purpleair_qc_files/figure-html/AB_boxplot_2-2.png" width="672"></p>
 <p>We can see that the null hypothesis – the difference in means is entirely due to chance – is extremely unlikely <code>pm25_p &lt; 1e-30</code>, for example, only occur for hours where the A and B channels have hourly avergaes that are both highly precise (low std dev) and very different. We can thus use the <code>pm25_t</code> variable to flag those hours where the A and B channels disagree.</p>
 </div>

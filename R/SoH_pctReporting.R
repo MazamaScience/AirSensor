@@ -41,7 +41,7 @@ SoH_pctReporting <- function(
     stop("Parameter 'pat' has no data.") 
   
   
-  # ----- SoH_pctRecording() ---------------------------------------------------
+  # ----- SoH_pctReporting() ---------------------------------------------------
 
   samplesPerDay <- 24 * 3600 / samplingInterval
   
