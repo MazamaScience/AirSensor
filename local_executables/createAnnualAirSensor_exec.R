@@ -60,7 +60,7 @@ if ( interactive() ) {
     ),
     make_option(
       c("-n","--collectionName"), 
-      default="COLLECTION_NAME", 
+      default="scaqmd", 
       help="Name associated with this collection of sensors [default=\"%default\"]"
     ),
     make_option(

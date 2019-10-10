@@ -1,3 +1,7 @@
+# AirSensor 0.5.7
+
+* Improved handling of missing files in data loading functions.
+
 # AirSensor 0.5.6
 
 * Updated `pat_createNew()` and `downloadParseTimeseriesData()` to support the

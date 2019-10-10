@@ -18,7 +18,6 @@ configure_crontabs:
 	sed 's%__EXEC_DIR__%${EXEC_DIR}%g' __crontab_archive.txt > crontab_archive.txt
 
 configure_scripts:
-	sed 's%__ARCHIVE_BASE_URL__%${ARCHIVE_BASE_URL}%g' __createCalendarPlot_exec.R > createCalendarPlot_exec.R
 	sed 's%__ARCHIVE_BASE_URL__%${ARCHIVE_BASE_URL}%g' __createLatestAirSensor_exec.R > createLatestAirSensor_exec.R
 	sed 's%__ARCHIVE_BASE_URL__%${ARCHIVE_BASE_URL}%g' __createLatestPAT_exec.R > createLatestPAT_exec.R
 	sed 's%__ARCHIVE_BASE_URL__%${ARCHIVE_BASE_URL}%g' __createMonthlyAirSensor_exec.R > createMonthlyAirSensor_exec.R
@@ -26,7 +25,6 @@ configure_scripts:
 	sed 's%__ARCHIVE_BASE_URL__%${ARCHIVE_BASE_URL}%g' __createPAS_archival_exec.R > createPAS_archival_exec.R
 	sed 's%__ARCHIVE_BASE_URL__%${ARCHIVE_BASE_URL}%g' __createPAS_exec.R > createPAS_exec.R
 	sed 's%__ARCHIVE_BASE_URL__%${ARCHIVE_BASE_URL}%g' __createVideo_exec.R > createVideo_exec.R
-	chmod +x createCalendarPlot_exec.R
 	chmod +x createLatestAirSensor_exec.R
 	chmod +x createLatestPAT_exec.R
 	chmod +x createMonthlyAirSensor_exec.R
