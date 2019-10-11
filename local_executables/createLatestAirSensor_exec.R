@@ -12,8 +12,8 @@
 # docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/airsensor /app/createLatestAirSensor_exec.R --pattern=^SCNP_..$
 #
 
-#  --- . --- . fixed pas filtering
-VERSION = "0.3.9" 
+#  --- . --- . logging tweaks
+VERSION = "0.3.10" 
 
 library(optparse)      # to parse command line flags
 
@@ -111,7 +111,7 @@ logger.debug("R session:\n\n%s\n", sessionString)
 
 result <- try({
   
-  logger.info("Loading PAS data")
+  logger.info("Loading PAS data for %s ", opt$pattern)
   
   # Big time window just to filter the "pas" 
   endtime <- lubridate::now(tzone = "UTC")
@@ -122,8 +122,6 @@ result <- try({
   enddate <- strftime(endtime, "%Y-%m-%d %H:%M:%S", tz = "UTC")
   
   logger.trace("startdate = %s, enddate = %s", startdate, enddate)
-  
-  logger.info("Loading PAS data for %s ", opt$pattern)
   
   # Start with all sensors and filter based on date.
   pas <- pas_load(archival = TRUE) %>%
@@ -158,7 +156,9 @@ result <- try({
       
     }, silent = TRUE)
     if ( "try-error" %in% class(result) ) {
-      logger.warn(geterrmessage())
+      logger.warn(paste0("Could not create 'airsensor' object for '",
+                         label, "':  ",
+                         geterrmessage()))
     }
     
   }

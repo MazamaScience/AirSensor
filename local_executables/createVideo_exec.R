@@ -334,5 +334,4 @@ if ( "try-error" %in% class(result) ) {
   # Guarantee that the errorLog exists
   if ( !file.exists(errorLog) ) dummy <- file.create(errorLog)
   logger.info("Completed successfully!")
-  logger.error("No errors")
 }

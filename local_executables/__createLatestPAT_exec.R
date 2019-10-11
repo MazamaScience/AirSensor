@@ -137,7 +137,7 @@ result <- try({
     # Try block so we keep chugging if one sensor fails
     result <- try({
       
-      logger.debug("pat_createNew(pas, '%s', '%s', '%s')", 
+      logger.trace("pat_createNew(pas, '%s', '%s', '%s')", 
                    label, startdate, enddate)
 
       pat <- pat_createNew(
