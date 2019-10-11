@@ -1,3 +1,26 @@
+# AirSensor 0.5.8
+
+* Added `sensor_loadYear()` to load annual files (~2-3 MB).
+* `sensor_load()` now attempts to load and join annual files before attempting
+the slower process of loading and joining monthly files.
+* Removed excessive logging in some of the loading functions.
+
+# AirSensor 0.5.7
+
+* `timeseriesTbl_multiplot()` now supports a `style` paramter which can be set
+to `"point"`, `"line"` or `"area"`.
+* Improved handling of missing files in data loading functions.
+* Added state-of-health functions: `SoH_pctValid()`, `SoH_pctDC()`.
+* Harmonized naming of state-of-health metrics.
+
+# AirSensor 0.5.6
+
+* Updated `pat_createNew()` and `downloadParseTimeseriesData()` to support the
+`id` parameter.
+* Enhanced `PurpleAirQC_aggregationPlot()` to work with any tibble or dataframe
+and renamed it to `tbl_multiplot()`.
+* Added a state-of-health metrics calculation function: `SoH_pctReporting()`.
+
 # AirSensor 0.5.5
 
 * Now requiring **MazamaCoreUtils** 0.3.10.

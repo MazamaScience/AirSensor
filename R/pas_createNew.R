@@ -56,9 +56,6 @@ pas_createNew <- function(
   lookbackDays = 1
 ) {
   
-  if ( MazamaCoreUtils::logger.isInitialized() )
-    logger.debug("----- pas_createNew() -----")
-  
   # ----- Validate parameters --------------------------------------------------
 
   # Guarantee uppercase codes
@@ -77,7 +74,14 @@ pas_createNew <- function(
   # ----- Load data ------------------------------------------------------------
   
   # Download, parse and enhance synoptic data
+  if ( logger.isInitialized() )
+    logger.debug("----- downloadParseSynopticData() -----")
+    
   pas_raw <- downloadParseSynopticData(baseUrl)
+  
+  if ( logger.isInitialized() )
+    logger.debug("----- enhanceParseSynopticData() -----")
+    
   pas <- enhanceSynopticData(pas_raw, countryCodes, includePWFSL)
   
   # Filter for age
