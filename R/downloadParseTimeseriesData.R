@@ -52,7 +52,7 @@ downloadParseTimeseriesData <- function(
       dplyr::filter(.data$ID == !!id)
   } else {
     if ( nrow(pas_single) > 1 ) {
-      IDString <- paste0(pas_single$ID, collapse = ", ")
+      IDString <- paste0(sort(pas_single$ID), collapse = ", ")
       stop(paste0("Multilpe sensors share this label.",
                   "You must specify the 'id' parameter as one of: '",
                   IDString, "'"))

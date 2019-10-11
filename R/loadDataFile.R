@@ -79,15 +79,12 @@ loadDataFile <- function(
 
   # ----- Handle errors --------------------------------------------------------
   
-  # NOTE:  Failures shoudl be handled above but just in case.
+  # NOTE:  Failures should be handled above but just in case.
 
   if ( "try-error" %in% class(result) ) {
-    if ( logger.isInitialized() ) {
-      logger.error("%s", geterrmessage())
-    }
     stop(paste0("Data file could not be loaded from: ", filepath), call.=FALSE)
   }
-
+  
   # ----- Return ---------------------------------------------------------------
   
   return(loadedData)

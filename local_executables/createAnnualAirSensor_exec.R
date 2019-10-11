@@ -9,7 +9,7 @@
 #
 # Run it inside a docker continer with something like:
 #
-# docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/airsensor /app/createAnnualAirSensor_exec.R --collectionName="MethowValley"
+# docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/airsensor /app/createAnnualAirSensor_exec.R --collectionName="scaqmd"
 #
 
 #  ----- . ----- . -----
@@ -32,7 +32,7 @@ if ( interactive() ) {
   opt <- list(
     outputDir = file.path(getwd()),
     logDir = file.path(getwd()),
-    datestamp = "2019",
+    datestamp = "",
     collectionName = "scaqmd",
     version = FALSE
   )  
