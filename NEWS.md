@@ -1,3 +1,10 @@
+# AirSensor 0.5.8
+
+* Added `sensor_loadYear()` to load annual files (~2-3 MB).
+* `sensor_load()` now attempts to load and join annual files before attempting
+the slower process of loading and joining monthly files.
+* Removed excessive logging in some of the loading functions.
+
 # AirSensor 0.5.7
 
 * `timeseriesTbl_multiplot()` now supports a `style` paramter which can be set

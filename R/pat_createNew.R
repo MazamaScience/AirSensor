@@ -40,9 +40,6 @@ pat_createNew <- function(
   baseURL = "https://api.thingspeak.com/channels/"
 ) {
   
-  if ( MazamaCoreUtils::logger.isInitialized() )
-    logger.debug("----- pat_createNew() -----")
-  
   # ----- Validate parameters --------------------------------------------------
   
   MazamaCoreUtils::stopIfNull(pas)

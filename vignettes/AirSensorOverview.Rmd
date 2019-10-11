@@ -83,6 +83,7 @@ the most common end-user functions:
 | `sensor_load()` | `collection, startdate, enddate, days, timezone` | 
 | `sensor_loadLatest()` | `collection` | 
 | `sensor_loadMonth()` | `collection, datestamp, timezone` | 
+| `sensor_loadYear()` | `collection, datestamp, timezone` | 
 | **Mainpulating an `airsensor`** |  |
 | `sensor_filter()` | `sensor, ...` |
 | `sensor_filterMeta()` | `sensor, ...` |

@@ -27,9 +27,6 @@
 
 pwfsl_loadLatest <- function(...) {
 
-  if ( MazamaCoreUtils::logger.isInitialized() )
-    logger.debug("----- pwfsl_loadLatest() -----")
-  
   # Download PWFSL data
   pwfsl <- PWFSLSmoke::monitor_loadLatest(...)
   
