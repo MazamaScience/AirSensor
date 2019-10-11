@@ -4,28 +4,28 @@
 \alias{SoH_pctDC}
 \title{Daily DC Signal percentage}
 \usage{
-SoH_pctDC(pat = NULL, aggregation_period = "30 min", timezone = NULL)
+SoH_pctDC(pat = NULL, testPeriod = "30 min")
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}
 
-\item{aggregation_period}{The period to aggregate over. Choose from "30 min",
-"1 hour", or "1 day".}
-
-\item{timezone}{Olson timezone at the location of interest}
+\item{testPeriod}{The period of time over which to test for a DC signal. 
+Choose from "30 min", "1 hour", or "1 day".}
 }
 \description{
 This function calculates the daily percentage of DC signal 
 recorded by the \code{pm25_A}, \code{pm25_B}, \code{humidity}, and 
-\code{temperature} channels. The data are flagged as DC signal when the 
-standard deviation of the data from each channel equals zero over the 
-\code{aggregation_period}. The number of DC hours are summed over the day and
-a daily DC percentage is returned.
+\code{temperature} channels. Each day is broken up into individual chunks
+defined by \code{testPeriod}. The data are flagged as DC signal when the 
+standard deviation of the data from each channel equals zero over a 
+\code{testPeriod}. The number of chunks with a DC signal are summed over the 
+day and a daily DC percentage is returned.
 }
 \examples{
  
 tbl <- 
-  example_pat_failure_B \%>\%
-  SoH_pctDC(aggregation_period = "30 min", timezone = "America/Los_Angeles") 
+  example_pat_failure_A \%>\%
+  SoH_pctDC(testPeriod = "30 min") 
 
+timeseriesTbl_multiplot(tbl, ylim = c(0,100))
 }

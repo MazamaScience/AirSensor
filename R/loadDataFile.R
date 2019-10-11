@@ -33,47 +33,58 @@ loadDataFile <- function(
 
   # ----- Load the data --------------------------------------------------------
 
-  # Always check for dataDir first
-  if ( 
-    !is.null(dataDir) && 
-    !is.na(dataDir) && 
-    dir.exists(path.expand(dataDir)) 
-  ) {
+  result <- try({
     
-    # Load from a file
-    filepath <- file.path(path.expand(dataDir), filename)
-
-    result <- try({
-      suppressWarnings(loadedData <- get(load(filepath)))
-    }, silent = TRUE)
+    # Always check for dataDir first
+    if ( 
+      !is.null(dataDir) && 
+      !is.na(dataDir) && 
+      dir.exists(path.expand(dataDir)) 
+    ) {
+      
+      # Load from a file
+      filepath <- file.path(path.expand(dataDir), filename)
+      
+      result <- try({
+        objectName <- load(filepath)
+      }, silent = TRUE)
+      
+      if ( "try-error" %in% class(result) ) {
+        stop(paste0("Data file could not be loaded from: ", filepath), call.=FALSE)
+      } else {
+        loadedData <- get(objectName)
+      }
+      
+    } else {
+      
+      # Load from a URL
+      filepath <- paste0(dataUrl, '/', filename)
+      
+      # Define a 'connection' object so we can close it no matter what happens
+      conn <- url(filepath)
+      result <- try({
+        objectName <- load(conn)
+      }, silent=TRUE )
+      close(conn)
+      
+      if ( "try-error" %in% class(result) ) {
+        stop(paste0("Data file could not be loaded from: ", filepath), call.=FALSE)
+      } else {
+        loadedData <- get(objectName)
+      }
+      
+    }
     
-  } else {
-
-    # Load from a URL
-    filepath <- paste0(dataUrl, '/', filename)
-
-    # Define a 'connection' object so we can close it no matter what happens
-    conn <- url(filepath)
-    result <- try({
-      suppressWarnings(loadedData <- get(load(conn)))
-    }, silent=TRUE )
-    close(conn)
-    
-  }
+  })
 
   # ----- Handle errors --------------------------------------------------------
   
-  # NOTE:  We used suppressWarnings() above so that we can have a more
-  # NOTE:  uniform error response for the large variety of reasons that
-  # NOTE:  loading might fail.
+  # NOTE:  Failures should be handled above but just in case.
 
   if ( "try-error" %in% class(result) ) {
-    if ( logger.isInitialized() ) {
-      logger.error("%s", geterrmessage())
-    }
     stop(paste0("Data file could not be loaded from: ", filepath), call.=FALSE)
   }
-
+  
   # ----- Return ---------------------------------------------------------------
   
   return(loadedData)

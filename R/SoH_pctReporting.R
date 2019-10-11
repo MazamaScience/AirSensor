@@ -1,5 +1,6 @@
 #' @export
 #' @importFrom rlang .data
+#' @importFrom dplyr contains
 #' 
 #' @title Daily reporting percentage
 #' 
@@ -51,14 +52,12 @@ SoH_pctReporting <- function(
     pat_aggregateOutlierCounts(period = "day") %>%
     # Divide the total count per day by the number of samples in a day where the
     # sensor was working perfectly (30 samp/hr * 24 hr/day)*100 to make percent.
-    dplyr::mutate(pctReporting_pm25_A =.data$pm25_A_count/samplesPerDay*100) %>%
-    dplyr::mutate(pctReporting_pm25_B =.data$pm25_B_count/samplesPerDay*100) %>%
-    dplyr::mutate(pctReporting_humidity =.data$humidity_count/samplesPerDay*100) %>%
-    dplyr::mutate(pctReporting_temperature =.data$temperature_count/samplesPerDay*100) %>%
-    dplyr::select(.data$datetime, 
-                  .data$pctReporting_pm25_A, .data$pctReporting_pm25_B,
-                  .data$pctReporting_humidity, .data$pctReporting_temperature)
-    
+    dplyr::mutate(pm25_A_pctReporting =.data$pm25_A_count/samplesPerDay*100) %>%
+    dplyr::mutate(pm25_B_pctReporting =.data$pm25_B_count/samplesPerDay*100) %>%
+    dplyr::mutate(humidity_pctReporting =.data$humidity_count/samplesPerDay*100) %>%
+    dplyr::mutate(temperature_pctReporting =.data$temperature_count/samplesPerDay*100) %>%
+    dplyr::select("datetime", contains("pctReporting"))
+
   # ----- Return ---------------------------------------------------------------
   
   return(tbl)

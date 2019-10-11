@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.7</span>
       </span>
     </div>
 
@@ -150,10 +150,22 @@
       <small>Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="airsensor-0-5-7" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-5-7" class="anchor"></a>AirSensor 0.5.7</h1>
+<ul>
+<li>
+<code><a href="../reference/timeseriesTbl_multiplot.html">timeseriesTbl_multiplot()</a></code> now supports a <code>style</code> paramter which can be set to <code>"point"</code>, <code>"line"</code> or <code>"area"</code>.</li>
+<li>Improved handling of missing files in data loading functions.</li>
+<li>Added state-of-health functions: <code><a href="../reference/SoH_pctValid.html">SoH_pctValid()</a></code>, <code><a href="../reference/SoH_pctDC.html">SoH_pctDC()</a></code>.</li>
+<li>Harmonized naming of state-of-health metrics.</li>
+</ul>
+</div>
     <div id="airsensor-0-5-6" class="section level1">
 <h1 class="page-header">
 <a href="#airsensor-0-5-6" class="anchor"></a>AirSensor 0.5.6</h1>
 <ul>
+<li>Updated <code><a href="../reference/pat_createNew.html">pat_createNew()</a></code> and <code><a href="../reference/downloadParseTimeseriesData.html">downloadParseTimeseriesData()</a></code> to support the <code>id</code> parameter.</li>
 <li>Enhanced <code>PurpleAirQC_aggregationPlot()</code> to work with any tibble or dataframe and renamed it to <code>tbl_multiplot()</code>.</li>
 <li>Added a state-of-health metrics calculation function: <code><a href="../reference/SoH_pctReporting.html">SoH_pctReporting()</a></code>.</li>
 </ul>
@@ -828,6 +840,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#airsensor-0-5-7">0.5.7</a></li>
         <li><a href="#airsensor-0-5-6">0.5.6</a></li>
         <li><a href="#airsensor-0-5-5">0.5.5</a></li>
         <li><a href="#airsensor-0-5-4">0.5.4</a></li>

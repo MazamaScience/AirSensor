@@ -1,27 +1,28 @@
 #' @export
 #' @importFrom rlang .data
+#' @importFrom dplyr contains
 #' 
 #' @title Daily valid percentage
 #' 
 #' @param pat PurpleAir Timeseries \emph{pat} object.
 #' 
-#' @description The number of valid (i.e., not NA or out of spec) sensor 
-#' readings recorded per hour are summed over the course of a calendar day (24 
+#' @description The number of valid (\emph{i.e.}, not NA or out-of-spec) sensor 
+#' measurements are summed over the course of a calendar day (24 
 #' hours unless a partial day is included in the data), then divided by the 
-#' total number of samples the sensor actually recorded in during that day 
-#' (including NA and out of spec values) to return a percentage of each 
-#' day that the sensor recorded valid measurements.
-#' 
+#' total number of measurements the sensor actually recorded in during that day 
+#' (including NA and out-of-spec values) to return a percentage of the total
+#' recorded measurements that are considered plausible.
 #' 
 #' @examples  
 #' tbl <- 
 #'   example_pat_failure_B %>%
 #'   SoH_pctValid() 
 #' 
+#' timeseriesTbl_multiplot(tbl, ylim = c(0,100))
 
 SoH_pctValid <- function(
   pat = NULL
-){
+) {
   
   # ----- Validate parameters --------------------------------------------------
   
@@ -52,15 +53,16 @@ SoH_pctValid <- function(
              .data$pm25_A_count/baseline_tbl$pm25_A_count*100) %>%
     dplyr::mutate(pm25_B_pctValid = 
              .data$pm25_B_count/baseline_tbl$pm25_B_count*100) %>%
-    dplyr::mutate(temperature_pctValid = 
-             .data$temperature_count/baseline_tbl$temperature_count*100) %>%
     dplyr::mutate(humidity_pctValid = 
              .data$humidity_count/baseline_tbl$humidity_count*100) %>%
+    dplyr::mutate(temperature_pctValid = 
+                    .data$temperature_count/baseline_tbl$temperature_count*100) %>%
     dplyr::select("datetime", contains("Valid"))
   
   # ----- Return ---------------------------------------------------------------
   
   return(valid_tbl)
+  
 }
 
 
