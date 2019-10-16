@@ -1,5 +1,5 @@
 #' @export
-#' @importFrom MazamaCoreUtils logger.trace logger.debug logger.warn
+#' @importFrom MazamaCoreUtils logger.trace logger.warn
 #' @importFrom rlang .data
 #' 
 #' @title Enhance synoptic data from Purple Air
@@ -64,9 +64,6 @@ enhanceSynopticData <- function(
   countryCodes = c('US'),
   includePWFSL = TRUE
 ) {
-  
-  if ( MazamaCoreUtils::logger.isInitialized() )
-    logger.debug("----- enhanceSynopticData() -----")
   
   # ----- Validate Parameters --------------------------------------------------
   

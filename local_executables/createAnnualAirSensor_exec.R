@@ -32,7 +32,7 @@ if ( interactive() ) {
   opt <- list(
     outputDir = file.path(getwd()),
     logDir = file.path(getwd()),
-    datestamp = "",
+    datestamp = "2019",
     collectionName = "scaqmd",
     version = FALSE
   )  
@@ -130,6 +130,9 @@ logger.debug("R session:\n\n%s\n", sessionString)
 
 result <- try({
   
+  logger.info("Loading a year's worth of sensor data for %s", 
+              opt$collectionname)
+  
   # NOTE:  Error messages are getting through even wilth "silent = TRUE" so we
   # NOTE:  just capture everything and log it.
   output <- capture.output({
@@ -157,24 +160,7 @@ if ( "try-error" %in% class(result) ) {
   logger.fatal(msg)
 } else {
   # Guarantee that the errorLog exists
-  if ( !file.exists(errorLog) ) dummy <- file.create(errorLog)
+  if ( !file.exists(errorLog) ) 
+    dummy <- file.create(errorLog)
   logger.info("Completed successfully!")
 }
-
-# ===== DEBUGGING ==============================================================
-
-# if ( FALSE ) {
-#   
-#   library(AirMonitorPlots)
-#   
-#   sensor <- get(load("airsensor_scaqmd_2019.rda"))
-#   
-#   gg <- ggplot_pm25Timeseries(sensor,
-#                               startdate = 20190101,
-#                               enddate = 20191231) + 
-#     geom_pm25Points(shape = "square", alpha = .1)
-#  
-#   
-#   print(gg)
-#   
-# }

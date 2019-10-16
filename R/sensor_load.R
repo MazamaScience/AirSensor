@@ -52,28 +52,20 @@ sensor_load <- function(
                                           timezone, 
                                           days = days)
   
-  # ----- Asssemble monthly archive files --------------------------------------
-  
   # NOTE:  datestamps here are created with the local timezone. It is the job of
   # NOTE:  pat_loadMonth() to convert these into UTC for use in constructing
   # NOTE:  data file URLs.
   
-  datestamps <-
-    sort(
-      unique(
-        strftime(
-          seq(
-            dateRange[1],
-            dateRange[2],
-            by = "days"
-          ), 
-          format = "%Y%m",
-          tz = timezone
-        )
-      )
-    )
+  # ----- Assemble annual archive files ----------------------------------------
   
+  # Set up empty list
   airsensorList <- list()
+  
+  datestamps <-
+    seq(dateRange[1], dateRange[2], by = "days") %>%
+    strftime(format = "%Y", tz = timezone) %>%
+    unique() %>%
+    sort()
   
   for ( datestamp in datestamps ) { 
     
@@ -81,7 +73,7 @@ sensor_load <- function(
     result <- try({
       
       airsensorList[[datestamp]] <- 
-        sensor_loadMonth(
+        sensor_loadYear(
           collection = collection, 
           datestamp = datestamp, 
           timezone = timezone
@@ -100,7 +92,51 @@ sensor_load <- function(
     
   } 
   
-  # ----- Join monthly objects -------------------------------------------------
+  # If no annual files are found, try to asssemble monthly archive files
+  if ( length(airsensorList) == 0 ) {
+    
+    datestamps <-
+      seq(dateRange[1], dateRange[2], by = "days") %>%
+      strftime(format = "%Y%m", tz = timezone) %>%
+      unique() %>%
+      sort()
+    
+    for ( datestamp in datestamps ) { 
+      
+      # Ignore "no data file" errors (likely for future months)
+      result <- try({
+        
+        airsensorList[[datestamp]] <- 
+          sensor_loadMonth(
+            collection = collection, 
+            datestamp = datestamp, 
+            timezone = timezone
+          )
+        
+      }, silent = TRUE)
+      
+      if ( "try-error" %in% class(result) ) {
+        err_msg <- geterrmessage()
+        if ( stringr::str_detect(err_msg, "file could not be loaded") ) {
+          # Ignore
+        } else {
+          stop(err_msg)
+        }
+      }
+      
+    } 
+    
+  } # END of search for monthly files
+  
+  if ( length(airsensorList) == 0 ) {
+    stop(paste0(
+      "No data found in the archive covering the period ",
+      strftime(dateRange[1], "%F"), " to ",
+      strftime(dateRange[2], "%F %Z")
+      ))
+  }
+  
+  # ----- Join individual sensor objects ---------------------------------------
   
   for ( i in seq_along(airsensorList) ) {
     
@@ -130,10 +166,10 @@ sensor_load <- function(
   
   airsensor$data <- data
   
+  # ----- Return ---------------------------------------------------------------
+  
   # Trim to the requested time range
   airsensor <- PWFSLSmoke::monitor_subset(airsensor, tlim = dateRange)
-  
-  # ----- Return ---------------------------------------------------------------
   
   return(airsensor)
   

@@ -1,5 +1,5 @@
 #' @export
-#' @importFrom MazamaCoreUtils logger.debug logger.error
+#' @importFrom MazamaCoreUtils logger.error
 #' 
 #' @title Download synoptic data from Purple Air
 #' 
@@ -22,9 +22,6 @@
 downloadParseSynopticData <- function(
   baseUrl = 'https://www.purpleair.com/json'
 ) {
-
-  if ( MazamaCoreUtils::logger.isInitialized() )
-    logger.debug("----- downloadParseSynopticData() -----")
 
   # ----- Download raw data ----------------------------------------------------
   
