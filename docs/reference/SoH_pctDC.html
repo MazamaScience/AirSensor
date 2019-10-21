@@ -45,18 +45,11 @@
 <meta property="og:title" content="Daily DC Signal percentage — SoH_pctDC" />
 <meta property="og:description" content="This function calculates the daily percentage of DC signal 
 recorded by the pm25_A, pm25_B, humidity, and 
-<<<<<<< HEAD
-temperature channels. The data are flagged as DC signal when the 
-standard deviation of the data from each channel equals zero over the 
-aggregation_period. The number of DC hours are summed over the day and
-a daily DC percentage is returned." />
-=======
 temperature channels. Each day is broken up into individual chunks
 defined by testPeriod. The data are flagged as DC signal when the 
 standard deviation of the data from each channel equals zero over a 
 testPeriod. The number of chunks with a DC signal are summed over the 
 day and a daily DC percentage is returned." />
->>>>>>> be02a097032f4145d4251072870ad544ec5a9232
 <meta name="twitter:card" content="summary" />
 
 
@@ -89,15 +82,7 @@ day and a daily DC percentage is returned." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-<<<<<<< HEAD
-<<<<<<< HEAD
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.6</span>
-=======
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.7</span>
->>>>>>> be02a097032f4145d4251072870ad544ec5a9232
-=======
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.8</span>
->>>>>>> e61eed793ba54b61dbe292e88b29c0831e5a7912
       </span>
     </div>
 
@@ -177,15 +162,6 @@ day and a daily DC percentage is returned." />
     <div class="ref-description">
     <p>This function calculates the daily percentage of DC signal 
 recorded by the <code>pm25_A</code>, <code>pm25_B</code>, <code>humidity</code>, and 
-<<<<<<< HEAD
-<code>temperature</code> channels. The data are flagged as DC signal when the 
-standard deviation of the data from each channel equals zero over the 
-<code>aggregation_period</code>. The number of DC hours are summed over the day and
-a daily DC percentage is returned.</p>
-    </div>
-
-    <pre class="usage"><span class='fu'>SoH_pctDC</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>aggregation_period</span> <span class='kw'>=</span> <span class='st'>"30 min"</span>, <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
-=======
 <code>temperature</code> channels. Each day is broken up into individual chunks
 defined by <code>testPeriod</code>. The data are flagged as DC signal when the 
 standard deviation of the data from each channel equals zero over a 
@@ -194,7 +170,6 @@ day and a daily DC percentage is returned.</p>
     </div>
 
     <pre class="usage"><span class='fu'>SoH_pctDC</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>testPeriod</span> <span class='kw'>=</span> <span class='st'>"30 min"</span>)</pre>
->>>>>>> be02a097032f4145d4251072870ad544ec5a9232
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -204,19 +179,9 @@ day and a daily DC percentage is returned.</p>
       <td><p>PurpleAir Timeseries <em>pat</em> object.</p></td>
     </tr>
     <tr>
-<<<<<<< HEAD
-      <th>aggregation_period</th>
-      <td><p>The period to aggregate over. Choose from "30 min",
-"1 hour", or "1 day".</p></td>
-    </tr>
-    <tr>
-      <th>timezone</th>
-      <td><p>Olson timezone at the location of interest</p></td>
-=======
       <th>testPeriod</th>
       <td><p>The period of time over which to test for a DC signal. 
 Choose from "30 min", "1 hour", or "1 day".</p></td>
->>>>>>> be02a097032f4145d4251072870ad544ec5a9232
     </tr>
     </table>
 
@@ -224,15 +189,10 @@ Choose from "30 min", "1 hour", or "1 day".</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='no'>tbl</span> <span class='kw'>&lt;-</span>
-<<<<<<< HEAD
-  <span class='no'>example_pat_failure_B</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>SoH_pctDC</span>(<span class='kw'>aggregation_period</span> <span class='kw'>=</span> <span class='st'>"30 min"</span>, <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='st'>"America/Los_Angeles"</span>)</div></pre>
-=======
   <span class='no'>example_pat_failure_A</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>SoH_pctDC</span>(<span class='kw'>testPeriod</span> <span class='kw'>=</span> <span class='st'>"30 min"</span>)
 
 <span class='fu'><a href='timeseriesTbl_multiplot.html'>timeseriesTbl_multiplot</a></span>(<span class='no'>tbl</span>, <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>,<span class='fl'>100</span>))</div><div class='img'><img src='SoH_pctDC-1.png' alt='' width='700' height='433' /></div></pre>
->>>>>>> be02a097032f4145d4251072870ad544ec5a9232
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

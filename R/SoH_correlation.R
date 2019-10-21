@@ -1,6 +1,6 @@
 #' @export
 #' @importFrom rlang .data
-#' @importFrom dplyr contains
+#' @importFrom dplyr contains 
 #' 
 #' @title Daily correlation values
 #' 
@@ -13,17 +13,18 @@
 #' min" for this reason.
 #' 
 #' @description This function calculates the daily correlation values between
-#'  the \code{pm25_A}, \code{pm25_B}, \code{humidity}, and 
-#' \code{temperature} channels. One correlation value for each channel pair will 
+#' the \code{pm25_A}, \code{pm25_B}, \code{humidity}, and \code{temperature} 
+#' channels. One correlation value for each channel pair will 
 #' be returned for each day.
 #' 
 #' 
 #' @examples  
 #' tbl <- 
 #'   example_pat %>%
-#'   SoH_correlation(testPeriod = "30 min") 
+#'   SoH_correlation(aggregationPeriod = "30 min") 
 #'   
-#' timeseriesTbl_multiplot(tbl, ylim = c(-1,1), style = "line)
+#' timeseriesTbl_multiplot(tbl, ylim = c(-1,1), style = "line")
+#' 
 
 SoH_correlation <- function(
   pat = NULL,
@@ -75,7 +76,7 @@ SoH_correlation <- function(
     # Recommend aggregating to at least 10 min for speed.
     pat_aggregate(period = aggregationPeriod) %>%
     # Establish a local time channel
-    mutate(localTime = lubridate::with_tz(datetime, tzone=timezone)) %>%
+    mutate(localTime = lubridate::with_tz(.data$datetime, tzone=timezone)) %>%
     # Group by day so that the correlations can be applied to a local 24 hour day
     dplyr::mutate(localDaystamp = strftime(.data$localTime, "%Y%m%d", tz = timezone)) %>%
     dplyr::group_by(.data$localDaystamp)
@@ -88,19 +89,25 @@ SoH_correlation <- function(
     
     # pull out the data associated with one day at a time
     day_tbl <- 
-      dplyr::filter(pat_tbl, localDaystamp == day)
+      dplyr::filter(pat_tbl, .data$localDaystamp == day)
     
     
     correlation_list[[day]] <- day_tbl
     
     
     # calculate the correlation between several variables
-    pm25_A_pm25_B_cor <- cor(day_tbl$pm25_A_mean, day_tbl$pm25_B_mean, use = "pairwise.complete.obs")
-    pm25_A_humidity_cor <- cor(day_tbl$pm25_A_mean, day_tbl$humidity_mean, use = "pairwise.complete.obs")
-    pm25_A_temperature_cor <- cor(day_tbl$pm25_A_mean, day_tbl$temperature_mean, use = "pairwise.complete.obs")
-    pm25_B_humidity_cor <- cor(day_tbl$pm25_B_mean, day_tbl$humidity_mean, use = "pairwise.complete.obs")
-    pm25_B_temperature_cor <- cor(day_tbl$pm25_B_mean, day_tbl$temperature_mean, use = "pairwise.complete.obs")
-    temperature_humidity_cor <- cor(day_tbl$temperature_mean, day_tbl$humidity_mean, use = "pairwise.complete.obs")
+    pm25_A_pm25_B_cor <- stats::cor(day_tbl$pm25_A_mean, day_tbl$pm25_B_mean, 
+                                    use = "pairwise.complete.obs")
+    pm25_A_humidity_cor <- stats::cor(day_tbl$pm25_A_mean, day_tbl$humidity_mean, 
+                                      use = "pairwise.complete.obs")
+    pm25_A_temperature_cor <- stats::cor(day_tbl$pm25_A_mean, day_tbl$temperature_mean, 
+                                         use = "pairwise.complete.obs")
+    pm25_B_humidity_cor <- stats::cor(day_tbl$pm25_B_mean, day_tbl$humidity_mean, 
+                                      use = "pairwise.complete.obs")
+    pm25_B_temperature_cor <- stats::cor(day_tbl$pm25_B_mean, day_tbl$temperature_mean, 
+                                         use = "pairwise.complete.obs")
+    temperature_humidity_cor <- stats::cor(day_tbl$temperature_mean, day_tbl$humidity_mean, 
+                                           use = "pairwise.complete.obs")
     
     
     # add the correlation per day, per variable comparison to a list
@@ -127,7 +134,8 @@ SoH_correlation <- function(
   correlation_df <- tibble::rownames_to_column(correlation_df, var="datetime") 
   
   # change datetime into a POSIXCT 
-  correlation_df$datetime <- MazamaCoreUtils::parseDatetime(correlation_df$datetime, timezone = timezone)
+  correlation_df$datetime <- MazamaCoreUtils::parseDatetime(correlation_df$datetime, 
+                                                            timezone = timezone)
   
   # add column names
   colnames <- c( "datetime","pm25_A_pm25_B_cor", "pm25_A_humidity_cor", "pm25_A_temperature_cor",

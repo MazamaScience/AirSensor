@@ -18,7 +18,16 @@ min" for this reason.}
 }
 \description{
 This function calculates the daily correlation values between
- the \code{pm25_A}, \code{pm25_B}, \code{humidity}, and 
-\code{temperature} channels. One correlation value for each channel pair will 
+the \code{pm25_A}, \code{pm25_B}, \code{humidity}, and \code{temperature} 
+channels. One correlation value for each channel pair will 
 be returned for each day.
+}
+\examples{
+ 
+tbl <- 
+  example_pat \%>\%
+  SoH_correlation(aggregationPeriod = "30 min") 
+  
+timeseriesTbl_multiplot(tbl, ylim = c(-1,1), style = "line")
+
 }
