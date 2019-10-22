@@ -66,9 +66,14 @@ SoH_correlation <- function(
   
   hourFactor <- 3600 / periodSeconds
   
-  # ----- Calculate pct_DC -----------------------------------------------------
+  # ----- Calculate daily correlation values -----------------------------------
   
   timezone <- pat$meta$timezone
+  
+  # NOTE: This line converts the datetime column in the pat to the local timezone.
+  # this was deemed necessary after the completion of the function, so the 
+  # datetime and localTime columns will be identical
+  pat$data$datetime <- lubridate::with_tz(pat$data$datetime, tzone = timezone)
   
   pat_tbl <-
     pat %>%
@@ -121,6 +126,9 @@ SoH_correlation <- function(
     )
     
   }
+  # TODO: the following is messy and not the most efficient way to convert 
+  # from a list to a dataframe and certainly could be improved.
+  
   # reformat the list as a tibble
   int_correlation_tbl <- dplyr::as_tibble(correlation_list)
   
