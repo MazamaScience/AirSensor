@@ -6,11 +6,11 @@
 #' 
 #' @param pat PurpleAir Timeseries \emph{pat} object.
 #' @param aggregationPeriod The period of time over which to aggregate the data. 
-#' Recommended that this value is at least greater than 2 min in order to have 
-#' complete pairs between the A and B channels. If there is not a complete pair, 
-#' the function will return an for that day. The smaller the \emph{aggregation
-#' period}, the longer this function will take to run. The default is set to "10
-#' min" for this reason.
+#' in order to create complete pairs between the A and B channels. If there is 
+#' not a complete pair, the function will return an "NA" for that day. It is
+#' recommended that this value is between "2 min" and "1 hour" The smaller the 
+#' \emph{aggregation period}, the longer this function will take to run. The 
+#' default is set to "10 min" for this reason.
 #' 
 #' @description This function calculates the daily correlation values between
 #' the \code{pm25_A}, \code{pm25_B}, \code{humidity}, and \code{temperature} 
@@ -21,12 +21,12 @@
 #' @examples  
 #' tbl <- 
 #'   example_pat %>%
-#'   SoH_correlation(aggregationPeriod = "30 min") 
+#'   SoH_dailyCorrelation(aggregationPeriod = "30 min") 
 #'   
 #' timeseriesTbl_multiplot(tbl, ylim = c(-1,1), style = "line")
 #' 
 
-SoH_correlation <- function(
+SoH_dailyCorrelation <- function(
   pat = NULL,
   aggregationPeriod = "10 min"
 ) {
@@ -70,20 +70,36 @@ SoH_correlation <- function(
   
   timezone <- pat$meta$timezone
   
-  # NOTE: This line converts the datetime column in the pat to the local timezone.
-  # this was deemed necessary after the completion of the function, so the 
-  # datetime and localTime columns will be identical
-  pat$data$datetime <- lubridate::with_tz(pat$data$datetime, tzone = timezone)
+  # Note: after initial completion of this function, decided to chop the passed 
+  # in pat objects by full days. First convert the datetime column in the pat to
+  # local time, then filter based on the first and last full day in the local
+  # timezone
   
+  pat$data$datetime <- lubridate::with_tz(pat$data$datetime, 
+                                          tzone = timezone)
+  # Parse the hours in datetime to find the first and last full days
+  hour <- lubridate::hour(pat$data$datetime)
+  start <- pat$data$datetime[ min(which(hour == 0)) ]
+  end <- pat$data$datetime[ max(which(hour == 23)) ]
+  
+  # Filter the pat based on the times established above.
+  pat <- pat_filterDate(pat, start, end, timezone = timezone) 
+  
+  # Begin aggregation and correlation calculations
   pat_tbl <-
+    
     pat %>%
     # Aggregate to at least 2 min to avoid NA offset between channels A and B. 
     # Recommend aggregating to at least 10 min for speed.
     pat_aggregate(period = aggregationPeriod) %>%
+    
     # Establish a local time channel
-    mutate(localTime = lubridate::with_tz(.data$datetime, tzone=timezone)) %>%
+    mutate(localTime = lubridate::with_tz(.data$datetime, 
+                                          tzone = timezone)) %>%
+    
     # Group by day so that the correlations can be applied to a local 24 hour day
-    dplyr::mutate(localDaystamp = strftime(.data$localTime, "%Y%m%d", tz = timezone)) %>%
+    dplyr::mutate(localDaystamp = strftime(.data$localTime, "%Y%m%d", 
+                                           tz = timezone)) %>%
     dplyr::group_by(.data$localDaystamp)
   
   # Preallocate a list

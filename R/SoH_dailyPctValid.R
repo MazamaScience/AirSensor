@@ -16,11 +16,11 @@
 #' @examples  
 #' tbl <- 
 #'   example_pat_failure_B %>%
-#'   SoH_pctValid() 
+#'   SoH_dailyPctValid() 
 #' 
 #' timeseriesTbl_multiplot(tbl, ylim = c(0,100))
 
-SoH_pctValid <- function(
+SoH_dailyPctValid <- function(
   pat = NULL
 ) {
   
@@ -35,8 +35,26 @@ SoH_pctValid <- function(
     stop("Parameter 'pat' has no data.") 
   
   
-  # ----- SoH_pctValid() ---------------------------------------------------
+  # ----- SoH_dailyPctValid() ---------------------------------------------------
 
+  timezone <- pat$meta$timezone
+  
+  # Note: after initial completion of this function, decided to chop the passed 
+  # in pat objects by full days. First convert the datetime column in the pat to
+  # local time, then filter based on the first and last full day in the local
+  # timezone
+  
+  pat$data$datetime <- lubridate::with_tz(pat$data$datetime, 
+                                          tzone = timezone)
+  # Parse the hours in datetime to find the first and last full days
+  hour <- lubridate::hour(pat$data$datetime)
+  start <- pat$data$datetime[ min(which(hour == 0)) ]
+  end <- pat$data$datetime[ max(which(hour == 23)) ]
+  
+  # Filter the pat based on the times established above.
+  pat <- pat_filterDate(pat, start, end, timezone = timezone) 
+  
+  # Begin pctValid calculations:
   # Calculate a baseline tbl that contains the count without removing entries 
   # containing NA or out of spec values
   baseline_tbl <-
@@ -58,6 +76,10 @@ SoH_pctValid <- function(
     dplyr::mutate(temperature_pctValid = 
                     .data$temperature_count/baseline_tbl$temperature_count*100) %>%
     dplyr::select("datetime", contains("Valid"))
+  
+  # Floor the datetime to display as a day in returned tbl rather than some hour
+  # each day
+  valid_tbl$datetime <- lubridate::floor_date(valid_tbl$datetime, unit = "day")
   
   # ----- Return ---------------------------------------------------------------
   

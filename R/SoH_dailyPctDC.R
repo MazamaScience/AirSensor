@@ -6,7 +6,8 @@
 #' 
 #' @param pat PurpleAir Timeseries \emph{pat} object.
 #' @param testPeriod The period of time over which to test for a DC signal. 
-#' Choose from "30 min", "1 hour", or "1 day". 
+#' Choose from an hour scale time period or less, i.e., "10 min", "30 min", or 
+#' "1 hour". 
 #' 
 #' @description This function calculates the daily percentage of DC signal 
 #' recorded by the \code{pm25_A}, \code{pm25_B}, \code{humidity}, and 
@@ -20,11 +21,11 @@
 #' @examples  
 #' tbl <- 
 #'   example_pat_failure_A %>%
-#'   SoH_pctDC(testPeriod = "30 min") 
+#'   SoH_dailyPctDC(testPeriod = "30 min") 
 #' 
 #' timeseriesTbl_multiplot(tbl, ylim = c(0,100))
 
-SoH_pctDC <- function(
+SoH_dailyPctDC <- function(
   pat = NULL,
   testPeriod = "30 min"
 ) {
@@ -68,6 +69,22 @@ SoH_pctDC <- function(
   
   timezone <- pat$meta$timezone
   
+  # Note: after initial completion of this function, decided to chop the passed 
+  # in pat objects by full days. First convert the datetime column in the pat to
+  # local time, then filter based on the first and last full day in the local
+  # timezone
+  
+  pat$data$datetime <- lubridate::with_tz(pat$data$datetime, 
+                                          tzone = timezone)
+  # Parse the hours in datetime to find the first and last full days
+  hour <- lubridate::hour(pat$data$datetime)
+  start <- pat$data$datetime[ min(which(hour == 0)) ]
+  end <- pat$data$datetime[ max(which(hour == 23)) ]
+  
+  # Filter the pat based on the times established above.
+  pat <- pat_filterDate(pat, start, end, timezone = timezone) 
+  
+  # Begin percent DC calculations:
   pct_DC_tbl <-
     pat %>%
     pat_aggregate(period = testPeriod) %>%

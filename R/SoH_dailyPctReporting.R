@@ -10,7 +10,7 @@
 #' 
 #' @description The number of sensor readings recorded per hour are summed over 
 #' the course of a calendar day (24 hours unless the \code{pat} datetime column
-#' includes a partial day at the beginning or end). This ishen divided by the 
+#' includes a partial day at the beginning or end). This is then divided by the 
 #' number of samples the sensor would record in an ideal day 
 #' (\code{24 * 3600 / samplingInterval}) to return a percentage of each 
 #' day that the sensor is reporting data.
@@ -22,11 +22,11 @@
 #' @examples 
 #' tbl <- 
 #'   example_pat %>%
-#'   SoH_pctReporting(80) 
+#'   SoH_dailyPctReporting(80) 
 #' 
 #' timeseriesTbl_multiplot(tbl)
 
-SoH_pctReporting <- function(
+SoH_dailyPctReporting <- function(
   pat = NULL,
   samplingInterval = 120
 ) {
@@ -42,8 +42,29 @@ SoH_pctReporting <- function(
     stop("Parameter 'pat' has no data.") 
   
   
-  # ----- SoH_pctReporting() ---------------------------------------------------
-
+  # ----- SoH_dailyPctReporting() ---------------------------------------------------
+  
+  timezone <- pat$meta$timezone
+  
+  # # The following lines of code were used in other SoH functions successfully 
+  # # but did not work in this case, I think because of using pat_aggregationOutlierCounts
+  # # on a day basis. 
+  # # Note: after initial completion of this function, decided to chop the passed
+  # # in pat objects by full days. First convert the datetime column in the pat to
+  # # local time, then filter based on the first and last full day in the local
+  # # timezone. 
+  # 
+  # pat$data$datetime <- lubridate::with_tz(pat$data$datetime,
+  #                                         tzone = timezone)
+  # # Parse the hours in datetime to find the first and last full days
+  # hour <- lubridate::hour(pat$data$datetime)
+  # start <- pat$data$datetime[ min(which(hour == 0)) ]
+  # end <- pat$data$datetime[ max(which(hour == 23)) ]
+  # 
+  # # Filter the pat based on the times established above.
+  # pat <- pat_filterDate(pat, start, end, timezone = timezone)
+  
+  # Begin daily reporting percentage calculations:
   samplesPerDay <- 24 * 3600 / samplingInterval
   
   tbl <- 
@@ -57,7 +78,14 @@ SoH_pctReporting <- function(
     dplyr::mutate(humidity_pctReporting =.data$humidity_count/samplesPerDay*100) %>%
     dplyr::mutate(temperature_pctReporting =.data$temperature_count/samplesPerDay*100) %>%
     dplyr::select("datetime", contains("pctReporting"))
+  
+  tbl_convert <- lubridate::with_tz(tbl$datetime, tzone = timezone)
 
+  # # The following line was used in other SoH functions successfully. 
+  # # Floor the datetime to display as a day in returned tbl rather than some hour
+  # # each day
+  # tbl$datetime <- lubridate::floor_date(tbl$datetime, unit = "day")
+  
   # ----- Return ---------------------------------------------------------------
   
   return(tbl)
