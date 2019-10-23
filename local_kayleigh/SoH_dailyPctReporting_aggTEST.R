@@ -47,10 +47,8 @@ SoH_dailyPctReporting <- function(
   timezone <- pat$meta$timezone
   
   # # The following lines of code were used in other SoH functions successfully 
-  # # but did not work in this case because of using pat_aggregationOutlierCounts
-  # # on a day basis. As a work around, I reduced the aggregation period of 
-  # # pat_aggregationOutlierCounts to 1 hour and did additional aggregation using
-  # # dplyr.
+  # # but did not work in this case, I think because of using pat_aggregationOutlierCounts
+  # # on a day basis. 
   # # Note: after initial completion of this function, decided to chop the passed
   # # in pat objects by full days. First convert the datetime column in the pat to
   # # local time, then filter based on the first and last full day in the local
@@ -73,7 +71,6 @@ SoH_dailyPctReporting <- function(
     pat %>%
     # Calculate the aggregation statistics based on a day rather than hourly.
     pat_aggregateOutlierCounts(period = "1 hour") %>%
-    # additional aggregation using dyplyr as mentioned in the notes above.
     dplyr::mutate(daystamp = strftime(.data$datetime, "%Y%m%d", tz = timezone)) %>%
     dplyr::group_by(.data$daystamp) %>%
     dplyr::summarise_at(.vars = c("pm25_A_count", "pm25_B_count", "humidity_count", "temperature_count"),
