@@ -30,6 +30,9 @@ pat %>% pat_multiplot()
 SoH <- pat_dailyStateOfHealth(pat)
 
 # ----- Plotting ------------------------------------------------------------
+plot(pat$data$datetime, pat$data$pm25_A, pch='.', 
+     xlim = MazamaCoreUtils::timeRange(starttime = "20190801", endtime = "20191101", timezone = "UTC") ,
+     ylim = c(0, 200))
 plot(pat$data$datetime, pat$data$pm25_A, pch='.', ylim = c(0, 200))
 points(SoH$datetime, SoH$pm25_A_pctDC, col = "red")
 points(SoH$datetime, SoH$pm25_A_pctReporting, col = "blue")
@@ -37,7 +40,7 @@ points(SoH$datetime, SoH$pm25_A_pctValid, col = "green")
 
 
 
-
+points(tbl$datetime, tbl$humidity_count, pch = '.', col = 'red')
 
 
 

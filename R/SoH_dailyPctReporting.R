@@ -69,11 +69,27 @@ SoH_dailyPctReporting <- function(
   # Begin daily reporting percentage calculations:
   samplesPerDay <- 24 * 3600 / samplingInterval
   
+  # Add create hourly tibble based on daterange to flag missing data
+  hours <- tibble(datetime = seq(start, end, by = "hour"))
+  
   tbl <- 
     pat %>%
-    # Calculate the aggregation statistics based on a day rather than hourly.
-    pat_aggregateOutlierCounts(period = "1 hour") %>%
-    # additional aggregation using dyplyr as mentioned in the notes above.
+    # Calculate the aggregation statistics hourly rather than daily.
+    pat_aggregateOutlierCounts(period = "1 hour")
+    
+  # Must break the pipeline because the order of tibble arguments in left_join 
+  # matters
+  tbl <- dplyr::left_join(hours,tbl, by = "datetime")
+  # Change all the "NA" values to zero in this function only since "zero" counts
+  # means the channel is not reporting. 
+  tbl$pm25_A_count[is.na(tbl$pm25_A_count)] <- 0
+  tbl$pm25_B_count[is.na(tbl$pm25_B_count)] <- 0
+  tbl$humidity_count[is.na(tbl$humidity_count)] <- 0
+  tbl$temperature_count[is.na(tbl$temperature_count)] <- 0
+  
+  # additional aggregation using dyplyr as mentioned in the notes above.
+  tbl <-
+    tbl %>%  
     dplyr::mutate(daystamp = strftime(.data$datetime, "%Y%m%d", tz = timezone)) %>%
     dplyr::group_by(.data$daystamp) %>%
     dplyr::summarise_at(.vars = c("pm25_A_count", "pm25_B_count", "humidity_count", "temperature_count"),

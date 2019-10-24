@@ -36,11 +36,11 @@ SoH_dailyPctValid <- function(
   
   
   # ----- SoH_dailyPctValid() ---------------------------------------------------
-
+  
   timezone <- pat$meta$timezone
   
   # # The following lines of code were used in other SoH functions successfully 
-  # # but did not work in this case because of using pat_aggregationOutlierCounts
+  # # but did not work initially in this case because of using pat_aggregationOutlierCounts
   # # on a day basis. As a work around, I reduced the aggregation period of 
   # # pat_aggregationOutlierCounts to 1 hour and did additional aggregation using
   # # dplyr.
@@ -51,48 +51,83 @@ SoH_dailyPctValid <- function(
   
   pat$data$datetime <- lubridate::with_tz(pat$data$datetime, 
                                           tzone = timezone)
+  
   # Parse the hours in datetime to find the first and last full days
   hour <- lubridate::hour(pat$data$datetime)
   start <- pat$data$datetime[ min(which(hour == 0)) ]
   end <- pat$data$datetime[ max(which(hour == 23)) ]
   
   # Filter the pat based on the times established above.
-  pat <- pat_filterDate(pat, start, end, timezone = timezone) 
+  pat <- pat_filterDate(pat, start, end, timezone = timezone)
+  
+  # Add create hourly tibble based on daterange to join later and flag missing data
+  hours <- tibble(datetime = seq(start, end, by = "hour"))
+  
+  # Add create hourly tibble based on daterange to join later and flag missing data
+  days <- tibble(datetime = seq(start, end, by = "day")) 
+  days$datetime <- lubridate::as_date(days$datetime)
+  days$datetime <- MazamaCoreUtils::parseDatetime(days$datetime, timezone = "America/Los_Angeles")
+
   
   # Begin pctValid calculations:
   # Calculate a baseline tbl that contains the count without removing entries 
   # containing NA or out of spec values
   baseline_tbl <-
     pat %>%
-    pat_aggregateOutlierCounts(period = "1 hour") %>%
-    # additional aggregation using dplyr as mentioned in the notes above
+    pat_aggregateOutlierCounts(period = "1 hour") 
+  
+  # Must break the pipeline because the order of tibble arguments in left_join 
+  # matters
+  baseline_tbl <- dplyr::left_join(hours, baseline_tbl, by = "datetime")
+  
+  # additional aggregation using dplyr as mentioned in the notes above
+  baseline_tbl <-
+    baseline_tbl %>%  
     dplyr::mutate(daystamp = strftime(.data$datetime, "%Y%m%d", tz = timezone)) %>%
     dplyr::group_by(.data$daystamp) %>%
     dplyr::summarise_at(.vars = c("pm25_A_count", "pm25_B_count", "humidity_count", "temperature_count"),
-                                  .funs = sum)
+                        .funs = sum)
+  
+  # Change all the "NA" values to zero since "zero" counts means the channel is 
+  # not reporting. 
+  baseline_tbl$pm25_A_count[is.na(baseline_tbl$pm25_A_count)] <- 0
+  baseline_tbl$pm25_B_count[is.na(baseline_tbl$pm25_B_count)] <- 0
+  baseline_tbl$humidity_count[is.na(baseline_tbl$humidity_count)] <- 0
+  baseline_tbl$temperature_count[is.na(baseline_tbl$temperature_count)] <- 0
   
   # Calculate a tbl after removing entries containing NA and out of spec values
   valid_tbl <-
     pat %>%
-    pat_qc()%>%
+    pat_qc()%>% # Remove NA and out of spec
     pat_aggregateOutlierCounts(period = "1 hour") %>%
-    # additional aggregation using dplyr as mentioned in the notes above
+    # additional daily aggregation
     dplyr::mutate(daystamp = strftime(.data$datetime, "%Y%m%d", tz = timezone)) %>%
     dplyr::group_by(.data$daystamp) %>%
     dplyr::summarise_at(.vars = c("pm25_A_count", "pm25_B_count", "humidity_count", "temperature_count"),
                         .funs = sum) %>%
-    # Add columns to the valid tbl to contain valid percentages
+    # add in a datetime column to join with a daily column to flag missing data
+    dplyr::mutate(datetime = MazamaCoreUtils::parseDatetime(.data$daystamp, timezone = timezone)) %>%
+    dplyr::select("datetime", contains("count"))
+  
+  # join with empty daily column to flag missing days
+  valid_tbl <- dplyr::left_join(days, valid_tbl, by = "datetime")
+  
+  # Add columns to the valid tbl to contain valid percentages
+  valid_tbl <-
+    valid_tbl%>%
     dplyr::mutate(pm25_A_pctValid = 
-             .data$pm25_A_count/baseline_tbl$pm25_A_count*100) %>%
+                    .data$pm25_A_count/baseline_tbl$pm25_A_count*100) %>%
     dplyr::mutate(pm25_B_pctValid = 
-             .data$pm25_B_count/baseline_tbl$pm25_B_count*100) %>%
+                    .data$pm25_B_count/baseline_tbl$pm25_B_count*100) %>%
     dplyr::mutate(humidity_pctValid = 
-             .data$humidity_count/baseline_tbl$humidity_count*100) %>%
+                    .data$humidity_count/baseline_tbl$humidity_count*100) %>%
     dplyr::mutate(temperature_pctValid = 
                     .data$temperature_count/baseline_tbl$temperature_count*100) %>%
-    dplyr::mutate(datetime = MazamaCoreUtils::parseDatetime(.data$daystamp, timezone = timezone)) %>%
+    #dplyr::mutate(datetime = MazamaCoreUtils::parseDatetime(.data$daystamp, timezone = timezone)) %>%
     dplyr::select("datetime", contains("Valid"))
   
+  # Replace inf with NA 
+  is.na(valid_tbl)<-  do.call(cbind,lapply(valid_tbl, is.infinite))
   
   # ----- Return ---------------------------------------------------------------
   
