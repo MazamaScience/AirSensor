@@ -14,6 +14,7 @@ aggregationPeriod <- "1 day"
 ex_pat <- example_pat
 
 # pat for testing pctDC
+setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 pas <- pas_load(archival = TRUE)
 pat_b_zero <- pat_createNew(pas, "SCAP_46", startdate = "2019-07-01", enddate = "2019-07-08", timezone = "America/Los_Angeles")
 
