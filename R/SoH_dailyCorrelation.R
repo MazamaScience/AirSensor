@@ -82,6 +82,11 @@ SoH_dailyCorrelation <- function(
   start <- pat$data$datetime[ min(which(hour == 0)) ]
   end <- pat$data$datetime[ max(which(hour == 23)) ]
   
+  # Add create hourly tibble based on daterange to join later and flag missing data
+  days <- tibble(datetime = seq(start, end, by = "day")) 
+  days$datetime <- lubridate::as_date(days$datetime)
+  days$datetime <- MazamaCoreUtils::parseDatetime(days$datetime, timezone = timezone)
+  
   # Filter the pat based on the times established above.
   pat <- pat_filterDate(pat, start, end, timezone = timezone) 
   
@@ -130,6 +135,12 @@ SoH_dailyCorrelation <- function(
     temperature_humidity_cor <- stats::cor(day_tbl$temperature_mean, day_tbl$humidity_mean, 
                                            use = "pairwise.complete.obs")
     
+    # calculate the ab slope
+    model <- lm(day_tbl$pm25_A_mean ~ day_tbl$pm25_B_mean, subset = NULL, weights = NULL)
+    pm25_A_pm25_B_slope <- as.numeric(model$coefficients[2])      # as.numeric() to remove name
+    pm25_A_pm25_B_intercept <- as.numeric(model$coefficients[1])
+    pm25_A_pm25_B_r_squared <- summary(model)$r.squared
+    
     
     # add the correlation per day, per variable comparison to a list
     correlation_list[[day]] <- list(
@@ -138,7 +149,9 @@ SoH_dailyCorrelation <- function(
       pm25_A_temperature_cor = pm25_A_temperature_cor,
       pm25_B_humidity_cor = pm25_B_humidity_cor,
       pm25_B_temperature_cor = pm25_B_temperature_cor,
-      temperature_humidity_cor = temperature_humidity_cor
+      temperature_humidity_cor = temperature_humidity_cor,
+      pm25_A_pm25_B_slope = pm25_A_pm25_B_slope,
+      pm25_A_pm25_B_intercept = pm25_A_pm25_B_intercept
     )
     
   }
@@ -148,8 +161,8 @@ SoH_dailyCorrelation <- function(
   # reformat the list as a tibble
   int_correlation_tbl <- dplyr::as_tibble(correlation_list)
   
-  # reformat as a matrix in order to have the desired outcome after transpose
-  correlation_matrix<- t(as.matrix(int_correlation_tbl))
+  #  transpose and reformat as a matrix in order to have the desired outcome after transpose
+  correlation_matrix <- t(as.matrix(int_correlation_tbl))
   
   # reformat as a data.frame in order to change datetime to POSIXCT and add the colnames
   correlation_df <- data.frame(correlation_matrix)
@@ -164,7 +177,7 @@ SoH_dailyCorrelation <- function(
   # add column names
   colnames <- c( "datetime","pm25_A_pm25_B_cor", "pm25_A_humidity_cor", "pm25_A_temperature_cor",
                  "pm25_B_humidity_cor", "pm25_B_temperature_cor",
-                 "temperature_humidity_cor")
+                 "temperature_humidity_cor", "pm25_A_pm25_B_slope", "pm25_A_pm25_B_intercept")
   colnames(correlation_df) <-colnames
   
   # re-define each of the columns as numeric rather than lists for easier plotting in ggplot
@@ -174,7 +187,12 @@ SoH_dailyCorrelation <- function(
   correlation_df$pm25_B_temperature_cor <- as.numeric(correlation_df$pm25_B_temperature_cor)
   correlation_df$pm25_B_humidity_cor <- as.numeric(correlation_df$pm25_B_humidity_cor)
   correlation_df$temperature_humidity_cor <- as.numeric(correlation_df$temperature_humidity_cor)
+  correlation_df$pm25_A_pm25_B_slope <- as.numeric(correlation_df$pm25_A_pm25_B_slope)
+  correlation_df$pm25_A_pm25_B_intercept <- as.numeric(correlation_df$pm25_A_pm25_B_intercept)
+
   
+  # join with empty daily column to flag missing days
+  correlation_df <- dplyr::left_join(days, correlation_df, by = "datetime")
   
 
   

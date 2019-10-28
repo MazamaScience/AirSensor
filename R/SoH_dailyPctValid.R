@@ -60,15 +60,16 @@ SoH_dailyPctValid <- function(
   # Filter the pat based on the times established above.
   pat <- pat_filterDate(pat, start, end, timezone = timezone)
   
-  # Add create hourly tibble based on daterange to join later and flag missing data
+  # Create hourly tibble based on daterange to join with the baseline tibble
+  # and flag missing data
   hours <- tibble(datetime = seq(start, end, by = "hour"))
   
-  # Add create hourly tibble based on daterange to join later and flag missing data
+  # Create daily tibble based on daterange to join with the valid tibble and 
+  # flag missing data
   days <- tibble(datetime = seq(start, end, by = "day")) 
   days$datetime <- lubridate::as_date(days$datetime)
-  days$datetime <- MazamaCoreUtils::parseDatetime(days$datetime, timezone = "America/Los_Angeles")
+  days$datetime <- MazamaCoreUtils::parseDatetime(days$datetime, timezone = timezone)
 
-  
   # Begin pctValid calculations:
   # Calculate a baseline tbl that contains the count without removing entries 
   # containing NA or out of spec values
@@ -77,23 +78,24 @@ SoH_dailyPctValid <- function(
     pat_aggregateOutlierCounts(period = "1 hour") 
   
   # Must break the pipeline because the order of tibble arguments in left_join 
-  # matters
+  # matters. This will add NA values to hours (rows) where data wasn't recorded
   baseline_tbl <- dplyr::left_join(hours, baseline_tbl, by = "datetime")
   
-  # additional aggregation using dplyr as mentioned in the notes above
+  # Change all the "NA" values to zero since zero counts means the channel is 
+  # not reporting. 
+  baseline_tbl$pm25_A_count[is.na(baseline_tbl$pm25_A_count)] <- 0
+  baseline_tbl$pm25_B_count[is.na(baseline_tbl$pm25_B_count)] <- 0
+  baseline_tbl$humidity_count[is.na(baseline_tbl$humidity_count)] <- 0
+  baseline_tbl$temperature_count[is.na(baseline_tbl$temperature_count)] <- 0
+  
+  # Additional aggregation using dplyr as mentioned in the notes above. This will
+  # result in daily sums of the counts for each variable of interest.
   baseline_tbl <-
     baseline_tbl %>%  
     dplyr::mutate(daystamp = strftime(.data$datetime, "%Y%m%d", tz = timezone)) %>%
     dplyr::group_by(.data$daystamp) %>%
     dplyr::summarise_at(.vars = c("pm25_A_count", "pm25_B_count", "humidity_count", "temperature_count"),
                         .funs = sum)
-  
-  # Change all the "NA" values to zero since "zero" counts means the channel is 
-  # not reporting. 
-  baseline_tbl$pm25_A_count[is.na(baseline_tbl$pm25_A_count)] <- 0
-  baseline_tbl$pm25_B_count[is.na(baseline_tbl$pm25_B_count)] <- 0
-  baseline_tbl$humidity_count[is.na(baseline_tbl$humidity_count)] <- 0
-  baseline_tbl$temperature_count[is.na(baseline_tbl$temperature_count)] <- 0
   
   # Calculate a tbl after removing entries containing NA and out of spec values
   valid_tbl <-
