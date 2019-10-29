@@ -45,12 +45,12 @@ SoH_dailyPctReporting <- function(
   # ----- SoH_dailyPctReporting() ---------------------------------------------------
   
   timezone <- pat$meta$timezone
-  
-  # # The following lines of code were used in other SoH functions successfully 
-  # # but did not work in this case because of using pat_aggregationOutlierCounts
-  # # on a day basis. As a work around, I reduced the aggregation period of 
-  # # pat_aggregationOutlierCounts to 1 hour and did additional aggregation using
-  # # dplyr.
+  # Notes:
+  # # Ideally, we would aggregate over a daily basis up front. This did not work
+  # # in this case because using pat_aggregationOutlierCounts on a day basis 
+  # # poses issues with timezones. As a work around, I reduced the aggregation 
+  # # period of pat_aggregationOutlierCounts to 1 hour and did additional 
+  # # aggregation using dplyr.
   # # Note: after initial completion of this function, decided to chop the passed
   # # in pat objects by full days. First convert the datetime column in the pat to
   # # local time, then filter based on the first and last full day in the local
@@ -58,6 +58,7 @@ SoH_dailyPctReporting <- function(
 
   pat$data$datetime <- lubridate::with_tz(pat$data$datetime,
                                           tzone = timezone)
+  
   # Parse the hours in datetime to find the first and last full days
   hour <- lubridate::hour(pat$data$datetime)
   start <- pat$data$datetime[ min(which(hour == 0)) ]
@@ -66,10 +67,10 @@ SoH_dailyPctReporting <- function(
   # Filter the pat based on the times established above.
   pat <- pat_filterDate(pat, start, end, timezone = timezone)
   
-  # Begin daily reporting percentage calculations:
+  # Samples collected per day in an ideal day:
   samplesPerDay <- 24 * 3600 / samplingInterval
   
-  # Add create hourly tibble based on daterange to flag missing data
+  # Create hourly tibble based on daterange to flag missing data
   hours <- tibble(datetime = seq(start, end, by = "hour"))
   
   tbl <- 
@@ -78,9 +79,10 @@ SoH_dailyPctReporting <- function(
     pat_aggregateOutlierCounts(period = "1 hour")
     
   # Must break the pipeline because the order of tibble arguments in left_join 
-  # matters
+  # matters. This will input NA's in the tibble on days when data were not recorded
   tbl <- dplyr::left_join(hours,tbl, by = "datetime")
-  # Change all the "NA" values to zero in this function only since "zero" counts
+  
+  # Change all the NA values to zero in this function since "zero" counts
   # means the channel is not reporting. 
   tbl$pm25_A_count[is.na(tbl$pm25_A_count)] <- 0
   tbl$pm25_B_count[is.na(tbl$pm25_B_count)] <- 0

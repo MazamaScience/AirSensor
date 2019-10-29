@@ -69,10 +69,16 @@ SoH_dailyPctDC <- function(
   
   timezone <- pat$meta$timezone
   
-  # Note: after initial completion of this function, decided to chop the passed 
-  # in pat objects by full days. First convert the datetime column in the pat to
-  # local time, then filter based on the first and last full day in the local
-  # timezone
+  # Notes:
+  # # Ideally, we would aggregate over a daily basis up front. This did not work
+  # # in this case because using pat_aggregationOutlierCounts on a day basis 
+  # # poses issues with timezones. As a work around, I reduced the aggregation 
+  # # period of pat_aggregationOutlierCounts to 1 hour and did additional 
+  # # aggregation using dplyr.
+  # # Note: after initial completion of this function, decided to chop the passed
+  # # in pat objects by full days. First convert the datetime column in the pat to
+  # # local time, then filter based on the first and last full day in the local
+  # # timezone. 
   
   pat$data$datetime <- lubridate::with_tz(pat$data$datetime, 
                                           tzone = timezone)
@@ -82,7 +88,7 @@ SoH_dailyPctDC <- function(
   start <- pat$data$datetime[ min(which(hour == 0)) ]
   end <- pat$data$datetime[ max(which(hour == 23)) ]
   
-  # Add create hourly tibble based on daterange to join later and flag missing data
+  # Create hourly tibble based on daterange to join later and flag missing data
   days <- tibble(datetime = seq(start, end, by = "day")) 
   days$datetime <- lubridate::as_date(days$datetime)
   days$datetime <- MazamaCoreUtils::parseDatetime(days$datetime, timezone = timezone)

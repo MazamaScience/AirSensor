@@ -15,7 +15,9 @@
 #' @description This function calculates the daily correlation values between
 #' the \code{pm25_A}, \code{pm25_B}, \code{humidity}, and \code{temperature} 
 #' channels. One correlation value for each channel pair will 
-#' be returned for each day.
+#' be returned for each day. A linear fit between channels A and B is also 
+#' calculated for each day and the coefficients are returned as the slope and 
+#' the intercept.
 #' 
 #' 
 #' @examples  
@@ -70,19 +72,26 @@ SoH_dailyCorrelation <- function(
   
   timezone <- pat$meta$timezone
   
-  # Note: after initial completion of this function, decided to chop the passed 
-  # in pat objects by full days. First convert the datetime column in the pat to
-  # local time, then filter based on the first and last full day in the local
-  # timezone
+  # Notes:
+  # # Ideally, we would aggregate over a daily basis up front. This did not work
+  # # in this case because using pat_aggregationOutlierCounts on a day basis 
+  # # poses issues with timezones. As a work around, I reduced the aggregation 
+  # # period of pat_aggregationOutlierCounts to 1 hour and did additional 
+  # # aggregation using dplyr.
+  # # Note: after initial completion of this function, decided to chop the passed
+  # # in pat objects by full days. First convert the datetime column in the pat to
+  # # local time, then filter based on the first and last full day in the local
+  # # timezone. 
   
   pat$data$datetime <- lubridate::with_tz(pat$data$datetime, 
                                           tzone = timezone)
+  
   # Parse the hours in datetime to find the first and last full days
   hour <- lubridate::hour(pat$data$datetime)
   start <- pat$data$datetime[ min(which(hour == 0)) ]
   end <- pat$data$datetime[ max(which(hour == 23)) ]
   
-  # Add create hourly tibble based on daterange to join later and flag missing data
+  # Create hourly tibble based on daterange to join later and flag missing data
   days <- tibble(datetime = seq(start, end, by = "day")) 
   days$datetime <- lubridate::as_date(days$datetime)
   days$datetime <- MazamaCoreUtils::parseDatetime(days$datetime, timezone = timezone)
@@ -94,7 +103,7 @@ SoH_dailyCorrelation <- function(
   pat_tbl <-
     
     pat %>%
-    # Aggregate to at least 2 min to avoid NA offset between channels A and B. 
+    # Aggregate to a minimum of 2 min to avoid NA offset between channels A and B. 
     # Recommend aggregating to at least 10 min for speed.
     pat_aggregate(period = aggregationPeriod) %>%
     
@@ -135,11 +144,10 @@ SoH_dailyCorrelation <- function(
     temperature_humidity_cor <- stats::cor(day_tbl$temperature_mean, day_tbl$humidity_mean, 
                                            use = "pairwise.complete.obs")
     
-    # calculate the ab slope
+    # calculate the ab slope and intercept
     model <- lm(day_tbl$pm25_A_mean ~ day_tbl$pm25_B_mean, subset = NULL, weights = NULL)
-    pm25_A_pm25_B_slope <- as.numeric(model$coefficients[2])      # as.numeric() to remove name
+    pm25_A_pm25_B_slope <- as.numeric(model$coefficients[2])  # as.numeric() to remove name
     pm25_A_pm25_B_intercept <- as.numeric(model$coefficients[1])
-    pm25_A_pm25_B_r_squared <- summary(model)$r.squared
     
     
     # add the correlation per day, per variable comparison to a list
