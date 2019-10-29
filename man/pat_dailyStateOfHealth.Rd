@@ -15,7 +15,7 @@ tibbles with the same number of rows}
 }
 \description{
 This function combines the output of the State of Health (SoH) 
-function arguments into a single tibble. The output tibble should have
+function arguments into a single tibble.
 }
 \examples{
  

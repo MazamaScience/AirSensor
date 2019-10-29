@@ -53,8 +53,17 @@ p <- subplot(p1, p2, nrows = 2)
 
 pat_sub <- pat_sample(pat, keepOutliers = TRUE)
 d <- pat_sub$data
-p1 <- plot(d$datetime, d$pm25_A, pch = 0, col = "firebrick")
-p2 <- plot(d)
+p#1 <- plot(d$datetime, d$pm25_A, pch = 0, col = "firebrick")
+p1 <- plot_ly(d, x = d$datetime, y = ~pm25_A, type = "scatter", name = "pm25_A", 
+              marker = list(opacity = 0.4, color = "darkred")) %>%
+  add_trace(name = "pm25_B", d, x = d$datetime, y = ~pm25_B, 
+            marker = list(opacity = 0.4, color = "darkblue"))
+#p2 <- plot(SoH$datetime, SoH$pm25_A_pctReporting, pch = 0, col = "firebrick")
+p2 <- plot_ly(SoH, x = ~datetime, y = ~pm25_A_pctReporting, type = "scatter", name = "pm25_A %Reporting",
+              marker = list(opacity = 0.4, color = "darkred")) %>%
+  add_trace(name = "pm25_B %Reporting", SoH, x = ~datetime, y = ~pm25_B_pctReporting,
+            marker = list(opacity = 0.4, color = "darkblue"))
+subplot(p1, p2, nrows = 2)
 
 
 
