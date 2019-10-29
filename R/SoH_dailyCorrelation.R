@@ -139,7 +139,6 @@ SoH_dailyCorrelation <- function(
     model <- lm(day_tbl$pm25_A_mean ~ day_tbl$pm25_B_mean, subset = NULL, weights = NULL)
     pm25_A_pm25_B_slope <- as.numeric(model$coefficients[2])      # as.numeric() to remove name
     pm25_A_pm25_B_intercept <- as.numeric(model$coefficients[1])
-    pm25_A_pm25_B_r_squared <- summary(model)$r.squared
     
     
     # add the correlation per day, per variable comparison to a list
