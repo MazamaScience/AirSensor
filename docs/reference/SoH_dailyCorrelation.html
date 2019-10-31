@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Detect and replace time series outliers — pat_outliers • AirSensor</title>
+<title>Daily correlation values — SoH_dailyCorrelation • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,27 +42,11 @@
 
 
 
-<meta property="og:title" content="Detect and replace time series outliers — pat_outliers" />
-<meta property="og:description" content="Outlier detection using a Median Average Deviation &quot;Hampel&quot; 
-filter. This function applies a rolling Hampel filter to find those points
-that are very far out in the tails of the distribution of values within the
-window.
-The thresholdMin level is similar to a sigma value for normally 
-distributed data. The default threshold setting thresholdMin = 8 
-identifies points that are extremely unlikely to be part of a normal 
-distribution and therefore very likely to be an outlier. By choosing a 
-relatively large value for `thresholdMin`` we make it less likely that we 
-will generate false positives.
-The default setting of the window size windowSize = 23 means that 23 samples
-from a single channel are used to determine the distribution of values for
-which a median is calculated. Each PurpleAir channel makes a measurement
-approximately every 80 seconds so the temporal window is 23 * 80 sec or
-approximately 30 minutes. This seems like a reasonable period of time over
-which to evaluate PM2.5 measurements.
-Specifying replace = TRUE allows you to perform smoothing by 
-replacing outliers with the window median value. Using this technique, you 
-can create an highly smoothed, artificial dataset by setting 
-thresholdMin = 1 or lower (but always above zero)." />
+<meta property="og:title" content="Daily correlation values — SoH_dailyCorrelation" />
+<meta property="og:description" content="This function calculates the daily correlation values between
+the pm25_A, pm25_B, humidity, and temperature 
+channels. One correlation value for each channel pair will 
+be returned for each day." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -167,38 +151,19 @@ thresholdMin = 1 or lower (but always above zero)." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Detect and replace time series outliers</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_outliers.R'><code>R/pat_outliers.R</code></a></small>
-    <div class="hidden name"><code>pat_outliers.Rd</code></div>
+    <h1>Daily correlation values</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/SoH_dailyCorrelation.R'><code>R/SoH_dailyCorrelation.R</code></a></small>
+    <div class="hidden name"><code>SoH_dailyCorrelation.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Outlier detection using a Median Average Deviation "Hampel" 
-filter. This function applies a rolling Hampel filter to find those points
-that are very far out in the tails of the distribution of values within the
-window.</p>
-<p>The <code>thresholdMin</code> level is similar to a sigma value for normally 
-distributed data. The default threshold setting <code>thresholdMin = 8</code> 
-identifies points that are extremely unlikely to be part of a normal 
-distribution and therefore very likely to be an outlier. By choosing a 
-relatively large value for `thresholdMin`` we make it less likely that we 
-will generate false positives.</p>
-<p>The default setting of the window size <code>windowSize = 23</code> means that 23 samples
-from a single channel are used to determine the distribution of values for
-which a median is calculated. Each PurpleAir channel makes a measurement
-approximately every 80 seconds so the temporal window is 23 * 80 sec or
-approximately 30 minutes. This seems like a reasonable period of time over
-which to evaluate PM2.5 measurements.</p>
-<p>Specifying <code>replace = TRUE</code> allows you to perform smoothing by 
-replacing outliers with the window median value. Using this technique, you 
-can create an highly smoothed, artificial dataset by setting 
-<code>thresholdMin = 1</code> or lower (but always above zero).</p>
+    <p>This function calculates the daily correlation values between
+the <code>pm25_A</code>, <code>pm25_B</code>, <code>humidity</code>, and <code>temperature</code> 
+channels. One correlation value for each channel pair will 
+be returned for each day.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>pat_outliers</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>windowSize</span> <span class='kw'>=</span> <span class='fl'>23</span>, <span class='kw'>thresholdMin</span> <span class='kw'>=</span> <span class='fl'>8</span>,
-  <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>showPlot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>data_shape</span> <span class='kw'>=</span> <span class='fl'>18</span>, <span class='kw'>data_size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>data_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>data_alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>outlier_shape</span> <span class='kw'>=</span> <span class='fl'>8</span>,
-  <span class='kw'>outlier_size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>outlier_color</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>outlier_alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+    <pre class="usage"><span class='fu'>SoH_dailyCorrelation</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>aggregationPeriod</span> <span class='kw'>=</span> <span class='st'>"10 min"</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -208,78 +173,30 @@ can create an highly smoothed, artificial dataset by setting
       <td><p>PurpleAir Timeseries <em>pat</em> object.</p></td>
     </tr>
     <tr>
-      <th>windowSize</th>
-      <td><p>Integer window size for outlier detection.</p></td>
-    </tr>
-    <tr>
-      <th>thresholdMin</th>
-      <td><p>Threshold value for outlier detection.</p></td>
-    </tr>
-    <tr>
-      <th>replace</th>
-      <td><p>Logical specifying whether replace outliers with the window
-median value.</p></td>
-    </tr>
-    <tr>
-      <th>showPlot</th>
-      <td><p>Logical specifying whether to generate outlier detection 
-plots.</p></td>
-    </tr>
-    <tr>
-      <th>data_shape</th>
-      <td><p>Symbol to use for data points.</p></td>
-    </tr>
-    <tr>
-      <th>data_size</th>
-      <td><p>Size of data points.</p></td>
-    </tr>
-    <tr>
-      <th>data_color</th>
-      <td><p>Color of data points.</p></td>
-    </tr>
-    <tr>
-      <th>data_alpha</th>
-      <td><p>Opacity of data points.</p></td>
-    </tr>
-    <tr>
-      <th>outlier_shape</th>
-      <td><p>Symbol to use for outlier points.</p></td>
-    </tr>
-    <tr>
-      <th>outlier_size</th>
-      <td><p>Size of outlier points.</p></td>
-    </tr>
-    <tr>
-      <th>outlier_color</th>
-      <td><p>Color of outlier points.</p></td>
-    </tr>
-    <tr>
-      <th>outlier_alpha</th>
-      <td><p>Opacity of outlier points.</p></td>
+      <th>aggregationPeriod</th>
+      <td><p>The period of time over which to aggregate the data. 
+in order to create complete pairs between the A and B channels. If there is 
+not a complete pair, the function will return an "NA" for that day. It is
+recommended that this value is between "2 min" and "1 hour" The smaller the 
+<em>aggregation period</em>, the longer this function will take to run. The 
+default is set to "10 min" for this reason.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A <em>pat</em> object with outliers replaced by median values.</p>
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
-
-    <p>Additional documentation on the algorithm is available in 
-<code><a href='https://rdrr.io/pkg/seismicRoll/man/findOutliers.html'>seismicRoll::findOutliers()</a></code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
-<span class='no'>example_pat</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='pat_filterDate.html'>pat_filterDate</a></span>(<span class='fl'>20180801</span>, <span class='fl'>20180815</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>pat_outliers</span>(<span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>showPlot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='pat_outliers-1.png' alt='' width='700' height='433' /></div><div class='input'># }
+    <pre class="examples"><div class='input'>
+<span class='no'>tbl</span> <span class='kw'>&lt;-</span>
+  <span class='no'>example_pat</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>SoH_dailyCorrelation</span>(<span class='kw'>aggregationPeriod</span> <span class='kw'>=</span> <span class='st'>"30 min"</span>)
+
+<span class='fu'><a href='timeseriesTbl_multiplot.html'>timeseriesTbl_multiplot</a></span>(<span class='no'>tbl</span>, <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>1</span>,<span class='fl'>1</span>), <span class='kw'>style</span> <span class='kw'>=</span> <span class='st'>"line"</span>)</div><div class='img'><img src='SoH_dailyCorrelation-1.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#note">Note</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 
