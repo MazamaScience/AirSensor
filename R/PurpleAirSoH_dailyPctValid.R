@@ -16,11 +16,11 @@
 #' @examples  
 #' tbl <- 
 #'   example_pat_failure_B %>%
-#'   SoH_dailyPctValid() 
+#'   PurpleAirSoH_dailyPctValid() 
 #' 
-#' timeseriesTbl_multiplot(tbl, ylim = c(0,100))
+#' timeseriesTbl_multiplot(tbl, ylim = c(0,100), style = "line")
 
-SoH_dailyPctValid <- function(
+PurpleAirSoH_dailyPctValid <- function(
   pat = NULL
 ) {
   
@@ -35,31 +35,24 @@ SoH_dailyPctValid <- function(
     stop("Parameter 'pat' has no data.") 
   
   
-  # ----- SoH_dailyPctValid() ---------------------------------------------------
+  # ----- Create aggregation tbl -----------------------------------------------
   
+  # Get full days in the local timezone
   timezone <- pat$meta$timezone
+  localTime <- lubridate::with_tz(pat$dat$datetime, tzone = timezone)
+  hour <- lubridate::hour(localTime)
+  start <- localTime[ min(which(hour == 0)) ]
+  end <- localTime[ max(which(hour == 23)) ]
   
-  # Notes:
-  # # Ideally, we would aggregate over a daily basis up front. This did not work
-  # # in this case because using pat_aggregationOutlierCounts on a day basis 
-  # # poses issues with timezones. As a work around, I reduced the aggregation 
-  # # period of pat_aggregationOutlierCounts to 1 hour and did additional 
-  # # aggregation using dplyr.
-  # # Note: after initial completion of this function, decided to chop the passed
-  # # in pat objects by full days. First convert the datetime column in the pat to
-  # # local time, then filter based on the first and last full day in the local
-  # # timezone. 
-  
-  pat$data$datetime <- lubridate::with_tz(pat$data$datetime, 
-                                          tzone = timezone)
-  
-  # Parse the hours in datetime to find the first and last full days
-  hour <- lubridate::hour(pat$data$datetime)
-  start <- pat$data$datetime[ min(which(hour == 0)) ]
-  end <- pat$data$datetime[ max(which(hour == 23)) ]
+  # NOTE:  pat_filterDate only goes to the beginning of enddate and we want it
+  # NOTE:  to go to the end of enddate.
   
   # Filter the pat based on the times established above.
-  pat <- pat_filterDate(pat, start, end, timezone = timezone)
+  pat <- pat_filterDate(
+    pat, 
+    startdate = start, 
+    enddate = end + lubridate::ddays(1)
+  )
   
   # Create hourly tibble based on daterange to join with the baseline_tbl
   # and flag missing data
@@ -68,15 +61,18 @@ SoH_dailyPctValid <- function(
   # Create daily tibble based on daterange to join with the valid_tbl and 
   # flag missing data
   days <- tibble(datetime = seq(start, end, by = "day")) 
-  days$datetime <- lubridate::as_date(days$datetime)
-  days$datetime <- MazamaCoreUtils::parseDatetime(days$datetime, timezone = timezone)
-
-  # Begin pctValid calculations:
+  
+  # ----- Cacluate dailyPctValid -----------------------------------------------
+  
   # Calculate a baseline tbl that contains the count without removing entries 
   # containing NA or out of spec values
   baseline_tbl <-
     pat %>%
     pat_aggregateOutlierCounts(period = "1 hour") 
+  
+  # Put it on a local time axis and trim
+  baseline_tbl$datetime <- lubridate::with_tz(baseline_tbl$datetime, tzone = timezone)
+  baseline_tbl <- dplyr::filter(baseline_tbl, .data$datetime >= start & .data$datetime <= end)
   
   # Must break the pipeline because the order of tibble arguments in left_join 
   # matters. This will add NA values to hours (rows) where data wasn't recorded
@@ -102,7 +98,14 @@ SoH_dailyPctValid <- function(
   valid_tbl <-
     pat %>%
     pat_qc()%>% # Remove NA and out of spec
-    pat_aggregateOutlierCounts(period = "1 hour") %>%
+    pat_aggregateOutlierCounts(period = "1 hour")
+  
+  # Put it on a local time axis and trim
+  valid_tbl$datetime <- lubridate::with_tz(valid_tbl$datetime, tzone = timezone)
+  valid_tbl <- dplyr::filter(valid_tbl, .data$datetime >= start & .data$datetime <= end)
+  
+  valid_tbl <-
+    valid_tbl %>%
     # additional daily aggregation
     dplyr::mutate(daystamp = strftime(.data$datetime, "%Y%m%d", tz = timezone)) %>%
     dplyr::group_by(.data$daystamp) %>%
@@ -126,11 +129,8 @@ SoH_dailyPctValid <- function(
                     .data$humidity_count/baseline_tbl$humidity_count*100) %>%
     dplyr::mutate(temperature_pctValid = 
                     .data$temperature_count/baseline_tbl$temperature_count*100) %>%
-    #dplyr::mutate(datetime = MazamaCoreUtils::parseDatetime(.data$daystamp, timezone = timezone)) %>%
-    dplyr::select("datetime", contains("Valid"))
-  
-  # Replace inf with NA 
-  is.na(valid_tbl)<-  do.call(cbind,lapply(valid_tbl, is.infinite))
+    dplyr::select("datetime", contains("Valid")) %>%
+    dplyr::mutate_all(function(x) { replace(x, is.infinite(x), NA) })
   
   # ----- Return ---------------------------------------------------------------
   

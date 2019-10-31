@@ -21,11 +21,11 @@
 #' @examples  
 #' tbl <- 
 #'   example_pat_failure_A %>%
-#'   SoH_dailyPctDC(testPeriod = "30 min") 
+#'   PurpleAirSoH_dailyPctDC(testPeriod = "30 min") 
 #' 
-#' timeseriesTbl_multiplot(tbl, ylim = c(0,100))
+#' timeseriesTbl_multiplot(tbl, ylim = c(0,100), style = "line")
 
-SoH_dailyPctDC <- function(
+PurpleAirSoH_dailyPctDC <- function(
   pat = NULL,
   testPeriod = "30 min"
 ) {
@@ -65,42 +65,42 @@ SoH_dailyPctDC <- function(
   
   hourFactor <- 3600 / periodSeconds
   
-  # ----- Calculate pct_DC -----------------------------------------------------
+  # ----- Create daily tbl -----------------------------------------------------
   
+  # Get full days in the local timezone
   timezone <- pat$meta$timezone
+  localTime <- lubridate::with_tz(pat$dat$datetime, tzone = timezone)
+  hour <- lubridate::hour(localTime)
+  start <- localTime[ min(which(hour == 0)) ]
+  end <- localTime[ max(which(hour == 23)) ]
   
-  # Notes:
-  # # Ideally, we would aggregate over a daily basis up front. This did not work
-  # # in this case because using pat_aggregationOutlierCounts on a day basis 
-  # # poses issues with timezones. As a work around, I reduced the aggregation 
-  # # period of pat_aggregationOutlierCounts to 1 hour and did additional 
-  # # aggregation using dplyr.
-  # # Note: after initial completion of this function, decided to chop the passed
-  # # in pat objects by full days. First convert the datetime column in the pat to
-  # # local time, then filter based on the first and last full day in the local
-  # # timezone. 
-  
-  pat$data$datetime <- lubridate::with_tz(pat$data$datetime, 
-                                          tzone = timezone)
-  
-  # Parse the hours in datetime to find the first and last full days
-  hour <- lubridate::hour(pat$data$datetime)
-  start <- pat$data$datetime[ min(which(hour == 0)) ]
-  end <- pat$data$datetime[ max(which(hour == 23)) ]
-  
-  # Create hourly tibble based on daterange to join later and flag missing data
-  days <- tibble(datetime = seq(start, end, by = "day")) 
-  days$datetime <- lubridate::as_date(days$datetime)
-  days$datetime <- MazamaCoreUtils::parseDatetime(days$datetime, timezone = timezone)
+  # NOTE:  pat_filterDate only goes to the beginning of enddate and we want it
+  # NOTE:  to go to the end of enddate.
   
   # Filter the pat based on the times established above.
-  pat <- pat_filterDate(pat, start, end, timezone = timezone) 
+  pat <- pat_filterDate(
+    pat, 
+    startdate = start, 
+    enddate = end + lubridate::ddays(1)
+  )
+  
+  # Create daily tibble based on daterange to join with the pct_DC_tbl and 
+  # flag missing data
+  days <- tibble(datetime = seq(start, end, by = "day")) 
+  
+  # ----- Calculate dailyPctDC -------------------------------------------------
   
   # Begin percent DC calculations:
   pct_DC_tbl <-
     pat %>%
-    pat_aggregate(period = testPeriod) %>%
-    
+    pat_aggregate(period = testPeriod)
+  
+  # Put it on a local time axis and trim
+  pct_DC_tbl$datetime <- lubridate::with_tz(pct_DC_tbl$datetime, tzone = timezone)
+  pct_DC_tbl <- dplyr::filter(pct_DC_tbl, .data$datetime >= start & .data$datetime <= end)
+  
+  pct_DC_tbl <-
+    pct_DC_tbl %>%
     # Group by day so that the DC time segments can be summed over the day even
     # if the aggregation period is less than one day. Each day must be a
     # complete day to avoid tapering when dividing by 24 hours later on.

@@ -20,13 +20,15 @@
 #' reported every 80 seconds.
 #' 
 #' @examples 
+#' library(AirSensor)
+#' 
 #' tbl <- 
 #'   example_pat %>%
-#'   SoH_dailyPctReporting(80) 
+#'   PurpleAirSoH_dailyPctReporting(80) 
 #' 
-#' timeseriesTbl_multiplot(tbl)
+#' timeseriesTbl_multiplot(tbl, ylim = c(0,101), style = "point")
 
-SoH_dailyPctReporting <- function(
+PurpleAirSoH_dailyPctReporting <- function(
   pat = NULL,
   samplingInterval = 120
 ) {
@@ -41,31 +43,27 @@ SoH_dailyPctReporting <- function(
   if ( pat_isEmpty(pat) )
     stop("Parameter 'pat' has no data.") 
   
+  if ( !is.numeric(samplingInterval) || is.na(samplingInterval) ) 
+    samplingInterval <- 120
   
-  # ----- SoH_dailyPctReporting() ---------------------------------------------------
+  # ----- Create aggregation tbl -----------------------------------------------
   
+  # Get full days in the local timezone
   timezone <- pat$meta$timezone
-  # Notes:
-  # # Ideally, we would aggregate over a daily basis up front. This did not work
-  # # in this case because using pat_aggregationOutlierCounts on a day basis 
-  # # poses issues with timezones. As a work around, I reduced the aggregation 
-  # # period of pat_aggregationOutlierCounts to 1 hour and did additional 
-  # # aggregation using dplyr.
-  # # Note: after initial completion of this function, decided to chop the passed
-  # # in pat objects by full days. First convert the datetime column in the pat to
-  # # local time, then filter based on the first and last full day in the local
-  # # timezone. 
+  localTime <- lubridate::with_tz(pat$dat$datetime, tzone = timezone)
+  hour <- lubridate::hour(localTime)
+  start <- localTime[ min(which(hour == 0)) ]
+  end <- localTime[ max(which(hour == 23)) ]
 
-  pat$data$datetime <- lubridate::with_tz(pat$data$datetime,
-                                          tzone = timezone)
+  # NOTE:  pat_filterDate only goes to the beginning of enddate and we want it
+  # NOTE:  to go to the end of enddate.
   
-  # Parse the hours in datetime to find the first and last full days
-  hour <- lubridate::hour(pat$data$datetime)
-  start <- pat$data$datetime[ min(which(hour == 0)) ]
-  end <- pat$data$datetime[ max(which(hour == 23)) ]
-
   # Filter the pat based on the times established above.
-  pat <- pat_filterDate(pat, start, end, timezone = timezone)
+  pat <- pat_filterDate(
+    pat, 
+    startdate = start, 
+    enddate = end + lubridate::ddays(1)
+  )
   
   # Samples collected per day in an ideal day:
   samplesPerDay <- 24 * 3600 / samplingInterval
@@ -73,14 +71,20 @@ SoH_dailyPctReporting <- function(
   # Create hourly tibble based on daterange to flag missing data
   hours <- tibble(datetime = seq(start, end, by = "hour"))
   
+  # Calculate hourly aggregation statistics
   tbl <- 
     pat %>%
-    # Calculate the aggregation statistics hourly rather than daily.
     pat_aggregateOutlierCounts(period = "1 hour")
+  
+  # Put them on a local time axis and trim
+  tbl$datetime <- lubridate::with_tz(tbl$datetime, tzone = timezone)
+  tbl <- dplyr::filter(tbl, .data$datetime >= start & .data$datetime <= end)
     
-  # Must break the pipeline because the order of tibble arguments in left_join 
-  # matters. This will input NA's in the tibble on days when data were not recorded
-  tbl <- dplyr::left_join(hours,tbl, by = "datetime")
+  # Join the hours-only tbl with the data tbl. This will input NA's in the tbl
+  # on days when data were not recorded.
+  tbl <- dplyr::left_join(hours, tbl, by = "datetime")
+  
+  # ----- Calculate dailyPctReporting ------------------------------------------
   
   # Change all the NA values to zero in this function since "zero" counts
   # means the channel is not reporting. 

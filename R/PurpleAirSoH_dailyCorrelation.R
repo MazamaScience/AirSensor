@@ -22,13 +22,25 @@
 #' 
 #' @examples  
 #' tbl <- 
-#'   example_pat %>%
-#'   SoH_dailyCorrelation(aggregationPeriod = "30 min") 
+#'   example_pat_failure_A %>%
+#'   PurpleAirSoH_dailyCorrelation(aggregationPeriod = "30 min") 
 #'   
-#' timeseriesTbl_multiplot(tbl, ylim = c(-1,1), style = "line")
+#' timeseriesTbl_multiplot(
+#'   tbl, 
+#'   parameters = c("pm25_A_pm25_B_cor", "temperature_humidity_cor", "pm25_A_temperature_cor"),
+#'   ylim = c(-1,1), 
+#'   style = "line"
+#' )
+#' 
+#' timeseriesTbl_multiplot(
+#'   tbl, 
+#'   parameterPattern = "_A.*_B",
+#'   autoRange = TRUE, 
+#'   style = "line"
+#' )
 #' 
 
-SoH_dailyCorrelation <- function(
+PurpleAirSoH_dailyCorrelation <- function(
   pat = NULL,
   aggregationPeriod = "10 min"
 ) {
@@ -68,51 +80,44 @@ SoH_dailyCorrelation <- function(
   
   hourFactor <- 3600 / periodSeconds
   
-  # ----- Calculate daily correlation values -----------------------------------
+  # ----- Create daily tbl -----------------------------------------------------
   
+  # Get full days in the local timezone
   timezone <- pat$meta$timezone
+  localTime <- lubridate::with_tz(pat$dat$datetime, tzone = timezone)
+  hour <- lubridate::hour(localTime)
+  start <- localTime[ min(which(hour == 0)) ]
+  end <- localTime[ max(which(hour == 23)) ]
   
-  # Notes:
-  # # Ideally, we would aggregate over a daily basis up front. This did not work
-  # # in this case because using pat_aggregationOutlierCounts on a day basis 
-  # # poses issues with timezones. As a work around, I reduced the aggregation 
-  # # period of pat_aggregationOutlierCounts to 1 hour and did additional 
-  # # aggregation using dplyr.
-  # # Note: after initial completion of this function, decided to chop the passed
-  # # in pat objects by full days. First convert the datetime column in the pat to
-  # # local time, then filter based on the first and last full day in the local
-  # # timezone. 
-  
-  pat$data$datetime <- lubridate::with_tz(pat$data$datetime, 
-                                          tzone = timezone)
-  
-  # Parse the hours in datetime to find the first and last full days
-  hour <- lubridate::hour(pat$data$datetime)
-  start <- pat$data$datetime[ min(which(hour == 0)) ]
-  end <- pat$data$datetime[ max(which(hour == 23)) ]
-  
-  # Create hourly tibble based on daterange to join later and flag missing data
-  days <- tibble(datetime = seq(start, end, by = "day")) 
-  days$datetime <- lubridate::as_date(days$datetime)
-  days$datetime <- MazamaCoreUtils::parseDatetime(days$datetime, timezone = timezone)
+  # NOTE:  pat_filterDate only goes to the beginning of enddate and we want it
+  # NOTE:  to go to the end of enddate.
   
   # Filter the pat based on the times established above.
-  pat <- pat_filterDate(pat, start, end, timezone = timezone) 
+  pat <- pat_filterDate(
+    pat, 
+    startdate = start, 
+    enddate = end + lubridate::ddays(1)
+  )
   
-  # Begin aggregation and correlation calculations
-  pat_tbl <-
-    
+  # Create daily tibble based on daterange to join with the correlation_tbl and 
+  # flag missing data
+  days <- tibble(datetime = seq(start, end, by = "day")) 
+  
+  # ----- Calculate dailyCorrelation -------------------------------------------
+  
+  # Begin percent DC calculations:
+  pct_tbl <-
     pat %>%
-    # Aggregate to a minimum of 2 min to avoid NA offset between channels A and B. 
-    # Recommend aggregating to at least 10 min for speed.
-    pat_aggregate(period = aggregationPeriod) %>%
-    
-    # Establish a local time channel
-    mutate(localTime = lubridate::with_tz(.data$datetime, 
-                                          tzone = timezone)) %>%
-    
+    pat_aggregate(period = aggregationPeriod)
+  
+  # Put it on a local time axis and trim
+  pct_tbl$datetime <- lubridate::with_tz(pct_tbl$datetime, tzone = timezone)
+  pct_tbl <- dplyr::filter(pct_tbl, .data$datetime >= start & .data$datetime <= end)
+  
+  pct_tbl <-
+    pct_tbl %>%
     # Group by day so that the correlations can be applied to a local 24 hour day
-    dplyr::mutate(localDaystamp = strftime(.data$localTime, "%Y%m%d", 
+    dplyr::mutate(localDaystamp = strftime(.data$datetime, "%Y%m%d", 
                                            tz = timezone)) %>%
     dplyr::group_by(.data$localDaystamp)
   
@@ -120,11 +125,11 @@ SoH_dailyCorrelation <- function(
   correlation_list <- list()
   
   # Loop through each unique day in the dataset
-  for ( day in unique(pat_tbl$localDaystamp) ) {
+  for ( day in unique(pct_tbl$localDaystamp) ) {
     
     # pull out the data associated with one day at a time
     day_tbl <- 
-      dplyr::filter(pat_tbl, .data$localDaystamp == day)
+      dplyr::filter(pct_tbl, .data$localDaystamp == day)
     
     
     correlation_list[[day]] <- day_tbl
@@ -149,7 +154,6 @@ SoH_dailyCorrelation <- function(
     pm25_A_pm25_B_slope <- as.numeric(model$coefficients[2])  # as.numeric() to remove name
     pm25_A_pm25_B_intercept <- as.numeric(model$coefficients[1])
     
-    
     # add the correlation per day, per variable comparison to a list
     correlation_list[[day]] <- list(
       pm25_A_pm25_B_cor = pm25_A_pm25_B_cor,
@@ -163,8 +167,9 @@ SoH_dailyCorrelation <- function(
     )
     
   }
-  # TODO: the following is messy and not the most efficient way to convert 
-  # from a list to a dataframe and certainly could be improved.
+  
+  # TODO:  The following is messy and not the most efficient way to convert 
+  # TODO:  from a list to a dataframe and certainly could be improved.
   
   # reformat the list as a tibble
   int_correlation_tbl <- dplyr::as_tibble(correlation_list)
@@ -201,8 +206,6 @@ SoH_dailyCorrelation <- function(
   
   # join with empty daily column to flag missing days
   correlation_df <- dplyr::left_join(days, correlation_df, by = "datetime")
-  
-
   
   # ----- Return ---------------------------------------------------------------
   

@@ -37,7 +37,7 @@ pat1 <- pat_createNew(pas_state, label = "Nickelsville Georgetown")
 # agg_stats for one station for testing:
 agg_stat_test <- pat_aggregateOutlierCounts(pat1)
 
-# ----- Begin SoH_dailyPctReporting() -----------------------------------------------
+# ----- Begin PurpleAirSoH_dailyPctReporting() -----------------------------------------------
 
 samplingFreq <- 30 
 samplesPerDay <- samplingFreq*24
@@ -50,7 +50,7 @@ tbl_test <-
   summarise(daily_sum = sum(pm25_A_count)) %>%
   mutate(pct_Reporting = pm25_A_count/samplesPerDay*100)
 
-# ----- Begin SoH_dailyPctValid() ---------------------------------------------------
+# ----- Begin PurpleAirSoH_dailyPctValid() ---------------------------------------------------
 # test with bad data:
 pat1 <- example_pat_failure_B
 
@@ -71,7 +71,7 @@ valid_tbl <-
   mutate(humidity_pctValid = humidity_count/baseline_tbl$humidity_count*100) %>%
   select("datetime", contains("Valid"))
 
-# ----- Begin SoH_dailyPctDC() ------------------------------------------------------
+# ----- Begin PurpleAirSoH_dailyPctDC() ------------------------------------------------------
 
 
 pat1 <- example_pat_failure_B
@@ -126,7 +126,7 @@ points(pct_DC_tbl$day, pct_DC_tbl$pctDC_PM25_B, col = "blue")
 points(pct_DC_tbl$day, pct_DC_tbl$pctDC_humidity, col = "green")
 
 # # For Reference, this is how to use tally() in a function:
-# SoH_dailyPctDC <- function(
+# PurpleAirSoH_dailyPctDC <- function(
 #   pat = NULL,
 #   aggregation_period = "30 min",
 #   parameter_sd = NULL
@@ -142,7 +142,7 @@ points(pct_DC_tbl$day, pct_DC_tbl$pctDC_humidity, col = "green")
 #   
 # }
 
-# ----- Begin SoH_dailyCorrelation() testing -------
+# ----- Begin PurpleAirSoH_dailyCorrelation() testing -------
 
 pat <- example_pat
 timezone<- "America/Los_Angeles"

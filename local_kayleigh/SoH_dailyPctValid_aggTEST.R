@@ -16,11 +16,11 @@
 #' @examples  
 #' tbl <- 
 #'   example_pat_failure_B %>%
-#'   SoH_dailyPctValid() 
+#'   PurpleAirSoH_dailyPctValid() 
 #' 
 #' timeseriesTbl_multiplot(tbl, ylim = c(0,100))
 
-SoH_dailyPctValid <- function(
+PurpleAirSoH_dailyPctValid <- function(
   pat = NULL
 ) {
   
@@ -35,7 +35,7 @@ SoH_dailyPctValid <- function(
     stop("Parameter 'pat' has no data.") 
   
   
-  # ----- SoH_dailyPctValid() ---------------------------------------------------
+  # ----- PurpleAirSoH_dailyPctValid() ---------------------------------------------------
 
   timezone <- pat$meta$timezone
   
