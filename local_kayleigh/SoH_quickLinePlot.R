@@ -16,7 +16,7 @@ pas <- pas_load()
 pat <- pat_load("MV Clean Air Ambassador @ Willowbrook Farm", startdate = 20190101, enddate = 20191023) #summer gap
 pat <- pat_load("Spokane South Hill #1", startdate = 20190101, enddate = 20191023) #super clean station
 
-# ------ data from California from Oct 2017 -----------
+# ------ data from California from Oct 2017 - South Coast -----------
 
 setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 ca <- pas_load() %>% pas_filter(stateCode == "CA")
