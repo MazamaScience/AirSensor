@@ -5,8 +5,9 @@
 #' @title Daily state of health
 #' 
 #' @param pat PurpleAir Timeseries \emph{pat} object.
-#' @param FUNs Vector of function names. All the passed in functions must output
-#' tibbles with the same number of rows
+#' @param SoH_functions Vector of function names. All the passed in functions 
+#' must output tibbles with a daily `datetime` variable and must cover the same
+#' period of time.
 #' 
 #' @description This function combines the output of the State of Health (SoH) 
 #' function arguments into a single tibble. 
@@ -21,7 +22,10 @@
 
 pat_dailyStateOfHealth <- function(
   pat = NULL,
-  FUNs = c("SoH_dailyPctDC", "SoH_dailyPctReporting", "SoH_dailyPctValid", "SoH_dailyCorrelation")
+  SoH_functions = c("PurpleAirSoH_dailyPctDC", 
+                    "PurpleAirSoH_dailyPctReporting", 
+                    "PurpleAirSoH_dailyPctValid", 
+                    "PurpleAirSoH_dailyCorrelation")
 ) {
   
   # ----- Validate parameters --------------------------------------------------
@@ -38,21 +42,24 @@ pat_dailyStateOfHealth <- function(
   # ----- pat_dailyStateOfHealth() ---------------------------------------------------
 
   # Initialize a list to store the output of each function
-  SoH <- list()
+  SoH_list <- list()
   
-  for (f in FUNs) {
+  for (SoH_function in SoH_functions) {
     
     # Isolate each passed in function
-    FUN <- get(f)
+    FUN <- get(SoH_function)
     
     # Run the pat through each function and store it in the list
-    SoH[[f]] <- FUN(pat)
+    SoH_list[[SoH_function]] <- FUN(pat)
     
   }
   
   # bind the all columns from the list into one dataframe with one datetime column
-  SoH_tbl <- dplyr::bind_cols(SoH) %>%
-    dplyr::select(unique("datetime"), contains("pm25"), contains("temperature"), contains("humidity"))
+  SoH_tbl <- dplyr::bind_cols(SoH_list) %>%
+    dplyr::select(unique("datetime"), 
+                  contains("pm25"), 
+                  contains("temperature"), 
+                  contains("humidity"))
  
   return(SoH_tbl)
 }

@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.9</span>
       </span>
     </div>
 
@@ -150,6 +150,18 @@
       <small>Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="airsensor-0-5-9" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-5-9" class="anchor"></a>AirSensor 0.5.9</h1>
+<p>New <code>PurpleAirSoH~</code> functions calculate daily state-of-health metrics from PAT data. These metrics can be combined to create multi-metric indices that provide an overall assessment of the health of a Purple Air sensor.</p>
+<ul>
+<li><code><a href="../reference/PurpleAirSoH_dailyCorrelation.html">PurpleAirSoH_dailyCorrelation()</a></code></li>
+<li><code><a href="../reference/PurpleAirSoH_dailyPctDC.html">PurpleAirSoH_dailyPctDC()</a></code></li>
+<li><code><a href="../reference/PurpleAirSoH_dailyPctReporting.html">PurpleAirSoH_dailyPctReporting()</a></code></li>
+<li><code><a href="../reference/PurpleAirSoH_dailyPctValid.html">PurpleAirSoH_dailyPctValid()</a></code></li>
+<li><code><a href="../reference/pat_dailyStateOfHealth.html">pat_dailyStateOfHealth()</a></code></li>
+</ul>
+</div>
     <div id="airsensor-0-5-8" class="section level1">
 <h1 class="page-header">
 <a href="#airsensor-0-5-8" class="anchor"></a>AirSensor 0.5.8</h1>
@@ -167,7 +179,7 @@
 <li>
 <code><a href="../reference/timeseriesTbl_multiplot.html">timeseriesTbl_multiplot()</a></code> now supports a <code>style</code> paramter which can be set to <code>"point"</code>, <code>"line"</code> or <code>"area"</code>.</li>
 <li>Improved handling of missing files in data loading functions.</li>
-<li>Added state-of-health functions: <code><a href="../reference/SoH_pctValid.html">SoH_pctValid()</a></code>, <code><a href="../reference/SoH_pctDC.html">SoH_pctDC()</a></code>.</li>
+<li>Added state-of-health functions: <code>SoH_pctValid()</code>, <code>SoH_pctDC()</code>.</li>
 <li>Harmonized naming of state-of-health metrics.</li>
 </ul>
 </div>
@@ -177,7 +189,7 @@
 <ul>
 <li>Updated <code><a href="../reference/pat_createNew.html">pat_createNew()</a></code> and <code><a href="../reference/downloadParseTimeseriesData.html">downloadParseTimeseriesData()</a></code> to support the <code>id</code> parameter.</li>
 <li>Enhanced <code>PurpleAirQC_aggregationPlot()</code> to work with any tibble or dataframe and renamed it to <code>tbl_multiplot()</code>.</li>
-<li>Added a state-of-health metrics calculation function: <code><a href="../reference/SoH_pctReporting.html">SoH_pctReporting()</a></code>.</li>
+<li>Added a state-of-health metrics calculation function: <code>SoH_pctReporting()</code>.</li>
 </ul>
 </div>
     <div id="airsensor-0-5-5" class="section level1">
@@ -850,6 +862,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#airsensor-0-5-9">0.5.9</a></li>
         <li><a href="#airsensor-0-5-8">0.5.8</a></li>
         <li><a href="#airsensor-0-5-7">0.5.7</a></li>
         <li><a href="#airsensor-0-5-6">0.5.6</a></li>

@@ -22,11 +22,11 @@
 #' @examples 
 #' tbl <- 
 #'   example_pat %>%
-#'   SoH_dailyPctReporting(80) 
+#'   PurpleAirSoH_dailyPctReporting(80) 
 #' 
 #' timeseriesTbl_multiplot(tbl)
 
-SoH_dailyPctReporting <- function(
+PurpleAirSoH_dailyPctReporting <- function(
   pat = NULL,
   samplingInterval = 120
 ) {
@@ -42,7 +42,7 @@ SoH_dailyPctReporting <- function(
     stop("Parameter 'pat' has no data.") 
   
   
-  # ----- SoH_dailyPctReporting() ---------------------------------------------------
+  # ----- PurpleAirSoH_dailyPctReporting() ---------------------------------------------------
   
   timezone <- pat$meta$timezone
   

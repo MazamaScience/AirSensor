@@ -12,8 +12,8 @@
 # docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/airsensor /app/createAnnualAirSensor_exec.R --collectionName="scaqmd"
 #
 
-#  ----- . ----- . -----
-VERSION = "0.1.0"
+#  ----- . ----- . load latest7 directly
+VERSION = "0.1.1"
 
 # The following packages are attached here so they show up in the sessionInfo
 suppressPackageStartupMessages({
@@ -130,22 +130,17 @@ logger.debug("R session:\n\n%s\n", sessionString)
 
 result <- try({
   
-  logger.info("Loading a year's worth of sensor data for %s", 
-              opt$collectionname)
+  logger.info("Loading sensor data for %s", opt$collectioNname)
   
-  # NOTE:  Error messages are getting through even wilth "silent = TRUE" so we
-  # NOTE:  just capture everything and log it.
-  output <- capture.output({
-    airsensor <- sensor_load(opt$collectionName, startstamp, endstamp)
-  })
+  # Load latest7 and annual
+  latest7 <- sensor_loadLatest(opt$collectionName)
+  latestYear <- sensor_loadYear(opt$collectionName, yearstamp)
   
-  logger.trace(paste0(output, collapse="\n"))
+  # Join them together
+  monitorIDs <- union(latestYear$meta$monitorID, latest7$meta$monitorID)
+  airsensor <- PWFSLSmoke::monitor_join(latestYear, latest7, monitorIDs) 
   
-  # NOTE:  The resulting file will have a UTC stamp but will include an extra
-  # NOTE:  day at the beginning and end so as to accomadate non-UTC timezones.
-  # NOTE:  It is incumbent upon code ingesting these annual files to trim any 
-  # NOTE:  excess.
-  
+  # Save the annual file
   filename <- paste0("airsensor_scaqmd_", yearstamp, ".rda")
   filepath <- file.path(opt$outputDir, filename)
   

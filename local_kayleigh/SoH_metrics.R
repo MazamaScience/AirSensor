@@ -24,13 +24,13 @@
 #' df <- 
 #'   example_pat %>%
 #'   pat_aggregateOutlierCounts() %>%
-#'   SoH_dailyPctReporting() 
+#'   PurpleAirSoH_dailyPctReporting() 
 #' 
 #' plot(tbl$day, tbl$pct_Reporting)
 #' }
 #' 
 
-SoH_dailyPctReporting <- function(
+PurpleAirSoH_dailyPctReporting <- function(
   aggregationStats = NULL,
   samplingFreq = 30
   

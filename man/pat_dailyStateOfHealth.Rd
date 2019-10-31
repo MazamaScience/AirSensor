@@ -4,14 +4,17 @@
 \alias{pat_dailyStateOfHealth}
 \title{Daily state of health}
 \usage{
-pat_dailyStateOfHealth(pat = NULL, FUNs = c("SoH_dailyPctDC",
-  "SoH_dailyPctReporting", "SoH_dailyPctValid", "SoH_dailyCorrelation"))
+pat_dailyStateOfHealth(pat = NULL,
+  SoH_functions = c("PurpleAirSoH_dailyPctDC",
+  "PurpleAirSoH_dailyPctReporting", "PurpleAirSoH_dailyPctValid",
+  "PurpleAirSoH_dailyCorrelation"))
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}
 
-\item{FUNs}{Vector of function names. All the passed in functions must output
-tibbles with the same number of rows}
+\item{SoH_functions}{Vector of function names. All the passed in functions 
+must output tibbles with a daily `datetime` variable and must cover the same
+period of time.}
 }
 \description{
 This function combines the output of the State of Health (SoH) 

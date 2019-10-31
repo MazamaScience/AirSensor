@@ -1,3 +1,15 @@
+# AirSensor 0.5.9
+
+New `PurpleAirSoH~` functions calculate daily state-of-health metrics from PAT
+data. These metrics can be combined to create multi-metric indices that provide
+an overall assessment of the health of a Purple Air sensor.
+
+ * `PurpleAirSoH_dailyCorrelation()`
+ * `PurpleAirSoH_dailyPctDC()`
+ * `PurpleAirSoH_dailyPctReporting()`
+ * `PurpleAirSoH_dailyPctValid()`
+ * `pat_dailyStateOfHealth()`
+
 # AirSensor 0.5.8
 
 * Added `sensor_loadYear()` to load annual files (~2-3 MB).

@@ -77,7 +77,7 @@ showing concentration by wind speed and direction." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.9</span>
       </span>
     </div>
 
@@ -261,7 +261,8 @@ direction when correlation or regression techniques are used. Default is 4.</p><
 
 <span class='co'># Load wind data from NOAA</span>
 <span class='no'>windData</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>worldmet</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/worldmet/man/importNOAA.html'>importNOAA</a></span>(<span class='kw'>code</span> <span class='kw'>=</span> <span class='st'>"722975-53141"</span>, <span class='kw'>year</span> <span class='kw'>=</span> <span class='fl'>2019</span>,
-                                 <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; |======================================================|100% ~0 s remaining     </div><div class='input'><span class='no'>windData</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>windData</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"date"</span>, <span class='st'>"wd"</span>, <span class='st'>"ws"</span>))
+                                 <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='no'>windData</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>windData</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"date"</span>, <span class='st'>"wd"</span>, <span class='st'>"ws"</span>))
 
 <span class='co'># Plot polar plot using</span>
 <span class='fu'>sensor_polarPlot</span>(<span class='no'>sensor</span>, <span class='no'>windData</span>, <span class='kw'>resolution</span> <span class='kw'>=</span> <span class='st'>"normal"</span>)</div><div class='img'><img src='sensor_polarPlot-1.png' alt='' width='700' height='433' /></div><div class='input'># }
