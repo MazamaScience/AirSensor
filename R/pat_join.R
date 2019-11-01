@@ -43,16 +43,15 @@ pat_join <- function(
   # Accept any number of pat objects
   patList <- list(...)  
   
-  suppressWarnings({ # checks class type to see if already a list
-    
-    # TODO:  refactor this logic
-    if( class(patList[[1]]) != c("pa_timeseries", "list") ) {
+  # NOTE:  If the fist element is NOT a "pa_timeseries", assume we are being 
+  # NOTE:  handed a list of pat objects rather than separate pat objects.
+  suppressWarnings({
+    if( !"pa_timeseries" %in% class(patList[[1]]) ) {
       patList <- patList[[1]]
     }
-    
   })
   
-  # Append to empty lists 
+  # Initialize empty lists 
   dataList <- list()
   metaList <- list()
   
@@ -60,13 +59,33 @@ pat_join <- function(
     
     # Check parameters
     if( !pat_isPat(patList[[i]]) )
-      stop("argument contains a non-'pat' object")
+      stop("arguments contain a non-'pat' object")
     if( pat_isEmpty(patList[[i]]) )
-      stop("argument contains an empty 'pat' object")
+      stop("arguments contain an empty 'pat' object")
     
-    dataList[[i]] <- patList[[i]]$data
     metaList[[i]] <- patList[[i]]$meta
+    dataList[[i]] <- patList[[i]]$data
   
+  }
+  
+  # TODO:  We have a basic problem with the pwfsl_closest~ variables.
+  # TODO:  These can change whan a new, temprary monitor gets installed.
+  # TODO:  We don't want to have two separate metadata records for a single 
+  # TODO:  Sensor as the metadata is supposed to be location-specific and
+  # TODO:  not time-dependent. Unfortunately, the location of the nearest
+  # TODO:  PWFSL monitor is time-dependent and any choice we make will break
+  # TODO:  things like pat_externalFit() for those periods when a temporary
+  # TODO:  monitor is closer than a permanent monitor.
+  # TODO:
+  # TODO:  Ideally, enhanceSynopticData() would have some concept of
+  # TODO:  "permanent" monitors but this is far beyond what is currently
+  # TODO:  supported.
+  
+  # Deal with pwfsl_closest~ issue by always using the most recent value
+  meta_last <- metaList[[length(metaList)]]
+  for ( i in seq_along(metaList) ) {
+    metaList[[i]]$pwfsl_closestDistance <- meta_last$pwfsl_closestDistance
+    metaList[[i]]$pwfsl_closestMonitorID <- meta_last$pwfsl_closestMonitorID
   }
   
   # Check that meta matches

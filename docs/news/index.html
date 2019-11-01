@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.10</span>
       </span>
     </div>
 
@@ -150,6 +150,22 @@
       <small>Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="airsensor-0-5-10" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-5-10" class="anchor"></a>AirSensor 0.5.10</h1>
+<p>Removed <code>logger.error()</code> statements from the following low-level functions as they couldn’t be turned off and ended up cluttering the log files:</p>
+<ul>
+<li><code><a href="../reference/loadDataFile.html">loadDataFile()</a></code></li>
+<li><code><a href="../reference/pas_load.html">pas_load()</a></code></li>
+<li><code><a href="../reference/pat_createNew.html">pat_createNew()</a></code></li>
+<li><code><a href="../reference/pat_loadLatest.html">pat_loadLatest()</a></code></li>
+<li><code><a href="../reference/pat_loadMonth.html">pat_loadMonth()</a></code></li>
+<li><code><a href="../reference/sensor_loadLatest.html">sensor_loadLatest()</a></code></li>
+<li><code><a href="../reference/sensor_loadMonth.html">sensor_loadMonth()</a></code></li>
+<li><code><a href="../reference/sensor_loadYear.html">sensor_loadYear()</a></code></li>
+</ul>
+<p>Improved <code><a href="../reference/pat_join.html">pat_join()</a></code> logic to deal with metadata changes associated with the value <code>pwfsl_closestMonitorID</code> when <em>temporary</em> monitors come and go in the PWFSL database.</p>
+</div>
     <div id="airsensor-0-5-9" class="section level1">
 <h1 class="page-header">
 <a href="#airsensor-0-5-9" class="anchor"></a>AirSensor 0.5.9</h1>
@@ -862,6 +878,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#airsensor-0-5-10">0.5.10</a></li>
         <li><a href="#airsensor-0-5-9">0.5.9</a></li>
         <li><a href="#airsensor-0-5-8">0.5.8</a></li>
         <li><a href="#airsensor-0-5-7">0.5.7</a></li>
