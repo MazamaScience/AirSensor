@@ -58,9 +58,19 @@ PurpleAirSoH_dailyPctValid <- function(
   # and flag missing data
   hours <- tibble(datetime = seq(start, end, by = "hour"))
   
+  # NOTE:  seq.Date(..., by = "day") operates by repeatedly adding 24 hours
+  # NOTE:  which means that when we switch to/from daylight savings we end up
+  # NOTE:  no longer on the midnight local time day boundary. Hence the
+  # NOTE:  following workaround
+  
+  datetime <- 
+    seq(start, end, by = "day") %>% 
+    strftime("%Y%m%d", tz = timezone) %>%
+    MazamaCoreUtils::parseDatetime(timezone = timezone)
+  
   # Create daily tibble based on daterange to join with the valid_tbl and 
   # flag missing data
-  days <- tibble(datetime = seq(start, end, by = "day")) 
+  days <- tibble(datetime = datetime) 
   
   # ----- Cacluate dailyPctValid -----------------------------------------------
   
@@ -94,6 +104,10 @@ PurpleAirSoH_dailyPctValid <- function(
     dplyr::summarise_at(.vars = c("pm25_A_count", "pm25_B_count", "humidity_count", "temperature_count"),
                         .funs = sum)
   
+  # add datetime and remove daystamp
+  baseline_tbl$datetime <- MazamaCoreUtils::parseDatetime(baseline_tbl$daystamp, timezone = timezone)
+  baseline_tbl$daystamp <- NULL
+
   # Calculate a tbl after removing entries containing NA and out of spec values
   valid_tbl <-
     pat %>%
@@ -110,10 +124,11 @@ PurpleAirSoH_dailyPctValid <- function(
     dplyr::mutate(daystamp = strftime(.data$datetime, "%Y%m%d", tz = timezone)) %>%
     dplyr::group_by(.data$daystamp) %>%
     dplyr::summarise_at(.vars = c("pm25_A_count", "pm25_B_count", "humidity_count", "temperature_count"),
-                        .funs = sum) %>%
-    # add in a datetime column to join with a daily column to flag missing data
-    dplyr::mutate(datetime = MazamaCoreUtils::parseDatetime(.data$daystamp, timezone = timezone)) %>%
-    dplyr::select("datetime", contains("count"))
+                        .funs = sum)
+    
+  # add datetime and remove daystamp
+  valid_tbl$datetime <- MazamaCoreUtils::parseDatetime(valid_tbl$daystamp, timezone = timezone)
+  valid_tbl$daystamp <- NULL
   
   # join with empty daily column to flag missing days
   valid_tbl <- dplyr::left_join(days, valid_tbl, by = "datetime")
