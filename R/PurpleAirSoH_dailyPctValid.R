@@ -41,8 +41,8 @@ PurpleAirSoH_dailyPctValid <- function(
   timezone <- pat$meta$timezone
   localTime <- lubridate::with_tz(pat$dat$datetime, tzone = timezone)
   hour <- lubridate::hour(localTime)
-  start <- localTime[ min(which(hour == 0)) ]
-  end <- localTime[ max(which(hour == 23)) ]
+  start <- lubridate::floor_date(localTime[ min(which(hour == 0)) ], unit = "hour")
+  end <- lubridate::floor_date(localTime[ max(which(hour == 23)) ], unit = "hour")
   
   # NOTE:  pat_filterDate only goes to the beginning of enddate and we want it
   # NOTE:  to go to the end of enddate.

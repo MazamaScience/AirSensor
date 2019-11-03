@@ -1,3 +1,8 @@
+# AirSensor 0.5.11
+
+Fixed bug in datetime axis that caused `SoH` functions to return missing values
+after the switch from PST to PDT.
+
 # AirSensor 0.5.10
 
 Removed `logger.error()` statements from the following low-level functions as

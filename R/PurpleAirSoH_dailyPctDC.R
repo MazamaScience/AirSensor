@@ -71,8 +71,8 @@ PurpleAirSoH_dailyPctDC <- function(
   timezone <- pat$meta$timezone
   localTime <- lubridate::with_tz(pat$dat$datetime, tzone = timezone)
   hour <- lubridate::hour(localTime)
-  start <- localTime[ min(which(hour == 0)) ]
-  end <- localTime[ max(which(hour == 23)) ]
+  start <- lubridate::floor_date(localTime[ min(which(hour == 0)) ], unit = "hour")
+  end <- lubridate::floor_date(localTime[ max(which(hour == 23)) ], unit = "hour")
   
   # NOTE:  pat_filterDate only goes to the beginning of enddate and we want it
   # NOTE:  to go to the end of enddate.
@@ -84,9 +84,19 @@ PurpleAirSoH_dailyPctDC <- function(
     enddate = end + lubridate::ddays(1)
   )
   
-  # Create daily tibble based on daterange to join with the pct_DC_tbl and 
+  # NOTE:  seq.Date(..., by = "day") operates by repeatedly adding 24 hours
+  # NOTE:  which means that when we switch to/from daylight savings we end up
+  # NOTE:  no longer on the midnight local time day boundary. Hence the
+  # NOTE:  following workaround
+  
+  datetime <- 
+    seq(start, end, by = "day") %>% 
+    strftime("%Y%m%d", tz = timezone) %>%
+    MazamaCoreUtils::parseDatetime(timezone = timezone)
+  
+  # Create daily tibble based on daterange to join with the valid_tbl and 
   # flag missing data
-  days <- tibble(datetime = seq(start, end, by = "day")) 
+  days <- tibble(datetime = datetime) 
   
   # ----- Calculate dailyPctDC -------------------------------------------------
   
