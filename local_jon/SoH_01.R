@@ -7,17 +7,17 @@ pas <- pas_load()
 
 # ----- Super clean station ----------------------------------------------------
 
-pat_South_Hill <- pat_load("Spokane South Hill #1", startdate = 20190101, enddate = 20191023) #super clean station
+pat_South_Hill <- pat_load("Spokane South Hill #1", startdate = 20190101, enddate = 20191023)
 pat_multiplot(pat_South_Hill)
 pat_South_Hill %>% pat_filterDate(20190909, 20190912) %>% pat_multiplot()
 
 # Daily State-of-Health metrics
 SoH_South_Hill <- pat_dailyStateOfHealth(pat_South_Hill)
 
-SoH_South_Hill %>% timeseriesTbl_multiplot(parameterPattern = "pctReporting", style = "point", autoRange = FALSE)
-SoH_South_Hill %>% timeseriesTbl_multiplot(parameterPattern = "pctValid", style = "point", autoRange = FALSE)
-SoH_South_Hill %>% timeseriesTbl_multiplot(parameterPattern = "pctDC", style = "point", autoRange = FALSE)
-SoH_South_Hill %>% timeseriesTbl_multiplot(parameterPattern = "_cor", style = "point", autoRange = FALSE)
+SoH_South_Hill %>% timeseriesTbl_multiplot(parameterPattern = "pctReporting", style = "point", ylim=c(0,150))
+SoH_South_Hill %>% timeseriesTbl_multiplot(parameterPattern = "pctValid", style = "point", ylim=c(0,101))
+SoH_South_Hill %>% timeseriesTbl_multiplot(parameterPattern = "pctDC", style = "point", ylim=c(0,101))
+SoH_South_Hill %>% timeseriesTbl_multiplot(parameterPattern = "_cor", style = "point", ylim=c(-1,1))
 SoH_South_Hill %>% timeseriesTbl_multiplot(parameterPattern = "pm25_A_pm25_B", style = "point", autoRange = TRUE)
 
 
@@ -30,8 +30,8 @@ pat_Willowbrook %>% pat_filterDate(20190909, 20190912) %>% pat_multiplot()
 # Daily State-of-Health metrics
 SoH_Willowbrook <- pat_dailyStateOfHealth(pat_Willowbrook)
 
-SoH_Willowbrook %>% timeseriesTbl_multiplot(parameterPattern = "pctReporting", style = "point", autoRange = FALSE)
-SoH_Willowbrook %>% timeseriesTbl_multiplot(parameterPattern = "pctValid", style = "point", autoRange = FALSE)
+SoH_Willowbrook %>% timeseriesTbl_multiplot(parameterPattern = "pctReporting", style = "point", ylim=c(0,150))
+SoH_Willowbrook %>% timeseriesTbl_multiplot(parameterPattern = "pctValid", style = "point", ylim=c(0,101))
 SoH_Willowbrook %>% timeseriesTbl_multiplot(parameterPattern = "pctDC", style = "point", autoRange = FALSE)
 SoH_Willowbrook %>% timeseriesTbl_multiplot(parameterPattern = "_cor", style = "point", autoRange = FALSE)
 SoH_Willowbrook %>% timeseriesTbl_multiplot(parameterPattern = "pm25_A_pm25_B", style = "point", autoRange = TRUE)
@@ -40,21 +40,6 @@ SoH_Willowbrook %>% timeseriesTbl_multiplot(parameterPattern = "pm25_A_pm25_B", 
 # ===== Mazama Science 2019 for SCAQMD =========================================
 setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 pas <- pas_load()
-
-# ----- B-channel DC -----------------------------------------------------------
-
-pat_SCAP_46 <- pat_load("SCAP_46", startdate = 20190101, enddate = 20191023)
-pat_multiplot(pat_SCAP_46)
-pat_SCAP_46 %>% pat_filterDate(20190909, 20190912) %>% pat_multiplot()
-
-# Daily State-of-Health metrics
-SoH_SCAP_46 <- pat_dailyStateOfHealth(pat_SCAP_46)
-
-SoH_SCAP_46 %>% timeseriesTbl_multiplot(parameterPattern = "pctReporting", style = "point", autoRange = FALSE)
-SoH_SCAP_46 %>% timeseriesTbl_multiplot(parameterPattern = "pctValid", style = "point", autoRange = FALSE)
-SoH_SCAP_46 %>% timeseriesTbl_multiplot(parameterPattern = "pctDC", style = "point", autoRange = FALSE)
-SoH_SCAP_46 %>% timeseriesTbl_multiplot(parameterPattern = "_cor", style = "point", autoRange = FALSE)
-SoH_SCAP_46 %>% timeseriesTbl_multiplot(parameterPattern = "pm25_A_pm25_B", style = "point", autoRange = TRUE)
 
 # ----- A-channel "magic number" -----------------------------------------------
 
@@ -70,6 +55,21 @@ SoH_SCEM_05 %>% timeseriesTbl_multiplot(parameterPattern = "pctValid", style = "
 SoH_SCEM_05 %>% timeseriesTbl_multiplot(parameterPattern = "pctDC", style = "point", autoRange = FALSE)
 SoH_SCEM_05 %>% timeseriesTbl_multiplot(parameterPattern = "_cor", style = "point", autoRange = FALSE)
 SoH_SCEM_05 %>% timeseriesTbl_multiplot(parameterPattern = "pm25_A_pm25_B", style = "point", autoRange = TRUE)
+
+# ----- B-channel DC -----------------------------------------------------------
+
+pat_SCAP_46 <- pat_load("SCAP_46", startdate = 20190101, enddate = 20191023)
+pat_multiplot(pat_SCAP_46)
+pat_SCAP_46 %>% pat_filterDate(20190909, 20190912) %>% pat_multiplot()
+
+# Daily State-of-Health metrics
+SoH_SCAP_46 <- pat_dailyStateOfHealth(pat_SCAP_46)
+
+SoH_SCAP_46 %>% timeseriesTbl_multiplot(parameterPattern = "pctReporting", style = "point", autoRange = FALSE)
+SoH_SCAP_46 %>% timeseriesTbl_multiplot(parameterPattern = "pctValid", style = "point", autoRange = FALSE)
+SoH_SCAP_46 %>% timeseriesTbl_multiplot(parameterPattern = "pctDC", style = "point", autoRange = FALSE)
+SoH_SCAP_46 %>% timeseriesTbl_multiplot(parameterPattern = "_cor", style = "point", autoRange = FALSE)
+SoH_SCAP_46 %>% timeseriesTbl_multiplot(parameterPattern = "pm25_A_pm25_B", style = "point", autoRange = TRUE)
 
 # ----- A-channel moderate errors ----------------------------------------------
 
