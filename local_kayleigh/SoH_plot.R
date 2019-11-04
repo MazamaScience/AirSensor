@@ -53,7 +53,7 @@ SoH_plot <- function(
   if ( !is.null(parameterPattern) ) {
     parameters <- stringr::str_subset(parameters, parameterPattern)
   }
-
+  
   # Make sure 'datetime' is included, but only once
   parameters <- unique(c("datetime", parameters))
   
