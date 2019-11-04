@@ -54,6 +54,10 @@ pat_load <- function(
                                           timezone, 
                                           days = days)
   
+  # Quick return if no dates provided
+  if ( is.null(startdate) && is.null(enddate) ) 
+    return( pat_loadLatest(label) )
+  
   # ----- Asssemble monthly archive files --------------------------------------
   
   # NOTE:  datestamps here are created with the local timezone. It is the job of

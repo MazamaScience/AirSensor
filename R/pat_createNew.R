@@ -1,6 +1,6 @@
 #' @export
 #' @importFrom rlang .data
-#' @importFrom MazamaCoreUtils logger.debug logger.error
+#' @importFrom MazamaCoreUtils logger.debug
 #' 
 #' @title Load latest PurpleAir time series data
 #' 

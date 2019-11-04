@@ -1,3 +1,26 @@
+# AirSensor 0.5.11
+
+Fixed bug in datetime axis that caused `SoH` functions to return missing values
+after the switch from PST to PDT.
+
+# AirSensor 0.5.10
+
+Removed `logger.error()` statements from the following low-level functions as
+they couldn't be turned off and ended up cluttering the log files:
+
+ * `loadDataFile()`
+ * `pas_load()`
+ * `pat_createNew()`
+ * `pat_loadLatest()`
+ * `pat_loadMonth()`
+ * `sensor_loadLatest()`
+ * `sensor_loadMonth()`
+ * `sensor_loadYear()`
+ 
+Improved `pat_join()` logic to deal with metadata changes associated 
+with the value `pwfsl_closestMonitorID` when _temporary_ monitors come and go
+in the PWFSL database.
+
 # AirSensor 0.5.9
 
 New `PurpleAirSoH~` functions calculate daily state-of-health metrics from PAT
