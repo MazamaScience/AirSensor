@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>General purpose filtering for PurpleAir Synoptic objects — pas_filter • AirSensor</title>
+<title>Daily reporting percentage — PurpleAirSoH_dailyPctReporting_OLD • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,10 +42,13 @@
 
 
 
-<meta property="og:title" content="General purpose filtering for PurpleAir Synoptic objects — pas_filter" />
-<meta property="og:description" content="A generalized data filter for pas objects to 
-  choose rows/cases where conditions are true. Rows where the condition 
-  evaluates to NA are dropped." />
+<meta property="og:title" content="Daily reporting percentage — PurpleAirSoH_dailyPctReporting_OLD" />
+<meta property="og:description" content="The number of sensor readings recorded per hour are summed over 
+the course of a calendar day (24 hours unless the pat datetime column
+includes a partial day at the beginning or end). This is then divided by the 
+number of samples the sensor would record in an ideal day 
+(24 * 3600 / samplingInterval) to return a percentage of each 
+day that the sensor is reporting data." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -150,63 +153,56 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>General purpose filtering for PurpleAir Synoptic objects</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pas_filter.R'><code>R/pas_filter.R</code></a></small>
-    <div class="hidden name"><code>pas_filter.Rd</code></div>
+    <h1>Daily reporting percentage</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/PurpleAirSoH_dailyPctReporting_OLD.R'><code>R/PurpleAirSoH_dailyPctReporting_OLD.R</code></a></small>
+    <div class="hidden name"><code>PurpleAirSoH_dailyPctReporting_OLD.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>A generalized data filter for <em>pas</em> objects to 
-  choose rows/cases where conditions are true. Rows where the condition 
-  evaluates to NA are dropped.</p>
+    <p>The number of sensor readings recorded per hour are summed over 
+the course of a calendar day (24 hours unless the <code>pat</code> datetime column
+includes a partial day at the beginning or end). This is then divided by the 
+number of samples the sensor would record in an ideal day 
+(<code>24 * 3600 / samplingInterval</code>) to return a percentage of each 
+day that the sensor is reporting data.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>pas_filter</span>(<span class='no'>pas</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>PurpleAirSoH_dailyPctReporting_OLD</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>samplingInterval</span> <span class='kw'>=</span> <span class='fl'>120</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pas</th>
-      <td><p>PurpleAir Synoptic <em>pas</em> object.</p></td>
+      <th>pat</th>
+      <td><p>PurpleAir Timeseries <em>pat</em> object.</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>Logical predicates defined in terms of the variables in the 
-<code>pas</code>. Multiple conditions are combined with &amp; or seperated by a comma. 
-Only rows where the condition evaluates to TRUE are kept.</p></td>
+      <th>samplingInterval</th>
+      <td><p>The number of seconds between samples when the sensor 
+is operating optimally.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>A subset of the given <em>pas</em> object.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><a href='pas_filterArea.html'>pas_filterArea</a>, <a href='pas_filterNear.html'>pas_filterNear</a></p></div>
+    <p>Purple Air II sensors reporting after the June, 2019 firmware
+upgrade report data every 120 seconds. Prior to the upgrade, data were 
+reported every 80 seconds.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>example_pas</span>)</div><div class='output co'>#&gt; [1] 7864</div><div class='input'>
-<span class='co'># California</span>
-<span class='no'>ca</span> <span class='kw'>&lt;-</span> <span class='fu'>pas_filter</span>(<span class='no'>example_pas</span>, <span class='no'>stateCode</span> <span class='kw'>==</span> <span class='st'>"CA"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>ca</span>)</div><div class='output co'>#&gt; [1] 4064</div><div class='input'>
-<span class='co'># Seal Beach</span>
-<span class='no'>scsb</span> <span class='kw'>&lt;-</span>
-  <span class='no'>ca</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>pas_filter</span>(<span class='kw pkg'>stringr</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/stringr/man/str_detect.html'>str_detect</a></span>(<span class='no'>label</span>, <span class='st'>"^SCSB_"</span>))
-<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>scsb</span>)</div><div class='output co'>#&gt; [1] 56</div><div class='input'>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='pas_leaflet.html'>pas_leaflet</a></span>(<span class='no'>ca</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>AirSensor</span>)
 
-<span class='fu'><a href='pas_leaflet.html'>pas_leaflet</a></span>(<span class='no'>scsb</span>, <span class='kw'>maptype</span> <span class='kw'>=</span> <span class='st'>"satellite"</span>)
-}</div></pre>
+<span class='no'>tbl</span> <span class='kw'>&lt;-</span>
+  <span class='no'>example_pat</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>PurpleAirSoH_dailyPctReporting_OLD</span>(<span class='fl'>80</span>)
+
+<span class='fu'><a href='timeseriesTbl_multiplot.html'>timeseriesTbl_multiplot</a></span>(<span class='no'>tbl</span>, <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>,<span class='fl'>101</span>), <span class='kw'>style</span> <span class='kw'>=</span> <span class='st'>"point"</span>)</div><div class='img'><img src='PurpleAirSoH_dailyPctReporting_OLD-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#see-also">See also</a></li>
+      <li><a href="#note">Note</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

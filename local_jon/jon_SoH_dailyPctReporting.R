@@ -27,8 +27,16 @@
 #'   PurpleAirSoH_dailyPctReporting(80) 
 #' 
 #' timeseriesTbl_multiplot(tbl, ylim = c(0,101), style = "point")
+#' 
+#' jon <- 
+#'   example_pat %>%
+#'   jon_dailyPctReporting(80) 
+#' 
+#' timeseriesTbl_multiplot(jon, ylim = c(0,101), style = "point")
+#' 
+#' 
 
-PurpleAirSoH_dailyPctReporting <- function(
+jon_dailyPctReporting <- function(
   pat = NULL,
   samplingInterval = 120
 ) {
@@ -46,7 +54,7 @@ PurpleAirSoH_dailyPctReporting <- function(
   if ( !is.numeric(samplingInterval) || is.na(samplingInterval) ) 
     samplingInterval <- 120
   
-  # ----- Prepare data ---------------------------------------------------------
+  # ----- Create aggregation tbl -----------------------------------------------
   
   # Get full days in the local timezone
   timezone <- pat$meta$timezone
@@ -68,12 +76,14 @@ PurpleAirSoH_dailyPctReporting <- function(
   # Samples collected per day in an ideal day:
   samplesPerDay <- 24 * 3600 / samplingInterval
   
-  # ----- Calculate dailyPctReporting ------------------------------------------
+  # # Create hourly tibble based on daterange to flag missing data
+  # hours <- tibble::tibble(datetime = seq(start, end, by = "hour"))
+  
+  
+  
   
   tbl <- 
     pat$data %>%  
-    
-    # Group by local time daystamp and count all non-NA values
     dplyr::mutate(daystamp = strftime(.data$datetime, "%Y%m%d", tz = timezone)) %>%
     dplyr::group_by(.data$daystamp) %>%
     dplyr::summarise_at(
@@ -81,19 +91,77 @@ PurpleAirSoH_dailyPctReporting <- function(
       .funs = function(x) { length(na.omit(x)) }
     ) %>%
     dplyr::rename(
-      pm25_A_count = .data$pm25_A,
-      pm25_B_count = .data$pm25_B,
-      temperature_count = .data$temperature,
-      humidity_count = .data$humidity
+      pm25_A_count = pm25_A,
+      pm25_B_count = pm25_B,
+      temperature_count = temperature,
+      humidity_count = humidity
     ) %>%
-    
-    # Calculate pctReporing = count/samplesPerDay * 100
+    # Divide the total count per day by the number of samples in a day where the
+    # sensor was working perfectly (30 samp/hr * 24 hr/day)*100 to make percent.
     dplyr::mutate(pm25_A_pctReporting =.data$pm25_A_count/samplesPerDay*100) %>%
     dplyr::mutate(pm25_B_pctReporting =.data$pm25_B_count/samplesPerDay*100) %>%
     dplyr::mutate(humidity_pctReporting =.data$humidity_count/samplesPerDay*100) %>%
     dplyr::mutate(temperature_pctReporting =.data$temperature_count/samplesPerDay*100) %>%
     dplyr::mutate(datetime = MazamaCoreUtils::parseDatetime(.data$daystamp, timezone = timezone)) %>%
     dplyr::select("datetime", contains("pctReporting"))
+    
+  #   dplyr::mutate(datetime = MazamaCoreUtils::parseDatetime(.data$daystamp, timezone = timezone)) %>%
+  #   dplyr::select("datetime", contains("pctReporting"))
+  # 
+  # 
+  # 
+  # 
+  # 
+  # 
+  # 
+  # 
+  # 
+  # 
+  # 
+  # 
+  # 
+  # 
+  # 
+  # 
+  # 
+  # # Calculate hourly aggregation statistics
+  # tbl <- 
+  #   pat %>%
+  #   pat_aggregateOutlierCounts(period = "1 hour")
+  # 
+  # # Put them on a local time axis and trim
+  # tbl$datetime <- lubridate::with_tz(tbl$datetime, tzone = timezone)
+  # tbl <- dplyr::filter(tbl, .data$datetime >= start & .data$datetime <= end)
+  #   
+  # # Join the hours-only tbl with the data tbl. This will input NA's in the tbl
+  # # on days when data were not recorded.
+  # tbl <- dplyr::left_join(hours, tbl, by = "datetime")
+  # 
+  # # ----- Calculate dailyPctReporting ------------------------------------------
+  # 
+  # # Change all the NA values to zero in this function since "zero" counts
+  # # means the channel is not reporting. 
+  # tbl$pm25_A_count[is.na(tbl$pm25_A_count)] <- 0
+  # tbl$pm25_B_count[is.na(tbl$pm25_B_count)] <- 0
+  # tbl$humidity_count[is.na(tbl$humidity_count)] <- 0
+  # tbl$temperature_count[is.na(tbl$temperature_count)] <- 0
+  # 
+  # # additional aggregation using dyplyr as mentioned in the notes above.
+  # tbl <-
+  #   tbl %>%  
+  #   dplyr::mutate(daystamp = strftime(.data$datetime, "%Y%m%d", tz = timezone)) %>%
+  #   dplyr::group_by(.data$daystamp) %>%
+  #   dplyr::summarise_at(.vars = c("pm25_A_count", "pm25_B_count", "humidity_count", "temperature_count"),
+  #                       .funs = sum) %>%
+    # # Divide the total count per day by the number of samples in a day where the
+    # # sensor was working perfectly (30 samp/hr * 24 hr/day)*100 to make percent.
+    # dplyr::mutate(pm25_A_pctReporting =.data$pm25_A_count/samplesPerDay*100) %>%
+    # dplyr::mutate(pm25_B_pctReporting =.data$pm25_B_count/samplesPerDay*100) %>%
+    # dplyr::mutate(humidity_pctReporting =.data$humidity_count/samplesPerDay*100) %>%
+    # dplyr::mutate(temperature_pctReporting =.data$temperature_count/samplesPerDay*100) %>%
+    # dplyr::mutate(datetime = MazamaCoreUtils::parseDatetime(.data$daystamp, timezone = timezone)) %>%
+    # dplyr::select("datetime", contains("pctReporting"))
+  
   
   # ----- Return ---------------------------------------------------------------
   
