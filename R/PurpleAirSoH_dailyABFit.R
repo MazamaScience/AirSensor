@@ -2,7 +2,7 @@
 #' @importFrom rlang .data
 #' @importFrom dplyr contains 
 #' 
-#' @title Daily correlation values
+#' @title Daily linear model fit values
 #' 
 #' @param pat PurpleAir Timeseries \emph{pat} object.
 #' @param aggregationPeriod The period of time over which to aggregate the data. 
@@ -12,34 +12,26 @@
 #' \emph{aggregation period}, the longer this function will take to run. The 
 #' default is set to "10 min" for this reason.
 #' 
-#' @description This function calculates the daily correlation values between
-#' the \code{pm25_A}, \code{pm25_B}, \code{humidity}, and \code{temperature} 
-#' channels. One correlation value for each channel pair except \code{pm25_A}, 
-#' \code{pm25_B}, and \code{humidity}, \code{temperature} will be returned for 
-#' each day. All returned values are expected to hover near 0 for a properly
-#' functioning sensor.
+#' @description This function calculates daily linear model values between
+#' the \code{pm25_A} and \code{pm25_B} channels. A daily r-squared value is
+#' returned in addition to the coefficients of the linear fit (slope and 
+#' intercept) 
 #' 
 #' 
 #' @examples  
 #' tbl <- 
 #'   example_pat_failure_A %>%
-#'   PurpleAirSoH_dailyCorrelation(aggregationPeriod = "30 min") 
+#'   PurpleAirSoH_dailyABFit(aggregationPeriod = "30 min") 
 #'   
 #' timeseriesTbl_multiplot(
 #'   tbl, 
-#'   parameters = c("pm25_B_temperature_cor", "pm25_A_temperature_cor"),
 #'   ylim = c(-1,1), 
 #'   style = "line"
 #' )
 #' 
-#' timeseriesTbl_multiplot(
-#'   tbl, 
-#'   autoRange = TRUE, 
-#'   style = "line"
-#' )
-#' 
 
-PurpleAirSoH_dailyCorrelation <- function(
+
+PurpleAirSoH_dailyABFit <- function(
   pat = NULL,
   aggregationPeriod = "10 min"
 ) {
@@ -131,7 +123,7 @@ PurpleAirSoH_dailyCorrelation <- function(
     dplyr::group_by(.data$localDaystamp)
   
   # Preallocate a list
-  correlation_list <- list()
+  ABFit_list <- list()
   
   # Loop through each unique day in the dataset
   for ( day in unique(pct_tbl$localDaystamp) ) {
@@ -141,26 +133,21 @@ PurpleAirSoH_dailyCorrelation <- function(
       dplyr::filter(pct_tbl, .data$localDaystamp == day)
     
     
-    correlation_list[[day]] <- day_tbl
+    ABFit_list[[day]] <- day_tbl
+  
     
-    
-    # calculate the correlation between several variables
-    pm25_A_humidity_cor <- stats::cor(day_tbl$pm25_A_mean, day_tbl$humidity_mean, 
-                                      use = "pairwise.complete.obs")
-    pm25_A_temperature_cor <- stats::cor(day_tbl$pm25_A_mean, day_tbl$temperature_mean, 
-                                         use = "pairwise.complete.obs")
-    pm25_B_humidity_cor <- stats::cor(day_tbl$pm25_B_mean, day_tbl$humidity_mean, 
-                                      use = "pairwise.complete.obs")
-    pm25_B_temperature_cor <- stats::cor(day_tbl$pm25_B_mean, day_tbl$temperature_mean, 
-                                         use = "pairwise.complete.obs")
-
+    # calculate the ab slope and intercept
+    model <- lm(day_tbl$pm25_A_mean ~ day_tbl$pm25_B_mean, subset = NULL, weights = NULL)
+    model_summary <- summary(model)
+    pm25A_pm25_B_rsquared <- as.numeric(model_summary$r.squared)
+    pm25_A_pm25_B_slope <- as.numeric(model$coefficients[2])  # as.numeric() to remove name
+    pm25_A_pm25_B_intercept <- as.numeric(model$coefficients[1])
     
     # add the correlation per day, per variable comparison to a list
-    correlation_list[[day]] <- list(
-      pm25_A_humidity_cor = pm25_A_humidity_cor,
-      pm25_A_temperature_cor = pm25_A_temperature_cor,
-      pm25_B_humidity_cor = pm25_B_humidity_cor,
-      pm25_B_temperature_cor = pm25_B_temperature_cor
+    ABFit_list[[day]] <- list(
+      pm25A_pm25_B_rsquared = pm25A_pm25_B_rsquared,
+      pm25_A_pm25_B_slope = pm25_A_pm25_B_slope,
+      pm25_A_pm25_B_intercept = pm25_A_pm25_B_intercept
     )
     
   }
@@ -169,39 +156,37 @@ PurpleAirSoH_dailyCorrelation <- function(
   # TODO:  from a list to a dataframe and certainly could be improved.
   
   # reformat the list as a tibble
-  int_correlation_tbl <- dplyr::as_tibble(correlation_list)
+  int_ABFit_tbl <- dplyr::as_tibble(ABFit_list)
   
   #  transpose and reformat as a matrix in order to have the desired outcome after transpose
-  correlation_matrix <- t(as.matrix(int_correlation_tbl))
+  ABFit_matrix <- t(as.matrix(int_ABFit_tbl))
   
   # reformat as a data.frame in order to change datetime to POSIXCT and add the colnames
-  correlation_df <- data.frame(correlation_matrix)
+  ABFit_df <- data.frame(ABFit_matrix)
   
   # reformat to tibble to change the datetime from rownames to an actual column of data
-  correlation_df <- tibble::rownames_to_column(correlation_df, var="datetime") 
+  ABFit_df <- tibble::rownames_to_column(ABFit_df, var="datetime") 
   
   # change datetime into a POSIXCT 
-  correlation_df$datetime <- MazamaCoreUtils::parseDatetime(correlation_df$datetime, 
+  ABFit_df$datetime <- MazamaCoreUtils::parseDatetime(ABFit_df$datetime, 
                                                             timezone = timezone)
   
   # add column names
-  colnames <- c( "datetime","pm25_A_humidity_cor", "pm25_A_temperature_cor",
-                 "pm25_B_humidity_cor", "pm25_B_temperature_cor")
-  colnames(correlation_df) <-colnames
+  colnames <- c( "datetime","pm25A_pm25_B_rsquared","pm25_A_pm25_B_slope", "pm25_A_pm25_B_intercept")
+  colnames(ABFit_df) <-colnames
   
   # re-define each of the columns as numeric rather than lists for easier plotting in ggplot
-  correlation_df$pm25_A_temperature_cor <- as.numeric(correlation_df$pm25_A_temperature_cor)
-  correlation_df$pm25_A_humidity_cor <- as.numeric(correlation_df$pm25_A_humidity_cor)
-  correlation_df$pm25_B_temperature_cor <- as.numeric(correlation_df$pm25_B_temperature_cor)
-  correlation_df$pm25_B_humidity_cor <- as.numeric(correlation_df$pm25_B_humidity_cor)
+  ABFit_df$pm25A_pm25_B_rsquared <- as.numeric(ABFit_df$pm25A_pm25_B_rsquared)
+  ABFit_df$pm25_A_pm25_B_slope <- as.numeric(ABFit_df$pm25_A_pm25_B_slope)
+  ABFit_df$pm25_A_pm25_B_intercept <- as.numeric(ABFit_df$pm25_A_pm25_B_intercept)
 
   
   # join with empty daily column to flag missing days
-  correlation_df <- dplyr::left_join(days, correlation_df, by = "datetime")
+  ABFit_df <- dplyr::left_join(days, ABFit_df, by = "datetime")
   
   # ----- Return ---------------------------------------------------------------
   
-  return(correlation_df)
+  return(ABFit_df)
   
 }
 
