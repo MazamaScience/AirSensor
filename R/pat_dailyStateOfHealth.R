@@ -25,7 +25,8 @@ pat_dailyStateOfHealth <- function(
   SoH_functions = c("PurpleAirSoH_dailyPctDC", 
                     "PurpleAirSoH_dailyPctReporting", 
                     "PurpleAirSoH_dailyPctValid", 
-                    "PurpleAirSoH_dailyCorrelation")
+                    "PurpleAirSoH_dailyCorrelation", 
+                    "PurpleAirSoH_dailyABFit")
 ) {
   
   # ----- Validate parameters --------------------------------------------------

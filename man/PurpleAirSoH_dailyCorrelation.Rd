@@ -19,10 +19,10 @@ default is set to "10 min" for this reason.}
 \description{
 This function calculates the daily correlation values between
 the \code{pm25_A}, \code{pm25_B}, \code{humidity}, and \code{temperature} 
-channels. One correlation value for each channel pair will 
-be returned for each day. A linear fit between channels A and B is also 
-calculated for each day and the coefficients are returned as the slope and 
-the intercept.
+channels. One correlation value for each channel pair except \code{pm25_A}, 
+\code{pm25_B}, and \code{humidity}, \code{temperature} will be returned for 
+each day. All returned values are expected to hover near 0 for a properly
+functioning sensor.
 }
 \examples{
  
@@ -32,14 +32,13 @@ tbl <-
   
 timeseriesTbl_multiplot(
   tbl, 
-  parameters = c("pm25_A_pm25_B_cor", "temperature_humidity_cor", "pm25_A_temperature_cor"),
+  parameters = c("pm25_B_temperature_cor", "pm25_A_temperature_cor"),
   ylim = c(-1,1), 
   style = "line"
 )
 
 timeseriesTbl_multiplot(
   tbl, 
-  parameterPattern = "_A.*_B",
   autoRange = TRUE, 
   style = "line"
 )

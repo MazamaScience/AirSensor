@@ -51,9 +51,9 @@ pat_multiplot(pat_sub)
 normalize <- function (x, na.rm = TRUE) (x/(max(x, na.rm = TRUE)))
 
 #pull out the indicator SoH columns and normalize them to from [-1, 1]
-SoH_sub_normalized <- dplyr::select(SoH, contains("_pctReporting"), "pm25_A_pm25_B_cor", "pm25_A_pm25_B_slope",
-                                    "temperature_humidity_cor", "pm25_A_pctDC", "pm25_B_pctDC",
-                                    "datetime", "pm25_A_temperature_cor") %>%
+SoH_sub_normalized <- dplyr::select(SoH, "datetime", contains("_pctReporting"), "pm25_A_pm25_B_rsquared", "pm25_A_pm25_B_slope",
+                                    "pm25_A_pm25_B_intercept", "pm25_A_pctDC", "pm25_B_pctDC", "humidity_pctValid", "temperature_pctValid",
+                                    "pm25_A_temperature_cor", "pm25_B_temperature_cor") %>%
   dplyr::mutate_if(is.numeric, normalize)
 
 SoH_tidy <-
@@ -65,11 +65,13 @@ SoH_tidy <-
 SoH_tidy <- 
   SoH_tidy %>%
   mutate(id = case_when(grepl("_pctReporting", SoH_tidy$variable) ~ 1,
-                        grepl("pm25_A_pm25_B_cor", SoH_tidy$variable) ~ 1,
+                        grepl("pm25_A_pm25_B_rsquared", SoH_tidy$variable) ~ 1,
                         grepl("pm25_A_pm25_B_slope", SoH_tidy$variable) ~ 1,
-                        grepl("temperature_humidity_cor", SoH_tidy$variable) ~ -1,
+                        grepl("pm25_A_pm25_intercept", SoH_tidy$variable) ~ -1,
                         grepl("_pctDC", SoH_tidy$variable) ~ -0,
-                        grepl("pm25_A_temperature_cor", SoH_tidy$variable) ~ 0)) #%>%
+                        grepl("_pctValid", SoH_tidy$variable) ~ 1,
+                        grepl("pm25_A_temperature_cor", SoH_tidy$variable) ~ 0,
+                        grepl("pm25_B_temperature_cor", SoH_tidy$variable) ~ 0)) #%>%
 #arrange(id, variable, datetime)
 SoH_tidy <- reorder(SoH_tidy$id, SoH_tidy$variable)
 
