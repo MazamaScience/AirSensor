@@ -1,6 +1,6 @@
 context("test-pas_load")
 
-test_that("baseUrl Input validation works", {
+test_that("baseUrl input validation works", {
   expect_error(downloadParseSynopticData(baseUrl = "https://www.purpleair.com/DUMMY"))
   expect_error(pas_createNew(baseUrl = "https://www.purpleair.com/DUMMY"))
 })

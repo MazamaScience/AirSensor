@@ -1,6 +1,6 @@
 #' @keywords internal
 #' @export
-#' @importFrom MazamaCoreUtils logger.isInitialized logger.error
+#' @importFrom MazamaCoreUtils logger.isInitialized
 #'
 #' @title Load data from URL or local file
 #'

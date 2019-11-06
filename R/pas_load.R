@@ -1,7 +1,7 @@
 #' @export
 #' @importFrom rlang .data
 #' @importFrom dplyr filter
-#' @importFrom MazamaCoreUtils logger.isInitialized logger.error
+#' @importFrom MazamaCoreUtils logger.isInitialized
 #' 
 #' @title Load PurpleAir synoptic data
 #' 
@@ -133,9 +133,6 @@ pas_load <- function(
   # NOTE:  loading might fail.
   
   if ( "try-error" %in% class(result) ) {
-    if ( logger.isInitialized() ) {
-      logger.error("%s", geterrmessage())
-    }
     stop(paste0("Data file could not be loaded after ", retries, " tries"), 
          call.=FALSE)
   }

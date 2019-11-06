@@ -1,7 +1,7 @@
 Type: Package
 Package: AirSensor
-Version: 0.5.8
-Title: Utilities to Process and Display PM2.5 data from Air Quality Sensors
+Version: 0.5.11
+Title: Process and Display data from Air Quality Sensors
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
     person("Hans", "Martin", email="hans@mazamascience.com", role=c("aut")),
@@ -41,7 +41,9 @@ Imports:
     scales,
     seismicRoll,
     sp,
+    stats,
     stringr,
+    tibble,
     tidyr,
     magrittr,
     worldmet,
@@ -50,8 +52,8 @@ Imports:
 Suggests:
     knitr,
     testthat
-Description: Utilities to process and display PM2.5 data from air quality sensors.
-    Initial focus is on sensors produced by Purple Air.
+Description: Process and display data from air quality sensors.
+    Initial focus is on PM2.5 measurements from sensors produced by Purple Air.
 License: GPL-3
 URL: https://github.com/MazamaScience/AirSensor 
 BugReports: https://github.com/MazamaScience/AirSensor/issues

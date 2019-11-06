@@ -1,6 +1,6 @@
 #' @export
 #' @importFrom rlang .data
-#' @importFrom MazamaCoreUtils logger.isInitialized logger.error
+#' @importFrom MazamaCoreUtils logger.isInitialized
 #' 
 #' @title Load hourly-aggregated Purple Air data for a month
 #' 
@@ -84,9 +84,6 @@ sensor_loadYear <- function(
   # NOTE:  loading might fail.
   
   if ( "try-error" %in% class(result) ) {
-    if ( logger.isInitialized() ) {
-      logger.error("%s", geterrmessage())
-    }
     if ( is.null(baseDir) ) {
       stop(paste0("Data file could not be loaded from: ", baseUrl), call.=FALSE)
     } else {
