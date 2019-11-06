@@ -13,7 +13,7 @@ library(skimr)
 
 setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
 pas <- pas_load()
-pat <- pat_load("MV Clean Air Ambassador @ Willowbrook Farm", startdate = 20190101, enddate = 20191023) #summer gap
+pat_short <- pat_load("MV Clean Air Ambassador @ Willowbrook Farm", startdate = 20190818, enddate = 20190822) #summer gap
 pat <- pat_load("Spokane South Hill #1", startdate = 20190101, enddate = 20191023) #super clean station
 
 # ------ data from California from Oct 2017 - South Coast -----------
@@ -22,7 +22,7 @@ setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 ca <- pas_load() %>% pas_filter(stateCode == "CA")
 scaqmd <- ca %>% pas_filter(stringr::str_detect(label, "SC.._"))
 pas_leaflet(scaqmd)  
-pat <- pat_load("SCPR_05", startdate = 20190101, enddate = 20191023)
+pat <- pat_load("SCPR_05", startdate = 20190401, enddate = 20190723)
 
 # ------ data for all of WA/OR for 2019 ----------------
 # Also has recent data for all sensors in California.

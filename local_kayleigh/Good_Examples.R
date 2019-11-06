@@ -15,3 +15,10 @@ SoH_sub_normalized <- dplyr::select(SoH, "datetime",
                                     "pm25_A_temperature_cor",
                                     "pm25_B_temperature_cor") %>%
   dplyr::mutate_if(is.numeric, normalize)
+
+# How many are NA or not NA?
+sum(is.na(pat$data$pm25_A))
+
+sum(!is.na(pat$data$pm25_A))
+
+
