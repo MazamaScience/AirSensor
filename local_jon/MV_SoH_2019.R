@@ -10,8 +10,8 @@ labels <-
   pas %>%
   pas_filter(is.na(parentID)) %>%
   pas_filter(DEVICE_LOCATIONTYPE == "outside") %>%
-  pas_filter(stateCode == "WA") %>%
-  pas_filter(stringr::str_detect(label, "^MV Clean Air Ambassador")) %>%
+  pas_filter(stateCode %in% PWFSLSmoke::CONUS) %>%
+  pas_filter(stringr::str_detect(label, "Home")) %>%
   dplyr::pull(label)
 
 # Loop over labels

@@ -65,8 +65,8 @@ gg <-
   ggplot(data = c, aes(datetime, pm25_A_pctReporting)) + 
   ylim(0,150) +
   geom_hline(yintercept = 100, color = "salmon", size = 0.5) +
-  geom_line()
-  ###geom_point(shape = "square", size = 0.8)
+  ###geom_line()
+  geom_point(shape = "square", size = 1.0)
 
 gg + 
   facet_wrap(~label, ncol = 3) +
