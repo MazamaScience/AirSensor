@@ -36,17 +36,21 @@
   outlierFlagName <- paste0("flag_outliers_", parameter)
   
   # Identify outliers
-  outlierIndices <- 
+  result <- try({
+    outlierIndices <- 
     seismicRoll::findOutliers(
       x = data, 
       n = windowSize,
       thresholdMin = thresholdMin
-    )
+    )}, silent = TRUE)
   
-  # Make a new logical column
-  df[[outlierFlagName]] <- FALSE 
-  df[[outlierFlagName]][outlierIndices] <- TRUE
-  
+  if ( 'try-error' %in% class(result) ) {
+    df[[outlierFlagName]] <- FALSE # if error with hampel filter ignore outlier flagging
+  } else {
+    # Make a new logical column
+    df[[outlierFlagName]] <- FALSE 
+    df[[outlierFlagName]][outlierIndices] <- TRUE
+  }
   return(df)
   
 }
