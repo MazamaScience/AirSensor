@@ -79,6 +79,7 @@ PurpleAirSoH_dailyABFit <- function(
   hour <- lubridate::hour(localTime)
   start <- lubridate::floor_date(localTime[ min(which(hour == 0)) ], unit = "hour")
   end <- lubridate::floor_date(localTime[ max(which(hour == 23)) ], unit = "hour")
+  endtime = end + lubridate::dhours(1)
   
   # NOTE:  pat_filterDate only goes to the beginning of enddate and we want it
   # NOTE:  to go to the end of enddate.
@@ -112,7 +113,7 @@ PurpleAirSoH_dailyABFit <- function(
     
   # Put it on a local time axis and trim
   pct_tbl$datetime <- lubridate::with_tz(pct_tbl$datetime, tzone = timezone)
-  pct_tbl <- dplyr::filter(pct_tbl, .data$datetime >= start & .data$datetime <= end)
+  pct_tbl <- dplyr::filter(pct_tbl, .data$datetime >= start & .data$datetime <= endtime)
   
   pct_tbl <-
     pct_tbl %>%

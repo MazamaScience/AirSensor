@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Daily state of health — pat_dailyStateOfHealth • AirSensor</title>
+<title>Daily fit values — PurpleAirSoH_dailyOtherFit • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,9 +42,13 @@
 
 
 
-<meta property="og:title" content="Daily state of health — pat_dailyStateOfHealth" />
-<meta property="og:description" content="This function combines the output of the State of Health (SoH) 
-function arguments into a single tibble." />
+<meta property="og:title" content="Daily fit values — PurpleAirSoH_dailyOtherFit" />
+<meta property="og:description" content="This function calculates a daily linear model between
+the pm25_A, pm25_B, humidity, and temperature 
+channels. One r-squared value for each channel pair except pm25_A, 
+pm25_B, and humidity, temperature will be returned for 
+each day. All returned values are expected to hover near 0 for a properly
+functioning sensor." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -149,20 +153,21 @@ function arguments into a single tibble." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Daily state of health</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_dailyStateOfHealth.R'><code>R/pat_dailyStateOfHealth.R</code></a></small>
-    <div class="hidden name"><code>pat_dailyStateOfHealth.Rd</code></div>
+    <h1>Daily fit values</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/PurpleAirSoH_dailyOtherFit.R'><code>R/PurpleAirSoH_dailyOtherFit.R</code></a></small>
+    <div class="hidden name"><code>PurpleAirSoH_dailyOtherFit.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function combines the output of the State of Health (SoH) 
-function arguments into a single tibble.</p>
+    <p>This function calculates a daily linear model between
+the <code>pm25_A</code>, <code>pm25_B</code>, <code>humidity</code>, and <code>temperature</code> 
+channels. One r-squared value for each channel pair except <code>pm25_A</code>, 
+<code>pm25_B</code>, and <code>humidity</code>, <code>temperature</code> will be returned for 
+each day. All returned values are expected to hover near 0 for a properly
+functioning sensor.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>pat_dailyStateOfHealth</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>SoH_functions</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"PurpleAirSoH_dailyPctDC"</span>,
-  <span class='st'>"PurpleAirSoH_dailyPctReporting"</span>, <span class='st'>"PurpleAirSoH_dailyPctValid"</span>,
-  <span class='st'>"PurpleAirSoH_dailyOtherFit"</span>, <span class='st'>"PurpleAirSoH_dailyABFit"</span>))</pre>
+    <pre class="usage"><span class='fu'>PurpleAirSoH_dailyOtherFit</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -171,38 +176,27 @@ function arguments into a single tibble.</p>
       <th>pat</th>
       <td><p>PurpleAir Timeseries <em>pat</em> object.</p></td>
     </tr>
-    <tr>
-      <th>SoH_functions</th>
-      <td><p>Vector of function names. All the passed in functions 
-must output tibbles with a daily `datetime` variable and must cover the same
-period of time.</p></td>
-    </tr>
     </table>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='no'>SoH</span> <span class='kw'>&lt;-</span>
-  <span class='no'>example_pat_failure_B</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>pat_dailyStateOfHealth</span>()
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>SoH</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 20</span><span>
-#&gt;   datetime            pm25_A_pctDC pm25_B_pctDC pm25_A_pctRepor…
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;dttm&gt;</span><span>                     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> 2019-06-01 </span><span style='color: #949494;'>00:00:00</span><span>            0            0             99.7
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> 2019-06-02 </span><span style='color: #949494;'>00:00:00</span><span>            0            0             99.6
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> 2019-06-03 </span><span style='color: #949494;'>00:00:00</span><span>            0            0             99.9
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> 2019-06-04 </span><span style='color: #949494;'>00:00:00</span><span>            0            0             99.7
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> 2019-06-05 </span><span style='color: #949494;'>00:00:00</span><span>            0            0             89.0
-#&gt; </span><span style='color: #BCBCBC;'>6</span><span> 2019-06-06 </span><span style='color: #949494;'>00:00:00</span><span>            0            0             95.8
-#&gt; </span><span style='color: #949494;'># … with 16 more variables: pm25_B_pctReporting </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, pm25_A_pctValid </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,
-#&gt; #   pm25_B_pctValid </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, pm25_A_humidity_rsquared </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,
-#&gt; #   pm25_A_temperature_rsquared </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, pm25_B_humidity_rsquared </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,
-#&gt; #   pm25_B_temperature_rsquared </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, pm25_A_pm25_B_rsquared </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,
-#&gt; #   pm25_A_pm25_B_slope </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, pm25_A_pm25_B_intercept </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,
-#&gt; #   temperature_pctDC </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, temperature_pctReporting </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,
-#&gt; #   temperature_pctValid </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, humidity_pctDC </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,
-#&gt; #   humidity_pctReporting </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, humidity_pctValid </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>#timeseriesTbl_multiplot(tbl, ylim = c(0,100))
-</div></span></pre>
+<span class='no'>tbl</span> <span class='kw'>&lt;-</span>
+  <span class='no'>example_pat_failure_A</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>PurpleAirSoH_dailyOtherFit</span>()
+
+<span class='fu'><a href='timeseriesTbl_multiplot.html'>timeseriesTbl_multiplot</a></span>(
+  <span class='no'>tbl</span>,
+  <span class='kw'>parameters</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"pm25_B_temperature_rsquared"</span>, <span class='st'>"pm25_A_temperature_rsquared"</span>),
+  <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>1</span>,<span class='fl'>1</span>),
+  <span class='kw'>style</span> <span class='kw'>=</span> <span class='st'>"line"</span>
+)</div><div class='img'><img src='PurpleAirSoH_dailyOtherFit-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='timeseriesTbl_multiplot.html'>timeseriesTbl_multiplot</a></span>(
+  <span class='no'>tbl</span>,
+  <span class='kw'>autoRange</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>style</span> <span class='kw'>=</span> <span class='st'>"line"</span>
+)</div><div class='img'><img src='PurpleAirSoH_dailyOtherFit-2.png' alt='' width='700' height='433' /></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

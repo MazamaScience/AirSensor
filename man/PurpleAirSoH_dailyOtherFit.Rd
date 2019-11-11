@@ -10,7 +10,7 @@ PurpleAirSoH_dailyOtherFit(pat = NULL)
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}
 }
 \description{
-This function calculates the daily linear model values between
+This function calculates a daily linear model between
 the \code{pm25_A}, \code{pm25_B}, \code{humidity}, and \code{temperature} 
 channels. One r-squared value for each channel pair except \code{pm25_A}, 
 \code{pm25_B}, and \code{humidity}, \code{temperature} will be returned for 
@@ -25,7 +25,7 @@ tbl <-
   
 timeseriesTbl_multiplot(
   tbl, 
-  parameters = c("pm25_B_temperature_rsquare", "pm25_A_temperature_rsquare"),
+  parameters = c("pm25_B_temperature_rsquared", "pm25_A_temperature_rsquared"),
   ylim = c(-1,1), 
   style = "line"
 )

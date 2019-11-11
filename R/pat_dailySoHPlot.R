@@ -12,7 +12,6 @@
 #' the plot.
 #' 
 #' 
-#' 
 
 
 pat_dailySoHPlot <- function(
@@ -45,8 +44,8 @@ pat_dailySoHPlot <- function(
                            "pm25_A_pm25_B_slope",
                            "pm25_A_pm25_B_intercept",
                            "pm25_A_pm25_B_rsquared",
-                           "pm25_A_temperature_cor",
-                           "pm25_B_temperature_cor") 
+                           "pm25_A_temperature_rsquared",
+                           "pm25_B_temperature_rsquared") 
   
   # copy the datetime column from the SoH to use later when creating the dummy 
   # data.
@@ -69,8 +68,8 @@ pat_dailySoHPlot <- function(
       grepl("pm25_A_pm25_B_slope", SoH_tidy$variable) ~ 1,
       grepl("pm25_A_pm25_B_intercept", SoH_tidy$variable) ~ 0,
       grepl("pm25_A_pm25_B_rsquared", SoH_tidy$variable) ~ 1,
-      grepl("pm25_A_temperature_cor", SoH_tidy$variable) ~ 0,
-      grepl("pm25_B_temperature_cor", SoH_tidy$variable) ~ 0)) 
+      grepl("pm25_A_temperature_rsquared", SoH_tidy$variable) ~ 0,
+      grepl("pm25_B_temperature_rsquared", SoH_tidy$variable) ~ 0)) 
   
   # create factor for ordering the facets later on
   SoH_tidy$variable <- factor(SoH_tidy$variable, levels=c(
@@ -85,8 +84,8 @@ pat_dailySoHPlot <- function(
     "pm25_A_pm25_B_slope",
     "pm25_A_pm25_B_intercept",
     "pm25_A_pm25_B_rsquared",
-    "pm25_A_temperature_cor",
-    "pm25_B_temperature_cor"
+    "pm25_A_temperature_rsquared",
+    "pm25_B_temperature_rsquared"
   ))
   
   # create the dummy variables which contain just the min and max expected 
@@ -102,8 +101,8 @@ pat_dailySoHPlot <- function(
   pm25_A_pm25_B_slope <- rep_len(c(-5, 5), length.out = length(SoH_sub$datetime))
   pm25_A_pm25_B_intercept <- rep_len(c(-50, 50), length.out = length(SoH_sub$datetime))
   pm25_A_pm25_B_rsquared <- rep_len(c(0, 1), length.out = length(SoH_sub$datetime))
-  pm25_A_temperature_cor <- rep_len(c(-1, 1), length.out = length(SoH_sub$datetime))
-  pm25_B_temperature_cor <- rep_len(c(-1, 1), length.out = length(SoH_sub$datetime))
+  pm25_A_temperature_rsquared <- rep_len(c(0, 1), length.out = length(SoH_sub$datetime))
+  pm25_B_temperature_rsquared <- rep_len(c(0, 1), length.out = length(SoH_sub$datetime))
   
   # add all the dummy variables to the dummy dataframe
   dummy <- data.frame(datetime,
@@ -118,8 +117,8 @@ pat_dailySoHPlot <- function(
                       pm25_A_pm25_B_slope,
                       pm25_A_pm25_B_intercept,
                       pm25_A_pm25_B_rsquared,
-                      pm25_A_temperature_cor,
-                      pm25_B_temperature_cor)
+                      pm25_A_temperature_rsquared,
+                      pm25_B_temperature_rsquared)
   
   # tidy the dummy data to mimic the real data
   dummy_tidy <-

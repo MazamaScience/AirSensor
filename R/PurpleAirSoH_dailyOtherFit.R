@@ -6,7 +6,7 @@
 #' 
 #' @param pat PurpleAir Timeseries \emph{pat} object.
 #' 
-#' @description This function calculates the daily linear model values between
+#' @description This function calculates a daily linear model between
 #' the \code{pm25_A}, \code{pm25_B}, \code{humidity}, and \code{temperature} 
 #' channels. One r-squared value for each channel pair except \code{pm25_A}, 
 #' \code{pm25_B}, and \code{humidity}, \code{temperature} will be returned for 
@@ -21,7 +21,7 @@
 #'   
 #' timeseriesTbl_multiplot(
 #'   tbl, 
-#'   parameters = c("pm25_B_temperature_rsquare", "pm25_A_temperature_rsquare"),
+#'   parameters = c("pm25_B_temperature_rsquared", "pm25_A_temperature_rsquared"),
 #'   ylim = c(-1,1), 
 #'   style = "line"
 #' )
@@ -56,7 +56,7 @@ PurpleAirSoH_dailyOtherFit <- function(
   hour <- lubridate::hour(localTime)
   start <- lubridate::floor_date(localTime[ min(which(hour == 0)) ], unit = "hour")
   end <- lubridate::floor_date(localTime[ max(which(hour == 23)) ], unit = "hour")
-  enddate = end + lubridate::dhours(1)
+  endtime = end + lubridate::dhours(1)
   
   # NOTE:  pat_filterDate only goes to the beginning of enddate and we want it
   # NOTE:  to go to the end of enddate.
@@ -96,8 +96,8 @@ PurpleAirSoH_dailyOtherFit <- function(
   #                      enddate = "2019-09-11",
   #                      timezone = "America/Los_Angeles")
   # cor_stats <- (stats::cor(pat$data$pm25_A, pat$data$temperature, use = "pairwise.complete.obs"))^2
-  # lm_rsquare <- PurpleAirSoH_dailyOtherFit(pat)
-  # Notice that cor_stats and lm_rsquare$pm25_A_temperature_rsquare are the same.
+  # lm_rsquared <- PurpleAirSoH_dailyOtherFit(pat)
+  # Notice that cor_stats and lm_rsquared$pm25_A_temperature_rsquared are the same.
   
   
   # Begin calculations:
@@ -106,7 +106,7 @@ PurpleAirSoH_dailyOtherFit <- function(
   
   # Put it on a local time axis and trim
   tbl$datetime <- lubridate::with_tz(tbl$datetime, tzone = timezone)
-  tbl <- dplyr::filter(tbl, .data$datetime >= start & .data$datetime <= enddate)
+  tbl <- dplyr::filter(tbl, .data$datetime >= start & .data$datetime <= endtime)
   
   tbl <-
     tbl %>%
@@ -115,7 +115,7 @@ PurpleAirSoH_dailyOtherFit <- function(
                                            tz = timezone))
   
   # Preallocate a list
-  rsquare_list <- list()
+  rsquared_list <- list()
   
   # Loop through each unique day in the dataset
   for ( day in unique(tbl$localDaystamp) ) {
@@ -127,26 +127,26 @@ PurpleAirSoH_dailyOtherFit <- function(
     # calculate the r-squared between several variables
     pm25_A_humidity_model <- lm(day_tbl$pm25_A ~ day_tbl$humidity, subset = NULL, weights = NULL)
     pm25_A_humidity_model_summary <- summary(pm25_A_humidity_model)
-    pm25_A_humidity_rsquare <- as.numeric(pm25_A_humidity_model_summary$r.squared)
+    pm25_A_humidity_rsquared <- as.numeric(pm25_A_humidity_model_summary$r.squared)
     
     pm25_A_temperature_model <- lm(day_tbl$pm25_A ~ day_tbl$temperature, subset = NULL, weights = NULL)
     pm25_A_temperature_model_summary <- summary(pm25_A_temperature_model)
-    pm25_A_temperature_rsquare <- as.numeric(pm25_A_temperature_model_summary$r.squared)
+    pm25_A_temperature_rsquared <- as.numeric(pm25_A_temperature_model_summary$r.squared)
     
     pm25_B_humidity_model <- lm(day_tbl$pm25_B ~ day_tbl$humidity, subset = NULL, weights = NULL)
     pm25_B_humidity_model_summary <- summary(pm25_B_humidity_model)
-    pm25_B_humidity_rsquare <- as.numeric(pm25_B_humidity_model_summary$r.squared)
+    pm25_B_humidity_rsquared <- as.numeric(pm25_B_humidity_model_summary$r.squared)
     
     pm25_B_temperature_model <- lm(day_tbl$pm25_B ~ day_tbl$temperature, subset = NULL, weights = NULL)
     pm25_B_temperature_model_summary <- summary(pm25_B_temperature_model)
-    pm25_B_temperature_rsquare <- as.numeric(pm25_B_temperature_model_summary$r.squared)
+    pm25_B_temperature_rsquared <- as.numeric(pm25_B_temperature_model_summary$r.squared)
     
     # add the r-squared per day, per variable comparison to a list
-    rsquare_list[[day]] <- list(
-      pm25_A_humidity_rsquare = pm25_A_humidity_rsquare,
-      pm25_A_temperature_rsquare = pm25_A_temperature_rsquare,
-      pm25_B_humidity_rsquare = pm25_B_humidity_rsquare,
-      pm25_B_temperature_rsquare = pm25_B_temperature_rsquare
+    rsquared_list[[day]] <- list(
+      pm25_A_humidity_rsquared = pm25_A_humidity_rsquared,
+      pm25_A_temperature_rsquared = pm25_A_temperature_rsquared,
+      pm25_B_humidity_rsquared = pm25_B_humidity_rsquared,
+      pm25_B_temperature_rsquared = pm25_B_temperature_rsquared
     )
   }
   
@@ -154,40 +154,40 @@ PurpleAirSoH_dailyOtherFit <- function(
   # TODO:  from a list to a dataframe and certainly could be improved.
   
   # reformat the list as a tibble
-  int_rsquare_tbl <- dplyr::as_tibble(rsquare_list)
+  int_rsquared_tbl <- dplyr::as_tibble(rsquared_list)
   
   #  transpose and reformat as a matrix in order to have the desired outcome after transpose
-  rsquare_matrix <- t(as.matrix(int_rsquare_tbl))
+  rsquared_matrix <- t(as.matrix(int_rsquared_tbl))
   
   # reformat as a data.frame in order to change datetime to POSIXCT and add the colnames
-  rsquare_df <- data.frame(rsquare_matrix)
+  rsquared_df <- data.frame(rsquared_matrix)
   
   # reformat to tibble to change the datetime from rownames to an actual column of data
-  rsquare_df <- tibble::rownames_to_column(rsquare_df, var="datetime") 
+  rsquared_df <- tibble::rownames_to_column(rsquared_df, var="datetime") 
   
   # change datetime into a POSIXCT 
-  rsquare_df$datetime <- MazamaCoreUtils::parseDatetime(rsquare_df$datetime, 
+  rsquared_df$datetime <- MazamaCoreUtils::parseDatetime(rsquared_df$datetime, 
                                                             timezone = timezone)
   
   # add column names
-  colnames <- c( "datetime","pm25_A_humidity_rsquare", "pm25_A_temperature_rsquare",
-                 "pm25_B_humidity_rsquare", "pm25_B_temperature_rsquare")
+  colnames <- c( "datetime","pm25_A_humidity_rsquared", "pm25_A_temperature_rsquared",
+                 "pm25_B_humidity_rsquared", "pm25_B_temperature_rsquared")
   
-  colnames(rsquare_df) <-colnames
+  colnames(rsquared_df) <-colnames
   
   # re-define each of the columns as numeric rather than lists for easier plotting in ggplot
-  rsquare_df$pm25_A_temperature_rsquare <- as.numeric(rsquare_df$pm25_A_temperature_rsquare)
-  rsquare_df$pm25_A_humidity_rsquare <- as.numeric(rsquare_df$pm25_A_humidity_rsquare)
-  rsquare_df$pm25_B_temperature_rsquare <- as.numeric(rsquare_df$pm25_B_temperature_rsquare)
-  rsquare_df$pm25_B_humidity_rsquare <- as.numeric(rsquare_df$pm25_B_humidity_rsquare)
+  rsquared_df$pm25_A_temperature_rsquared <- as.numeric(rsquared_df$pm25_A_temperature_rsquared)
+  rsquared_df$pm25_A_humidity_rsquared <- as.numeric(rsquared_df$pm25_A_humidity_rsquared)
+  rsquared_df$pm25_B_temperature_rsquared <- as.numeric(rsquared_df$pm25_B_temperature_rsquared)
+  rsquared_df$pm25_B_humidity_rsquared <- as.numeric(rsquared_df$pm25_B_humidity_rsquared)
   
   
   # join with empty daily column to flag missing days
-  rsquare_df <- dplyr::left_join(days, rsquare_df, by = "datetime")
+  rsquared_df <- dplyr::left_join(days, rsquared_df, by = "datetime")
   
   # ----- Return ---------------------------------------------------------------
   
-  return(rsquare_df)
+  return(rsquared_df)
   
 }
 
