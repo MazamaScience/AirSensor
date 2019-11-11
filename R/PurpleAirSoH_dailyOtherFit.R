@@ -2,13 +2,13 @@
 #' @importFrom rlang .data
 #' @importFrom dplyr contains 
 #' 
-#' @title Daily correlation values
+#' @title Daily fit values
 #' 
 #' @param pat PurpleAir Timeseries \emph{pat} object.
 #' 
-#' @description This function calculates the daily correlation values between
+#' @description This function calculates the daily linear model values between
 #' the \code{pm25_A}, \code{pm25_B}, \code{humidity}, and \code{temperature} 
-#' channels. One correlation value for each channel pair except \code{pm25_A}, 
+#' channels. One r-squared value for each channel pair except \code{pm25_A}, 
 #' \code{pm25_B}, and \code{humidity}, \code{temperature} will be returned for 
 #' each day. All returned values are expected to hover near 0 for a properly
 #' functioning sensor.
@@ -17,11 +17,11 @@
 #' @examples  
 #' tbl <- 
 #'   example_pat_failure_A %>%
-#'   PurpleAirSoH_dailyCorrelation() 
+#'   PurpleAirSoH_dailyOtherFit() 
 #'   
 #' timeseriesTbl_multiplot(
 #'   tbl, 
-#'   parameters = c("pm25_B_temperature_cor", "pm25_A_temperature_cor"),
+#'   parameters = c("pm25_B_temperature_rsquare", "pm25_A_temperature_rsquare"),
 #'   ylim = c(-1,1), 
 #'   style = "line"
 #' )
@@ -33,7 +33,7 @@
 #' )
 #' 
 
-PurpleAirSoH_dailyCorrelation <- function(
+PurpleAirSoH_dailyOtherFit <- function(
   pat = NULL
 ) {
   
@@ -47,7 +47,7 @@ PurpleAirSoH_dailyCorrelation <- function(
   if ( pat_isEmpty(pat) )
     stop("Parameter 'pat' has no data.") 
   
-
+  
   # ----- Create daily tbl -----------------------------------------------------
   
   # Get full days in the local timezone
@@ -56,6 +56,7 @@ PurpleAirSoH_dailyCorrelation <- function(
   hour <- lubridate::hour(localTime)
   start <- lubridate::floor_date(localTime[ min(which(hour == 0)) ], unit = "hour")
   end <- lubridate::floor_date(localTime[ max(which(hour == 23)) ], unit = "hour")
+  enddate = end + lubridate::dhours(1)
   
   # NOTE:  pat_filterDate only goes to the beginning of enddate and we want it
   # NOTE:  to go to the end of enddate.
@@ -81,55 +82,71 @@ PurpleAirSoH_dailyCorrelation <- function(
   # flag missing data
   days <- tibble(datetime = datetime) 
   
-  # ----- Calculate dailyCorrelation -------------------------------------------
+  # ----- Calculate dailyOtherFit -------------------------------------------
   
-  # Begin percent DC calculations:
-  pct_tbl <-
+  # Note: This function uses a combination of lm() and summary() to calculate 
+  # the r-squared between several channels rather than using stats::cor() 
+  # because lm() has a built-in method for handling incomplete pairing between
+  # channels. To ground truth that this method produces the same results as 
+  # stats::cor(), run this example:
+  # setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+  # pas <- pas_load(archival = TRUE)
+  # pat <- pat_createNew(pas, "SCAP_19",
+  #                      startdate = "2019-09-10",
+  #                      enddate = "2019-09-11",
+  #                      timezone = "America/Los_Angeles")
+  # cor_stats <- (stats::cor(pat$data$pm25_A, pat$data$temperature, use = "pairwise.complete.obs"))^2
+  # lm_rsquare <- PurpleAirSoH_dailyOtherFit(pat)
+  # Notice that cor_stats and lm_rsquare$pm25_A_temperature_rsquare are the same.
+  
+  
+  # Begin calculations:
+  tbl <-
     pat$data  
-    
-  # Put it on a local time axis and trim
-  pct_tbl$datetime <- lubridate::with_tz(pct_tbl$datetime, tzone = timezone)
-  pct_tbl <- dplyr::filter(pct_tbl, .data$datetime >= start & .data$datetime <= end)
   
-  pct_tbl <-
-    pct_tbl %>%
-    # Group by day so that the correlations can be applied to a local 24 hour day
+  # Put it on a local time axis and trim
+  tbl$datetime <- lubridate::with_tz(tbl$datetime, tzone = timezone)
+  tbl <- dplyr::filter(tbl, .data$datetime >= start & .data$datetime <= enddate)
+  
+  tbl <-
+    tbl %>%
+    # Group by day so that the r-squared can be applied to a local 24 hour day
     dplyr::mutate(localDaystamp = strftime(.data$datetime, "%Y%m%d", 
                                            tz = timezone))
   
   # Preallocate a list
-  correlation_list <- list()
+  rsquare_list <- list()
   
   # Loop through each unique day in the dataset
-  for ( day in unique(pct_tbl$localDaystamp) ) {
+  for ( day in unique(tbl$localDaystamp) ) {
     
     # pull out the data associated with one day at a time
     day_tbl <- 
-      dplyr::filter(pct_tbl, .data$localDaystamp == day)
+      dplyr::filter(tbl, .data$localDaystamp == day)
     
-    # calculate the correlation between several variables
+    # calculate the r-squared between several variables
     pm25_A_humidity_model <- lm(day_tbl$pm25_A ~ day_tbl$humidity, subset = NULL, weights = NULL)
     pm25_A_humidity_model_summary <- summary(pm25_A_humidity_model)
-    pm25_A_humidity_cor <- as.numeric(pm25_A_humidity_model_summary$r.squared)^0.5
+    pm25_A_humidity_rsquare <- as.numeric(pm25_A_humidity_model_summary$r.squared)
     
     pm25_A_temperature_model <- lm(day_tbl$pm25_A ~ day_tbl$temperature, subset = NULL, weights = NULL)
     pm25_A_temperature_model_summary <- summary(pm25_A_temperature_model)
-    pm25_A_temperature_cor <- as.numeric(pm25_A_temperature_model_summary$r.squared)^0.5
+    pm25_A_temperature_rsquare <- as.numeric(pm25_A_temperature_model_summary$r.squared)
     
     pm25_B_humidity_model <- lm(day_tbl$pm25_B ~ day_tbl$humidity, subset = NULL, weights = NULL)
     pm25_B_humidity_model_summary <- summary(pm25_B_humidity_model)
-    pm25_B_humidity_cor <- as.numeric(pm25_B_humidity_model_summary$r.squared)^0.5
+    pm25_B_humidity_rsquare <- as.numeric(pm25_B_humidity_model_summary$r.squared)
     
     pm25_B_temperature_model <- lm(day_tbl$pm25_B ~ day_tbl$temperature, subset = NULL, weights = NULL)
     pm25_B_temperature_model_summary <- summary(pm25_B_temperature_model)
-    pm25_B_temperature_cor <- as.numeric(pm25_B_temperature_model_summary$r.squared)^0.5
+    pm25_B_temperature_rsquare <- as.numeric(pm25_B_temperature_model_summary$r.squared)
     
-    # add the correlation per day, per variable comparison to a list
-    correlation_list[[day]] <- list(
-      pm25_A_humidity_cor = pm25_A_humidity_cor,
-      pm25_A_temperature_cor = pm25_A_temperature_cor,
-      pm25_B_humidity_cor = pm25_B_humidity_cor,
-      pm25_B_temperature_cor = pm25_B_temperature_cor
+    # add the r-squared per day, per variable comparison to a list
+    rsquare_list[[day]] <- list(
+      pm25_A_humidity_rsquare = pm25_A_humidity_rsquare,
+      pm25_A_temperature_rsquare = pm25_A_temperature_rsquare,
+      pm25_B_humidity_rsquare = pm25_B_humidity_rsquare,
+      pm25_B_temperature_rsquare = pm25_B_temperature_rsquare
     )
   }
   
@@ -137,39 +154,40 @@ PurpleAirSoH_dailyCorrelation <- function(
   # TODO:  from a list to a dataframe and certainly could be improved.
   
   # reformat the list as a tibble
-  int_correlation_tbl <- dplyr::as_tibble(correlation_list)
+  int_rsquare_tbl <- dplyr::as_tibble(rsquare_list)
   
   #  transpose and reformat as a matrix in order to have the desired outcome after transpose
-  correlation_matrix <- t(as.matrix(int_correlation_tbl))
+  rsquare_matrix <- t(as.matrix(int_rsquare_tbl))
   
   # reformat as a data.frame in order to change datetime to POSIXCT and add the colnames
-  correlation_df <- data.frame(correlation_matrix)
+  rsquare_df <- data.frame(rsquare_matrix)
   
   # reformat to tibble to change the datetime from rownames to an actual column of data
-  correlation_df <- tibble::rownames_to_column(correlation_df, var="datetime") 
+  rsquare_df <- tibble::rownames_to_column(rsquare_df, var="datetime") 
   
   # change datetime into a POSIXCT 
-  correlation_df$datetime <- MazamaCoreUtils::parseDatetime(correlation_df$datetime, 
+  rsquare_df$datetime <- MazamaCoreUtils::parseDatetime(rsquare_df$datetime, 
                                                             timezone = timezone)
   
   # add column names
-  colnames <- c( "datetime","pm25_A_humidity_cor", "pm25_A_temperature_cor",
-                 "pm25_B_humidity_cor", "pm25_B_temperature_cor")
-  colnames(correlation_df) <-colnames
+  colnames <- c( "datetime","pm25_A_humidity_rsquare", "pm25_A_temperature_rsquare",
+                 "pm25_B_humidity_rsquare", "pm25_B_temperature_rsquare")
+  
+  colnames(rsquare_df) <-colnames
   
   # re-define each of the columns as numeric rather than lists for easier plotting in ggplot
-  correlation_df$pm25_A_temperature_cor <- as.numeric(correlation_df$pm25_A_temperature_cor)
-  correlation_df$pm25_A_humidity_cor <- as.numeric(correlation_df$pm25_A_humidity_cor)
-  correlation_df$pm25_B_temperature_cor <- as.numeric(correlation_df$pm25_B_temperature_cor)
-  correlation_df$pm25_B_humidity_cor <- as.numeric(correlation_df$pm25_B_humidity_cor)
-
+  rsquare_df$pm25_A_temperature_rsquare <- as.numeric(rsquare_df$pm25_A_temperature_rsquare)
+  rsquare_df$pm25_A_humidity_rsquare <- as.numeric(rsquare_df$pm25_A_humidity_rsquare)
+  rsquare_df$pm25_B_temperature_rsquare <- as.numeric(rsquare_df$pm25_B_temperature_rsquare)
+  rsquare_df$pm25_B_humidity_rsquare <- as.numeric(rsquare_df$pm25_B_humidity_rsquare)
+  
   
   # join with empty daily column to flag missing days
-  correlation_df <- dplyr::left_join(days, correlation_df, by = "datetime")
+  rsquare_df <- dplyr::left_join(days, rsquare_df, by = "datetime")
   
   # ----- Return ---------------------------------------------------------------
   
-  return(correlation_df)
+  return(rsquare_df)
   
 }
 

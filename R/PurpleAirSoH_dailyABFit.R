@@ -104,7 +104,7 @@ PurpleAirSoH_dailyABFit <- function(
   # flag missing data
   days <- tibble(datetime = datetime) 
   
-  # ----- Calculate dailyCorrelation -------------------------------------------
+  # ----- Calculate linear models -------------------------------------------
   
   # Begin percent DC calculations:
   pct_tbl <-
@@ -116,7 +116,7 @@ PurpleAirSoH_dailyABFit <- function(
   
   pct_tbl <-
     pct_tbl %>%
-    # Group by day so that the correlations can be applied to a local 24 hour day
+    # Group by day so that the linear models can be applied to a local 24 hour day
     dplyr::mutate(localDaystamp = strftime(.data$datetime, "%Y%m%d", 
                                            tz = timezone)) 
   
@@ -139,7 +139,7 @@ PurpleAirSoH_dailyABFit <- function(
     pm25_A_pm25_B_slope <- as.numeric(model$coefficients[2])  # as.numeric() to remove name
     pm25_A_pm25_B_intercept <- as.numeric(model$coefficients[1])
     
-    # add the correlation per day, per variable comparison to a list
+    # add the linear model per day, per variable comparison to a list
     ABFit_list[[day]] <- list(
       pm25_A_pm25_B_rsquared = pm25_A_pm25_B_rsquared,
       pm25_A_pm25_B_slope = pm25_A_pm25_B_slope,
