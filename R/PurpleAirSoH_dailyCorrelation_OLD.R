@@ -14,33 +14,32 @@
 #' 
 #' @description This function calculates the daily correlation values between
 #' the \code{pm25_A}, \code{pm25_B}, \code{humidity}, and \code{temperature} 
-#' channels. One correlation value for each channel pair will 
-#' be returned for each day. A linear fit between channels A and B is also 
-#' calculated for each day and the coefficients are returned as the slope and 
-#' the intercept.
+#' channels. One correlation value for each channel pair except \code{pm25_A}, 
+#' \code{pm25_B}, and \code{humidity}, \code{temperature} will be returned for 
+#' each day. All returned values are expected to hover near 0 for a properly
+#' functioning sensor.
 #' 
 #' 
 #' @examples  
 #' tbl <- 
 #'   example_pat_failure_A %>%
-#'   PurpleAirSoH_dailyCorrelation(aggregationPeriod = "30 min") 
+#'   PurpleAirSoH_dailyCorrelation_OLD(aggregationPeriod = "30 min") 
 #'   
 #' timeseriesTbl_multiplot(
 #'   tbl, 
-#'   parameters = c("pm25_A_pm25_B_cor", "temperature_humidity_cor", "pm25_A_temperature_cor"),
+#'   parameters = c("pm25_B_temperature_cor", "pm25_A_temperature_cor"),
 #'   ylim = c(-1,1), 
 #'   style = "line"
 #' )
 #' 
 #' timeseriesTbl_multiplot(
 #'   tbl, 
-#'   parameterPattern = "_A.*_B",
 #'   autoRange = TRUE, 
 #'   style = "line"
 #' )
 #' 
 
-PurpleAirSoH_dailyCorrelation <- function(
+PurpleAirSoH_dailyCorrelation_OLD <- function(
   pat = NULL,
   aggregationPeriod = "10 min"
 ) {
@@ -146,8 +145,6 @@ PurpleAirSoH_dailyCorrelation <- function(
     
     
     # calculate the correlation between several variables
-    pm25_A_pm25_B_cor <- stats::cor(day_tbl$pm25_A_mean, day_tbl$pm25_B_mean, 
-                                    use = "pairwise.complete.obs")
     pm25_A_humidity_cor <- stats::cor(day_tbl$pm25_A_mean, day_tbl$humidity_mean, 
                                       use = "pairwise.complete.obs")
     pm25_A_temperature_cor <- stats::cor(day_tbl$pm25_A_mean, day_tbl$temperature_mean, 
@@ -156,24 +153,14 @@ PurpleAirSoH_dailyCorrelation <- function(
                                       use = "pairwise.complete.obs")
     pm25_B_temperature_cor <- stats::cor(day_tbl$pm25_B_mean, day_tbl$temperature_mean, 
                                          use = "pairwise.complete.obs")
-    temperature_humidity_cor <- stats::cor(day_tbl$temperature_mean, day_tbl$humidity_mean, 
-                                           use = "pairwise.complete.obs")
-    
-    # calculate the ab slope and intercept
-    model <- lm(day_tbl$pm25_A_mean ~ day_tbl$pm25_B_mean, subset = NULL, weights = NULL)
-    pm25_A_pm25_B_slope <- as.numeric(model$coefficients[2])  # as.numeric() to remove name
-    pm25_A_pm25_B_intercept <- as.numeric(model$coefficients[1])
+
     
     # add the correlation per day, per variable comparison to a list
     correlation_list[[day]] <- list(
-      pm25_A_pm25_B_cor = pm25_A_pm25_B_cor,
       pm25_A_humidity_cor = pm25_A_humidity_cor,
       pm25_A_temperature_cor = pm25_A_temperature_cor,
       pm25_B_humidity_cor = pm25_B_humidity_cor,
-      pm25_B_temperature_cor = pm25_B_temperature_cor,
-      temperature_humidity_cor = temperature_humidity_cor,
-      pm25_A_pm25_B_slope = pm25_A_pm25_B_slope,
-      pm25_A_pm25_B_intercept = pm25_A_pm25_B_intercept
+      pm25_B_temperature_cor = pm25_B_temperature_cor
     )
     
   }
@@ -198,20 +185,15 @@ PurpleAirSoH_dailyCorrelation <- function(
                                                             timezone = timezone)
   
   # add column names
-  colnames <- c( "datetime","pm25_A_pm25_B_cor", "pm25_A_humidity_cor", "pm25_A_temperature_cor",
-                 "pm25_B_humidity_cor", "pm25_B_temperature_cor",
-                 "temperature_humidity_cor", "pm25_A_pm25_B_slope", "pm25_A_pm25_B_intercept")
+  colnames <- c( "datetime","pm25_A_humidity_cor", "pm25_A_temperature_cor",
+                 "pm25_B_humidity_cor", "pm25_B_temperature_cor")
   colnames(correlation_df) <-colnames
   
   # re-define each of the columns as numeric rather than lists for easier plotting in ggplot
-  correlation_df$pm25_A_pm25_B_cor <- as.numeric(correlation_df$pm25_A_pm25_B_cor)
   correlation_df$pm25_A_temperature_cor <- as.numeric(correlation_df$pm25_A_temperature_cor)
   correlation_df$pm25_A_humidity_cor <- as.numeric(correlation_df$pm25_A_humidity_cor)
   correlation_df$pm25_B_temperature_cor <- as.numeric(correlation_df$pm25_B_temperature_cor)
   correlation_df$pm25_B_humidity_cor <- as.numeric(correlation_df$pm25_B_humidity_cor)
-  correlation_df$temperature_humidity_cor <- as.numeric(correlation_df$temperature_humidity_cor)
-  correlation_df$pm25_A_pm25_B_slope <- as.numeric(correlation_df$pm25_A_pm25_B_slope)
-  correlation_df$pm25_A_pm25_B_intercept <- as.numeric(correlation_df$pm25_A_pm25_B_intercept)
 
   
   # join with empty daily column to flag missing days

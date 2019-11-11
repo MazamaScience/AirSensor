@@ -9,8 +9,7 @@
 #' is operating optimally.
 #' 
 #' @description The number of sensor readings recorded per hour are summed over 
-#' the course of a calendar day (24 hours unless the \code{pat} datetime column
-#' includes a partial day at the beginning or end). This is then divided by the 
+#' the course of a calendar day. This is then divided by the 
 #' number of samples the sensor would record in an ideal day 
 #' (\code{24 * 3600 / samplingInterval}) to return a percentage of each 
 #' day that the sensor is reporting data.
@@ -64,6 +63,15 @@ PurpleAirSoH_dailyPctReporting <- function(
     startdate = start, 
     enddate = end + lubridate::ddays(1)
   )
+ 
+  # Create daily tibble based on daterange to join with the valid_tbl and 
+  # flag missing data 
+  datetime <- 
+    seq(start, end, by = "day") %>% 
+    strftime("%Y%m%d", tz = timezone) %>%
+    MazamaCoreUtils::parseDatetime(timezone = timezone)
+  days <- tibble(datetime = datetime) 
+  
   
   # Samples collected per day in an ideal day:
   samplesPerDay <- 24 * 3600 / samplingInterval
@@ -87,7 +95,7 @@ PurpleAirSoH_dailyPctReporting <- function(
       humidity_count = .data$humidity
     ) %>%
     
-    # Calculate pctReporing = count/samplesPerDay * 100
+    # Calculate pctReporting = count/samplesPerDay * 100
     dplyr::mutate(pm25_A_pctReporting =.data$pm25_A_count/samplesPerDay*100) %>%
     dplyr::mutate(pm25_B_pctReporting =.data$pm25_B_count/samplesPerDay*100) %>%
     dplyr::mutate(humidity_pctReporting =.data$humidity_count/samplesPerDay*100) %>%
@@ -95,6 +103,11 @@ PurpleAirSoH_dailyPctReporting <- function(
     dplyr::mutate(datetime = MazamaCoreUtils::parseDatetime(.data$daystamp, timezone = timezone)) %>%
     dplyr::select("datetime", contains("pctReporting"))
   
+    tbl <- dplyr::left_join(days, tbl, by = "datetime") 
+    tbl <- 
+      tbl %>%
+      dplyr::mutate_if(is.numeric, ~replace(., is.na(.), 0))
+    
   # ----- Return ---------------------------------------------------------------
   
   return(tbl)

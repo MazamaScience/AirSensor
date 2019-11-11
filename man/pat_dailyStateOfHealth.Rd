@@ -7,7 +7,7 @@
 pat_dailyStateOfHealth(pat = NULL,
   SoH_functions = c("PurpleAirSoH_dailyPctDC",
   "PurpleAirSoH_dailyPctReporting", "PurpleAirSoH_dailyPctValid",
-  "PurpleAirSoH_dailyCorrelation"))
+  "PurpleAirSoH_dailyOtherFit", "PurpleAirSoH_dailyABFit"))
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}

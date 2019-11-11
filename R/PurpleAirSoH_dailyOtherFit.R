@@ -1,0 +1,198 @@
+#' @export
+#' @importFrom rlang .data
+#' @importFrom dplyr contains 
+#' 
+#' @title Daily fit values
+#' 
+#' @param pat PurpleAir Timeseries \emph{pat} object.
+#' 
+#' @description This function calculates a daily linear model between
+#' the \code{pm25_A}, \code{pm25_B}, \code{humidity}, and \code{temperature} 
+#' channels. One r-squared value for each channel pair except \code{pm25_A}, 
+#' \code{pm25_B}, and \code{humidity}, \code{temperature} will be returned for 
+#' each day. All returned values are expected to hover near 0 for a properly
+#' functioning sensor.
+#' 
+#' 
+#' @examples  
+#' tbl <- 
+#'   example_pat_failure_A %>%
+#'   PurpleAirSoH_dailyOtherFit() 
+#'   
+#' timeseriesTbl_multiplot(
+#'   tbl, 
+#'   parameters = c("pm25_B_temperature_rsquared", "pm25_A_temperature_rsquared"),
+#'   ylim = c(-1,1), 
+#'   style = "line"
+#' )
+#' 
+#' timeseriesTbl_multiplot(
+#'   tbl, 
+#'   autoRange = TRUE, 
+#'   style = "line"
+#' )
+#' 
+
+PurpleAirSoH_dailyOtherFit <- function(
+  pat = NULL
+) {
+  
+  # ----- Validate parameters --------------------------------------------------
+  
+  MazamaCoreUtils::stopIfNull(pat)
+  
+  if ( !pat_isPat(pat) )
+    stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")
+  
+  if ( pat_isEmpty(pat) )
+    stop("Parameter 'pat' has no data.") 
+  
+  
+  # ----- Create daily tbl -----------------------------------------------------
+  
+  # Get full days in the local timezone
+  timezone <- pat$meta$timezone
+  localTime <- lubridate::with_tz(pat$dat$datetime, tzone = timezone)
+  hour <- lubridate::hour(localTime)
+  start <- lubridate::floor_date(localTime[ min(which(hour == 0)) ], unit = "hour")
+  end <- lubridate::floor_date(localTime[ max(which(hour == 23)) ], unit = "hour")
+  endtime = end + lubridate::dhours(1)
+  
+  # NOTE:  pat_filterDate only goes to the beginning of enddate and we want it
+  # NOTE:  to go to the end of enddate.
+  
+  # Filter the pat based on the times established above.
+  pat <- pat_filterDate(
+    pat, 
+    startdate = start, 
+    enddate = end + lubridate::ddays(1)
+  )
+  
+  # NOTE:  seq.Date(..., by = "day") operates by repeatedly adding 24 hours
+  # NOTE:  which means that when we switch to/from daylight savings we end up
+  # NOTE:  no longer on the midnight local time day boundary. Hence the
+  # NOTE:  following workaround
+  
+  datetime <- 
+    seq(start, end, by = "day") %>% 
+    strftime("%Y%m%d", tz = timezone) %>%
+    MazamaCoreUtils::parseDatetime(timezone = timezone)
+  
+  # Create daily tibble based on daterange to join with the valid_tbl and 
+  # flag missing data
+  days <- tibble(datetime = datetime) 
+  
+  # ----- Calculate dailyOtherFit -------------------------------------------
+  
+  # Note: This function uses a combination of lm() and summary() to calculate 
+  # the r-squared between several channels rather than using stats::cor() 
+  # because lm() has a built-in method for handling incomplete pairing between
+  # channels. To ground truth that this method produces the same results as 
+  # stats::cor(), run this example:
+  # setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+  # pas <- pas_load(archival = TRUE)
+  # pat <- pat_createNew(pas, "SCAP_19",
+  #                      startdate = "2019-09-10",
+  #                      enddate = "2019-09-11",
+  #                      timezone = "America/Los_Angeles")
+  # cor_stats <- (stats::cor(pat$data$pm25_A, pat$data$temperature, use = "pairwise.complete.obs"))^2
+  # lm_rsquared <- PurpleAirSoH_dailyOtherFit(pat)
+  # Notice that cor_stats and lm_rsquared$pm25_A_temperature_rsquared are the same.
+  
+  
+  # Begin calculations:
+  tbl <-
+    pat$data  
+  
+  # Put it on a local time axis and trim
+  tbl$datetime <- lubridate::with_tz(tbl$datetime, tzone = timezone)
+  tbl <- dplyr::filter(tbl, .data$datetime >= start & .data$datetime <= endtime)
+  
+  tbl <-
+    tbl %>%
+    # Group by day so that the r-squared can be applied to a local 24 hour day
+    dplyr::mutate(localDaystamp = strftime(.data$datetime, "%Y%m%d", 
+                                           tz = timezone))
+  
+  # Preallocate a list
+  rsquared_list <- list()
+  
+  # Loop through each unique day in the dataset
+  for ( day in unique(tbl$localDaystamp) ) {
+    
+    # pull out the data associated with one day at a time
+    day_tbl <- 
+      dplyr::filter(tbl, .data$localDaystamp == day)
+    
+    # calculate the r-squared between several variables
+    pm25_A_humidity_model <- lm(day_tbl$pm25_A ~ day_tbl$humidity, subset = NULL, weights = NULL)
+    pm25_A_humidity_model_summary <- summary(pm25_A_humidity_model)
+    pm25_A_humidity_rsquared <- as.numeric(pm25_A_humidity_model_summary$r.squared)
+    
+    pm25_A_temperature_model <- lm(day_tbl$pm25_A ~ day_tbl$temperature, subset = NULL, weights = NULL)
+    pm25_A_temperature_model_summary <- summary(pm25_A_temperature_model)
+    pm25_A_temperature_rsquared <- as.numeric(pm25_A_temperature_model_summary$r.squared)
+    
+    pm25_B_humidity_model <- lm(day_tbl$pm25_B ~ day_tbl$humidity, subset = NULL, weights = NULL)
+    pm25_B_humidity_model_summary <- summary(pm25_B_humidity_model)
+    pm25_B_humidity_rsquared <- as.numeric(pm25_B_humidity_model_summary$r.squared)
+    
+    pm25_B_temperature_model <- lm(day_tbl$pm25_B ~ day_tbl$temperature, subset = NULL, weights = NULL)
+    pm25_B_temperature_model_summary <- summary(pm25_B_temperature_model)
+    pm25_B_temperature_rsquared <- as.numeric(pm25_B_temperature_model_summary$r.squared)
+    
+    # add the r-squared per day, per variable comparison to a list
+    rsquared_list[[day]] <- list(
+      pm25_A_humidity_rsquared = pm25_A_humidity_rsquared,
+      pm25_A_temperature_rsquared = pm25_A_temperature_rsquared,
+      pm25_B_humidity_rsquared = pm25_B_humidity_rsquared,
+      pm25_B_temperature_rsquared = pm25_B_temperature_rsquared
+    )
+  }
+  
+  # TODO:  The following is messy and not the most efficient way to convert 
+  # TODO:  from a list to a dataframe and certainly could be improved.
+  
+  # reformat the list as a tibble
+  int_rsquared_tbl <- dplyr::as_tibble(rsquared_list)
+  
+  #  transpose and reformat as a matrix in order to have the desired outcome after transpose
+  rsquared_matrix <- t(as.matrix(int_rsquared_tbl))
+  
+  # reformat as a data.frame in order to change datetime to POSIXCT and add the colnames
+  rsquared_df <- data.frame(rsquared_matrix)
+  
+  # reformat to tibble to change the datetime from rownames to an actual column of data
+  rsquared_df <- tibble::rownames_to_column(rsquared_df, var="datetime") 
+  
+  # change datetime into a POSIXCT 
+  rsquared_df$datetime <- MazamaCoreUtils::parseDatetime(rsquared_df$datetime, 
+                                                            timezone = timezone)
+  
+  # add column names
+  colnames <- c( "datetime","pm25_A_humidity_rsquared", "pm25_A_temperature_rsquared",
+                 "pm25_B_humidity_rsquared", "pm25_B_temperature_rsquared")
+  
+  colnames(rsquared_df) <-colnames
+  
+  # re-define each of the columns as numeric rather than lists for easier plotting in ggplot
+  rsquared_df$pm25_A_temperature_rsquared <- as.numeric(rsquared_df$pm25_A_temperature_rsquared)
+  rsquared_df$pm25_A_humidity_rsquared <- as.numeric(rsquared_df$pm25_A_humidity_rsquared)
+  rsquared_df$pm25_B_temperature_rsquared <- as.numeric(rsquared_df$pm25_B_temperature_rsquared)
+  rsquared_df$pm25_B_humidity_rsquared <- as.numeric(rsquared_df$pm25_B_humidity_rsquared)
+  
+  
+  # join with empty daily column to flag missing days
+  rsquared_df <- dplyr::left_join(days, rsquared_df, by = "datetime")
+  
+  # ----- Return ---------------------------------------------------------------
+  
+  return(rsquared_df)
+  
+}
+
+
+
+
+
+

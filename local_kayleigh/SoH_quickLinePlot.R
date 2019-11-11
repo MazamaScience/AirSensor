@@ -13,7 +13,7 @@ library(skimr)
 
 setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
 pas <- pas_load()
-pat <- pat_load("MV Clean Air Ambassador @ Willowbrook Farm", startdate = 20190101, enddate = 20191023) #summer gap
+pat <- pat_load("MV Clean Air Ambassador @ Willowbrook Farm", startdate = 20190101, enddate = 20191101) #summer gap
 pat <- pat_load("Spokane South Hill #1", startdate = 20190101, enddate = 20191023) #super clean station
 
 # ------ data from California from Oct 2017 - South Coast -----------
@@ -22,7 +22,7 @@ setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 ca <- pas_load() %>% pas_filter(stateCode == "CA")
 scaqmd <- ca %>% pas_filter(stringr::str_detect(label, "SC.._"))
 pas_leaflet(scaqmd)  
-pat <- pat_load("SCPR_05", startdate = 20190101, enddate = 20191023)
+pat <- pat_load("SCPR_05", startdate = 20190401, enddate = 20190723)
 
 # ------ data for all of WA/OR for 2019 ----------------
 # Also has recent data for all sensors in California.
@@ -42,51 +42,101 @@ pat <- get(load("/Users/kayleigh/Projects/sensor-data-ingest-v1/output/pat/2019/
 
 pat_sub <- pat_sample(pat, keepOutliers = TRUE) #for viewing a subset of the pat data
 station_name <- pat$meta$label 
-# d <- pat_sub$data 
+
 # quick look at the pat
 pat_multiplot(pat_sub)
 
-#SoH <- pat_dailyStateOfHealth(pat) #calculate the daily SoH of a pat
+SoH_sub <- dplyr::select(SoH, "datetime", 
+                         contains("_pctReporting"),
+                         "pm25_A_pctValid",
+                         "pm25_B_pctValid",
+                         "pm25_A_pctDC", 
+                         "pm25_B_pctDC", 
+                         "pm25_A_pm25_B_slope",
+                         "pm25_A_pm25_B_intercept",
+                         "pm25_A_pm25_B_rsquared",
+                         "pm25_A_temperature_cor",
+                         "pm25_B_temperature_cor") 
 
-normalize <- function (x, na.rm = TRUE) (x/(max(x, na.rm = TRUE)))
-
-#pull out the indicator SoH columns and normalize them to from [-1, 1]
-SoH_sub_normalized <- dplyr::select(SoH, contains("_pctReporting"), "pm25_A_pm25_B_cor", "pm25_A_pm25_B_slope",
-                                    "temperature_humidity_cor", "pm25_A_pctDC", "pm25_B_pctDC",
-                                    "datetime", "pm25_A_temperature_cor") %>%
-  dplyr::mutate_if(is.numeric, normalize)
+datetime <- SoH_sub$datetime
 
 SoH_tidy <-
-  SoH_sub_normalized %>%
+  SoH_sub %>%
   tidyr::gather(variable, value, -datetime) %>%
-  mutate(id = as.integer(factor(variable))) 
+  mutate(expectedValue = as.integer(factor(variable))) 
 
-# SoH_tidy <-  ifelse(grepl("_pctReporting", SoH_tidy$variable), 1)
 SoH_tidy <- 
   SoH_tidy %>%
-  mutate(id = case_when(grepl("_pctReporting", SoH_tidy$variable) ~ 1,
-                        grepl("pm25_A_pm25_B_cor", SoH_tidy$variable) ~ 1,
-                        grepl("pm25_A_pm25_B_slope", SoH_tidy$variable) ~ 1,
-                        grepl("temperature_humidity_cor", SoH_tidy$variable) ~ -1,
-                        grepl("_pctDC", SoH_tidy$variable) ~ -0,
-                        grepl("pm25_A_temperature_cor", SoH_tidy$variable) ~ 0)) #%>%
-#arrange(id, variable, datetime)
-SoH_tidy <- reorder(SoH_tidy$id, SoH_tidy$variable)
+  mutate(expectedValue = case_when(
+    grepl("_pctReporting", SoH_tidy$variable) ~ 150,
+    grepl("_pctValid", SoH_tidy$variable) ~ 100,
+    grepl("_pctDC", SoH_tidy$variable) ~ 0,
+    grepl("pm25_A_pm25_B_slope", SoH_tidy$variable) ~ 1,
+    grepl("pm25_A_pm25_B_intercept", SoH_tidy$variable) ~ 0,
+    grepl("pm25_A_pm25_B_rsquared", SoH_tidy$variable) ~ 1,
+    grepl("pm25_A_temperature_cor", SoH_tidy$variable) ~ 0,
+    grepl("pm25_B_temperature_cor", SoH_tidy$variable) ~ 0)) 
 
 
+SoH_tidy$variable <- factor(SoH_tidy$variable, levels=c(
+  "pm25_A_pctReporting",
+  "pm25_B_pctReporting",
+  "temperature_pctReporting",
+  "humidity_pctReporting",
+  "pm25_A_pctValid",
+  "pm25_B_pctValid",
+  "pm25_A_pctDC",
+  "pm25_B_pctDC",
+  "pm25_A_pm25_B_slope",
+  "pm25_A_pm25_B_intercept",
+  "pm25_A_pm25_B_rsquared",
+  "pm25_A_temperature_cor",
+  "pm25_B_temperature_cor"
+))
 
+pm25_A_pctReporting <- rep_len(c(0, 150), length.out = length(SoH_sub$datetime))
+pm25_B_pctReporting <- rep_len(c(0, 150), length.out = length(SoH_sub$datetime))
+temperature_pctReporting <- rep_len(c(0, 150), length.out = length(SoH_sub$datetime))
+humidity_pctReporting <- rep_len(c(0, 150), length.out = length(SoH_sub$datetime))
+pm25_A_pctValid <- rep_len(c(0, 100), length.out = length(SoH_sub$datetime))
+pm25_B_pctValid <- rep_len(c(0, 100), length.out = length(SoH_sub$datetime))
+pm25_A_pctDC <- rep_len(c(0, 100), length.out = length(SoH_sub$datetime))
+pm25_B_pctDC <- rep_len(c(0, 100), length.out = length(SoH_sub$datetime))
+pm25_A_pm25_B_slope <- rep_len(c(-5, 5), length.out = length(SoH_sub$datetime))
+pm25_A_pm25_B_intercept <- rep_len(c(-50, 50), length.out = length(SoH_sub$datetime))
+pm25_A_pm25_B_rsquared <- rep_len(c(0, 1), length.out = length(SoH_sub$datetime))
+pm25_A_temperature_cor <- rep_len(c(-1, 1), length.out = length(SoH_sub$datetime))
+pm25_B_temperature_cor <- rep_len(c(-1, 1), length.out = length(SoH_sub$datetime))
 
-SoH_tidy$id <- factor(SoH_tidy$id, levels = c("-1", "0", "1"))
-colors <- c("deeppink3", "deepskyblue4", "springgreen4")
-#color <- scale_color_manual(name="colors", values=c("cyan", "purple", "magenta"), labels=c("-1", "0", "1"))
+dummy <- data.frame(datetime,
+                    pm25_A_pctReporting, 
+                    pm25_B_pctReporting,
+                    temperature_pctReporting,
+                    humidity_pctReporting,
+                    pm25_A_pctValid,
+                    pm25_B_pctValid,
+                    pm25_A_pctDC,
+                    pm25_B_pctDC,
+                    pm25_A_pm25_B_slope,
+                    pm25_A_pm25_B_intercept,
+                    pm25_A_pm25_B_rsquared,
+                    pm25_A_temperature_cor,
+                    pm25_B_temperature_cor)
+dummy_tidy <-
+  dummy %>%
+  tidyr::gather(variable, value, -datetime) %>%
+  mutate(expectedValue = as.integer(factor(variable))) 
+
+colors <- c("salmon")
+
 gg <- ggplot(SoH_tidy, aes(datetime, value)) +
-  geom_line(aes(x = .data$datetime, y = .data$id, color = factor(id, levels = c("-1", "0", "1")), alpha = 0.9)) +
-  scale_colour_manual(values=colors) +
+  geom_line(aes(x = SoH_tidy$datetime, y = SoH_tidy$expectedValue),  color = colors, alpha = 0.8) +
+  geom_line(aes(x = dummy_tidy$datetime, y = dummy_tidy$value, color = "black"), alpha = 0)+
   geom_line() +
-  facet_wrap(vars(variable), nrow = 10, strip.position = c("top")) +
-  scale_y_continuous(breaks = seq(-1, 1, by=1), limits=c(-1,1)) +
+  scale_y_continuous(breaks=scales::pretty_breaks(3)) +
+  facet_wrap(vars(variable), ncol = 1, strip.position = c("top"), scales = "free_y") +
   labs(title = paste0("State of Health - ", station_name)) +
-  labs(color="Expected \nValue")
+  theme(legend.position = "none")
 gg
 
 # labels <- c("humidity %reporting", "pm25 A %DC", "pm25 A %reporting", "pm25 A/B correlation",
