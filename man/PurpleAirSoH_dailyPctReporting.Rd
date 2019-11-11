@@ -14,8 +14,7 @@ is operating optimally.}
 }
 \description{
 The number of sensor readings recorded per hour are summed over 
-the course of a calendar day (24 hours unless the \code{pat} datetime column
-includes a partial day at the beginning or end). This is then divided by the 
+the course of a calendar day. This is then divided by the 
 number of samples the sensor would record in an ideal day 
 (\code{24 * 3600 / samplingInterval}) to return a percentage of each 
 day that the sensor is reporting data.

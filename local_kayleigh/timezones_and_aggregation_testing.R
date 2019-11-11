@@ -5,6 +5,7 @@ library(ggplot2)
 library(forcats)
 library(stringr)
 library(purrr)
+library(skimr)
 
 aggregationPeriod <- "1 day"
 #timezone <- "America/Los_Angeles"
@@ -72,6 +73,123 @@ points(tbl_utc$daystamp, tbl_utc$pm25_A, col = "red")
 
 plot(tbl_pacific_hour$hourstamp, tbl_pacific_hour$pm25_A, ylim = c(1, 2))
 points(tbl_utc_hour$hourstamp, tbl_utc_hour$pm25_A, col = "red")
+
+
+# --- testing manual aggregation using dplyr -----------------------------------
+
+tbl <-
+  pat$data %>%  
+  
+  #dplyr::mutate(daystamp = lubridate::round_date(datetime, "30 mins") )%>%
+  dplyr::mutate(daystampFloor = lubridate::floor_date(datetime, "10 mins") )%>%
+  dplyr::mutate(hourstamp = strftime(.data$datetime, "%Y%m%d%H", tz = timezone)) 
+
+# ---- testing A/B match up with NA's ------------------------------------------
+
+setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+pas <- pas_load(archival = TRUE)
+
+# Clean channels
+
+SCAP_41_early <- pat_createNew(pas, "SCAP_41", startdate = "2019-02-01", enddate = "2019-04-01", timezone = "America/Los_Angeles")
+# 19.2%
+SCAP_41_late <- pat_createNew(pas, "SCAH_29", startdate = "2019-08-01", enddate = "2019-10-01", timezone = "America/Los_Angeles")
+# 0.04%
+
+SCAP_19_early <- pat_createNew(pas, "SCAP_19", startdate = "2019-02-01", enddate = "2019-04-01", timezone = "America/Los_Angeles")
+# 9.9%
+SCAP_19_late <- pat_createNew(pas, "SCAP_19", startdate = "2019-08-01", enddate = "2019-10-01", timezone = "America/Los_Angeles")
+# 37%
+
+SCNP_05_early <- pat_createNew(pas, "SCNP_05", startdate = "2019-02-01", enddate = "2019-04-01", timezone = "America/Los_Angeles")
+# 12%
+SCNP_05_late <- pat_createNew(pas, "SCNP_05", startdate = "2019-08-01", enddate = "2019-10-01", timezone = "America/Los_Angeles")
+# 18.7%
+
+# Noisy channels
+# Channel A blows up in the second half of the year
+SCAP_14_early <- pat_createNew(pas, "SCAP_14", startdate = "2019-02-01", enddate = "2019-04-01", timezone = "America/Los_Angeles")
+# 33%
+SCAP_14_late <- pat_createNew(pas, "SCAP_14", startdate = "2019-08-01", enddate = "2019-10-01", timezone = "America/Los_Angeles")
+# 4.9%
+
+# Missing summer, somewhat noisy?
+MV_early <- pat_createNew(pas, "MV Clean Air Ambassador @ Willowbrook Farm", startdate = "2019-02-01", enddate = "2019-04-01", timezone = "America/Los_Angeles")
+# 17%
+MV_late <- pat_createNew(pas, "MV Clean Air Ambassador @ Willowbrook Farm", startdate = "2019-08-01", enddate = "2019-10-01", timezone = "America/Los_Angeles")
+# 16.5%
+
+# oddly rhythmic signal in the pct reporting plots
+SCTV_40_early <- pat_createNew(pas, "SCTV_40", startdate = "2019-02-01", enddate = "2019-04-01", timezone = "America/Los_Angeles")
+# 7.4%
+SCTV_40_late <- pat_createNew(pas, "SCTV_40", startdate = "2019-08-01", enddate = "2019-10-01", timezone = "America/Los_Angeles")
+# 11.7%
+
+# day with alternating NA's
+day_NA <- pat_filterDate(SCAP_19_late, startdate = 20190801, enddate = 20190802, timezone = "America/Los_Angeles")
+# day with no NA's
+day <- pat_filterDate(SCAP_19_late, startdate = 20190910, enddate = 20190911, timezone = "America/Los_Angeles")
+# another day with alternating NA's
+day_NA2 <- pat_filterDate(SCAP_19_late, startdate = 20190925, enddate = 20190926, timezone = "America/Los_Angeles")
+pat_multiplot(day)
+data <- day_NA$data
+data_2 <- day_NA2$data
+
+pat<- SCAP_19_late
+
+# timeseriesTbl_multiplot(data)
+# 
+# #time <- data$datetime
+# 
+# A_missing <- 
+#   data %>%
+#   filter(
+#     is.na(.data$pm25_A) & !is.na(.data$pm25_B)
+#   )
+# B_missing <- 
+#   data %>%
+#   filter(
+#     !is.na(.data$pm25_A) & is.na(.data$pm25_B)
+#   )
+# timeseriesTbl_multiplot(A_missing, parameterPattern = "pm25", style = "point")
+# correlation <- cor(x=data$pm25_A, y=data$pm25_B, use = "pairwise.complete.obs")
+# model <- lm(data$pm25_A ~ data$pm25_B)
+# summary <- summary(model)
+
+A_is_NA <- length(which(is.na(data$pm25_A) & !is.na(data$pm25_B)))
+B_is_NA <- length(which(!is.na(data$pm25_A) & is.na(data$pm25_B)))
+total_NA <- B_is_NA + A_is_NA
+complete_pairs <- length(which(!is.na(data$pm25_A) & !is.na(data$pm25_B)))
+where_complete <- which(!is.na(data$pm25_A) & !is.na(data$pm25_B))
+
+fraction <- total_NA/complete_pairs
+percent <- fraction*100
+
+A_is_NA_2 <- length(which(is.na(data_2$pm25_A) & !is.na(data_2$pm25_B)))
+where_A_NA_2 <- which(is.na(data_2$pm25_A) & !is.na(data_2$pm25_B))
+B_is_NA_2 <- length(which(!is.na(data_2$pm25_A) & is.na(data_2$pm25_B)))
+where_B_NA_2 <-which(!is.na(data_2$pm25_A) & is.na(data_2$pm25_B))
+total_NA_2 <- B_is_NA_2 + A_is_NA_2
+complete_pairs_2 <- length(which(!is.na(data_2$pm25_A) & !is.na(data_2$pm25_B)))
+where_complete_2 <- which(!is.na(data_2$pm25_A) & !is.na(data_2$pm25_B))
+
+fraction_2 <- total_NA_2/complete_pairs_2
+percent_2 <- fraction_2*100
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

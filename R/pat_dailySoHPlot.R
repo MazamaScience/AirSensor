@@ -55,7 +55,7 @@ pat_dailySoHPlot <- function(
   # create a tidy dataframe from the SoH
   SoH_tidy <-
     SoH_sub %>%
-    tidyr::gather(.data$variable, .data$value, -datetime) %>%
+    tidyr::gather(key ="variable", value = "value", -datetime) %>%
     # create a factor based on the variable name for expected value association
     dplyr::mutate(expectedValue = as.integer(factor(.data$variable))) 
   
@@ -124,7 +124,7 @@ pat_dailySoHPlot <- function(
   # tidy the dummy data to mimic the real data
   dummy_tidy <-
     dummy %>%
-    tidyr::gather(.data$variable, .data$value, -.data$datetime) %>%
+    tidyr::gather(key = "variable", value = "value", -.data$datetime) %>%
     dplyr::mutate(expectedValue = as.integer(factor(.data$variable))) 
   
   colors <- c("salmon")

@@ -5,29 +5,24 @@
 #' @title Daily DC Signal percentage
 #' 
 #' @param pat PurpleAir Timeseries \emph{pat} object.
-#' @param testPeriod The period of time over which to test for a DC signal. 
-#' Choose from an hour scale time period or less, i.e., "10 min", "30 min", or 
-#' "1 hour". 
 #' 
 #' @description This function calculates the daily percentage of DC signal 
 #' recorded by the \code{pm25_A}, \code{pm25_B}, \code{humidity}, and 
-#' \code{temperature} channels. Each day is broken up into individual chunks
-#' defined by \code{testPeriod}. The data are flagged as DC signal when the 
-#' standard deviation of the data from each channel equals zero over a 
-#' \code{testPeriod}. The number of chunks with a DC signal are summed over the 
-#' day and a daily DC percentage is returned. 
+#' \code{temperature} channels. The data are flagged as DC signal when the 
+#' standard deviation of an hour of data from each channel equals zero.
+#' The number of hours with a DC signal are summed over the day and a daily DC 
+#' percentage for each channel is returned. 
 #' 
 #' 
 #' @examples  
 #' tbl <- 
 #'   example_pat_failure_A %>%
-#'   PurpleAirSoH_dailyPctDC(testPeriod = "30 min") 
+#'   PurpleAirSoH_dailyPctDC() 
 #' 
 #' timeseriesTbl_multiplot(tbl, ylim = c(0,100), style = "line")
 
 PurpleAirSoH_dailyPctDC <- function(
-  pat = NULL,
-  testPeriod = "30 min"
+  pat = NULL
 ) {
   
   # ----- Validate parameters --------------------------------------------------
@@ -40,31 +35,7 @@ PurpleAirSoH_dailyPctDC <- function(
   if ( pat_isEmpty(pat) )
     stop("Parameter 'pat' has no data.") 
   
-  # ----- Convert period to seconds --------------------------------------------
-  
-  periodParts <- strsplit(testPeriod, " ", fixed = TRUE)[[1]]
-  
-  if ( length(periodParts) == 1 ) {
-    periodCount <- 1
-    units <- periodParts[1]
-  } else {
-    periodCount <- as.numeric(periodParts[1])
-    units <- periodParts[2]
-  }
-  
-  if ( units == "sec"     ) unitSecs <- 1
-  if ( units == "min"     ) unitSecs <- 60
-  if ( units == "hour"    ) unitSecs <- 3600
-  if ( units == "day"     ) unitSecs <- 3600 * 24
-  if ( units == "week"    ) unitSecs <- 3600 * 24 * 7
-  if ( units == "month"   ) unitSecs <- 3600 * 24 * 31
-  if ( units == "quarter" ) unitSecs <- 3600 * 24 * 31 * 3
-  if ( units == "year"    ) unitSecs <- 3600 * 8784 
-  
-  periodSeconds <- periodCount * unitSecs 
-  
-  hourFactor <- 3600 / periodSeconds
-  
+
   # ----- Create daily tbl -----------------------------------------------------
   
   # Get full days in the local timezone
@@ -102,43 +73,41 @@ PurpleAirSoH_dailyPctDC <- function(
   
   # Begin percent DC calculations:
   pct_DC_tbl <-
-    pat %>%
-    pat_aggregate(period = testPeriod)
-  
-  # Put it on a local time axis and trim
-  pct_DC_tbl$datetime <- lubridate::with_tz(pct_DC_tbl$datetime, tzone = timezone)
-  pct_DC_tbl <- dplyr::filter(pct_DC_tbl, .data$datetime >= start & .data$datetime <= end)
-  
-  pct_DC_tbl <-
-    pct_DC_tbl %>%
-    # Group by day so that the DC time segments can be summed over the day even
-    # if the aggregation period is less than one day. Each day must be a
-    # complete day to avoid tapering when dividing by 24 hours later on.
-    dplyr::mutate(daystamp = strftime(.data$datetime, "%Y%m%d", tz = timezone)) %>%
-    dplyr::group_by(.data$daystamp) %>% 
+    pat$data %>%  
+    
+    # Group by local time daystamp and calculate the sd over the course of an hour
+    dplyr::mutate(hourstamp = strftime(.data$datetime, "%Y%m%d%H", tz = timezone)) %>%
+    dplyr::group_by(.data$hourstamp) %>%
+    dplyr::summarise_at(
+      .vars = c("pm25_A", "pm25_B", "temperature", "humidity"),
+      .funs = function(x) { sd(x, na.rm = TRUE) }
+    ) %>%
+    dplyr::rename(
+      pm25_A_sd = .data$pm25_A,
+      pm25_B_sd = .data$pm25_B,
+      temperature_sd = .data$temperature,
+      humidity_sd = .data$humidity
+    ) %>%
     
     # Tally the number of time segments for which the standard deviation is 0
+    dplyr::mutate(datetime = MazamaCoreUtils::parseDatetime(.data$hourstamp, timezone = timezone)) %>%
+    dplyr::group_by(.data$hourstamp) %>%
     dplyr::add_tally(.data$pm25_A_sd==0, name = "pm25_A_DCSignalCount") %>%
     dplyr::add_tally(.data$pm25_B_sd==0, name = "pm25_B_DCSignalCount") %>%
-    dplyr::add_tally(.data$humidity_sd==0, name = "pm25_B_humidity") %>%
-    dplyr::add_tally(.data$temperature_sd==0, name = "pm25_B_temperature") %>%
+    dplyr::add_tally(.data$humidity_sd==0, name = "humidity_DCSignalCount") %>%
+    dplyr::add_tally(.data$temperature_sd==0, name = "temperature_DCSignalCount") %>%
     
-    # Summarize each tally channel. Since, it's a tally per day, take the max
-    # each day rather than sum.
+    # Add in and group by a daystamp column to sum the tally over the day
+    dplyr::mutate(daystamp = strftime(.data$datetime, "%Y%m%d", tz = timezone)) %>%
+    dplyr::group_by(.data$daystamp) %>%
     dplyr::summarise_at(.vars = c("pm25_A_DCSignalCount", "pm25_B_DCSignalCount", 
-                                  "pm25_B_temperature", "pm25_B_humidity"),max) %>%
-    
-    # Turn the DC signal time segments into hours per day 
-    dplyr::mutate(pm25_A_DCHourCount = .data$pm25_A_DCSignalCount/hourFactor) %>%
-    dplyr::mutate(pm25_B_DCHourCount = .data$pm25_B_DCSignalCount/hourFactor ) %>%
-    dplyr::mutate(humidity_DCHourCount = .data$pm25_B_humidity/hourFactor ) %>%
-    dplyr::mutate(temperature_DCHourCount = .data$pm25_B_temperature/hourFactor ) %>%
+                                  "humidity_DCSignalCount", "temperature_DCSignalCount"), sum) %>%
     
     # Turn the hours of DC per day into a percentage
-    dplyr::mutate(pm25_A_pctDC = .data$pm25_A_DCHourCount/24*100) %>%
-    dplyr::mutate(pm25_B_pctDC = .data$pm25_B_DCHourCount/24*100) %>%
-    dplyr::mutate(humidity_pctDC = .data$humidity_DCHourCount/24*100) %>%
-    dplyr::mutate(temperature_pctDC = .data$temperature_DCHourCount/24*100) %>%
+    dplyr::mutate(pm25_A_pctDC = .data$pm25_A_DCSignalCount/24*100) %>%
+    dplyr::mutate(pm25_B_pctDC = .data$pm25_B_DCSignalCount/24*100) %>%
+    dplyr::mutate(humidity_pctDC = .data$humidity_DCSignalCount/24*100) %>%
+    dplyr::mutate(temperature_pctDC = .data$temperature_DCSignalCount/24*100) %>%
     
     # Add back in the datetime column that was removed during summarizing.
     dplyr::mutate(datetime = MazamaCoreUtils::parseDatetime(.data$daystamp, timezone = timezone)) %>%

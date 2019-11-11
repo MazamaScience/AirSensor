@@ -21,7 +21,7 @@
 #' @examples  
 #' tbl <- 
 #'   example_pat_failure_A %>%
-#'   PurpleAirSoH_dailyABFit(aggregationPeriod = "30 min") 
+#'   PurpleAirSoH_dailyABFit_OLD(aggregationPeriod = "30 min") 
 #'   
 #' timeseriesTbl_multiplot(
 #'   tbl, 
@@ -31,7 +31,7 @@
 #' 
 
 
-PurpleAirSoH_dailyABFit <- function(
+PurpleAirSoH_dailyABFit_OLD <- function(
   pat = NULL,
   aggregationPeriod = "10 min"
 ) {
@@ -108,8 +108,9 @@ PurpleAirSoH_dailyABFit <- function(
   
   # Begin percent DC calculations:
   pct_tbl <-
-    pat$data #%>%  
-    
+    pat %>%
+    pat_aggregate(period = aggregationPeriod)
+  
   # Put it on a local time axis and trim
   pct_tbl$datetime <- lubridate::with_tz(pct_tbl$datetime, tzone = timezone)
   pct_tbl <- dplyr::filter(pct_tbl, .data$datetime >= start & .data$datetime <= end)
@@ -118,7 +119,8 @@ PurpleAirSoH_dailyABFit <- function(
     pct_tbl %>%
     # Group by day so that the correlations can be applied to a local 24 hour day
     dplyr::mutate(localDaystamp = strftime(.data$datetime, "%Y%m%d", 
-                                           tz = timezone)) 
+                                           tz = timezone)) %>%
+    dplyr::group_by(.data$localDaystamp)
   
   # Preallocate a list
   ABFit_list <- list()
@@ -130,10 +132,12 @@ PurpleAirSoH_dailyABFit <- function(
     day_tbl <- 
       dplyr::filter(pct_tbl, .data$localDaystamp == day)
     
+    
     ABFit_list[[day]] <- day_tbl
+  
     
     # calculate the ab slope and intercept
-    model <- lm(day_tbl$pm25_A ~ day_tbl$pm25_B, subset = NULL, weights = NULL)
+    model <- lm(day_tbl$pm25_A_mean ~ day_tbl$pm25_B_mean, subset = NULL, weights = NULL)
     model_summary <- summary(model)
     pm25_A_pm25_B_rsquared <- as.numeric(model_summary$r.squared)
     pm25_A_pm25_B_slope <- as.numeric(model$coefficients[2])  # as.numeric() to remove name

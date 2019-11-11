@@ -13,7 +13,7 @@ library(skimr)
 
 setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
 pas <- pas_load()
-pat_short <- pat_load("MV Clean Air Ambassador @ Willowbrook Farm", startdate = 20190818, enddate = 20190822) #summer gap
+pat <- pat_load("MV Clean Air Ambassador @ Willowbrook Farm", startdate = 20190101, enddate = 20191101) #summer gap
 pat <- pat_load("Spokane South Hill #1", startdate = 20190101, enddate = 20191023) #super clean station
 
 # ------ data from California from Oct 2017 - South Coast -----------

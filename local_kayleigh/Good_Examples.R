@@ -22,3 +22,5 @@ sum(is.na(pat$data$pm25_A))
 sum(!is.na(pat$data$pm25_A))
 
 
+
+

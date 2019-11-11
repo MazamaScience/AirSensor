@@ -4,29 +4,24 @@
 \alias{PurpleAirSoH_dailyPctDC}
 \title{Daily DC Signal percentage}
 \usage{
-PurpleAirSoH_dailyPctDC(pat = NULL, testPeriod = "30 min")
+PurpleAirSoH_dailyPctDC(pat = NULL)
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}
-
-\item{testPeriod}{The period of time over which to test for a DC signal. 
-Choose from an hour scale time period or less, i.e., "10 min", "30 min", or 
-"1 hour".}
 }
 \description{
 This function calculates the daily percentage of DC signal 
 recorded by the \code{pm25_A}, \code{pm25_B}, \code{humidity}, and 
-\code{temperature} channels. Each day is broken up into individual chunks
-defined by \code{testPeriod}. The data are flagged as DC signal when the 
-standard deviation of the data from each channel equals zero over a 
-\code{testPeriod}. The number of chunks with a DC signal are summed over the 
-day and a daily DC percentage is returned.
+\code{temperature} channels. The data are flagged as DC signal when the 
+standard deviation of an hour of data from each channel equals zero.
+The number of hours with a DC signal are summed over the day and a daily DC 
+percentage for each channel is returned.
 }
 \examples{
  
 tbl <- 
   example_pat_failure_A \%>\%
-  PurpleAirSoH_dailyPctDC(testPeriod = "30 min") 
+  PurpleAirSoH_dailyPctDC() 
 
 timeseriesTbl_multiplot(tbl, ylim = c(0,100), style = "line")
 }

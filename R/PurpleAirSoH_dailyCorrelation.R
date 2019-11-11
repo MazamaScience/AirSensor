@@ -5,12 +5,6 @@
 #' @title Daily correlation values
 #' 
 #' @param pat PurpleAir Timeseries \emph{pat} object.
-#' @param aggregationPeriod The period of time over which to aggregate the data. 
-#' in order to create complete pairs between the A and B channels. If there is 
-#' not a complete pair, the function will return an "NA" for that day. It is
-#' recommended that this value is between "2 min" and "1 hour" The smaller the 
-#' \emph{aggregation period}, the longer this function will take to run. The 
-#' default is set to "10 min" for this reason.
 #' 
 #' @description This function calculates the daily correlation values between
 #' the \code{pm25_A}, \code{pm25_B}, \code{humidity}, and \code{temperature} 
@@ -23,7 +17,7 @@
 #' @examples  
 #' tbl <- 
 #'   example_pat_failure_A %>%
-#'   PurpleAirSoH_dailyCorrelation(aggregationPeriod = "30 min") 
+#'   PurpleAirSoH_dailyCorrelation() 
 #'   
 #' timeseriesTbl_multiplot(
 #'   tbl, 
@@ -40,8 +34,7 @@
 #' 
 
 PurpleAirSoH_dailyCorrelation <- function(
-  pat = NULL,
-  aggregationPeriod = "10 min"
+  pat = NULL
 ) {
   
   # ----- Validate parameters --------------------------------------------------
@@ -54,31 +47,7 @@ PurpleAirSoH_dailyCorrelation <- function(
   if ( pat_isEmpty(pat) )
     stop("Parameter 'pat' has no data.") 
   
-  # ----- Convert period to seconds --------------------------------------------
-  
-  periodParts <- strsplit(aggregationPeriod, " ", fixed = TRUE)[[1]]
-  
-  if ( length(periodParts) == 1 ) {
-    periodCount <- 1
-    units <- periodParts[1]
-  } else {
-    periodCount <- as.numeric(periodParts[1])
-    units <- periodParts[2]
-  }
-  
-  if ( units == "sec"     ) unitSecs <- 1
-  if ( units == "min"     ) unitSecs <- 60
-  if ( units == "hour"    ) unitSecs <- 3600
-  if ( units == "day"     ) unitSecs <- 3600 * 24
-  if ( units == "week"    ) unitSecs <- 3600 * 24 * 7
-  if ( units == "month"   ) unitSecs <- 3600 * 24 * 31
-  if ( units == "quarter" ) unitSecs <- 3600 * 24 * 31 * 3
-  if ( units == "year"    ) unitSecs <- 3600 * 8784 
-  
-  periodSeconds <- periodCount * unitSecs 
-  
-  hourFactor <- 3600 / periodSeconds
-  
+
   # ----- Create daily tbl -----------------------------------------------------
   
   # Get full days in the local timezone
@@ -116,9 +85,8 @@ PurpleAirSoH_dailyCorrelation <- function(
   
   # Begin percent DC calculations:
   pct_tbl <-
-    pat %>%
-    pat_aggregate(period = aggregationPeriod)
-  
+    pat$data  
+    
   # Put it on a local time axis and trim
   pct_tbl$datetime <- lubridate::with_tz(pct_tbl$datetime, tzone = timezone)
   pct_tbl <- dplyr::filter(pct_tbl, .data$datetime >= start & .data$datetime <= end)
@@ -127,8 +95,7 @@ PurpleAirSoH_dailyCorrelation <- function(
     pct_tbl %>%
     # Group by day so that the correlations can be applied to a local 24 hour day
     dplyr::mutate(localDaystamp = strftime(.data$datetime, "%Y%m%d", 
-                                           tz = timezone)) %>%
-    dplyr::group_by(.data$localDaystamp)
+                                           tz = timezone))
   
   # Preallocate a list
   correlation_list <- list()
@@ -140,20 +107,22 @@ PurpleAirSoH_dailyCorrelation <- function(
     day_tbl <- 
       dplyr::filter(pct_tbl, .data$localDaystamp == day)
     
-    
-    correlation_list[[day]] <- day_tbl
-    
-    
     # calculate the correlation between several variables
-    pm25_A_humidity_cor <- stats::cor(day_tbl$pm25_A_mean, day_tbl$humidity_mean, 
-                                      use = "pairwise.complete.obs")
-    pm25_A_temperature_cor <- stats::cor(day_tbl$pm25_A_mean, day_tbl$temperature_mean, 
-                                         use = "pairwise.complete.obs")
-    pm25_B_humidity_cor <- stats::cor(day_tbl$pm25_B_mean, day_tbl$humidity_mean, 
-                                      use = "pairwise.complete.obs")
-    pm25_B_temperature_cor <- stats::cor(day_tbl$pm25_B_mean, day_tbl$temperature_mean, 
-                                         use = "pairwise.complete.obs")
-
+    pm25_A_humidity_model <- lm(day_tbl$pm25_A ~ day_tbl$humidity, subset = NULL, weights = NULL)
+    pm25_A_humidity_model_summary <- summary(pm25_A_humidity_model)
+    pm25_A_humidity_cor <- as.numeric(pm25_A_humidity_model_summary$r.squared)^0.5
+    
+    pm25_A_temperature_model <- lm(day_tbl$pm25_A ~ day_tbl$temperature, subset = NULL, weights = NULL)
+    pm25_A_temperature_model_summary <- summary(pm25_A_temperature_model)
+    pm25_A_temperature_cor <- as.numeric(pm25_A_temperature_model_summary$r.squared)^0.5
+    
+    pm25_B_humidity_model <- lm(day_tbl$pm25_B ~ day_tbl$humidity, subset = NULL, weights = NULL)
+    pm25_B_humidity_model_summary <- summary(pm25_B_humidity_model)
+    pm25_B_humidity_cor <- as.numeric(pm25_B_humidity_model_summary$r.squared)^0.5
+    
+    pm25_B_temperature_model <- lm(day_tbl$pm25_B ~ day_tbl$temperature, subset = NULL, weights = NULL)
+    pm25_B_temperature_model_summary <- summary(pm25_B_temperature_model)
+    pm25_B_temperature_cor <- as.numeric(pm25_B_temperature_model_summary$r.squared)^0.5
     
     # add the correlation per day, per variable comparison to a list
     correlation_list[[day]] <- list(
@@ -162,7 +131,6 @@ PurpleAirSoH_dailyCorrelation <- function(
       pm25_B_humidity_cor = pm25_B_humidity_cor,
       pm25_B_temperature_cor = pm25_B_temperature_cor
     )
-    
   }
   
   # TODO:  The following is messy and not the most efficient way to convert 

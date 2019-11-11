@@ -7,9 +7,8 @@
 #' @param pat PurpleAir Timeseries \emph{pat} object.
 #' 
 #' @description The number of valid (\emph{i.e.}, not NA or out-of-spec) sensor 
-#' measurements are summed over the course of a calendar day (24 
-#' hours unless a partial day is included in the data), then divided by the 
-#' total number of measurements the sensor actually recorded in during that day 
+#' measurements are summed over the course of a calendar day, then divided by the 
+#' total number of measurements the sensor actually recorded during that day 
 #' (including NA and out-of-spec values) to return a percentage of the total
 #' recorded measurements that are considered plausible.
 #' 
