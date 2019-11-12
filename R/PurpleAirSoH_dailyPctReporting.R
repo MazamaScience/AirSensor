@@ -53,7 +53,7 @@ PurpleAirSoH_dailyPctReporting <- function(
   hour <- lubridate::hour(localTime)
   start <- lubridate::floor_date(localTime[ min(which(hour == 0)) ], unit = "hour")
   end <- lubridate::floor_date(localTime[ max(which(hour == 23)) ], unit = "hour")
-
+  
   # NOTE:  pat_filterDate only goes to the beginning of enddate and we want it
   # NOTE:  to go to the end of enddate.
   
@@ -63,14 +63,13 @@ PurpleAirSoH_dailyPctReporting <- function(
     startdate = start, 
     enddate = end + lubridate::ddays(1)
   )
- 
-  # Create daily tibble based on daterange to join with the valid_tbl and 
-  # flag missing data 
-  datetime <- 
-    seq(start, end, by = "day") %>% 
-    strftime("%Y%m%d", tz = timezone) %>%
-    MazamaCoreUtils::parseDatetime(timezone = timezone)
-  days <- tibble(datetime = datetime) 
+  
+  # Create daily tibble based on date range to join with the valid_tbl.
+  # This will ensure that missing records from valid_tbl will have NA.
+  days <- dplyr::tibble(
+    # Special function to handle daylight savings transitions
+    datetime = MazamaCoreUtils::dateSequence(start, end, timezone = timezone)
+  )
   
   
   # Samples collected per day in an ideal day:
@@ -78,36 +77,57 @@ PurpleAirSoH_dailyPctReporting <- function(
   
   # ----- Calculate dailyPctReporting ------------------------------------------
   
-  tbl <- 
-    pat$data %>%  
+  result <- try({
     
-    # Group by local time daystamp and count all non-NA values
-    dplyr::mutate(daystamp = strftime(.data$datetime, "%Y%m%d", tz = timezone)) %>%
-    dplyr::group_by(.data$daystamp) %>%
-    dplyr::summarise_at(
-      .vars = c("pm25_A", "pm25_B", "temperature", "humidity"),
-      .funs = function(x) { length(na.omit(x)) }
-    ) %>%
-    dplyr::rename(
-      pm25_A_count = .data$pm25_A,
-      pm25_B_count = .data$pm25_B,
-      temperature_count = .data$temperature,
-      humidity_count = .data$humidity
-    ) %>%
-    
-    # Calculate pctReporting = count/samplesPerDay * 100
-    dplyr::mutate(pm25_A_pctReporting =.data$pm25_A_count/samplesPerDay*100) %>%
-    dplyr::mutate(pm25_B_pctReporting =.data$pm25_B_count/samplesPerDay*100) %>%
-    dplyr::mutate(humidity_pctReporting =.data$humidity_count/samplesPerDay*100) %>%
-    dplyr::mutate(temperature_pctReporting =.data$temperature_count/samplesPerDay*100) %>%
-    dplyr::mutate(datetime = MazamaCoreUtils::parseDatetime(.data$daystamp, timezone = timezone)) %>%
-    dplyr::select("datetime", contains("pctReporting"))
-  
-    tbl <- dplyr::left_join(days, tbl, by = "datetime") 
     tbl <- 
-      tbl %>%
-      dplyr::mutate_if(is.numeric, ~replace(., is.na(.), 0))
+      pat$data %>%  
+      
+      # Group by local time daystamp and count all non-NA values
+      dplyr::mutate(daystamp = strftime(.data$datetime, "%Y%m%d", tz = timezone)) %>%
+      dplyr::group_by(.data$daystamp) %>%
+      dplyr::summarise_at(
+        .vars = c("pm25_A", "pm25_B", "temperature", "humidity"),
+        .funs = function(x) { length(na.omit(x)) }
+      ) %>%
+      dplyr::rename(
+        pm25_A_count = .data$pm25_A,
+        pm25_B_count = .data$pm25_B,
+        temperature_count = .data$temperature,
+        humidity_count = .data$humidity
+      ) %>%
+      
+      # Calculate pctReporting = count/samplesPerDay * 100
+      dplyr::mutate(pm25_A_pctReporting =.data$pm25_A_count/samplesPerDay*100) %>%
+      dplyr::mutate(pm25_B_pctReporting =.data$pm25_B_count/samplesPerDay*100) %>%
+      dplyr::mutate(humidity_pctReporting =.data$humidity_count/samplesPerDay*100) %>%
+      dplyr::mutate(temperature_pctReporting =.data$temperature_count/samplesPerDay*100) %>%
+      dplyr::mutate(datetime = MazamaCoreUtils::parseDatetime(.data$daystamp, timezone = timezone)) %>%
+      dplyr::select("datetime", contains("pctReporting"))
     
+  }, silent = TRUE)
+  
+  # If successful, join with days
+  if ( ! "try-error" %in% class(result) ) {
+    result <- try({
+      tbl <- dplyr::left_join(days, tbl, by = "datetime") 
+    }, silent = TRUE)
+  }
+  
+  # Handle either failure
+  if ( "try-error" %in% class(result) ) {
+    tbl <- 
+      days %>%
+      dplyr::mutate(pm25_A_pctReporting = as.numeric(NA)) %>%
+      dplyr::mutate(pm25_B_pctReporting = as.numeric(NA)) %>%
+      dplyr::mutate(humidity_pctReporting = as.numeric(NA)) %>%
+      dplyr::mutate(temperature_pctReporting = as.numeric(NA))
+  }
+  
+  # Convert all NA (for any reason) to zero
+  tbl <- 
+    tbl %>%
+    dplyr::mutate_if(is.numeric, ~replace(., is.na(.), 0))
+  
   # ----- Return ---------------------------------------------------------------
   
   return(tbl)
