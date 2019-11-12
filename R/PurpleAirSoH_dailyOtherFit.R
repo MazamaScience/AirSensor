@@ -78,10 +78,12 @@ PurpleAirSoH_dailyOtherFit <- function(
     strftime("%Y%m%d", tz = timezone) %>%
     MazamaCoreUtils::parseDatetime(timezone = timezone)
   
-  # Create daily tibble based on daterange to join with the valid_tbl and 
-  # flag missing data
-  days <- tibble(datetime = datetime) 
-  
+  # Create daily tibble based on date range to join with the valid_tbl.
+  # This will ensure that missing records from valid_tbl will have NA.
+  days <- dplyr::tibble(
+    # Special function to handle daylight savings transitions
+    datetime = MazamaCoreUtils::dateSequence(start, end, timezone = timezone)
+  )
   # ----- Calculate dailyOtherFit -------------------------------------------
   
   # Note: This function uses a combination of lm() and summary() to calculate 
@@ -117,74 +119,114 @@ PurpleAirSoH_dailyOtherFit <- function(
   # Preallocate a list
   rsquared_list <- list()
   
-  # Loop through each unique day in the dataset
-  for ( day in unique(tbl$localDaystamp) ) {
+  # Pat try block
+  result <- try({
+    # Loop through each unique day in the dataset
+    for ( day in unique(tbl$localDaystamp) ) {
+      
+      # pull out the data associated with one day at a time
+      day_tbl <- 
+        dplyr::filter(tbl, .data$localDaystamp == day)
+      
+      # Daily try block to try to test if fits can be calculated on a daily basis 
+      result <- try({
+        # calculate the r-squared between several variables
+        pm25_A_humidity_model <- lm(day_tbl$pm25_A ~ day_tbl$humidity, subset = NULL, weights = NULL)
+        pm25_A_humidity_model_summary <- summary(pm25_A_humidity_model)
+        pm25_A_humidity_rsquared <- as.numeric(pm25_A_humidity_model_summary$r.squared)
+        
+        pm25_A_temperature_model <- lm(day_tbl$pm25_A ~ day_tbl$temperature, subset = NULL, weights = NULL)
+        pm25_A_temperature_model_summary <- summary(pm25_A_temperature_model)
+        pm25_A_temperature_rsquared <- as.numeric(pm25_A_temperature_model_summary$r.squared)
+        
+        pm25_B_humidity_model <- lm(day_tbl$pm25_B ~ day_tbl$humidity, subset = NULL, weights = NULL)
+        pm25_B_humidity_model_summary <- summary(pm25_B_humidity_model)
+        pm25_B_humidity_rsquared <- as.numeric(pm25_B_humidity_model_summary$r.squared)
+        
+        pm25_B_temperature_model <- lm(day_tbl$pm25_B ~ day_tbl$temperature, subset = NULL, weights = NULL)
+        pm25_B_temperature_model_summary <- summary(pm25_B_temperature_model)
+        pm25_B_temperature_rsquared <- as.numeric(pm25_B_temperature_model_summary$r.squared)
+        
+      }, silent = TRUE)
+      
+      # If the daily try block comes back error free, fill day with the fit values
+      if ( ! "try-error" %in% class(result) ) {
+        result <- try({
+          # add the r-squared per day, per variable comparison to a list
+          rsquared_list[[day]] <- list(
+            pm25_A_humidity_rsquared = pm25_A_humidity_rsquared,
+            pm25_A_temperature_rsquared = pm25_A_temperature_rsquared,
+            pm25_B_humidity_rsquared = pm25_B_humidity_rsquared,
+            pm25_B_temperature_rsquared = pm25_B_temperature_rsquared
+          )
+        }, silent = TRUE)
+      }
+      
+      # If the daily try block comes back with error, fill day with NA
+      if ( "try-error" %in% class(result) ) {
+        rsquared_list[[day]] <- list(
+          pm25_A_humidity_rsquared = as.numeric(NA),
+          pm25_A_temperature_rsquared = as.numeric(NA),
+          pm25_B_humidity_rsquared = as.numeric(NA),
+          pm25_B_temperature_rsquared = as.numeric(NA)
+        )
+      }
+      
+    }
+  }, silent = TRUE)
+  
+  # If the pat try block comes back error free, continue calculations
+  if ( ! "try-error" %in% class(result) ) {
+    result <- try({
+      # TODO:  The following is messy and not the most efficient way to convert 
+      # TODO:  from a list to a dataframe and certainly could be improved.
+      
+      # reformat the list as a tibble
+      int_rsquared_tbl <- dplyr::as_tibble(rsquared_list)
+      
+      #  transpose and reformat as a matrix in order to have the desired outcome after transpose
+      rsquared_matrix <- t(as.matrix(int_rsquared_tbl))
+      
+      # reformat as a data.frame in order to change datetime to POSIXCT and add the colnames
+      rsquared_df <- data.frame(rsquared_matrix)
+      
+      # reformat to tibble to change the datetime from rownames to an actual column of data
+      rsquared_df <- tibble::rownames_to_column(rsquared_df, var="datetime") 
+      
+      # change datetime into a POSIXCT 
+      rsquared_df$datetime <- MazamaCoreUtils::parseDatetime(rsquared_df$datetime, 
+                                                             timezone = timezone)
+      
+      # add column names
+      colnames <- c( "datetime","pm25_A_humidity_rsquared", "pm25_A_temperature_rsquared",
+                     "pm25_B_humidity_rsquared", "pm25_B_temperature_rsquared")
+      
+      colnames(rsquared_df) <-colnames
+      
+      # re-define each of the columns as numeric rather than lists for easier plotting in ggplot
+      rsquared_df$pm25_A_temperature_rsquared <- as.numeric(rsquared_df$pm25_A_temperature_rsquared)
+      rsquared_df$pm25_A_humidity_rsquared <- as.numeric(rsquared_df$pm25_A_humidity_rsquared)
+      rsquared_df$pm25_B_temperature_rsquared <- as.numeric(rsquared_df$pm25_B_temperature_rsquared)
+      rsquared_df$pm25_B_humidity_rsquared <- as.numeric(rsquared_df$pm25_B_humidity_rsquared)
+      rsquared_df <- 
+        rsquared_df %>%
+        dplyr::mutate_if(is.numeric, ~replace(., is.nan(.), as.numeric(NA)))
+      
+      # join with empty daily column to flag missing days
+      rsquared_df <- dplyr::left_join(days, rsquared_df, by = "datetime")
     
-    # pull out the data associated with one day at a time
-    day_tbl <- 
-      dplyr::filter(tbl, .data$localDaystamp == day)
-    
-    # calculate the r-squared between several variables
-    pm25_A_humidity_model <- lm(day_tbl$pm25_A ~ day_tbl$humidity, subset = NULL, weights = NULL)
-    pm25_A_humidity_model_summary <- summary(pm25_A_humidity_model)
-    pm25_A_humidity_rsquared <- as.numeric(pm25_A_humidity_model_summary$r.squared)
-    
-    pm25_A_temperature_model <- lm(day_tbl$pm25_A ~ day_tbl$temperature, subset = NULL, weights = NULL)
-    pm25_A_temperature_model_summary <- summary(pm25_A_temperature_model)
-    pm25_A_temperature_rsquared <- as.numeric(pm25_A_temperature_model_summary$r.squared)
-    
-    pm25_B_humidity_model <- lm(day_tbl$pm25_B ~ day_tbl$humidity, subset = NULL, weights = NULL)
-    pm25_B_humidity_model_summary <- summary(pm25_B_humidity_model)
-    pm25_B_humidity_rsquared <- as.numeric(pm25_B_humidity_model_summary$r.squared)
-    
-    pm25_B_temperature_model <- lm(day_tbl$pm25_B ~ day_tbl$temperature, subset = NULL, weights = NULL)
-    pm25_B_temperature_model_summary <- summary(pm25_B_temperature_model)
-    pm25_B_temperature_rsquared <- as.numeric(pm25_B_temperature_model_summary$r.squared)
-    
-    # add the r-squared per day, per variable comparison to a list
-    rsquared_list[[day]] <- list(
-      pm25_A_humidity_rsquared = pm25_A_humidity_rsquared,
-      pm25_A_temperature_rsquared = pm25_A_temperature_rsquared,
-      pm25_B_humidity_rsquared = pm25_B_humidity_rsquared,
-      pm25_B_temperature_rsquared = pm25_B_temperature_rsquared
-    )
+    }, silent = TRUE)
   }
   
-  # TODO:  The following is messy and not the most efficient way to convert 
-  # TODO:  from a list to a dataframe and certainly could be improved.
-  
-  # reformat the list as a tibble
-  int_rsquared_tbl <- dplyr::as_tibble(rsquared_list)
-  
-  #  transpose and reformat as a matrix in order to have the desired outcome after transpose
-  rsquared_matrix <- t(as.matrix(int_rsquared_tbl))
-  
-  # reformat as a data.frame in order to change datetime to POSIXCT and add the colnames
-  rsquared_df <- data.frame(rsquared_matrix)
-  
-  # reformat to tibble to change the datetime from rownames to an actual column of data
-  rsquared_df <- tibble::rownames_to_column(rsquared_df, var="datetime") 
-  
-  # change datetime into a POSIXCT 
-  rsquared_df$datetime <- MazamaCoreUtils::parseDatetime(rsquared_df$datetime, 
-                                                            timezone = timezone)
-  
-  # add column names
-  colnames <- c( "datetime","pm25_A_humidity_rsquared", "pm25_A_temperature_rsquared",
-                 "pm25_B_humidity_rsquared", "pm25_B_temperature_rsquared")
-  
-  colnames(rsquared_df) <-colnames
-  
-  # re-define each of the columns as numeric rather than lists for easier plotting in ggplot
-  rsquared_df$pm25_A_temperature_rsquared <- as.numeric(rsquared_df$pm25_A_temperature_rsquared)
-  rsquared_df$pm25_A_humidity_rsquared <- as.numeric(rsquared_df$pm25_A_humidity_rsquared)
-  rsquared_df$pm25_B_temperature_rsquared <- as.numeric(rsquared_df$pm25_B_temperature_rsquared)
-  rsquared_df$pm25_B_humidity_rsquared <- as.numeric(rsquared_df$pm25_B_humidity_rsquared)
-  
-  
-  # join with empty daily column to flag missing days
-  rsquared_df <- dplyr::left_join(days, rsquared_df, by = "datetime")
-  
+  # If the pat try block comes back with errors, fill with NA's
+  if ( "try-error" %in% class(result) ) {
+    rsquared_df <- 
+      days %>%
+      dplyr::mutate(pm25_A_temperature_rsquared = as.numeric(NA)) %>%
+      dplyr::mutate(pm25_A_humidity_rsquared = as.numeric(NA)) %>%
+      dplyr::mutate(pm25_B_temperature_rsquared = as.numeric(NA)) %>%
+      dplyr::mutate(pm25_B_humidity_rsquared = as.numeric(NA))
+  }
   # ----- Return ---------------------------------------------------------------
   
   return(rsquared_df)

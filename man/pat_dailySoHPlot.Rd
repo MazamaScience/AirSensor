@@ -11,7 +11,7 @@ pat_dailySoHPlot(pat = NULL)
 }
 \description{
 This function plots as subset of the most useful State of Health 
-metrics calculated by the \code{pat_dailyStateOfHealth} function. The function 
-runs \code{pat_dailyStateOfHealth} internally and uses the output to create 
+metrics calculated by the \code{pat_dailySoH} function. The function 
+runs \code{pat_dailySoH} internally and uses the output to create 
 the plot.
 }

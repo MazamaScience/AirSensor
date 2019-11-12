@@ -41,17 +41,32 @@ pat_dailySoH <- function(
   
   
   # ----- pat_dailySoH() ---------------------------------------------------
-
+  
   # Initialize a list to store the output of each function
   SoH_list <- list()
   
   for (SoH_function in SoH_functions) {
     
-    # Isolate each passed in function
-    FUN <- get(SoH_function)
+    result <- try({
+      # Isolate each passed in function
+      FUN <- get(SoH_function)
+    }, silent = TRUE)
     
-    # Run the pat through each function and store it in the list
-    SoH_list[[SoH_function]] <- FUN(pat)
+    if ( ! "try-error" %in% class(result) ) {
+      result <- try({
+        # Run the pat through each function and store it in the list
+        SoH_list[[SoH_function]] <- FUN(pat)
+      }, silent = TRUE)
+    }
+    
+    if ( "try-error" %in% class(result) ) {
+      localTime <- lubridate::with_tz(pat$data$datetime, tzone = pat$meta$timezone)
+      hour <- lubridate::hour(localTime)
+      start <- lubridate::floor_date(localTime[ min(which(hour == 0)) ], unit = "hour")
+      end <- lubridate::floor_date(localTime[ max(which(hour == 23)) ], unit = "hour")
+      days <- dplyr::tibble(datetime = MazamaCoreUtils::dateSequence(start, end, timezone = pat$meta$timezone))
+      SoH_list[[SoH_function]] <- rep_len(as.numeric(NA), length.out = length(days$datetime))
+    }
     
   }
   
@@ -61,7 +76,7 @@ pat_dailySoH <- function(
                   contains("pm25"), 
                   contains("temperature"), 
                   contains("humidity"))
- 
+  
   return(SoH_tbl)
 }
 

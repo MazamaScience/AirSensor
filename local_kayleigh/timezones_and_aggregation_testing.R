@@ -141,12 +141,12 @@ pat<- SCAP_19_late
 # 
 # #time <- data$datetime
 # 
-# A_missing <- 
+# A_missing <-
 #   data %>%
 #   filter(
 #     is.na(.data$pm25_A) & !is.na(.data$pm25_B)
 #   )
-# B_missing <- 
+# B_missing <-
 #   data %>%
 #   filter(
 #     !is.na(.data$pm25_A) & is.na(.data$pm25_B)
@@ -157,7 +157,9 @@ pat<- SCAP_19_late
 # summary <- summary(model)
 
 A_is_NA <- length(which(is.na(data$pm25_A) & !is.na(data$pm25_B)))
+where_A_NA <- which(is.na(data$pm25_A) & !is.na(data$pm25_B))
 B_is_NA <- length(which(!is.na(data$pm25_A) & is.na(data$pm25_B)))
+where_B_NA <-which(!is.na(data$pm25_A) & is.na(data$pm25_B))
 total_NA <- B_is_NA + A_is_NA
 complete_pairs <- length(which(!is.na(data$pm25_A) & !is.na(data$pm25_B)))
 where_complete <- which(!is.na(data$pm25_A) & !is.na(data$pm25_B))
@@ -176,16 +178,50 @@ where_complete_2 <- which(!is.na(data_2$pm25_A) & !is.na(data_2$pm25_B))
 fraction_2 <- total_NA_2/complete_pairs_2
 percent_2 <- fraction_2*100
 
+# ----- testing SoH's for special cases ----------------------------------------
+
+
+setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+pas <- pas_load()
+
+# A-channel "magic number"
+pat_SCEM_05 <- pat_load("SCEM_05", startdate = 20190101, enddate = 20191023)
+pat_multiplot(pat_SCEM_05)
+pat_SCEM_05 %>% pat_filterDate(20190909, 20190912) %>% pat_multiplot()
+
+SoH_SCEM_05 <- pat_dailySoH(pat_SCEM_05)
+
+# Another case
+pat_SCAP_46 <- pat_load("SCAP_46", startdate = 20190101, enddate = 20191023)
+pat_multiplot(pat_SCAP_46)
+pat_SCAP_46 %>% pat_filterDate(20190909, 20190912) %>% pat_multiplot()
+
+SoH_SCAP_46 <- pat_dailySoH(pat_SCAP_46)
+
+pat_empty_SCAP_46 <- pat_filterDate(pat_SCAP_46, 20190118, 20190130, timezone = "America/Los_Angeles")
+
+# And another one
+pat_SCAP_14 <- pat_load("SCAP_14", startdate = 20190101, enddate = 20191023)
+pat_multiplot(pat_SCAP_14)
+pat_SCAP_14 %>% pat_filterDate(20190909, 20190912) %>% pat_multiplot()
+
+SoH_SCAP_14 <- pat_dailySoH(pat_SCAP_14)
+
+
+gg1 <- ggplot(pat_SCAP_14$data) +
+  geom_point(aes(datetime, pm25_A), pch = ".", alpha = 0.5, color = "darkred") +
+  geom_point(aes(datetime, pm25_B), pch = ".", alpha = 0.3, color = "darkblue") 
+gg1
 
 
 
 
+day <- 20190102
+SCAP_14_partial <- pat_filterDate(pat_SCAP_14,20190101, 20190526, timezone = "America/Los_Angeles")
+SCAP_14_27 <- pat_filterDate(pat_SCAP_14,20190527, 20190529, timezone = "America/Los_Angeles")
 
 
-
-
-
-
+pat <- SCAP_14_partial
 
 
 
