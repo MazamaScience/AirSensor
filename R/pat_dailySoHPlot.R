@@ -7,8 +7,8 @@
 #' @param pat PurpleAir Timeseries \emph{pat} object.
 #' 
 #' @description This function plots as subset of the most useful State of Health 
-#' metrics calculated by the \code{pat_dailyStateOfHealth} function. The function 
-#' runs \code{pat_dailyStateOfHealth} internally and uses the output to create 
+#' metrics calculated by the \code{pat_dailySoH} function. The function 
+#' runs \code{pat_dailySoH} internally and uses the output to create 
 #' the plot.
 #' 
 #' 
@@ -32,7 +32,7 @@ pat_dailySoHPlot <- function(
   # ----- Create the SoH object, and SoH plot ----------------------------------
   
   # calculate the SoH 
-  SoH <- pat_dailyStateOfHealth(pat)
+  SoH <- pat_dailySoH(pat)
   
   # select only the useful metrics of interest from the full SoH
   SoH_sub <- dplyr::select(SoH, "datetime", 

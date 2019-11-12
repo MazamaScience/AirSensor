@@ -16,11 +16,11 @@
 #' @examples  
 #' SoH <- 
 #'   example_pat_failure_B %>%
-#'   pat_dailyStateOfHealth() 
+#'   pat_dailySoH() 
 #' head(SoH)
 #' #timeseriesTbl_multiplot(tbl, ylim = c(0,100))
 
-pat_dailyStateOfHealth <- function(
+pat_dailySoH <- function(
   pat = NULL,
   SoH_functions = c("PurpleAirSoH_dailyPctDC", 
                     "PurpleAirSoH_dailyPctReporting", 
@@ -40,7 +40,7 @@ pat_dailyStateOfHealth <- function(
     stop("Parameter 'pat' has no data.") 
   
   
-  # ----- pat_dailyStateOfHealth() ---------------------------------------------------
+  # ----- pat_dailySoH() ---------------------------------------------------
 
   # Initialize a list to store the output of each function
   SoH_list <- list()
