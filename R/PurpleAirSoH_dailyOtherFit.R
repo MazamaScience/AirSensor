@@ -21,8 +21,8 @@
 #'   
 #' timeseriesTbl_multiplot(
 #'   tbl, 
-#'   parameters = c("pm25_B_temperature_rsquared", "pm25_A_temperature_rsquared"),
-#'   ylim = c(-1,1), 
+#'   ncol = 2,
+#'   ylim = c(0,1), 
 #'   style = "line"
 #' )
 #' 

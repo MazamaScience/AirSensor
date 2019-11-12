@@ -1,3 +1,11 @@
+# AirSensor 0.5.12
+
+Refactored `PurpleAirSoH_daily~()` functions to use *dplyr* resulting in code
+that runs faster and is easier to understand.
+
+* Changed `~SoH_dailyCorrelation()` to `~SoH_dailyOtherFit()`.
+* Changed `timeseriesTbl_multiplot()` argument `parameterPatter` to `pattern`.
+
 # AirSensor 0.5.11
 
 Fixed bug in datetime axis that caused `SoH` functions to return missing values

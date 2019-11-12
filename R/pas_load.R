@@ -132,7 +132,7 @@ pas_load <- function(
   # NOTE:  uniform error response for the large variety of reasons that
   # NOTE:  loading might fail.
   
-  if ( "try-error" %in% class(result) ) {
+  if ( !successful ) {
     stop(paste0("Data file could not be loaded after ", retries, " tries"), 
          call.=FALSE)
   }

@@ -4,18 +4,20 @@
 \alias{timeseriesTbl_multiplot}
 \title{Faceted plot of a timeseries tibble}
 \usage{
-timeseriesTbl_multiplot(tbl = NULL, parameterPattern = NULL,
-  parameters = NULL, nrow = 5, autoRange = TRUE, ylim = NULL,
-  style = "area")
+timeseriesTbl_multiplot(tbl = NULL, pattern = NULL,
+  parameters = NULL, nrow = NULL, ncol = NULL, autoRange = TRUE,
+  ylim = NULL, style = "line")
 }
 \arguments{
 \item{tbl}{Tibble with a \code{datetime}.}
 
-\item{parameterPattern}{Pattern used to match groups of parameters.}
+\item{pattern}{Pattern used to match groups of parameters.}
 
 \item{parameters}{Custom vector of aggregation parameters to view.}
 
 \item{nrow}{Number of rows in the faceted plot.}
+
+\item{ncol}{Number of columns in the faceted plot.}
 
 \item{autoRange}{Logical specifying whether to scale the y axis separately
 for each plot or to use a common y axis.}
@@ -36,7 +38,7 @@ Specification of \code{ylim} will override the choice of
 \donttest{
 tbl <- pat_aggregateOutlierCounts(example_pat_failure_A)
 timeseriesTbl_multiplot(tbl, 
-                        parameterPattern = "humidity_m|temperature_m", 
+                        pattern = "humidity_m|temperature_m", 
                         nrow = 2)
 }
 }

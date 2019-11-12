@@ -50,8 +50,8 @@ SoH_plot <- function(
   }
   
   # Subset if requested
-  if ( !is.null(parameterPattern) ) {
-    parameters <- stringr::str_subset(parameters, parameterPattern)
+  if ( !is.null(pattern) ) {
+    parameters <- stringr::str_subset(parameters, pattern)
   }
   
   # Make sure 'datetime' is included, but only once

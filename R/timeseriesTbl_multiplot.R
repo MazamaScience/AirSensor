@@ -5,9 +5,10 @@
 #' @title Faceted plot of a timeseries tibble 
 #' 
 #' @param tbl Tibble with a \code{datetime}.
-#' @param parameterPattern Pattern used to match groups of parameters.
+#' @param pattern Pattern used to match groups of parameters.
 #' @param parameters Custom vector of aggregation parameters to view.
 #' @param nrow Number of rows in the faceted plot.
+#' @param ncol Number of columns in the faceted plot.
 #' @param autoRange Logical specifying whether to scale the y axis separately
 #' for each plot or to use a common y axis.
 #' @param ylim Vector of (lo,hi) y-axis limits.
@@ -23,18 +24,19 @@
 #' \donttest{
 #' tbl <- pat_aggregateOutlierCounts(example_pat_failure_A)
 #' timeseriesTbl_multiplot(tbl, 
-#'                         parameterPattern = "humidity_m|temperature_m", 
+#'                         pattern = "humidity_m|temperature_m", 
 #'                         nrow = 2)
 #' }
 
 timeseriesTbl_multiplot <- function(
   tbl = NULL, 
-  parameterPattern = NULL,
+  pattern = NULL,
   parameters = NULL,
-  nrow = 5,
+  nrow = NULL,
+  ncol = NULL,
   autoRange = TRUE,
   ylim = NULL,
-  style = "area"
+  style = "line"
 ) {
   
   # ----- Validate parameters --------------------------------------------------
@@ -56,6 +58,9 @@ timeseriesTbl_multiplot <- function(
     }
   }
   
+  if ( is.null(nrow) && is.null(ncol) )
+    ncol <- 1
+  
   # ----- Determine parameters to plot -----------------------------------------
   
   if ( is.null(parameters) ) {
@@ -70,8 +75,8 @@ timeseriesTbl_multiplot <- function(
     }
     
     # Subset if requested
-    if ( !is.null(parameterPattern) ) {
-      parameters <- stringr::str_subset(parameters, parameterPattern)
+    if ( !is.null(pattern) ) {
+      parameters <- stringr::str_subset(parameters, pattern)
     }
     
   }
@@ -113,7 +118,7 @@ timeseriesTbl_multiplot <- function(
   }
   
   gg <- gg + 
-    facet_wrap(facets, nrow = nrow, scales = scales ) 
+    facet_wrap(facets, nrow = nrow, ncol = ncol, scales = scales ) 
   
   if ( !is.null(ylim) ) {
     gg <- gg + ylim(ylim)

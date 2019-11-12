@@ -5,12 +5,6 @@
 #' @title Daily linear model fit values
 #' 
 #' @param pat PurpleAir Timeseries \emph{pat} object.
-#' @param aggregationPeriod The period of time over which to aggregate the data. 
-#' in order to create complete pairs between the A and B channels. If there is 
-#' not a complete pair, the function will return an "NA" for that day. It is
-#' recommended that this value is between "2 min" and "1 hour" The smaller the 
-#' \emph{aggregation period}, the longer this function will take to run. The 
-#' default is set to "10 min" for this reason.
 #' 
 #' @description This function calculates daily linear model values between
 #' the \code{pm25_A} and \code{pm25_B} channels. A daily r-squared value is
@@ -21,7 +15,7 @@
 #' @examples  
 #' tbl <- 
 #'   example_pat_failure_A %>%
-#'   PurpleAirSoH_dailyABFit(aggregationPeriod = "30 min") 
+#'   PurpleAirSoH_dailyABFit() 
 #'   
 #' timeseriesTbl_multiplot(
 #'   tbl, 
@@ -32,8 +26,7 @@
 
 
 PurpleAirSoH_dailyABFit <- function(
-  pat = NULL,
-  aggregationPeriod = "10 min"
+  pat = NULL
 ) {
   
   # ----- Validate parameters --------------------------------------------------
@@ -45,31 +38,6 @@ PurpleAirSoH_dailyABFit <- function(
   
   if ( pat_isEmpty(pat) )
     stop("Parameter 'pat' has no data.") 
-  
-  # ----- Convert period to seconds --------------------------------------------
-  
-  periodParts <- strsplit(aggregationPeriod, " ", fixed = TRUE)[[1]]
-  
-  if ( length(periodParts) == 1 ) {
-    periodCount <- 1
-    units <- periodParts[1]
-  } else {
-    periodCount <- as.numeric(periodParts[1])
-    units <- periodParts[2]
-  }
-  
-  if ( units == "sec"     ) unitSecs <- 1
-  if ( units == "min"     ) unitSecs <- 60
-  if ( units == "hour"    ) unitSecs <- 3600
-  if ( units == "day"     ) unitSecs <- 3600 * 24
-  if ( units == "week"    ) unitSecs <- 3600 * 24 * 7
-  if ( units == "month"   ) unitSecs <- 3600 * 24 * 31
-  if ( units == "quarter" ) unitSecs <- 3600 * 24 * 31 * 3
-  if ( units == "year"    ) unitSecs <- 3600 * 8784 
-  
-  periodSeconds <- periodCount * unitSecs 
-  
-  hourFactor <- 3600 / periodSeconds
   
   # ----- Create daily tbl -----------------------------------------------------
   
@@ -94,7 +62,7 @@ PurpleAirSoH_dailyABFit <- function(
   # NOTE:  seq.Date(..., by = "day") operates by repeatedly adding 24 hours
   # NOTE:  which means that when we switch to/from daylight savings we end up
   # NOTE:  no longer on the midnight local time day boundary. Hence the
-  # NOTE:  following workaround
+  # NOTE:  following workaround:
   
   datetime <- 
     seq(start, end, by = "day") %>% 
@@ -105,7 +73,7 @@ PurpleAirSoH_dailyABFit <- function(
   # flag missing data
   days <- tibble(datetime = datetime) 
   
-  # ----- Calculate linear models -------------------------------------------
+  # ----- Calculate linear models ----------------------------------------------
   
   # Begin percent DC calculations:
   pct_tbl <-
