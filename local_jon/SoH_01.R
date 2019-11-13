@@ -12,7 +12,7 @@ pat_multiplot(pat_South_Hill)
 pat_South_Hill %>% pat_filterDate(20190909, 20190912) %>% pat_multiplot()
 
 # Daily State-of-Health metrics
-SoH_South_Hill <- pat_dailyStateOfHealth(pat_South_Hill)
+SoH_South_Hill <- pat_dailySoH(pat_South_Hill)
 
 SoH_South_Hill %>% timeseriesTbl_multiplot(pattern = "pctReporting", style = "point", ylim=c(0,150))
 SoH_South_Hill %>% timeseriesTbl_multiplot(pattern = "pctValid", style = "point", ylim=c(0,101))
@@ -28,7 +28,7 @@ pat_multiplot(pat_Willowbrook)
 pat_Willowbrook %>% pat_filterDate(20190909, 20190912) %>% pat_multiplot()
 
 # Daily State-of-Health metrics
-SoH_Willowbrook <- pat_dailyStateOfHealth(pat_Willowbrook)
+SoH_Willowbrook <- pat_dailySoH(pat_Willowbrook)
 
 SoH_Willowbrook %>% timeseriesTbl_multiplot(pattern = "pctReporting", style = "point", ylim=c(0,150))
 SoH_Willowbrook %>% timeseriesTbl_multiplot(pattern = "pctValid", style = "point", ylim=c(0,101))
@@ -48,7 +48,7 @@ pat_multiplot(pat_SCEM_05)
 pat_SCEM_05 %>% pat_filterDate(20190909, 20190912) %>% pat_multiplot()
 
 # Daily State-of-Health metrics
-SoH_SCEM_05 <- pat_dailyStateOfHealth(pat_SCEM_05)
+SoH_SCEM_05 <- pat_dailySoH(pat_SCEM_05)
 
 SoH_SCEM_05 %>% timeseriesTbl_multiplot(pattern = "pctReporting", style = "point", autoRange = FALSE)
 SoH_SCEM_05 %>% timeseriesTbl_multiplot(pattern = "pctValid", style = "point", autoRange = FALSE)
@@ -63,7 +63,7 @@ pat_multiplot(pat_SCAP_46)
 pat_SCAP_46 %>% pat_filterDate(20190909, 20190912) %>% pat_multiplot()
 
 # Daily State-of-Health metrics
-SoH_SCAP_46 <- pat_dailyStateOfHealth(pat_SCAP_46)
+SoH_SCAP_46 <- pat_dailySoH(pat_SCAP_46)
 
 SoH_SCAP_46 %>% timeseriesTbl_multiplot(pattern = "pctReporting", style = "point", autoRange = FALSE)
 SoH_SCAP_46 %>% timeseriesTbl_multiplot(pattern = "pctValid", style = "point", autoRange = FALSE)
@@ -78,7 +78,7 @@ pat_multiplot(pat_SCNP_20)
 pat_SCNP_20 %>% pat_filterDate(20190909, 20190912) %>% pat_multiplot()
 
 # Daily State-of-Health metrics
-SoH_SCNP_20 <- pat_dailyStateOfHealth(pat_SCNP_20)
+SoH_SCNP_20 <- pat_dailySoH(pat_SCNP_20)
 
 SoH_SCNP_20 %>% timeseriesTbl_multiplot(pattern = "pctReporting", style = "point", autoRange = FALSE)
 SoH_SCNP_20 %>% timeseriesTbl_multiplot(pattern = "pctValid", style = "point", autoRange = FALSE)
@@ -93,7 +93,7 @@ pat_multiplot(pat_SCAP_14)
 pat_SCAP_14 %>% pat_filterDate(20190909, 20190912) %>% pat_multiplot()
 
 # Daily State-of-Health metrics
-SoH_SCAP_14 <- pat_dailyStateOfHealth(pat_SCAP_14)
+SoH_SCAP_14 <- pat_dailySoH(pat_SCAP_14)
 
 SoH_SCAP_14 %>% timeseriesTbl_multiplot(pattern = "pctReporting", style = "point", autoRange = FALSE)
 SoH_SCAP_14 %>% timeseriesTbl_multiplot(pattern = "pctValid", style = "point", autoRange = FALSE)
