@@ -10,8 +10,8 @@ labels <-
   pas %>%
   pas_filter(is.na(parentID)) %>%
   pas_filter(DEVICE_LOCATIONTYPE == "outside") %>%
-  pas_filter(stateCode %in% PWFSLSmoke::CONUS) %>%
-  pas_filter(stringr::str_detect(label, "Home")) %>%
+  pas_filter(stateCode %in% "WA") %>%
+  pas_filter(stringr::str_detect(label, "MV Clean Air Ambassador")) %>%
   dplyr::pull(label)
 
 # Loop over labels
@@ -39,6 +39,13 @@ for ( label in labels ) {
 
 # Apply dailyPctReporting metrics to each pat
 pctReportingList <- purrr::map(sensorList, PurpleAirSoH_dailyPctReporting)
+
+# FOR DEBUGGING:
+# pctReportingList <- list()
+# for ( name in names(sensorList) ) {
+#   print(paste0("Working on ", name, " ..."))
+#   pctReportingList[[name]] <- PurpleAirSoH_dailyPctReporting(sensorList[[name]])
+# }
 
 # # Create a list whose names are SoH metrics and whose elements are tibbles of
 # # data with column names matching the sensor label.
@@ -72,7 +79,7 @@ gg <-
   geom_point(shape = "square", size = 0.8)
 
 gg + 
-  facet_wrap(~label, ncol = 1) +
+  facet_wrap(~label, ncol = 2) +
   ggtitle("Methow Valley Celan Air Ambassador -- Channel A % Reporting")
 
 
