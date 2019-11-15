@@ -1,3 +1,9 @@
+# AirSensor 0.5.13
+
+* `pat_outliers()` no longer fails in the face of DC signals
+* New `pas_getLabels()` functions simplifies the creation of vectors of sensor 
+labels (currently used as unique identifiers)
+
 # AirSensor 0.5.12
 
 Refactored `PurpleAirSoH_daily~()` functions to use *dplyr* resulting in code
