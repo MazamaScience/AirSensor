@@ -1,8 +1,9 @@
-pandoc: 1.19.2.1
+pandoc: 2.3.1
 pkgdown: 1.4.1
 pkgdown_sha: ~
 articles:
   AirSensorOverview: AirSensorOverview.html
+  SoH_functions: SoH_functions.html
   outlier_detection: outlier_detection.html
   pas_introduction: pas_introduction.html
   pat_introduction: pat_introduction.html

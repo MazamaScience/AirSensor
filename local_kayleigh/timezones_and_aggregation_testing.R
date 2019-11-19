@@ -224,7 +224,116 @@ SCAP_14_27 <- pat_filterDate(pat_SCAP_14,20190527, 20190529, timezone = "America
 pat <- SCAP_14_partial
 
 
+#---- test - ----
 
+# ggplot only, combine both datasets into one and facet by good/bad.
+
+SCTV_16 <- pat_createNew(pas, "SCTV_16", startdate = "2019-05-27", enddate = "2019-06-22", timezone = "America/Los_Angeles")
+bad_test_report <- PurpleAirSoH_dailyPctReporting(SCTV_16)
+
+SCAH_29 <- pat_createNew(pas, "SCAH_29", startdate = "2019-05-27", enddate = "2019-06-22", timezone = "America/Los_Angeles")
+good_test_report <- PurpleAirSoH_dailyPctReporting(SCAH_29)
+
+bad_tidy <- bad_test_report %>%
+  gather(key ="variable", value = "value", -datetime) %>%
+  mutate(label = rep_len("'bad' data", length.out = length(.data$datetime) ))
+
+good_tidy <- good_test_report %>%
+  gather(key ="variable", value = "value", -datetime) %>%
+  mutate(label = rep_len("'good' data", length.out = length(.data$datetime) ))
+
+
+combined_tidy <- dplyr::full_join(good_tidy, bad_tidy)
+
+combined_tidy$label <- factor(combined_tidy$label, levels=c("'good' data", "'bad' data"))
+
+
+# ggplot using facetting 
+gg_combined <- ggplot(combined_tidy) +
+  geom_point(aes(x = datetime, y = value, color = variable, pch = variable), alpha =0.8)+
+  facet_wrap(vars(label), scales = "free_x")+
+  scale_color_manual(values=c("goldenrod3", "deepskyblue4", "forestgreen", "plum4")) +
+  ylab("percent") +
+  theme(legend.position = c(0.85, 0.9))
+gg_combined
+
+
+#leave good/bad separate and facet by variable per each good/bad plot
+gg_good <- ggplot(good_tidy) +
+  geom_point(aes(x = datetime, y = value, color = variable), alpha = 0.8)+
+  facet_wrap(vars(variable), scales = "free_y", nrow = 4) +
+  scale_color_manual(values = c("red","blue", "black", "black" )) +
+  ylab("percent") +
+  scale_y_continuous(breaks = c(0, 25, 50, 75, 100, 125, 150), limits = c(0, 150)) +
+  theme(legend.position = "none")
+gg_good
+
+gg_bad <- ggplot(bad_tidy) +
+  geom_point(aes(x = datetime, y = value, color = variable), alpha = 0.8)+
+  facet_wrap(vars(variable), scales = "free_y", nrow = 4) +
+  scale_color_manual(values = c("red","blue", "black", "black" )) +
+  scale_y_continuous(breaks = c(0, 25, 50, 75, 100, 125, 150), limits = c(0, 150)) +
+  ylab("percent") +
+  theme(legend.position = "none")
+gg_bad
+
+
+
+# separate ggplot items
+gg_good <- ggplot(good_tidy) +
+  geom_point(aes(good_tidy$datetime, good_tidy$value, pch = variable, color = variable), alpha = 0.6)+
+  xlab("datetime") +
+  #ylab("percent") +
+  ylim(80, 150) +
+  labs(subtitle = "good data") +
+  theme(legend.position = "none") #+
+#theme(aspect.ratio=4/3)
+
+gg_bad <- ggplot(bad_tidy) +
+  geom_point(aes(bad_tidy$datetime, bad_tidy$value, pch = variable, color = variable), alpha = 0.6)+
+  xlab("datetime") +
+  ylab(NULL) +
+  ylim(80, 150) +
+  #labs(title = "Percent Reporting") +
+  labs(subtitle = "bad data") +
+  theme(legend.position = "none") #+
+#theme(aspect.ratio=4/3)
+
+
+
+# plotly, but convert to plotly objects first
+s1 <- ggplotly(gg_good)
+s2 <- ggplotly(gg_bad)
+s3<- subplot(s1, s2, nrows = 1, titleY = "percent") 
+
+
+# plotly without converting to plotly objects first
+s3<- subplot(gg_good, gg_bad, nrows = 1)
+
+
+# grid.arrange example
+s3 <- grid.arrange(gg_good, gg_bad, ncol = 2)
+
+
+# Plotly example. 
+p_good <- plot_ly(good_tidy) %>%
+  add_trace(x = ~datetime, y = ~value, name = "good", 
+            marker = list(opacity = 0.5, color = factor(~variable))) 
+
+p_bad <- plot_ly(bad_tidy) %>%
+  add_trace(x = ~datetime, y = ~value, name = "good", 
+            marker = list(opacity = 0.5, color = ~variable))
+
+s3 <- subplot(p_good, p_bad, nrows = 1)
+
+#----- testing pat_multiplot -----------------------------------------
+
+gg <- autolayer(ggplot(pat_multiplot(bad_pat)))+
+  theme(legend.position = "left") 
+
+
+g <- pat_multiplot(bad_pat, plottype = "pm25_over", sampleSize = 1e6 )+
+  theme(legend.position = "left")
 
 
 
