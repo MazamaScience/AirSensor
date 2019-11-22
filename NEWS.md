@@ -1,3 +1,12 @@
+# AirSensor 0.5.14
+
+Modified how `pat_filterDate()` obtains the `timezone` used to interpret the
+incoming `startdate` and `enddate`:
+
+1) `startdate` timezone if it is `POSIXct`
+2) `timezone` if it is passed in
+3) `pat$meta$timezone` otherwise
+
 # AirSensor 0.5.13
 
 * `pat_outliers()` no longer fails in the face of DC signals
