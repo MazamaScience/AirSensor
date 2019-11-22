@@ -47,41 +47,31 @@ PurpleAirSoH_dailyPctReporting <- function(
   
   # ----- Prepare data ---------------------------------------------------------
   
-  # Get full days in the local timezone
+  # Grab the first day with data and end on the last day with data, partial days
+  # will have tapered results. Either provide full days or trim to full days
+  # after the fact.
   timezone <- pat$meta$timezone
   localTime <- lubridate::with_tz(pat$dat$datetime, tzone = timezone)
   hour <- lubridate::hour(localTime)
   
-  # NOTE:  Trim to full days unless we have less than a day or intermittent.
-  # NOTE:  In that case, expand to encompass all data.
-  
-  if ( any(hour == 0) ) {
-    start <- lubridate::floor_date(localTime[ min(which(hour == 0)) ], unit = "hour")
-  } else {
-    start <- lubridate::floor_date(localTime[1], unit = "day")
-  }
-  
-  if ( any(hour == 23) ) {
-    end <- lubridate::floor_date(localTime[ max(which(hour == 23)) ], unit = "hour")
-  } else {
-   end <- lubridate::ceiling_date(localTime[length(localTime)], unit = "day")
-  }
-  
-  # NOTE:  pat_filterDate only goes to the beginning of enddate and we want it
-  # NOTE:  to go to the end of enddate.
+  range <- range(localTime)
+  start <- lubridate::floor_date(range[1], unit = "day")
+  end <- lubridate::ceiling_date(range[2], unit = "day")
   
   # Filter the pat based on the times established above.
   pat <- pat_filterDate(
     pat, 
     startdate = start, 
-    enddate = end + lubridate::ddays(1)
+    # enddate = end + lubridate::ddays(1),
+    enddate = end,
+    timezone = timezone
   )
   
-  # Create daily tibble based on date range to join with the valid_tbl.
+  # Create daily tibble based on date range to join later.
   # This will ensure that missing records from valid_tbl will have NA.
   days <- dplyr::tibble(
     # Special function to handle daylight savings transitions
-    datetime = MazamaCoreUtils::dateSequence(start, end, timezone = timezone)
+    datetime = MazamaCoreUtils::dateSequence(start, end - lubridate::ddays(1), timezone = timezone)
   )
   
   
