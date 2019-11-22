@@ -6,7 +6,7 @@
 #' 
 #' @param pat PurpleAir Timeseries \emph{pat} object.
 #' 
-#' @description This function plots as subset of the most useful State of Health 
+#' @description This function plots a subset of the most useful State of Health 
 #' metrics calculated by the \code{pat_dailySoH} function. The function 
 #' runs \code{pat_dailySoH} internally and uses the output to create 
 #' the plot.
@@ -36,8 +36,9 @@ pat_dailySoHPlot_SEPARATE_Vars <- function(
   
   # select only the useful metrics of interest from the full SoH
   SoH_sub <- dplyr::select(SoH, "datetime", 
-                           "pm25_A_pctReporting",
-                           "pm25_B_pctReporting",
+                           contains("_pctReporting"),
+                           # "pm25_A_pctReporting",
+                           # "pm25_B_pctReporting",
                            "pm25_A_pctValid",
                            "pm25_B_pctValid",
                            "pm25_A_pctDC", 
@@ -47,6 +48,7 @@ pat_dailySoHPlot_SEPARATE_Vars <- function(
                            "pm25_A_pm25_B_rsquared",
                            #"pm25_A_pm25_B_p_value",
                            "pm25_A_temperature_rsquared") 
+  # select the p-value for log display added later
   SoH_pvalue <- dplyr::select(SoH, "datetime", 
                               "pm25_A_pm25_B_p_value")
   
@@ -61,6 +63,7 @@ pat_dailySoHPlot_SEPARATE_Vars <- function(
     # create a factor based on the variable name for expected value association
     dplyr::mutate(expectedValue = as.integer(factor(.data$variable))) 
   
+  # p value for later display
   SoH_pvalue_tidy <-
     SoH_pvalue %>%
     tidyr::gather(key ="variable", value = "value", -datetime) %>%
@@ -80,6 +83,7 @@ pat_dailySoHPlot_SEPARATE_Vars <- function(
       #grepl("pm25_A_pm25_B_p_value", SoH_tidy$variable) ~ 1, 
       grepl("pm25_A_temperature_rsquared", SoH_tidy$variable) ~ 0))
      
+  # p value for later display
   SoH_pvalue_tidy <- 
     SoH_pvalue_tidy %>%
     dplyr::mutate(expectedValue = case_when(
@@ -89,6 +93,8 @@ pat_dailySoHPlot_SEPARATE_Vars <- function(
   SoH_tidy$variable <- factor(SoH_tidy$variable, levels=c(
     "pm25_A_pctReporting",
     "pm25_B_pctReporting",
+    "temperature_pctReporting",
+    "humidity_pctReporting",
     "pm25_A_pctValid",
     "pm25_B_pctValid",
     "pm25_A_pctDC",
@@ -104,6 +110,8 @@ pat_dailySoHPlot_SEPARATE_Vars <- function(
   # values for each variable in order to set an appropriate range in the facets
   pm25_A_pctReporting <- rep_len(c(0, 150), length.out = length(SoH_sub$datetime))
   pm25_B_pctReporting <- rep_len(c(0, 150), length.out = length(SoH_sub$datetime))
+  temperature_pctReporting <- rep_len(c(0, 150), length.out = length(SoH_sub$datetime))
+  humidity_pctReporting <- rep_len(c(0, 150), length.out = length(SoH_sub$datetime))
   pm25_A_pctValid <- rep_len(c(0, 100), length.out = length(SoH_sub$datetime))
   pm25_B_pctValid <- rep_len(c(0, 100), length.out = length(SoH_sub$datetime))
   pm25_A_pctDC <- rep_len(c(0, 100), length.out = length(SoH_sub$datetime))
@@ -119,6 +127,8 @@ pat_dailySoHPlot_SEPARATE_Vars <- function(
   dummy <- data.frame(datetime,
                       pm25_A_pctReporting, 
                       pm25_B_pctReporting,
+                      temperature_pctReporting,
+                      humidity_pctReporting,
                       pm25_A_pctValid,
                       pm25_B_pctValid,
                       pm25_A_pctDC,
@@ -140,6 +150,7 @@ pat_dailySoHPlot_SEPARATE_Vars <- function(
   # pull out the station name for labeling the plot
   station_name <- pat$meta$label
   
+  # create the ggplot for all the data except the p-value
   gg1 <- ggplot(SoH_tidy, aes(.data$datetime, .data$value)) +
     # plot the flat-lined, expected values
     geom_line(aes(x = SoH_tidy$datetime, y = SoH_tidy$expectedValue),  
@@ -158,25 +169,21 @@ pat_dailySoHPlot_SEPARATE_Vars <- function(
           axis.ticks.x=element_blank())+
     theme(legend.position = "none")
   
-  #breaks=seq(1e-40, 1, length.out = 3)
-  #breaks = scales::trans_breaks("log10", function(x) 10^x)
-  #breaks = scales::trans_breaks("log10",function(x) 10^x, n =  3)
-  #breaks = c(min(SoH_pvalue_tidy$value, na.rm = TRUE), max(SoH_pvalue_tidy$value, na.rm = TRUE), 1)
-  #breaks = scales::trans_breaks("log10", function(x) min(x, na.rm = TRUE))
-  
+  #breaks for the p-value plot
+  breaks = scales::trans_breaks("log10",function(x) 10^x, n =  3)
+  #create the ggplot for the pvalue plot
   gg2 <- ggplot(SoH_pvalue_tidy, aes(.data$datetime, .data$value)) +
     geom_line(aes(x = SoH_pvalue_tidy$datetime, y = SoH_pvalue_tidy$expectedValue),  
               color = colors, alpha = 0.8) +
     geom_line() +
-    #scale_y_continuous(trans = "log10", breaks=c(1e-80, 1e-40, 1e-20, 1), lim = c(1e-80, 1)) +
-    #scale_y_continuous(trans = "log10", breaks=breaks) +
-    scale_y_continuous(trans = "log10", breaks = as.numeric(waiver())) +
-    #scale_y_log10(breaks = NULL) +
+    #scale_y_continuous(trans = "log10", breaks = breaks, lim = c(1e-50, 1)) +
+    scale_y_continuous(trans = "log10", breaks = breaks) +
     facet_wrap(vars(SoH_pvalue_tidy$variable), ncol = 1, strip.position = c("top"), scales = "free_y") +
-    #theme(plot.margin = unit(c(0,0.2,0.2,0.4), "cm")) +
     ylab(NULL) +
     xlab("date")
   
+  
+  # combine both gg's
   grid.newpage()
   gg <- grid.draw(rbind(ggplotGrob(gg1), ggplotGrob(gg2), size = "last"))
   
