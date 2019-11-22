@@ -51,7 +51,10 @@ Imports:
     zoo
 Suggests:
     knitr,
-    testthat
+    markdown,
+    testthat (>= 2.1.0),
+    rmarkdown,
+    roxygen2
 Description: Process and display data from air quality sensors.
     Initial focus is on PM2.5 measurements from sensors produced by Purple Air.
 License: GPL-3
