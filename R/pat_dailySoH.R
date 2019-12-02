@@ -26,7 +26,8 @@ pat_dailySoH <- function(
                     "PurpleAirSoH_dailyPctReporting", 
                     "PurpleAirSoH_dailyPctValid", 
                     "PurpleAirSoH_dailyOtherFit", 
-                    "PurpleAirSoH_dailyABFit")
+                    "PurpleAirSoH_dailyABFit",
+                    "PurpleAirSoH_dailyABtTest")
 ) {
   
   # ----- Validate parameters --------------------------------------------------
