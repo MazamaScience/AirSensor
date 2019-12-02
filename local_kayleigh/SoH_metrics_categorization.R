@@ -10,6 +10,7 @@ library(purrr)
 library(skimr)
 
 
+#Forest Service data
 setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
 pas <- pas_load()
 
@@ -144,6 +145,38 @@ small_pat_days_hours$data <- data
 
 report_days_hours <- PurpleAirSoH_dailyPctReporting(small_pat_days_hours) # SHOULD contain FOUR entries
 
+
+# ------------------------------------------------------------------------------
+# loop through all of california stations and load pat for one day.
+setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
+pas <- pas_load()
+pas <- pas_filter(pas, stateCode == "CA", DEVICE_LOCATIONTYPE == "outside")
+test_pas <- pas_filter(pas,stringr::str_detect(label, "B") )
+labels <- unique(pas_getLabels(test_pas))
+
+soh_all <- data.frame()
+system.time(
+  for (sensor in labels) {
+    
+    print(sensor)
+    result <- try({
+      pat <- pat_load(label = sensor, startdate = 20191129, enddate = 20191130, timezone = "America/Los_Angeles")
+    }, silent = TRUE)
+    
+    if ( ! "try-error" %in% class(result) ) {
+      result <- try({
+        soh <- pat_dailySoHIndex(pat) %>%
+          dplyr::mutate(label = sensor)
+        
+        soh_all <-
+          soh_all %>%
+          dplyr::bind_rows(soh)
+      }, silent = TRUE)
+    }
+    
+  })
+
+hist(soh_all$SoH_index, n = 80, main = "State of health of California PurpleAir sensors", xlab = "SoH Index")
 
 
 
