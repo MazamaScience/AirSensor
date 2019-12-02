@@ -143,7 +143,10 @@ pat_dailySoHPlot <- function(
     scale_y_continuous(breaks=scales::pretty_breaks(3)) +
     facet_wrap(vars(SoH_tidy$variable), ncol = 1, strip.position = c("top"), scales = "free_y") +
     labs(title = paste0("State of Health - ", station_name)) +
-    theme(legend.position = "none")
+    theme(legend.position = "none") +
+    xlab("datetime") +
+    ylab(NULL)
+    
   
   # ----- Return -------------------------------------------------------------
   return(gg)
