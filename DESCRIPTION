@@ -5,11 +5,13 @@ Title: Process and Display data from Air Quality Sensors
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
     person("Hans", "Martin", email="hans@mazamascience.com", role=c("aut")),
+    person("Kayleigh", "Wilson", email="andrakayleigh@gmail.com", role=c("aut")),
     person("Tate", "Brasel", email="tatebrasel6@gmail.com", role=c("aut")),
     person("Helen", "Miller", email="helen@ohana.org", role=c("aut"))
     )
 Author: Jonathan Callahan [aut, cre],
     Hans Martin [aut],
+    Kayleigh Wilson [aut],
     Tate Brasel [aut],
     Helen Miller [aut]
 Maintainer: Jonathan Callahan <jonathan.s.callahan@gmail.com>

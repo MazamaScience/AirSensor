@@ -75,10 +75,10 @@ pat_dailySoHIndexPlot <- function(
   legendBar_xmin <- tlim[2] - lubridate::ddays(dayCount/20)
   legendBar_xmax <- tlim[2] + lubridate::ddays(dayCount/20)
   legendBar_ymin <- c(0.60, 0.64, 0.68) * dataRange
-  legendBar_ymax <- legendBar_ymin + indexBar_thickness
+  legendBar_ymax <- legendBar_ymin + 1.5*indexBar_thickness
   
   legendText_x <- tlim[2]
-  legendText_y <- legendBar_ymin
+  legendText_y <- legendBar_ymin + 0.5 * indexBar_thickness
   legendText_label <- c("Poor", "Fair", "Good")
   
   xlab <- strftime(localTime[1], "Local Time (%Z)")
@@ -125,7 +125,7 @@ pat_dailySoHIndexPlot <- function(
       x = legendText_x,
       y = legendText_y,
       label = legendText_label,
-      vjust = -0.2,
+      vjust = 0.0,
       color = "white"
     ) +
     
@@ -134,7 +134,7 @@ pat_dailySoHIndexPlot <- function(
       "text",
       x = legendText_x,
       y = legendText_y[3] + 2*indexBar_thickness,
-      label = "Sensor Performance",
+      label = "Sensor Health",
       vjust = 0.5,
       color = "black"
     ) +

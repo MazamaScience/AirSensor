@@ -77,7 +77,7 @@ function arguments into a single tibble." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.14</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.15</span>
       </span>
     </div>
 
@@ -164,52 +164,42 @@ function arguments into a single tibble.</p>
 
     <pre class="usage"><span class='fu'>pat_dailySoH</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>SoH_functions</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"PurpleAirSoH_dailyPctDC"</span>,
   <span class='st'>"PurpleAirSoH_dailyPctReporting"</span>, <span class='st'>"PurpleAirSoH_dailyPctValid"</span>,
-  <span class='st'>"PurpleAirSoH_dailyOtherFit"</span>, <span class='st'>"PurpleAirSoH_dailyABFit"</span>))</pre>
+  <span class='st'>"PurpleAirSoH_dailyOtherFit"</span>, <span class='st'>"PurpleAirSoH_dailyABFit"</span>,
+  <span class='st'>"PurpleAirSoH_dailyABtTest"</span>))</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pat</th>
-      <td><p>PurpleAir Timeseries <em>pat</em> object.</p></td>
+      <td><p>PurpleAir Timeseries <code>pat</code> object.</p></td>
     </tr>
     <tr>
       <th>SoH_functions</th>
       <td><p>Vector of function names. All the passed in functions 
-must output tibbles with a daily `datetime` variable and must cover the same
+must output tibbles with a daily <code>datetime</code> variable and must cover the same
 period of time.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='pat_dailySoHPlot.html'>pat_dailySoHPlot</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>AirSensor</span>)
+
 <span class='no'>SoH</span> <span class='kw'>&lt;-</span>
   <span class='no'>example_pat_failure_B</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>pat_dailySoH</span>()
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>SoH</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 6 x 20</span><span>
-#&gt;   datetime            pm25_A_pctDC pm25_B_pctDC pm25_A_pctRepor…
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>                     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> 2019-06-01 </span><span style='color: #555555;'>00:00:00</span><span>            0            0             99.7
-#&gt; </span><span style='color: #555555;'>2</span><span> 2019-06-02 </span><span style='color: #555555;'>00:00:00</span><span>            0            0             99.6
-#&gt; </span><span style='color: #555555;'>3</span><span> 2019-06-03 </span><span style='color: #555555;'>00:00:00</span><span>            0            0             99.9
-#&gt; </span><span style='color: #555555;'>4</span><span> 2019-06-04 </span><span style='color: #555555;'>00:00:00</span><span>            0            0             99.7
-#&gt; </span><span style='color: #555555;'>5</span><span> 2019-06-05 </span><span style='color: #555555;'>00:00:00</span><span>            0            0             89.0
-#&gt; </span><span style='color: #555555;'>6</span><span> 2019-06-06 </span><span style='color: #555555;'>00:00:00</span><span>            0            0             95.8
-#&gt; </span><span style='color: #555555;'># … with 16 more variables: pm25_B_pctReporting </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, pm25_A_pctValid </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
-#&gt; #   pm25_B_pctValid </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, pm25_A_humidity_rsquared </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
-#&gt; #   pm25_A_temperature_rsquared </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, pm25_B_humidity_rsquared </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
-#&gt; #   pm25_B_temperature_rsquared </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, pm25_A_pm25_B_rsquared </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
-#&gt; #   pm25_A_pm25_B_slope </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, pm25_A_pm25_B_intercept </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
-#&gt; #   temperature_pctDC </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, temperature_pctReporting </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
-#&gt; #   temperature_pctValid </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, humidity_pctDC </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
-#&gt; #   humidity_pctReporting </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, humidity_pctValid </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>#timeseriesTbl_multiplot(tbl, ylim = c(0,100))
-</div></span></pre>
+
+<span class='fu'><a href='timeseriesTbl_multiplot.html'>timeseriesTbl_multiplot</a></span>(<span class='no'>SoH</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>4</span>)</div><div class='img'><img src='pat_dailySoH-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -219,7 +209,7 @@ period of time.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Jonathan Callahan, Hans Martin, Tate Brasel, Helen Miller.</p>
+  <p>Developed by Jonathan Callahan, Hans Martin, Kayleigh Wilson, Tate Brasel, Helen Miller.</p>
 </div>
 
 <div class="pkgdown">
