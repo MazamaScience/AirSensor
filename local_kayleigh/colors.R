@@ -20,3 +20,12 @@
 # pm25_A_color <- cols[3]
 # pm25_B_color <- cols[4]
 # temp_color <- cols[5]
+
+# ------- Purple colors for later ----------------------------------------------
+
+# "#fb51e7"
+# "#4700b3"
+
+
+
+

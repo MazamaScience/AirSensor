@@ -54,13 +54,13 @@ pat_dailySoHIndexPlot <- function(
   # NOTES: chunk for the day, we shift the symbol to be centered at noon for the day.
   gg <- ggplot2::ggplot(pat$data) +
     ggplot2::geom_point(aes(pat$data$datetime, pat$data$pm25_A), 
-               color= "red", 
+               color= "red",
                pch = 16, 
-               cex = 0.5) +
+               cex = 1) +
     ggplot2::geom_point(aes(pat$data$datetime, pat$data$pm25_B), 
-               color= "blue", 
+               color= "blue",
                pch = 16, 
-               cex = 0.5) +
+               cex = 1) +
     ggplot2::geom_point(data = index, 
                aes(index$datetime+lubridate::dhours(12), (index$SoH_index_bin*0)-plot_offset, color = colors), 
                pch = 15, 
