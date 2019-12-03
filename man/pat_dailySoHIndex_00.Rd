@@ -2,25 +2,20 @@
 % Please edit documentation in R/pat_dailySoHIndex_00.R
 \name{pat_dailySoHIndex_00}
 \alias{pat_dailySoHIndex_00}
-\title{Daily State of Health indexing}
+\title{State of Health index plot}
 \usage{
-pat_dailySoHIndex_00(pat = NULL, breaks = c(0, 0.2, 0.8, 1))
+pat_dailySoHIndex_00(pat = NULL, minPctReporting = 50, breaks = c(0,
+  0.2, 0.8, 1))
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}
 
+\item{minPctReporting}{Percent reporting threshold for A and B channels.}
+
 \item{breaks}{Breaks used to convert index values into index bins.}
 }
 \description{
-This function calculates the \code{pat_dailySoH} function and 
-returns a tibble containing a state of health index for each day of the 
-\code{pat} provided. The returned tibble contains columns: \code{datetime}, 
-\code{SoH_index}, and \code{SoH_index_bin}.
-
-The \code{SoH_index} is a value normalized between 
-0 and 1 where 0 represents low confidence in the sensor data and 1 represents 
-high confidence. The \code{SoH_index_bin} is either 1, 2, or 3 representing
-poor, fair, and good data respectively.
+State of Health index plot
 }
 \examples{
  

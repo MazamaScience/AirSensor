@@ -35,7 +35,7 @@ pat_dailySoHPlot <- function(
   if ( pat_isEmpty(pat) )
     stop("Parameter 'pat' has no data.") 
   
-  # ----- Create the SoH object, and SoH plot ----------------------------------
+  # ----- Create the SoH_tidy object -------------------------------------------
   
   # Calculate the SoH 
   SoH <- pat_dailySoH(pat)
@@ -78,8 +78,7 @@ pat_dailySoHPlot <- function(
       grepl("pm25_A_pm25_B_intercept", SoH_tidy$variable) ~ 0,
       grepl("pm25_A_pm25_B_rsquared", SoH_tidy$variable) ~ 1,
       grepl("pm25_A_temperature_rsquared", SoH_tidy$variable) ~ 0)
-    )#,
-  # grepl("pm25_B_temperature_rsquared", SoH_tidy$variable) ~ 0)) 
+    )
   
   # Create factor for ordering the facets later on
   SoH_tidy$variable <- factor(SoH_tidy$variable, 
@@ -96,6 +95,8 @@ pat_dailySoHPlot <- function(
                                 "pm25_A_temperature_rsquared"
                               ))
   
+  # ----- Create plot variables ------------------------------------------------
+  
   # Create the dummy variables which contain just the min and max expected 
   # values for each variable in order to set an appropriate range in the facets
   
@@ -110,7 +111,7 @@ pat_dailySoHPlot <- function(
   pm25_A_pm25_B_rsquared <- rep_len(c(0, 1), length.out = length(SoH_sub$datetime))
   pm25_A_temperature_rsquared <- rep_len(c(0, 1), length.out = length(SoH_sub$datetime))
 
-  # add all the dummy variables to the dummy dataframe
+  # Add all the dummy variables to the dummy dataframe
   dummy <- data.frame(
     datetime,
     pm25_A_pctReporting, 
@@ -125,7 +126,7 @@ pat_dailySoHPlot <- function(
     pm25_A_temperature_rsquared
   )
   
-  # tidy the dummy data to mimic the real data
+  # Tidy the dummy data to mimic the real data
   dummy_tidy <-
     dummy %>%
     tidyr::gather(key = "variable", value = "value", -.data$datetime) %>%
@@ -133,8 +134,10 @@ pat_dailySoHPlot <- function(
   
   colors <- c("salmon")
   
-  # pull out the station name for labeling the plot
+  # Pull out the station name for labeling the plot
   station_name <- pat$meta$label
+  
+  # ----- Create plot ----------------------------------------------------------
   
   gg <- ggplot2::ggplot(SoH_tidy, aes(.data$datetime, .data$value)) +
     # plot the flat-lined, expected values

@@ -10,10 +10,10 @@ pat_dailySoH(pat = NULL, SoH_functions = c("PurpleAirSoH_dailyPctDC",
   "PurpleAirSoH_dailyABtTest"))
 }
 \arguments{
-\item{pat}{PurpleAir Timeseries \emph{pat} object.}
+\item{pat}{PurpleAir Timeseries \code{pat} object.}
 
 \item{SoH_functions}{Vector of function names. All the passed in functions 
-must output tibbles with a daily `datetime` variable and must cover the same
+must output tibbles with a daily \code{datetime} variable and must cover the same
 period of time.}
 }
 \description{

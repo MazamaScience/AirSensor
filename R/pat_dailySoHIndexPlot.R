@@ -5,25 +5,37 @@
 #' @title Daily State of Health metric plot
 #' 
 #' @param pat PurpleAir Timeseries \emph{pat} object.
+#' @param minPctReporting Percent reporting threshold for A and B channels.
+#' @param breaks Breaks used to convert index values into index bins.
+#' @param SoHIndex_FUN Function used to create \code{SoHIndex} tibble. (Not quoted.)
 #' 
-#' @description This function plots as subset of the most useful State of Health 
-#' metrics calculated by the \code{pat_dailySoH} function. The function 
-#' runs \code{pat_dailySoH} internally and uses the output to create 
-#' the plot.
+#' @description This function plots a subset of the most useful State of Health 
+#' metrics calculated with \code{SoHIndex_FUN}.
 #' 
+#' Both \code{minPctReporting} and \code{breaks} are passed to 
+#' \code{SoHIndex_FUN}.
+#' 
+#' @seealso \link{pat_dailySoHIndex_00}
 #' 
 #' @examples
+#' library(AirSensor)
 #' 
 #' pat_dailySoHIndexPlot(example_pat_failure_A)
 #' 
 
 pat_dailySoHIndexPlot <- function(
-  pat = NULL
+  pat = NULL,
+  minPctReporting = 50,
+  breaks = c(0, .2, .8, 1),
+  SoHIndex_FUN = pat_dailySoHIndex_00
 ) {
   
   # ----- Validate parameters --------------------------------------------------
   
   MazamaCoreUtils::stopIfNull(pat)
+  MazamaCoreUtils::stopIfNull(minPctReporting)
+  MazamaCoreUtils::stopIfNull(breaks)
+  MazamaCoreUtils::stopIfNull(SoHIndex_FUN)
   
   if ( !pat_isPat(pat) )
     stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")
@@ -31,51 +43,109 @@ pat_dailySoHIndexPlot <- function(
   if ( pat_isEmpty(pat) )
     stop("Parameter 'pat' has no data.") 
   
-  # ----- Create the SoH object, and SoH plot ----------------------------------
+  if ( ! rlang::is_closure(SoHIndex_FUN) ) {
+    stop("Parameter 'SoHIndex_FUN' must be a function, not a function name. Don't use quotes.")
+  }
+  
+  # ----- Create the SoHIndex object -------------------------------------------
   
   # Calculate the SoH_index
-  SoHIndex <- pat_dailySoHIndex_00(pat)
+  SoHIndex <- SoHIndex_FUN(
+    pat = pat,
+    minPctReporting = minPctReporting,
+    breaks = breaks
+  )
   
-  station_name <- pat$meta$label
+  # ----- Create plot variables ------------------------------------------------
   
-  colors <- factor(SoHIndex$index_bin)
+  localTime <- lubridate::with_tz(pat$data$datetime, tzone = pat$meta$timezone)
   
-  # Calculate the plot offset for plotting location of the index
-  plot_offset <- 0.05*(max(pat$data$pm25_A, pat$data$pm25_B, na.rm = TRUE))
+  colors <- c("firebrick", "goldenrod1", "seagreen3")
+  fillColors <- colors[SoHIndex$index_bin]
   
-  # NOTES: The value of the daily index bin is represented with color so the 
-  # NOTES: value is multiplied by 0 since all that matters for display is color 
-  # NOTES: and datetime. The index is also shifted to the right by 12 hours 
-  # NOTES: because the symbol is a lorge square that is plotted (centered) at 
-  # NOTES: midnight for the day, so to make the square better represent the time
-  # NOTES: chunk for the day, we shift the symbol to be centered at noon for the day.
+  sensorLabel <- pat$meta$label
   
-  gg <- ggplot2::ggplot(pat$data) +
-    ggplot2::geom_point(aes(pat$data$datetime, pat$data$pm25_A), 
+  # Calculate locations the index color bar
+  dataRange <- max(pat$data$pm25_A, pat$data$pm25_B, na.rm = TRUE)
+  indexBar_thickness <- 0.025*(dataRange)
+  
+  # Calculate locations of the legend bars
+  tlim <- range(localTime)
+  dayCount <- as.numeric(difftime(tlim[2], tlim[1], units = "days"))
+  legendBar_xmin <- tlim[2] - lubridate::ddays(dayCount/20)
+  legendBar_xmax <- tlim[2] + lubridate::ddays(dayCount/20)
+  legendBar_ymin <- c(0.60, 0.64, 0.68) * dataRange
+  legendBar_ymax <- legendBar_ymin + indexBar_thickness
+  
+  legendText_x <- tlim[2]
+  legendText_y <- legendBar_ymin
+  legendText_label <- c("Poor", "Fair", "Good")
+  
+  xlab <- strftime(localTime[1], "Local Time (%Z)")
+  
+  # ----- Create plot ----------------------------------------------------------
+  
+  gg <- 
+    # A and B channel PM2.5
+    ggplot2::ggplot(pat$data) +
+    ggplot2::geom_point(aes(localTime, pat$data$pm25_A), 
                         color= "red", 
                         pch = 16, 
                         cex = 0.5) +
-    ggplot2::geom_point(aes(pat$data$datetime, pat$data$pm25_B), 
+    ggplot2::geom_point(aes(localTime, pat$data$pm25_B), 
                         color= "blue", 
                         pch = 16, 
                         cex = 0.5) +
-    ggplot2::geom_point(data = SoHIndex, 
-                        aes(SoHIndex$datetime+lubridate::dhours(12), (SoHIndex$index_bin*0)-plot_offset, color = colors), 
-                        pch = 15, 
-                        cex = 5) +
-    ggplot2::scale_color_manual(values=c("1" = "firebrick", 
-                                         "2" = "goldenrod1", 
-                                         "3" = "mediumaquamarine")) +
-    ggplot2::labs(title = paste0("SoH Index - ", station_name)) +
-    ggplot2::xlab("datetime")+
-    ggplot2::ylab("\u03bcg / m\u00b3") +
-    ggplot2::labs(color = "Daily \nIndex Bin")
-  
+    
+    # Add State-of-Health bin colors underneath
+    ggplot2::annotate(
+      "rect",
+      xmin = SoHIndex$datetime,
+      xmax = SoHIndex$datetime + lubridate::dhours(24),
+      ymin = (SoHIndex$index_bin*0)-2*indexBar_thickness,
+      ymax = (SoHIndex$index_bin*0)-indexBar_thickness,
+      fill = fillColors,
+      alpha = 1.0
+    ) +
+
+    # Add SoH legend boxes on the right
+    ggplot2::annotate(
+      "rect",
+      xmin = legendBar_xmin,
+      xmax = legendBar_xmax,
+      ymin = legendBar_ymin,
+      ymax = legendBar_ymax,
+      fill = colors,
+      alpha = 1.0
+    ) +
+    
+    # Add SoH legend boxes text
+    ggplot2::annotate(
+      "text",
+      x = legendText_x,
+      y = legendText_y,
+      label = legendText_label,
+      vjust = -0.2,
+      color = "white"
+    ) +
+    
+    # Add SoH legend title
+    ggplot2::annotate(
+      "text",
+      x = legendText_x,
+      y = legendText_y[3] + 2*indexBar_thickness,
+      label = "Sensor Performance",
+      vjust = 0.5,
+      color = "black"
+    ) +
+    
+    # Title and axis labels
+    ggplot2::labs(title = paste0("SoH Index - ", sensorLabel)) +
+    ggplot2::xlab(xlab)+
+    ggplot2::ylab("\u03bcg / m\u00b3")
+
   # ----- Return ---------------------------------------------------------------
   
   return(gg)
   
 }
-
-
-
