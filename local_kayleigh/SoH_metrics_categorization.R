@@ -160,7 +160,7 @@ system.time(
     
     print(sensor)
     result <- try({
-      pat <- pat_load(label = sensor, startdate = 20191129, enddate = 20191130, timezone = "America/Los_Angeles")
+      pat <- pat_load(label = sensor, startdate = 20191130, enddate = 20191201, timezone = "America/Los_Angeles")
     }, silent = TRUE)
     
     if ( ! "try-error" %in% class(result) ) {
@@ -178,35 +178,16 @@ system.time(
 
 hist(soh_all$SoH_index, n = 80, main = "State of health of California PurpleAir sensors", xlab = "SoH Index", col = "#a128cd")
 
-df <- data.frame(
-  x = c(0, 0.2, 0.8, 1.0),
-  y = c(-15, -15, -15, -15)
-)
 
-soh_all_filt <- 
-  soh_all %>% 
-  filter(!is.na(SoH_index_bin))
-
-soh_all_filt <-
-  soh_all_filt %>%
-  mutate_if(SoH_index <= 0.2, )
-gg <- ggplot(soh_all_filt, aes(SoH_index)) +
-  geom_histogram(bins = 50, fill = soh_all_filt$SoH_index_bin) +
+gg <- ggplot(soh_all, aes(SoH_index)) +
+  geom_histogram(data=subset(soh_all, SoH_index_bin == '0'), 
+                fill = "firebrick", color = "firebrick", alpha = 0.6, bins = 40) +
+  geom_histogram(data=subset(soh_all, SoH_index_bin == '1'), 
+                 fill = "goldenrod1", color = "goldenrod1", alpha = 0.6, bins = 40) +
+  geom_histogram(data=subset(soh_all, SoH_index_bin == '2'), 
+                 fill = "mediumseagreen", color = "mediumseagreen", alpha = 0.6, bins = 40) +
   xlab("SoH Index") +
-  labs(title = "State of health of California PurpleAir sensors")
-
-gg
-
-gg <- ggplot(soh_all_filt, aes(SoH_index, fill=SoH_index_bin)) +
-  #geom_histogram(bins = 50) +
-  geom_histogram(data=subset(soh_all_filt, SoH_index_bin == '0'), 
-                fill = "firebrick", alpha = 0.8, bins = 40) +
-  geom_histogram(data=subset(soh_all_filt, SoH_index_bin == '1'), 
-                 fill = "goldenrod1", alpha = 0.8, bins = 40) +
-  geom_histogram(data=subset(soh_all_filt, SoH_index_bin == '2'), 
-                 fill = "mediumseagreen", alpha = 0.8, bins = 40) +
-  xlab("SoH Index") +
-  labs(title = "State of health of California PurpleAir sensors")
+  labs(title = "State of health histogram of California PurpleAir sensors")
 
 gg
 
@@ -221,7 +202,7 @@ gg
 #   labs(title = "State of health of California PurpleAir sensors") +
 #   geom_rect(data = df, aes(xmin = x[1], xmax = x[2], ymin = y[1], ymax = y[1] - 20), color = "firebrick", fill = "firebrick") +
 #   geom_rect(data = df, aes(xmin = x[2], xmax = x[3], ymin = y[1], ymax = y[1] - 20), color = "goldenrod1", fill ="goldenrod1" ) +
-#   geom_rect(data = df, aes(xmin = x[3], xmax = x[4], ymin = y[1], ymax = y[1] - 20), color = "mediumseagreen", fill = "mediumseagreen") 
+#   geom_rect(data = df, aes(xmin = x[3], xmax = x[4], ymin = y[1], ymax = y[1] - 20), color = "mediumseagreen", fill = "mediumseagreen")
 # 
 # 
 # gg
