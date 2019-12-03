@@ -19,5 +19,4 @@ the plot.
 
 pat_dailySoHIndexPlot(example_pat_failure_A)
 
-
 }

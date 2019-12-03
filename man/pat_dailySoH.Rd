@@ -21,10 +21,14 @@ This function combines the output of the State of Health (SoH)
 function arguments into a single tibble.
 }
 \examples{
- 
+library(AirSensor)
+
 SoH <- 
   example_pat_failure_B \%>\%
   pat_dailySoH() 
-head(SoH)
-#timeseriesTbl_multiplot(tbl, ylim = c(0,100))
+  
+timeseriesTbl_multiplot(SoH, ncol = 4)
+}
+\seealso{
+\link{pat_dailySoHPlot}
 }

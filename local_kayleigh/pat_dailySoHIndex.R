@@ -17,13 +17,13 @@
 #' @examples  
 #' tbl <- 
 #'   example_pat_failure_A %>%
-#'   pat_dailySoHIndex() 
+#'   pat_dailySoHIndex_00() 
 #'   
 #' 
 #' 
 
 
-pat_dailySoHIndex <- function(
+pat_dailySoHIndex_00 <- function(
   pat = NULL
 ) {
   

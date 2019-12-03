@@ -39,7 +39,7 @@ SoH <-
 index_tbl$SoH_index <- SoH$SoH_index
 
 # good example using colors as factors
-index <- pat_dailySoHIndex(pat)
+index <- pat_dailySoHIndex_00(pat)
 station_name <- pat$meta$label
 cols <- brewer.pal(5, "RdYlGn")
 colors <- factor(index$SoH_index)

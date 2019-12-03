@@ -1,23 +1,29 @@
 #' @export
 #' @importFrom rlang .data
 #' @importFrom dplyr contains 
+#' @importFrom ggplot2 aes
 #' 
 #' @title Daily State of Health metric plot
 #' 
 #' @param pat PurpleAir Timeseries \emph{pat} object.
+#' @param ncol Number of columns in the faceted plot.
 #' 
-#' @description This function plots as subset of the most useful State of Health 
+#' @description This function plots a subset of the most useful State of Health 
 #' metrics calculated by the \code{pat_dailySoH} function. The function 
 #' runs \code{pat_dailySoH} internally and uses the output to create 
 #' the plot.
 #' 
+#' @seealso \link{pat_dailySoH}
 #' 
-
+#' @examples
+#' library(AirSensor)
+#' 
+#' pat_dailySoHPlot(example_pat_failure_B)
 
 pat_dailySoHPlot <- function(
-  pat = NULL
+  pat = NULL,
+  ncol = 2
 ) {
-  
   
   # ----- Validate parameters --------------------------------------------------
   
@@ -31,34 +37,37 @@ pat_dailySoHPlot <- function(
   
   # ----- Create the SoH object, and SoH plot ----------------------------------
   
-  # calculate the SoH 
+  # Calculate the SoH 
   SoH <- pat_dailySoH(pat)
   
-  # select only the useful metrics of interest from the full SoH
-  SoH_sub <- dplyr::select(SoH, "datetime", 
-                           contains("_pctReporting"),
-                           "pm25_A_pctValid",
-                           "pm25_B_pctValid",
-                           "pm25_A_pctDC", 
-                           "pm25_B_pctDC", 
-                           "pm25_A_pm25_B_slope",
-                           "pm25_A_pm25_B_intercept",
-                           "pm25_A_pm25_B_rsquared",
-                           "pm25_A_temperature_rsquared",
-                           "pm25_B_temperature_rsquared") 
+  # Select only the useful metrics of interest from the full SoH
+  SoH_sub <- dplyr::select(
+    SoH, 
+    "datetime", 
+    "pm25_A_pctReporting",
+    "pm25_B_pctReporting",
+    "pm25_A_pctValid",
+    "pm25_B_pctValid",
+    "pm25_A_pctDC", 
+    "pm25_B_pctDC", 
+    "pm25_A_pm25_B_slope",
+    "pm25_A_pm25_B_intercept",
+    "pm25_A_pm25_B_rsquared",
+    "pm25_A_temperature_rsquared"
+  )
   
-  # copy the datetime column from the SoH to use later when creating the dummy 
+  # Copy the datetime column from the SoH to use later when creating the dummy 
   # data.
   datetime <- SoH_sub$datetime
   
-  # create a tidy dataframe from the SoH
+  # Create a tidy dataframe from the SoH
   SoH_tidy <-
     SoH_sub %>%
     tidyr::gather(key ="variable", value = "value", -datetime) %>%
     # create a factor based on the variable name for expected value association
     dplyr::mutate(expectedValue = as.integer(factor(.data$variable))) 
   
-  # assign associated expected values based on the original column
+  # Assign associated expected values based on the original column
   SoH_tidy <- 
     SoH_tidy %>%
     dplyr::mutate(expectedValue = case_when(
@@ -68,32 +77,30 @@ pat_dailySoHPlot <- function(
       grepl("pm25_A_pm25_B_slope", SoH_tidy$variable) ~ 1,
       grepl("pm25_A_pm25_B_intercept", SoH_tidy$variable) ~ 0,
       grepl("pm25_A_pm25_B_rsquared", SoH_tidy$variable) ~ 1,
-      grepl("pm25_A_temperature_rsquared", SoH_tidy$variable) ~ 0,
-      grepl("pm25_B_temperature_rsquared", SoH_tidy$variable) ~ 0)) 
+      grepl("pm25_A_temperature_rsquared", SoH_tidy$variable) ~ 0)
+    )#,
+  # grepl("pm25_B_temperature_rsquared", SoH_tidy$variable) ~ 0)) 
   
-  # create factor for ordering the facets later on
-  SoH_tidy$variable <- factor(SoH_tidy$variable, levels=c(
-    "pm25_A_pctReporting",
-    "pm25_B_pctReporting",
-    "temperature_pctReporting",
-    "humidity_pctReporting",
-    "pm25_A_pctValid",
-    "pm25_B_pctValid",
-    "pm25_A_pctDC",
-    "pm25_B_pctDC",
-    "pm25_A_pm25_B_slope",
-    "pm25_A_pm25_B_intercept",
-    "pm25_A_pm25_B_rsquared",
-    "pm25_A_temperature_rsquared",
-    "pm25_B_temperature_rsquared"
-  ))
+  # Create factor for ordering the facets later on
+  SoH_tidy$variable <- factor(SoH_tidy$variable, 
+                              levels = c(
+                                "pm25_A_pctReporting",
+                                "pm25_B_pctReporting",
+                                "pm25_A_pctValid",
+                                "pm25_B_pctValid",
+                                "pm25_A_pctDC",
+                                "pm25_B_pctDC",
+                                "pm25_A_pm25_B_slope",
+                                "pm25_A_pm25_B_intercept",
+                                "pm25_A_pm25_B_rsquared",
+                                "pm25_A_temperature_rsquared"
+                              ))
   
-  # create the dummy variables which contain just the min and max expected 
+  # Create the dummy variables which contain just the min and max expected 
   # values for each variable in order to set an appropriate range in the facets
+  
   pm25_A_pctReporting <- rep_len(c(0, 150), length.out = length(SoH_sub$datetime))
   pm25_B_pctReporting <- rep_len(c(0, 150), length.out = length(SoH_sub$datetime))
-  temperature_pctReporting <- rep_len(c(0, 150), length.out = length(SoH_sub$datetime))
-  humidity_pctReporting <- rep_len(c(0, 150), length.out = length(SoH_sub$datetime))
   pm25_A_pctValid <- rep_len(c(0, 100), length.out = length(SoH_sub$datetime))
   pm25_B_pctValid <- rep_len(c(0, 100), length.out = length(SoH_sub$datetime))
   pm25_A_pctDC <- rep_len(c(0, 100), length.out = length(SoH_sub$datetime))
@@ -102,23 +109,21 @@ pat_dailySoHPlot <- function(
   pm25_A_pm25_B_intercept <- rep_len(c(-50, 50), length.out = length(SoH_sub$datetime))
   pm25_A_pm25_B_rsquared <- rep_len(c(0, 1), length.out = length(SoH_sub$datetime))
   pm25_A_temperature_rsquared <- rep_len(c(0, 1), length.out = length(SoH_sub$datetime))
-  pm25_B_temperature_rsquared <- rep_len(c(0, 1), length.out = length(SoH_sub$datetime))
-  
+
   # add all the dummy variables to the dummy dataframe
-  dummy <- data.frame(datetime,
-                      pm25_A_pctReporting, 
-                      pm25_B_pctReporting,
-                      temperature_pctReporting,
-                      humidity_pctReporting,
-                      pm25_A_pctValid,
-                      pm25_B_pctValid,
-                      pm25_A_pctDC,
-                      pm25_B_pctDC,
-                      pm25_A_pm25_B_slope,
-                      pm25_A_pm25_B_intercept,
-                      pm25_A_pm25_B_rsquared,
-                      pm25_A_temperature_rsquared,
-                      pm25_B_temperature_rsquared)
+  dummy <- data.frame(
+    datetime,
+    pm25_A_pctReporting, 
+    pm25_B_pctReporting,
+    pm25_A_pctValid,
+    pm25_B_pctValid,
+    pm25_A_pctDC,
+    pm25_B_pctDC,
+    pm25_A_pm25_B_slope,
+    pm25_A_pm25_B_intercept,
+    pm25_A_pm25_B_rsquared,
+    pm25_A_temperature_rsquared
+  )
   
   # tidy the dummy data to mimic the real data
   dummy_tidy <-
@@ -131,24 +136,24 @@ pat_dailySoHPlot <- function(
   # pull out the station name for labeling the plot
   station_name <- pat$meta$label
   
-  gg <- ggplot(SoH_tidy, aes(.data$datetime, .data$value)) +
+  gg <- ggplot2::ggplot(SoH_tidy, aes(.data$datetime, .data$value)) +
     # plot the flat-lined, expected values
-    geom_line(aes(x = SoH_tidy$datetime, y = SoH_tidy$expectedValue),  
-              color = colors, alpha = 0.8) +
+    ggplot2::geom_line(aes(x = SoH_tidy$datetime, y = SoH_tidy$expectedValue),  
+                       color = colors, alpha = 0.8) +
     # plot the dummy data to establish a uniform range from station to station
-    geom_line(aes(x = dummy_tidy$datetime, y = dummy_tidy$value), 
-              color = "black", alpha = 0) +
+    ggplot2::geom_line(aes(x = dummy_tidy$datetime, y = dummy_tidy$value), 
+                       color = "black", alpha = 0) +
     # plot the actual SoH data as outlined in the initial aes()
-    geom_line() +
-    scale_y_continuous(breaks=scales::pretty_breaks(3)) +
-    facet_wrap(vars(SoH_tidy$variable), ncol = 1, strip.position = c("top"), scales = "free_y") +
-    labs(title = paste0("State of Health - ", station_name)) +
-    theme(legend.position = "none") +
-    xlab("datetime") +
-    ylab(NULL)
-    
+    ggplot2::geom_line() +
+    ggplot2::scale_y_continuous(breaks=scales::pretty_breaks(3)) +
+    ggplot2::facet_wrap(vars(SoH_tidy$variable), ncol = ncol, strip.position = c("top"), scales = "free_y") +
+    ggplot2::labs(title = paste0("State of Health - ", station_name)) +
+    ggplot2::theme(legend.position = "none") +
+    ggplot2::xlab("datetime") +
+    ggplot2::ylab(NULL)
   
-  # ----- Return -------------------------------------------------------------
+  # ----- Return ---------------------------------------------------------------
+  
   return(gg)
   
 }

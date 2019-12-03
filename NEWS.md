@@ -1,3 +1,12 @@
+# AirSensor 0.5.15
+
+Additional functionality for calculating a state of health index to be used as
+an overall assessment of sensor functioning.
+
+* renamed `pat_dailyStateOfHealth()` to `pat_dailySoH()`
+* new functions `pat_dailySoHPlot()`, `pat_dailySoHIndex_00()`, 
+`pat_dailySoHIndexPlot()`
+
 # AirSensor 0.5.14
 
 Modified how `pat_filterDate()` obtains the `timezone` used to interpret the

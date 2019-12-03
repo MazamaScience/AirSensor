@@ -12,13 +12,16 @@
 #' @description This function combines the output of the State of Health (SoH) 
 #' function arguments into a single tibble. 
 #' 
+#' @seealso \link{pat_dailySoHPlot}
 #' 
-#' @examples  
+#' @examples
+#' library(AirSensor)
+#' 
 #' SoH <- 
 #'   example_pat_failure_B %>%
 #'   pat_dailySoH() 
-#' head(SoH)
-#' #timeseriesTbl_multiplot(tbl, ylim = c(0,100))
+#'   
+#' timeseriesTbl_multiplot(SoH, ncol = 4)
 
 pat_dailySoH <- function(
   pat = NULL,
@@ -39,7 +42,6 @@ pat_dailySoH <- function(
   
   if ( pat_isEmpty(pat) )
     stop("Parameter 'pat' has no data.") 
-  
   
   # ----- pat_dailySoH() ---------------------------------------------------
   
