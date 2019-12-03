@@ -5,7 +5,7 @@
 \title{Date filtering for PurpleAir Timeseries objects}
 \usage{
 pat_filterDate(pat = NULL, startdate = NULL, enddate = NULL,
-  days = NULL, weeks = NULL, timezone = "America/Los_Angeles")
+  days = NULL, weeks = NULL, timezone = NULL)
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}
@@ -37,7 +37,9 @@ including either of the following recommended formats:
 \note{
 The returned data will run from the beginning of \code{startdate} until
 the \strong{beginning} of \code{enddate} -- \emph{i.e.} no values associated
-with \code{enddate} will be returned.
+with \code{enddate} will be returned. The exception being when
+\code{enddate} is less than 24 hours after \code{startdate}. In that case, a
+single day is returned.
 }
 \examples{
 \donttest{

@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.14</span>
       </span>
     </div>
 
@@ -129,19 +129,19 @@
 <a href="#good-and-bad-data" class="anchor"></a>“Good” and “Bad” data</h2>
 <p>An important part of data analysis is deciding whether or not the data are accurate. As part of the AirSensor package there are several functions that provide metrics to help you assess the “State of Health” (SoH) of the data collected by a PurpleAir sensor. This vignette demonstrates an example workflow for using pat data and the SoH functions.</p>
 <p>Provided below are two examples of pat data. The first is well behaved data from a properly functioning sensor that here forward will be referred to as “good data”. The second example shows data that were clearly collected by a malfunctioning sensor. We will call that “bad data”. Notice the jump in channel A pm25 readings between June 10 and June 17 in the bad data, we will explore this section of data throughout the rest of this example.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">good_pat &lt;-<span class="st"> </span><span class="kw"><a href="../reference/pat_createNew.html">pat_createNew</a></span>(pas, <span class="st">"SCAH_29"</span>, </a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">                          <span class="dt">startdate =</span> <span class="st">"2019-05-27"</span>, </a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">                          <span class="dt">enddate =</span> <span class="st">"2019-06-22"</span>, </a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">                          <span class="dt">timezone =</span> <span class="st">"America/Los_Angeles"</span>)</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(good_pat, <span class="dt">sampleSize =</span> <span class="fl">1e6</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">good_pat &lt;-<span class="st"> </span><span class="kw"><a href="../reference/pat_createNew.html">pat_createNew</a></span>(pas, <span class="st">"SCAH_29"</span>, 
+                          <span class="dt">startdate =</span> <span class="st">"2019-05-27"</span>, 
+                          <span class="dt">enddate =</span> <span class="st">"2019-06-22"</span>, 
+                          <span class="dt">timezone =</span> <span class="st">"America/Los_Angeles"</span>)
+
+<span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(good_pat, <span class="dt">sampleSize =</span> <span class="fl">1e6</span>)</code></pre></div>
 <p><img src="SoH_functions_files/figure-html/pat_muliplots%20fig-margin-1.png" width="672"></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">bad_pat &lt;-<span class="st"> </span><span class="kw"><a href="../reference/pat_createNew.html">pat_createNew</a></span>(pas, <span class="st">"SCTV_16"</span>, </a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">                         <span class="dt">startdate =</span> <span class="st">"2019-05-27"</span>, </a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">                         <span class="dt">enddate =</span> <span class="st">"2019-06-22"</span>, </a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">                         <span class="dt">timezone =</span> <span class="st">"America/Los_Angeles"</span>)</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(bad_pat,  <span class="dt">sampleSize =</span> <span class="fl">1e6</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bad_pat &lt;-<span class="st"> </span><span class="kw"><a href="../reference/pat_createNew.html">pat_createNew</a></span>(pas, <span class="st">"SCTV_16"</span>, 
+                         <span class="dt">startdate =</span> <span class="st">"2019-05-27"</span>, 
+                         <span class="dt">enddate =</span> <span class="st">"2019-06-22"</span>, 
+                         <span class="dt">timezone =</span> <span class="st">"America/Los_Angeles"</span>)
+
+<span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(bad_pat,  <span class="dt">sampleSize =</span> <span class="fl">1e6</span>)</code></pre></div>
 <p><img src="SoH_functions_files/figure-html/pat_muliplots%20fig-margin-2.png" width="672"></p>
 </div>
 <div id="percent-reporting" class="section level2">
@@ -149,73 +149,73 @@
 <a href="#percent-reporting" class="anchor"></a>Percent reporting</h2>
 <p>Within the AirSensor package there are several functions that can help to determine which of these datasets are more reliable without actually looking at a plot of the pm25 channels.</p>
 <p>The first of these functions, <code>PurpleAirSoH_dailyPctReporting</code> will provide a daily percentage of each day that the sensor was turned on and reporting data.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">good_PctReport &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PurpleAirSoH_dailyPctReporting.html">PurpleAirSoH_dailyPctReporting</a></span>(good_pat)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">bad_PctReport &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PurpleAirSoH_dailyPctReporting.html">PurpleAirSoH_dailyPctReporting</a></span>(bad_pat)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">good_PctReport &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PurpleAirSoH_dailyPctReporting.html">PurpleAirSoH_dailyPctReporting</a></span>(good_pat)
+bad_PctReport &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PurpleAirSoH_dailyPctReporting.html">PurpleAirSoH_dailyPctReporting</a></span>(bad_pat)</code></pre></div>
 <p>Ideally, the percent reporting hovers near 100%, the sensor should be reporting all the time. Notice however, that for both stations the first few points hang out around 150%, this is due to a difference in sampling frequencies before and after a firmware update that became available to the sensors in June 2019. Prior to June, all stations were recording at a higher rate, hence percentages greater than %100. Before firmware updates were installed, a perfectly performing sensor should report at %150.</p>
 <p>Both stations start out with near full reporting percentages, and after the firmware update the good data are still nearly perfect, hovering at 100% without any dropouts, but the bad data start to deteriorate between June 10 and June 17.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># gg setup</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">good_tidy &lt;-<span class="st"> </span>good_PctReport <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  </span><span class="kw">gather</span>(<span class="dt">key =</span><span class="st">"variable"</span>, <span class="dt">value =</span> <span class="st">"value"</span>, <span class="op">-</span>datetime) </a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">bad_tidy &lt;-<span class="st"> </span>bad_PctReport <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="st">  </span><span class="kw">gather</span>(<span class="dt">key =</span><span class="st">"variable"</span>, <span class="dt">value =</span> <span class="st">"value"</span>, <span class="op">-</span>datetime)</a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co"># ggplots using tidy data</span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9">gg_good &lt;-<span class="st"> </span><span class="kw">ggplot</span>(good_tidy) <span class="op">+</span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> datetime, <span class="dt">y =</span> value, <span class="dt">color =</span> variable), <span class="dt">alpha =</span> <span class="fl">0.8</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="kw">vars</span>(variable), <span class="dt">scales =</span> <span class="st">"free_y"</span>, <span class="dt">nrow =</span> <span class="dv">4</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"black"</span>,<span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"black"</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">"percent"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">100</span>, <span class="dv">125</span>, <span class="dv">150</span>), </a>
-<a class="sourceLine" id="cb4-15" data-line-number="15">                     <span class="dt">limits =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="dv">150</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">"none"</span>)</a>
-<a class="sourceLine" id="cb4-17" data-line-number="17">gg_good</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># gg setup</span>
+good_tidy &lt;-<span class="st"> </span>good_PctReport <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gather</span>(<span class="dt">key =</span><span class="st">"variable"</span>, <span class="dt">value =</span> <span class="st">"value"</span>, <span class="op">-</span>datetime) 
+
+bad_tidy &lt;-<span class="st"> </span>bad_PctReport <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gather</span>(<span class="dt">key =</span><span class="st">"variable"</span>, <span class="dt">value =</span> <span class="st">"value"</span>, <span class="op">-</span>datetime)
+
+<span class="co"># ggplots using tidy data</span>
+gg_good &lt;-<span class="st"> </span><span class="kw">ggplot</span>(good_tidy) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> datetime, <span class="dt">y =</span> value, <span class="dt">color =</span> variable), <span class="dt">alpha =</span> <span class="fl">0.8</span>)<span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="kw">vars</span>(variable), <span class="dt">scales =</span> <span class="st">"free_y"</span>, <span class="dt">nrow =</span> <span class="dv">4</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"black"</span>,<span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"black"</span>)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">ylab</span>(<span class="st">"percent"</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">100</span>, <span class="dv">125</span>, <span class="dv">150</span>), 
+                     <span class="dt">limits =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="dv">150</span>)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">"none"</span>)
+gg_good</code></pre></div>
 <p><img src="SoH_functions_files/figure-html/percent_reporting_plot-1.png" width="672"></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">gg_bad &lt;-<span class="st"> </span><span class="kw">ggplot</span>(bad_tidy) <span class="op">+</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> datetime, <span class="dt">y =</span> value, <span class="dt">color =</span> variable), <span class="dt">alpha =</span> <span class="fl">0.8</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="kw">vars</span>(variable), <span class="dt">scales =</span> <span class="st">"free_y"</span>, <span class="dt">nrow =</span> <span class="dv">4</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"black"</span>,<span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"black"</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">"percent"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">100</span>, <span class="dv">125</span>, <span class="dv">150</span>), </a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">                     <span class="dt">limits =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="dv">150</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">"none"</span>)</a>
-<a class="sourceLine" id="cb5-9" data-line-number="9">gg_bad</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gg_bad &lt;-<span class="st"> </span><span class="kw">ggplot</span>(bad_tidy) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> datetime, <span class="dt">y =</span> value, <span class="dt">color =</span> variable), <span class="dt">alpha =</span> <span class="fl">0.8</span>)<span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="kw">vars</span>(variable), <span class="dt">scales =</span> <span class="st">"free_y"</span>, <span class="dt">nrow =</span> <span class="dv">4</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"black"</span>,<span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"black"</span>)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">ylab</span>(<span class="st">"percent"</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">100</span>, <span class="dv">125</span>, <span class="dv">150</span>), 
+                     <span class="dt">limits =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="dv">150</span>)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">"none"</span>)
+gg_bad</code></pre></div>
 <p><img src="SoH_functions_files/figure-html/percent_reporting_plot-2.png" width="672"></p>
 </div>
 <div id="percent-valid" class="section level2">
 <h2 class="hasAnchor">
 <a href="#percent-valid" class="anchor"></a>Percent valid</h2>
 <p>The next question to ask is, of the recorded data, how much of it is valid, i.e., not NA or out of spec for the sensor? This is a question that can be answered by is <code>PurpleAirSoH_dailyPctValid</code>.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">good_PctValid &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PurpleAirSoH_dailyPctValid.html">PurpleAirSoH_dailyPctValid</a></span>(good_pat)</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">bad_PctValid &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PurpleAirSoH_dailyPctValid.html">PurpleAirSoH_dailyPctValid</a></span>(bad_pat)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">good_PctValid &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PurpleAirSoH_dailyPctValid.html">PurpleAirSoH_dailyPctValid</a></span>(good_pat)
+bad_PctValid &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PurpleAirSoH_dailyPctValid.html">PurpleAirSoH_dailyPctValid</a></span>(bad_pat)</code></pre></div>
 <p>Here, the good data are 100% valid and almost all the bad data are valid except for the pm25_A readings on a few days between June 10 - 17. This is exactly what we would have suspected based on the channel A pm25 trace on the initial raw data plots</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># gg setup</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">good_tidy &lt;-<span class="st"> </span>good_PctValid <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">  </span><span class="kw">gather</span>(<span class="dt">key =</span><span class="st">"variable"</span>, <span class="dt">value =</span> <span class="st">"value"</span>, <span class="op">-</span>datetime) </a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5">bad_tidy &lt;-<span class="st"> </span>bad_PctValid <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="st">  </span><span class="kw">gather</span>(<span class="dt">key =</span><span class="st">"variable"</span>, <span class="dt">value =</span> <span class="st">"value"</span>, <span class="op">-</span>datetime) </a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co"># ggplots using tidy data</span></a>
-<a class="sourceLine" id="cb7-9" data-line-number="9">gg_good &lt;-<span class="st"> </span><span class="kw">ggplot</span>(good_tidy) <span class="op">+</span></a>
-<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> datetime, <span class="dt">y =</span> value, <span class="dt">color =</span> variable), <span class="dt">alpha =</span> <span class="fl">0.8</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="kw">vars</span>(variable), <span class="dt">scales =</span> <span class="st">"free_y"</span>, <span class="dt">nrow =</span> <span class="dv">4</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"black"</span>,<span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"black"</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">"percent"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">100</span>, <span class="dv">125</span>, <span class="dv">150</span>), </a>
-<a class="sourceLine" id="cb7-15" data-line-number="15">                     <span class="dt">limits =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="dv">150</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">"none"</span>)</a>
-<a class="sourceLine" id="cb7-17" data-line-number="17">gg_good</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># gg setup</span>
+good_tidy &lt;-<span class="st"> </span>good_PctValid <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gather</span>(<span class="dt">key =</span><span class="st">"variable"</span>, <span class="dt">value =</span> <span class="st">"value"</span>, <span class="op">-</span>datetime) 
+
+bad_tidy &lt;-<span class="st"> </span>bad_PctValid <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gather</span>(<span class="dt">key =</span><span class="st">"variable"</span>, <span class="dt">value =</span> <span class="st">"value"</span>, <span class="op">-</span>datetime) 
+
+<span class="co"># ggplots using tidy data</span>
+gg_good &lt;-<span class="st"> </span><span class="kw">ggplot</span>(good_tidy) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> datetime, <span class="dt">y =</span> value, <span class="dt">color =</span> variable), <span class="dt">alpha =</span> <span class="fl">0.8</span>)<span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="kw">vars</span>(variable), <span class="dt">scales =</span> <span class="st">"free_y"</span>, <span class="dt">nrow =</span> <span class="dv">4</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"black"</span>,<span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"black"</span>)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">ylab</span>(<span class="st">"percent"</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">100</span>, <span class="dv">125</span>, <span class="dv">150</span>), 
+                     <span class="dt">limits =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="dv">150</span>)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">"none"</span>)
+gg_good</code></pre></div>
 <p><img src="SoH_functions_files/figure-html/percent_valid_plot-1.png" width="672"></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">gg_bad &lt;-<span class="st"> </span><span class="kw">ggplot</span>(bad_tidy) <span class="op">+</span></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> datetime, <span class="dt">y =</span> value, <span class="dt">color =</span> variable), <span class="dt">alpha =</span> <span class="fl">0.8</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="kw">vars</span>(variable), <span class="dt">scales =</span> <span class="st">"free_y"</span>, <span class="dt">nrow =</span> <span class="dv">4</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"black"</span>,<span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"black"</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">"percent"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">100</span>, <span class="dv">125</span>, <span class="dv">150</span>), </a>
-<a class="sourceLine" id="cb8-7" data-line-number="7">                     <span class="dt">limits =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="dv">150</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">"none"</span>)</a>
-<a class="sourceLine" id="cb8-9" data-line-number="9">gg_bad</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gg_bad &lt;-<span class="st"> </span><span class="kw">ggplot</span>(bad_tidy) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> datetime, <span class="dt">y =</span> value, <span class="dt">color =</span> variable), <span class="dt">alpha =</span> <span class="fl">0.8</span>)<span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="kw">vars</span>(variable), <span class="dt">scales =</span> <span class="st">"free_y"</span>, <span class="dt">nrow =</span> <span class="dv">4</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"black"</span>,<span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"black"</span>)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">ylab</span>(<span class="st">"percent"</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">100</span>, <span class="dv">125</span>, <span class="dv">150</span>), 
+                     <span class="dt">limits =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="dv">150</span>)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">"none"</span>)
+gg_bad</code></pre></div>
 <p><img src="SoH_functions_files/figure-html/percent_valid_plot-2.png" width="672"></p>
 </div>
 <div id="daily-soh-plots" class="section level2">
@@ -224,9 +224,9 @@
 <p>There are a few more individual SoH functions in the AirSensor package including a function that calculates the percent of time a sensor reports a DC signal and funtions that calculate linear fits between different variables. But, rather than going through each one, there is also a function that calculates all the available SoH metrics for a given pat and plots the most useful ones.</p>
 <p>On each plot there is a salmon colored line located at the expected value for each metric. For example, ideally, the percent reporting values are expected to be 100% and the percent DC values are expected to be 0. This helps at a quick glance, to identify a deviating signal or “bad” data.</p>
 <p>In our example, the good data have almost perfectly flat lines in all metrics with the exception of some variability in the bottom three plots. Alternatively, the bad data show variability on all nearly all the plots between June 10 and June 17.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../reference/pat_dailySoHPlot.html">pat_dailySoHPlot</a></span>(good_pat)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/pat_dailySoHPlot.html">pat_dailySoHPlot</a></span>(good_pat)</code></pre></div>
 <p><img src="SoH_functions_files/figure-html/SoH_plot-1.png" width="672"></p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="../reference/pat_dailySoHPlot.html">pat_dailySoHPlot</a></span>(bad_pat)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/pat_dailySoHPlot.html">pat_dailySoHPlot</a></span>(bad_pat)</code></pre></div>
 <p><img src="SoH_functions_files/figure-html/SoH_plot-2.png" width="672"></p>
 <p>The <code>pat_dailySoHPlot</code> can be a useful way to quickly assess whether the data from a sensor should be trusted. Questions that a data anylist would ask themselves, (was the sensor powered on and reporting data, are the reported data valid or are they all out of spec, are the pm25_A and humidity channels well correlated?) are all questions that can be quickly answered quickly and objectively with the SoH functions.</p>
 <p>This package contains many additional functions for working with PurpleAir data and users are encouraged to review the reference documentation.</p>

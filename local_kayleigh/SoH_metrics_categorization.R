@@ -62,7 +62,7 @@ pat$data$datetime <- lubridate::with_tz(pat$data$datetime, tzone = pat$meta$time
 
 
 
-#index <- pat_dailySoHIndex(pat)
+#index <- pat_dailySoHIndex_00(pat)
 station_name <- pat$meta$label
 #cols <- brewer.pal(3, "RdYlGn")
 colors <- factor(index$SoH_index_bin)

@@ -22,7 +22,9 @@
 #' 
 #' @note The returned data will run from the beginning of \code{startdate} until
 #' the \strong{beginning} of \code{enddate} -- \emph{i.e.} no values associated
-#' with \code{enddate} will be returned.
+#' with \code{enddate} will be returned. The exception being when
+#' \code{enddate} is less than 24 hours after \code{startdate}. In that case, a
+#' single day is returned.
 #' 
 #' @return A subset of the given \emph{pat} object.
 #' 
@@ -38,7 +40,7 @@ pat_filterDate <- function(
   enddate = NULL, 
   days = NULL, 
   weeks = NULL,
-  timezone = "America/Los_Angeles"
+  timezone = NULL
 ) {
   
   # ----- Validate parameters --------------------------------------------------
@@ -57,6 +59,20 @@ pat_filterDate <- function(
   if ( is.null(startdate) && !is.null(enddate) )
     stop("At least one of 'startdate' or 'enddate' must be specified")
   
+  # Timezone determination precedence assumes that if you are passing in
+  # POSIXct times then you know what you are doing.
+  #   1) get timezone from startdate if it is POSIXct
+  #   2) use passed in timezone
+  #   3) get timezone from pat
+  
+  if ( lubridate::is.POSIXt(startdate) ) {
+    timezone <- lubridate::tz(startdate)
+  } else {
+    if ( is.null(timezone) ) {
+      timezone <- pat$meta$timezone
+    }
+  }
+  
   # ----- Get the start and end times ------------------------------------------
   
   if ( !is.null(days) ) {
@@ -67,10 +83,14 @@ pat_filterDate <- function(
     days <- 7 # default
   }
   
-  dateRange <- MazamaCoreUtils::dateRange(startdate, 
-                                          enddate, 
-                                          timezone, 
-                                          days = days)
+  dateRange <- MazamaCoreUtils::dateRange(
+    startdate = startdate, 
+    enddate = enddate, 
+    timezone = timezone,
+    unit = "sec",
+    ceilingEnd = FALSE,
+    days = days
+  )
   
   # ----- Subset the "pat" object ----------------------------------------------
   

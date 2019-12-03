@@ -1,3 +1,27 @@
+# AirSensor 0.5.15
+
+Additional functionality for calculating a state of health index to be used as
+an overall assessment of sensor functioning.
+
+* renamed `pat_dailyStateOfHealth()` to `pat_dailySoH()`
+* new functions `pat_dailySoHPlot()`, `pat_dailySoHIndex_00()`, 
+`pat_dailySoHIndexPlot()`
+
+# AirSensor 0.5.14
+
+Modified how `pat_filterDate()` obtains the `timezone` used to interpret the
+incoming `startdate` and `enddate`:
+
+1) `startdate` timezone if it is `POSIXct`
+2) `timezone` if it is passed in
+3) `pat$meta$timezone` otherwise
+
+# AirSensor 0.5.13
+
+* `pat_outliers()` no longer fails in the face of DC signals
+* New `pas_getLabels()` functions simplifies the creation of vectors of sensor 
+labels (currently used as unique identifiers)
+
 # AirSensor 0.5.12
 
 Refactored `PurpleAirSoH_daily~()` functions to use *dplyr* resulting in code

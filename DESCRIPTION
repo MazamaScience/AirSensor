@@ -1,6 +1,6 @@
 Type: Package
 Package: AirSensor
-Version: 0.5.12
+Version: 0.5.15
 Title: Process and Display data from Air Quality Sensors
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
@@ -29,7 +29,7 @@ Imports:
     jsonlite,
     leaflet,
     lubridate,
-    MazamaCoreUtils (>= 0.4.0),
+    MazamaCoreUtils (>= 0.4.1),
     MazamaSpatialUtils (>= 0.6.3),
     openair,
     plyr, 
@@ -51,7 +51,10 @@ Imports:
     zoo
 Suggests:
     knitr,
-    testthat
+    markdown,
+    testthat (>= 2.1.0),
+    rmarkdown,
+    roxygen2
 Description: Process and display data from air quality sensors.
     Initial focus is on PM2.5 measurements from sensors produced by Purple Air.
 License: GPL-3

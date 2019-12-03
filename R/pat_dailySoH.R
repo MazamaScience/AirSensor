@@ -4,21 +4,24 @@
 #' 
 #' @title Daily state of health
 #' 
-#' @param pat PurpleAir Timeseries \emph{pat} object.
+#' @param pat PurpleAir Timeseries \code{pat} object.
 #' @param SoH_functions Vector of function names. All the passed in functions 
-#' must output tibbles with a daily `datetime` variable and must cover the same
+#' must output tibbles with a daily \code{datetime} variable and must cover the same
 #' period of time.
 #' 
 #' @description This function combines the output of the State of Health (SoH) 
 #' function arguments into a single tibble. 
 #' 
+#' @seealso \link{pat_dailySoHPlot}
 #' 
-#' @examples  
+#' @examples
+#' library(AirSensor)
+#' 
 #' SoH <- 
 #'   example_pat_failure_B %>%
 #'   pat_dailySoH() 
-#' head(SoH)
-#' #timeseriesTbl_multiplot(tbl, ylim = c(0,100))
+#'   
+#' timeseriesTbl_multiplot(SoH, ncol = 4)
 
 pat_dailySoH <- function(
   pat = NULL,
@@ -40,26 +43,26 @@ pat_dailySoH <- function(
   if ( pat_isEmpty(pat) )
     stop("Parameter 'pat' has no data.") 
   
-  
-  # ----- pat_dailySoH() ---------------------------------------------------
+  # ----- Calculate SoH values -------------------------------------------------
   
   # Initialize a list to store the output of each function
   SoH_list <- list()
   
-  for (SoH_function in SoH_functions) {
+  for ( SoH_function in SoH_functions ) {
     
+    # Isolate each passed in function
     result <- try({
-      # Isolate each passed in function
       FUN <- get(SoH_function)
     }, silent = TRUE)
     
     if ( ! "try-error" %in% class(result) ) {
       result <- try({
-        # Run the pat through each function and store it in the list
+        # Run the pat through the function and store it in the list
         SoH_list[[SoH_function]] <- FUN(pat)
       }, silent = TRUE)
     }
     
+    # In case of error, add a tibble with NA values
     if ( "try-error" %in% class(result) ) {
       localTime <- lubridate::with_tz(pat$data$datetime, tzone = pat$meta$timezone)
       hour <- lubridate::hour(localTime)
@@ -71,7 +74,9 @@ pat_dailySoH <- function(
     
   }
   
-  # bind the all columns from the list into one dataframe with one datetime column
+  # ----- Return ---------------------------------------------------------------
+  
+  # Bind the all columns from the list into a tibble with one datetime column
   SoH_tbl <- dplyr::bind_cols(SoH_list) %>%
     dplyr::select(unique("datetime"), 
                   contains("pm25"), 
@@ -79,6 +84,7 @@ pat_dailySoH <- function(
                   contains("humidity"))
   
   return(SoH_tbl)
+  
 }
 
 
