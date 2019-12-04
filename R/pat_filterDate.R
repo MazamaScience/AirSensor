@@ -92,6 +92,11 @@ pat_filterDate <- function(
     days = days
   )
   
+  if (dateRange[1] > pat$data$datetime[length(pat$data$datetime)] |
+      dateRange[2] < pat$data$datetime[1])
+    stop("pat does not contain requested date range")
+  
+  
   # ----- Subset the "pat" object ----------------------------------------------
   
   data <- 
