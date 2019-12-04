@@ -1,7 +1,6 @@
 #' @export
 #'
 #' @importFrom rlang .data
-#' @importFrom MazamaCoreUtils logger.debug
 #'
 #' @title Download Purple Air timeseries data
 #'
@@ -137,7 +136,7 @@ downloadParseTimeseriesData <- function(
   
   webserviceUrl <- A_url
   
-  # print(webserviceUrl)
+  # message(webserviceUrl)
   
   # NOTE:  using Hadley Wickham style:
   # NOTE:  https://github.com/hadley/httr/blob/master/vignettes/quickstart.Rmd
@@ -227,7 +226,7 @@ downloadParseTimeseriesData <- function(
       )
     }
     
-    print(paste0("Channel A: ", err_msg, " === Returning empty PAS object ==="))
+    message(paste0("Channel A: ", err_msg, " === Returning empty A channel ==="))
     
     A_list <- err_list
     A_data <- err_data
@@ -293,7 +292,7 @@ downloadParseTimeseriesData <- function(
       )
     }
     
-    print(paste0("Channel B: ", err_msg, " === Returning empty PAS object ==="))
+    message(paste0("Channel B: ", err_msg, " === Returning empty B channel ==="))
     
     B_list <- err_list
     B_data <- err_data

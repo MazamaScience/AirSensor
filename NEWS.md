@@ -1,3 +1,7 @@
+# AirSensor 0.5.16
+
+* removed print statements from `downloadParseTimeseriesData()`
+
 # AirSensor 0.5.15
 
 Additional functionality for calculating a state of health index to be used as
