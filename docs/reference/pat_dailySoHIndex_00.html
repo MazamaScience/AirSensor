@@ -43,7 +43,22 @@
 
 
 <meta property="og:title" content="State of Health index plot — pat_dailySoHIndex_00" />
-<meta property="og:description" content="State of Health index plot" />
+<meta property="og:description" content="This function calculates the pat_dailySoH function and 
+returns a tibble containing a state of health index for each day of the 
+pat provided. The returned tibble contains columns: datetime, 
+index, and index_bin.
+The index column contains a value normalized between 
+0 and 1 where 0 represents low confidence in the sensor data and 1 represents 
+high confidence. The index_bin is one of 1, 2, or 3 and represents
+poor, fair, and good data respectively.
+The index is calculated in the following manner:
+
+If the A or B channel percent reporting is &amp;lt; minPctReporting, index = 0
+Otherwise, index = pm25_A_pm25_B_rsquared
+
+
+The breaks are used to convert index into the indenx_bin
+poor-fair-good values." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -157,7 +172,22 @@
     </div>
 
     <div class="ref-description">
-    <p>State of Health index plot</p>
+    <p>This function calculates the <code>pat_dailySoH</code> function and 
+returns a tibble containing a state of health index for each day of the 
+<code>pat</code> provided. The returned tibble contains columns: <code>datetime</code>, 
+<code>index</code>, and <code>index_bin</code>.</p>
+<p>The <code>index</code> column contains a value normalized between 
+0 and 1 where 0 represents low confidence in the sensor data and 1 represents 
+high confidence. The <code>index_bin</code> is one of 1, 2, or 3 and represents
+poor, fair, and good data respectively.</p>
+<p>The <code>index</code> is calculated in the following manner:</p>
+<ol>
+<li><p>If the A or B channel percent reporting is &lt; <code>minPctReporting</code>, <code>index = 0</code></p></li>
+<li><p>Otherwise, <code>index = pm25_A_pm25_B_rsquared</code></p></li>
+</ol>
+
+<p>The <code>breaks</code> are used to convert <code>index</code> into the <code>indenx_bin</code>
+poor-fair-good values.</p>
     </div>
 
     <pre class="usage"><span class='fu'>pat_dailySoHIndex_00</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>minPctReporting</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>,

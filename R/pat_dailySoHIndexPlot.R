@@ -43,9 +43,6 @@ pat_dailySoHIndexPlot <- function(
   if ( pat_isEmpty(pat) )
     stop("Parameter 'pat' has no data.") 
   
-  if ( ! rlang::is_closure(SoHIndex_FUN) ) {
-    stop("Parameter 'SoHIndex_FUN' must be a function, not a function name. Don't use quotes.")
-  }
   
   # ----- Create the SoHIndex object -------------------------------------------
   

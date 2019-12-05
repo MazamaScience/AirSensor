@@ -1,5 +1,7 @@
 # AirSensor 0.5.16
 
+* `pat_filterDate()` now issues a warning if requested data range is outside
+aviailable date range
 * removed print statements from `downloadParseTimeseriesData()`
 
 # AirSensor 0.5.15

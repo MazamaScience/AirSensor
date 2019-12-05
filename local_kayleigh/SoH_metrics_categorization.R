@@ -10,6 +10,7 @@ library(purrr)
 library(skimr)
 
 
+#Forest Service data
 setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
 pas <- pas_load()
 
@@ -145,8 +146,66 @@ small_pat_days_hours$data <- data
 report_days_hours <- PurpleAirSoH_dailyPctReporting(small_pat_days_hours) # SHOULD contain FOUR entries
 
 
+# ------------------------------------------------------------------------------
+# loop through all of california stations and load pat for one day.
+setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
+pas <- pas_load()
+pas <- pas_filter(pas, stateCode == "CA", DEVICE_LOCATIONTYPE == "outside")
+test_pas <- pas_filter(pas,stringr::str_detect(label, "B") )
+labels <- unique(pas_getLabels(pas))
+
+soh_all <- data.frame()
+system.time(
+  for (sensor in labels) {
+    
+    print(sensor)
+    result <- try({
+      pat <- pat_load(label = sensor, startdate = 20191130, enddate = 20191201, timezone = "America/Los_Angeles")
+    }, silent = TRUE)
+    
+    if ( ! "try-error" %in% class(result) ) {
+      result <- try({
+        soh <- pat_dailySoHIndex(pat) %>%
+          dplyr::mutate(label = sensor)
+        
+        soh_all <-
+          soh_all %>%
+          dplyr::bind_rows(soh)
+      }, silent = TRUE)
+    }
+    
+  })
+
+hist(soh_all$SoH_index, n = 80, main = "State of health of California PurpleAir sensors", xlab = "SoH Index", col = "#a128cd")
 
 
+gg <- ggplot(soh_all, aes(SoH_index)) +
+  geom_histogram(data=subset(soh_all, SoH_index_bin == '0'), 
+                fill = "firebrick", color = "firebrick", alpha = 0.6, bins = 40) +
+  geom_histogram(data=subset(soh_all, SoH_index_bin == '1'), 
+                 fill = "goldenrod1", color = "goldenrod1", alpha = 0.6, bins = 40) +
+  geom_histogram(data=subset(soh_all, SoH_index_bin == '2'), 
+                 fill = "mediumseagreen", color = "mediumseagreen", alpha = 0.6, bins = 40) +
+  xlab("SoH Index") +
+  labs(title = "State of health histogram of California PurpleAir sensors")
+
+gg
+
+# df <- data.frame(
+#   x = c(0, 0.2, 0.8, 1.0),
+#   y = c(-15, -15, -15, -15)
+# )
+# 
+# gg <- ggplot(soh_all) +
+#   geom_histogram(aes(SoH_index), bins = 30, fill = "#a128cd", color = "#a128cd", alpha = 0.5 ) +
+#   xlab("SoH Index") +
+#   labs(title = "State of health of California PurpleAir sensors") +
+#   geom_rect(data = df, aes(xmin = x[1], xmax = x[2], ymin = y[1], ymax = y[1] - 20), color = "firebrick", fill = "firebrick") +
+#   geom_rect(data = df, aes(xmin = x[2], xmax = x[3], ymin = y[1], ymax = y[1] - 20), color = "goldenrod1", fill ="goldenrod1" ) +
+#   geom_rect(data = df, aes(xmin = x[3], xmax = x[4], ymin = y[1], ymax = y[1] - 20), color = "mediumseagreen", fill = "mediumseagreen")
+# 
+# 
+# gg
 
 
 

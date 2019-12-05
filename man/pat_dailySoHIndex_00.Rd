@@ -15,7 +15,25 @@ pat_dailySoHIndex_00(pat = NULL, minPctReporting = 50, breaks = c(0,
 \item{breaks}{Breaks used to convert index values into index bins.}
 }
 \description{
-State of Health index plot
+This function calculates the \code{pat_dailySoH} function and 
+returns a tibble containing a state of health index for each day of the 
+\code{pat} provided. The returned tibble contains columns: \code{datetime}, 
+\code{index}, and \code{index_bin}.
+
+The \code{index} column contains a value normalized between 
+0 and 1 where 0 represents low confidence in the sensor data and 1 represents 
+high confidence. The \code{index_bin} is one of 1, 2, or 3 and represents
+poor, fair, and good data respectively. 
+
+The \code{index} is calculated in the following manner:
+
+\enumerate{
+\item{If the A or B channel percent reporting is < \code{minPctReporting}, \code{index = 0}}
+\item{Otherwise, \code{index = pm25_A_pm25_B_rsquared}}
+}
+
+The \code{breaks} are used to convert \code{index} into the \code{indenx_bin}
+poor-fair-good values.
 }
 \examples{
  
