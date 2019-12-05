@@ -4,10 +4,12 @@
 \alias{pat_dailySoH}
 \title{Daily state of health}
 \usage{
-pat_dailySoH(pat = NULL, SoH_functions = c("PurpleAirSoH_dailyPctDC",
-  "PurpleAirSoH_dailyPctReporting", "PurpleAirSoH_dailyPctValid",
-  "PurpleAirSoH_dailyOtherFit", "PurpleAirSoH_dailyABFit",
-  "PurpleAirSoH_dailyABtTest"))
+pat_dailySoH(
+  pat = NULL,
+  SoH_functions = c("PurpleAirSoH_dailyPctDC", "PurpleAirSoH_dailyPctReporting",
+    "PurpleAirSoH_dailyPctValid", "PurpleAirSoH_dailyOtherFit", "PurpleAirSoH_dailyABFit",
+    "PurpleAirSoH_dailyABtTest")
+)
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \code{pat} object.}

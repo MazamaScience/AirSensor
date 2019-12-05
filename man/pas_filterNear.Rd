@@ -4,8 +4,7 @@
 \alias{pas_filterNear}
 \title{Find PurpleAir sensors within radial distance}
 \usage{
-pas_filterNear(pas = NULL, latitude = NULL, longitude = NULL,
-  radius = "1 km")
+pas_filterNear(pas = NULL, latitude = NULL, longitude = NULL, radius = "1 km")
 }
 \arguments{
 \item{pas}{PurpleAir \emph{pas} object.}

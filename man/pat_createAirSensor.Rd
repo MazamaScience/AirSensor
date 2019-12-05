@@ -4,9 +4,15 @@
 \alias{pat_createAirSensor}
 \title{Create an Air Sensor object}
 \usage{
-pat_createAirSensor(pat = NULL, period = "1 hour",
-  parameter = "pm25", channel = "ab", qc_algorithm = "hourly_AB_01",
-  min_count = 20, aggregation_FUN = pat_aggregate)
+pat_createAirSensor(
+  pat = NULL,
+  period = "1 hour",
+  parameter = "pm25",
+  channel = "ab",
+  qc_algorithm = "hourly_AB_01",
+  min_count = 20,
+  aggregation_FUN = pat_aggregate
+)
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}

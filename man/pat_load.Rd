@@ -4,8 +4,13 @@
 \alias{pat_load}
 \title{Load PurpleAir time series data for a time period}
 \usage{
-pat_load(label = NULL, startdate = NULL, enddate = NULL, days = 7,
-  timezone = "America/Los_Angeles")
+pat_load(
+  label = NULL,
+  startdate = NULL,
+  enddate = NULL,
+  days = 7,
+  timezone = "America/Los_Angeles"
+)
 }
 \arguments{
 \item{label}{PurpleAir sensor 'label'.}

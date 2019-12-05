@@ -4,10 +4,21 @@
 \alias{pat_internalFit}
 \title{Linear model fitting of channel A and B time series data}
 \usage{
-pat_internalFit(pat = NULL, showPlot = TRUE, size = 1,
-  a_color = "red", b_color = "blue", alpha = 0.25, lr_shape = 15,
-  lr_color = "black", lr_lwd = 1.5, lr_lcolor = "tomato",
-  lr_lalpha = 0.45, ts_shape = 1, xylim = NULL)
+pat_internalFit(
+  pat = NULL,
+  showPlot = TRUE,
+  size = 1,
+  a_color = "red",
+  b_color = "blue",
+  alpha = 0.25,
+  lr_shape = 15,
+  lr_color = "black",
+  lr_lwd = 1.5,
+  lr_lcolor = "tomato",
+  lr_lalpha = 0.45,
+  ts_shape = 1,
+  xylim = NULL
+)
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}

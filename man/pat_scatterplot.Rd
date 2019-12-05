@@ -4,10 +4,16 @@
 \alias{pat_scatterplot}
 \title{Compare all variables in a PurpleAir Timeseries object}
 \usage{
-pat_scatterplot(pat = NULL, parameters = c("datetime", "pm25_A",
-  "pm25_B", "temperature", "humidity"), sampleSize = 5000,
-  sampleFraction = NULL, size = 0.5, shape = 15, color = "black",
-  alpha = 0.25)
+pat_scatterplot(
+  pat = NULL,
+  parameters = c("datetime", "pm25_A", "pm25_B", "temperature", "humidity"),
+  sampleSize = 5000,
+  sampleFraction = NULL,
+  size = 0.5,
+  shape = 15,
+  color = "black",
+  alpha = 0.25
+)
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}

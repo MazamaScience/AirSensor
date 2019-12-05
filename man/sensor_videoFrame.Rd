@@ -4,10 +4,19 @@
 \alias{sensor_videoFrame}
 \title{Generate video frames}
 \usage{
-sensor_videoFrame(sensor = sensor_load(), communityRegion = NULL,
-  frameTime = NULL, timeInfo = NULL, timeAxis = NULL,
-  timeTicks = NULL, timeLabels = NULL, map = NULL, logo = NULL,
-  colorPalette = NULL, colorBins = NULL)
+sensor_videoFrame(
+  sensor = sensor_load(),
+  communityRegion = NULL,
+  frameTime = NULL,
+  timeInfo = NULL,
+  timeAxis = NULL,
+  timeTicks = NULL,
+  timeLabels = NULL,
+  map = NULL,
+  logo = NULL,
+  colorPalette = NULL,
+  colorBins = NULL
+)
 }
 \arguments{
 \item{sensor}{An AirSensor object.}

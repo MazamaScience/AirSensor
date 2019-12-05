@@ -4,8 +4,12 @@
 \alias{pas_load}
 \title{Load PurpleAir synoptic data}
 \usage{
-pas_load(datestamp = NULL, retries = 30,
-  timezone = "America/Los_Angeles", archival = FALSE)
+pas_load(
+  datestamp = NULL,
+  retries = 30,
+  timezone = "America/Los_Angeles",
+  archival = FALSE
+)
 }
 \arguments{
 \item{datestamp}{Local date string in ymd order.}

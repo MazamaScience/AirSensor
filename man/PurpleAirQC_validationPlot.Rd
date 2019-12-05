@@ -4,8 +4,12 @@
 \alias{PurpleAirQC_validationPlot}
 \title{Validation plot for QC algorithms}
 \usage{
-PurpleAirQC_validationPlot(pat = NULL, period = "1 hour",
-  qc_algorithm = "hourly_AB_01", min_count = 20)
+PurpleAirQC_validationPlot(
+  pat = NULL,
+  period = "1 hour",
+  qc_algorithm = "hourly_AB_01",
+  min_count = 20
+)
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}

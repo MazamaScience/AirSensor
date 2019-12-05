@@ -4,8 +4,11 @@
 \alias{initializeMazamaSpatialUtils}
 \title{Initialize MazamaSpatialUtils package}
 \usage{
-initializeMazamaSpatialUtils(spatialDataDir = "~/Data/Spatial",
-  stateCodeDataset = "NaturalEarthAdm1", logLevel = WARN)
+initializeMazamaSpatialUtils(
+  spatialDataDir = "~/Data/Spatial",
+  stateCodeDataset = "NaturalEarthAdm1",
+  logLevel = WARN
+)
 }
 \arguments{
 \item{spatialDataDir}{Directory where spatial datasets are created.}

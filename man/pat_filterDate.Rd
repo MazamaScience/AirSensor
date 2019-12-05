@@ -4,8 +4,14 @@
 \alias{pat_filterDate}
 \title{Date filtering for PurpleAir Timeseries objects}
 \usage{
-pat_filterDate(pat = NULL, startdate = NULL, enddate = NULL,
-  days = NULL, weeks = NULL, timezone = NULL)
+pat_filterDate(
+  pat = NULL,
+  startdate = NULL,
+  enddate = NULL,
+  days = NULL,
+  weeks = NULL,
+  timezone = NULL
+)
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}
