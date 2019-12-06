@@ -20,6 +20,7 @@ The R statistical programming language and the RStudio IDE provide powerful tool
 
 # Data Access
 The AirSensor R package provides functions to access, regularize and QC data from over 9000 PurpleAir sensors with a simple, readable syntax. With AirSensor, analysts can access up-to-the-hour PurpleAir data as well as historical time series. Accessing PurpleAir synoptic and timeseries data can be achieved with the code below.
+
 ```{r}
 # Import the library and set the URL to gather the Synoptic Data list
 library(AirSensor)
@@ -34,39 +35,48 @@ pa_timeseries <- pat_createNew( pas = pa_synoptic,
                                 startdate = 20181001, 
                                 enddate = 20181201 )
 ```
+
 The PurpleAir Synoptic data contains recent information on all avliable sensors. This data includes recent & averaged PM2.5, humiditiy, temperature, and other information. We can visualize the location of all the PurpleAir sensors avliable using an interactive map.
+
 ```{r}
 pa_synoptic %>% pas_leaflet()
 ```
 
-
 # Easy Data Pipeline Syntax
 The AirSensor R package provides many intuitively named functions and arguments and harnesses R’s pipeline syntax so that analysts can write R code that is easy to understand. Several functions provide high level analysis and visualization in a single line of code. The code below demonstrates how straightforward it is to work with data from a PurpleAir sensor in downtown San Francisco. The plot clearly shows the decline in air quality from smoke that drifted in from Butte County’s catastrophic Camp Fire in 2018. 
+
 ```{r}
 pa_timeseries %>% pat_multiplot()
 ```
-There are also inyeractive options. 
+
+There are also interactive options for plotting. 
 ```{r}
 pa_timeseries %>% pat_dygraph()
 ```
+
 # Mazama Tools integrations
-Mazama Science offers many tools for dealing with hourly time axis data regarding air quality. Other packages Mazama Science supports can be found at our [GitHub](https://github.com/MazamaScience). The following will demonstrate the integration of Mazama Science's R tools using _PWFSLSmoke_ R package, _AirMonitorPlots_ R package, and _AirFireModeling_ R package. 
+Mazama Science offers many tools for dealing with hourly time axis data regarding air quality. Other packages Mazama Science supports can be found at our [GitHub](https://github.com/MazamaScience). The following will demonstrate the integration of Mazama Science's R tools using _PWFSLSmoke_ R package, and _AirMonitorPlots_ R package.
+
 ```{r}
 # Convert to 'AirSensor object' aloing a regularized hourly axis.
 airsensor <- pa_timeseries %>% pat_createAirSensor()
 ```
 
 We can use Mazama Science's _AirMonitorPlots_ package to expand the capabilites of plotting hourly axis data. Below is an example of a daily average calendar plot. 
+
 ```{r, fig.height=7}
 library(AirMonitorPlots)
 monitor_ggCalendar(airsensor)
 ```
 
 We can also look at daily averages for any PurpleAir hourly timeseries using the _AirMonitorPlots_ package. 
+
 ```{r}
 monitor_dailyBarplot(airsensor)
 ```
-Because Mazama Sciences uses a regular air quality format
+
+Because Mazama Science R tools use a regular air quality data format we can further expand the capablilties in a consistent and powerful way. 
+
 # Sensor/Monitor Comparison 
 PurpleAir sensors generate data using laser particle counters. With assumed values of scattering coefficient and particle density, particle counts are converted into mass concentration (µg/m3). Federal reference monitors measure mass concentration more directly and accurately. It is thus important to compare sensor data with federal reference data to validate and scale the sensor data. The AirSensor R package provides functions to compare a PurpleAir sensor with the nearest federal reference monitor. The comparison below shows a sensor performing quite well during the  2018 Camp Fire.
 
@@ -76,6 +86,7 @@ pa_timeseries %>% pat_monitorComparison()
 
 # Sensor State-of-Health 
 An important aspect in the analysis of low-cost sensor data is determining whether or not the device itself is “healthy”. The AirSensor package provides functions that calculate “State-of-Health” metrics to help assess the day-to-day reliability of data from a PurpleAir sensor. Below is an example of a San Francisco PurpleAir sensor performing poorly and providing inaccurate results during the Camp Fire smoke intrusion in October-November, 2018.
+
 ```{r}
 # Load a bad PurpleAir Sensor
 bad_pat <- pat_createNew( pas = pa_synoptic, 
@@ -85,16 +96,26 @@ bad_pat <- pat_createNew( pas = pa_synoptic,
 # Plot the bad data
 bad_pat %>% pat_multiplot()
 ```
-Visually, this sensor looks 'bad'. We can futher confirm this with an overlayed timeseries plot of both channels and performing a pearson correlation using AirSensors built in tools. 
+
+Visually, this sensor looks 'bad'. We can futher confirm this with an overlayed timeseries plot of both channels and performing a Pearson correlation using AirSensors built in tools. 
+
 ```{r}
 bad_pat %>% pat_internalFit()
 ```
+
 Indeed, our correlation coefficent is too low and therefore our sensor channels do not agree. We can assume this sensor is ill-performant and is not recommended for analysis. 
 We can further our investigation using PurpleAir timeseries State of Health functions in the AirSensor package. 
+
 ```{r}
 bad_pat %>% pat_dailySoHPlot()
 ```
 
+This clearly shows that while this sensor is reporting real values, they are likely erronous due to a pegged DC signal on channel B and low channel-to-channel correlation. 
+
+# Conclusion
+The AirSensor package provides tools for PurpleAir sensors and air quality analysis.  The rise in public interest and safety regarding air quality deserves easy access and we at Mazama Science believe air quality data should be inutitive and open across all disciplines. Mazama Science provides modern, open source approaches to data management, analysis and visualization. We collaborate with clients across disciplines to make large, high-value datasets more usable with intuitive, interactive tools. 
+
+To Learn more about our mission, visit our [website](http://mazamascience.com/) and [Github](https://github.com/MazamaScience).
 
 _Mazama Science_
 
