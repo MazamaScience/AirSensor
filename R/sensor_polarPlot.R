@@ -106,12 +106,22 @@ sensor_polarPlot <- function(
     lon <- sensor$meta$longitude[1]
     lat <- sensor$meta$latitude[1]
     
-    closestSite <- worldmet::getMeta(lon = lon, lat = lat, n = 1, 
-                                     plot = FALSE)[1,]
-    siteCode <- paste0(closestSite$USAF, "-", closestSite$WBAN)
+    # Get first two nearest met data
+    closeSites <- worldmet::getMeta(lon = lon, lat = lat, n = 2, plot = FALSE)
     
-    siteData <- worldmet::importNOAA(code = siteCode, year = year, 
-                                     parallel = FALSE)
+    siteCodes <- paste0(closeSites$USAF, "-", closeSites$WBAN)
+    
+    siteData <- worldmet::importNOAA( code = siteCodes[1], 
+                                      year = year, 
+                                      parallel = FALSE )
+    # Check if the first is NA to avoid errors
+    if ( all(is.na(siteData$ws) | is.na(siteData$wd)) ) {
+      
+      siteData <- worldmet::importNOAA( code = siteCodes[2], 
+                                        year = year, 
+                                        parallel = FALSE )
+      
+    }
     windData <- dplyr::select(siteData, c("date", "wd", "ws"))
   }
   
@@ -157,5 +167,23 @@ sensor_polarPlot <- function(
     )
     
   })
+  
+  # === Debug ===
+  if (FALSE) {
+    sensor = pas_load() %>% 
+      pat_createNew(label='POLK GULCH', startdate = 20181001, enddate = 20181201) %>%
+      pat_createAirSensor() 
+    windData = NULL 
+    statistic = "mean" 
+    resolution = "fine"
+    colors = "default" 
+    alpha = 1 
+    angleScale = 315
+    normalize = FALSE
+    key = TRUE 
+    keyPosition = "right" 
+    ws_spread = 15 
+    wd_spread = 4
+  }
   
 }
