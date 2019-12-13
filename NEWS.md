@@ -1,5 +1,12 @@
+# AirSensor 0.5.17
+
+* `sensor_polarPlot()` now uses the second-nearest met station if no data are
+found at the nearest station.
+
 # AirSensor 0.5.16
 
+* `sensor_polarPlot()` now uses the second-nearest met station if no data are
+found at the nearest station.
 * `pat_filterDate()` now issues a warning if requested data range is outside
 aviailable date range
 

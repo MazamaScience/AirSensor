@@ -77,7 +77,7 @@ showing concentration by wind speed and direction." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.15</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.17</span>
       </span>
     </div>
 
@@ -162,10 +162,20 @@ showing concentration by wind speed and direction." />
 showing concentration by wind speed and direction.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>sensor_polarPlot</span>(<span class='kw'>sensor</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>windData</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>statistic</span> <span class='kw'>=</span> <span class='st'>"mean"</span>,
-  <span class='kw'>resolution</span> <span class='kw'>=</span> <span class='st'>"fine"</span>, <span class='kw'>colors</span> <span class='kw'>=</span> <span class='st'>"default"</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>angleScale</span> <span class='kw'>=</span> <span class='fl'>315</span>, <span class='kw'>normalize</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>key</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>keyPosition</span> <span class='kw'>=</span> <span class='st'>"right"</span>, <span class='kw'>ws_spread</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>wd_spread</span> <span class='kw'>=</span> <span class='fl'>4</span>)</pre>
+    <pre class="usage"><span class='fu'>sensor_polarPlot</span>(
+  <span class='kw'>sensor</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>windData</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>statistic</span> <span class='kw'>=</span> <span class='st'>"mean"</span>,
+  <span class='kw'>resolution</span> <span class='kw'>=</span> <span class='st'>"fine"</span>,
+  <span class='kw'>colors</span> <span class='kw'>=</span> <span class='st'>"default"</span>,
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>angleScale</span> <span class='kw'>=</span> <span class='fl'>315</span>,
+  <span class='kw'>normalize</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>key</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>keyPosition</span> <span class='kw'>=</span> <span class='st'>"right"</span>,
+  <span class='kw'>ws_spread</span> <span class='kw'>=</span> <span class='fl'>15</span>,
+  <span class='kw'>wd_spread</span> <span class='kw'>=</span> <span class='fl'>4</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
