@@ -4,8 +4,11 @@
 \alias{enhanceSynopticData}
 \title{Enhance synoptic data from Purple Air}
 \usage{
-enhanceSynopticData(pas_raw = NULL, countryCodes = c("US"),
-  includePWFSL = TRUE)
+enhanceSynopticData(
+  pas_raw = NULL,
+  countryCodes = c("US"),
+  includePWFSL = TRUE
+)
 }
 \arguments{
 \item{pas_raw}{Dataframe returned by \code{downloadParseSynopticData()}.}

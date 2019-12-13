@@ -4,11 +4,23 @@
 \alias{pat_monitorComparison}
 \title{Comparison of Purple Air and federal monitoring data}
 \usage{
-pat_monitorComparison(pat = NULL, ylim = NULL,
-  replaceOutliers = TRUE, a_size = 1, a_shape = 15,
-  a_color = "gray80", b_size = 1, b_shape = 15, b_color = "gray80",
-  ab_alpha = 0.5, hourly_size = 2, hourly_shape = 1,
-  hourly_stroke = 0.6, pa_color = "purple", pwfsl_color = "black")
+pat_monitorComparison(
+  pat = NULL,
+  ylim = NULL,
+  replaceOutliers = TRUE,
+  a_size = 1,
+  a_shape = 15,
+  a_color = "gray80",
+  b_size = 1,
+  b_shape = 15,
+  b_color = "gray80",
+  ab_alpha = 0.5,
+  hourly_size = 2,
+  hourly_shape = 1,
+  hourly_stroke = 0.6,
+  pa_color = "purple",
+  pwfsl_color = "black"
+)
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}

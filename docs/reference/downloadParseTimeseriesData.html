@@ -76,7 +76,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.15</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.17</span>
       </span>
     </div>
 
@@ -160,9 +160,15 @@
     <p>Timeseries data from a specific PurpleAir can be retrieved from the Thingspeak API .</p>
     </div>
 
-    <pre class="usage"><span class='fu'>downloadParseTimeseriesData</span>(<span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>baseURL</span> <span class='kw'>=</span> <span class='st'>"https://api.thingspeak.com/channels/"</span>)</pre>
+    <pre class="usage"><span class='fu'>downloadParseTimeseriesData</span>(
+  <span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>baseURL</span> <span class='kw'>=</span> <span class='st'>"https://api.thingspeak.com/channels/"</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

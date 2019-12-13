@@ -4,8 +4,7 @@
 \alias{.flagOutliers}
 \title{Flag outliers in vectorized data}
 \usage{
-.flagOutliers(df = NULL, parameter = NULL, windowSize = 23,
-  thresholdMin = 8)
+.flagOutliers(df = NULL, parameter = NULL, windowSize = 23, thresholdMin = 8)
 }
 \arguments{
 \item{df}{A data frame.}

@@ -3,7 +3,6 @@
 \docType{package}
 \name{AirSensor}
 \alias{AirSensor}
-\alias{AirSensor-package}
 \title{Data access and analysis functions for Purple Air sensor data}
 \description{
 This package contains code to access current synoptic data from

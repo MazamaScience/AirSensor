@@ -91,7 +91,7 @@ http://maps.stamen.com/" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.15</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.17</span>
       </span>
     </div>
 
@@ -190,10 +190,22 @@ as well as a suite of sequential and diverging palettes from the
 <a href='http://maps.stamen.com/'>http://maps.stamen.com/</a></p>
     </div>
 
-    <pre class="usage"><span class='fu'>pas_staticMap</span>(<span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>"pm25_1hr"</span>,
-  <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"Purples"</span>, <span class='kw'>mapTheme</span> <span class='kw'>=</span> <span class='st'>"terrain"</span>, <span class='kw'>mapShape</span> <span class='kw'>=</span> <span class='st'>"sq"</span>,
-  <span class='kw'>direction</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>minScale</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>maxScale</span> <span class='kw'>=</span> <span class='fl'>150</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>15</span>,
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='kw'>bbuff</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>zoomAdjust</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>pas_staticMap</span>(
+  <span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>"pm25_1hr"</span>,
+  <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"Purples"</span>,
+  <span class='kw'>mapTheme</span> <span class='kw'>=</span> <span class='st'>"terrain"</span>,
+  <span class='kw'>mapShape</span> <span class='kw'>=</span> <span class='st'>"sq"</span>,
+  <span class='kw'>direction</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>minScale</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>maxScale</span> <span class='kw'>=</span> <span class='fl'>150</span>,
+  <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>15</span>,
+  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.8</span>,
+  <span class='kw'>bbuff</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>zoomAdjust</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -266,7 +278,8 @@ and renamed with <code>name= "Example name"</code>.</p></td>
 <span class='fu'><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl</a></span>(<span class='st'>"http://smoke.mazamascience.com/data/PurpleAir"</span>)
 <span class='no'>LA_basin</span> <span class='kw'>&lt;-</span>
   <span class='fu'><a href='pas_load.html'>pas_load</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='pas_filterArea.html'>pas_filterArea</a></span>(-<span class='fl'>118.5</span>, -<span class='fl'>117.5</span>, <span class='fl'>33.5</span>, <span class='fl'>34.5</span>)</div><div class='output co'>#&gt; Error : Data file could not be loaded from: http://smoke.mazamascience.com/data/PurpleAir/pas/2019/pas_20191205.rda</div><div class='input'><span class='fu'>pas_staticMap</span>(<span class='no'>LA_basin</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"AQI"</span>, <span class='kw'>zoomAdjust</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='img'><img src='pas_staticMap-1.png' alt='' width='700' height='433' /></div><div class='input'># }
+  <span class='fu'><a href='pas_filterArea.html'>pas_filterArea</a></span>(-<span class='fl'>118.5</span>, -<span class='fl'>117.5</span>, <span class='fl'>33.5</span>, <span class='fl'>34.5</span>)
+<span class='fu'>pas_staticMap</span>(<span class='no'>LA_basin</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"AQI"</span>, <span class='kw'>zoomAdjust</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='img'><img src='pas_staticMap-1.png' alt='' width='700' height='433' /></div><div class='input'># }
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

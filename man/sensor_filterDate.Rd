@@ -4,8 +4,14 @@
 \alias{sensor_filterDate}
 \title{Date filtering for AirSensor objects}
 \usage{
-sensor_filterDate(sensor = NULL, startdate = NULL, enddate = NULL,
-  days = NULL, weeks = NULL, timezone = "America/Los_Angeles")
+sensor_filterDate(
+  sensor = NULL,
+  startdate = NULL,
+  enddate = NULL,
+  days = NULL,
+  weeks = NULL,
+  timezone = "America/Los_Angeles"
+)
 }
 \arguments{
 \item{sensor}{An AirSensor object.}

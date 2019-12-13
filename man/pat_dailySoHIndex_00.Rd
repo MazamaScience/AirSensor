@@ -4,8 +4,11 @@
 \alias{pat_dailySoHIndex_00}
 \title{State of Health index plot}
 \usage{
-pat_dailySoHIndex_00(pat = NULL, minPctReporting = 50, breaks = c(0,
-  0.2, 0.8, 1))
+pat_dailySoHIndex_00(
+  pat = NULL,
+  minPctReporting = 50,
+  breaks = c(0, 0.2, 0.8, 1)
+)
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}

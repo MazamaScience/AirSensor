@@ -4,9 +4,18 @@
 \alias{pat_dygraph}
 \title{Interactive time series plot}
 \usage{
-pat_dygraph(pat = NULL, parameter = "pm25", sampleSize = 5000,
-  title = NULL, xlab = NULL, ylab = NULL, tlim = NULL,
-  rollPeriod = 1, showLegend = TRUE, colors = NULL)
+pat_dygraph(
+  pat = NULL,
+  parameter = "pm25",
+  sampleSize = 5000,
+  title = NULL,
+  xlab = NULL,
+  ylab = NULL,
+  tlim = NULL,
+  rollPeriod = 1,
+  showLegend = TRUE,
+  colors = NULL
+)
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object from \code{createPATimeseriesObject()}}

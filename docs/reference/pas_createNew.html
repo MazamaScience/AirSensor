@@ -90,7 +90,7 @@ argument." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.15</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.17</span>
       </span>
     </div>
 
@@ -188,8 +188,12 @@ return the results as a useful tibble with class <code>pa_synoptic</code>.</p>
 argument.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>pas_createNew</span>(<span class='kw'>baseUrl</span> <span class='kw'>=</span> <span class='st'>"https://www.purpleair.com/json"</span>,
-  <span class='kw'>countryCodes</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"US"</span>), <span class='kw'>includePWFSL</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>lookbackDays</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+    <pre class="usage"><span class='fu'>pas_createNew</span>(
+  <span class='kw'>baseUrl</span> <span class='kw'>=</span> <span class='st'>"https://www.purpleair.com/json"</span>,
+  <span class='kw'>countryCodes</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"US"</span>),
+  <span class='kw'>includePWFSL</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>lookbackDays</span> <span class='kw'>=</span> <span class='fl'>1</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

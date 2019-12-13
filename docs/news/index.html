@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.17</span>
       </span>
     </div>
 
@@ -153,10 +153,17 @@
       <small>Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="airsensor-0-5-17" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-5-17" class="anchor"></a>AirSensor 0.5.17</h1>
+<p>Minor documentation updates and package rebuild.</p>
+</div>
     <div id="airsensor-0-5-16" class="section level1">
 <h1 class="page-header">
 <a href="#airsensor-0-5-16" class="anchor"></a>AirSensor 0.5.16</h1>
 <ul>
+<li>
+<code><a href="../reference/sensor_polarPlot.html">sensor_polarPlot()</a></code> now uses the second-nearest met station if no data are found at the nearest station.</li>
 <li>
 <code><a href="../reference/pat_filterDate.html">pat_filterDate()</a></code> now issues a warning if requested data range is outside aviailable date range</li>
 <li>removed print statements from <code><a href="../reference/downloadParseTimeseriesData.html">downloadParseTimeseriesData()</a></code>
@@ -733,7 +740,8 @@
 <li>consistent support for named palettes in <code><a href="../reference/pas_leaflet.html">pas_leaflet()</a></code> and <code><a href="../reference/pas_staticMap.html">pas_staticMap()</a></code>
 </li>
 <li>
-<code>enhanceSynopticMetadata()</code> adds the following columns to a <code>pas</code> object:</li>
+<code>enhanceSynopticMetadata()</code> adds the following columns to a <code>pas</code> object:
+<ul>
 <li>
 <code>airDistrict</code> – CARB air district</li>
 <li><code>sensorManufacturer = "Purple Air"</code></li>
@@ -741,6 +749,8 @@
 <li><code>technologyType = "consumer-grade"</code></li>
 <li>
 <code>communityRegion</code> – (where known)</li>
+</ul>
+</li>
 </ul>
 </div>
     <div id="airsensor-0-2-6" class="section level1">
@@ -931,6 +941,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#airsensor-0-5-17">0.5.17</a></li>
         <li><a href="#airsensor-0-5-16">0.5.16</a></li>
         <li><a href="#airsensor-0-5-15">0.5.15</a></li>
         <li><a href="#airsensor-0-5-14">0.5.14</a></li>
