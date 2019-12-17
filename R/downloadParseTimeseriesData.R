@@ -29,35 +29,40 @@ downloadParseTimeseriesData <- function(
   # ----- Validate parameters --------------------------------------------------
   
   MazamaCoreUtils::stopIfNull(pas)
-  MazamaCoreUtils::stopIfNull(label)
+  # MazamaCoreUtils::stopIfNull(label)
   
-  if ( !label %in% pas$label )
-    stop(paste0("'", label, "' is not found in the 'pas' object"))
+  if( is.null(label) & is.null(id))
+    stop(paste0("label or id must be provided"))
+  
+  if (!is.null(label)){
+    if ( !label %in% pas$label )
+      stop(paste0("'", label, "' is not found in the 'pas' object"))
+  }
   
   timezone <- unique(timezone)
   
   # ----- Determine date sequence ----------------------------------------------
   
-  # Subset by label
-  if ( !is.null(label) ) {
-    pas_single <-
-      pas %>%
-      dplyr::filter(.data$label == !!label)
-  }
-  
   # Subset by ID
   if ( !is.null(id) ) {
     pas_single <-
-      pas_single %>%
+      pas %>%
       dplyr::filter(.data$ID == !!id)
   } else {
-    if ( nrow(pas_single) > 1 ) {
-      IDString <- paste0(sort(pas_single$ID), collapse = ", ")
-      stop(paste0("Multilpe sensors share this label.",
-                  "You must specify the 'id' parameter as one of: '",
-                  IDString, "'"))
-    }
+    # Subset by label
+    if ( !is.null(label) ) {
+      pas_single <-
+        pas %>%
+        dplyr::filter(.data$label == !!label)
+    } 
   }
+  if ( nrow(pas_single) > 1 ) {
+    IDString <- paste0(sort(pas_single$ID), collapse = ", ")
+    stop(paste0("Multilpe sensors share this label.",
+                "You must specify the 'id' parameter as one of: '",
+                IDString, "'"))
+  }
+  
   
   # Get the timezone associated with this sensor
   if ( is.null(timezone) ) {
@@ -107,6 +112,10 @@ downloadParseTimeseriesData <- function(
     B_meta <- requested_meta
     A_meta <- dplyr::filter(pas, .data$ID == B_meta$parentID)
   }
+  
+  # Get identifiers from the A channel
+  sensor_ID <- A_meta$ID
+  sensor_label <- A_meta$label
   
   # Combine channel A and B monitor metadata
   meta <- dplyr::bind_rows(A_meta, B_meta)
@@ -189,7 +198,7 @@ downloadParseTimeseriesData <- function(
     simplifyMatrix = TRUE,
     flatten = FALSE
   ) 
-
+  
   err_data <- err_list$feeds
   
   if ( httr::http_error(r) ) { # web service failed to respond
@@ -318,19 +327,22 @@ downloadParseTimeseriesData <- function(
   if ( length(A_data) == 0 && length(B_data) == 0 ) {
     A_data <- err_data
     B_data <- err_data
-    warning(
-     paste0(label,": A & B channels for the requested time period do not exist.")
-    )
+    warning(sprintf(
+      "Sensor %s -- %s: A & B channels for the requested time period do not exist.",
+      sensor_ID, sensor_label
+    ))
   } else if ( length(A_data) == 0) {
     A_data <- err_data
-    warning(
-      paste0(label,": A channel for the requested time period do not exist.")
-    )
+    warning(sprintf(
+      "Sensor %s -- %s: A channel for the requested time period do not exist.",
+      sensor_ID, sensor_label
+    ))
   } else if ( length(B_data) == 0) {
     B_data <- err_data
-    warning(
-      paste0(label,": B channel for the requested time period do not exist")
-    )
+    warning(sprintf(
+      "Sensor %s -- %s: B channel for the requested time period do not exist",
+      sensor_ID, sensor_label
+    ))
   }
   
   # Rename columns
@@ -414,5 +426,5 @@ if ( FALSE ) {
   
   pat <- createPATimeseriesObject(pat_raw)
   
-
+  
 }

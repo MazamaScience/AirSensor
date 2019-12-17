@@ -43,34 +43,43 @@ pat_createNew <- function(
   # ----- Validate parameters --------------------------------------------------
   
   MazamaCoreUtils::stopIfNull(pas)
-  MazamaCoreUtils::stopIfNull(label)
+  #MazamaCoreUtils::stopIfNull(label)
   
-  if ( !label %in% pas$label )
-    stop(paste0("'", label, "' is not found in the 'pas' object"))
+  if (!is.null(label)){
+    if ( !label %in% pas$label )
+      stop(paste0("'", label, "' is not found in the 'pas' object"))
+  }
+  
+  if( is.null(label) & is.null(id))
+    stop(paste0("label or id must be provided"))
   
   # ----- Determine date sequence ----------------------------------------------
   
-  # Subset by label
-  if ( !is.null(label) ) {
-    pas_single <-
-      pas %>%
-      dplyr::filter(.data$label == !!label)
-  }
+  
+  # if label is missing and id is missing complain
+  # if id is defined, filter by id
+  # else filter by label
   
   # Subset by ID
   if ( !is.null(id) ) {
     pas_single <-
-      pas_single %>%
+      pas %>%
       dplyr::filter(.data$ID == !!id)
   } else {
-    if ( nrow(pas_single) > 1 ) {
-      IDString <- paste0(sort(pas_single$ID), collapse = ", ")
-      stop(paste0("Multilpe sensors share this label.",
-                  "You must specify the 'id' parameter as one of: '",
-                  IDString, "'"))
-    }
+    # Subset by label
+    if ( !is.null(label) ) {
+      pas_single <-
+        pas %>%
+        dplyr::filter(.data$label == !!label)
+    } 
   }
-  
+  if ( nrow(pas_single) > 1 ) {
+    IDString <- paste0(sort(pas_single$ID), collapse = ", ")
+    stop(paste0("Multilpe sensors share this label.",
+                "You must specify the 'id' parameter as one of: '",
+                IDString, "'"))
+  } 
+
   # Get the timezone associated with this sensor
   if ( is.null(timezone) ) {
     timezone <-
@@ -97,7 +106,7 @@ pat_createNew <- function(
                                             timezone, 
                                             days = 7)
   }
-
+  
   # Create a sequence of weekly POSIXct times
   dateSeq <- seq(dateRange[1], dateRange[2], by = lubridate::ddays(7))
   

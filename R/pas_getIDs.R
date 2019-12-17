@@ -1,13 +1,12 @@
 #' @export
 #' @importFrom rlang .data
 #' 
-#' @title Return column of data from filtered PurpleAir Synoptic objects
+#' @title Return ID column of data from filtered PurpleAir Synoptic objects
 #' 
 #' @param pas PurpleAir Synoptic \emph{pas} object.
-#' @param name Name of the column to return
 #' 
-#' @description A filter for \emph{pas} objects to return the column of the 
-#' stations of interest
+#' @description A filter for \emph{pas} objects to return the ID column of the 
+#' \emph{pas} object.
 #' 
 #' @return A column of data.
 #' 
@@ -36,18 +35,16 @@ pas_getIDs <- function(
   # ----- pas_getIDs() ------------------------------------------------------
   
 
-  # get the lat/lon
-  longitude <- pas_getColumn(pas, "longitude")
-  latitude <- pas_getColumn(pas, "latitude")
+  # get the sensor ID
+  IDs <- pas_getColumn(pas, "ID")
   
-  # create location ID
-  locationID <- MazamaLocationUtils::location_createID(longitude, latitude)
+
  
 
   
   # ---- Return ----------------------------------------------------------------
   
-  return(locationID)
+  return(IDs)
 }
 
 
