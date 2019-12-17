@@ -23,5 +23,5 @@ A character vector of station labels.
 }
 \description{
 A filter for \emph{pas} objects to return the labels of the 
-stations of interest
+stations of interest. Wrapper around \emph{pas_getColumn}.
 }

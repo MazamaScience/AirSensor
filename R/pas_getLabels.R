@@ -10,7 +10,7 @@
 #' @param isParent Logigal, is the station a parent station?
 #' 
 #' @description A filter for \emph{pas} objects to return the labels of the 
-#' stations of interest
+#' stations of interest. Wrapper around \emph{pas_getColumn}.
 #' 
 #' @return A character vector of station labels.
 #' 
@@ -43,51 +43,12 @@ pas_getLabels <- function(
   # ----- pas_getLabels() ------------------------------------------------------
   
 
-  # filter by Outside/Inside
-  if ( !is.null(isOutside) ) {
-    if ( isOutside ) {
-      sub_pas <- pas %>% pas_filter(.data$DEVICE_LOCATIONTYPE == "outside")
-    } else {
-      sub_pas <- sub_pas %>% pas_filter(.data$DEVICE_LOCATIONTYPE == "inside")
-    }
-  }
-  
-  if ( is.null(isOutside) ) {
-    sub_pas <- pas %>% pas_filter(.data$DEVICE_LOCATIONTYPE == "outside")
-  }
-  
-  # filter by Parent
-  if ( !is.null(isParent) ) {
-    if ( isParent ) {
-      sub_pas <- sub_pas %>% pas_filter(is.na(.data$parentID))
-    } else {
-      sub_pas <- sub_pas %>% pas_filter(!is.na(.data$parentID))
-    }
-  }
-  
-  if ( is.null(isParent) ) {
-    sub_pas <- sub_pas %>% pas_filter(is.na(.data$parentID))
-  }
- 
-  # filter by state code
-  if ( !is.null(states) ) {
-  sub_pas <- sub_pas %>% pas_filter(.data$stateCode %in% states)
-  }
-  
-  if ( is.null(states) ) {
-    sub_pas <- sub_pas %>% pas_filter(.data$stateCode %in% PWFSLSmoke::US_52)
-  }
-   
-  
-  # filter by label pattern
-  if ( !is.null(pattern) ) {
-  sub_pas <- sub_pas %>% pas_filter(stringr::str_detect(.data$label, pattern))
-  labels <- sub_pas %>% dplyr::pull(.data$label)
-  }
-  
-  if ( is.null(pattern) ) {
-    labels <- sub_pas %>% dplyr::pull(.data$label)
-  }
+  labels <- pas_getColumn(pas, 
+                          name = "label", 
+                          states = states, 
+                          pattern = pattern, 
+                          isOutside = isOutside, 
+                          isParent = isParent)
   
   # ---- Return ----------------------------------------------------------------
   
