@@ -4,12 +4,8 @@
 \alias{pat_aggregateOutlierCounts}
 \title{Aggreagte data with count of outliers in each bin}
 \usage{
-pat_aggregateOutlierCounts(
-  pat = NULL,
-  period = "1 hour",
-  windowSize = 23,
-  thresholdMin = 8
-)
+pat_aggregateOutlierCounts(pat = NULL, period = "1 hour",
+  windowSize = 23, thresholdMin = 8)
 }
 \arguments{
 \item{pat}{a PurpleAir Timeseries \emph{pat} object.}

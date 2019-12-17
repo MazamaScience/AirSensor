@@ -4,21 +4,10 @@
 \alias{sensor_pollutionRose}
 \title{Pollution rose plot}
 \usage{
-sensor_pollutionRose(
-  sensor = NULL,
-  windData = NULL,
-  statistic = "prop.count",
-  key = TRUE,
-  keyPosition = "right",
-  annotate = TRUE,
-  angle = 30,
-  angleScale = 315,
-  gridLine = NULL,
-  breaks = 6,
-  paddle = FALSE,
-  seg = 0.9,
-  normalize = FALSE
-)
+sensor_pollutionRose(sensor = NULL, windData = NULL,
+  statistic = "prop.count", key = TRUE, keyPosition = "right",
+  annotate = TRUE, angle = 30, angleScale = 315, gridLine = NULL,
+  breaks = 6, paddle = FALSE, seg = 0.9, normalize = FALSE)
 }
 \arguments{
 \item{sensor}{an 'airsensor' object}

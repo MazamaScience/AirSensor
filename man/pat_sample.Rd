@@ -4,13 +4,8 @@
 \alias{pat_sample}
 \title{Sample PurpleAir time series data}
 \usage{
-pat_sample(
-  pat = NULL,
-  sampleSize = NULL,
-  sampleFraction = NULL,
-  setSeed = NULL,
-  keepOutliers = FALSE
-)
+pat_sample(pat = NULL, sampleSize = NULL, sampleFraction = NULL,
+  setSeed = NULL, keepOutliers = FALSE)
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}

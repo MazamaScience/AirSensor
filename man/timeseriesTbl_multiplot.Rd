@@ -4,16 +4,9 @@
 \alias{timeseriesTbl_multiplot}
 \title{Faceted plot of a timeseries tibble}
 \usage{
-timeseriesTbl_multiplot(
-  tbl = NULL,
-  pattern = NULL,
-  parameters = NULL,
-  nrow = NULL,
-  ncol = NULL,
-  autoRange = TRUE,
-  ylim = NULL,
-  style = "line"
-)
+timeseriesTbl_multiplot(tbl = NULL, pattern = NULL,
+  parameters = NULL, nrow = NULL, ncol = NULL, autoRange = TRUE,
+  ylim = NULL, style = "line")
 }
 \arguments{
 \item{tbl}{Tibble with a \code{datetime}.}

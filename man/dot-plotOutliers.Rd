@@ -4,23 +4,11 @@
 \alias{.plotOutliers}
 \title{Plot flagged outliers}
 \usage{
-.plotOutliers(
-  df = NULL,
-  parameter = "pm25",
-  ylim = NULL,
-  xlab = "Date",
-  ylab = "μg / m³",
-  title = "default",
-  subtitle = NULL,
-  data_shape = 18,
-  data_size = 1,
-  data_color = "black",
-  data_alpha = 0.5,
-  outlier_shape = 8,
-  outlier_size = 1,
-  outlier_color = "red",
-  outlier_alpha = 1
-)
+.plotOutliers(df = NULL, parameter = "pm25", ylim = NULL,
+  xlab = "Date", ylab = "μg / m³", title = "default",
+  subtitle = NULL, data_shape = 18, data_size = 1,
+  data_color = "black", data_alpha = 0.5, outlier_shape = 8,
+  outlier_size = 1, outlier_color = "red", outlier_alpha = 1)
 }
 \arguments{
 \item{df}{data frame that contains datetime, PM2.5, and outlier boolean flags}

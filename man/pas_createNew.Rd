@@ -4,12 +4,8 @@
 \alias{pas_createNew}
 \title{Load latest PurpleAir synoptic data}
 \usage{
-pas_createNew(
-  baseUrl = "https://www.purpleair.com/json",
-  countryCodes = c("US"),
-  includePWFSL = TRUE,
-  lookbackDays = 1
-)
+pas_createNew(baseUrl = "https://www.purpleair.com/json",
+  countryCodes = c("US"), includePWFSL = TRUE, lookbackDays = 1)
 }
 \arguments{
 \item{baseUrl}{Base URL for synoptic data.}

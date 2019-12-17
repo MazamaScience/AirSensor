@@ -4,11 +4,8 @@
 \alias{sensor_loadYear}
 \title{Load hourly-aggregated Purple Air data for a month}
 \usage{
-sensor_loadYear(
-  collection = "scaqmd",
-  datestamp = NULL,
-  timezone = "America/Los_Angeles"
-)
+sensor_loadYear(collection = "scaqmd", datestamp = NULL,
+  timezone = "America/Los_Angeles")
 }
 \arguments{
 \item{collection}{Name associated with the collection.}

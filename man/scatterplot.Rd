@@ -4,16 +4,9 @@
 \alias{scatterplot}
 \title{Matrix scatter plot variables in a data frame}
 \usage{
-scatterplot(
-  data,
-  parameters = NULL,
-  sampleSize = 5000,
-  sampleFraction = NULL,
-  shape = 18,
-  size = 1.5,
-  color = "black",
-  alpha = 0.5
-)
+scatterplot(data, parameters = NULL, sampleSize = 5000,
+  sampleFraction = NULL, shape = 18, size = 1.5, color = "black",
+  alpha = 0.5)
 }
 \arguments{
 \item{data}{data frame}

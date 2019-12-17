@@ -4,12 +4,8 @@
 \alias{pat_loadMonth}
 \title{Load PurpleAir time series data for a month}
 \usage{
-pat_loadMonth(
-  label = NULL,
-  datestamp = NULL,
-  timezone = "America/Los_Angeles",
-  make.names = TRUE
-)
+pat_loadMonth(label = NULL, datestamp = NULL,
+  timezone = "America/Los_Angeles", make.names = TRUE)
 }
 \arguments{
 \item{label}{Purple Air sensor 'label'}
