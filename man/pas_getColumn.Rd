@@ -4,8 +4,14 @@
 \alias{pas_getColumn}
 \title{Return column of data from filtered PurpleAir Synoptic objects}
 \usage{
-pas_getColumn(pas = NULL, name = NULL, states = NULL,
-  pattern = ".*", isOutside = TRUE, isParent = TRUE)
+pas_getColumn(
+  pas = NULL,
+  name = NULL,
+  states = NULL,
+  pattern = ".*",
+  isOutside = TRUE,
+  isParent = TRUE
+)
 }
 \arguments{
 \item{pas}{PurpleAir Synoptic \emph{pas} object.}

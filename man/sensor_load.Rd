@@ -4,8 +4,13 @@
 \alias{sensor_load}
 \title{Load hourly-aggregated Purple Air data}
 \usage{
-sensor_load(collection = "scaqmd", startdate = NULL, enddate = NULL,
-  days = 7, timezone = "America/Los_Angeles")
+sensor_load(
+  collection = "scaqmd",
+  startdate = NULL,
+  enddate = NULL,
+  days = 7,
+  timezone = "America/Los_Angeles"
+)
 }
 \arguments{
 \item{collection}{Name associated with the collection.}

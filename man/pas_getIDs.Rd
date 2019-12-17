@@ -2,19 +2,17 @@
 % Please edit documentation in R/pas_getIDs.R
 \name{pas_getIDs}
 \alias{pas_getIDs}
-\title{Return column of data from filtered PurpleAir Synoptic objects}
+\title{Return ID column of data from filtered PurpleAir Synoptic objects}
 \usage{
 pas_getIDs(pas = NULL)
 }
 \arguments{
 \item{pas}{PurpleAir Synoptic \emph{pas} object.}
-
-\item{name}{Name of the column to return}
 }
 \value{
 A column of data.
 }
 \description{
-A filter for \emph{pas} objects to return the column of the 
-stations of interest
+A filter for \emph{pas} objects to return the ID column of the 
+\emph{pas} object.
 }

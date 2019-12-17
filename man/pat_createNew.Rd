@@ -4,9 +4,15 @@
 \alias{pat_createNew}
 \title{Load latest PurpleAir time series data}
 \usage{
-pat_createNew(pas = NULL, label = NULL, id = NULL,
-  startdate = NULL, enddate = NULL, timezone = NULL,
-  baseURL = "https://api.thingspeak.com/channels/")
+pat_createNew(
+  pas = NULL,
+  label = NULL,
+  id = NULL,
+  startdate = NULL,
+  enddate = NULL,
+  timezone = NULL,
+  baseURL = "https://api.thingspeak.com/channels/"
+)
 }
 \arguments{
 \item{pas}{PurpleAir Synoptic \emph{pas} object.}
