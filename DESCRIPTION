@@ -32,6 +32,7 @@ Imports:
     leaflet,
     lubridate,
     MazamaCoreUtils (>= 0.4.1),
+    MazamaLocationUtils (>= 0.1.6),
     MazamaSpatialUtils (>= 0.6.3),
     openair,
     plyr, 

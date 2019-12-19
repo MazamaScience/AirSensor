@@ -7,6 +7,9 @@ change, archives must be regenerated and the `pat_load~()` functions must
 request new file names.
 
 * New/refactored functions: `pas_getColumn()`, `past_getLabels()`, `pas_getIDs()`
+* New function `pas_sensorDeploymentID()` creates a unique "sensor-deployment"
+identifier. This identifier is used in creation of file names in the archive
+database and as the unique time series identifer in _airsensor_ objects.
 
 # AirSensor 0.5.17
 

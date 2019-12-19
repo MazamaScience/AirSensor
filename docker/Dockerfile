@@ -34,7 +34,8 @@ RUN wget -nv http://mazamascience.com/RData/Spatial/CA_AirBasins_01.RData \
 
 # Install latest development versions of packages
 RUN installGithub.r \
-    MazamaScience/MazamaCoreUtils
+    MazamaScience/MazamaCoreUtils \
+    MazamaScience/MazamaLocationUtils
 
 
 #######################################################################
@@ -42,7 +43,7 @@ RUN installGithub.r \
 
 WORKDIR /
 
-COPY AirSensor_0.5.16.tar.gz /
+COPY AirSensor_0.6.0.tar.gz /
 
-RUN R CMD INSTALL AirSensor_0.5.16.tar.gz
+RUN R CMD INSTALL AirSensor_0.6.0.tar.gz
 
