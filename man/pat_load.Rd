@@ -5,7 +5,9 @@
 \title{Load PurpleAir time series data for a time period}
 \usage{
 pat_load(
+  pas = NULL,
   label = NULL,
+  id = NULL,
   startdate = NULL,
   enddate = NULL,
   days = 7,
@@ -13,7 +15,11 @@ pat_load(
 )
 }
 \arguments{
+\item{pas}{PurpleAir Synoptic \emph{pas} object.}
+
 \item{label}{PurpleAir sensor 'label'.}
+
+\item{id}{PurpleAir sensor 'ID'.}
 
 \item{startdate}{Desired start time (ISO 8601).}
 
@@ -28,8 +34,9 @@ A PurpleAir Timeseries \emph{pat} object.
 }
 \description{
 A pre-generated PurpleAir Timeseries \emph{pat} object will be 
-loaded for the given time interval. Archived data for SCAQMD sensors go back 
-to January, 2018.
+loaded for the given time interval if available. Data are 
+loaded from the archive set with either \code{setArchiveBaseUrl()} or 
+\code{setArchiveBaseDir()} for locally archived files.
 
 Dates can be anything that is understood by 
 \code{lubrdiate::parse_date_time()} including either of the following 
@@ -39,11 +46,17 @@ recommended formats:
 \item{\code{"YYYYmmdd"}}
 \item{\code{"YYYY-mm-dd"}}
 }
-
-By default, the current week is loaded.
+}
+\note{
+Starting with \pkg{AirSensor} version 0.6, archive file names are 
+generated with a "sensor-deployment" identifier by combining a unique 
+location ID with a unique device ID. These "sensor-deployment" identifiers 
+guarantee that movement of a sensor will result in the creation of a new
+time series.
 }
 \examples{
 \donttest{
+# TODO:  This needs to be updated to use USFS data
 setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 pat <- pat_load("SCNP_20", 20190411, 20190521)
 pat_multiplot(pat)

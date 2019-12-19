@@ -5,8 +5,9 @@
 #' @title Load PurpleAir time series data for a month
 #' 
 #' @description A pre-generated PurpleAir Timeseries \emph{pat} object will be 
-#' loaded for the given month. Archived data for SCAQMD sensors go back to 
-#' January, 2018.
+#' loaded for the month requested with \code{datestamp} if available. Data are 
+#' loaded from the archive set with either \code{setArchiveBaseUrl()} or 
+#' \code{setArchiveBaseDir()} for locally archived files.
 #' 
 #' The \code{datestamp} must be in the following format:
 #' 
@@ -16,20 +17,17 @@
 #' 
 #' By default, the current month is loaded.
 #'
-#' @note Many Purple Air sensor labels have spaces and other special characters
-#' which make for awkward file names. Best practices would suggest creating
-#' file names without special characters by running the \code{label} string
-#' through \code{make.names()} first.
-#'  
-#' This function defaults to generating file names in this manner but allows
-#' users to override this in case some users have a compelling reason to create 
-#' filenames that exactly match the \code{pat$label} of the \emph{pat} object
-#' they contain.
+#' @note Starting with \pkg{AirSensor} version 0.6, archive file names are 
+#' generated with a "sensor-deployment" identifier by combining a unique 
+#' location ID with a unique device ID. These "sensor-deployment" identifiers 
+#' guarantee that movement of a sensor will result in the creation of a new
+#' time series.
 #' 
-#' @param label Purple Air sensor 'label'
+#' @param pas PurpleAir Synoptic \emph{pas} object.
+#' @param label PurpleAir sensor 'label'.
+#' @param id PurpleAir sensor 'ID'.
 #' @param datestamp Date string in ymd order.
 #' @param timezone Timezone used to interpret \code{datestamp}.
-#' @param make.names Logical specifying whether to run 
 #' \code{make.names(label)} when assembilng the file path.
 #' 
 #' @return A PurpleAir Timeseries \emph{pat} object.
@@ -40,24 +38,54 @@
 #' 
 #' @examples
 #' \donttest{
+#' # TODO:  This needs to be updated to use USFS data
 #' setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 #' may <- pat_loadMonth("SCNP_20", 201905)
 #' pat_multiplot(may)
 #' }
 
 pat_loadMonth <- function(
+  pas = NULL,
   label = NULL,
+  id = NULL,
   datestamp = NULL,
-  timezone = "America/Los_Angeles",
-  make.names = TRUE
+  timezone = "America/Los_Angeles"
 ) {
   
   # ----- Validate parameters --------------------------------------------------
   
-  MazamaCoreUtils::stopIfNull(label)
+  MazamaCoreUtils::stopIfNull(pas)
   
-  if ( make.names ) 
-    label <- make.names(label)
+  if ( !pas_isPas(pas) )
+    stop("Required parameter 'pas' is not a valid 'pa_synoptic' object.")
+  
+  if ( pas_isEmpty(pas) )
+    stop("Required parameter 'pas' has no data.") 
+  
+  # Get the sensorID
+  if ( is.null(id) && is.null(label) ) {
+    
+    stop(paste0("label or id must be provided"))
+    
+  } else if ( is.null(id) && !is.null(label) ) {
+    
+    if ( ! label %in% pas$label )
+      stop(sprintf("label '%s' is not found in the 'pas' object", label))
+    
+    # Get the sensorID from the label
+    sensorID <- pas_getIDs(pas, pattern = label)
+    
+    if ( length(sensorID) > 1 )
+      stop(sprintf("label '%s' matches more than one sensor", label))
+    
+  } else {
+    
+    if ( ! id %in% pas$ID )
+      stop(sprintf("id '%s' is not found in the 'pas' object", id))
+    
+    sensorID <- id
+    
+  }
   
   # ----- Create year and month stamps -----------------------------------------
   
@@ -77,11 +105,14 @@ pat_loadMonth <- function(
   
   # ----- Load data from URL or directory --------------------------------------
   
+  # Create filewname
+  sensorDeploymentID <- pas_sensorDeploymentID(pas, sensorID)
+  filename <- paste0("pat_", sensorDeploymentID, "_", monthstamp, ".rda")
+  
   # Use package internal URL
   baseDir <- getArchiveBaseDir()
   baseUrl <- getArchiveBaseUrl()
   
-  filename <- paste0("pat_", label, "_", monthstamp, ".rda")
   dataUrl <- paste0(baseUrl, '/pat/', yearstamp)
   
   # dataDir should be NULL if baseDir is NULL

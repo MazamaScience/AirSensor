@@ -5,20 +5,23 @@
 \title{Load PurpleAir time series data for a month}
 \usage{
 pat_loadMonth(
+  pas = NULL,
   label = NULL,
+  id = NULL,
   datestamp = NULL,
-  timezone = "America/Los_Angeles",
-  make.names = TRUE
+  timezone = "America/Los_Angeles"
 )
 }
 \arguments{
-\item{label}{Purple Air sensor 'label'}
+\item{pas}{PurpleAir Synoptic \emph{pas} object.}
+
+\item{label}{PurpleAir sensor 'label'.}
+
+\item{id}{PurpleAir sensor 'ID'.}
 
 \item{datestamp}{Date string in ymd order.}
 
-\item{timezone}{Timezone used to interpret \code{datestamp}.}
-
-\item{make.names}{Logical specifying whether to run 
+\item{timezone}{Timezone used to interpret \code{datestamp}.
 \code{make.names(label)} when assembilng the file path.}
 }
 \value{
@@ -26,8 +29,9 @@ A PurpleAir Timeseries \emph{pat} object.
 }
 \description{
 A pre-generated PurpleAir Timeseries \emph{pat} object will be 
-loaded for the given month. Archived data for SCAQMD sensors go back to 
-January, 2018.
+loaded for the month requested with \code{datestamp} if available. Data are 
+loaded from the archive set with either \code{setArchiveBaseUrl()} or 
+\code{setArchiveBaseDir()} for locally archived files.
 
 The \code{datestamp} must be in the following format:
 
@@ -38,18 +42,15 @@ The \code{datestamp} must be in the following format:
 By default, the current month is loaded.
 }
 \note{
-Many Purple Air sensor labels have spaces and other special characters
-which make for awkward file names. Best practices would suggest creating
-file names without special characters by running the \code{label} string
-through \code{make.names()} first.
- 
-This function defaults to generating file names in this manner but allows
-users to override this in case some users have a compelling reason to create 
-filenames that exactly match the \code{pat$label} of the \emph{pat} object
-they contain.
+Starting with \pkg{AirSensor} version 0.6, archive file names are 
+generated with a "sensor-deployment" identifier by combining a unique 
+location ID with a unique device ID. These "sensor-deployment" identifiers 
+guarantee that movement of a sensor will result in the creation of a new
+time series.
 }
 \examples{
 \donttest{
+# TODO:  This needs to be updated to use USFS data
 setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 may <- pat_loadMonth("SCNP_20", 201905)
 pat_multiplot(may)

@@ -43,15 +43,14 @@ pat_createNew <- function(
   # ----- Validate parameters --------------------------------------------------
   
   MazamaCoreUtils::stopIfNull(pas)
-  #MazamaCoreUtils::stopIfNull(label)
-  
-  if (!is.null(label)){
+
+  if ( !is.null(label) )  {
     if ( !label %in% pas$label )
       stop(paste0("'", label, "' is not found in the 'pas' object"))
   }
   
-  if( is.null(label) & is.null(id))
-    stop(paste0("label or id must be provided"))
+  if ( is.null(label) && is.null(id) )
+    stop(paste0("'label' or 'id' must be provided"))
   
   # ----- Determine date sequence ----------------------------------------------
   

@@ -325,7 +325,8 @@ if ( FALSE ) {
   
   setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
   
-  pat <- pat_loadLatest("SCNP_05")
+  pas <- pas_load()
+  pat <- pat_loadLatest(pas, "SCNP_05")
   plottype <- "all"
   sampleSize <- 5000
   columns <- NULL

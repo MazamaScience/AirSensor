@@ -163,7 +163,8 @@ pat_monitorComparison <- function(
 
 if ( FALSE ) {
   
-  pat <- pat_load("SCPR_19", 20190618, 20190629)
+  pas <- pas_load()
+  pat <- pat_load(pas, label = "SCPR_19", startdate = 20190618, enddate = 20190629)
   ylim <- NULL
   replaceOutliers <- TRUE
   a_size <- 1

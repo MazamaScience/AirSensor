@@ -4,34 +4,34 @@
 \alias{pat_loadLatest}
 \title{Load PurpleAir time series data for a week}
 \usage{
-pat_loadLatest(label = NULL, make.names = TRUE)
+pat_loadLatest(pas = NULL, label = NULL, id = NULL)
 }
 \arguments{
+\item{pas}{PurpleAir Synoptic \emph{pas} object.}
+
 \item{label}{PurpleAir sensor 'label'.}
 
-\item{make.names}{Logical specifying whether to run 
-\code{make.names(label)} when assembilng the file path.}
+\item{id}{PurpleAir sensor 'ID'.}
 }
 \value{
 A PurpleAir Timeseries \emph{pat} object.
 }
 \description{
 A pre-generated PurpleAir Timeseries \emph{pat} object will be 
-loaded containing data for the most recent 7-day interval.
+loaded containing data for the most recent 7-day interval. Data are loaded
+from the archive set with either \code{setArchiveBaseUrl()} or 
+\code{setArchiveBaseDir()} for locally archived files.
 }
 \note{
-Many Purple Air sensor labels have spaces and other special characters
-which make for awkward file names. Best practices would suggest creating
-file names without special characters by running the \code{label} string
-through \code{make.names()} first.
- 
-This function defaults to generating file names in this manner but allows
-users to override this in case some users have a compelling reason to create 
-filenames that exactly match the \code{pat$label} of the \emph{pat} object
-they contain.
+Starting with \pkg{AirSensor} version 0.6, archive file names are 
+generated with a "sensor-deployment" identifier by combining a unique 
+location ID with a unique device ID. These "sensor-deployment" identifiers 
+guarantee that movement of a sensor will result in the creation of a new
+time series.
 }
 \examples{
 \donttest{
+# TODO:  This needs to be updated to use USFS data
 setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 pat <- pat_loadLatest("SCNP_20")
 pat_multiplot(pat)
