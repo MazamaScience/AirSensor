@@ -7,7 +7,7 @@
 pas_getColumn(
   pas = NULL,
   name = NULL,
-  states = NULL,
+  states = PWFSLSmoke::US_52,
   pattern = ".*",
   isOutside = TRUE,
   isParent = TRUE
@@ -16,20 +16,27 @@ pas_getColumn(
 \arguments{
 \item{pas}{PurpleAir Synoptic \emph{pas} object.}
 
-\item{name}{Name of the column to return}
+\item{name}{Name of the column to return.}
 
-\item{states}{Vector of recognized  ISO state codes}
+\item{states}{Vector of recognized ISO state codes.}
 
-\item{pattern}{Text pattern used to filter station labels}
+\item{pattern}{Text pattern used to filter station labels.}
 
-\item{isOutside}{Logical, is the station located outside?}
+\item{isOutside}{Logical, is the sensor located outside?}
 
-\item{isParent}{Logigal, is the station a parent station?}
+\item{isParent}{Logigal, is the sensor a parent station?}
 }
 \value{
-A column of data.
+Vector of values.
 }
 \description{
-A filter for \emph{pas} objects to return the column of the 
-stations of interest
+The incoming \code{pas} object is first filtered based on the 
+values of \code{states}, \code{patter}, \code{isOutside} and \code{isParent}.
+The values associated with the \code{name} column are then returned.
+
+This function is useful for returning values associated with specific
+\emph{devices}, which are represented by records with \code{isParent = TRUE}.
+}
+\seealso{
+\code{\link{pas_getIDs}},  \code{\link{pas_getLabels}}
 }

@@ -4,29 +4,39 @@
 #' @title Return column of data from filtered PurpleAir Synoptic objects
 #' 
 #' @param pas PurpleAir Synoptic \emph{pas} object.
-#' @param name Name of the column to return
-#' @param states Vector of recognized  ISO state codes 
-#' @param pattern Text pattern used to filter station labels
-#' @param isOutside Logical, is the station located outside?
-#' @param isParent Logigal, is the station a parent station?
+#' @param name Name of the column to return.
+#' @param states Vector of recognized ISO state codes.
+#' @param pattern Text pattern used to filter station labels.
+#' @param isOutside Logical, is the sensor located outside?
+#' @param isParent Logigal, is the sensor a parent station?
 #' 
-#' @description A filter for \emph{pas} objects to return the column of the 
-#' stations of interest
+#' @description The incoming \code{pas} object is first filtered based on the 
+#' values of \code{states}, \code{patter}, \code{isOutside} and \code{isParent}.
+#' The values associated with the \code{name} column are then returned.
 #' 
-#' @return A column of data.
+#' This function is useful for returning values associated with specific
+#' \emph{devices}, which are represented by records with \code{isParent = TRUE}.
 #' 
+#' @return Vector of values.
 #' 
+#' @seealso \code{\link{pas_getIDs}},  \code{\link{pas_getLabels}}
 #' 
 pas_getColumn <- function(
   pas = NULL,
   name = NULL,
-  states = NULL,
+  states = PWFSLSmoke::US_52,
   pattern = ".*",
   isOutside = TRUE,
   isParent = TRUE
 ) {
   
   # ----- Validate parameters --------------------------------------------------
+  
+  MazamaCoreUtils::stopIfNull(name)
+  MazamaCoreUtils::stopIfNull(pattern)
+  MazamaCoreUtils::stopIfNull(states)
+  MazamaCoreUtils::stopIfNull(isOutside)
+  MazamaCoreUtils::stopIfNull(isParent)
   
   # A little involved to catch the case where the user forgets to pass in 'pas'
   
@@ -42,64 +52,38 @@ pas_getColumn <- function(
     }
   }
   
-  # ----- pas_getColumn() ------------------------------------------------------
+  # Name must match a column in the PAS
+  if ( !name %in% names(pas) ) 
+    stop(sprintf("'%s' is not a column name in the pas object", name))
   
-  # filter by Outside/Inside
-  if ( !is.null(isOutside) ) {
-    if ( isOutside ) {
-      sub_pas <- pas %>% pas_filter(.data$DEVICE_LOCATIONTYPE == "outside")
-    } else {
-      sub_pas <- sub_pas %>% pas_filter(.data$DEVICE_LOCATIONTYPE == "inside")
-    }
-  }
+  # ----- Filter data ----------------------------------------------------------
   
-  if ( is.null(isOutside) ) {
+  # Filter by Outside/Inside
+  if ( isOutside ) {
     sub_pas <- pas %>% pas_filter(.data$DEVICE_LOCATIONTYPE == "outside")
+  } else {
+    sub_pas <- pas %>% pas_filter(.data$DEVICE_LOCATIONTYPE != "outside")
   }
   
-  # filter by Parent
-  if ( !is.null(isParent) ) {
-    if ( isParent ) {
-      sub_pas <- sub_pas %>% pas_filter(is.na(.data$parentID))
-    } else {
-      sub_pas <- sub_pas %>% pas_filter(!is.na(.data$parentID))
-    }
-  }
-  
-  if ( is.null(isParent) ) {
+  # Filter by Parent
+  if ( isParent ) {
     sub_pas <- sub_pas %>% pas_filter(is.na(.data$parentID))
+  } else {
+    sub_pas <- sub_pas %>% pas_filter(!is.na(.data$parentID))
   }
   
-  # filter by state code
-  if ( !is.null(states) ) {
-    sub_pas <- sub_pas %>% pas_filter(.data$stateCode %in% states)
-  }
-  
-  if ( is.null(states) ) {
-    sub_pas <- sub_pas %>% pas_filter(.data$stateCode %in% PWFSLSmoke::US_52)
-  }
-  
-  
-  # filter by label pattern
-  if ( !is.null(pattern) ) {
-    sub_pas <- sub_pas %>% pas_filter(stringr::str_detect(.data$label, pattern))
-  }
-  
-  
-  # make sure the name exists in a pas
-  if(name %in% names(sub_pas)) {
-    column <- dplyr::pull(sub_pas, name)
-  }
-  
-  else {
-    stop("'pas' does not contain requested column")
-  }
-  
-
+  # Filter by state code and pattern
+  sub_pas <- 
+    sub_pas %>% 
+    pas_filter(.data$stateCode %in% states) %>%
+    pas_filter(stringr::str_detect(.data$label, pattern))
   
   # ---- Return ----------------------------------------------------------------
   
+  column <- dplyr::pull(sub_pas, name)
+  
   return(column)
+  
 }
 
 

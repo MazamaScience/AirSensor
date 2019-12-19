@@ -214,23 +214,23 @@ test_that("POSIXct date formats work with timezones", {
   
 })
 
-test_that("character formats w/o timezone get complete days in the sensor timezone", {
-  
-  # TODO:  Flesh this out
-  
-})
-
-test_that("character formats w/ timezone get complete days in the specified timezone", {
-  
-  # TODO:  Flesh this out
-  
-})
-
-test_that("POSIXct formats always get complete days in the POSIXct timezone", {
-  
-  # Assume that anyone passing in a POSIXct object knows what they are doing.
-  
-  # TODO:  Flesh this out
-  
-})
+# test_that("character formats w/o timezone get complete days in the sensor timezone", {
+#   
+#   # TODO:  Flesh this out
+#   
+# })
+# 
+# test_that("character formats w/ timezone get complete days in the specified timezone", {
+#   
+#   # TODO:  Flesh this out
+#   
+# })
+# 
+# test_that("POSIXct formats always get complete days in the POSIXct timezone", {
+#   
+#   # Assume that anyone passing in a POSIXct object knows what they are doing.
+#   
+#   # TODO:  Flesh this out
+#   
+# })
 

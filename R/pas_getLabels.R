@@ -1,24 +1,28 @@
 #' @export
 #' @importFrom rlang .data
 #' 
-#' @title Return station labels from filtered PurpleAir Synoptic objects
+#' @title Return labels from filtered PurpleAir Synoptic objects
 #' 
 #' @param pas PurpleAir Synoptic \emph{pas} object.
-#' @param states Vector of recognized  ISO state codes 
-#' @param pattern Text pattern used to filter station labels
-#' @param isOutside Logical, is the station located outside?
-#' @param isParent Logigal, is the station a parent station?
+#' @param states Vector of recognized ISO state codes.
+#' @param pattern Text pattern used to filter station labels.
+#' @param isOutside Logical, is the sensor located outside?
+#' @param isParent Logigal, is the sensor a parent station?
 #' 
-#' @description A filter for \emph{pas} objects to return the labels of the 
-#' stations of interest. Wrapper around \emph{pas_getColumn}.
+#' @description The incoming \code{pas} object is first filtered based on the 
+#' values of \code{states}, \code{patter}, \code{isOutside} and \code{isParent}.
+#' The values associated with the \code{"label"} column are then returned.
 #' 
-#' @return A character vector of station labels.
+#' This function is useful for returning values associated with specific
+#' \emph{devices}, which are represented by records with \code{isParent = TRUE}.
 #' 
+#' @return Vector of values.
 #' 
+#' @seealso \code{\link{pas_getColumn}},  \code{\link{pas_getIDs}}
 #' 
 pas_getLabels <- function(
   pas = NULL,
-  states = NULL,
+  states = PWFSLSmoke::US_52,
   pattern = ".*",
   isOutside = TRUE,
   isParent = TRUE
@@ -26,29 +30,18 @@ pas_getLabels <- function(
   
   # ----- Validate parameters --------------------------------------------------
   
-  # A little involved to catch the case where the user forgets to pass in 'pas'
+  # Validation is handled by pas_getColumn()
   
-  result <- try({
-    if ( !pas_isPas(pas) )
-      stop("First argument is not of class 'pas'.")
-  }, silent = TRUE)
+  # ----- Get labels -----------------------------------------------------------
   
-  if ( class(result) %in% "try-error" ) {
-    err_msg <- geterrmessage()
-    if ( stringr::str_detect(err_msg, "object .* not found") ) {
-      stop(paste0(err_msg, "\n(Did you forget to pass in the 'pas' object?)"))
-    }
-  }
-  
-  # ----- pas_getLabels() ------------------------------------------------------
-  
-
-  labels <- pas_getColumn(pas, 
-                          name = "label", 
-                          states = states, 
-                          pattern = pattern, 
-                          isOutside = isOutside, 
-                          isParent = isParent)
+  labels <- pas_getColumn(
+    pas, 
+    name = "label", 
+    states = states, 
+    pattern = pattern, 
+    isOutside = isOutside, 
+    isParent = isParent
+  )
   
   # ---- Return ----------------------------------------------------------------
   

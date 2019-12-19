@@ -2,11 +2,11 @@
 % Please edit documentation in R/pas_getLabels.R
 \name{pas_getLabels}
 \alias{pas_getLabels}
-\title{Return station labels from filtered PurpleAir Synoptic objects}
+\title{Return labels from filtered PurpleAir Synoptic objects}
 \usage{
 pas_getLabels(
   pas = NULL,
-  states = NULL,
+  states = PWFSLSmoke::US_52,
   pattern = ".*",
   isOutside = TRUE,
   isParent = TRUE
@@ -15,18 +15,25 @@ pas_getLabels(
 \arguments{
 \item{pas}{PurpleAir Synoptic \emph{pas} object.}
 
-\item{states}{Vector of recognized  ISO state codes}
+\item{states}{Vector of recognized ISO state codes.}
 
-\item{pattern}{Text pattern used to filter station labels}
+\item{pattern}{Text pattern used to filter station labels.}
 
-\item{isOutside}{Logical, is the station located outside?}
+\item{isOutside}{Logical, is the sensor located outside?}
 
-\item{isParent}{Logigal, is the station a parent station?}
+\item{isParent}{Logigal, is the sensor a parent station?}
 }
 \value{
-A character vector of station labels.
+Vector of values.
 }
 \description{
-A filter for \emph{pas} objects to return the labels of the 
-stations of interest. Wrapper around \emph{pas_getColumn}.
+The incoming \code{pas} object is first filtered based on the 
+values of \code{states}, \code{patter}, \code{isOutside} and \code{isParent}.
+The values associated with the \code{"label"} column are then returned.
+
+This function is useful for returning values associated with specific
+\emph{devices}, which are represented by records with \code{isParent = TRUE}.
+}
+\seealso{
+\code{\link{pas_getColumn}},  \code{\link{pas_getIDs}}
 }

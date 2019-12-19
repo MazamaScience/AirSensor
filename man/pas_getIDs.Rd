@@ -2,17 +2,38 @@
 % Please edit documentation in R/pas_getIDs.R
 \name{pas_getIDs}
 \alias{pas_getIDs}
-\title{Return ID column of data from filtered PurpleAir Synoptic objects}
+\title{Return IDs from filtered PurpleAir Synoptic objects}
 \usage{
-pas_getIDs(pas = NULL)
+pas_getIDs(
+  pas = NULL,
+  states = PWFSLSmoke::US_52,
+  pattern = ".*",
+  isOutside = TRUE,
+  isParent = TRUE
+)
 }
 \arguments{
 \item{pas}{PurpleAir Synoptic \emph{pas} object.}
+
+\item{states}{Vector of recognized ISO state codes.}
+
+\item{pattern}{Text pattern used to filter station labels.}
+
+\item{isOutside}{Logical, is the sensor located outside?}
+
+\item{isParent}{Logigal, is the sensor a parent station?}
 }
 \value{
-A column of data.
+Vector of values.
 }
 \description{
-A filter for \emph{pas} objects to return the ID column of the 
-\emph{pas} object.
+The incoming \code{pas} object is first filtered based on the 
+values of \code{states}, \code{patter}, \code{isOutside} and \code{isParent}.
+The values associated with the \code{"ID"} column are then returned.
+
+This function is useful for returning values associated with specific
+\emph{devices}, which are represented by records with \code{isParent = TRUE}.
+}
+\seealso{
+\code{\link{pas_getColumn}},  \code{\link{pas_getLabels}}
 }

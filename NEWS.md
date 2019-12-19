@@ -1,3 +1,13 @@
+# AirSensor 0.6.0
+
+Version 0.6 is a backwards *in*compatible release. It replaces `label` identifier
+with a proper "sensor-deployment" identifier and relies on the
+*MazamaLocationUtils* package to create location identifiers. Becuase of this
+change, archives must be regenerated and the `pat_load~()` functions must 
+request new file names.
+
+* New/refactored functions: `pas_getColumn()`, `past_getLabels()`, `pas_getIDs()`
+
 # AirSensor 0.5.17
 
 Minor documentation updates and package rebuild.

@@ -1,46 +1,47 @@
 #' @export
 #' @importFrom rlang .data
 #' 
-#' @title Return ID column of data from filtered PurpleAir Synoptic objects
+#' @title Return IDs from filtered PurpleAir Synoptic objects
 #' 
 #' @param pas PurpleAir Synoptic \emph{pas} object.
+#' @param states Vector of recognized ISO state codes.
+#' @param pattern Text pattern used to filter station labels.
+#' @param isOutside Logical, is the sensor located outside?
+#' @param isParent Logigal, is the sensor a parent station?
 #' 
-#' @description A filter for \emph{pas} objects to return the ID column of the 
-#' \emph{pas} object.
+#' @description The incoming \code{pas} object is first filtered based on the 
+#' values of \code{states}, \code{patter}, \code{isOutside} and \code{isParent}.
+#' The values associated with the \code{"ID"} column are then returned.
 #' 
-#' @return A column of data.
+#' This function is useful for returning values associated with specific
+#' \emph{devices}, which are represented by records with \code{isParent = TRUE}.
 #' 
+#' @return Vector of values.
 #' 
+#' @seealso \code{\link{pas_getColumn}},  \code{\link{pas_getLabels}}
 #' 
 pas_getIDs <- function(
-  pas = NULL
+  pas = NULL,
+  states = PWFSLSmoke::US_52,
+  pattern = ".*",
+  isOutside = TRUE,
+  isParent = TRUE
 ) {
   
   # ----- Validate parameters --------------------------------------------------
   
-  # A little involved to catch the case where the user forgets to pass in 'pas'
+  # Validation is handled by pas_getColumn()
   
-  result <- try({
-    if ( !pas_isPas(pas) )
-      stop("First argument is not of class 'pas'.")
-  }, silent = TRUE)
+  # ----- Get labels -----------------------------------------------------------
   
-  if ( class(result) %in% "try-error" ) {
-    err_msg <- geterrmessage()
-    if ( stringr::str_detect(err_msg, "object .* not found") ) {
-      stop(paste0(err_msg, "\n(Did you forget to pass in the 'pas' object?)"))
-    }
-  }
-  
-  # ----- pas_getIDs() ------------------------------------------------------
-  
-
-  # get the sensor ID
-  IDs <- pas_getColumn(pas, "ID")
-  
-
- 
-
+  IDs <- pas_getColumn(
+    pas, 
+    name = "ID", 
+    states = states, 
+    pattern = pattern, 
+    isOutside = isOutside, 
+    isParent = isParent
+  )
   
   # ---- Return ----------------------------------------------------------------
   
