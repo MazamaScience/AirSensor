@@ -14,10 +14,10 @@ Dataframe of synoptic PurpleAir data.
 }
 \description{
 Download and parse synoptic data from the Purple Air network
-of particulate monitors.
+of particulate sensors.
 
 The synoptic data provides a view of the entire Purple Air network and
-includes both metadata and recent PM2.5 averages for each deployed monitor.
+includes both metadata and recent PM2.5 averages for each deployed sensor.
 }
 \examples{
 \dontrun{

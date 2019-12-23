@@ -4,7 +4,7 @@
 \name{example_pas_raw}
 \alias{example_pas_raw}
 \title{Example raw Purple Air Synoptic dataset}
-\format{A tibble with 12657 rows and 32 columns of data.}
+\format{A tibble with 961 rows and 33 columns of data.}
 \source{
 https://www.purpleair.com/json
 }
@@ -14,10 +14,13 @@ example_pas_raw
 \description{
 The \code{example_pas_raw} dataset provides a quickly loadable
 version of raw Purple Air synoptic data JSON for practicing and code
-examples. This dataset was was generated on 2019-07-06 by running:
+examples. This dataset contains data for sensors in Washington and Oregon
+and was generated on 2019-12-23 by running:
 
 \preformatted{
-  example_pas_raw <- downloadParseSynopticData()
+  example_pas_raw <- 
+  downloadParseSynopticData() %>%
+  dplyr::filter(Lon > -125.0 & Lon < -117.0 & Lat > 42.0 & Lat < 49.0)
 }
 
 This dataset can be converted into a standard \emph{pas} dataset with:

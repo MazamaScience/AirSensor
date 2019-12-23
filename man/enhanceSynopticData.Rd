@@ -29,7 +29,7 @@ Steps include:
 
 1) Replace variable with more consistent, more human readable names.
 
-2) Add spatial metadata for each monitor including:
+2) Add spatial metadata for each sensor including:
 \itemize{
   \item{timezone -- olson timezone}
   \item{countryCode -- ISO 3166-1 alpha-2}
@@ -49,7 +49,7 @@ Steps include:
 \item{communityRegion -- (where known)}
 }
 
-Subsetting by country may be performed by specifying the \code{countryCodes} 
+Filtering by country may be performed by specifying the \code{countryCodes} 
 argument.
 
 Setting \code{outsideOnly = TRUE} will return only those records marked as 
@@ -64,8 +64,7 @@ map.
 \examples{
 \dontrun{
 initializeMazamaSpatialUtils()
-pas_raw <- downloadParseSynopticData()
-pas <- enhanceSynopticData(pas_raw)
+pas <- enhanceSynopticData(example_pas_raw)
 setdiff(names(pas), names(pas_raw))
 View(pas[1:100,])
 }

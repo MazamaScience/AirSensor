@@ -1,6 +1,6 @@
 #' @export
 #' @importFrom rlang .data
-#' @importFrom MazamaCoreUtils logger.debug
+#' @importFrom MazamaCoreUtils logger.isInitialized logger.debug
 #' 
 #' @title Load latest PurpleAir synoptic data
 #' 
@@ -13,7 +13,7 @@
 #'
 #' 2) Replace variable with more consistent, more human readable names.
 #'
-#' 3) Add spatial metadata for each monitor including:
+#' 3) Add spatial metadata for each sensor including:
 #' \itemize{
 #'   \item{timezone -- olson timezone}
 #'   \item{countryCode -- ISO 3166-1 alpha-2}
@@ -24,7 +24,7 @@
 #'
 #' 5) Add distance and monitorID for the closest PWFSL monitor
 #'
-#' Subsetting by country may be performed by specifying the \code{countryCodes}
+#' Filtering by country may be performed by specifying the \code{countryCodes}
 #' argument.
 #'
 #' @param baseUrl Base URL for synoptic data.
@@ -58,8 +58,15 @@ pas_createNew <- function(
   
   # ----- Validate parameters --------------------------------------------------
 
+  MazamaCoreUtils::stopIfNull(baseUrl)
+  MazamaCoreUtils::stopIfNull(countryCodes)
+  MazamaCoreUtils::stopIfNull(includePWFSL)
+  MazamaCoreUtils::stopIfNull(lookbackDays)
+  
   # Guarantee uppercase codes
   countryCodes <- toupper(countryCodes)
+  
+  # Validate countryCodes
   if ( any(!(countryCodes %in% countrycode::codelist$iso2c)) ) 
     stop("parameter 'countryCodes' has values that are not recognized as ISO-2 country codes")
   

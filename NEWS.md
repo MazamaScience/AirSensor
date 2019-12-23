@@ -1,3 +1,13 @@
+# AirSensor 0.6.1
+
+Revisited everything at the `pas` object level:
+
+* Error message harmonization.
+* Updated package data files.
+* Updated documentation.
+* Updated tests.
+* Renamed `pas_sensorDeploymentID()` to `pas_deviceDeploymentID()`
+
 # AirSensor 0.6.0
 
 Version 0.6 is a backwards *in*compatible release. It replaces `label` identifier
