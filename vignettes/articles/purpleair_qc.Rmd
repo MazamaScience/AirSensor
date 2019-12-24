@@ -1,0 +1,319 @@
+---
+title: "Purple Air Quality Control"
+author: "Mazama Science"
+date: "2019-07-02"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Purple Air Qualitiy Control}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE, message=FALSE}
+knitr::opts_chunk$set(fig.width=7, fig.height=5)
+library(AirSensor)
+```
+
+This vignette decribes Quality Control (QC) functions and best practices for
+working with Purple Air Sensor data.
+
+## Raw "Engineering" Data
+
+The **AirSensor** package *pat* data model and associated functions make it easy
+to work with raw Purple Air data. (*pat* is for *P*urple *A*ir *T*imeseries.)
+Each *pat* object provides unmodified data
+obtained from the *ThingSpeak* database. (ThingSpeak is the Internet of Things 
+data provider that Purple Air has partnered with to handle access to archival
+data.)
+
+See the pat_introduction vignette for details.
+
+### Good Data
+
+Lets begin by looking at one week's worth of trouble free sensor data:
+
+```{r example_pat_basic}
+pat <- example_pat %>% pat_filterDate(20180701, 20180708)
+# use sampleSize = NULL to force display of every data point
+pat_multiplot(pat, sampleSize = NULL)
+```
+
+In this case, no obvious errors are seen in the data.
+
+### Bad Humitidy Values, Noisy Channel A
+
+Occasionally one sees aphysical relative humidity values > 100. The example
+below also shows one of the particle detectors generating noisy data.
+
+```{r example_pat_failure_A_basic}
+data("example_pat_failure_A")
+pat <- example_pat_failure_A
+# use sampleSize = NULL to force display of every data point
+pat_multiplot(pat, sampleSize = NULL)
+```
+
+### Out-of-spec PM2.5 Values
+
+One of the PM2.5 channels can also report completely bogus data:
+
+```{r example_pat_failure_B_basic}
+data("example_pat_failure_B")
+pat <- example_pat_failure_B
+# use sampleSize = NULL to force display of every data point
+pat_multiplot(pat, sampleSize = NULL)
+```
+
+## Raw Data QC
+
+The examples above demonstrate just two of many possible failure modes but they 
+provide data we can use to develop basic QC algorithms that identify the most 
+egregiously misbehaving data without throwing away potentially interesting 
+outliers.
+
+The least controversial QC is the removal of values that are out-of-spec for
+the sensor. Purple Air provides 
+[PA-II sensor specs](https://www2.purpleair.com/products/purpleair-pa-ii)
+which define the valid measurement range for each variable:
+
+```
+  0 <   humidity  < 100
+-40 < temperature < 185
+  0 <     pm25    < 1000
+```
+
+The `pat_qc()` function applies these thresholds and returns a *pat* object
+where out-of-spec values have been replaced by `NA`. See how the out-of-spec
+humidity values get replaced in `example_pat_failure_A`:
+
+```{r example_pat_failure_A_qc1}
+pat <-
+  example_pat_failure_A %>%
+  pat_qc()
+pat_multiplot(pat, sampleSize = NULL)
+```
+
+The case of `example_pat_failure_B` is also improved by removing out-of-spec
+values but some questionable data still exist in channel A:
+
+```{r example_pat_failure_B_qc1}
+pat <-
+  example_pat_failure_B %>%
+  pat_qc()
+pat_multiplot(pat, sampleSize = NULL)
+
+```
+
+## Aggregation
+
+The `pat_aggregate()` function is used in the conversion of *pat* data objects
+into dataframes with a uniform, typically hourly, time axis. The 
+aggregation process invovles creating regular time bins and
+then calculating a variety of statistics for the data within each bin. We end
+up with a dataframe with a regular time axis and multiple columns of statistics
+for each input variable.
+
+Applying our uncontroversial `pat_qc()` as the first step in the pipeline, we
+can reivew which statistics are calcualted:
+
+```{r pat_aggregate}
+df <-
+  example_pat_failure_A %>%
+  pat_qc() %>%
+  pat_aggregate(period = "1 hour")
+class(df)
+names(df)
+```
+
+### Aggregation statistics
+
+For each variable, core statistics are calculated for the population of
+measurements found in each time bin:
+
+* mean
+* median
+* sd -- standard deviation
+* min
+* max
+* count
+
+### Student's t-Test
+
+Every Purple Air II sensor has two separate particle detectors, each reporting
+on a separate channel: A and B. When measurements in both channels agree within
+measurement error then we have higher confidence in the measurements. Because
+the two particle detectors are so close together we shouldn't expect any
+difference in the air entering detector A or B.
+
+The two-sample t-test is the standard statistical technique for determining
+whether a difference in two means is significant or can be attributed to 
+random processes. The friendliest explanation of this statistical technique
+is available through a serires of 
+[Khan Academy videos](https://www.khanacademy.org/math/ap-statistics/two-sample-inference#two-sample-t-test-means)
+
+When the Purple Air sensor is functioning properly we expect the hourly 
+average of A channel PM2.5 measurements to be close to the average of B channel
+PM2.5 measurements. To determine whether this NULL hypothesis holds,  the
+`pat_aggregate()` function does some additional work for PM2.5 and calculates 
+the following addition two-sample t-test statistics:
+
+* t -- t-statistic
+* p -- p-value 
+* df -- degrees of freedom for the t-statistic
+
+For visual thinkers, imagine a boxplot showing the range of values from the A
+and B channels for a particular hour. If the boxplots overlap, then the means,
+although not identical, are not significantly different.
+
+A picture may help. Below we display hourly boxplots for the A and B channels
+during a day when they largely agree:
+
+```{r AB_boxplot}
+library(ggplot2)
+
+# Always specify a timezone wherever possible!
+timezone <- "America/Los_Angeles"
+
+# Grab a 1-day subset of the data
+raw_data <- 
+  example_pat_failure_B %>%
+  pat_filterDate(20190611,20190612) %>%
+  pat_extractData() %>%
+  dplyr::select(datetime, pm25_A, pm25_B) %>%
+  # Convert datetime to an hourly timestamp to use as a factor
+  dplyr::mutate(datetime = strftime(datetime, "%Y%m%d%H", tz = timezone)) %>%
+  # Convert from wide to "tidy" so we can use channel as a factor
+  tidyr::gather("channel", "pm25", -datetime)
+
+# Look at a random sample of this new dataframe
+dplyr::sample_n(raw_data, 10)
+
+# Create a timeseries using boxplots
+colors <- c(rgb(0.9, 0.25, 0.2), rgb(0.2, 0.25, 0.9))
+ggplot(raw_data, aes(datetime, pm25, color = channel)) + 
+  geom_boxplot(outlier.shape = NA,
+               show.legend = FALSE) +
+  scale_color_manual(values=colors) +
+  geom_point(pch=15, cex=0.2, position = position_jitterdodge()) +
+  ggtitle("A/B hourly averages")
+
+# Compare the t-statistic for that day
+agg_data <- 
+  example_pat_failure_B %>%
+  pat_filterDate(20190611,20190612) %>%
+  pat_aggregate()
+
+ggplot(agg_data, aes(datetime, pm25_p)) +
+  geom_point() +
+  scale_y_log10() + 
+  ggtitle("t-test p-value")
+```
+
+And here is the same for a day with serious problems:
+
+```{r AB_boxplot_2, echo = FALSE}
+library(ggplot2)
+
+# Grab a 1-day subset of the data
+raw_data <- 
+  example_pat_failure_B %>%
+  pat_filterDate(20190612,20190613) %>%
+  pat_extractData() %>%
+  dplyr::select(datetime, pm25_A, pm25_B) %>%
+  # Convert datetime to an hourly timestamp to use as a factor
+  dplyr::mutate(datetime = strftime(datetime, "%Y%m%d%H", tz = timezone)) %>%
+  # Convert from wide to "tidy" so we can use channel as a factor
+  tidyr::gather("channel", "pm25", -datetime)
+
+# Look at a random sample of this new dataframe
+dplyr::sample_n(raw_data, 10)
+
+# Create a timeseries using boxplots
+colors <- c(rgb(0.9, 0.25, 0.2), rgb(0.2, 0.25, 0.9))
+ggplot(raw_data, aes(datetime, pm25, color = channel)) + 
+  geom_boxplot(outlier.shape = NA,
+               show.legend = FALSE) +
+  scale_color_manual(values=colors) +
+  geom_point(pch=15, cex=0.2, position = position_jitterdodge()) +
+  ggtitle("A/B hourly averages")
+
+# Compare the t-statistic for that day
+agg_data <- 
+  example_pat_failure_B %>%
+  pat_filterDate(20190612,20190613) %>%
+  pat_aggregate()
+
+ggplot(agg_data, aes(datetime, pm25_p)) +
+  geom_point() +
+  scale_y_log10() + 
+  ggtitle("t-test p-value")
+```
+
+We can see that the null hypothesis -- the difference in means is entirely due
+to chance -- is extremely unlikely `pm25_p < 1e-30`, for example, only occur for
+hours where the A and B channels have hourly avergaes that are both highly
+precise (low std dev) and very different. We can thus use the `pm25_t` variable
+to flag those hours where the A and B channels disagree.
+
+## Hourly Averages
+
+One of the most important data products we can create form raw Purple Air data
+is the hourly avergaged dataset that can be used for comparison with co-located
+federal regulatory monitors. 
+
+The following steps are recommend for creating an hourly PM2.5 timeseries:
+
+1) apply out-of-spec QC
+2) calculate aggregation statistics
+3) average together pm25_A and pm25_B hourly values
+5) invalidate pm25 values where the count on either the A or B channel is below
+some threshold (e.g. 10 where 30 are expected)
+5) invalidate pm25 hourly values then the mean difference is "moderate" or above
+(e.g. > 10) AND the p-value is below some threshold (e.g. < 1e-4)
+6) invalidate pm25 hourly values regardless of p-value when the average pm25
+value is below some threshold (e.g. < 100) and the difference between channel A
+and B means is high (e.g. > 20)
+
+```
+  (min_count < 10)
+  (p-value < 1e-4) & (mean_diff > 10)
+  (pm25 < 100) & (mean_diff > 20)
+```
+
+This combination of QC steps is used in when the `pat_createAirSensor()` 
+function is run with `qc_algorithm = "hourly_AB_01"`.
+
+As a test of the overall effect, here are some simple, hourly barplots for a 
+single week of data for each of the three examples we started with:
+
+```{r hourly_barplots, echo = FALSE, warning = FALSE}
+layout(matrix(seq(3)))
+
+example_pat %>%
+  pat_filterDate(20180801, 20180808) %>%
+  pat_createAirSensor() %>%
+  sensor_extractData() %>%
+  plot(type = "h", lwd=2, main = "example_pat")
+
+example_pat_failure_A %>%
+  pat_filterDate(20190409, 20190417) %>%
+  pat_createAirSensor() %>%
+  sensor_extractData() %>%
+  plot(type = "h", lwd=2, main = "example_pat_failure_A")
+
+example_pat_failure_B %>%
+  pat_filterDate(20190611, 20190618) %>%
+  pat_createAirSensor() %>%
+  sensor_extractData() %>%
+  plot(type = "h", lwd=2, main = "example_pat_failure_B")
+
+```
+
+Things look pretty good. The first two time seres look quite reasonable given
+the input data and *most* of the hours of questionable data have been removed
+from `example_pat_failure_B`. The only questionably high value in
+`example_pat_failure_B` has values on either side that have been flagged
+as invalid which should raise questions.
+
+It is beyond the scope of this vignette, but one could imagine further cleanup
+that removed every value adjacent to an invalid value which would have 
+completely cleaned up the last example.

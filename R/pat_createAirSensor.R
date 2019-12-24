@@ -162,7 +162,7 @@ pat_createAirSensor <- function(
     dplyr::mutate_all( function(x) replace(x, which(is.nan(x)), NA) ) %>%
     dplyr::mutate_all( function(x) replace(x, which(is.infinite(x)), NA) )
   
-  names(data) <- c("datetime", pat$meta$sensorDeploymentID)
+  names(data) <- c("datetime", pat$meta$deviceDeploymentID)
   
   # ----- Create metadata  -----------------------------------------------------
   
@@ -172,7 +172,7 @@ pat_createAirSensor <- function(
     as.data.frame()
   
   # Add metadata found in PWFSLSmoke ws_monitor objects
-  meta$monitorID <- meta$sensorDeploymentID
+  meta$monitorID <- meta$deviceDeploymentID
   meta$elevation <- as.numeric(NA)
   meta$siteName <- meta$label
   meta$countyName <- as.character(NA)

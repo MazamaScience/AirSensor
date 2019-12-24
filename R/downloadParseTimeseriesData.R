@@ -4,17 +4,21 @@
 #'
 #' @title Download Purple Air timeseries data
 #'
-#' @param pas Purple Air 'enhanced' synoptic data
-#' @param label Purple Air 'label'
-#' @param id Purple Air 'ID'
-#' @param startdate Desired UTC start time (ISO 8601)
-#' @param enddate Desired UTC end time (ISO 8601)
+#' @param pas Purple Air 'enhanced' synoptic data.
+#' @param label Purple Air 'label'.
+#' @param id Purple Air 'ID'.
+#' @param startdate Desired start time (ISO 8601).
+#' @param enddate Desired end time (ISO 8601).
 #' @param timezone Timezone used to interpret start and end dates.
-#' @param baseURL Base URL for Thingspeak API
-#' @return The monitor time series given broken up into metadata and readings data
-#' @description Timeseries data from a specific PurpleAir can be retrieved from 
-#' the Thingspeak API.
+#' @param baseURL Base URL for Thingspeak API.
+#' 
+#' @return List of type \code{pa_timeseries} containing \code{meta} and 
+#' \code{data} elements with timeseries metadata and data, respectively.
+#' 
+#' @description Downloads timeseries data for a specific Purple Air sensor 
+#' from the ThingSpeak API and parses the content into a dataframe.
 #'
+#' @references https://www2.purpleair.com/community/faq
 
 downloadParseTimeseriesData <- function(
   pas = NULL,
@@ -29,52 +33,52 @@ downloadParseTimeseriesData <- function(
   # ----- Validate parameters --------------------------------------------------
   
   MazamaCoreUtils::stopIfNull(pas)
-  # MazamaCoreUtils::stopIfNull(label)
+  MazamaCoreUtils::stopIfNull(baseURL)
   
-  if( is.null(label) && is.null(id))
+  # Get the sensorID
+  if ( is.null(id) && is.null(label) ) {
+    
     stop(paste0("label or id must be provided"))
-  
-  if (!is.null(label)){
-    if ( !label %in% pas$label )
-      stop(paste0("'", label, "' is not found in the 'pas' object"))
+    
+  } else if ( is.null(id) && !is.null(label) ) {
+    
+    if ( ! label %in% pas$label )
+      stop(sprintf("label '%s' is not found in the 'pas' object", label))
+    
+    # Get the sensorID from the label
+    sensorID <- pas_getIDs(pas, pattern = label)
+    
+    if ( length(sensorID) == 0 ) {
+      stop(sprintf("label '%s' does not match any sensors", label))
+    } else if ( length(sensorID) > 1 ) {
+      stop(sprintf("label '%s' matches more than one sensor", label))
+    }
+    
+  } else {
+    
+    if ( ! id %in% pas$ID )
+      stop(sprintf("id '%s' does not match any sensors in the 'pas' object", id))
+    
+    sensorID <- id
+    
   }
-  
-  timezone <- unique(timezone)
   
   # ----- Determine date sequence ----------------------------------------------
   
-  # Subset by ID
-  if ( !is.null(id) ) {
-    pas_single <-
-      pas %>%
-      dplyr::filter(.data$ID == !!id)
-  } else {
-    # Subset by label
-    if ( !is.null(label) ) {
-      pas_single <-
-        pas %>%
-        dplyr::filter(.data$label == !!label)
-    } 
-  }
-  if ( nrow(pas_single) > 1 ) {
-    IDString <- paste0(sort(pas_single$ID), collapse = ", ")
-    stop(paste0("Multilpe sensors share this label.",
-                "You must specify the 'id' parameter as one of: '",
-                IDString, "'"))
-  }
+  # Get record with this sensorID
+  sensor_meta <-
+    pas %>%
+    dplyr::filter(.data$ID == !!sensorID)
   
+  # NOTE:  This should never happen!
+  if ( nrow(sensor_meta) > 1 )
+    stop(sprintf("Non-unique 'id': %s", sensorID))
   
   # Get the timezone associated with this sensor
   if ( is.null(timezone) ) {
     timezone <-
-      pas_single %>%
+      sensor_meta %>%
       dplyr::pull(.data$timezone)
-  }
-  
-  if ( length(timezone) > 1 ) {
-    err_msg <- paste0(length(timezone),
-                      " senors share the same label and ID")
-    stop(err_msg)
   }
   
   # Create a valid dateRange
@@ -95,27 +99,18 @@ downloadParseTimeseriesData <- function(
   startString <- strftime(dateRange[1], "%Y-%m-%dT%H:%M:%S", tz = "UTC")
   endString <- strftime(dateRange[2], "%Y-%m-%dT%H:%M:%S", tz = "UTC")
   
-  # Prefer to use the monitor's ID over label
-  if ( !is.null(id) ) {
-    requested_meta <- dplyr::filter(pas, .data$ID == !!id)
-  } else if ( !is.null(label) ) {
-    requested_meta <- dplyr::filter(pas, .data$label == !!label)
-  } else {
-    stop("Either 'label' or 'id' must be specified.")
-  }
-  
   # Determine which channel was given and access the other channel from it
-  if ( is.na(requested_meta$parentID) ) {
-    A_meta <- requested_meta
+  if ( is.na(sensor_meta$parentID) ) {
+    A_meta <- sensor_meta
     B_meta <- dplyr::filter(pas, .data$parentID == A_meta$ID)
   } else {
-    B_meta <- requested_meta
+    B_meta <- sensor_meta
     A_meta <- dplyr::filter(pas, .data$ID == B_meta$parentID)
   }
   
   # Get identifiers from the A channel
-  sensor_ID <- A_meta$ID
-  sensor_label <- A_meta$label
+  sensorID <- A_meta$ID
+  sensorLabel <- A_meta$label
   
   # Combine channel A and B monitor metadata
   meta <- dplyr::bind_rows(A_meta, B_meta)
@@ -324,24 +319,24 @@ downloadParseTimeseriesData <- function(
   }
   
   # Sanity check for data -> fill if empty to avoid error DL 
-  if ( length(A_data) == 0 && length(B_data) == 0 ) {
+  if ( ncol(A_data) == 0 && ncol(B_data) == 0 ) {
     A_data <- err_data
     B_data <- err_data
     warning(sprintf(
       "Sensor %s -- %s: A & B channels for the requested time period do not exist.",
-      sensor_ID, sensor_label
+      sensorID, sensorLabel
     ))
-  } else if ( length(A_data) == 0) {
+  } else if ( ncol(A_data) == 0) {
     A_data <- err_data
     warning(sprintf(
-      "Sensor %s -- %s: A channel for the requested time period do not exist.",
-      sensor_ID, sensor_label
+      "Sensor %s -- %s: A channel for the requested time period does not exist.",
+      sensorID, sensorLabel
     ))
-  } else if ( length(B_data) == 0) {
+  } else if ( ncol(B_data) == 0) {
     B_data <- err_data
     warning(sprintf(
-      "Sensor %s -- %s: B channel for the requested time period do not exist",
-      sensor_ID, sensor_label
+      "Sensor %s -- %s: B channel for the requested time period does not exist",
+      sensorID, sensorLabel
     ))
   }
   

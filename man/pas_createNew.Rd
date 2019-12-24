@@ -36,7 +36,7 @@ Steps include:
 
 2) Replace variable with more consistent, more human readable names.
 
-3) Add spatial metadata for each monitor including:
+3) Add spatial metadata for each sensor including:
 \itemize{
   \item{timezone -- olson timezone}
   \item{countryCode -- ISO 3166-1 alpha-2}
@@ -47,7 +47,7 @@ Steps include:
 
 5) Add distance and monitorID for the closest PWFSL monitor
 
-Subsetting by country may be performed by specifying the \code{countryCodes}
+Filtering by country may be performed by specifying the \code{countryCodes}
 argument.
 }
 \examples{

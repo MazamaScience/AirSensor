@@ -19,14 +19,15 @@
 #' @seealso \link{pas_filterArea}
 #'
 #' @examples 
-#'\dontrun{
 #' # Near Diamond Bar, CA
+#' pas <- example_pas
 #' diamond_bar <-
-#'   pas_load() %>%
+#'   pas %>%
 #'   pas_filterNear(latitude = 34.001667, 
 #'                  longitude = -117.820833,
 #'                  radius = "20 km")
 #'                  
+#'\dontrun{
 #' pas_leaflet(diamond_bar)
 #'}
 
@@ -53,15 +54,20 @@ pas_filterNear <- function(
   if ( !stringr::str_ends(radius, "[ km]") )
     stop("Radius requires a unit and format (i.e '1 m' or '1 km')")
   
-  r_split <- 
+  parts <- 
     stringr::str_split(
       string = radius, 
       pattern = " ", 
       simplify = TRUE
     ) 
   
-  if ( tolower(r_split[,2]) == "km" ) radius_m <- as.numeric(r_split[,1])*1000
-  if ( tolower(r_split[,2]) == "m" ) radius_m <- as.numeric(r_split[,1])
+  if ( tolower(parts[,2]) == "km" ) {
+    radius_m <- as.numeric(parts[,1])*1000
+  } else if ( tolower(parts[,2]) == "m" ) {
+    radius_m <- as.numeric(parts[,1])
+  } else {
+    stop(sprintf("Unit \"%s\" is not understood. Use 'm' or 'km'.", parts[,2]))
+  }
   
   # ----- Calculate distances --------------------------------------------------
   

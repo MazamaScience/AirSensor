@@ -44,6 +44,29 @@ createPATimeseriesObject <- function(
   
   # ----- Simplify meta --------------------------------------------------------
 
+  # > names(pat_raw$meta)
+  # [1] "ID"                               "label"                           
+  # [3] "DEVICE_LOCATIONTYPE"              "THINGSPEAK_PRIMARY_ID"           
+  # [5] "THINGSPEAK_PRIMARY_ID_READ_KEY"   "THINGSPEAK_SECONDARY_ID"         
+  # [7] "THINGSPEAK_SECONDARY_ID_READ_KEY" "latitude"                        
+  # [9] "longitude"                        "pm25"                            
+  # [11] "lastSeenDate"                     "sensorType"                      
+  # [13] "flag_hidden"                      "isOwner"                         
+  # [15] "humidity"                         "temperature"                     
+  # [17] "pressure"                         "age"                             
+  # [19] "parentID"                         "flag_highValue"                  
+  # [21] "flag_attenuation_hardware"        "Voc"                             
+  # [23] "Ozone1"                           "pm25_current"                    
+  # [25] "pm25_10min"                       "pm25_30min"                      
+  # [27] "pm25_1hr"                         "pm25_6hr"                        
+  # [29] "pm25_1day"                        "pm25_1week"                      
+  # [31] "statsLastModifiedDate"            "statsLastModifiedInterval"       
+  # [33] "countryCode"                      "stateCode"                       
+  # [35] "timezone"                         "airDistrict"                     
+  # [37] "pwfsl_closestDistance"            "pwfsl_closestMonitorID"          
+  # [39] "sensorManufacturer"               "targetPollutant"                 
+  # [41] "technologyType"                   "communityRegion"                 
+
   meta <- 
     pat_raw$meta %>%
     dplyr::filter(is.na(.data$parentID)) %>%
@@ -68,7 +91,7 @@ createPATimeseriesObject <- function(
   # Add more IDs
   meta$sensorID <- meta$ID # Redundant but more explicit than "ID"
   meta$locationID <- MazamaLocationUtils::location_createID(meta$longitude, meta$latitude)
-  meta$sensorDeploymentID <- paste0(meta$locationID, "_", meta$sensorID)
+  meta$deviceDeploymentID <- paste0(meta$locationID, "_", meta$sensorID)
   
   # ----- Simplify data --------------------------------------------------------
   
@@ -92,8 +115,15 @@ createPATimeseriesObject <- function(
                   .data$rssi, 
                   .data$temperature, 
                   .data$humidity, 
+                  .data$pm1_atm, 
+                  .data$pm2.5_atm, 
+                  .data$pm10_atm, 
                   .data$pm2.5_cf1) %>%
-    dplyr::rename(datetime_A = .data$datetime, pm25_A = .data$pm2.5_cf1)
+    dplyr::rename(datetime_A = .data$datetime, 
+                  pm1_atm_A = .data$pm1_atm,
+                  pm25_atm_A = .data$pm2.5_atm,
+                  pm10_atm_A = .data$pm10_atm,
+                  pm25_A = .data$pm2.5_cf1)
   
   # NOTE:  Expedient conversion to a minute axis with floor_date() 
   A$datetime <- lubridate::floor_date(A$datetime_A, unit="min")
@@ -107,8 +137,15 @@ createPATimeseriesObject <- function(
     dplyr::select(.data$datetime, 
                   .data$memory, 
                   .data$adc0, 
+                  .data$pm1_atm, 
+                  .data$pm2.5_atm, 
+                  .data$pm10_atm, 
                   .data$pm2.5_cf1) %>%
-    dplyr::rename(datetime_B = .data$datetime, pm25_B = .data$pm2.5_cf1)
+    dplyr::rename(datetime_B = .data$datetime, 
+                  pm1_atm_B = .data$pm1_atm,
+                  pm25_atm_B = .data$pm2.5_atm,
+                  pm10_atm_B = .data$pm10_atm,
+                  pm25_B = .data$pm2.5_cf1)
   
   # NOTE:  Expedient conversion to a minute axis with floor_date() 
   B$datetime <- lubridate::floor_date(B$datetime_B, unit="min")
@@ -121,6 +158,12 @@ createPATimeseriesObject <- function(
     dplyr::select(.data$datetime, 
                   .data$pm25_A, 
                   .data$pm25_B, 
+                  .data$pm1_atm_A, 
+                  .data$pm1_atm_B, 
+                  .data$pm25_atm_A, 
+                  .data$pm25_atm_B, 
+                  .data$pm10_atm_A, 
+                  .data$pm10_atm_B, 
                   .data$temperature, 
                   .data$humidity,
                   .data$uptime, 

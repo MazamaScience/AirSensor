@@ -1,0 +1,128 @@
+---
+title: "Purple Air Sensors"
+author: "Mazama Science"
+date: "2019-06-13"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Purple Air Sensors}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE, message=FALSE}
+knitr::opts_chunk$set(fig.width=7, fig.height=5)
+library(AirSensor)
+```
+
+This vignette decribes some technical details of Purple Air Sensor internals.
+
+## General Description
+
+The PurpleAir PA-II sensor tracks real-time atmospheric measurements including 
+particulate matter concentrations (PM1.0, PM2.5, and PM10), temperature and 
+humidity. The device is connected via wifi to the ThingSpeak
+"Internet of Things" platform which serves as the data store for sensor data.
+
+* Useful resources:
+  + .[PurpleAir technology overview](https://www2.purpleair.com/pages/technology)
+  + .[PurpleAir FAQ](https://www2.purpleair.com/community/faq)
+  + .[AQ-SPEC evaluation](https://www.aqmd.gov/aq-spec/product/purpleair-pa-ii)
+
+
+## Internal Hardware
+
+### Particle Detectors
+
+PM concentration readings are provided by two
+[Plantower PMS5003 Particle Detectors](http://www.aqmd.gov/docs/default-source/aq-spec/resources-page/plantower-pms5003-manual_v2-3.pdf),
+each reporting on a separate data channel (A and B). These optical 
+particle counters function by measuring the amount of light scattered by
+suspended particulates. A PMS5003 unit sends a laser through air sucked in
+by a fan, detects the light refracted, and counts the number of different-sized 
+particles based on 
+[Mie scattering](https://en.wikipedia.org/wiki/Mie_scattering) algorithms. 
+The final PM1.0, PM2.5, and PM10 concentrations are then calculated from these 
+counts.
+[Source](https://www2.purpleair.com/community/faq#!hc-how-do-laser-particle-counters-work)
+
+This algorithm for calculating concentration relies on an assumed 
+average particle density because not all particles have the same 
+[composition](https://en.wikipedia.org/wiki/Particulates#Composition). 
+This assumed particule density is noted to be a potential cause for PurpleAir 
+monitors reading higher PM levels than federal monitors.
+[Source](https://www2.purpleair.com/community/faq#!hc-how-do-purpleair-sensors-compare-to-regulatory-particulate-matter-sensors)
+
+Finally, the PM2.5 AQI provided by the PurpleAir unit is averaged over ~80
+seconds for firmware versions 3.00 and ~120 seconds for version 4.00 and later.
+Other regulatory groups often give an AQI that represents a 24 hour average, 
+which may appear to exaggerate the PurpleAir data on comparison. 
+[Source](https://www2.purpleair.com/community/faq#!hc-how-do-purpleair-sensors-compare-to-regulatory-particulate-matter-sensors)
+
+A Plantower particle detector's effective range for PM2.5 lies between 0 and 
+500 ug/m3, even though it can still report measurements up to 1000 ug/m3 and 
+beyond. 
+
+More on optical particle counting can be found 
+[here](http://www.cas.manchester.ac.uk/restools/instruments/aerosol/opc/).
+
+### Temperature/Humidity Sensor
+
+Temperature and humidity are both measured by a single 
+[Bosch Sensortec Intergrated Environmental Sensor Unit BME280](https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BME280-DS002.pdf).
+PurpleAir notes that temperature readings may be elevated due to the sensor's 
+position within the monitor casing. 
+[Source](https://www2.purpleair.com/pages/technology)
+
+The unit's 'operational' temperature sensor range lies between -40°C to +85°C, 
+but narrows its 'full-accuracy' to between 0°C and 65°C. The humidity sensor is 
+operational between -40°C and 85°C, and can measure from 0 to 100 %RH.
+
+## Internal Firmware
+
+### Sampling Protocol
+
+The firmware in each PA sensor is in charge of communicating with the internal
+particle detectors and averaging instantaneous measurements over a sampling
+period before reporting the sampling-period averaged value back over wifi.
+
+From internal communication with PurpleAir:
+
+```
+Do the reported pm2.5 values in the raw data represent instantaneous values or 
+does the PA sensor firmware do some averaging? If the firmware does averaging, 
+what is the underlying sampling period -- i.e. how many particle counter
+measurements does the firmware average together before reporting every 80/120 
+seconds?
+
+----- >8 -----
+
+The PM data is averaged over a sampling period. For PA-II and PA-II-SD sensors
+that contain 2 laser counters (Channel A and Channel B) they alternate averaging
+5 1-second measurements over the sampling period, which is 80 seconds for
+firmware versions 3.00 and orders and 120 seconds for firmware versions 4.00 and
+later. So Channel A will measure to 5 seconds and then Channel B will measure
+for 5 seconds, then back to Channel A, etc. At the end of the sampling period
+Channel A will be a cumulative 40s/60s average over the sampling period of
+80s/120s and Channel B will be a cumulative 40s/60s average of the other half of
+that 80s/120s sampling period.
+
+----- >8 -----
+
+Just to make sure I've got it:
+
+If each letter is 1 sec then we have, for an 80 second sampling period:
+
+AAAAA-----AAAAA-----AAAAA-----AAAAA-----AAAAA-----AAAAA-----AAAAA-----AAAAA-----
+-----BBBBB-----BBBBB-----BBBBB-----BBBBB-----BBBBB-----BBBBB-----BBBBB-----BBBBB
+
+So the pm2.5 value reported for the A channel at the end of 80 seconds actually
+consists of 40 separate measurements, spaced as shown. And similarly for the B
+channel.
+
+Is that correct?
+
+----- >8 -----
+
+That is correct!
+```
+

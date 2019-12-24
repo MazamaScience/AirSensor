@@ -15,24 +15,28 @@ downloadParseTimeseriesData(
 )
 }
 \arguments{
-\item{pas}{Purple Air 'enhanced' synoptic data}
+\item{pas}{Purple Air 'enhanced' synoptic data.}
 
-\item{label}{Purple Air 'label'}
+\item{label}{Purple Air 'label'.}
 
-\item{id}{Purple Air 'ID'}
+\item{id}{Purple Air 'ID'.}
 
-\item{startdate}{Desired UTC start time (ISO 8601)}
+\item{startdate}{Desired start time (ISO 8601).}
 
-\item{enddate}{Desired UTC end time (ISO 8601)}
+\item{enddate}{Desired end time (ISO 8601).}
 
 \item{timezone}{Timezone used to interpret start and end dates.}
 
-\item{baseURL}{Base URL for Thingspeak API}
+\item{baseURL}{Base URL for Thingspeak API.}
 }
 \value{
-The monitor time series given broken up into metadata and readings data
+List of type \code{pa_timeseries} containing \code{meta} and 
+\code{data} elements with timeseries metadata and data, respectively.
 }
 \description{
-Timeseries data from a specific PurpleAir can be retrieved from 
-the Thingspeak API.
+Downloads timeseries data for a specific Purple Air sensor 
+from the ThingSpeak API and parses the content into a dataframe.
+}
+\references{
+https://www2.purpleair.com/community/faq
 }

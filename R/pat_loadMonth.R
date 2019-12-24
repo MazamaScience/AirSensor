@@ -18,8 +18,8 @@
 #' By default, the current month is loaded.
 #'
 #' @note Starting with \pkg{AirSensor} version 0.6, archive file names are 
-#' generated with a "sensor-deployment" identifier by combining a unique 
-#' location ID with a unique device ID. These "sensor-deployment" identifiers 
+#' generated with a "device-deployment" identifier by combining a unique 
+#' location ID with a unique device ID. These "device-deployment" identifiers 
 #' guarantee that movement of a sensor will result in the creation of a new
 #' time series.
 #' 
@@ -106,8 +106,8 @@ pat_loadMonth <- function(
   # ----- Load data from URL or directory --------------------------------------
   
   # Create filewname
-  sensorDeploymentID <- pas_sensorDeploymentID(pas, sensorID)
-  filename <- paste0("pat_", sensorDeploymentID, "_", monthstamp, ".rda")
+  deviceDeploymentID <- pas_deviceDeploymentID(pas, sensorID)
+  filename <- paste0("pat_", deviceDeploymentID, "_", monthstamp, ".rda")
   
   # Use package internal URL
   baseDir <- getArchiveBaseDir()

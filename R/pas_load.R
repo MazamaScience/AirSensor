@@ -6,7 +6,7 @@
 #' @title Load PurpleAir synoptic data
 #' 
 #' @description A pre-generated \emph{pa_synoptic} object will be loaded for
-#'   the given date. These files are generated throughout each day and provide
+#'   the given date. These files are generated each day and provide
 #'   a record of all currently installed Purple Air sensors for the day of 
 #'   interest. With default arguments, this function will always load data 
 #'   associated with the most recent pre-generated file -- typically less than 
@@ -39,7 +39,7 @@
 #' 
 #' @examples
 #' \dontrun{
-#' setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+#' setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir/v1")
 #' pas <- pas_load()
 #' pas %>% 
 #'   pas_filter(stateCode == "CA") %>%
@@ -54,6 +54,10 @@ pas_load <- function(
 ) {
   
   # ----- Validate parameters --------------------------------------------------
+  
+  MazamaCoreUtils::stopIfNull(retries)
+  MazamaCoreUtils::stopIfNull(timezone)
+  MazamaCoreUtils::stopIfNull(archival)
   
   if ( !timezone %in% OlsonNames() ) {
     stop(paste0("Parameter 'timezone' is not recognized: ", timezone))

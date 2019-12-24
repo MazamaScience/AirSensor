@@ -1,12 +1,12 @@
 #' @export
 #' @importFrom rlang .data
 #' 
-#' @title Create sensor-deployent IDs for specific sensors
+#' @title Create device-deployment IDs for specific sensors
 #' 
 #' @param pas PurpleAir Synoptic \emph{pas} object.
 #' @param ids Vector of sensor IDs.
 #' 
-#' @description The "sensor-deployment" ID is the unique time series identifier
+#' @description The "device-deployment" ID is the unique time series identifier
 #' used in \emph{pat} archive file names and in \emph{airsensor} objects. It is
 #' created by combining a digest of the location (with an accuracy of < 0.1 
 #' meters) with the device ID.
@@ -16,7 +16,7 @@
 #' 
 #' @return Vector of time series identifiers.
 #' 
-pas_sensorDeploymentID <- function(
+pas_deviceDeploymentID <- function(
   pas = NULL,
   ids = NULL
 ) {
@@ -62,11 +62,11 @@ pas_sensorDeploymentID <- function(
   locationID <- MazamaLocationUtils::location_createID(sub_pas$longitude, sub_pas$latitude)
   
   # Create "deployment-sensor" identifier
-  sensorDeploymentID <- paste0(locationID, "_", sub_pas$ID)
+  deviceDeploymentID <- paste0(locationID, "_", sub_pas$ID)
   
   # ---- Return ----------------------------------------------------------------
   
-  return(sensorDeploymentID)
+  return(deviceDeploymentID)
   
 }
 

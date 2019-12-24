@@ -32,7 +32,7 @@ test_that("results_are_consistent", {
   pas_sanfran <- pas_filterArea(example_pas, 
                                 w = -122.518155, e = -122.374895,
                                 s = 37.739002, n = 37.810491)
-  expect_equal(nrow(pas_sanfran), 195)
+  expect_equal(nrow(pas_sanfran), 298)
   
   # Fresno
   pas_fresno <- pas_filterArea(example_pas,
@@ -44,5 +44,5 @@ test_that("results_are_consistent", {
   pas_redding <- pas_filterArea(example_pas,
                                 w = -122.430983, e = -122.300330,
                                 s = 40.523458, n = 40.629298) 
-  expect_equal(nrow(pas_redding), 30)
+  expect_equal(nrow(pas_redding), 32)
 })

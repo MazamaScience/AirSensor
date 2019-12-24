@@ -1,5 +1,5 @@
 #' @export
-#' @importFrom MazamaCoreUtils logger.trace logger.warn
+#' @importFrom MazamaCoreUtils logger.isInitialized logger.trace logger.warn
 #' @importFrom rlang .data
 #' 
 #' @title Enhance synoptic data from Purple Air
@@ -11,7 +11,7 @@
 #'
 #' 1) Replace variable with more consistent, more human readable names.
 #'
-#' 2) Add spatial metadata for each monitor including:
+#' 2) Add spatial metadata for each sensor including:
 #' \itemize{
 #'   \item{timezone -- olson timezone}
 #'   \item{countryCode -- ISO 3166-1 alpha-2}
@@ -31,7 +31,7 @@
 #' \item{communityRegion -- (where known)}
 #' }
 #'
-#' Subsetting by country may be performed by specifying the \code{countryCodes} 
+#' Filtering by country may be performed by specifying the \code{countryCodes} 
 #' argument.
 #'
 #' Setting \code{outsideOnly = TRUE} will return only those records marked as 
@@ -53,15 +53,14 @@
 #' @examples
 #' \dontrun{
 #' initializeMazamaSpatialUtils()
-#' pas_raw <- downloadParseSynopticData()
-#' pas <- enhanceSynopticData(pas_raw)
+#' pas <- enhanceSynopticData(example_pas_raw)
 #' setdiff(names(pas), names(pas_raw))
 #' View(pas[1:100,])
 #' }
 
 enhanceSynopticData <- function(
   pas_raw = NULL,
-  countryCodes = c('US'),
+  countryCodes = c("US"),
   includePWFSL = TRUE
 ) {
   
@@ -69,7 +68,7 @@ enhanceSynopticData <- function(
   
   MazamaCoreUtils::stopIfNull(pas_raw)
 
-  if ( !('data.frame' %in% class(pas_raw)) )
+  if ( !("data.frame" %in% class(pas_raw)) )
     stop("parameter 'pas_raw' parameter is not a dataframe")
   
   # Guarantee uppercase codes
@@ -82,7 +81,9 @@ enhanceSynopticData <- function(
   
   # ----- Discard unwanted columns ---------------------------------------------
   
-  # On 2019-09-05, the data columns look like this:
+  # Prior to 2019-09-05, a "State" column existed
+  
+  # On 2019-09-05, the data columns looked like this:
   #
   # > sort(names(pas_raw))
   # [1] "A_H"                              "AGE"                              "DEVICE_LOCATIONTYPE"             
@@ -96,14 +97,28 @@ enhanceSynopticData <- function(
   # [25] "v"                                "v1"                               "v2"                              
   # [28] "v3"                               "v4"                               "v5"                              
   # [31] "v6"                              
+
+  # On 2019-09-05, the data columns look like this:
+  #
+  # [1] "A_H"                              "AGE"                              "DEVICE_LOCATIONTYPE"             
+  # [4] "Flag"                             "Hidden"                           "humidity"                        
+  # [7] "ID"                               "isOwner"                          "Label"                           
+  # [10] "lastModified"                     "LastSeen"                         "Lat"                             
+  # [13] "Lon"                              "Ozone1"                           "ParentID"                        
+  # [16] "pm"                               "PM2_5Value"                       "pressure"                        
+  # [19] "temp_f"                           "THINGSPEAK_PRIMARY_ID"            "THINGSPEAK_PRIMARY_ID_READ_KEY"  
+  # [22] "THINGSPEAK_SECONDARY_ID"          "THINGSPEAK_SECONDARY_ID_READ_KEY" "timeSinceModified"               
+  # [25] "Type"                             "v"                                "v1"                              
+  # [28] "v2"                               "v3"                               "v4"                              
+  # [31] "v5"                               "v6"                               "Voc"                             
   
   
-  # NOTE:  A previously existing "State" column has been removed. (2019-09-05)
-  
+  # NOTE:  This should no longer be necessary as "State" is no longer included
   if ( "State" %in% names(pas_raw) ) {
     pas_raw$State <- NULL
   }
   
+  # Removing "pm" because it is redundant with the value in "v"
   if ( "pm" %in% names(pas_raw) ) {
     pas_raw$pm <- NULL
   }
@@ -152,9 +167,14 @@ enhanceSynopticData <- function(
   badLocationCount <- preValidationRows - nrow(pas)
   
   if ( badLocationCount > 0 ) {
-    logger.trace("%d records removed because of invalid location data.", 
-                 badLocationCount)
+    if ( logger.isInitialized() ) {
+      logger.trace("%d records removed because of invalid location data.", 
+                   badLocationCount)
+    }
   }
+  
+  if ( logger.isInitialized() )
+    logger.trace("Adding spatial metadata")
   
   # Suppress annoying 'deprecated' messages
   suppressWarnings({
@@ -184,7 +204,7 @@ enhanceSynopticData <- function(
     
     if ( "try-error" %in% class(result) ) {
       
-      logger.warn("Unable to load spatial data `CA_AirBasins`.")
+      logger.warn("Unable to load spatial data 'CA_AirBasins'.")
       
     } else {
       
@@ -192,22 +212,26 @@ enhanceSynopticData <- function(
         pas %>% 
         dplyr::filter(.data$countryCode == "US" & .data$stateCode == "CA")
       
-      pas_CA$airDistrict <- 
-        MazamaSpatialUtils::getSpatialData(
-          pas_CA$longitude,
-          pas_CA$latitude,
-          CA_AirBasins,
-          useBuffering = TRUE
-        ) %>%
-        pull("name")
-      
-      pas_nonCA <-  
-        pas %>% 
-        filter(.data$countryCode != "US" | .data$stateCode != "CA")
-      
-      pas_nonCA$airDistrict <- as.character(NA)
-      
-      pas <- bind_rows(pas_CA, pas_nonCA)
+      if ( nrow(pas_CA) > 0 ) {
+        
+        pas_CA$airDistrict <- 
+          MazamaSpatialUtils::getSpatialData(
+            pas_CA$longitude,
+            pas_CA$latitude,
+            CA_AirBasins,
+            useBuffering = TRUE
+          ) %>%
+          pull("name")
+        
+        pas_nonCA <-  
+          pas %>% 
+          filter(.data$countryCode != "US" | .data$stateCode != "CA")
+        
+        pas_nonCA$airDistrict <- as.character(NA)
+        
+        pas <- bind_rows(pas_CA, pas_nonCA)
+        
+      }
       
     }
     
@@ -240,7 +264,8 @@ enhanceSynopticData <- function(
   
   pas$statsLastModifiedInterval <- pas$statsLastModifiedInterval / 1000   # seconds
   
-  # ----- Round values to reflect resolution as specified in https://www.purpleair.com/sensors
+  # Round values to reflect resolution as specified in:
+  #   https://www.purpleair.com/sensors
   
   # TODO:  Figure out why rounding breaks outlier detection
   
@@ -253,6 +278,10 @@ enhanceSynopticData <- function(
   # ----- Find nearby PWFSL monitors -------------------------------------------
   
   if ( includePWFSL ) {
+    
+    if ( logger.isInitialized() )
+      logger.trace("Adding PWFSL monitor metadata")
+    
     if ( !exists('pwfsl') ) (pwfsl <- PWFSLSmoke::loadLatest())
     
     pas$pwfsl_closestDistance <- as.numeric(NA)
@@ -320,7 +349,7 @@ enhanceSynopticData <- function(
   # ----- Return ---------------------------------------------------------------
   
   # Guarantee the class name still exists
-  class(pas) <- c('pa_synoptic', class(pas))
+  class(pas) <- union('pa_synoptic', class(pas))
   
   return(pas)
   

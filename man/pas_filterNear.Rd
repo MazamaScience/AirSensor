@@ -27,14 +27,15 @@ specified target coordinates.
 separated by a space, such as \code{"250 m"}.
 }
 \examples{
-\dontrun{
 # Near Diamond Bar, CA
+pas <- example_pas
 diamond_bar <-
-  pas_load() \%>\%
+  pas \%>\%
   pas_filterNear(latitude = 34.001667, 
                  longitude = -117.820833,
                  radius = "20 km")
                  
+\dontrun{
 pas_leaflet(diamond_bar)
 }
 }
