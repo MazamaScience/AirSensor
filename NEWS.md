@@ -3,13 +3,24 @@
 Version 0.6 is a backwards *in*compatible release. It replaces `label` identifier
 with a proper "sensor-deployment" identifier and relies on the
 *MazamaLocationUtils* package to create location identifiers. Becuase of this
-change, archives must be regenerated and the `pat_load~()` functions must 
-request new file names.
+change, archives must be regenerated and many functions must be refactored.
 
-* New/refactored functions: `pas_getColumn()`, `past_getLabels()`, `pas_getIDs()`
-* New function `pas_sensorDeploymentID()` creates a unique "sensor-deployment"
+New fields in `pat$meta` include:
+
+* `sensorID` -- same as `ID` but more explicit
+* `locationID` -- generated with `MazamaLocationUtils::location_createID()`
+* `sensorDeploymentID` -- combination of the above
+
+The following functions were added/refactored to use "sensor-deployment"
+identifiers:
+
+* `pas_sensorDeploymentID()` creates a unique "sensor-deployment"
 identifier. This identifier is used in creation of file names in the archive
 database and as the unique time series identifer in _airsensor_ objects.
+* `pas_getColumn()`, `past_getLabels()`, `pas_getIDs()`
+* `pat_createNew()`
+* `pat_load()`, `pat_loadLatest()`, `pat_loadMonth()`
+* `pat_createAirSensor()` 
 
 # AirSensor 0.5.17
 

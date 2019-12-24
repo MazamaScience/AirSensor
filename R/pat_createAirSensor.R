@@ -162,30 +162,30 @@ pat_createAirSensor <- function(
     dplyr::mutate_all( function(x) replace(x, which(is.nan(x)), NA) ) %>%
     dplyr::mutate_all( function(x) replace(x, which(is.infinite(x)), NA) )
   
-  names(data) <- c("datetime", pat$meta$label)
+  names(data) <- c("datetime", pat$meta$sensorDeploymentID)
   
   # ----- Create metadata  -----------------------------------------------------
   
   # Copy metadata from pat object
   meta <- 
     pat$meta %>% 
-    dplyr::rename(monitorID = .data$label) %>%
     as.data.frame()
   
   # Add metadata found in PWFSLSmoke ws_monitor objects
+  meta$monitorID <- meta$sensorDeploymentID
   meta$elevation <- as.numeric(NA)
-  meta$siteName <- meta$monitorID
+  meta$siteName <- meta$label
   meta$countyName <- as.character(NA)
   meta$msaName <- as.character(NA)
   meta$monitorType <- meta$sensorType
-  meta$siteID <- as.character(NA)
-  meta$instrumentID <- as.character(NA)
+  meta$siteID <- meta$locationID
+  meta$instrumentID <- meta$sensorID
   meta$aqsID <- as.character(NA)
   meta$pwfslID <- as.character(NA)
-  meta$pwfslDataIngestSource <- as.character(NA)
+  meta$pwfslDataIngestSource <- "ThingSpeak"
   meta$telemetryAggregator <- as.character(NA)
   meta$telemetryUnitID <- as.character(NA)
-
+  
   # ----- Return ---------------------------------------------------------------
   
   # NOTE:  As of 2019-05-14, the PWFSLSmoke meta dataframe still has rownames

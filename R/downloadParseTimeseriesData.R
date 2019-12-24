@@ -12,7 +12,8 @@
 #' @param timezone Timezone used to interpret start and end dates.
 #' @param baseURL Base URL for Thingspeak API
 #' @return The monitor time series given broken up into metadata and readings data
-#' @description Timeseries data from a specific PurpleAir can be retrieved from the Thingspeak API .
+#' @description Timeseries data from a specific PurpleAir can be retrieved from 
+#' the Thingspeak API.
 #'
 
 downloadParseTimeseriesData <- function(
@@ -30,7 +31,7 @@ downloadParseTimeseriesData <- function(
   MazamaCoreUtils::stopIfNull(pas)
   # MazamaCoreUtils::stopIfNull(label)
   
-  if( is.null(label) & is.null(id))
+  if( is.null(label) && is.null(id))
     stop(paste0("label or id must be provided"))
   
   if (!is.null(label)){

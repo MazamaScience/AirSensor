@@ -65,6 +65,11 @@ createPATimeseriesObject <- function(
                   .data$technologyType,
                   .data$communityRegion)
   
+  # Add more IDs
+  meta$sensorID <- meta$ID # Redundant but more explicit than "ID"
+  meta$locationID <- MazamaLocationUtils::location_createID(meta$longitude, meta$latitude)
+  meta$sensorDeploymentID <- paste0(meta$locationID, "_", meta$sensorID)
+  
   # ----- Simplify data --------------------------------------------------------
   
   # Remove any duplicate data records
@@ -125,7 +130,7 @@ createPATimeseriesObject <- function(
                   .data$datetime_B) %>%
     dplyr::arrange(.data$datetime)
   
-  # Fillin adc0 and rssi using last observation carry forward so both 
+  # Fill in adc0 and rssi using last observation carry forward so both 
   # channels have these (they don't change much)
   data <- tidyr::fill(data, .data$adc0, .data$rssi)
   

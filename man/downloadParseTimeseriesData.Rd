@@ -33,5 +33,6 @@ downloadParseTimeseriesData(
 The monitor time series given broken up into metadata and readings data
 }
 \description{
-Timeseries data from a specific PurpleAir can be retrieved from the Thingspeak API .
+Timeseries data from a specific PurpleAir can be retrieved from 
+the Thingspeak API.
 }
