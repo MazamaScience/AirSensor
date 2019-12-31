@@ -91,7 +91,7 @@ http://maps.stamen.com/" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.17</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
       </span>
     </div>
 
@@ -114,31 +114,31 @@ http://maps.stamen.com/" />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
+      <a href="../articles/articles/AirSensorOverview.html">AirSensor Function Overview</a>
     </li>
     <li>
-      <a href="../articles/SoH_functions.html">SoH Functions</a>
+      <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
     </li>
     <li>
-      <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
+      <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
+    </li>
+    <li>
+      <a href="../articles/articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
+    </li>
+    <li>
+      <a href="../articles/articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
+    </li>
+    <li>
+      <a href="../articles/articles/purpleair_qc.html">Purple Air Quality Control</a>
+    </li>
+    <li>
+      <a href="../articles/articles/purpleair_sensors.html">Purple Air Sensors</a>
+    </li>
+    <li>
+      <a href="../articles/articles/working_with_wind_data.html">Working With Wind Data</a>
     </li>
     <li>
       <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
-    </li>
-    <li>
-      <a href="../articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
-    </li>
-    <li>
-      <a href="../articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
-    </li>
-    <li>
-      <a href="../articles/purpleair_qc.html">Purple Air Quality Control</a>
-    </li>
-    <li>
-      <a href="../articles/purpleair_sensors.html">Purple Air Sensors</a>
-    </li>
-    <li>
-      <a href="../articles/working_with_wind_data.html">Working With Wind Data</a>
     </li>
   </ul>
 </li>
@@ -274,13 +274,10 @@ and renamed with <code>name= "Example name"</code>.</p></td>
     <p>A ggplot object.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
-<span class='fu'><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl</a></span>(<span class='st'>"http://smoke.mazamascience.com/data/PurpleAir"</span>)
-<span class='no'>LA_basin</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='pas_load.html'>pas_load</a></span>() <span class='kw'>%&gt;%</span>
+    <pre class="examples"><div class='input'><span class='no'>LA_basin</span> <span class='kw'>&lt;-</span>
+  <span class='no'>example_pas</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='pas_filterArea.html'>pas_filterArea</a></span>(-<span class='fl'>118.5</span>, -<span class='fl'>117.5</span>, <span class='fl'>33.5</span>, <span class='fl'>34.5</span>)
-<span class='fu'>pas_staticMap</span>(<span class='no'>LA_basin</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"AQI"</span>, <span class='kw'>zoomAdjust</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='img'><img src='pas_staticMap-1.png' alt='' width='700' height='433' /></div><div class='input'># }
-</div></pre>
+<span class='fu'>pas_staticMap</span>(<span class='no'>LA_basin</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"AQI"</span>, <span class='kw'>zoomAdjust</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='img'><img src='pas_staticMap-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

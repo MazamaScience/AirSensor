@@ -19,8 +19,8 @@ and was generated on 2019-12-23 by running:
 
 \preformatted{
   example_pas_raw <- 
-  downloadParseSynopticData() %>%
-  dplyr::filter(Lon > -125.0 & Lon < -117.0 & Lat > 42.0 & Lat < 49.0)
+    downloadParseSynopticData() %>%
+    dplyr::filter(Lon > -125.0 & Lon < -117.0 & Lat > 42.0 & Lat < 49.0)
 }
 
 This dataset can be converted into a standard \emph{pas} dataset with:

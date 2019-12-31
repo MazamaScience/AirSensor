@@ -1,3 +1,9 @@
+# AirSensor 0.6.2
+
+* Documentation corrections.
+* Recreated all `exaple_pat~` data files with so they have the new metadata
+fields: `sensorID`, `locationID` and `deviceDeploymentID`.
+
 # AirSensor 0.6.1
 
 Revisited everything at the `pas` object level:

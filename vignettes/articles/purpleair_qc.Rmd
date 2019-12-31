@@ -33,7 +33,7 @@ See the pat_introduction vignette for details.
 Lets begin by looking at one week's worth of trouble free sensor data:
 
 ```{r example_pat_basic}
-pat <- example_pat %>% pat_filterDate(20180701, 20180708)
+pat <- example_pat %>% pat_filterDate(20180801, 20180808)
 # use sampleSize = NULL to force display of every data point
 pat_multiplot(pat, sampleSize = NULL)
 ```

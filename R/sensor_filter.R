@@ -22,9 +22,10 @@
 #' @seealso \link{sensor_filterMeta}
 #' 
 #' @examples
+#' \donttest{
 #' twenties <- sensor_filter(example_sensor, SCAN_14 >= 20, SCAN_14 < 30)
 #' head(twenties$data)
-#' 
+#' }
 
 sensor_filter <- function(
   sensor = NULL, 

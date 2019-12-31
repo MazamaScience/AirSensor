@@ -48,7 +48,7 @@ return the results as a useful tibble with class pa_synoptic.
 Steps include:
 1) Download and parse synoptic data
 2) Replace variable with more consistent, more human readable names.
-3) Add spatial metadata for each monitor including:
+3) Add spatial metadata for each sensor including:
 timezone -- olson timezone
 countryCode -- ISO 3166-1 alpha-2
 stateCode -- ISO 3166-2 alpha-2
@@ -56,7 +56,7 @@ stateCode -- ISO 3166-2 alpha-2
 
 4) Convert data types from character to POSIXct and numeric.
 5) Add distance and monitorID for the closest PWFSL monitor
-Subsetting by country may be performed by specifying the countryCodes
+Filtering by country may be performed by specifying the countryCodes
 argument." />
 <meta name="twitter:card" content="summary" />
 
@@ -90,7 +90,7 @@ argument." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.17</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
       </span>
     </div>
 
@@ -113,31 +113,31 @@ argument." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
+      <a href="../articles/articles/AirSensorOverview.html">AirSensor Function Overview</a>
     </li>
     <li>
-      <a href="../articles/SoH_functions.html">SoH Functions</a>
+      <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
     </li>
     <li>
-      <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
+      <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
+    </li>
+    <li>
+      <a href="../articles/articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
+    </li>
+    <li>
+      <a href="../articles/articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
+    </li>
+    <li>
+      <a href="../articles/articles/purpleair_qc.html">Purple Air Quality Control</a>
+    </li>
+    <li>
+      <a href="../articles/articles/purpleair_sensors.html">Purple Air Sensors</a>
+    </li>
+    <li>
+      <a href="../articles/articles/working_with_wind_data.html">Working With Wind Data</a>
     </li>
     <li>
       <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
-    </li>
-    <li>
-      <a href="../articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
-    </li>
-    <li>
-      <a href="../articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
-    </li>
-    <li>
-      <a href="../articles/purpleair_qc.html">Purple Air Quality Control</a>
-    </li>
-    <li>
-      <a href="../articles/purpleair_sensors.html">Purple Air Sensors</a>
-    </li>
-    <li>
-      <a href="../articles/working_with_wind_data.html">Working With Wind Data</a>
     </li>
   </ul>
 </li>
@@ -176,7 +176,7 @@ return the results as a useful tibble with class <code>pa_synoptic</code>.</p>
 <p>Steps include:</p>
 <p>1) Download and parse synoptic data</p>
 <p>2) Replace variable with more consistent, more human readable names.</p>
-<p>3) Add spatial metadata for each monitor including:</p><ul>
+<p>3) Add spatial metadata for each sensor including:</p><ul>
 <li><p>timezone -- olson timezone</p></li>
 <li><p>countryCode -- ISO 3166-1 alpha-2</p></li>
 <li><p>stateCode -- ISO 3166-2 alpha-2</p></li>
@@ -184,7 +184,7 @@ return the results as a useful tibble with class <code>pa_synoptic</code>.</p>
 
 <p>4) Convert data types from character to <code>POSIXct</code> and <code>numeric</code>.</p>
 <p>5) Add distance and monitorID for the closest PWFSL monitor</p>
-<p>Subsetting by country may be performed by specifying the <code>countryCodes</code>
+<p>Filtering by country may be performed by specifying the <code>countryCodes</code>
 argument.</p>
     </div>
 

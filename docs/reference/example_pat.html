@@ -45,12 +45,12 @@
 <meta property="og:title" content="Example Purple Air Timeseries dataset — example_pat" />
 <meta property="og:description" content="The example_pat dataset provides a quickly loadable version of
 a pa_timeseries object for practicing and code examples.
-This dataset was was generated on 2019-07-06 by running:
+This dataset was was generated on 2019-12-30 by running:
 
-  pas &amp;lt;- pas_load()
-  example_pat &amp;lt;- pat_createNew(pas, label = &quot;Seattle&quot;,
-                               startdate = &quot;2018-07-01&quot;,
-                               enddate = &quot;2018-09-01&quot;)
+  example_pat &amp;lt;- pat_createNew(example_pas,
+                               label = &quot;Seattle&quot;,
+                               startdate = &quot;2018-08-01&quot;,
+                               enddate = &quot;2018-08-28&quot;)
 
 " />
 <meta name="twitter:card" content="summary" />
@@ -85,7 +85,7 @@ This dataset was was generated on 2019-07-06 by running:
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.17</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
       </span>
     </div>
 
@@ -108,31 +108,31 @@ This dataset was was generated on 2019-07-06 by running:
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
+      <a href="../articles/articles/AirSensorOverview.html">AirSensor Function Overview</a>
     </li>
     <li>
-      <a href="../articles/SoH_functions.html">SoH Functions</a>
+      <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
     </li>
     <li>
-      <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
+      <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
+    </li>
+    <li>
+      <a href="../articles/articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
+    </li>
+    <li>
+      <a href="../articles/articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
+    </li>
+    <li>
+      <a href="../articles/articles/purpleair_qc.html">Purple Air Quality Control</a>
+    </li>
+    <li>
+      <a href="../articles/articles/purpleair_sensors.html">Purple Air Sensors</a>
+    </li>
+    <li>
+      <a href="../articles/articles/working_with_wind_data.html">Working With Wind Data</a>
     </li>
     <li>
       <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
-    </li>
-    <li>
-      <a href="../articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
-    </li>
-    <li>
-      <a href="../articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
-    </li>
-    <li>
-      <a href="../articles/purpleair_qc.html">Purple Air Quality Control</a>
-    </li>
-    <li>
-      <a href="../articles/purpleair_sensors.html">Purple Air Sensors</a>
-    </li>
-    <li>
-      <a href="../articles/working_with_wind_data.html">Working With Wind Data</a>
     </li>
   </ul>
 </li>
@@ -168,12 +168,12 @@ This dataset was was generated on 2019-07-06 by running:
     <div class="ref-description">
     <p>The <code>example_pat</code> dataset provides a quickly loadable version of
 a <em>pa_timeseries</em> object for practicing and code examples.
-This dataset was was generated on 2019-07-06 by running:</p>
+This dataset was was generated on 2019-12-30 by running:</p>
 <pre>
-  pas &lt;- pas_load()
-  example_pat &lt;- pat_createNew(pas, label = "Seattle",
-                               startdate = "2018-07-01",
-                               enddate = "2018-09-01")
+  example_pat &lt;- pat_createNew(example_pas,
+                               label = "Seattle",
+                               startdate = "2018-08-01",
+                               enddate = "2018-08-28")
 </pre>
 
     </div>

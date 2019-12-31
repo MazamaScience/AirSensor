@@ -24,7 +24,7 @@
 #' @examples 
 #' \dontrun{
 #' initializeMazamaSpatialUtils()
-#' pas <- pas_load()
+#' pas <- example_pas
 #' pat_raw <- downloadParseTimeseriesData(
 #'   pas, 
 #'   label = 'North Bend Weather', 

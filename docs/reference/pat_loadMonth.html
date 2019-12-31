@@ -44,8 +44,9 @@
 
 <meta property="og:title" content="Load PurpleAir time series data for a month — pat_loadMonth" />
 <meta property="og:description" content="A pre-generated PurpleAir Timeseries pat object will be 
-loaded for the given month. Archived data for SCAQMD sensors go back to 
-January, 2018.
+loaded for the month requested with datestamp if available. Data are 
+loaded from the archive set with either setArchiveBaseUrl() or 
+setArchiveBaseDir() for locally archived files.
 The datestamp must be in the following format:
 
 &quot;YYYYmm&quot;
@@ -84,7 +85,7 @@ By default, the current month is loaded." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.17</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
       </span>
     </div>
 
@@ -107,31 +108,31 @@ By default, the current month is loaded." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
+      <a href="../articles/articles/AirSensorOverview.html">AirSensor Function Overview</a>
     </li>
     <li>
-      <a href="../articles/SoH_functions.html">SoH Functions</a>
+      <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
     </li>
     <li>
-      <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
+      <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
+    </li>
+    <li>
+      <a href="../articles/articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
+    </li>
+    <li>
+      <a href="../articles/articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
+    </li>
+    <li>
+      <a href="../articles/articles/purpleair_qc.html">Purple Air Quality Control</a>
+    </li>
+    <li>
+      <a href="../articles/articles/purpleair_sensors.html">Purple Air Sensors</a>
+    </li>
+    <li>
+      <a href="../articles/articles/working_with_wind_data.html">Working With Wind Data</a>
     </li>
     <li>
       <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
-    </li>
-    <li>
-      <a href="../articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
-    </li>
-    <li>
-      <a href="../articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
-    </li>
-    <li>
-      <a href="../articles/purpleair_qc.html">Purple Air Quality Control</a>
-    </li>
-    <li>
-      <a href="../articles/purpleair_sensors.html">Purple Air Sensors</a>
-    </li>
-    <li>
-      <a href="../articles/working_with_wind_data.html">Working With Wind Data</a>
     </li>
   </ul>
 </li>
@@ -166,8 +167,9 @@ By default, the current month is loaded." />
 
     <div class="ref-description">
     <p>A pre-generated PurpleAir Timeseries <em>pat</em> object will be 
-loaded for the given month. Archived data for SCAQMD sensors go back to 
-January, 2018.</p>
+loaded for the month requested with <code>datestamp</code> if available. Data are 
+loaded from the archive set with either <code><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl()</a></code> or 
+<code><a href='setArchiveBaseDir.html'>setArchiveBaseDir()</a></code> for locally archived files.</p>
 <p>The <code>datestamp</code> must be in the following format:</p>
 <ul>
 <li><p><code>"YYYYmm"</code></p></li>
@@ -177,18 +179,27 @@ January, 2018.</p>
     </div>
 
     <pre class="usage"><span class='fu'>pat_loadMonth</span>(
+  <span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>datestamp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='st'>"America/Los_Angeles"</span>,
-  <span class='kw'>make.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='st'>"America/Los_Angeles"</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>pas</th>
+      <td><p>PurpleAir Synoptic <em>pas</em> object.</p></td>
+    </tr>
+    <tr>
       <th>label</th>
-      <td><p>Purple Air sensor 'label'</p></td>
+      <td><p>PurpleAir sensor 'label'.</p></td>
+    </tr>
+    <tr>
+      <th>id</th>
+      <td><p>PurpleAir sensor 'ID'.</p></td>
     </tr>
     <tr>
       <th>datestamp</th>
@@ -196,11 +207,7 @@ January, 2018.</p>
     </tr>
     <tr>
       <th>timezone</th>
-      <td><p>Timezone used to interpret <code>datestamp</code>.</p></td>
-    </tr>
-    <tr>
-      <th>make.names</th>
-      <td><p>Logical specifying whether to run 
+      <td><p>Timezone used to interpret <code>datestamp</code>.
 <code><a href='https://rdrr.io/r/base/make.names.html'>make.names(label)</a></code> when assembilng the file path.</p></td>
     </tr>
     </table>
@@ -210,14 +217,11 @@ January, 2018.</p>
     <p>A PurpleAir Timeseries <em>pat</em> object.</p>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>Many Purple Air sensor labels have spaces and other special characters
-which make for awkward file names. Best practices would suggest creating
-file names without special characters by running the <code>label</code> string
-through <code><a href='https://rdrr.io/r/base/make.names.html'>make.names()</a></code> first.</p> 
-<p>This function defaults to generating file names in this manner but allows
-users to override this in case some users have a compelling reason to create 
-filenames that exactly match the <code>pat$label</code> of the <em>pat</em> object
-they contain.</p>
+    <p>Starting with <span class="pkg">AirSensor</span> version 0.6, archive file names are 
+generated with a "device-deployment" identifier by combining a unique 
+location ID with a unique device ID. These "device-deployment" identifiers 
+guarantee that movement of a sensor will result in the creation of a new
+time series.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='pat_load.html'>pat_load</a></p>
@@ -226,9 +230,9 @@ they contain.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
+<span class='co'># TODO:  This needs to be updated to use USFS data</span>
 <span class='fu'><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl</a></span>(<span class='st'>"http://smoke.mazamascience.com/data/PurpleAir"</span>)
-<span class='no'>may</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_loadMonth</span>(<span class='st'>"SCNP_20"</span>, <span class='fl'>201905</span>)
-<span class='fu'><a href='pat_multiplot.html'>pat_multiplot</a></span>(<span class='no'>may</span>)</div><div class='img'><img src='pat_loadMonth-1.png' alt='' width='700' height='433' /></div><div class='input'># }
+<span class='no'>may</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_loadMonth</span>(<span class='st'>"SCNP_20"</span>, <span class='fl'>201905</span>)</div><div class='output co'>#&gt; <span class='error'>Error in pat_loadMonth("SCNP_20", 201905): Required parameter 'pas' is not a valid 'pa_synoptic' object.</span></div><div class='input'><span class='fu'><a href='pat_multiplot.html'>pat_multiplot</a></span>(<span class='no'>may</span>)</div><div class='output co'>#&gt; <span class='error'>Error in MazamaCoreUtils::stopIfNull(pat): object 'may' not found</span></div><div class='input'># }
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

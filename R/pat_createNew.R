@@ -54,7 +54,6 @@ pat_createNew <- function(
   
   # ----- Determine date sequence ----------------------------------------------
   
-  
   # if label is missing and id is missing complain
   # if id is defined, filter by id
   # else filter by label
@@ -116,24 +115,29 @@ pat_createNew <- function(
   
   # ----- Load data from URL ---------------------------------------------------
   
-  pat_raw <- downloadParseTimeseriesData(pas,
-                                         label,
-                                         id,
-                                         dateSeq[1],
-                                         dateSeq[2],
-                                         timezone = timezone,
-                                         baseURL)
+  # Use more specific ID rather than the label
+  pat_raw <- downloadParseTimeseriesData(
+    pas,
+    label = NULL,
+    id = pas_single$ID,
+    startdate = dateSeq[1],
+    enddate = dateSeq[2],
+    timezone = timezone,
+    baseURL
+  )
   
   if ( length(dateSeq) > 2 ) {
     
     for ( i in 2:(length(dateSeq) - 1) ) {
-      new_pat_raw <- downloadParseTimeseriesData(pas, 
-                                                 label,
-                                                 id,
-                                                 dateSeq[i],
-                                                 dateSeq[i+1],
-                                                 timezone = timezone,
-                                                 baseURL)
+      new_pat_raw <- downloadParseTimeseriesData(
+        pas, 
+        label = NULL,
+        id = pas_single$ID,
+        startdate = dateSeq[i],
+        enddate = dateSeq[i+1],
+        timezone = timezone,
+        baseURL
+      )
       pat_raw$data <- dplyr::bind_rows(pat_raw$data, new_pat_raw$data)
     }
     

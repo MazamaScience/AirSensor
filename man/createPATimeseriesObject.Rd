@@ -27,7 +27,7 @@ In the process, the following columns of data are omitted:
 \examples{
 \dontrun{
 initializeMazamaSpatialUtils()
-pas <- pas_load()
+pas <- example_pas
 pat_raw <- downloadParseTimeseriesData(
   pas, 
   label = 'North Bend Weather', 

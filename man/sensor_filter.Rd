@@ -27,9 +27,10 @@ Filtering predicates are applied to the \code{data} dataframe within
 the \emph{sensor} object.
 }
 \examples{
+\donttest{
 twenties <- sensor_filter(example_sensor, SCAN_14 >= 20, SCAN_14 < 30)
 head(twenties$data)
-
+}
 }
 \seealso{
 \link{sensor_filterDate}
