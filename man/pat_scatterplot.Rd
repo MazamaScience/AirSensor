@@ -55,7 +55,9 @@ The list of available parameters include:
 }
 \examples{
 \donttest{
-pat <- example_pat \%>\% pat_filterDate(20180811,20180818)
+pat <- 
+  example_pat \%>\% 
+  pat_filterDate(20180811,20180818)
 pat_scatterplot(pat, sampleSize = 1000)
 }
 }

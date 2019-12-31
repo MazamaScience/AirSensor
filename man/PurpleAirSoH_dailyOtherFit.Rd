@@ -18,6 +18,7 @@ each day. All returned values are expected to hover near 0 for a properly
 functioning sensor.
 }
 \examples{
+library(AirSensor)
  
 tbl <- 
   example_pat_failure_A \%>\%

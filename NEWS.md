@@ -1,3 +1,7 @@
+# AirSensor 0.6.3
+
+* Improved examples.
+
 # AirSensor 0.6.2
 
 * Documentation corrections.

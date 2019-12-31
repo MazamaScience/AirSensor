@@ -30,8 +30,11 @@
 #' 
 #' @examples
 #' \donttest{
-#' august <- pat_filterDate(example_pat, startdate = 20180801, enddate = 20180901)
-#' pat_multiplot(pat = august)
+#' library(AirSensor)
+#' august08_15 <- pat_filterDate(example_pat, 
+#'                               startdate = 20180808, 
+#'                               enddate = 20180815)
+#' pat_multiplot(pat = august08_15)
 #' }
 
 pat_filterDate <- function(
