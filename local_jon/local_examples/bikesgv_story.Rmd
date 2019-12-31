@@ -1,0 +1,201 @@
+---
+title: "BikeSGV Story"
+output:
+  html_document:
+    df_print: paged
+---
+
+Using just few of AirSensor's synoptic and time series functions, we can 
+investigate something fishy going on with one particular air sensor in 
+northwest Pasadena.
+
+Let's pull it up by its sensor label, *BikeSGV - West Pasadena*, from a loaded 
+list of US PurpleAir sensors:
+
+```{r setup}
+library(AirSensor)
+
+setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+
+pas <- pas_load()
+pas_bikesgv <- pas_filter(pas, label == "BikeSGV - West Pasadena")
+pas_leaflet(pas_bikesgv)
+```
+
+While this surface level view may seem normal at first, the sensor's past
+measurements happen to display something very strange. We can gather these 
+readings by loading a PurpleAir Timeseries *pat* object using the same label:
+
+```{r load_pat_and_multiplot, warning=FALSE}
+pat_bikesgv <- pat_createNew(pas, "BikeSGV - West Pasadena", 
+                            startdate="2019-06-18", enddate="2019-06-25")
+pat_multiplot(pat_bikesgv)
+```
+
+This sensor's A and B PM sensors appear to be telling us two very different 
+stories! Let's ignore temperature and humidity for now and zoom in on just the 
+PM readings by setting *plottype*:
+
+```{r plot_only_pm25, warning=FALSE}
+pat_multiplot(pat_bikesgv, plottype = "pm25_over")
+```
+
+While the A channel PM 2.5 measurements oscillate over time in a fairly natural 
+manner, they also all measure impossibly high: Around 4000 μg/m³ when 
+anything over 100 μg/m³ on the 
+[AQI](https://www.airnow.gov/index.cfm?action=aqibasics.aqi) can be dangerous!
+This also skews the plot enough to make channel B look practically flat, so 
+let's separate them and take a look at B on its own scale to see if it's 
+readings are any more reasonable:
+
+```{r plot_only_pm25b, warning=FALSE}
+pm25_b <- pat_bikesgv$data[, c("datetime", "pm25_B")]
+plot(pm25_b, type = "p", cex = 0.6, pch=15, col=adjustcolor("black", 0.2),
+     main = "PM 2.5 Channel B", xlab = "2019", ylab = "PM 2.5 (μg/m³)")
+```
+
+B channel does look a bit more normal. There are a few spikes but they never 
+reach the ridiculous levels of channel A. So then what *is* the issue with the A 
+channel? Is there any relationship between the channels at all? Let's generate a
+linear fit between them and see if they might have a common scale factor:
+
+```{r channel_fit_plot, warning=FALSE, message=FALSE, error=FALSE}
+pat_internalFit(pat_bikesgv)
+```
+
+It looks like the A and B channels aren't linearly correlated at all. This is 
+odd since the two sensors are measuring the same air and should at least give
+somewhat similar readings. Maybe comparing more sensors could give us some 
+insight. We can check them all against each other by using a scatterplot:
+
+```{r all_sensors_scatterplot, warning=FALSE, message=FALSE}
+pat_scatterplot(pat_bikesgv)
+```
+
+Now we're getting somewhere! While the correlation plot between the two channels
+is a shapeless cloud, channel A seems to have a very well defined relationship 
+with temperature and humidity while channel B has no similarities with them at 
+all.
+
+Just for reference, this is the scatterplot for a different sensor, only a few
+hundred feet away, that is not experiencing this issue:
+
+```{r normal_scatterplot, warning=FALSE, message=FALSE}
+pat_normal <- pat_createNew(pas, "AQMD_NASA_33", 
+                            startdate="2019-06-18", enddate="2019-06-25")
+pat_scatterplot(pat_normal)
+```
+
+Notice that at this site, both PM 2.5 sensors share a proper linear relationship
+and neither channel has much correlation with the auxillary sensors.
+
+The BikeSGV sensor is quite the opposite. Let's take a closer look at how its 
+A channel is related to temperature by generating a linear model: 
+
+```{r pm25a_and_temp, warning=FALSE}
+pat_data <- pat_bikesgv$data
+model_temp <- lm(temperature ~ pm25_A, data=pat_data)
+
+par(mfrow = c(2, 2), las = 1)
+plot(model_temp)
+summary(model_temp)
+```
+
+That's a pretty clear correlation! Now how closely would the channel A plot 
+match that of temperature if we apply the fit model coefficients?
+
+```{r plot_fitted_pm25a_to_temp}
+x <- pat_data$datetime
+y <- pat_data$temperature
+temp_fitted_pm25a <- predict.lm(model_temp, newdata=pat_data)
+
+par(las = 1)
+plot(x, temp_fitted_pm25a, 
+     pch = 15, cex = 0.9, col=adjustcolor("black", 0.2),
+     main = "Fitting PM2.5_A to Temperature",
+     xlab = "2019", ylab = "Temperature (F)")
+lines(x, y, lwd = 4, col=adjustcolor("tomato", 0.7))
+legend(x = "bottomright", legend = c("Temp", "Fitted ChA"), 
+       col = c("tomato", "black"), bg = adjustcolor("lightgray", 0.3), 
+       lwd = 4, box.lty = 0, inset = 0.025)
+```
+
+Wow! Although it's a bit noisy, the A channel data definitely matches the 
+general shape of the temperature plot! Let's see if the same holds when 
+comparing to humidity:
+
+```{r plot_fitted_pm25a_to_humidity}
+model_humid <- lm(humidity ~ pm25_A, data=pat_data)
+x <- pat_data$datetime
+y <- pat_data$humidity
+hum_fitted_pm25a <- predict.lm(model_humid, newdata=pat_data)
+
+par(las = 1)
+plot(x, hum_fitted_pm25a, 
+     pch = 15, cex = 0.9, col=adjustcolor("black", 0.2),
+     main = "Scaling PM2.5_A to Humidity",
+     xlab = "2019", ylab = "Humidity (RH)")
+lines(x, y, lwd = 4, col=adjustcolor("cornflowerblue", 0.7))
+legend(x = "bottomright", legend = c("Humidity", "Fitted ChA"), 
+       col = c("cornflowerblue", "black"), bg = adjustcolor("lightgray", 0.3), 
+       lwd = 4, box.lty = 0, inset = 0.025)
+```
+
+Though maybe not as definite as the temperature comparison, the channel A 
+readings also match the trend of the humidity data. Just to be complete, let's
+try the same comparison process for channel B and see if we find a relationship
+there too:
+
+```{r plot_fitted_pm25b_to_temp}
+model_temp_b <- lm(temperature ~ pm25_B, data=pat_data)
+x <- pat_data$datetime
+y <- pat_data$temperature
+temp_fitted_pm25b <- predict.lm(model_temp_b, newdata=pat_data)
+
+par(las = 1)
+plot(x, y, 
+     col=adjustcolor("black", 0.0),
+     main = "Fitting PM2.5_B to Temperature",
+     xlab = "2019", ylab = "Temperature (F)")
+points(x, temp_fitted_pm25b, 
+       pch = 15, cex = 0.9, col=adjustcolor("black", 0.2))
+lines(x, y, lwd = 4, col=adjustcolor("tomato", 0.8))
+legend(x = "bottomright", legend = c("Temp", "Fitted ChB"), 
+       col = c("tomato", "black"), bg = adjustcolor("lightgray", 0.3), 
+       lwd = 4, box.lty = 0, inset = 0.025)
+```
+
+Hmm, not quite for this sensor.
+So what is happening with channel A? It almost seems like the
+temperature or humidity readings have been leaking into the PM 2.5 channel A 
+sensor and overriding its measurements.
+
+So far though we've only looked at a week's worth of questionable data. Has this
+sensor always been acting this way? Lets load and view readings from earlier 
+this year:
+
+```{r april_dygraph, warning=FALSE}
+pat_april <- pat_createNew(pas, "BikeSGV - West Pasadena", 
+                           startdate="2019-04-05", enddate="2019-04-22")
+pat_dygraph(pat_april)
+```
+
+Well that answers that question! Before the evening of April 18th, 2019, both 
+channels seemed to agree with each other for the most part. Around 7:00 PM that 
+day though, channel A suddenly switched to the strange state it's currently 
+stuck in. Channel A also appeared to have some issues between April 7th and 9th 
+which yielded readings in the same 3000-4000 μg/m³ range, but returned to normal
+for about a week.
+
+Channel B seemed unaffected by anything the whole time though. Let's see if 
+the auxilary sensors experienced anything unusual:
+
+```{r transition_multiplot, warning=FALSE}
+pat_multiplot(pat_april)
+```
+
+It seems that only the channel A sensor was affected at this time. The reason
+why is still unknown, but at the very least we now have a good idea of where 
+this sensor is getting its readings and when this change occurred.
+
+THE END
