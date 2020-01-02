@@ -7,13 +7,19 @@ Authors@R: c(
     person("Hans", "Martin", email="hans@mazamascience.com", role=c("aut")),
     person("Kayleigh", "Wilson", email="andrakayleigh@gmail.com", role=c("aut")),
     person("Tate", "Brasel", email="tatebrasel6@gmail.com", role=c("aut")),
-    person("Helen", "Miller", email="helen@ohana.org", role=c("aut"))
+    person("Helen", "Miller", email="helen@ohana.org", role=c("aut")),
+    person("Vasileios", "Papapostolou", email="vpapapostolou@aqmd.gov", role=c("ctb")),
+    person("Ashley", "Collier-Oxandale", email="Acollier-oxandale@aqmd.gov", role=c("ctb")),
+    person("Brandon", "Feenstra", email="bfeenstra@aqmd.gov", role=c("ctb"))
     )
 Author: Jonathan Callahan [aut, cre],
     Hans Martin [aut],
     Kayleigh Wilson [aut],
     Tate Brasel [aut],
-    Helen Miller [aut]
+    Helen Miller [aut],
+    Vasileios Papapostolou [ctb],
+    Ashley Collier-Oxandale [ctb],
+    Brandon Feenstra [ctb]
 Maintainer: Jonathan Callahan <jonathan.s.callahan@gmail.com>
 Depends:
     R (>= 3.5.0)
