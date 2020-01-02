@@ -4,8 +4,13 @@
 \alias{pas_getLabels}
 \title{Return station labels from filtered PurpleAir Synoptic objects}
 \usage{
-pas_getLabels(pas = NULL, states = NULL, pattern = ".*",
-  isOutside = TRUE, isParent = TRUE)
+pas_getLabels(
+  pas = NULL,
+  states = NULL,
+  pattern = ".*",
+  isOutside = TRUE,
+  isParent = TRUE
+)
 }
 \arguments{
 \item{pas}{PurpleAir Synoptic \emph{pas} object.}

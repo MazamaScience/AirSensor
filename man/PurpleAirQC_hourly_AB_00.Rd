@@ -4,8 +4,11 @@
 \alias{PurpleAirQC_hourly_AB_00}
 \title{Apply QC to Aggregation Statistics}
 \usage{
-PurpleAirQC_hourly_AB_00(aggregationStats = NULL, min_count = 20,
-  returnAllColumns = FALSE)
+PurpleAirQC_hourly_AB_00(
+  aggregationStats = NULL,
+  min_count = 20,
+  returnAllColumns = FALSE
+)
 }
 \arguments{
 \item{aggregationStats}{Dataframe of statistics as returned by
