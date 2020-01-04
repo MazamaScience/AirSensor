@@ -4,14 +4,14 @@
 \alias{pas_filterNear}
 \title{Find PurpleAir sensors within radial distance}
 \usage{
-pas_filterNear(pas = NULL, latitude = NULL, longitude = NULL, radius = "1 km")
+pas_filterNear(pas = NULL, longitude = NULL, latitude = NULL, radius = "1 km")
 }
 \arguments{
 \item{pas}{PurpleAir \emph{pas} object.}
 
-\item{latitude}{a Target latitude.}
-
 \item{longitude}{a Target longitude.}
+
+\item{latitude}{a Target latitude.}
 
 \item{radius}{Distance from target with unit (i.e "15 km").}
 }
@@ -23,7 +23,7 @@ Filter for Purple Air sensors within a specified distance from
 specified target coordinates.
 }
 \details{
-\code{radius} Should be a numeric string with provided metric unit 
+\code{radius} Should be a numeric string with a metric unit 
 separated by a space, such as \code{"250 m"}.
 }
 \examples{
@@ -31,8 +31,8 @@ separated by a space, such as \code{"250 m"}.
 pas <- example_pas
 diamond_bar <-
   pas \%>\%
-  pas_filterNear(latitude = 34.001667, 
-                 longitude = -117.820833,
+  pas_filterNear(longitude = -117.820833,
+                 latitude = 34.001667, 
                  radius = "20 km")
                  
 \dontrun{

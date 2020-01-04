@@ -1,3 +1,8 @@
+# AirSensor 0.6.5
+
+* Reordered arguments in `pas_filterNear()` to package standard
+`longitude, latitude`.
+
 # AirSensor 0.6.4
 
 * Refactored _pas_ objects to include: `deviceID`, `locationID`, 
