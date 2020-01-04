@@ -18,8 +18,5 @@
 # Ignore all directories beginning with "local"
 ^local*
 
-# Ignore pkgdown::build_site() "doc" directory
-^doc$
-
 # NOTE:  TEMPORARY -- for development only
 ^AirShiny/
