@@ -143,7 +143,7 @@ pas_leaflet <- function(
           pas, 
           paletteName = paletteName, 
           parameter = parameter, 
-          reverse=TRUE
+          reverse = TRUE
         )
         
         cols <- colorInfo$colors
@@ -258,13 +258,13 @@ pas_leaflet <- function(
     } else {
       
       # All other parameters
-      domain <- range(pas[[parameter]], na.rm=TRUE)
+      domain <- range(pas[[parameter]], na.rm = TRUE)
       colorFunc <- leaflet::colorNumeric("Purples", 
                                          domain = domain, 
                                          na.color = "#bbbbbb", 
-                                         reverse=FALSE)
+                                         reverse = FALSE)
       cols <- colorFunc(pas[[parameter]])
-      breaks <- seq(domain[1],domain[2],length.out=6)
+      breaks <- seq(domain[1], domain[2], length.out = 6)
       offset <- diff(breaks)[1] / 2
       levels <- signif(seq(breaks[1]+offset, breaks[6]-offset,length.out=5), digits=4)
       colors <- leaflet::colorBin("Purples", domain=range(breaks), bins=breaks, reverse=FALSE)(levels)
@@ -277,7 +277,7 @@ pas_leaflet <- function(
     # Create popupText
     pas$popupText <- paste0(
       "<b>", pas$label, "</b><br/>",
-      "<b>ID = ", pas$ID, "</b><br/>",
+      "<b>deviceDeploymentID = ", pas$deviceDeploymentID, "</b><br/>",
       "<b>", parameter, " = ", value, " ", unit, "</b><br/>",
       "temperature = ", round(pas$temperature, 0), " F<br/>",
       "humidity = ", round(pas$humidity, 0), "%<br/>",
@@ -315,8 +315,8 @@ pas_leaflet <- function(
   
   # Convert locations to SpatialPointsDataFrame
   pas <- pas[!is.na(pas$latitude),]
-  SPDF <- sp::SpatialPointsDataFrame(coords=cbind(pas$longitude,pas$latitude),
-                                     data=as.data.frame(pas))
+  SPDF <- sp::SpatialPointsDataFrame(coords = cbind(pas$longitude,pas$latitude),
+                                     data = as.data.frame(pas))
   
   # Convert maptype to a character string that addProviderTiles can read
   if ( missing(maptype) || maptype == 'terrain') {

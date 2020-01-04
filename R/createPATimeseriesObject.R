@@ -23,13 +23,15 @@
 #' 
 #' @examples 
 #' \dontrun{
+#' library(AirSensor)
 #' initializeMazamaSpatialUtils()
-#' pas <- example_pas
+#' 
 #' pat_raw <- downloadParseTimeseriesData(
-#'   pas, 
-#'   label = 'North Bend Weather', 
+#'   label = 'North Bend Weather',
+#'   pas = example_pas,
 #'   startdate = 20180908
 #' )
+#' 
 #' pat <- createPATimeseriesObject(pat_raw)
 #' pat_multiplot(pat)
 #' }
@@ -55,18 +57,20 @@ createPATimeseriesObject <- function(
   # [15] "humidity"                         "temperature"                     
   # [17] "pressure"                         "age"                             
   # [19] "parentID"                         "flag_highValue"                  
-  # [21] "flag_attenuation_hardware"        "Voc"                             
-  # [23] "Ozone1"                           "pm25_current"                    
+  # [21] "flag_attenuation_hardware"        "Ozone1"                          
+  # [23] "Voc"                              "pm25_current"                    
   # [25] "pm25_10min"                       "pm25_30min"                      
   # [27] "pm25_1hr"                         "pm25_6hr"                        
   # [29] "pm25_1day"                        "pm25_1week"                      
   # [31] "statsLastModifiedDate"            "statsLastModifiedInterval"       
-  # [33] "countryCode"                      "stateCode"                       
-  # [35] "timezone"                         "airDistrict"                     
-  # [37] "pwfsl_closestDistance"            "pwfsl_closestMonitorID"          
-  # [39] "sensorManufacturer"               "targetPollutant"                 
-  # [41] "technologyType"                   "communityRegion"                 
-
+  # [33] "deviceID"                         "locationID"                      
+  # [35] "deviceDeploymentID"               "countryCode"                     
+  # [37] "stateCode"                        "timezone"                        
+  # [39] "airDistrict"                      "pwfsl_closestDistance"           
+  # [41] "pwfsl_closestMonitorID"           "sensorManufacturer"              
+  # [43] "targetPollutant"                  "technologyType"                  
+  # [45] "communityRegion"                 
+  
   meta <- 
     pat_raw$meta %>%
     dplyr::filter(is.na(.data$parentID)) %>%
@@ -81,17 +85,15 @@ createPATimeseriesObject <- function(
                   .data$countryCode, 
                   .data$stateCode, 
                   .data$timezone, 
+                  .data$deviceID, 
+                  .data$locationID, 
+                  .data$deviceDeploymentID, 
                   .data$pwfsl_closestDistance, 
                   .data$pwfsl_closestMonitorID,
                   .data$sensorManufacturer,
                   .data$targetPollutant,
                   .data$technologyType,
                   .data$communityRegion)
-  
-  # Add more IDs
-  meta$sensorID <- meta$ID # Redundant but more explicit than "ID"
-  meta$locationID <- MazamaLocationUtils::location_createID(meta$longitude, meta$latitude)
-  meta$deviceDeploymentID <- paste0(meta$locationID, "_", meta$sensorID)
   
   # ----- Simplify data --------------------------------------------------------
   

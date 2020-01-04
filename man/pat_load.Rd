@@ -5,9 +5,9 @@
 \title{Load PurpleAir time series data for a time period}
 \usage{
 pat_load(
-  pas = NULL,
-  label = NULL,
   id = NULL,
+  label = NULL,
+  pas = NULL,
   startdate = NULL,
   enddate = NULL,
   days = 7,
@@ -15,11 +15,11 @@ pat_load(
 )
 }
 \arguments{
-\item{pas}{PurpleAir Synoptic \emph{pas} object.}
+\item{id}{PurpleAir sensor 'deviceDeploymentID'.}
 
 \item{label}{PurpleAir sensor 'label'.}
 
-\item{id}{PurpleAir sensor 'ID'.}
+\item{pas}{PurpleAir Synoptic \emph{pas} object.}
 
 \item{startdate}{Desired start time (ISO 8601).}
 
@@ -49,10 +49,17 @@ recommended formats:
 }
 \note{
 Starting with \pkg{AirSensor} version 0.6, archive file names are 
-generated with a "device-deployment" identifier by combining a unique 
+generated with a unique "device-deployment" identifier by combining a unique 
 location ID with a unique device ID. These "device-deployment" identifiers 
 guarantee that movement of a sensor will result in the creation of a new
 time series.
+
+Users may request a \emph{pat} object in one of two ways:
+
+1) Pass in \code{id} with a valid a \code{deviceDeploymentID}
+
+2) Pass in both \code{label} and \code{pas} so that the 
+\code{deviceDeploymentID} can be looked up.
 }
 \examples{
 \donttest{

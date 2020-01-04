@@ -18,17 +18,23 @@
 #' By default, the current month is loaded.
 #'
 #' @note Starting with \pkg{AirSensor} version 0.6, archive file names are 
-#' generated with a "device-deployment" identifier by combining a unique 
+#' generated with a unique "device-deployment" identifier by combining a unique 
 #' location ID with a unique device ID. These "device-deployment" identifiers 
 #' guarantee that movement of a sensor will result in the creation of a new
 #' time series.
 #' 
-#' @param pas PurpleAir Synoptic \emph{pas} object.
+#' Users may request a \emph{pat} object in one of two ways:
+#' 
+#' 1) Pass in \code{id} with a valid a \code{deviceDeploymentID}
+#' 
+#' 2) Pass in both \code{label} and \code{pas} so that the 
+#' \code{deviceDeploymentID} can be looked up.
+#' 
+#' @param id PurpleAir sensor 'deviceDeploymentID'.
 #' @param label PurpleAir sensor 'label'.
-#' @param id PurpleAir sensor 'ID'.
+#' @param pas PurpleAir Synoptic \emph{pas} object.
 #' @param datestamp Date string in ymd order.
 #' @param timezone Timezone used to interpret \code{datestamp}.
-#' \code{make.names(label)} when assembilng the file path.
 #' 
 #' @return A PurpleAir Timeseries \emph{pat} object.
 #' 
@@ -45,45 +51,38 @@
 #' }
 
 pat_loadMonth <- function(
-  pas = NULL,
-  label = NULL,
   id = NULL,
+  label = NULL,
+  pas = NULL,
   datestamp = NULL,
   timezone = "America/Los_Angeles"
 ) {
   
   # ----- Validate parameters --------------------------------------------------
   
-  MazamaCoreUtils::stopIfNull(pas)
-  
-  if ( !pas_isPas(pas) )
-    stop("Required parameter 'pas' is not a valid 'pa_synoptic' object.")
-  
-  if ( pas_isEmpty(pas) )
-    stop("Required parameter 'pas' has no data.") 
-  
-  # Get the sensorID
+  # Get the deviceDeploymentID
   if ( is.null(id) && is.null(label) ) {
     
     stop(paste0("label or id must be provided"))
     
   } else if ( is.null(id) && !is.null(label) ) {
     
-    if ( ! label %in% pas$label )
+    if ( is.null(pas) )
+      stop(paste0("pas must be provided when loading by label"))
+    
+    if ( !label %in% pas$label )
       stop(sprintf("label '%s' is not found in the 'pas' object", label))
     
-    # Get the sensorID from the label
-    sensorID <- pas_getIDs(pas, pattern = label)
+    # Get the deviceDeploymentID from the label
+    deviceDeploymentID <- pas_getDeviceDeploymentIDs(pas, pattern = label)
     
-    if ( length(sensorID) > 1 )
+    if ( length(deviceDeploymentID) > 1 )
       stop(sprintf("label '%s' matches more than one sensor", label))
     
   } else {
     
-    if ( ! id %in% pas$ID )
-      stop(sprintf("id '%s' is not found in the 'pas' object", id))
-    
-    sensorID <- id
+    # Use id whenever it is defined, potentially ignoring label
+    deviceDeploymentID <- id
     
   }
   
@@ -105,8 +104,7 @@ pat_loadMonth <- function(
   
   # ----- Load data from URL or directory --------------------------------------
   
-  # Create filewname
-  deviceDeploymentID <- pas_deviceDeploymentID(pas, sensorID)
+  # Create filename
   filename <- paste0("pat_", deviceDeploymentID, "_", monthstamp, ".rda")
   
   # Use package internal URL

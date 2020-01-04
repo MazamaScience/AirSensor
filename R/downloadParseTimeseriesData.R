@@ -4,9 +4,9 @@
 #'
 #' @title Download Purple Air timeseries data
 #'
-#' @param pas Purple Air 'enhanced' synoptic data.
-#' @param label Purple Air 'label'.
-#' @param id Purple Air 'ID'.
+#' @param id PurpleAir sensor 'deviceDeploymentID'.
+#' @param label PurpleAir sensor 'label'.
+#' @param pas PurpleAir Synoptic \emph{pas} object.
 #' @param startdate Desired start time (ISO 8601).
 #' @param enddate Desired end time (ISO 8601).
 #' @param timezone Timezone used to interpret start and end dates.
@@ -21,9 +21,9 @@
 #' @references https://www2.purpleair.com/community/faq
 
 downloadParseTimeseriesData <- function(
-  pas = NULL,
-  label = NULL,
   id = NULL,
+  label = NULL,
+  pas = NULL,
   startdate = NULL,
   enddate = NULL,
   timezone = NULL,
@@ -32,52 +32,52 @@ downloadParseTimeseriesData <- function(
   
   # ----- Validate parameters --------------------------------------------------
   
-  MazamaCoreUtils::stopIfNull(pas)
   MazamaCoreUtils::stopIfNull(baseURL)
   
-  # Get the sensorID
+  # Get the deviceDeploymentID
   if ( is.null(id) && is.null(label) ) {
     
     stop(paste0("label or id must be provided"))
     
   } else if ( is.null(id) && !is.null(label) ) {
     
-    if ( ! label %in% pas$label )
+    if ( is.null(pas) )
+      stop(paste0("pas must be provided when loading by label"))
+    
+    if ( !label %in% pas$label )
       stop(sprintf("label '%s' is not found in the 'pas' object", label))
     
-    # Get the sensorID from the label
-    sensorID <- pas_getIDs(pas, pattern = label)
+    # Get the deviceDeploymentID from the label
+    pattern <- paste0("^", label, "$")
+    deviceDeploymentID <- pas_getDeviceDeploymentIDs(pas, pattern = pattern)
     
-    if ( length(sensorID) == 0 ) {
-      stop(sprintf("label '%s' does not match any sensors", label))
-    } else if ( length(sensorID) > 1 ) {
+    if ( length(deviceDeploymentID) > 1 )
       stop(sprintf("label '%s' matches more than one sensor", label))
-    }
     
   } else {
     
-    if ( ! id %in% pas$ID )
-      stop(sprintf("id '%s' does not match any sensors in the 'pas' object", id))
-    
-    sensorID <- id
+    # Use id whenever it is defined, potentially ignoring label
+    deviceDeploymentID <- id
     
   }
   
   # ----- Determine date sequence ----------------------------------------------
   
-  # Get record with this sensorID
-  sensor_meta <-
+  # Find a single, parent record
+  pas_single <-
     pas %>%
-    dplyr::filter(.data$ID == !!sensorID)
+    dplyr::filter(is.na(.data$parentID)) %>%
+    dplyr::filter(.data$deviceDeploymentID == !!deviceDeploymentID)
   
-  # NOTE:  This should never happen!
-  if ( nrow(sensor_meta) > 1 )
-    stop(sprintf("Non-unique 'id': %s", sensorID))
+  if ( nrow(pas_single) > 1 ) {
+    stop(paste0("Multilpe sensors share deviceDeploymentID: ",
+                deviceDeploymentID, "'"))
+  } 
   
   # Get the timezone associated with this sensor
   if ( is.null(timezone) ) {
     timezone <-
-      sensor_meta %>%
+      pas_single %>%
       dplyr::pull(.data$timezone)
   }
   
@@ -100,11 +100,11 @@ downloadParseTimeseriesData <- function(
   endString <- strftime(dateRange[2], "%Y-%m-%dT%H:%M:%S", tz = "UTC")
   
   # Determine which channel was given and access the other channel from it
-  if ( is.na(sensor_meta$parentID) ) {
-    A_meta <- sensor_meta
+  if ( is.na(pas_single$parentID) ) {
+    A_meta <- pas_single
     B_meta <- dplyr::filter(pas, .data$parentID == A_meta$ID)
   } else {
-    B_meta <- sensor_meta
+    B_meta <- pas_single
     A_meta <- dplyr::filter(pas, .data$ID == B_meta$parentID)
   }
   
@@ -372,7 +372,7 @@ downloadParseTimeseriesData <- function(
   )
   
   # Convert to proper types
-  data$datetime <- lubridate::ymd_hms(data$datetime, tz="UTC")
+  data$datetime <- lubridate::ymd_hms(data$datetime, tz = "UTC")
   data$entry_id <- as.character(data$entry_id)
   for (columnName in numeric_columns) {
     data[[columnName]] <- as.numeric(data[[columnName]])
@@ -409,17 +409,16 @@ downloadParseTimeseriesData <- function(
 # ===== DEBUGGING ==============================================================
 
 if ( FALSE ) {
-  
-  pat_raw <- downloadParseTimeseriesData(
-    pas = pas_load(),
-    label = "SCAP_28",
-    id = NULL,
-    startdate = 20190701,
-    enddate = 20190805,
-    baseURL = "https://api.thingspeak.com/channels/"
-  )
-  
-  pat <- createPATimeseriesObject(pat_raw)
-  
+
+  # id <- NULL
+  # label <- "Seattle"
+  # pas <- example_pas
+  id <- "ebcb53584e44bb6f_3218"
+  label <- NULL
+  pas <- example_pas
+  startdate <- "2018-08-01"
+  enddate <- "2018-08-28"
+  timezone <- NULL
+  baseURL <- "https://api.thingspeak.com/channels/"
   
 }

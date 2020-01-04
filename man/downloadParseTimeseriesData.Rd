@@ -5,9 +5,9 @@
 \title{Download Purple Air timeseries data}
 \usage{
 downloadParseTimeseriesData(
-  pas = NULL,
-  label = NULL,
   id = NULL,
+  label = NULL,
+  pas = NULL,
   startdate = NULL,
   enddate = NULL,
   timezone = NULL,
@@ -15,11 +15,11 @@ downloadParseTimeseriesData(
 )
 }
 \arguments{
-\item{pas}{Purple Air 'enhanced' synoptic data.}
+\item{id}{PurpleAir sensor 'deviceDeploymentID'.}
 
-\item{label}{Purple Air 'label'.}
+\item{label}{PurpleAir sensor 'label'.}
 
-\item{id}{Purple Air 'ID'.}
+\item{pas}{PurpleAir Synoptic \emph{pas} object.}
 
 \item{startdate}{Desired start time (ISO 8601).}
 

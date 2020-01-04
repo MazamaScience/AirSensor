@@ -18,7 +18,7 @@
 #' 
 #' @return Vector of values.
 #' 
-#' @seealso \code{\link{pas_getColumn}},  \code{\link{pas_getIDs}}
+#' @seealso \code{\link{pas_getColumn}},  \code{\link{pas_getIDs}},  \code{\link{pas_getDeviceDeploymentIDs}}
 #' 
 pas_getLabels <- function(
   pas = NULL,

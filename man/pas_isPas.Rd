@@ -29,6 +29,9 @@ and presence of core metadata columns:
   \item{temperature -- deg F}
   \item{humidity -- \%}
   \item{pressure -- mb}
+  \item{deviceID -- unique device identifier}
+  \item{locationID -- unique location identifier}
+  \item{deviceDeploymentID -- unique time series identifier}
   \item{pwfsl_closestDistance -- distance in meters from an official monitor}
   \item{pwfsl_closestMonitorID -- identifer for the nearest official monitor}
 }

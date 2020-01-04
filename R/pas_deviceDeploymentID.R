@@ -16,62 +16,57 @@
 #' 
 #' @return Vector of time series identifiers.
 #' 
-pas_deviceDeploymentID <- function(
-  pas = NULL,
-  ids = NULL
-) {
-  
-  # ----- Validate parameters --------------------------------------------------
-  
-  MazamaCoreUtils::stopIfNull(ids)
-  
-  # A little involved to catch the case where the user forgets to pass in 'pas'
-  
-  result <- try({
-    if ( !pas_isPas(pas) )
-      stop("First argument is not of class 'pas'.")
-  }, silent = TRUE)
-  
-  if ( class(result) %in% "try-error" ) {
-    err_msg <- geterrmessage()
-    if ( stringr::str_detect(err_msg, "object .* not found") ) {
-      stop(paste0(err_msg, "\n(Did you forget to pass in the 'pas' object?)"))
-    }
-  }
-  
-  # ----- Create IDs -----------------------------------------------------------
-  
-  sub_pas <-
-    pas %>%
-    pas_filter(.data$ID %in% ids)
-  
-  # Check for parent
-  if ( any(!is.na(sub_pas$parentID)) ) {
-    badIDs <- 
-      sub_pas %>% 
-      pas_filter(!is.na(.data$parentID)) %>%
-      dplyr::pull(.data$ID)
-    
-    stop(sprintf(
-      "The following IDs are not associated with the A channel: %s",
-      paste0(badIDs, collapse = ", ")
-    ))
-  }
-  
-  # Get location-specific identifier
-  locationID <- MazamaLocationUtils::location_createID(sub_pas$longitude, sub_pas$latitude)
-  
-  # Create "deployment-sensor" identifier
-  deviceDeploymentID <- paste0(locationID, "_", sub_pas$ID)
-  
-  # ---- Return ----------------------------------------------------------------
-  
-  return(deviceDeploymentID)
-  
-}
 
-
-
-
-
-
+# pas_deviceDeploymentID <- function(
+#   pas = NULL,
+#   ids = NULL
+# ) {
+#   
+#   # ----- Validate parameters --------------------------------------------------
+#   
+#   MazamaCoreUtils::stopIfNull(ids)
+#   
+#   # A little involved to catch the case where the user forgets to pass in 'pas'
+#   
+#   result <- try({
+#     if ( !pas_isPas(pas) )
+#       stop("First argument is not of class 'pas'.")
+#   }, silent = TRUE)
+#   
+#   if ( class(result) %in% "try-error" ) {
+#     err_msg <- geterrmessage()
+#     if ( stringr::str_detect(err_msg, "object .* not found") ) {
+#       stop(paste0(err_msg, "\n(Did you forget to pass in the 'pas' object?)"))
+#     }
+#   }
+#   
+#   # ----- Create IDs -----------------------------------------------------------
+#   
+#   sub_pas <-
+#     pas %>%
+#     pas_filter(.data$ID %in% ids)
+#   
+#   # Check for parent
+#   if ( any(!is.na(sub_pas$parentID)) ) {
+#     badIDs <- 
+#       sub_pas %>% 
+#       pas_filter(!is.na(.data$parentID)) %>%
+#       dplyr::pull(.data$ID)
+#     
+#     stop(sprintf(
+#       "The following IDs are not associated with the A channel: %s",
+#       paste0(badIDs, collapse = ", ")
+#     ))
+#   }
+#   
+#   # Get location-specific identifier
+#   locationID <- MazamaLocationUtils::location_createID(sub_pas$longitude, sub_pas$latitude)
+#   
+#   # Create "deployment-sensor" identifier
+#   deviceDeploymentID <- paste0(locationID, "_", sub_pas$ID)
+#   
+#   # ---- Return ----------------------------------------------------------------
+#   
+#   return(deviceDeploymentID)
+#   
+# }

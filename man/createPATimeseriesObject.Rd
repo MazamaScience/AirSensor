@@ -26,13 +26,15 @@ In the process, the following columns of data are omitted:
 }
 \examples{
 \dontrun{
+library(AirSensor)
 initializeMazamaSpatialUtils()
-pas <- example_pas
+
 pat_raw <- downloadParseTimeseriesData(
-  pas, 
-  label = 'North Bend Weather', 
+  label = 'North Bend Weather',
+  pas = example_pas,
   startdate = 20180908
 )
+
 pat <- createPATimeseriesObject(pat_raw)
 pat_multiplot(pat)
 }

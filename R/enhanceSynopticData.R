@@ -67,6 +67,7 @@ enhanceSynopticData <- function(
   # ----- Validate Parameters --------------------------------------------------
   
   MazamaCoreUtils::stopIfNull(pas_raw)
+  MazamaCoreUtils::stopIfNull(countryCodes)
 
   if ( !("data.frame" %in% class(pas_raw)) )
     stop("parameter 'pas_raw' parameter is not a dataframe")
@@ -152,6 +153,20 @@ enhanceSynopticData <- function(
       statsLastModifiedDate = .data$lastModified,
       statsLastModifiedInterval = .data$timeSinceModified
     )
+  
+  # ----- Add unique identifiers -----------------------------------------------
+  
+  # Device ID based on A channel ID
+  pas$deviceID <- pas$ID
+  # Ensure that B channel records use the parent (A channel) ID
+  childMask <- !is.na(pas$parentID)
+  pas$deviceID[childMask] <- pas$parentID[childMask]
+  
+  # Location ID
+  pas$locationID <- MazamaLocationUtils::location_createID(pas$longitude, pas$latitude)
+  
+  # Device Deployment ID
+  pas$deviceDeploymentID <- paste0(pas$locationID, "_", pas$deviceID)
   
   # ----- Add spatial metadata -------------------------------------------------
   

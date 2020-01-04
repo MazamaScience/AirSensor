@@ -5,24 +5,23 @@
 \title{Load PurpleAir time series data for a month}
 \usage{
 pat_loadMonth(
-  pas = NULL,
-  label = NULL,
   id = NULL,
+  label = NULL,
+  pas = NULL,
   datestamp = NULL,
   timezone = "America/Los_Angeles"
 )
 }
 \arguments{
-\item{pas}{PurpleAir Synoptic \emph{pas} object.}
+\item{id}{PurpleAir sensor 'deviceDeploymentID'.}
 
 \item{label}{PurpleAir sensor 'label'.}
 
-\item{id}{PurpleAir sensor 'ID'.}
+\item{pas}{PurpleAir Synoptic \emph{pas} object.}
 
 \item{datestamp}{Date string in ymd order.}
 
-\item{timezone}{Timezone used to interpret \code{datestamp}.
-\code{make.names(label)} when assembilng the file path.}
+\item{timezone}{Timezone used to interpret \code{datestamp}.}
 }
 \value{
 A PurpleAir Timeseries \emph{pat} object.
@@ -43,10 +42,17 @@ By default, the current month is loaded.
 }
 \note{
 Starting with \pkg{AirSensor} version 0.6, archive file names are 
-generated with a "device-deployment" identifier by combining a unique 
+generated with a unique "device-deployment" identifier by combining a unique 
 location ID with a unique device ID. These "device-deployment" identifiers 
 guarantee that movement of a sensor will result in the creation of a new
 time series.
+
+Users may request a \emph{pat} object in one of two ways:
+
+1) Pass in \code{id} with a valid a \code{deviceDeploymentID}
+
+2) Pass in both \code{label} and \code{pas} so that the 
+\code{deviceDeploymentID} can be looked up.
 }
 \examples{
 \donttest{

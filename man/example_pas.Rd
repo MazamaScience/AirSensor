@@ -4,7 +4,7 @@
 \name{example_pas}
 \alias{example_pas}
 \title{Example Purple Air Synoptic dataset}
-\format{A tibble with 10081 rows and 42 columns of data.}
+\format{A tibble with 10220 rows and 45 columns of data.}
 \source{
 https://www.purpleair.com/json
 }
@@ -14,11 +14,12 @@ example_pas
 \description{
 The \code{example_pas} dataset provides a quickly loadable
 version of a \emph{pa_synoptic} object for practicing and code examples.
-This dataset was generatedon 2019-12-23 by running:
+This dataset was generatedon 2020-01-03 by running:
 
 \preformatted{
   initializeMazamaSpatialUtils()
   example_pas <- pas_createNew()
+  save(example_pas, file = "data/example_pas.rda")
 }
 }
 \seealso{

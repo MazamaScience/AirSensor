@@ -11,13 +11,17 @@ example_pat
 \description{
 The \code{example_pat} dataset provides a quickly loadable version of
 a \emph{pa_timeseries} object for practicing and code examples.
-This dataset was was generated on 2019-12-30 by running:
+This dataset was was generated on 2020-01-03 by running:
 
 \preformatted{
-  example_pat <- pat_createNew(example_pas,
-                               label = "Seattle",
-                               startdate = "2018-08-01",
-                               enddate = "2018-08-28")
+  example_pat <-
+    pat_createNew(
+      label = "Seattle",
+      pas = example_pas,
+      startdate = "2018-08-01",
+      enddate = "2018-08-28"
+    )
+  save(example_pat, file = "data/example_pat.rda")
 }
 }
 \seealso{

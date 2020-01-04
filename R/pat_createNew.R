@@ -4,9 +4,9 @@
 #' 
 #' @title Load latest PurpleAir time series data
 #' 
-#' @param pas PurpleAir Synoptic \emph{pas} object.
+#' @param id PurpleAir sensor 'deviceDeploymentID'.
 #' @param label PurpleAir sensor 'label'.
-#' @param id PurpleAir sensor 'ID'.
+#' @param pas PurpleAir Synoptic \emph{pas} object.
 #' @param startdate Desired UTC start time (ISO 8601).
 #' @param enddate Desired UTC end time (ISO 8601).
 #' @param timezone Timezone used to interpret start and end dates.
@@ -17,23 +17,47 @@
 #' @description Retrieve and parse timeseries data from the Thingspeak API for 
 #' specific PurpleAir sensors.
 #' 
+#' Dates can be anything that is understood by 
+#' \code{lubrdiate::parse_date_time()} including either of the following 
+#' recommended formats:
+#' 
+#' \itemize{
+#' \item{\code{"YYYYmmdd"}}
+#' \item{\code{"YYYY-mm-dd"}}
+#' }
+#' 
 #' @note When \code{timezone = NULL}, the default, dates are interpreted to be 
 #' in the local timezone for the sensor of interest.
 #'
+#' @note Starting with \pkg{AirSensor} version 0.6, archive file names are 
+#' generated with a unique "device-deployment" identifier by combining a unique 
+#' location ID with a unique device ID. These "device-deployment" identifiers 
+#' guarantee that movement of a sensor will result in the creation of a new
+#' time series.
+#' 
+#' Users may request a \emph{pat} object in one of two ways:
+#' 
+#' 1) Pass in \code{id} with a valid a \code{deviceDeploymentID}
+#' 
+#' 2) Pass in both \code{label} and \code{pas} so that the 
+#' \code{deviceDeploymentID} can be looked up.
 #' @seealso \link{downloadParseTimeseriesData}
 #' 
 #' @examples
 #' \donttest{
-#' setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
-#' pas <- pas_load()
-#' pat <- pat_createNew(pas, "Seattle", startdate = 20180701, enddate = 20180901)
+#' pat <- pat_createNew(
+#'   label = "Seattle", 
+#'   pas = example_pas, 
+#'   startdate = 20180701, 
+#'   enddate = 20180901
+#' )
 #' pat_multiplot(pat)
 #' }
 
 pat_createNew <- function(
-  pas = NULL,
-  label = NULL,
   id = NULL,
+  label = NULL,
+  pas = NULL,
   startdate = NULL,
   enddate = NULL,
   timezone = NULL,
@@ -42,40 +66,46 @@ pat_createNew <- function(
   
   # ----- Validate parameters --------------------------------------------------
   
-  MazamaCoreUtils::stopIfNull(pas)
-
-  if ( !is.null(label) )  {
-    if ( !label %in% pas$label )
-      stop(paste0("'", label, "' is not found in the 'pas' object"))
-  }
+  MazamaCoreUtils::stopIfNull(baseURL)
   
-  if ( is.null(label) && is.null(id) )
-    stop(paste0("'label' or 'id' must be provided"))
+  # Get the deviceDeploymentID
+  if ( is.null(id) && is.null(label) ) {
+    
+    stop(paste0("label or id must be provided"))
+    
+  } else if ( is.null(id) && !is.null(label) ) {
+    
+    if ( is.null(pas) )
+      stop(paste0("pas must be provided when loading by label"))
+    
+    if ( !label %in% pas$label )
+      stop(sprintf("label '%s' is not found in the 'pas' object", label))
+    
+    # Get the deviceDeploymentID from the label
+    pattern <- paste0("^", label, "$")
+    deviceDeploymentID <- pas_getDeviceDeploymentIDs(pas, pattern = pattern)
+    
+    if ( length(deviceDeploymentID) > 1 )
+      stop(sprintf("label '%s' matches more than one sensor", label))
+    
+  } else {
+    
+    # Use id whenever it is defined, potentially ignoring label
+    deviceDeploymentID <- id
+    
+  }
   
   # ----- Determine date sequence ----------------------------------------------
   
-  # if label is missing and id is missing complain
-  # if id is defined, filter by id
-  # else filter by label
+  # Find a single, parent record
+  pas_single <-
+    pas %>%
+    dplyr::filter(is.na(.data$parentID)) %>%
+    dplyr::filter(.data$deviceDeploymentID == !!deviceDeploymentID)
   
-  # Subset by ID
-  if ( !is.null(id) ) {
-    pas_single <-
-      pas %>%
-      dplyr::filter(.data$ID == !!id)
-  } else {
-    # Subset by label
-    if ( !is.null(label) ) {
-      pas_single <-
-        pas %>%
-        dplyr::filter(.data$label == !!label)
-    } 
-  }
   if ( nrow(pas_single) > 1 ) {
-    IDString <- paste0(sort(pas_single$ID), collapse = ", ")
-    stop(paste0("Multilpe sensors share this label.",
-                "You must specify the 'id' parameter as one of: '",
-                IDString, "'"))
+    stop(paste0("Multilpe sensors share deviceDeploymentID: ",
+                deviceDeploymentID, "'"))
   } 
 
   # Get the timezone associated with this sensor
@@ -83,12 +113,6 @@ pat_createNew <- function(
     timezone <-
       pas_single %>%
       dplyr::pull(.data$timezone)
-  }
-  
-  if ( length(timezone) > 1 ) {
-    err_msg <- paste0(length(timezone),
-                      " senors share the same label and ID")
-    stop(err_msg)
   }
   
   # Create a valid dateRange
@@ -117,26 +141,26 @@ pat_createNew <- function(
   
   # Use more specific ID rather than the label
   pat_raw <- downloadParseTimeseriesData(
-    pas,
+    id = pas_single$deviceDeploymentID,
     label = NULL,
-    id = pas_single$ID,
+    pas = pas,
     startdate = dateSeq[1],
     enddate = dateSeq[2],
     timezone = timezone,
-    baseURL
+    baseURL = baseURL
   )
   
   if ( length(dateSeq) > 2 ) {
     
     for ( i in 2:(length(dateSeq) - 1) ) {
       new_pat_raw <- downloadParseTimeseriesData(
-        pas, 
+        id = pas_single$deviceDeploymentID,
         label = NULL,
-        id = pas_single$ID,
+        pas = pas,
         startdate = dateSeq[i],
-        enddate = dateSeq[i+1],
+        enddate = dateSeq[i + 1],
         timezone = timezone,
-        baseURL
+        baseURL = baseURL
       )
       pat_raw$data <- dplyr::bind_rows(pat_raw$data, new_pat_raw$data)
     }
@@ -175,11 +199,11 @@ pat_createNew <- function(
 
 if ( FALSE ) {
   
-  pas <- pas_load()
-  label <- "SCSB_09"
-  id <- 20071
-  startdate <- 20191001
-  enddate <- 20191008
+  id <- NULL
+  label <- "Seattle"
+  pas <- example_pas
+  startdate <- "2018-08-01"
+  enddate <- "2018-08-28"
   timezone <- NULL
   baseURL <- "https://api.thingspeak.com/channels/"
   

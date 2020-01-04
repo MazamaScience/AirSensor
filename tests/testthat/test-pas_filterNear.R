@@ -5,7 +5,7 @@ test_that("filtering is consistent", {
   pas_sanfran <- pas_filterNear(example_pas,
                                 latitude = 37.774429, longitude = -122.419463,
                                 radius = "10 km")
-  expect_equal(nrow(pas_sanfran), 358)
+  expect_equal(nrow(pas_sanfran), 364)
 
   # Fresno
   pas_fresno <- pas_filterNear(example_pas,

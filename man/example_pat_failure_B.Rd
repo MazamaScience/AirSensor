@@ -11,14 +11,17 @@ example_pat_failure_B
 \description{
 The \code{example_pat_failure_B} dataset provides a quickly loadable
 version of a \emph{pa_timeseries} object for practicing and code examples.
-This dataset was was generated on 2019-12-30 by running:
+This dataset was was generated on 2020-01-03 by running:
 
 \preformatted{
   example_pat_failure_B <-
-    pat_createNew(example_pas, 
-                  label = "SCTV_16",
-                  startdate = "2019-06-01",
-                  enddate = "2019-06-18")
+    pat_createNew(
+      label = "SCTV_16",
+      pas = example_pas,
+      startdate = "2019-06-01",
+      enddate = "2019-06-18"
+    )
+  save(example_pat_failure_B, file = "data/example_pat_failure_B.rda")
 }
 }
 \seealso{

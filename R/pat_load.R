@@ -18,14 +18,21 @@
 #' }
 #' 
 #' @note Starting with \pkg{AirSensor} version 0.6, archive file names are 
-#' generated with a "device-deployment" identifier by combining a unique 
+#' generated with a unique "device-deployment" identifier by combining a unique 
 #' location ID with a unique device ID. These "device-deployment" identifiers 
 #' guarantee that movement of a sensor will result in the creation of a new
 #' time series.
 #' 
-#' @param pas PurpleAir Synoptic \emph{pas} object.
+#' Users may request a \emph{pat} object in one of two ways:
+#' 
+#' 1) Pass in \code{id} with a valid a \code{deviceDeploymentID}
+#' 
+#' 2) Pass in both \code{label} and \code{pas} so that the 
+#' \code{deviceDeploymentID} can be looked up.
+#' 
+#' @param id PurpleAir sensor 'deviceDeploymentID'.
 #' @param label PurpleAir sensor 'label'.
-#' @param id PurpleAir sensor 'ID'.
+#' @param pas PurpleAir Synoptic \emph{pas} object.
 #' @param startdate Desired start time (ISO 8601).
 #' @param enddate Desired end time (ISO 8601).
 #' @param days Number of days of data to include.
@@ -46,9 +53,9 @@
 #' }
 
 pat_load <- function(
-  pas = NULL,
-  label = NULL,
   id = NULL,
+  label = NULL,
+  pas = NULL,
   startdate = NULL, 
   enddate = NULL, 
   days = 7, 
@@ -57,36 +64,28 @@ pat_load <- function(
   
   # ----- Validate parameters --------------------------------------------------
   
-  MazamaCoreUtils::stopIfNull(pas)
-  
-  if ( !pas_isPas(pas) )
-    stop("Required parameter 'pas' is not a valid 'pa_synoptic' object.")
-  
-  if ( pas_isEmpty(pas) )
-    stop("Required parameter 'pas' has no data.") 
-  
-  # Get the sensorID
+  # Get the deviceDeploymentID
   if ( is.null(id) && is.null(label) ) {
     
     stop(paste0("label or id must be provided"))
     
   } else if ( is.null(id) && !is.null(label) ) {
     
-    if ( ! label %in% pas$label )
+    if ( is.null(pas) )
+      stop(paste0("pas must be provided when loading by label"))
+    
+    if ( !label %in% pas$label )
       stop(sprintf("label '%s' is not found in the 'pas' object", label))
     
-    # Get the sensorID from the label
-    sensorID <- pas_getIDs(pas, pattern = label)
+    # Get the deviceDeploymentID from the label
+    deviceDeploymentID <- pas_getDeviceDeploymentIDs(pas, pattern = label)
     
-    if ( length(sensorID) > 1 )
+    if ( length(deviceDeploymentID) > 1 )
       stop(sprintf("label '%s' matches more than one sensor", label))
     
   } else {
     
-    if ( ! id %in% pas$ID )
-      stop(sprintf("id '%s' is not found in the 'pas' object", id))
-    
-    sensorID <- id
+    deviceDeploymentID <- id
     
   }
   
@@ -97,7 +96,7 @@ pat_load <- function(
   
   # Quick return if no dates provided
   if ( is.null(startdate) && is.null(enddate) ) 
-    return( pat_loadLatest(pas, label, sensorID) )
+    return( pat_loadLatest(deviceDeploymentID) )
   
   # ----- Asssemble monthly archive files --------------------------------------
   
@@ -129,9 +128,7 @@ pat_load <- function(
       
       patList[[datestamp]] <- 
         pat_loadMonth(
-          pas,
-          label = NULL, 
-          id = sensorID,
+          id = deviceDeploymentID,
           datestamp = datestamp, 
           timezone = timezone
         )

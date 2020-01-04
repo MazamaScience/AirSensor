@@ -16,13 +16,13 @@ test_that("bound order doesn't matter", {
                                w = -118.10, e = -118.07, 
                                s = 33.75, n = 33.78)
   lonRange1 <- range(areaOrder1$longitude)
-  latRange1 <-range(areaOrder1$latitude)
+  latRange1 <- range(areaOrder1$latitude)
   
   areaOrder2 <- pas_filterArea(example_pas, 
                                n = 33.78, e = -118.07, 
                                s = 33.75, w = -118.10)
   lonRange2 <- range(areaOrder2$longitude)
-  latRange2 <-range(areaOrder2$latitude)
+  latRange2 <- range(areaOrder2$latitude)
   
   expect_true(all(lonRange1 == lonRange2) && all(latRange1 == latRange2))
 })
@@ -32,7 +32,7 @@ test_that("results_are_consistent", {
   pas_sanfran <- pas_filterArea(example_pas, 
                                 w = -122.518155, e = -122.374895,
                                 s = 37.739002, n = 37.810491)
-  expect_equal(nrow(pas_sanfran), 298)
+  expect_equal(nrow(pas_sanfran), 308)
   
   # Fresno
   pas_fresno <- pas_filterArea(example_pas,

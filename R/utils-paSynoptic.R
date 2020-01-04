@@ -23,6 +23,9 @@
 #'   \item{temperature -- deg F}
 #'   \item{humidity -- \%}
 #'   \item{pressure -- mb}
+#'   \item{deviceID -- unique device identifier}
+#'   \item{locationID -- unique location identifier}
+#'   \item{deviceDeploymentID -- unique time series identifier}
 #'   \item{pwfsl_closestDistance -- distance in meters from an official monitor}
 #'   \item{pwfsl_closestMonitorID -- identifer for the nearest official monitor}
 #' }
@@ -43,12 +46,13 @@ pas_isPas <- function(
   if ( !"pa_synoptic" %in% class(pas) ) return(FALSE)
   
   parameters <- c(
-    'ID', 'label', 'sensorType',
-    'longitude', 'latitude', 
-    'timezone', 'countryCode', 'stateCode',
-    'pm25_1hr', 'pm25_1day', 'temperature', 'humidity', 'pressure',
-    'pwfsl_closestDistance',
-    'pwfsl_closestMonitorID'
+    "ID", "label", "sensorType",
+    "longitude", "latitude", 
+    "timezone", "countryCode", "stateCode",
+    "pm25_1hr", "pm25_1day", "temperature", "humidity", "pressure",
+    "deviceID", "locationID", "deviceDeploymentID",
+    "pwfsl_closestDistance",
+    "pwfsl_closestMonitorID"
   )
   
   if ( !all(parameters %in% names(pas)) ) return(FALSE)

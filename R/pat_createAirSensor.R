@@ -179,7 +179,7 @@ pat_createAirSensor <- function(
   meta$msaName <- as.character(NA)
   meta$monitorType <- meta$sensorType
   meta$siteID <- meta$locationID
-  meta$instrumentID <- meta$sensorID
+  meta$instrumentID <- meta$deviceID
   meta$aqsID <- as.character(NA)
   meta$pwfslID <- as.character(NA)
   meta$pwfslDataIngestSource <- "ThingSpeak"

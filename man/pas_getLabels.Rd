@@ -35,5 +35,5 @@ This function is useful for returning values associated with specific
 \emph{devices}, which are represented by records with \code{isParent = TRUE}.
 }
 \seealso{
-\code{\link{pas_getColumn}},  \code{\link{pas_getIDs}}
+\code{\link{pas_getColumn}},  \code{\link{pas_getIDs}},  \code{\link{pas_getDeviceDeploymentIDs}}
 }

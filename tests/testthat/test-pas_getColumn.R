@@ -10,11 +10,11 @@ test_that("input validation works", {
 
 test_that("filtering works", { 
   # Many DEVICE_LOCATIONTYPE values are NA and don't show up as TRUE or FALSE
-  expect_equal(length(pas_getColumn(example_pas, "ID", isOutside = TRUE)), 4100)
-  expect_equal(length(pas_getColumn(example_pas, "ID", isOutside = FALSE)), 891)
+  expect_equal(length(pas_getColumn(example_pas, "ID", isOutside = TRUE)), 4159)
+  expect_equal(length(pas_getColumn(example_pas, "ID", isOutside = FALSE)), 901)
   # State counts when example_pas was created
-  expect_equal(length(pas_getColumn(example_pas, "ID", states = c("WA", "OR"))), 378)
-  expect_equal(length(pas_getColumn(example_pas, "ID", states = c("CA"))), 1995)
+  expect_equal(length(pas_getColumn(example_pas, "ID", states = c("WA", "OR"))), 379)
+  expect_equal(length(pas_getColumn(example_pas, "ID", states = c("CA"))), 2007)
 })
 
 test_that("proper column is extracted", { 
@@ -37,7 +37,7 @@ test_that("proper column is extracted", {
   # pm25
   expect_equal(
     pas_getColumn(example_pas, "pm25", states = "SD"),
-    c(7.09, 8.04, 0.00, 18.00, 0.00)
+    c(0.04, 1.30, 0.00, 8.59, 1.99)
   )
 })
 

@@ -1,3 +1,13 @@
+# AirSensor 0.6.4
+
+* Refactored _pas_ objects to include: `deviceID`, `locationID`, 
+`deviceDeploymentID`.
+* Refactored `pat_createNew() and `pat_load~()` functions so that the first `id` 
+argument is used as the `deviceDeploymentID` unique time series identifier.
+* The second and third arguments are now `label` and `pas` and provide an 
+alternative to specifying `id`.
+* Recreated example data with the new functions.
+
 # AirSensor 0.6.3
 
 * Improved examples.

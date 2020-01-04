@@ -156,7 +156,7 @@ getArchiveBaseUrl <- function() {
     stop(
       'No BASE_URL set. Please set one with setArchiveBaseUrl("BASE_URL").',
       "\n\nKnown options include:\n\n",
-      "  setArchiveBaseUrl(\"http://smoke.mazamascience.com/data/PurpleAir\")"
+      "  setArchiveBaseUrl(\"https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1\")"
     )
   }
   return(airsensorEnv$archiveBaseUrl)    
