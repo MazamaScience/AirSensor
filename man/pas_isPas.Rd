@@ -32,8 +32,6 @@ and presence of core metadata columns:
   \item{deviceID -- unique device identifier}
   \item{locationID -- unique location identifier}
   \item{deviceDeploymentID -- unique time series identifier}
-  \item{pwfsl_closestDistance -- distance in meters from an official monitor}
-  \item{pwfsl_closestMonitorID -- identifer for the nearest official monitor}
 }
 
 The "pwfsl", official, monitors are obtained from the USFS AirFire site 

@@ -4,6 +4,7 @@
 * `pat_load()` and `sensor_load()` default to the last 7 days when no dates
 are provided.
 * New `pat_trimDate()` function trims data to local time full days.
+* `pas_isPas()` no longer requires presence of optional `pwfsl_~` columns.
 
 # AirSensor 0.6.5
 

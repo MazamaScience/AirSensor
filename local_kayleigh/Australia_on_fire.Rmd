@@ -1,0 +1,110 @@
+---
+title: "Australia on Fire"
+author: "Kayleigh Wilson"
+date: "2020-01-05"
+output:
+  html_document:
+    toc: true
+    theme: united
+---
+
+```{r setup, message = FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.width = 7, fig.height = 5)
+```
+
+## Goals
+
+The goal of this report is to demonstrate the use of the **AirSensor** package
+to create a local archive or PurpleAir data covering the December 2019 - 
+January 2020 fires and smoke in Australia.
+
+The target audience is any R user interested in air quality data but who who may 
+not be familiar with Mazama Science pacakges. 
+
+We begin by loading the necessary packages:
+
+```{r load_packages, message = FALSE}
+library(dplyr)            # data manipulation
+library(ggplot2)          # plotting
+library(PWFSLSmoke)       # USFS monitor data access and plotting
+library(AirSensor)        # PurpleAir sensor data access and plotting
+library(AirMonitorPlots)  # Advanced plots for monitors
+```
+
+*TODO: Explain the difference between 'monitors' and 'sensors'.*
+
+## Getting the Data
+
+### Set up a local archive
+
+*TODO: Explain what this code does.*
+
+```{r setup_local_archive}
+archiveBaseDir <- path.expand("~/Data/Australia_on_fire")
+if ( !dir.exists(archiveBaseDir) ) {
+  dir.create(archiveBaseDir)
+}
+setArchiveBaseDir(archiveBaseDir)
+```
+
+### Load synoptic data for Australia
+
+*TODO: Explain what this code does.*
+
+```{r load_synoptic}
+filePath <- file.path(archiveBaseDir, "pas_au.rda")
+
+if ( !file.exists(filePath) ) {
+  initializeMazamaSpatialUtils()
+  pas_au <- pas_createNew(countryCodes = "AU", includePWFSL = FALSE)
+  save(pas_au, file = filePath)
+}
+
+pas <- get(load(filePath))
+```
+
+### View the 'pas' data
+
+*TODO: Explain what this code does.*
+
+```{r explore_pas}
+pas_leaflet(pas)
+```
+
+### Load time series data for Australia
+
+*TODO: Create code similar to the the "load_synoptic" code above to install/load
+2-8 weeks of pat data for some/all of the sensors in Australia. It's OK if this
+takes a few minutes the first time.*
+
+### View the 'pat' data
+
+*TODO: Simple example looking at a sensor in a major population center.*
+
+## Explore the 'pas' data
+
+*TODO: Describe the pas object and show how to maipulate and visualizae data
+using other `pas_~() functions. There could be subsections in here.*
+
+*TODO: You may choose to only show the code for some examples by running a
+chunk with `eval = FALSE`.*
+
+## Explore the 'pat' data
+
+*TODO: Describe the pat object and show how to manipulate and visualize data 
+using other `pat_~() functions. There will be subsections in here.*
+
+## Working with 'airsensor' data
+
+*TODO: Describe creation of 'airsensor' objects and how the __PWFSLSmoke__
+package can be used to manipulate and visualize them. There will be subsections 
+in here.*
+
+## Advanced plotting with **AirMonitorPlots**
+
+*TODO: Show a couple of examples.*
+
+## STORY
+
+*TODO:  Pick one of sensors in a major population center and work up a story.*
+
