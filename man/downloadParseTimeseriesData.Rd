@@ -2,7 +2,7 @@
 % Please edit documentation in R/downloadParseTimeseriesData.R
 \name{downloadParseTimeseriesData}
 \alias{downloadParseTimeseriesData}
-\title{Download Purple Air timeseries data}
+\title{Download PurpleAir timeseries data}
 \usage{
 downloadParseTimeseriesData(
   id = NULL,
@@ -34,7 +34,7 @@ List of type \code{pa_timeseries} containing \code{meta} and
 \code{data} elements with timeseries metadata and data, respectively.
 }
 \description{
-Downloads timeseries data for a specific Purple Air sensor 
+Downloads timeseries data for a specific PurpleAir sensor 
 from the ThingSpeak API and parses the content into a dataframe.
 }
 \references{

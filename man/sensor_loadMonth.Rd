@@ -2,7 +2,7 @@
 % Please edit documentation in R/sensor_loadMonth.R
 \name{sensor_loadMonth}
 \alias{sensor_loadMonth}
-\title{Load hourly-aggregated Purple Air data for a month}
+\title{Load hourly-aggregated PurpleAir data for a month}
 \usage{
 sensor_loadMonth(
   collection = "scaqmd",
@@ -33,10 +33,11 @@ The \code{datestamp} can must be in the following format:
 By default, the current month is loaded.
 
 Each \code{airsensor} object contains data from a named collection of 
-Purple Air sensors.
+PurpleAir sensors.
 }
 \examples{
 \donttest{
+# TODO:  This needs to be updated to use USFS data
 setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 sensor_loadMonth("scaqmd", 201905) \%>\%
   PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')

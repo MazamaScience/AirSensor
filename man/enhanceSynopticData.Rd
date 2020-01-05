@@ -2,7 +2,7 @@
 % Please edit documentation in R/enhanceSynopticData.R
 \name{enhanceSynopticData}
 \alias{enhanceSynopticData}
-\title{Enhance synoptic data from Purple Air}
+\title{Enhance synoptic data from PurpleAir}
 \usage{
 enhanceSynopticData(
   pas_raw = NULL,

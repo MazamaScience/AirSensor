@@ -1,6 +1,6 @@
 #' @docType package
 #' @name AirSensor
-#' @title Data access and analysis functions for Purple Air sensor data
+#' @title Data access and analysis functions for PurpleAir sensor data
 #' @description This package contains code to access current synoptic data from
 #' Purple Air as well as time series data for individual sensors from Thing
 #' Speak.
@@ -14,7 +14,7 @@
 #' }
 #'
 #' Analysis and visualization functions provide basic functionality for working
-#' with Purple Air sensor data and comparing it with national monitoring data
+#' with PurpleAir sensor data and comparing it with national monitoring data
 #' retrieved with the \pkg{PWFSLSmoke} package.
 NULL
 

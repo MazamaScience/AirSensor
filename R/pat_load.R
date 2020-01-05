@@ -35,7 +35,7 @@
 #' @param pas PurpleAir Synoptic \emph{pas} object.
 #' @param startdate Desired start time (ISO 8601).
 #' @param enddate Desired end time (ISO 8601).
-#' @param days Number of days of data to include.
+#' @param days Number of days of data to include (7 or 45).
 #' @param timezone Timezone used to interpret start and end dates.
 #' 
 #' @return A PurpleAir Timeseries \emph{pat} object.
@@ -64,6 +64,8 @@ pat_load <- function(
   
   # ----- Validate parameters --------------------------------------------------
   
+  MazamaCoreUtils::stopIfNull(timezone)
+  
   # Get the deviceDeploymentID
   if ( is.null(id) && is.null(label) ) {
     
@@ -89,14 +91,15 @@ pat_load <- function(
     
   }
   
+  # Quick return if no dates provided
+  if ( is.null(startdate) && is.null(enddate) ) 
+    return( pat_loadLatest(deviceDeploymentID) )
+  
+  # Get the date range
   dateRange <- MazamaCoreUtils::dateRange(startdate, 
                                           enddate, 
                                           timezone, 
                                           days = days)
-  
-  # Quick return if no dates provided
-  if ( is.null(startdate) && is.null(enddate) ) 
-    return( pat_loadLatest(deviceDeploymentID) )
   
   # ----- Asssemble monthly archive files --------------------------------------
   

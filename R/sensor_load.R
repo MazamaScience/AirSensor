@@ -1,7 +1,7 @@
 #' @export
 #' @importFrom rlang .data
 #' 
-#' @title Load hourly-aggregated Purple Air data
+#' @title Load hourly-aggregated PurpleAir data
 #' 
 #' @description A pre-generated \code{airsensor} object will be loaded for
 #' the given time interval. Archived data for SCAQMD sensors go back to 
@@ -21,7 +21,7 @@
 #' @param collection Name associated with the collection.
 #' @param startdate Desired start datetime (ISO 8601).
 #' @param enddate Desired end datetime (ISO 8601).
-#' @param days Number of days of data to include.
+#' @param days Number of days of data to include (7 or 45).
 #' @param timezone Timezone used to interpret start and end dates.
 #' 
 #' @return An object of class "airsensor".
@@ -47,6 +47,11 @@ sensor_load <- function(
   
   MazamaCoreUtils::stopIfNull(collection)
   
+  # Quick return if no dates provided
+  if ( is.null(startdate) && is.null(enddate) ) 
+    return( sensor_loadLatest(collection) )
+  
+  # Get the date range
   dateRange <- MazamaCoreUtils::dateRange(startdate, 
                                           enddate, 
                                           timezone, 

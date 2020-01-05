@@ -2,7 +2,7 @@
 #'
 #' @importFrom rlang .data
 #'
-#' @title Download Purple Air timeseries data
+#' @title Download PurpleAir timeseries data
 #'
 #' @param id PurpleAir sensor 'deviceDeploymentID'.
 #' @param label PurpleAir sensor 'label'.
@@ -15,7 +15,7 @@
 #' @return List of type \code{pa_timeseries} containing \code{meta} and 
 #' \code{data} elements with timeseries metadata and data, respectively.
 #' 
-#' @description Downloads timeseries data for a specific Purple Air sensor 
+#' @description Downloads timeseries data for a specific PurpleAir sensor 
 #' from the ThingSpeak API and parses the content into a dataframe.
 #'
 #' @references https://www2.purpleair.com/community/faq

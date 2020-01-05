@@ -19,7 +19,7 @@ pas_filterNear(pas = NULL, longitude = NULL, latitude = NULL, radius = "1 km")
 A subset of the given \emph{pas} object.
 }
 \description{
-Filter for Purple Air sensors within a specified distance from 
+Filter for PurpleAir sensors within a specified distance from 
 specified target coordinates.
 }
 \details{

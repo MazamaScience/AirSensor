@@ -1,7 +1,7 @@
 #' @export
 #' @importFrom MazamaCoreUtils logger.error logger.debug
 #' 
-#' @title Download synoptic data from Purple Air
+#' @title Download synoptic data from PurpleAir
 #' 
 #' @param baseUrl base URL for synoptic data
 #' @return Dataframe of synoptic PurpleAir data.
@@ -11,7 +11,7 @@
 #' The synoptic data provides a view of the entire Purple Air network and
 #' includes both metadata and recent PM2.5 averages for each deployed sensor.
 #' 
-#' @references \href{https://www.purpleair.com/json}{json formatted Purple Air data}
+#' @references \href{https://www.purpleair.com/json}{json formatted PurpleAir data}
 #' @seealso \link{enhanceSynopticData}
 #' @examples
 #' \dontrun{

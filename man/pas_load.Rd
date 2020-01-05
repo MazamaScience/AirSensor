@@ -28,7 +28,7 @@ A PurpleAir Synoptic \emph{pas} object.
 \description{
 A pre-generated \emph{pa_synoptic} object will be loaded for
   the given date. These files are generated each day and provide
-  a record of all currently installed Purple Air sensors for the day of 
+  a record of all currently installed PurpleAir sensors for the day of 
   interest. With default arguments, this function will always load data 
   associated with the most recent pre-generated file -- typically less than 
   one hour old.

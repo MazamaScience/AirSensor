@@ -2,9 +2,9 @@
 #' @importFrom rlang .data
 #' @import dplyr
 #' 
-#' @title Create a Purple Air Timeseries object
+#' @title Create a PurpleAir Timeseries object
 #' 
-#' @param pat_raw Raw Purple Air timeseries data from \code{downloadParseTimeseriesData()}
+#' @param pat_raw Raw PurpleAir timeseries data from \code{downloadParseTimeseriesData()}
 #' 
 #' @return List with original \code{meta} and restructured \code{data} elements
 #' 
@@ -179,7 +179,7 @@ createPATimeseriesObject <- function(
   # channels have these (they don't change much)
   data <- tidyr::fill(data, .data$adc0, .data$rssi)
   
-  # ----- Create the Purple Air Timeseries (pat) object ------------------------
+  # ----- Create the PurpleAir Timeseries (pat) object ------------------------
   
   # Combine meta and data dataframes into a list
   pat <- list(meta = meta, data = data)

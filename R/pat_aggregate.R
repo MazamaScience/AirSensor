@@ -11,7 +11,7 @@
 #'  precede these options followed by a space (i.e. "2 day" or "37 min").
 #' 
 #' @description Calculates statistics associated with the aggregation of raw 
-#' Purple Air Timeseries data onto a regular time axis.
+#' PurpleAir Timeseries data onto a regular time axis.
 #' 
 #' Temporal aggregation involves creating time period bins defined by
 #' \code{period} and then calculating the statistics associated with the raw

@@ -2,7 +2,7 @@
 #' @importFrom MazamaCoreUtils logger.isInitialized logger.trace logger.warn
 #' @importFrom rlang .data
 #' 
-#' @title Enhance synoptic data from Purple Air
+#' @title Enhance synoptic data from PurpleAir
 #' 
 #' @description Enhance raw synoptic data from PurpleAir to create a generally 
 #' useful dataframe.
@@ -127,7 +127,7 @@ enhanceSynopticData <- function(
   # ----- Rename columns -------------------------------------------------------
   
   # Rename some things to have consistent lowerCamelCase and better human names
-  # based on the information in the document "Using Purple Air Data".
+  # based on the information in the document "Using PurpleAir Data".
   pas <-
     pas_raw %>%
     dplyr::rename(

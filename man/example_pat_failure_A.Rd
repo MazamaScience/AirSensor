@@ -3,7 +3,7 @@
 \docType{data}
 \name{example_pat_failure_A}
 \alias{example_pat_failure_A}
-\title{Example Purple Air Timeseries dataset exhibiting moderate errors}
+\title{Example PurpleAir Timeseries dataset exhibiting moderate errors}
 \format{An S3 object composed of "meta" and "data" data.}
 \usage{
 example_pat_failure_A

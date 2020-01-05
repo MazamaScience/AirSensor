@@ -2,7 +2,7 @@
 % Please edit documentation in R/sensor_load.R
 \name{sensor_load}
 \alias{sensor_load}
-\title{Load hourly-aggregated Purple Air data}
+\title{Load hourly-aggregated PurpleAir data}
 \usage{
 sensor_load(
   collection = "scaqmd",
@@ -19,7 +19,7 @@ sensor_load(
 
 \item{enddate}{Desired end datetime (ISO 8601).}
 
-\item{days}{Number of days of data to include.}
+\item{days}{Number of days of data to include (7 or 45).}
 
 \item{timezone}{Timezone used to interpret start and end dates.}
 }

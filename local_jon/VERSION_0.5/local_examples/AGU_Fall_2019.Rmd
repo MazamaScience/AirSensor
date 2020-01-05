@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 ```
 
 # Goal
-Increased public interest in low cost air quality sensors creates a need for software that provides high quality analysis and visualization of sensor data in a manner that is open, transparent and reproducible. The AirSensor R package addresses part of this need with functionality focused on data from Purple Air sensors.
+Increased public interest in low cost air quality sensors creates a need for software that provides high quality analysis and visualization of sensor data in a manner that is open, transparent and reproducible. The AirSensor R package addresses part of this need with functionality focused on data from PurpleAir sensors.
 
 # Introduction
 Low-cost air quality sensors are providing an increasingly dense network of high resolution air quality measurements throughout North America. This is particularly true of laser particle counters measuring PM1.0, PM2.5 and PM10 such as those produced by PurpleAir. Much of the careful analysis of PurpleAir data by academic institutions and government agencies is performed with in-house or proprietary tools that are not freely available to members of the general public. Mazama Science has partnered with the Air Quality Sensor Performance Evaluation Center (AQ-SPEC) at California’s South Coast Air Quality Management District to create an open source R package that provides a full suite of data download and analysis capabilities for PurpleAir PM2.5 data.

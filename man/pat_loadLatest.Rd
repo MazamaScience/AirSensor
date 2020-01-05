@@ -4,7 +4,7 @@
 \alias{pat_loadLatest}
 \title{Load PurpleAir time series data for a week}
 \usage{
-pat_loadLatest(id = NULL, label = NULL, pas = NULL)
+pat_loadLatest(id = NULL, label = NULL, pas = NULL, days = 7)
 }
 \arguments{
 \item{id}{PurpleAir sensor 'deviceDeploymentID'.}
@@ -12,22 +12,24 @@ pat_loadLatest(id = NULL, label = NULL, pas = NULL)
 \item{label}{PurpleAir sensor 'label'.}
 
 \item{pas}{PurpleAir Synoptic \emph{pas} object.}
+
+\item{days}{Number of days of data to include (7 or 45).}
 }
 \value{
 A PurpleAir Timeseries \emph{pat} object.
 }
 \description{
 A pre-generated PurpleAir Timeseries \emph{pat} object will be 
-loaded containing data for the most recent 7-day interval. Data are loaded
-from the archive set with either \code{setArchiveBaseUrl()} or 
+loaded containing data for the most recent 7- or 45-day interval. Data are
+loaded from the archive set with either \code{setArchiveBaseUrl()} or 
 \code{setArchiveBaseDir()} for locally archived files.
 }
 \note{
 Starting with \pkg{AirSensor} version 0.6, archive file names are 
 generated with a unique "device-deployment" identifier by combining a unique 
-location ID with a unique device ID. These "device-deployment" identifiers 
-guarantee that movement of a sensor will result in the creation of a new
-time series.
+location ID with a unique device ID. These \code{deviceDeploymentID} 
+identifiers guarantee that movement of a sensor will result in the creation 
+of a new time series.
 
 Users may request a \emph{pat} object in one of two ways:
 

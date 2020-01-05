@@ -2,12 +2,12 @@
 % Please edit documentation in R/createPATimeseriesObject.R
 \name{createPATimeseriesObject}
 \alias{createPATimeseriesObject}
-\title{Create a Purple Air Timeseries object}
+\title{Create a PurpleAir Timeseries object}
 \usage{
 createPATimeseriesObject(pat_raw = NULL)
 }
 \arguments{
-\item{pat_raw}{Raw Purple Air timeseries data from \code{downloadParseTimeseriesData()}}
+\item{pat_raw}{Raw PurpleAir timeseries data from \code{downloadParseTimeseriesData()}}
 }
 \value{
 List with original \code{meta} and restructured \code{data} elements

@@ -95,7 +95,7 @@ pat_join <- function(
   meta <- patList[[1]]$meta
   data <- do.call(rbind, dataList) # duplicates removed below
   
-  # ----- Create the Purple Air Timeseries (pat) object ------------------------
+  # ----- Create the PurpleAir Timeseries (pat) object ------------------------
   
   pat <- list(meta = meta, data = data)
   class(pat) <- c("pa_timeseries", class(pat))

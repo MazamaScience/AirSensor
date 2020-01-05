@@ -25,7 +25,7 @@ pat_load(
 
 \item{enddate}{Desired end time (ISO 8601).}
 
-\item{days}{Number of days of data to include.}
+\item{days}{Number of days of data to include (7 or 45).}
 
 \item{timezone}{Timezone used to interpret start and end dates.}
 }

@@ -1,19 +1,18 @@
 #' @export
 #' @importFrom rlang .data
-#' @importFrom MazamaCoreUtils logger.isInitialized
 #' 
 #' @title Load PurpleAir time series data for a week
 #' 
 #' @description A pre-generated PurpleAir Timeseries \emph{pat} object will be 
-#' loaded containing data for the most recent 7-day interval. Data are loaded
-#' from the archive set with either \code{setArchiveBaseUrl()} or 
+#' loaded containing data for the most recent 7- or 45-day interval. Data are
+#' loaded from the archive set with either \code{setArchiveBaseUrl()} or 
 #' \code{setArchiveBaseDir()} for locally archived files.
 #' 
 #' @note Starting with \pkg{AirSensor} version 0.6, archive file names are 
 #' generated with a unique "device-deployment" identifier by combining a unique 
-#' location ID with a unique device ID. These "device-deployment" identifiers 
-#' guarantee that movement of a sensor will result in the creation of a new
-#' time series.
+#' location ID with a unique device ID. These \code{deviceDeploymentID} 
+#' identifiers guarantee that movement of a sensor will result in the creation 
+#' of a new time series.
 #' 
 #' Users may request a \emph{pat} object in one of two ways:
 #' 
@@ -25,6 +24,7 @@
 #' @param id PurpleAir sensor 'deviceDeploymentID'.
 #' @param label PurpleAir sensor 'label'.
 #' @param pas PurpleAir Synoptic \emph{pas} object.
+#' @param days Number of days of data to include (7 or 45).
 #' 
 #' @return A PurpleAir Timeseries \emph{pat} object.
 #' 
@@ -43,10 +43,18 @@
 pat_loadLatest <- function(
   id = NULL,
   label = NULL,
-  pas = NULL
+  pas = NULL,
+  days = 7
 ) {
   
   # ----- Validate parameters --------------------------------------------------
+  
+  MazamaCoreUtils::stopIfNull(days)
+  days <- as.numeric(days)
+  
+  if ( !days %in% c(7, 45) )
+    stop("Parameter 'days' must be either 7 or 45")
+
   
   # Get the deviceDeploymentID
   if ( is.null(id) && is.null(label) ) {
@@ -77,7 +85,7 @@ pat_loadLatest <- function(
   # ----- Load data from URL or directory --------------------------------------
   
   # Create filename
-  filename <- paste0("pat_", deviceDeploymentID, "_latest7.rda")
+  filename <- paste0("pat_", deviceDeploymentID, "_latest", days, ".rda")
   
   # Use package internal URL
   baseDir <- getArchiveBaseDir()
@@ -94,7 +102,9 @@ pat_loadLatest <- function(
   
   # Get data from URL or directory
   result <- try({
-    suppressWarnings( pat <- loadDataFile(filename, dataUrl, dataDir) )
+    suppressWarnings({ 
+      pat <- loadDataFile(filename, dataUrl, dataDir)
+    })
   }, silent = TRUE)
   
   # NOTE:  We used suppressWarnings() above so that we can have a more
@@ -103,9 +113,9 @@ pat_loadLatest <- function(
   
   if ( "try-error" %in% class(result) ) {
     if ( is.null(baseDir) ) {
-      stop(paste0("Data file could not be loaded from: ", baseUrl), call.=FALSE)
+      stop(paste0("Data file could not be loaded from: ", baseUrl), call. = FALSE)
     } else {
-      stop(paste0("Data file could not be loaded from: ", baseDir), call.=FALSE)
+      stop(paste0("Data file could not be loaded from: ", baseDir), call. = FALSE)
     }
   }
 

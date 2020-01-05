@@ -40,7 +40,7 @@
 "example_pas_raw"
 
 
-#' @title Example Purple Air Timeseries dataset
+#' @title Example PurpleAir Timeseries dataset
 #' @format An S3 object composed of "meta" and "data" data.
 #' @description The \code{example_pat} dataset provides a quickly loadable version of
 #' a \emph{pa_timeseries} object for practicing and code examples.
@@ -61,7 +61,7 @@
 "example_pat"
 
 
-#' @title Example Purple Air Timeseries dataset exhibiting moderate errors
+#' @title Example PurpleAir Timeseries dataset exhibiting moderate errors
 #' @format An S3 object composed of "meta" and "data" data.
 #' @description The \code{example_pat_failure_A} dataset provides a quickly loadable
 #' version of a \emph{pa_timeseries} object for practicing and code examples.
@@ -82,7 +82,7 @@
 "example_pat_failure_A"
 
 
-#' @title Example Purple Air Timeseries dataset exhibiting severe errors
+#' @title Example PurpleAir Timeseries dataset exhibiting severe errors
 #' @format An S3 object composed of "meta" and "data" data.
 #' @description The \code{example_pat_failure_B} dataset provides a quickly loadable
 #' version of a \emph{pa_timeseries} object for practicing and code examples.

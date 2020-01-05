@@ -20,7 +20,7 @@ working with Purple Air Sensor data.
 ## Raw "Engineering" Data
 
 The **AirSensor** package *pat* data model and associated functions make it easy
-to work with raw Purple Air data. (*pat* is for *P*urple *A*ir *T*imeseries.)
+to work with raw PurpleAir data. (*pat* is for *P*urple *A*ir *T*imeseries.)
 Each *pat* object provides unmodified data
 obtained from the *ThingSpeak* database. (ThingSpeak is the Internet of Things 
 data provider that Purple Air has partnered with to handle access to archival
@@ -150,7 +150,7 @@ random processes. The friendliest explanation of this statistical technique
 is available through a serires of 
 [Khan Academy videos](https://www.khanacademy.org/math/ap-statistics/two-sample-inference#two-sample-t-test-means)
 
-When the Purple Air sensor is functioning properly we expect the hourly 
+When the PurpleAir sensor is functioning properly we expect the hourly 
 average of A channel PM2.5 measurements to be close to the average of B channel
 PM2.5 measurements. To determine whether this NULL hypothesis holds,  the
 `pat_aggregate()` function does some additional work for PM2.5 and calculates 
@@ -256,7 +256,7 @@ to flag those hours where the A and B channels disagree.
 
 ## Hourly Averages
 
-One of the most important data products we can create form raw Purple Air data
+One of the most important data products we can create form raw PurpleAir data
 is the hourly avergaged dataset that can be used for comparison with co-located
 federal regulatory monitors. 
 

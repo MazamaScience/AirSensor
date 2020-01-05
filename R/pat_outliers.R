@@ -224,7 +224,7 @@ pat_outliers <- function(
   
     
 
-  # ----- Create the Purple Air Timeseries (pat) object ------------------------
+  # ----- Create the PurpleAir Timeseries (pat) object ------------------------
   
   # Combine meta and data dataframes into a list
   pat <- list(meta = pat$meta, data = data)

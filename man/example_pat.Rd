@@ -3,7 +3,7 @@
 \docType{data}
 \name{example_pat}
 \alias{example_pat}
-\title{Example Purple Air Timeseries dataset}
+\title{Example PurpleAir Timeseries dataset}
 \format{An S3 object composed of "meta" and "data" data.}
 \usage{
 example_pat

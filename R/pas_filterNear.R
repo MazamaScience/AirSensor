@@ -7,7 +7,7 @@
 #' @param latitude a Target latitude. 
 #' @param radius Distance from target with unit (i.e "15 km").
 #' 
-#' @description Filter for Purple Air sensors within a specified distance from 
+#' @description Filter for PurpleAir sensors within a specified distance from 
 #' specified target coordinates. 
 #' 
 #' @details \code{radius} Should be a numeric string with a metric unit 

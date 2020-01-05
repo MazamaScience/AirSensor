@@ -42,7 +42,7 @@ following functions are the most common end-user functions:
 
 ## Timeseries Data
 
-Purple Air Timeseries (PAT) data is available on a per-sensor basis. Within the 
+PurpleAir Timeseries (PAT) data is available on a per-sensor basis. Within the 
 **AirSensor** package, this data is availabe as a `pat` object. All functions 
 beginning with `pat_` are designed for creating or working with this data. The
 following functions are the most common end-user functions:

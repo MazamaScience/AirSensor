@@ -20,7 +20,7 @@ A cleaned up \emph{pat} object.
 }
 \description{
 Optionally applies QC thresholds to a \emph{pat} object
-based on the documented specs of the Purple Air sensor.
+based on the documented specs of the PurpleAir sensor.
 
 The \code{pat_load()} function returns raw "engineering" data for a
 PurpleAir Sensor. The very first level of QC that should always be applied

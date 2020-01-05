@@ -1,11 +1,14 @@
 #!/usr/local/bin/Rscript
 
-# This Rscript will download the latest 2 weeks of synoptic pas from Purple Air. 
-# Then create a pat and save a .png of the plot.
+# This Rscript will download the latest synoptic JSON file from PurpleAir. 
 #
 # Test this script from the command line with:
 #
-# ./B_exec.R
+# ./createPAS_exec.R
+#
+# Run it inside a docker continer with something like:
+#
+# docker run --rm -v /Users/jonathan/Projects/MazamaScience/AirSensor/local_executables:/app -w /app mazamascience/airsensor /app/createPAS_exec.R 
 #
 
 #  --- . --- . MazamaCoreUtils 0.3.5
@@ -28,8 +31,7 @@ if ( interactive() ) {
   opt <- list(
     outputDir = getwd(),
     logDir = getwd(),
-    label = "EDCAQMD Placerville Library",
-    timezone = "America/Los_Angeles",
+    spatialDataDir = "~/Data/Spatial",
     version = FALSE
   )  
   
@@ -50,14 +52,9 @@ if ( interactive() ) {
       help="Output directory for generated .log file [default=\"%default\"]"
     ),
     make_option(
-      c("-u", "--label"),
-      default = "EDCAQMD Placerville Library",
-      help = "label for the purple air sensor of interest"
-    ),
-    make_option(
-      c("-p", "--timezone"),
-      default = "America/Los_Angeles",
-      help = "timezone you want the data to be in"
+      c("-s","--spatialDataDir"), 
+      default="/home/mazama/data/Spatial", 
+      help="Directory containing spatial datasets used by MazamaSpatialUtils [default=\"%default\"]"
     ),
     make_option(
       c("-V","--version"), 
@@ -85,6 +82,9 @@ if ( !dir.exists(opt$outputDir) )
 
 if ( !dir.exists(opt$logDir) )
   stop(paste0("logDir not found:  ",opt$logDir))
+# 
+# if ( !dir.exists(opt$spatialDataDir) ) 
+#   stop(paste0("spatialDataDir not found:  ",opt$spatialDataDir))
 
 # ----- Set up logging ---------------------------------------------------------
 
@@ -102,7 +102,7 @@ errorLog <- file.path(opt$logDir, "createPAS_ERROR.log")
 options(warn=-1) # -1=ignore, 0=save/print, 1=print, 2=error
 
 # Start logging
-logger.info("Running B_exec.R version %s",VERSION)
+logger.info("Running createPAS_exec.R version %s",VERSION)
 sessionString <- paste(capture.output(sessionInfo()), collapse="\n")
 logger.debug("R session:\n\n%s\n", sessionString)
 
@@ -110,42 +110,25 @@ logger.debug("R session:\n\n%s\n", sessionString)
 
 result <- try({
   
-  # Get times
-  endtime <- lubridate::now(tzone = "UTC")
-  starttime <- lubridate::floor_date(endtime) - lubridate::ddays(14)
+  # Set up MazamaSpatialUtils
+  #AirSensor::initializeMazamaSpatialUtils(opt$spatialDataDir)
   
-  # Get strings
-  startdate <- strftime(starttime, "%Y-%m-%d %H:%M:%S", tz = "UTC")
-  enddate <- strftime(endtime, "%Y-%m-%d %H:%M:%S", tz = "UTC")
-  
-  logger.trace("startdate = %s, enddate = %s", startdate, enddate)
-  
-  logger.info("Loading PAS data")
-  
-  # Start with all sensors and filter based on date.
-  pas <- pas_load(archival = TRUE) %>%
-    pas_filter(lastSeenDate > starttime)
-
   # Save it with the YYYYmmdd stamp
   timestamp <- strftime(lubridate::now(tzone = "UTC"), "%Y%m%d", tz="UTC")
   filename <- paste0("pas_", timestamp, ".rda")
   filepath <- file.path(opt$outputDir, filename)
   
-  logger.info("Obtaining 'pat' data for %s", timestamp)
-  pat <- pat_createNew(
-    pas,
-    label = opt$label,
-    startdate = startdate,
-    enddate = enddate,
-    timezone = opt$timezone,
-    #baseURL = "https://api.thingspeak.com/channels/"
-  )
+  # logger.info("Obtaining 'pas' data for %s", timestamp)
+  # pas <- pas_createNew(
+  #   baseUrl = 'https://www.purpleair.com/json',
+  #   countryCodes = c('US'),
+  #   includePWFSL = TRUE,
+  #   lookbackDays = 1
+  # )
+  pas <- 7
   
-  logger.info("creating plot")
-  png("testplot.png", width = 900, height = 900)
-  pat_multiplot(pat)
-  dev.off 
-  
+  logger.info("Writing 'pas' data to %s", filename)
+  save(list="pas", file=filepath)  
   
 }, silent=TRUE)
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/downloadParseSynopticData.R
 \name{downloadParseSynopticData}
 \alias{downloadParseSynopticData}
-\title{Download synoptic data from Purple Air}
+\title{Download synoptic data from PurpleAir}
 \usage{
 downloadParseSynopticData(baseUrl = "https://www.purpleair.com/json")
 }
@@ -27,7 +27,7 @@ View(pas_raw[1:100,])
 }
 }
 \references{
-\href{https://www.purpleair.com/json}{json formatted Purple Air data}
+\href{https://www.purpleair.com/json}{json formatted PurpleAir data}
 }
 \seealso{
 \link{enhanceSynopticData}

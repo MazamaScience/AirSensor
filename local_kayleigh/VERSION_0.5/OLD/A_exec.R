@@ -1,6 +1,6 @@
 #!/usr/local/bin/Rscript
 
-# This Rscript will download the latest synoptic JSON file from Purple Air. 
+# This Rscript will download the latest synoptic JSON file from PurpleAir. 
 #
 # Test this script from the command line with:
 #

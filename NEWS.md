@@ -1,3 +1,10 @@
+# AirSensor 0.6.6
+
+* Added `days` argument to `pat_loadLatest()`.
+* `pat_load()` and `sensor_load()` default to the last 7 days when no dates
+are provided.
+* New `pat_trimDate()` function trims data to local time full days.
+
 # AirSensor 0.6.5
 
 * Reordered arguments in `pas_filterNear()` to package standard
