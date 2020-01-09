@@ -7,7 +7,8 @@
 pas_getColumn(
   pas = NULL,
   name = NULL,
-  states = PWFSLSmoke::US_52,
+  countryCodes = c("US"),
+  stateCodes = NULL,
   pattern = ".*",
   isOutside = TRUE,
   isParent = TRUE
@@ -18,7 +19,9 @@ pas_getColumn(
 
 \item{name}{Name of the column to return.}
 
-\item{states}{Vector of recognized ISO state codes.}
+\item{countryCodes}{ISO country codes used to subset the data.}
+
+\item{stateCodes}{ISO country codes used to subset the data.}
 
 \item{pattern}{Text pattern used to filter station labels.}
 

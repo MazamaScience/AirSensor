@@ -6,7 +6,8 @@
 \usage{
 pas_getDeviceDeploymentIDs(
   pas = NULL,
-  states = PWFSLSmoke::US_52,
+  countryCodes = c("US"),
+  stateCodes = NULL,
   pattern = ".*",
   isOutside = TRUE,
   isParent = TRUE
@@ -15,7 +16,9 @@ pas_getDeviceDeploymentIDs(
 \arguments{
 \item{pas}{PurpleAir Synoptic \emph{pas} object.}
 
-\item{states}{Vector of recognized ISO state codes.}
+\item{countryCodes}{ISO country codes used to subset the data.}
+
+\item{stateCodes}{ISO country codes used to subset the data.}
 
 \item{pattern}{Text pattern used to filter station labels.}
 
@@ -28,7 +31,7 @@ Vector of values.
 }
 \description{
 The incoming \code{pas} object is first filtered based on the 
-values of \code{states}, \code{patter}, \code{isOutside} and \code{isParent}.
+values of \code{stateCodes}, \code{patter}, \code{isOutside} and \code{isParent}.
 The values associated with the \code{"deviceDeploymentID"} column are then 
 returned.
 

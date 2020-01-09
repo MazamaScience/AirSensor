@@ -292,15 +292,16 @@ enhanceSynopticData <- function(
   
   # ----- Find nearby PWFSL monitors -------------------------------------------
   
-  if ( includePWFSL ) {
+  # NOTE:  These columns need to exist even if they are all missing
+  pas$pwfsl_closestDistance <- as.numeric(NA)
+  pas$pwfsl_closestMonitorID <- as.character(NA)
+  
+  if ( !includePWFSL ) {
     
     if ( logger.isInitialized() )
       logger.trace("Adding PWFSL monitor metadata")
     
     if ( !exists('pwfsl') ) (pwfsl <- PWFSLSmoke::loadLatest())
-    
-    pas$pwfsl_closestDistance <- as.numeric(NA)
-    pas$pwfsl_closestMonitorID <- as.character(NA)
     
     for ( i in seq_len(nrow(pas)) ) {
       distances <- PWFSLSmoke::monitor_distance(pwfsl,

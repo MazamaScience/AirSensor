@@ -62,7 +62,7 @@ pas_load <- function(
   if ( !timezone %in% OlsonNames() ) {
     stop(paste0("Parameter 'timezone' is not recognized: ", timezone))
   }
-    
+  
   if ( is.null(datestamp) ) {
     # All .rda archive files are saved with UTC datestamp filenames
     datestamp <- 
@@ -82,7 +82,7 @@ pas_load <- function(
   
   # Allow datestamp to be one day past today to handle timezone differences
   tomorrowStamp <- 
-  { lubridate::now(tzone = timezone) + lubridate::ddays(1) } %>%
+    { lubridate::now(tzone = timezone) + lubridate::ddays(1) } %>%
     strftime("%Y%m%d", tz = timezone)
   
   if ( datestamp > tomorrowStamp )
@@ -123,7 +123,9 @@ pas_load <- function(
     
     # Get data from URL or directory
     result <- try({
-      suppressWarnings( pas <- loadDataFile(filename, dataUrl, dataDir) )
+      suppressWarnings({ 
+        pas <- loadDataFile(filename, dataUrl, dataDir) 
+      })
     }, silent = TRUE)
     
     successful <- !("try-error" %in% class(result))

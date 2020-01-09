@@ -67,6 +67,7 @@ pat_createNew <- function(
   # ----- Validate parameters --------------------------------------------------
   
   MazamaCoreUtils::stopIfNull(baseURL)
+  MazamaCoreUtils::stopIfNull(pas)
   
   # Get the deviceDeploymentID
   if ( is.null(id) && is.null(label) ) {
@@ -199,11 +200,13 @@ pat_createNew <- function(
 
 if ( FALSE ) {
   
+  #id <- "27f2d8382be52aff_41449"
   id <- NULL
-  label <- "Seattle"
-  pas <- example_pas
-  startdate <- "2018-08-01"
-  enddate <- "2018-08-28"
+  label <- "Chisholm ACT Australia"
+  #label <- NULL
+  pas <- pas_au
+  startdate <- NULL
+  enddate <- NULL
   timezone <- NULL
   baseURL <- "https://api.thingspeak.com/channels/"
   
