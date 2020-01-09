@@ -31,13 +31,22 @@ library(AirSensor)        # PurpleAir sensor data access and plotting
 library(AirMonitorPlots)  # Advanced plots for monitors
 ```
 
-*TODO: Explain the difference between 'monitors' and 'sensors'.*
+# *TODO: Explain the difference between 'monitors' and 'sensors'.*
+
+Data can come from two different sources, either a 'monitor' or a 'sensor'. 
+Within the AirSensor package, we consider a 'monitor' to be something installed
+and operated federally, in contrast to a 'sensor' which is a PurpleAir sensor, 
+installed and operated by anyone. 
 
 ## Getting the Data
 
 ### Set up a local archive
 
 *TODO: Explain what this code does.*
+
+First, if the archive base directory does not exist, we can set it up so that 
+RStudio knows where to find and write data.  
+
 
 ```{r setup_local_archive}
 archiveBaseDir <- path.expand("~/Data/Australia_on_fire")
@@ -51,12 +60,16 @@ setArchiveBaseDir(archiveBaseDir)
 
 *TODO: Explain what this code does.*
 
+Next, make sure the Australia pas exists in your directory. The following chunk 
+of code will check to to see if it exists, if not, it will download it.
+
+
 ```{r load_synoptic}
 filePath <- file.path(archiveBaseDir, "pas_au.rda")
 
 if ( !file.exists(filePath) ) {
   initializeMazamaSpatialUtils()
-  pas_au <- pas_createNew(countryCodes = "AU", includePWFSL = FALSE)
+  pas_au <- pas_createNew(countryCodes = "AU", includePWFSL = TRUE)
   save(pas_au, file = filePath)
 }
 
@@ -67,24 +80,94 @@ pas <- get(load(filePath))
 
 *TODO: Explain what this code does.*
 
-```{r explore_pas}
+We can view the locations of each sensor and the AQI over the last hour using the 
+pas_leaflet function.
+
+```{r view_pas}
 pas_leaflet(pas)
 ```
 
 ### Load time series data for Australia
 
+It looks like the air quality in Melbourne is currently unhealthy, let's look at
+data from a sensor there. 
+
 *TODO: Create code similar to the the "load_synoptic" code above to install/load
 2-8 weeks of pat data for some/all of the sensors in Australia. It's OK if this
 takes a few minutes the first time.*
+
+```{r load_pats}
+labels <- c("PIE Wagga", "MORUYA HEADS", "Gadd Street Air Quality", "Hamilton ",
+            "Para Hills West")
+
+deviceDeploymentIDs <- rep(0, length(labels))
+
+for (i in seq(labels)) {
+  
+  deviceDeploymentIDs[i] <-
+    pas_au %>%
+    pas_filter(.data$DEVICE_LOCATIONTYPE == "outside") %>%
+    pas_filter(is.na(.data$parentID)) %>%
+    pas_filter(.data$countryCode == "AU") %>%
+    pas_filter(.data$label == labels[i]) %>%
+    dplyr::pull(deviceDeploymentID)
+  
+}
+
+pat_pie <- pat_createNew(pas = pas, id = deviceDeploymentIDs[1], 
+                         startdate = 20191115, enddate = 20200108)
+
+pat_moruya <- pat_createNew(pas = pas, id = deviceDeploymentIDs[2], 
+                            startdate = 20191115, enddate = 20200108)
+
+pat_gadd <- pat_createNew(pas = pas, id = deviceDeploymentIDs[3], 
+                          startdate = 20191115, enddate = 20200108)
+
+pat_hamilton <- pat_createNew(pas = pas, id = deviceDeploymentIDs[4], 
+                          startdate = 20191115, enddate = 20200108)
+
+pat_para <- pat_createNew(pas = pas, id = deviceDeploymentIDs[5], 
+                          startdate = 20191210, enddate = 20200108)
+
+```
+
 
 ### View the 'pat' data
 
 *TODO: Simple example looking at a sensor in a major population center.*
 
-## Explore the 'pas' data
+```{r view_pats}
+
+pat_multiplot(pat_gadd)
+
+```
+
+
+## Explore the 'pas' dataframe
+
+A 'pas' (PurpleAir synoptic) object is a dataframe that contains meta data and 
+PM 2.5 averages for each sensor in a designated region. For the purposes of this
+exploratory example, we are focusing on Australia but maybe we want to filter 
+even more and just look at the sensors within a certain radius of the one we 
+chose in Melbourne. While we're at it, lets also filter for sensors that are
+located outside.
 
 *TODO: Describe the pas object and show how to maipulate and visualizae data
 using other `pas_~() functions. There could be subsections in here.*
+
+```{r explore_pas}
+lon <- pat_gadd$meta$longitude
+lat <- pat_gadd$meta$latitude
+
+pas_melbourne <- 
+  pas_au %>%
+  pas_filterNear(longitude = lon, latitude = lat, radius = "60 km") %>%
+  pas_filter(.data$DEVICE_LOCATIONTYPE == "outside")
+
+pas_leaflet(pas_melbourne)
+
+```
+
 
 *TODO: You may choose to only show the code for some examples by running a
 chunk with `eval = FALSE`.*
