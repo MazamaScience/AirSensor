@@ -1,3 +1,10 @@
+# AirSensor 0.6.7
+
+* Fixed bug in `enhanceSynopticData()` which failed to add `pwfsl~` columns when
+`includePWFSL = FALSE`. (The columns should still exist but with all NA.)
+* All `pas_get~()` functions now support subsetting by `countryCode` and US
+`stateCode`.
+
 # AirSensor 0.6.6
 
 * Added `days` argument to `pat_loadLatest()`.
