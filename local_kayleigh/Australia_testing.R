@@ -25,6 +25,8 @@ pas_leaflet(pas_au)
 label_au <- c("PIE Wagga", "MORUYA HEADS", "Hamilton ", "Gadd Street Air Quality", 
               "Heathcote", "Para Hills West", "Downer", "Chisholm ACT Australia")
 
+
+pat_test <- pat_createNew(pas = pas_au, label = "PIE Wagga")
 deviceDeploymentID <- rep(0, length(label_au))
 
 for (i in seq(label_au)){
@@ -38,6 +40,7 @@ for (i in seq(label_au)){
   
 }
 
+ql_ids <- pas_getDeviceDeploymentIDs(pas_au, countryCodes = c("AU"))
 
 pat_gadd <- pat_createNew(pas = pas_au, id = deviceDeploymentID[4], startdate = 20191201, enddate = 20200108)
 
@@ -69,7 +72,22 @@ pas_test <- pas_load(
   archival = FALSE
 )
 
+pas_test <- pas_createNew(
+  baseUrl = "https://www.purpleair.com/json",
+  countryCodes = c("US"),
+  includePWFSL = TRUE,
+  lookbackDays = 1
+)
+
 pat_test <- pat_createNew(pas = pas_test, label =  "Alamo Square")
 
+pas_test_au <- pas_createNew(
+  baseUrl = "https://www.purpleair.com/json",
+  countryCodes = c("AU"),
+  includePWFSL = TRUE,
+  lookbackDays = 1
+)
+
+pat_test <- pat_createNew(pas = pas_test_au, label = "PIE Wagga")
 
 
