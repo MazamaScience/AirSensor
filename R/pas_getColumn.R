@@ -5,8 +5,6 @@
 #' 
 #' @param pas PurpleAir Synoptic \emph{pas} object.
 #' @param name Name of the column to return.
-#' @param countryCodes ISO country codes used to subset the data.
-#' @param stateCodes ISO country codes used to subset the data.
 #' @param pattern Text pattern used to filter station labels.
 #' @param isOutside Logical, is the sensor located outside?
 #' @param isParent Logigal, is the sensor a parent station?
@@ -25,8 +23,6 @@
 pas_getColumn <- function(
   pas = NULL,
   name = NULL,
-  countryCodes = c('US'),
-  stateCodes = NULL,
   pattern = ".*",
   isOutside = TRUE,
   isParent = TRUE
@@ -57,10 +53,6 @@ pas_getColumn <- function(
   if ( !name %in% names(pas) ) 
     stop(sprintf("'%s' is not a column name in the pas object", name))
   
-  # TODO: validate countryCodes
-  
-  # TODO: validate (potentially international) stateCodes
-  
   # ----- Filter data ----------------------------------------------------------
   
   # Filter by Outside/Inside
@@ -75,16 +67,6 @@ pas_getColumn <- function(
     sub_pas <- sub_pas %>% pas_filter(is.na(.data$parentID))
   } else {
     sub_pas <- sub_pas %>% pas_filter(!is.na(.data$parentID))
-  }
-  
-  # Filter by countryCodes
-  if ( !is.null(countryCodes) ) {
-    sub_pas <- sub_pas %>% pas_filter(.data$countryCode %in% countryCodes)
-  }
-  
-  # Filter by stateCodes
-  if ( !is.null(stateCodes) ) {
-    sub_pas <- sub_pas %>% pas_filter(.data$stateCode %in% stateCodes)
   }
   
   # Filter by pattern

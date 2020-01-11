@@ -1,5 +1,5 @@
 #' @export
-#' @importFrom MazamaCoreUtils logger.isInitialized logger.trace logger.warn
+#' @importFrom MazamaCoreUtils logger.isInitialized logger.trace logger.warn logger.error logger.fatal
 #' @importFrom rlang .data
 #' 
 #' @title Enhance synoptic data from PurpleAir
@@ -31,11 +31,13 @@
 #' \item{communityRegion -- (where known)}
 #' }
 #'
-#' Filtering by country may be performed by specifying the \code{countryCodes} 
-#' argument.
+#' Filtering by country can speed up the process of enhancement and may be
+#' performed by providing a vector ISO country codes to the \code{countryCodes} 
+#' argument. By default, no subsetting is performed.
 #'
 #' Setting \code{outsideOnly = TRUE} will return only those records marked as 
 #' 'outside'.
+#' 
 #' @note For data obtained on July 28, 2018 this will result in removal of all 
 #' 'B' channels, even those whose parent 'A' channel is marked as 'outside'. 
 #' This is useful if you want a quick, synoptic view of the network, e.g. for a 
@@ -60,14 +62,13 @@
 
 enhanceSynopticData <- function(
   pas_raw = NULL,
-  countryCodes = c("US"),
+  countryCodes = NULL,
   includePWFSL = TRUE
 ) {
   
   # ----- Validate Parameters --------------------------------------------------
   
   MazamaCoreUtils::stopIfNull(pas_raw)
-  MazamaCoreUtils::stopIfNull(countryCodes)
 
   if ( !("data.frame" %in% class(pas_raw)) )
     stop("parameter 'pas_raw' parameter is not a dataframe")
@@ -191,14 +192,30 @@ enhanceSynopticData <- function(
   if ( logger.isInitialized() )
     logger.trace("Adding spatial metadata")
   
-  # Suppress annoying 'deprecated' messages
-  suppressWarnings({
-    
-    # Assign countryCodes and subset to countries of interest
+  # Assign countryCodes
+  result <- try({
     pas$countryCode <- MazamaSpatialUtils::getCountryCode(pas$longitude,
                                                           pas$latitude,
                                                           useBuffering = TRUE)
-    pas <- subset(pas, pas$countryCode %in% countryCodes)
+  }, silent = TRUE)
+  
+  if ( "try-error" %in% class(result) ) {
+    err_msg <- geterrmessage()
+    if ( logger.isInitialized() ) {
+      logger.error(err_msg)
+      logger.fatal("Unable to assign countryCodes.")
+    }
+    stop(paste0("Unable to assign countryCodes: ", err_msg))
+  }  
+  
+  # On with the rest of the spatial data
+  
+  # Suppress annoying 'deprecated' messages
+  suppressWarnings({
+    
+    #  Subset to countries of interest
+    if ( !is.null(countryCodes) )
+      pas <- subset(pas, pas$countryCode %in% countryCodes)
     
     # Assign stateCodes
     pas$stateCode <- MazamaSpatialUtils::getStateCode(pas$longitude,
@@ -236,15 +253,15 @@ enhanceSynopticData <- function(
             CA_AirBasins,
             useBuffering = TRUE
           ) %>%
-          pull("name")
+          dplyr::pull("name")
         
         pas_nonCA <-  
           pas %>% 
-          filter(.data$countryCode != "US" | .data$stateCode != "CA")
+          dplyr::filter(.data$countryCode != "US" | .data$stateCode != "CA")
         
         pas_nonCA$airDistrict <- as.character(NA)
         
-        pas <- bind_rows(pas_CA, pas_nonCA)
+        pas <- dplyr::bind_rows(pas_CA, pas_nonCA)
         
       }
       
@@ -296,12 +313,13 @@ enhanceSynopticData <- function(
   pas$pwfsl_closestDistance <- as.numeric(NA)
   pas$pwfsl_closestMonitorID <- as.character(NA)
   
-  if ( !includePWFSL ) {
+  if ( includePWFSL ) {
     
     if ( logger.isInitialized() )
       logger.trace("Adding PWFSL monitor metadata")
     
-    if ( !exists('pwfsl') ) (pwfsl <- PWFSLSmoke::loadLatest())
+    if ( !exists('pwfsl') )
+      pwfsl <- PWFSLSmoke::loadLatest()
     
     for ( i in seq_len(nrow(pas)) ) {
       distances <- PWFSLSmoke::monitor_distance(pwfsl,
@@ -310,7 +328,6 @@ enhanceSynopticData <- function(
       minDistIndex <- which.min(distances)
       pas$pwfsl_closestDistance[i] <- distances[minDistIndex] * 1000 # To meters
       pas$pwfsl_closestMonitorID[i] <- names(distances[minDistIndex])
-      
     }
     
   }

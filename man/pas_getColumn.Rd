@@ -7,8 +7,6 @@
 pas_getColumn(
   pas = NULL,
   name = NULL,
-  countryCodes = c("US"),
-  stateCodes = NULL,
   pattern = ".*",
   isOutside = TRUE,
   isParent = TRUE
@@ -18,10 +16,6 @@ pas_getColumn(
 \item{pas}{PurpleAir Synoptic \emph{pas} object.}
 
 \item{name}{Name of the column to return.}
-
-\item{countryCodes}{ISO country codes used to subset the data.}
-
-\item{stateCodes}{ISO country codes used to subset the data.}
 
 \item{pattern}{Text pattern used to filter station labels.}
 

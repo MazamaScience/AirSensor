@@ -4,8 +4,6 @@
 #' @title Return timeseries identifiers from filtered PurpleAir Synoptic objects
 #' 
 #' @param pas PurpleAir Synoptic \emph{pas} object.
-#' @param countryCodes ISO country codes used to subset the data.
-#' @param stateCodes ISO country codes used to subset the data.
 #' @param pattern Text pattern used to filter station labels.
 #' @param isOutside Logical, is the sensor located outside?
 #' @param isParent Logigal, is the sensor a parent station?
@@ -25,8 +23,6 @@
 #' 
 pas_getDeviceDeploymentIDs <- function(
   pas = NULL,
-  countryCodes = c('US'),
-  stateCodes = NULL,
   pattern = ".*",
   isOutside = TRUE,
   isParent = TRUE
@@ -41,8 +37,6 @@ pas_getDeviceDeploymentIDs <- function(
   IDs <- pas_getColumn(
     pas, 
     name = "deviceDeploymentID",
-    countryCodes = countryCodes,
-    stateCodes = stateCodes, 
     pattern = pattern, 
     isOutside = isOutside, 
     isParent = isParent

@@ -27,13 +27,13 @@
 #' Filtering by country may be performed by specifying the \code{countryCodes}
 #' argument.
 #'
-#' @param baseUrl Base URL for synoptic data.
 #' @param countryCodes ISO country codes used to subset the data.
 #' @param includePWFSL Logical specifying whether to calculate distances from 
 #'   PWFSL monitors.
 #' @param lookbackDays Number of days to "look back" for valid data. Data are
 #'   filtered to only include sensors with data more recent than 
 #'   \code{lookbackDays} ago.
+#' @param baseUrl Base URL for synoptic data.
 #' 
 #' @return A PurpleAir Synoptic \emph{pas} object.
 #' 
@@ -50,33 +50,36 @@
 #' }
 
 pas_createNew <- function(
-  baseUrl = 'https://www.purpleair.com/json',
-  countryCodes = c('US'),
+  countryCodes = NULL,
   includePWFSL = TRUE,
-  lookbackDays = 1
+  lookbackDays = 1,
+  baseUrl = 'https://www.purpleair.com/json'
 ) {
   
   # ----- Validate parameters --------------------------------------------------
 
-  MazamaCoreUtils::stopIfNull(baseUrl)
-  MazamaCoreUtils::stopIfNull(countryCodes)
   MazamaCoreUtils::stopIfNull(includePWFSL)
   MazamaCoreUtils::stopIfNull(lookbackDays)
+  MazamaCoreUtils::stopIfNull(baseUrl)
   
-  # Guarantee uppercase codes
-  countryCodes <- toupper(countryCodes)
-  
-  # Validate countryCodes
-  if ( any(!(countryCodes %in% countrycode::codelist$iso2c)) ) 
-    stop("parameter 'countryCodes' has values that are not recognized as ISO-2 country codes")
+  if ( !is.null(countryCodes) ) {
+    
+    # Guarantee uppercase codes
+    countryCodes <- toupper(countryCodes)
+    
+    # Validate countryCodes
+    if ( any(!(countryCodes %in% countrycode::codelist$iso2c)) ) 
+      stop("parameter 'countryCodes' has values that are not recognized as ISO-2 country codes")
+    
+  }
   
   # Gaurantee includePWFSL is a logial value
   if ( !is.logical(includePWFSL) )
-    stop("parameter 'includePWFSL' is not a logical value")
+    stop("parameter 'includePWFSL' must be a logical value")
   
   # Guarantee lookbackDays at least 1
   if ( lookbackDays < 1 )
-    stop("parameter 'lookbackDays' is less than one")
+    stop("parameter 'lookbackDays' must be >= 1")
   
   # ----- Load data ------------------------------------------------------------
   
@@ -87,7 +90,7 @@ pas_createNew <- function(
   pas_raw <- downloadParseSynopticData(baseUrl)
   
   if ( logger.isInitialized() )
-    logger.debug("----- enhanceParseSynopticData() -----")
+    logger.debug("----- enhanceSynopticData() -----")
     
   pas <- enhanceSynopticData(pas_raw, countryCodes, includePWFSL)
   

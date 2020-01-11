@@ -5,15 +5,13 @@
 \title{Load latest PurpleAir synoptic data}
 \usage{
 pas_createNew(
-  baseUrl = "https://www.purpleair.com/json",
-  countryCodes = c("US"),
+  countryCodes = NULL,
   includePWFSL = TRUE,
-  lookbackDays = 1
+  lookbackDays = 1,
+  baseUrl = "https://www.purpleair.com/json"
 )
 }
 \arguments{
-\item{baseUrl}{Base URL for synoptic data.}
-
 \item{countryCodes}{ISO country codes used to subset the data.}
 
 \item{includePWFSL}{Logical specifying whether to calculate distances from 
@@ -22,6 +20,8 @@ PWFSL monitors.}
 \item{lookbackDays}{Number of days to "look back" for valid data. Data are
 filtered to only include sensors with data more recent than 
 \code{lookbackDays} ago.}
+
+\item{baseUrl}{Base URL for synoptic data.}
 }
 \value{
 A PurpleAir Synoptic \emph{pas} object.
