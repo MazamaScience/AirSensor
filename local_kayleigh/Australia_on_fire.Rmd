@@ -89,45 +89,22 @@ pas_leaflet(pas)
 
 ### Load time series data for Australia
 
-It looks like the air quality in Melbourne is currently unhealthy, let's look at
+It looks like the air quality in Sydney is currently unhealthy, let's look at
 data from a sensor there. 
 
 *TODO: Create code similar to the the "load_synoptic" code above to install/load
 2-8 weeks of pat data for some/all of the sensors in Australia. It's OK if this
 takes a few minutes the first time.*
 
-```{r load_pats}
-labels <- c("PIE Wagga", "MORUYA HEADS", "Gadd Street Air Quality", "Hamilton ",
-            "Para Hills West")
+```{r load_pat}
+label <- c("Hurstville")
 
-deviceDeploymentIDs <- rep(0, length(labels))
+deviceDeploymentID <- pas_getDeviceDeploymentIDs(pas = pas, 
+                                                 countryCodes = c("AU"), 
+                                                 pattern = label)
 
-for (i in seq(labels)) {
-  
-  deviceDeploymentIDs[i] <-
-    pas_au %>%
-    pas_filter(.data$DEVICE_LOCATIONTYPE == "outside") %>%
-    pas_filter(is.na(.data$parentID)) %>%
-    pas_filter(.data$countryCode == "AU") %>%
-    pas_filter(.data$label == labels[i]) %>%
-    dplyr::pull(deviceDeploymentID)
-  
-}
-
-pat_pie <- pat_createNew(pas = pas, id = deviceDeploymentIDs[1], 
-                         startdate = 20191115, enddate = 20200108)
-
-pat_moruya <- pat_createNew(pas = pas, id = deviceDeploymentIDs[2], 
-                            startdate = 20191115, enddate = 20200108)
-
-pat_gadd <- pat_createNew(pas = pas, id = deviceDeploymentIDs[3], 
-                          startdate = 20191115, enddate = 20200108)
-
-pat_hamilton <- pat_createNew(pas = pas, id = deviceDeploymentIDs[4], 
-                          startdate = 20191115, enddate = 20200108)
-
-pat_para <- pat_createNew(pas = pas, id = deviceDeploymentIDs[5], 
-                          startdate = 20191210, enddate = 20200108)
+pat_hurstville <- pat_createNew(pas = pas, id = deviceDeploymentID, 
+                          startdate = 20191201, enddate = 20200108)
 
 ```
 
@@ -138,33 +115,37 @@ pat_para <- pat_createNew(pas = pas, id = deviceDeploymentIDs[5],
 
 ```{r view_pats}
 
-pat_multiplot(pat_gadd)
+pat_multiplot(pat_hurstville)
 
 ```
 
 
 ## Explore the 'pas' dataframe
 
-A 'pas' (PurpleAir synoptic) object is a dataframe that contains meta data and 
-PM 2.5 averages for each sensor in a designated region. For the purposes of this
-exploratory example, we are focusing on Australia but maybe we want to filter 
-even more and just look at the sensors within a certain radius of the one we 
-chose in Melbourne. While we're at it, lets also filter for sensors that are
-located outside.
+A 'pas' (PurpleAir synoptic) object is a dataframe that contains metadata and 
+PM 2.5 averages for many purple air sensors in a designated region. Each pas 
+object can be filtered and edited to contain whichever arrangement of sensors 
+that the programmer desires based on location, state, name, etc, due to the 
+flexibility of being a dataframe. Data averages that the pas object contain 
+are current at the time that the pas is created and are different from time 
+series data which are reserved for the 'pat' objects. 
+
+For the purposes of this exploratory example, we are focusing on Australia but 
+maybe we want to filter even more and just look at the sensors within a certain 
+radius of the one we chose in Sydney. 
 
 *TODO: Describe the pas object and show how to maipulate and visualizae data
 using other `pas_~() functions. There could be subsections in here.*
 
 ```{r explore_pas}
-lon <- pat_gadd$meta$longitude
-lat <- pat_gadd$meta$latitude
+lon <- pat_hurstville$meta$longitude
+lat <- pat_hurstville$meta$latitude
 
-pas_melbourne <- 
+pas_sydney <- 
   pas_au %>%
-  pas_filterNear(longitude = lon, latitude = lat, radius = "60 km") %>%
-  pas_filter(.data$DEVICE_LOCATIONTYPE == "outside")
+  pas_filterNear(longitude = lon, latitude = lat, radius = "60 km")
 
-pas_leaflet(pas_melbourne)
+pas_leaflet(pas_sydney)
 
 ```
 
@@ -174,8 +155,16 @@ chunk with `eval = FALSE`.*
 
 ## Explore the 'pat' data
 
+A 'pat' (PurpleAir timeseries) object is a list of two dataframes, one metadata 
+dataframe, and one timeseries dataframe for one sinlge PurpleAir sensor. For the
+purposes of this example, 
+
+
+
 *TODO: Describe the pat object and show how to manipulate and visualize data 
 using other `pat_~() functions. There will be subsections in here.*
+
+
 
 ## Working with 'airsensor' data
 
