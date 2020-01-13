@@ -1,3 +1,9 @@
+# AirSensor 0.6.9
+
+* Archive directory structure was changed so that monthly pat files are found
+in a monthly directiory underneath `pat/YYYY/`. The `pat_loadMonth()` function
+was modified to search in this locaiton.
+
 # AirSensor 0.6.8
 
 * Changed default value to `countryCodes = NULL` in `pas_createNew()` and

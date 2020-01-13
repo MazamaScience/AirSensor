@@ -90,8 +90,14 @@ pas_load <- function(
   
   # ----- Load data from URL or directory --------------------------------------
   
+  # Use baseDir if it is set
   baseDir <- getArchiveBaseDir()
-  baseUrl <- getArchiveBaseUrl()
+  
+  if ( is.null(baseDir) ) {
+    baseUrl <- getArchiveBaseUrl()
+  } else {
+    baseUrl <- NULL
+  }
   
   result <- NULL
   successful <- FALSE
@@ -112,13 +118,14 @@ pas_load <- function(
     } else {
       filename <- paste0("pas_", datestamp, ".rda")
     }
-    dataUrl <- paste0(baseUrl, '/pas/', yearstamp)
     
-    # dataDir should be NULL if baseDir is NULL
+    # Use baseDir if it is set
     if ( is.null(baseDir) ) {
       dataDir <- NULL
+      dataUrl <- paste0(baseUrl, '/pas/', yearstamp)
     } else {
       dataDir <- paste0(baseDir, '/pas/', yearstamp)
+      dataUrl <- NULL
     }
     
     # Get data from URL or directory

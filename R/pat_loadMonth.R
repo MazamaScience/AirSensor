@@ -101,6 +101,7 @@ pat_loadMonth <- function(
   datestamp <- strftime(datetime, "%Y%m%d", tz = "UTC")
   monthstamp <- strftime(datetime, "%Y%m", tz = "UTC")
   yearstamp <- strftime(datetime, "%Y", tz = "UTC")
+  mmstamp <- strftime(datetime, "%m", tz = "UTC")
   
   # ----- Load data from URL or directory --------------------------------------
   
@@ -111,13 +112,13 @@ pat_loadMonth <- function(
   baseDir <- getArchiveBaseDir()
   baseUrl <- getArchiveBaseUrl()
   
-  dataUrl <- paste0(baseUrl, '/pat/', yearstamp)
+  dataUrl <- paste0(baseUrl, '/pat/', yearstamp, '/', mmstamp)
   
   # dataDir should be NULL if baseDir is NULL
   if ( is.null(baseDir) ) {
     dataDir <- NULL
   } else {
-    dataDir <- paste0(baseDir, '/pat/', yearstamp)
+    dataDir <- paste0(baseDir, '/pat/', yearstamp, '/', mmstamp)
   }
   
   # Get data from URL or directory
@@ -131,9 +132,9 @@ pat_loadMonth <- function(
   
   if ( "try-error" %in% class(result) ) {
     if ( is.null(baseDir) ) {
-      stop(paste0("Data file could not be loaded from: ", baseUrl), call.=FALSE)
+      stop(paste0("Data file could not be loaded from: ", baseUrl), call. = FALSE)
     } else {
-      stop(paste0("Data file could not be loaded from: ", baseDir), call.=FALSE)
+      stop(paste0("Data file could not be loaded from: ", baseDir), call. = FALSE)
     }
   }
   
