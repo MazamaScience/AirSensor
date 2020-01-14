@@ -23,6 +23,8 @@ if ( !file.exists(pas_filePath) ) {
 
 canberra_wind <- get(load(wind_filePath))
 pas <- get(load(pas_filePath))
+
+
 pas_leaflet(pas_au)
 
 # label_au <- c("PIE Wagga", "MORUYA HEADS", "Hamilton ", "Gadd Street Air Quality", 

@@ -14,6 +14,9 @@ wind2020 <-
 
 wind2020$date <- MazamaCoreUtils::parseDatetime(wind2020$date, timezone = "Australia/Canberra")
 
+canberra_airportLat <- wind2020_orig$LATITUDE
+canberra_airportLon <- wind2020_orig$LONGITUDE
+
 wind <- dplyr::bind_rows(wind2019, wind2020)
 min_date <- MazamaCoreUtils::parseDatetime(20191201, timezone = "Australia/Canberra")
 wind_filt <- dplyr::filter(wind, date >= min_date)

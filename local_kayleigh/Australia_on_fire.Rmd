@@ -1,14 +1,14 @@
 ---
 title: "Australia on Fire"
 author: "Kayleigh Wilson"
-date: "2020-01-05"
+date: "2020-01-13"
 output:
   html_document:
     toc: true
     theme: united
 ---
 
-```{r setup, message = FALSE}
+```{r setup, include=FALSE, message = FALSE}
 knitr::opts_chunk$set(echo = TRUE, fig.width = 7, fig.height = 5)
 ```
 
@@ -17,9 +17,6 @@ knitr::opts_chunk$set(echo = TRUE, fig.width = 7, fig.height = 5)
 The goal of this report is to demonstrate the use of the **AirSensor** package
 to create a local archive or PurpleAir data covering the December 2019 - 
 January 2020 fires and smoke in Australia.
-
-The target audience is any R user interested in air quality data but who who may 
-not be familiar with Mazama Science pacakges. 
 
 We begin by loading the necessary packages:
 
@@ -31,18 +28,17 @@ library(AirSensor)        # PurpleAir sensor data access and plotting
 library(AirMonitorPlots)  # Advanced plots for monitors
 ```
 
-# *TODO: Explain the difference between 'monitors' and 'sensors'.*
-
-Data can come from two different sources, either a 'monitor' or a 'sensor'. 
-Within the AirSensor package, we consider a 'monitor' to be something installed
-and operated federally, in contrast to a 'sensor' which is a PurpleAir sensor, 
-installed and operated by anyone. 
+Within the AirSensor package, data can come from two different sources, we 
+consider a 'monitor' to be something installed and operated federally, in 
+contrast to a 'sensor' which is a PurpleAir sensor, installed and operated by 
+anyone. However, data collected by a PurpleAir sensor can be changed into a data 
+format recognized by some of the plotting functions designed for the 'monitor' 
+data. An example of how to do this is outlined in this report, but first, lets 
+get the data.
 
 ## Getting the Data
 
 ### Set up a local archive
-
-*TODO: Explain what this code does.*
 
 First, if the archive base directory does not exist, we can set it up so that 
 RStudio knows where to find and write data.  
@@ -58,27 +54,27 @@ setArchiveBaseDir(archiveBaseDir)
 
 ### Load synoptic data for Australia
 
-*TODO: Explain what this code does.*
-
 Next, make sure the Australia pas exists in your directory. The following chunk 
 of code will check to to see if it exists, if not, it will download it.
 
 
 ```{r load_synoptic}
-filePath <- file.path(archiveBaseDir, "pas_au.rda")
+pas_filePath <- file.path(archiveBaseDir, "pas_au.rda")
 
-if ( !file.exists(filePath) ) {
+wind_filePath <- file.path(archiveBaseDir, "canberra_wind.rda")
+
+if ( !file.exists(pas_filePath) ) {
   initializeMazamaSpatialUtils()
   pas_au <- pas_createNew(countryCodes = "AU", includePWFSL = TRUE)
-  save(pas_au, file = filePath)
+  save(pas_au, file = pas_filePath)
 }
 
-pas <- get(load(filePath))
+canberra_wind <- get(load(wind_filePath))
+pas <- get(load(pas_filePath))
 ```
 
 ### View the 'pas' data
 
-*TODO: Explain what this code does.*
 
 We can view the locations of each sensor and the AQI over the last hour using the 
 pas_leaflet function.
@@ -92,30 +88,25 @@ pas_leaflet(pas)
 It looks like the air quality in Sydney is currently unhealthy, let's look at
 data from a sensor there. 
 
-*TODO: Create code similar to the the "load_synoptic" code above to install/load
-2-8 weeks of pat data for some/all of the sensors in Australia. It's OK if this
-takes a few minutes the first time.*
 
 ```{r load_pat}
-label <- c("Hurstville")
+label <- c("Jannali" )
 
 deviceDeploymentID <- pas_getDeviceDeploymentIDs(pas = pas, 
                                                  countryCodes = c("AU"), 
                                                  pattern = label)
 
-pat_hurstville <- pat_createNew(pas = pas, id = deviceDeploymentID, 
-                          startdate = 20191201, enddate = 20200108)
+pat_jannali <- pat_createNew(pas = pas, id = deviceDeploymentID, 
+                          startdate = 20191229, enddate = 20200110)
 
 ```
 
 
 ### View the 'pat' data
 
-*TODO: Simple example looking at a sensor in a major population center.*
-
 ```{r view_pats}
 
-pat_multiplot(pat_hurstville)
+pat_multiplot(pat_jannali)
 
 ```
 
@@ -134,49 +125,215 @@ For the purposes of this exploratory example, we are focusing on Australia but
 maybe we want to filter even more and just look at the sensors within a certain 
 radius of the one we chose in Sydney. 
 
-*TODO: Describe the pas object and show how to maipulate and visualizae data
-using other `pas_~() functions. There could be subsections in here.*
 
 ```{r explore_pas}
-lon <- pat_hurstville$meta$longitude
-lat <- pat_hurstville$meta$latitude
+lon <- pat_jannali$meta$longitude
+lat <- pat_jannali$meta$latitude
 
 pas_sydney <- 
   pas_au %>%
-  pas_filterNear(longitude = lon, latitude = lat, radius = "60 km")
+  pas_filterNear(longitude = lon, latitude = lat, radius = "50 km") 
 
 pas_leaflet(pas_sydney)
 
 ```
 
 
-*TODO: You may choose to only show the code for some examples by running a
-chunk with `eval = FALSE`.*
+### Filter the 'pas' based on conditions
+
+The air quality in Sydney appears to be unhealthy, but let's look for the the 
+sensors that are reporting "Very Unhealth" or worse.
+```{r unhealthy_pas}
+pas_v_unhealthy <- 
+  pas_au%>%
+  pas_filter(pm25_1hr > 150)
+
+pas_leaflet(pas_v_unhealthy)
+```
+
 
 ## Explore the 'pat' data
+
+### Download some data based on the bad air quality
+Now that we have filtered the 'pas' based on the worst air quality, we can 
+download some time series data which we call 'pat' objects. 
+
+Since the fires in Australia started, PurpleAir sensors have been popping up left
+and right. Lets start by grabbing data from sensors with the longest history.
+
+```{r explore_pat}
+labels <- pas_getLabels(pas_v_unhealthy, countryCodes = c("AU"))
+deviceDeploymentIDs <- pas_getDeviceDeploymentIDs(pas_v_unhealthy, countryCodes = c("AU"))
+unhealthy_IDsubset <- deviceDeploymentIDs[c(3, 5, 6)]
+
+patList <- list()
+for ( id in unhealthy_IDsubset ) {
+  patList[[id]] <- pat_createNew(id, pas = pas_v_unhealthy, startdate = 20191210, enddate = 20200110) 
+  }
+
+pat_chisholm <- patList[[1]]
+pat_moruya <- patList[[2]]
+pat_windang <- patList[[3]]
+```
+
+### Download data based on proximity
+
+```{r plot_pats, message=FALSE, warning=FALSE}
+colors <- c("Chisholm" = "#1b9e77", "Moruya" = "#d95f02", "Windang" = "#7570b3")
+gg <- ggplot(data = pat_chisholm$data) +
+  geom_point(aes(x = pat_chisholm$data$datetime, y = pat_chisholm$data$pm25_A, 
+            color = "Chisholm"), alpha = 0.5) +
+  geom_point(data = pat_moruya$data, 
+            aes(x = pat_moruya$data$datetime, y = pat_moruya$data$pm25_A,
+                color = "Moruya"), alpha = 0.5) +
+  geom_point(data = pat_windang$data, 
+            aes(x = pat_windang$data$datetime, y = pat_windang$data$pm25_A, 
+                color = "Windang"), alpha = 0.5) +
+  labs(title = "PM 2.5 channel A for multiple sensors" ) +
+  xlab("date") +
+  ylab("ug/m3") +
+  scale_colour_manual(name="Sensor",values=colors) +
+  theme(legend.position= c(0.9, 0.8))
+
+gg
+
+```
 
 A 'pat' (PurpleAir timeseries) object is a list of two dataframes, one metadata 
 dataframe, and one timeseries dataframe for one sinlge PurpleAir sensor. For the
 purposes of this example, 
 
+### Download data based on proximity
+
+Interesting that of these two new sensors, there are two in which the data that
+channel A is reporting are out of spec. Lets see if there are others that are 
+closer in proximity that are also reporting out of spec.
+
+```{r proximity_pats, message=FALSE, warning=FALSE}
+proximity_IDsubset <- deviceDeploymentIDs[c(2, 4)]
+
+pat_bungendore <- pat_createNew(id = proximity_IDsubset[1], pas = pas_v_unhealthy,
+                                startdate = 20191229, enddate = 20200110)
+
+pat_downer <- pat_createNew(id = proximity_IDsubset[2], pas = pas_v_unhealthy,
+                                startdate = 20191220, enddate = 20200110)
 
 
-*TODO: Describe the pat object and show how to manipulate and visualize data 
-using other `pat_~() functions. There will be subsections in here.*
 
+colors <- c("Chisholm" = "#1b9e77", "Downer" = "#f1a340", "Bungendore" = "#998ec3")
+gg <- ggplot(data = pat_chisholm$data) +
+  geom_point(aes(x = pat_chisholm$data$datetime, y = pat_chisholm$data$pm25_A, 
+                 color = "Chisholm"), alpha = 0.5) +
+  geom_point(data = pat_downer$data, 
+             aes(x = pat_downer$data$datetime, y = pat_downer$data$pm25_A,
+                 color = "Downer"), alpha = 0.5) +
+  geom_point(data = pat_bungendore$data, 
+             aes(x = pat_bungendore$data$datetime, y = pat_bungendore$data$pm25_A, 
+                 color = "Bungendore"), alpha = 0.5) +
+  labs(title = "PM 2.5 channel A for multiple sensors" ) +
+  xlab("date") +
+  ylab("ug/m3") +
+  scale_colour_manual(name="Sensor",values=colors) +
+  theme(legend.position= c(0.9, 0.8))
 
+gg
+
+```
+
+Looks like there are several that are reporting out of spec values on the same 
+days. 
+As a quick check on the quality of the data lets run a state of health function
+```{r pat_soh, message=FALSE, warning=FALSE}
+pat_dailySoHIndexPlot(pat_chisholm)
+```
+
+both channels are reporting good health so lets look a little deeper. Not really sure
+what to make of these values, perhaps the smoke is so bad that the sensors don't
+know how to report the values but three sensors in close proximity that report  
+out of spec values at the same time is compelling nevertheless.
+
+to get a better look at the data, lets conver the data into an airsensor object
 
 ## Working with 'airsensor' data
+````{r airsensor_data}
+airsensor_chisholm <- pat_createAirSensor(
+  pat = pat_chisholm,
+  period = "1 hour",
+  parameter = "pm25",
+  channel = "a",
+  qc_algorithm = "hourly_AB_01",
+  min_count = 20,
+  aggregation_FUN = pat_aggregate
+)
+```
 
-*TODO: Describe creation of 'airsensor' objects and how the __PWFSLSmoke__
-package can be used to manipulate and visualize them. There will be subsections 
-in here.*
 
-## Advanced plotting with **AirMonitorPlots**
+### Advanced plotting with **AirMonitorPlots**
 
-*TODO: Show a couple of examples.*
+Now that the data are in an airsensor object, we can use a variety of other 
+plotting functions located in the __PWFSLSmoke__ package to explore more.
 
-## STORY
+```{r monitor_plots}
+PWFSLSmoke::monitor_dailyBarplot(airsensor_chisholm)
 
-*TODO:  Pick one of sensors in a major population center and work up a story.*
+```
+
+
+Lastly, explore where the smoke seemed to come from in this area. I gathered
+wind data from the Canberra Airport and did a bit of dataset formatting behind
+the scenes on a dataset I downloaded from this location 
+(https://www.ncei.noaa.gov/access/search/dataset-search). Conveniently, the 
+Canberra Airport is located in the middle of the three sensors of interest so 
+we can see where the majority of the smoke was coming from. 
+here is a map.
+
+```{r leaflet_map}
+canberra_labels <- c("Chisholm ACT Australia", "Bungendore, NSW Australia", "Downer")
+
+pas_canberra <- 
+  pas_au%>%
+  pas_filterNear(latitude = pat_chisholm$meta$latitude, longitude = pat_chisholm$meta$longitude, radius = "40 km")
+
+canberra_airportLat <- -35.30694
+canberra_airportLon <- 149.195
+
+m <- pas_leaflet(pas_canberra)
+
+
+leaf <- m %>%
+  leaflet::addCircleMarkers(lng = canberra_airportLon, lat = canberra_airportLat)
+leaf
+```
+
+Here is the pollution rose. Looks like the smoke is coming mostly from the E/SE
+which is sort of validated by the New York Times article here https://www.nytimes.com/interactive/2020/01/02/climate/australia-fires-map.html
+
+```{r pollution_rose}
+sensor_pollutionRose(airsensor_chisholm, canberra_wind, statistic = "prop.mean")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
