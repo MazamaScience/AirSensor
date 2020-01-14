@@ -95,17 +95,13 @@ not, it will be downloaded.
 ```{r load_pat}
 label <- c("Jannali" )
 
-deviceDeploymentID <- pas_getDeviceDeploymentIDs(pas = pas, 
-                                                 countryCodes = c("AU"), 
-                                                 pattern = label)
-
 filePath_jannali <- file.path(archiveBaseDir, "pat_jannali.rda")
 
 if ( file.exists(filePath_jannali) ) {
   pat_jannali <- get(load(filePath_jannali))
 } else {
   pat_jannali <- pat_createNew(pas = pas, 
-                               id = deviceDeploymentID, 
+                               label = label, 
                                startdate = 20191229, 
                                enddate = 20200110)
 }
@@ -196,17 +192,15 @@ if ( file.exists(filePath_windang) ) {
   pat_windang <- get(load(filePath_windang))
 } else {
   
-  labels <- pas_getLabels(pas_v_unhealthy, countryCodes = c("AU"))
-  deviceDeploymentIDs <- pas_getDeviceDeploymentIDs(pas_v_unhealthy, 
-                                                    countryCodes = c("AU"))
-  unhealthy_IDsubset <- deviceDeploymentIDs[c(3, 5, 6)]
+  unhealthy_labels <- pas_getLabels(pas_v_unhealthy)
+  label_subset <- unhealthy_labels[c(3, 5, 6)]
   
   patList <- list()
-  for ( id in unhealthy_IDsubset ) {
-    patList[[id]] <- pat_createNew(id,
-                                   pas = pas_v_unhealthy, 
-                                   startdate = 20191210, 
-                                   enddate = 20200110) 
+  for ( label in label_subset ) {
+    patList[[label]] <- pat_createNew(label = label,
+                                      pas = pas_v_unhealthy, 
+                                      startdate = 20191210, 
+                                      enddate = 20200110) 
   }
   
   pat_chisholm <- patList[[1]]
@@ -268,14 +262,12 @@ filePath_downer <- file.path(archiveBaseDir, "pat_downer.rda")
 if ( file.exists(filePath_downer) ) {
   pat_downer <- get(load(filePath_downer))
 } else {
-  proximity_IDsubset <- deviceDeploymentIDs[c(2, 4)]
-  
-  pat_bungendore <- pat_createNew(id = proximity_IDsubset[1], 
+  pat_bungendore <- pat_createNew(label = "Bungendore, NSW Australia", 
                                   pas = pas_v_unhealthy,
                                   startdate = 20191229, 
                                   enddate = 20200110)
   
-  pat_downer <- pat_createNew(id = proximity_IDsubset[2],
+  pat_downer <- pat_createNew(label = "Chisholm ACT Australia",
                               pas = pas_v_unhealthy,
                               startdate = 20191220, 
                               enddate = 20200110)
