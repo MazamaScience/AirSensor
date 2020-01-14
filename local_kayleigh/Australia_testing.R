@@ -220,7 +220,7 @@ pat_dailySoHIndexPlot(pat_chisholm)
 
 ### to get a better look at the data, lets conver the data into an airsensor object
 airsensor_chisholm <- pat_createAirSensor(
-  pat = pat_chisholm,
+  pat = pat_bungendore,
   period = "1 hour",
   parameter = "pm25",
   channel = "a",
@@ -255,7 +255,8 @@ leaf <- m %>%
   leaflet::addCircleMarkers(lng = closestSite$longitude, lat = closestSite$latitude)
 leaf
 
-sensor_pollutionRose(airsensor_chisholm, canberra_wind, statistic = "prop.mean")
+sensor_pollutionRose(airsensor_chisholm, windData = NULL, 
+                     statistic = "prop.mean")
 
 
 # 

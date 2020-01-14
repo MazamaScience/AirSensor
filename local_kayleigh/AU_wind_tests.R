@@ -2,7 +2,7 @@
 ## NOTE: Originally I was downloading data from the link below, 
 ## now I see otherwise. 
 
-# Lines of code for seeing which station seems to have more reliable data:
+# Lines of code for deciding which stations seems to have more reliable data:
 
 
 lon <- 149.19
