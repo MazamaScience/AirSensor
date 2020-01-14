@@ -1,3 +1,28 @@
+
+## NOTE: Originally I was downloading data from the link below, 
+## now I see otherwise. 
+
+# Lines of code for seeing which station seems to have more reliable data:
+
+
+lon <- 149.19
+lat <- -35.30
+year <- 2020
+
+lon <- pat_downer$meta$longitude
+lat <- pat_downer$meta$latitude
+
+closestSite <- worldmet::getMeta(lon = lon, lat = lat, n = 1, 
+                                 plot = FALSE)[1,]
+siteCode <- paste0(closestSite$USAF, "-", closestSite$WBAN)
+siteData <- worldmet::importNOAA(code = siteCode, year = year, 
+                                 parallel = FALSE)
+windData <- dplyr::select(siteData, c("date", "wd", "ws"))
+
+
+
+
+# original wind data formatting:
 wind2020_orig <- read.csv("/Users/kayleigh/Data/Australia_on_fire/2020.csv", header = TRUE)
 wind2019_orig <- read.csv("/Users/kayleigh/Data/Australia_on_fire/2019.csv", header = TRUE)
 
@@ -28,5 +53,11 @@ canberra_wind <- dplyr::filter(wind_filt, lubridate::minute(wind_filt$date) == 0
 filename <- c("canberra_wind.rda")
 filepath <- file.path("/Users/kayleigh/Data/Australia_on_fire/", filename)
 save(list = "canberra_wind", file = filepath)
+
+
+# search site to search manually: https://www.ncei.noaa.gov/access/search/dataset-search
+# Example API URL from the site:
+# https://www.ncei.noaa.gov/access/services/data/v1?dataset=global-marine&dataTypes=WIND_DIR,WIND_SPEED&stations=AUCE&startDate=2016-01-01&endDate=2016-01-02&boundingBox=90,-180,-90,180
+
 
 

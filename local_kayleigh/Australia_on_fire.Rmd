@@ -59,18 +59,16 @@ of code will check to to see if it exists, if not, it will download it.
 
 
 ```{r load_synoptic}
-pas_filePath <- file.path(archiveBaseDir, "pas_au.rda")
+filePath_pas <- file.path(archiveBaseDir, "pas_au.rda")
 
-wind_filePath <- file.path(archiveBaseDir, "canberra_wind.rda")
 
-if ( !file.exists(pas_filePath) ) {
+if ( !file.exists(filePath_pas) ) {
   initializeMazamaSpatialUtils()
   pas_au <- pas_createNew(countryCodes = "AU", includePWFSL = TRUE)
-  save(pas_au, file = pas_filePath)
+  save(pas_au, file = filePath_pas)
 }
 
-canberra_wind <- get(load(wind_filePath))
-pas <- get(load(pas_filePath))
+pas <- get(load(filePath_pas))
 ```
 
 ### View the 'pas' data
@@ -95,10 +93,13 @@ label <- c("Jannali" )
 deviceDeploymentID <- pas_getDeviceDeploymentIDs(pas = pas, 
                                                  countryCodes = c("AU"), 
                                                  pattern = label)
-
-pat_jannali <- pat_createNew(pas = pas, id = deviceDeploymentID, 
-                          startdate = 20191229, enddate = 20200110)
-
+filePath_jannali <- file.path(archiveBaseDir, "pat_jannali.rda")
+if ( file.exists(filePath_jannali) ) {
+  pat_jannali <- get(load(filePath_jannali))
+} else {
+  pat_jannali <- pat_createNew(pas = pas, id = deviceDeploymentID, 
+                               startdate = 20191229, enddate = 20200110)
+}
 ```
 
 
@@ -162,18 +163,35 @@ Since the fires in Australia started, PurpleAir sensors have been popping up lef
 and right. Lets start by grabbing data from sensors with the longest history.
 
 ```{r explore_pat}
-labels <- pas_getLabels(pas_v_unhealthy, countryCodes = c("AU"))
-deviceDeploymentIDs <- pas_getDeviceDeploymentIDs(pas_v_unhealthy, countryCodes = c("AU"))
-unhealthy_IDsubset <- deviceDeploymentIDs[c(3, 5, 6)]
 
-patList <- list()
-for ( id in unhealthy_IDsubset ) {
-  patList[[id]] <- pat_createNew(id, pas = pas_v_unhealthy, startdate = 20191210, enddate = 20200110) 
+filePath_chisholm <- file.path(archiveBaseDir, "pat_chisholm.rda")
+if ( file.exists(filePath_chisholm) ) {
+  pat_chisholm <- get(load(filePath_chisholm))
+} 
+
+filePath_moruya <- file.path(archiveBaseDir, "pat_moruya.rda")
+if ( file.exists(filePath_moruya) ) {
+  pat_moruya <- get(load(filePath_moruya))
+} 
+
+filePath_windang <- file.path(archiveBaseDir, "pat_windang.rda")
+if ( file.exists(filePath_windang) ) {
+  pat_windang <- get(load(filePath_windang))
+} else {
+  
+  labels <- pas_getLabels(pas_v_unhealthy, countryCodes = c("AU"))
+  deviceDeploymentIDs <- pas_getDeviceDeploymentIDs(pas_v_unhealthy, countryCodes = c("AU"))
+  unhealthy_IDsubset <- deviceDeploymentIDs[c(3, 5, 6)]
+  
+  patList <- list()
+  for ( id in unhealthy_IDsubset ) {
+    patList[[id]] <- pat_createNew(id, pas = pas_v_unhealthy, startdate = 20191210, enddate = 20200110) 
   }
-
-pat_chisholm <- patList[[1]]
-pat_moruya <- patList[[2]]
-pat_windang <- patList[[3]]
+  
+  pat_chisholm <- patList[[1]]
+  pat_moruya <- patList[[2]]
+  pat_windang <- patList[[3]]
+}
 ```
 
 ### Download data based on proximity
@@ -182,13 +200,13 @@ pat_windang <- patList[[3]]
 colors <- c("Chisholm" = "#1b9e77", "Moruya" = "#d95f02", "Windang" = "#7570b3")
 gg <- ggplot(data = pat_chisholm$data) +
   geom_point(aes(x = pat_chisholm$data$datetime, y = pat_chisholm$data$pm25_A, 
-            color = "Chisholm"), alpha = 0.5) +
+                 color = "Chisholm"), alpha = 0.5) +
   geom_point(data = pat_moruya$data, 
-            aes(x = pat_moruya$data$datetime, y = pat_moruya$data$pm25_A,
-                color = "Moruya"), alpha = 0.5) +
+             aes(x = pat_moruya$data$datetime, y = pat_moruya$data$pm25_A,
+                 color = "Moruya"), alpha = 0.5) +
   geom_point(data = pat_windang$data, 
-            aes(x = pat_windang$data$datetime, y = pat_windang$data$pm25_A, 
-                color = "Windang"), alpha = 0.5) +
+             aes(x = pat_windang$data$datetime, y = pat_windang$data$pm25_A, 
+                 color = "Windang"), alpha = 0.5) +
   labs(title = "PM 2.5 channel A for multiple sensors" ) +
   xlab("date") +
   ylab("ug/m3") +
@@ -210,14 +228,24 @@ channel A is reporting are out of spec. Lets see if there are others that are
 closer in proximity that are also reporting out of spec.
 
 ```{r proximity_pats, message=FALSE, warning=FALSE}
-proximity_IDsubset <- deviceDeploymentIDs[c(2, 4)]
 
-pat_bungendore <- pat_createNew(id = proximity_IDsubset[1], pas = pas_v_unhealthy,
-                                startdate = 20191229, enddate = 20200110)
+filePath_bungendore <- file.path(archiveBaseDir, "pat_bungendore.rda")
+if ( file.exists(filePath_bungendore) ) {
+  pat_bungendore <- get(load(filePath_bungendore))
+} 
 
-pat_downer <- pat_createNew(id = proximity_IDsubset[2], pas = pas_v_unhealthy,
-                                startdate = 20191220, enddate = 20200110)
-
+filePath_downer <- file.path(archiveBaseDir, "pat_downer.rda")
+if ( file.exists(filePath_downer) ) {
+  pat_downer <- get(load(filePath_downer))
+} else {
+  proximity_IDsubset <- deviceDeploymentIDs[c(2, 4)]
+  
+  pat_bungendore <- pat_createNew(id = proximity_IDsubset[1], pas = pas_v_unhealthy,
+                                  startdate = 20191229, enddate = 20200110)
+  
+  pat_downer <- pat_createNew(id = proximity_IDsubset[2], pas = pas_v_unhealthy,
+                              startdate = 20191220, enddate = 20200110)
+}
 
 
 colors <- c("Chisholm" = "#1b9e77", "Downer" = "#f1a340", "Bungendore" = "#998ec3")
@@ -294,22 +322,29 @@ pas_canberra <-
   pas_au%>%
   pas_filterNear(latitude = pat_chisholm$meta$latitude, longitude = pat_chisholm$meta$longitude, radius = "40 km")
 
-canberra_airportLat <- -35.30694
-canberra_airportLon <- 149.195
+
+
+lon <- pat_chisholm$meta$longitude
+lat <- pat_chisholm$meta$latitude
+
+closestSite <- worldmet::getMeta(lon = lon, lat = lat, n = 1, 
+                                 plot = FALSE)[1,]
 
 m <- pas_leaflet(pas_canberra)
 
 
 leaf <- m %>%
-  leaflet::addCircleMarkers(lng = canberra_airportLon, lat = canberra_airportLat)
+  leaflet::addCircleMarkers(lng = closestSite$longitude, lat = closestSite$latitude)
 leaf
 ```
 
-Here is the pollution rose. Looks like the smoke is coming mostly from the E/SE
+Here is the pollution rose. Looks like the smoke is coming mostly from the E/NE
 which is sort of validated by the New York Times article here https://www.nytimes.com/interactive/2020/01/02/climate/australia-fires-map.html
 
 ```{r pollution_rose}
-sensor_pollutionRose(airsensor_chisholm, canberra_wind, statistic = "prop.mean")
+sensor_pollutionRose(sensor = airsensor_chisholm, 
+                     windData = NULL, 
+                     statistic = "prop.mean")
 ```
 
 

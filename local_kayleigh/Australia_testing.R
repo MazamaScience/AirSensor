@@ -44,7 +44,20 @@ deviceDeploymentID <- pas_getDeviceDeploymentIDs(pas = pas,
 #                                            pattern = "Windang, Ocean Street")
 
 pat_jannali <- pat_createNew(pas = pas, id = deviceDeploymentID, 
-                          startdate = 20191229, enddate = 20200110)
+                             startdate = 20191229, enddate = 20200110)
+filename <- c("pat_jannali.rda")
+filepath <- file.path("/Users/kayleigh/Data/Australia_on_fire/", filename)
+save(list = "pat_jannali", file = filepath)
+
+
+jannali_filePath <- file.path(archiveBaseDir, "pat_jannali.rda")
+if ( file.exists(jannali_filePath) ) {
+  pat_jannali <- get(load(jannali_filePath))
+} else {
+  pat_jannali <- pat_createNew(pas = pas, id = deviceDeploymentID, 
+                               startdate = 20191229, enddate = 20200110)
+}
+
 
 # pat_windang <- pat_createNew(pas = pas, id = testdeviceID, 
 #                           startdate = 20191210, enddate = 20200110)
@@ -70,30 +83,70 @@ pas_v_unhealthy <-
 pas_leaflet(pas_v_unhealthy)
 
 ### if you wanted you could download all the pat's for canberra but lets just look at a few with the longest data history
-labels <- pas_getLabels(pas_v_unhealthy, countryCodes = c("AU"))
-deviceDeploymentIDs <- pas_getDeviceDeploymentIDs(pas_v_unhealthy, countryCodes = c("AU"))
-unhealthy_IDsubset <- deviceDeploymentIDs[c(3, 5, 6)]
+filePath_chisholm <- file.path(archiveBaseDir, "pat_chisholm.rda")
+if ( file.exists(filePath_chisholm) ) {
+  pat_chisholm <- get(load(filePath_chisholm))
+} 
 
-patList <- list()
-for ( id in unhealthy_IDsubset ) {
-  patList[[id]] <- pat_createNew(id, pas = pas_v_unhealthy, startdate = 20191210, enddate = 20200110) 
+filePath_moruya <- file.path(archiveBaseDir, "pat_moruya.rda")
+if ( file.exists(filePath_moruya) ) {
+  pat_moruya <- get(load(filePath_moruya))
+} 
+
+filePath_windang <- file.path(archiveBaseDir, "pat_windang.rda")
+if ( file.exists(filePath_windang) ) {
+  pat_moruya <- get(load(filePath_windang))
+} else {
+  
+  labels <- pas_getLabels(pas_v_unhealthy, countryCodes = c("AU"))
+  deviceDeploymentIDs <- pas_getDeviceDeploymentIDs(pas_v_unhealthy, countryCodes = c("AU"))
+  unhealthy_IDsubset <- deviceDeploymentIDs[c(3, 5, 6)]
+  
+  patList <- list()
+  for ( id in unhealthy_IDsubset ) {
+    patList[[id]] <- pat_createNew(id, pas = pas_v_unhealthy, startdate = 20191210, enddate = 20200110) 
   }
+  
+  pat_chisholm <- patList[[1]]
+  pat_moruya <- patList[[2]]
+  pat_windang <- patList[[3]]
+}
 
-pat_chisholm <- patList[[1]]
-pat_moruya <- patList[[2]]
-pat_windang <- patList[[3]]
+
+# labels <- pas_getLabels(pas_v_unhealthy, countryCodes = c("AU"))
+# deviceDeploymentIDs <- pas_getDeviceDeploymentIDs(pas_v_unhealthy, countryCodes = c("AU"))
+# unhealthy_IDsubset <- deviceDeploymentIDs[c(3, 5, 6)]
+# 
+# patList <- list()
+# for ( id in unhealthy_IDsubset ) {
+#   patList[[id]] <- pat_createNew(id, pas = pas_v_unhealthy, startdate = 20191210, enddate = 20200110) 
+# }
+# 
+# pat_chisholm <- patList[[1]]
+# pat_moruya <- patList[[2]]
+# pat_windang <- patList[[3]]
+#Saving pat's so they can be downloaded more easily
+filename <- c("pat_chisholm.rda")
+filepath <- file.path("/Users/kayleigh/Data/Australia_on_fire/", filename)
+save(list = "pat_chisholm", file = filepath)
+filename <- c("pat_moruya.rda")
+filepath <- file.path("/Users/kayleigh/Data/Australia_on_fire/", filename)
+save(list = "pat_moruya", file = filepath)
+filename <- c("pat_windang.rda")
+filepath <- file.path("/Users/kayleigh/Data/Australia_on_fire/", filename)
+save(list = "pat_windang", file = filepath)
 
 
 colors <- c("Chisholm" = "#1b9e77", "Moruya" = "#d95f02", "Windang" = "#7570b3")
 gg <- ggplot(data = pat_chisholm$data) +
   geom_point(aes(x = pat_chisholm$data$datetime, y = pat_chisholm$data$pm25_A, 
-            color = "Chisholm"), alpha = 0.5) +
+                 color = "Chisholm"), alpha = 0.5) +
   geom_point(data = pat_moruya$data, 
-            aes(x = pat_moruya$data$datetime, y = pat_moruya$data$pm25_A,
-                color = "Moruya"), alpha = 0.5) +
+             aes(x = pat_moruya$data$datetime, y = pat_moruya$data$pm25_A,
+                 color = "Moruya"), alpha = 0.5) +
   geom_point(data = pat_windang$data, 
-            aes(x = pat_windang$data$datetime, y = pat_windang$data$pm25_A, 
-                color = "Windang"), alpha = 0.5) +
+             aes(x = pat_windang$data$datetime, y = pat_windang$data$pm25_A, 
+                 color = "Windang"), alpha = 0.5) +
   labs(title = "PM 2.5 channel A for multiple sensors" ) +
   xlab("date") +
   ylab("ug/m3") +
@@ -103,16 +156,39 @@ gg <- ggplot(data = pat_chisholm$data) +
 gg
 ### interesting that two of these three sensors report real looking data out of spec. T
 ### these three are spread all over Canberra, what if we look at three right next to each other
+filePath_bungendore <- file.path(archiveBaseDir, "pat_bungendore.rda")
+if ( file.exists(filePath_bungendore) ) {
+  pat_bungendore <- get(load(filePath_bungendore))
+} 
 
-proximity_IDsubset <- deviceDeploymentIDs[c(2, 4)]
+filePath_downer <- file.path(archiveBaseDir, "pat_downer.rda")
+if ( file.exists(filePath_downer) ) {
+  pat_downer <- get(load(filePath_downer))
+} else {
+  proximity_IDsubset <- deviceDeploymentIDs[c(2, 4)]
+  
+  pat_bungendore <- pat_createNew(id = proximity_IDsubset[1], pas = pas_v_unhealthy,
+                                  startdate = 20191229, enddate = 20200110)
+  
+  pat_downer <- pat_createNew(id = proximity_IDsubset[2], pas = pas_v_unhealthy,
+                              startdate = 20191220, enddate = 20200110)
+}
+# proximity_IDsubset <- deviceDeploymentIDs[c(2, 4)]
+# 
+# pat_bungendore <- pat_createNew(id = proximity_IDsubset[1], pas = pas_v_unhealthy,
+#                                 startdate = 20191229, enddate = 20200110)
+# 
+# 
+# pat_downer <- pat_createNew(id = proximity_IDsubset[2], pas = pas_v_unhealthy,
+#                             startdate = 20191220, enddate = 20200110)
 
-pat_bungendore <- pat_createNew(id = proximity_IDsubset[1], pas = pas_v_unhealthy,
-                                startdate = 20191229, enddate = 20200110)
-
-pat_downer <- pat_createNew(id = proximity_IDsubset[2], pas = pas_v_unhealthy,
-                                startdate = 20191220, enddate = 20200110)
-
-
+#Saving pat's so they can be downloaded more easily
+filename <- c("pat_downer.rda")
+filepath <- file.path("/Users/kayleigh/Data/Australia_on_fire/", filename)
+save(list = "pat_downer", file = filepath)
+filename <- c("pat_bungendore.rda")
+filepath <- file.path("/Users/kayleigh/Data/Australia_on_fire/", filename)
+save(list = "pat_bungendore", file = filepath)
 
 colors <- c("Chisholm" = "#1b9e77", "Downer" = "#f1a340", "Bungendore" = "#998ec3")
 gg <- ggplot(data = pat_chisholm$data) +
@@ -166,15 +242,17 @@ canberra_labels <- c("Chisholm ACT Australia", "Bungendore, NSW Australia", "Dow
 pas_canberra <- 
   pas_au%>%
   pas_filterNear(latitude = pat_chisholm$meta$latitude, longitude = pat_chisholm$meta$longitude, radius = "40 km")
+lon <- pat_chisholm$meta$longitude
+lat <- pat_chisholm$meta$latitude
 
-canberra_airportLat <- -35.30694
-canberra_airportLon <- 149.195
+closestSite <- worldmet::getMeta(lon = lon, lat = lat, n = 1, 
+                                 plot = FALSE)[1,]
 
 m <- pas_leaflet(pas_canberra)
 
 
 leaf <- m %>%
-  leaflet::addCircleMarkers(lng = canberra_airportLon, lat = canberra_airportLat)
+  leaflet::addCircleMarkers(lng = closestSite$longitude, lat = closestSite$latitude)
 leaf
 
 sensor_pollutionRose(airsensor_chisholm, canberra_wind, statistic = "prop.mean")
@@ -199,7 +277,7 @@ id_glen <- deviceDeploymentIDs[5]
 pat_heathcote <- pat_createNew(id_heathcote, pas = pas_sydney, 
                                startdate = 20191201, enddate = 20200110) 
 pat_glen <- pat_createNew(id_glen, pas = pas_sydney, 
-                               startdate = 20191201, enddate = 20200110) 
+                          startdate = 20191201, enddate = 20200110) 
 pat_ormond <- patList[[1]]
 pat_werribee <- patList[[2]]
 
@@ -207,7 +285,7 @@ pat_werribee <- patList[[2]]
 pat_multiplot(pat_donvale)
 
 
- pat_externalFit(pat_gadd)
+pat_externalFit(pat_gadd)
 pat_internalFit(pat_gadd)
 pat_dailySoHIndexPlot(pat_gadd)
 
