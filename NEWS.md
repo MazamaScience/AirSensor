@@ -1,3 +1,17 @@
+# AirSensor 0.6.9
+
+* Archive directory structure was changed so that monthly pat files are found
+in a monthly directiory underneath `pat/YYYY/`. The `pat_loadMonth()` function
+was modified to search in this locaiton.
+
+# AirSensor 0.6.8
+
+* Changed default value to `countryCodes = NULL` in `pas_createNew()` and
+`enhanceSynopticData()` so that it is easier to create _pas_ objects for other
+countries.
+* Removed `countryCode` and `stateCode` arguments from `pas_get~` functions.
+Filter should be done with `pas_filter()` before these functions are called.
+
 # AirSensor 0.6.7
 
 * Fixed bug in `enhanceSynopticData()` which failed to add `pwfsl~` columns when

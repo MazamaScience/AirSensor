@@ -47,14 +47,19 @@ pat_trimDate <- function(
   timeRange <- range(pat$data$datetime)
   timezone <- pat$meta$timezone
   
-  # NOTE:  The dateRange() function will automatically floor() both the enddate 
-  # NOTE:  and the startdate. This is appropriate for enddate but we now have
-  # NOTE:  to add a day to startdate to get it 'inside' the data range.
+  # NOTE:  The dateRange() is used to restrict the time range days that have
+  # NOTE:  complete data.
   
   dateRange <-
-    MazamaCoreUtils::dateRange(timeRange[1], timeRange[2], timezone = timezone)
-  dateRange[1] <- dateRange[1] + lubridate::ddays(1)
-
+    MazamaCoreUtils::dateRange(
+      startdate = timeRange[1],
+      enddate = timeRange[2],
+      timezone = timezone,
+      unit = "sec",
+      ceilingStart = TRUE, # date boundary *after* the start
+      ceilingEnd = FALSE   # date boundary *before* the end
+    )
+  
   # ----- Subset the "pat" object ----------------------------------------------
   
   data <- 

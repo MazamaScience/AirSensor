@@ -4,21 +4,10 @@
 \alias{pas_getIDs}
 \title{Return IDs from filtered PurpleAir Synoptic objects}
 \usage{
-pas_getIDs(
-  pas = NULL,
-  countryCodes = c("US"),
-  stateCodes = NULL,
-  pattern = ".*",
-  isOutside = TRUE,
-  isParent = TRUE
-)
+pas_getIDs(pas = NULL, pattern = ".*", isOutside = TRUE, isParent = TRUE)
 }
 \arguments{
 \item{pas}{PurpleAir Synoptic \emph{pas} object.}
-
-\item{countryCodes}{ISO country codes used to subset the data.}
-
-\item{stateCodes}{ISO country codes used to subset the data.}
 
 \item{pattern}{Text pattern used to filter station labels.}
 

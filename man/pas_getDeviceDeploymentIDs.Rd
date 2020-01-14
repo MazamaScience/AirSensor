@@ -6,8 +6,6 @@
 \usage{
 pas_getDeviceDeploymentIDs(
   pas = NULL,
-  countryCodes = c("US"),
-  stateCodes = NULL,
   pattern = ".*",
   isOutside = TRUE,
   isParent = TRUE
@@ -15,10 +13,6 @@ pas_getDeviceDeploymentIDs(
 }
 \arguments{
 \item{pas}{PurpleAir Synoptic \emph{pas} object.}
-
-\item{countryCodes}{ISO country codes used to subset the data.}
-
-\item{stateCodes}{ISO country codes used to subset the data.}
 
 \item{pattern}{Text pattern used to filter station labels.}
 

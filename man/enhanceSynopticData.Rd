@@ -4,11 +4,7 @@
 \alias{enhanceSynopticData}
 \title{Enhance synoptic data from PurpleAir}
 \usage{
-enhanceSynopticData(
-  pas_raw = NULL,
-  countryCodes = c("US"),
-  includePWFSL = TRUE
-)
+enhanceSynopticData(pas_raw = NULL, countryCodes = NULL, includePWFSL = TRUE)
 }
 \arguments{
 \item{pas_raw}{Dataframe returned by \code{downloadParseSynopticData()}.}
@@ -49,8 +45,9 @@ Steps include:
 \item{communityRegion -- (where known)}
 }
 
-Filtering by country may be performed by specifying the \code{countryCodes} 
-argument.
+Filtering by country can speed up the process of enhancement and may be
+performed by providing a vector ISO country codes to the \code{countryCodes} 
+argument. By default, no subsetting is performed.
 
 Setting \code{outsideOnly = TRUE} will return only those records marked as 
 'outside'.
