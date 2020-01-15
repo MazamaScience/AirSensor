@@ -73,8 +73,6 @@ A diagnostic plot is produced if `showPlot = TRUE`.
 }
 \examples{
 \donttest{
-setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
-pat <- pat_load("SCAH_22")
-pat_externalFit(pat)
+pat_externalFit(example_pat)
 }
 }

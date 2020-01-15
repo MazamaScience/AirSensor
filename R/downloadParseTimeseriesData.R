@@ -1,4 +1,5 @@
 #' @export
+#' @importFrom MazamaCoreUtils logger.isInitialized logger.trace logger.warn logger.error
 #'
 #' @importFrom rlang .data
 #'
@@ -231,6 +232,9 @@ downloadParseTimeseriesData <- function(
       )
     }
     
+    if ( logger.isInitialized() )
+      logger.warn("Channel A: %s", err_msg)
+    
     message(paste0("Channel A: ", err_msg, " === Returning empty A channel ==="))
     
     A_list <- err_list
@@ -260,7 +264,7 @@ downloadParseTimeseriesData <- function(
   
   # Handle the response
   status_code <- httr::status_code(r)
-  content <- httr::content(r, as = "text") # don't interpret the JSONw
+  content <- httr::content(r, as = "text") # don't interpret the JSON
   
   if ( httr::http_error(r) ) { # web service failed to respond
     
@@ -297,6 +301,9 @@ downloadParseTimeseriesData <- function(
       )
     }
     
+    if ( logger.isInitialized() )
+      logger.warn("Channel B: %s", err_msg)
+    
     message(paste0("Channel B: ", err_msg, " === Returning empty B channel ==="))
     
     B_list <- err_list
@@ -318,7 +325,18 @@ downloadParseTimeseriesData <- function(
     
   }
   
-  # Sanity check for data -> fill if empty to avoid error DL 
+  # Extra checks for some errors we have seen
+  if ( !is.numeric(ncol(A_data)) ) {
+    if ( logger.isInitialized() )
+      logger.warn("A_data is not a dataframe: %s", print(A_data))
+  }
+  
+  if ( !is.numeric(ncol(B_data)) ) {
+    if ( logger.isInitialized() )
+      logger.warn("B_data is not a dataframe: %s", print(B_data))
+  }
+  
+  # Sanity check for data -> fill if empty to avoid error 
   if ( ncol(A_data) == 0 && ncol(B_data) == 0 ) {
     A_data <- err_data
     B_data <- err_data

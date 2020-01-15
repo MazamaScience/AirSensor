@@ -17,9 +17,29 @@
 #' \item{\code{pm10_atm}}
 #' }
 #' 
+#' @note 
+#' On January 13, 2020 the PurpleAir FAQ "Whsat's the difference between CF_1
+#' and CF_ATM?" contained the following text:
+#' 
+#' \preformatted{
+#' The CF_ATM and CF_1 values are calculated from the particle count data with a 
+#' proprietary algorithm developed by the PMS5003 laser counter manufacturer, 
+#' PlanTower. The specifics of the calculation are not available to the public 
+#' (or us for that matter). However, to convert the particle count data (um/dl) 
+#' to a mass concentration (ug/m3) they must use an average particle density. 
+#' They do provide 2 different mass concentration conversion options; CF_1 uses 
+#' the "average particle density" for indoor particulate matter and CF_ATM uses 
+#' the "average particle density" for outdoor particulate matter. Depending on 
+#' the density of the particles you are measuring the sensor could appear to 
+#' read "high" or "low". Some groups have developed conversion factors to 
+#' convert the data from the sensor to match the unique average particle density 
+#' within their airshed. 
+#' }
+#' 
 #' @return "pa_timeseries" list of time series PurpleAir data
 #' 
 #' @seealso \link{downloadParseTimeseriesData}
+#' @references https://www2.purpleair.com/community/faq
 #' 
 #' @examples 
 #' \dontrun{
@@ -125,7 +145,8 @@ createPATimeseriesObject <- function(
                   pm1_atm_A = .data$pm1_atm,
                   pm25_atm_A = .data$pm2.5_atm,
                   pm10_atm_A = .data$pm10_atm,
-                  pm25_A = .data$pm2.5_cf1)
+                  pm25_cf1_A = .data$pm2.5_cf1) %>%
+    dplyr::mutate(pm25_A = .data$pm25_atm_A)
   
   # NOTE:  Expedient conversion to a minute axis with floor_date() 
   A$datetime <- lubridate::floor_date(A$datetime_A, unit="min")
@@ -147,7 +168,8 @@ createPATimeseriesObject <- function(
                   pm1_atm_B = .data$pm1_atm,
                   pm25_atm_B = .data$pm2.5_atm,
                   pm10_atm_B = .data$pm10_atm,
-                  pm25_B = .data$pm2.5_cf1)
+                  pm25_cf1_B = .data$pm2.5_cf1) %>%
+    dplyr::mutate(pm25_B = .data$pm25_atm_B)
   
   # NOTE:  Expedient conversion to a minute axis with floor_date() 
   B$datetime <- lubridate::floor_date(B$datetime_B, unit="min")
@@ -166,6 +188,8 @@ createPATimeseriesObject <- function(
                   .data$pm25_atm_B, 
                   .data$pm10_atm_A, 
                   .data$pm10_atm_B, 
+                  .data$pm25_cf1_A, 
+                  .data$pm25_cf1_B, 
                   .data$temperature, 
                   .data$humidity,
                   .data$uptime, 

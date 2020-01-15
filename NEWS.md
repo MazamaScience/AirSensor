@@ -3,6 +3,10 @@
 * Archive directory structure was changed so that monthly pat files are found
 in a monthly directiory underneath `pat/YYYY/`. The `pat_loadMonth()` function
 was modified to search in this locaiton.
+* `pat$meta$pm25_A/B` values now come from the raw data _outdoor_ value
+` PM2.5 (ATM)` rather than the _indoor_ value `PM2.5 (CF=1)`. See
+https://www2.purpleair.com/community/faq#!hc-what-is-the-difference-between-cf-1-and-cf-atm
+* Added more logging to `downloadParseTimeseriesData()`.
 
 # AirSensor 0.6.8
 
