@@ -21,7 +21,7 @@ if ( !file.exists(pas_filePath) ) {
   save(pas_au, file = pas_filePath)
 }
 
-canberra_wind <- get(load(wind_filePath))
+#canberra_wind <- get(load(wind_filePath))
 pas <- get(load(pas_filePath))
 
 
@@ -35,9 +35,9 @@ pas_leaflet(pas_au)
 
 label <- c("Jannali" )
 
-deviceDeploymentID <- pas_getDeviceDeploymentIDs(pas = pas, 
-                                                 countryCodes = c("AU"), 
-                                                 pattern = label)
+# deviceDeploymentID <- pas_getDeviceDeploymentIDs(pas = pas, 
+#                                                  countryCodes = c("AU"), 
+#                                                  pattern = label)
 
 # testdeviceID <- pas_getDeviceDeploymentIDs(pas = pas, 
 #                                            countryCodes = c("AU"), 
@@ -50,14 +50,16 @@ filepath <- file.path("/Users/kayleigh/Data/Australia_on_fire/", filename)
 save(list = "pat_jannali", file = filepath)
 
 
-jannali_filePath <- file.path(archiveBaseDir, "pat_jannali.rda")
-if ( file.exists(jannali_filePath) ) {
-  pat_jannali <- get(load(jannali_filePath))
-} else {
-  pat_jannali <- pat_createNew(pas = pas, id = deviceDeploymentID, 
-                               startdate = 20191229, enddate = 20200110)
-}
+filePath_jannali <- file.path(archiveBaseDir, "pat_jannali.rda")
 
+if ( file.exists(filePath_jannali) ) {
+  pat_jannali <- get(load(filePath_jannali))
+} else {
+  pat_jannali <- pat_createNew(pas = pas, 
+                               label = label, 
+                               startdate = 20191229, 
+                               enddate = 20200110)
+}
 
 # pat_windang <- pat_createNew(pas = pas, id = testdeviceID, 
 #                           startdate = 20191210, enddate = 20200110)
@@ -98,13 +100,15 @@ if ( file.exists(filePath_windang) ) {
   pat_moruya <- get(load(filePath_windang))
 } else {
   
-  labels <- pas_getLabels(pas_v_unhealthy, countryCodes = c("AU"))
-  deviceDeploymentIDs <- pas_getDeviceDeploymentIDs(pas_v_unhealthy, countryCodes = c("AU"))
-  unhealthy_IDsubset <- deviceDeploymentIDs[c(3, 5, 6)]
+  unhealthy_labels <- pas_getLabels(pas_v_unhealthy)
+  label_subset <- unhealthy_labels[c(3, 5, 6)]
   
   patList <- list()
-  for ( id in unhealthy_IDsubset ) {
-    patList[[id]] <- pat_createNew(id, pas = pas_v_unhealthy, startdate = 20191210, enddate = 20200110) 
+  for ( label in label_subset ) {
+    patList[[label]] <- pat_createNew(label = label,
+                                      pas = pas_v_unhealthy, 
+                                      startdate = 20191210, 
+                                      enddate = 20200110) 
   }
   
   pat_chisholm <- patList[[1]]

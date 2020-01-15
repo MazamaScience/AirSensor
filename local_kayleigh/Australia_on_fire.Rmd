@@ -76,7 +76,8 @@ PM 2.5 averages for many purple air sensors in a designated region. Each pas
 object can be filtered and edited to contain whichever arrangement of sensors 
 that the programmer desires based on location, state, name, etc. Data averages 
 that the pas object contain are current at the time that the pas is created and 
-are different from time series data which are reserved for the 'pat' objects.
+are different from time series data which are reserved for the 'pat' objects. 
+
 
 We can view the locations of each sensor and the AQI (Air Quality Index) over 
 the last hour using the pas_leaflet function.
@@ -104,6 +105,7 @@ if ( file.exists(filePath_jannali) ) {
                                label = label, 
                                startdate = 20191229, 
                                enddate = 20200110)
+  save(pat_jannali, file = filePath_jannali)
 }
 ```
 
@@ -155,6 +157,13 @@ the 'pas' for the sensors that have an AQI value higher than 150 which
 corresponds to levels of concern called "Very Unhealthy", or "Hazardous" when 
 the AQI value is higher than 250.
 
+It is important to note here that the sensors listed in the 'pas' after 
+filtering will depend on the date that the original 'pas' was generated. Since 
+data averages are generated each time a 'pas' is created, the 'pas' that you use 
+may show different AQI averages for the same sensors than the 'pas' that we are 
+using here. For the purposes of this example, I generated this 'pas' on January 
+10, 2020.
+
 ```{r unhealthy_pas}
 pas_v_unhealthy <- 
   pas_au%>%
@@ -168,7 +177,13 @@ pas_leaflet(pas_v_unhealthy)
 ### Download 'pat' data based on the bad air quality
 
 Now that the 'pas' has been filtered based on the worst air quality, we can 
-download the 'pat' objets for sensors listed in the 'pas'.
+download the 'pat' objets for sensors listed in the 'pas'. Here, you could 
+download all the sensors in the newly filtered 'pas' but in this example for the
+purposes of reproducibility, I am going to continue to use the `pas_au` object 
+as the reference 'pas' to ensure that the sensors I am referencing are present 
+in any 'pas' that one may download in the future. This is once again, due to 
+ephemeral nature of the AQI data averages which are generated at the time of the
+'pas' creation.
 
 Since the fires in Australia started, new PurpleAir sensors have been popping up 
 left and right. Let's start by grabbing data from sensors with the longest 
@@ -192,20 +207,27 @@ if ( file.exists(filePath_windang) ) {
   pat_windang <- get(load(filePath_windang))
 } else {
   
-  unhealthy_labels <- pas_getLabels(pas_v_unhealthy)
-  label_subset <- unhealthy_labels[c(3, 5, 6)]
+  unhealthy_labels <- c("Chisholm ACT Australia", 
+                        "MORUYA HEADS",
+                        "Windang, Ocean Street")
   
   patList <- list()
-  for ( label in label_subset ) {
+  for ( label in unhealthy_labels ) {
     patList[[label]] <- pat_createNew(label = label,
-                                      pas = pas_v_unhealthy, 
+                                      pas = pas_au, 
                                       startdate = 20191210, 
                                       enddate = 20200110) 
   }
   
   pat_chisholm <- patList[[1]]
+  save(pat_chisholm, file = filePath_chisholm)
+  
   pat_moruya <- patList[[2]]
+  save(pat_moruya, file = filePath_moruya)
+  
   pat_windang <- patList[[3]]
+  save(pat_windang, file = filePath_windang)
+  
 }
 ```
 
@@ -263,14 +285,16 @@ if ( file.exists(filePath_downer) ) {
   pat_downer <- get(load(filePath_downer))
 } else {
   pat_bungendore <- pat_createNew(label = "Bungendore, NSW Australia", 
-                                  pas = pas_v_unhealthy,
+                                  pas = pas_au,
                                   startdate = 20191229, 
                                   enddate = 20200110)
+  save(pat_bungendore, file = filePath_bungendore)
   
-  pat_downer <- pat_createNew(label = "Chisholm ACT Australia",
-                              pas = pas_v_unhealthy,
+  pat_downer <- pat_createNew(label = "Downer",
+                              pas = pas_au,
                               startdate = 20191220, 
                               enddate = 20200110)
+  save(pat_downer, file = filePath_downer)
 }
 ```
 
