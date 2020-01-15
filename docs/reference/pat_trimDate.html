@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Daily DC Signal percentage — PurpleAirSoH_dailyPctDC • AirSensor</title>
+<title>Trim a PurpleAir Timeseries object to full days — pat_trimDate • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,13 +42,11 @@
 
 
 
-<meta property="og:title" content="Daily DC Signal percentage — PurpleAirSoH_dailyPctDC" />
-<meta property="og:description" content="This function calculates the daily percentage of DC signal 
-recorded by the pm25_A, pm25_B, humidity, and 
-temperature channels. The data are flagged as DC signal when the 
-standard deviation of an hour of data from each channel equals zero.
-The number of hours with a DC signal are summed over the day and a daily DC 
-percentage for each channel is returned." />
+<meta property="og:title" content="Trim a PurpleAir Timeseries object to full days — pat_trimDate" />
+<meta property="og:description" content="Trims the date range of a pat object to local time date
+boundaries which are within the range of data. This has the effect
+of removing partial-day data records and is useful when calculating
+full-day statistics." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -156,21 +154,19 @@ percentage for each channel is returned." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Daily DC Signal percentage</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/PurpleAirSoH_dailyPctDC.R'><code>R/PurpleAirSoH_dailyPctDC.R</code></a></small>
-    <div class="hidden name"><code>PurpleAirSoH_dailyPctDC.Rd</code></div>
+    <h1>Trim a PurpleAir Timeseries object to full days</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_trimDate.R'><code>R/pat_trimDate.R</code></a></small>
+    <div class="hidden name"><code>pat_trimDate.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function calculates the daily percentage of DC signal 
-recorded by the <code>pm25_A</code>, <code>pm25_B</code>, <code>humidity</code>, and 
-<code>temperature</code> channels. The data are flagged as DC signal when the 
-standard deviation of an hour of data from each channel equals zero.
-The number of hours with a DC signal are summed over the day and a daily DC 
-percentage for each channel is returned.</p>
+    <p>Trims the date range of a <em>pat</em> object to local time date
+boundaries which are <em>within</em> the range of data. This has the effect
+of removing partial-day data records and is useful when calculating
+full-day statistics.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>PurpleAirSoH_dailyPctDC</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>pat_trimDate</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -181,21 +177,26 @@ percentage for each channel is returned.</p>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A subset of the given <em>pat</em> object.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>AirSensor</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>AirSensor</span>)
 
-<span class='no'>tbl</span> <span class='kw'>&lt;-</span>
-  <span class='no'>example_pat_failure_A</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>PurpleAirSoH_dailyPctDC</span>()
-
-<span class='fu'><a href='timeseriesTbl_multiplot.html'>timeseriesTbl_multiplot</a></span>(<span class='no'>tbl</span>, <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>,<span class='fl'>100</span>), <span class='kw'>style</span> <span class='kw'>=</span> <span class='st'>"line"</span>)</div><div class='img'><img src='PurpleAirSoH_dailyPctDC-1.png' alt='' width='700' height='433' /></div></pre>
+<span class='no'>UTC_week</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pat_filterDate.html'>pat_filterDate</a></span>(<span class='no'>example_pat</span>,
+                           <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fl'>20180808</span>,
+                           <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='fl'>20180815</span>,
+                           <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='st'>"UTC"</span>)
+<span class='fu'><a href='pat_multiplot.html'>pat_multiplot</a></span>(<span class='no'>UTC_week</span>)</div><div class='img'><img src='pat_trimDate-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>local_week</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_trimDate</span>(<span class='no'>UTC_week</span>)</div><div class='output co'>#&gt; <span class='error'>Error in MazamaCoreUtils::dateRange(startdate = timeRange[1], enddate = timeRange[2],     timezone = timezone, unit = "sec", ceilingStart = TRUE, ceilingEnd = FALSE): unused argument (ceilingStart = TRUE)</span></div><div class='input'><span class='fu'><a href='pat_multiplot.html'>pat_multiplot</a></span>(<span class='no'>local_week</span>)</div><div class='output co'>#&gt; <span class='error'>Error in MazamaCoreUtils::stopIfNull(pat): object 'local_week' not found</span></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

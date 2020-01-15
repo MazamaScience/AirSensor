@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Daily DC Signal percentage — PurpleAirSoH_dailyPctDC • AirSensor</title>
+<title>Return timeseries identifiers from filtered PurpleAir Synoptic objects — pas_getDeviceDeploymentIDs • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,13 +42,14 @@
 
 
 
-<meta property="og:title" content="Daily DC Signal percentage — PurpleAirSoH_dailyPctDC" />
-<meta property="og:description" content="This function calculates the daily percentage of DC signal 
-recorded by the pm25_A, pm25_B, humidity, and 
-temperature channels. The data are flagged as DC signal when the 
-standard deviation of an hour of data from each channel equals zero.
-The number of hours with a DC signal are summed over the day and a daily DC 
-percentage for each channel is returned." />
+<meta property="og:title" content="Return timeseries identifiers from filtered PurpleAir Synoptic objects — pas_getDeviceDeploymentIDs" />
+<meta property="og:description" content="The incoming pas object is first filtered based on the 
+values of stateCodes, patter, isOutside and isParent.
+The values associated with the &quot;deviceDeploymentID&quot; column are then 
+returned.
+This function is useful for returning a vector of unique time series
+identifiers. These are used in the names of pre-generated pat files
+found in data archives." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -156,47 +157,63 @@ percentage for each channel is returned." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Daily DC Signal percentage</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/PurpleAirSoH_dailyPctDC.R'><code>R/PurpleAirSoH_dailyPctDC.R</code></a></small>
-    <div class="hidden name"><code>PurpleAirSoH_dailyPctDC.Rd</code></div>
+    <h1>Return timeseries identifiers from filtered PurpleAir Synoptic objects</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pas_getDeviceDeploymentIDs.R'><code>R/pas_getDeviceDeploymentIDs.R</code></a></small>
+    <div class="hidden name"><code>pas_getDeviceDeploymentIDs.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function calculates the daily percentage of DC signal 
-recorded by the <code>pm25_A</code>, <code>pm25_B</code>, <code>humidity</code>, and 
-<code>temperature</code> channels. The data are flagged as DC signal when the 
-standard deviation of an hour of data from each channel equals zero.
-The number of hours with a DC signal are summed over the day and a daily DC 
-percentage for each channel is returned.</p>
+    <p>The incoming <code>pas</code> object is first filtered based on the 
+values of <code>stateCodes</code>, <code>patter</code>, <code>isOutside</code> and <code>isParent</code>.
+The values associated with the <code>"deviceDeploymentID"</code> column are then 
+returned.</p>
+<p>This function is useful for returning a vector of unique time series
+identifiers. These are used in the names of pre-generated <em>pat</em> files
+found in data archives.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>PurpleAirSoH_dailyPctDC</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>pas_getDeviceDeploymentIDs</span>(
+  <span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>".*"</span>,
+  <span class='kw'>isOutside</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>isParent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pat</th>
-      <td><p>PurpleAir Timeseries <em>pat</em> object.</p></td>
+      <th>pas</th>
+      <td><p>PurpleAir Synoptic <em>pas</em> object.</p></td>
+    </tr>
+    <tr>
+      <th>pattern</th>
+      <td><p>Text pattern used to filter station labels.</p></td>
+    </tr>
+    <tr>
+      <th>isOutside</th>
+      <td><p>Logical, is the sensor located outside?</p></td>
+    </tr>
+    <tr>
+      <th>isParent</th>
+      <td><p>Logigal, is the sensor a parent station?</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>AirSensor</span>)
+    <p>Vector of values.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-<span class='no'>tbl</span> <span class='kw'>&lt;-</span>
-  <span class='no'>example_pat_failure_A</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>PurpleAirSoH_dailyPctDC</span>()
+    <div class='dont-index'><p><code><a href='pas_getColumn.html'>pas_getColumn</a></code>,  <code><a href='pas_getLabels.html'>pas_getLabels</a></code></p></div>
 
-<span class='fu'><a href='timeseriesTbl_multiplot.html'>timeseriesTbl_multiplot</a></span>(<span class='no'>tbl</span>, <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>,<span class='fl'>100</span>), <span class='kw'>style</span> <span class='kw'>=</span> <span class='st'>"line"</span>)</div><div class='img'><img src='PurpleAirSoH_dailyPctDC-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#examples">Examples</a></li>
+      <li><a href="#value">Value</a></li>
+      <li><a href="#see-also">See also</a></li>
     </ul>
 
   </div>

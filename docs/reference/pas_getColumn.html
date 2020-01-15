@@ -44,7 +44,7 @@
 
 <meta property="og:title" content="Return column of data from filtered PurpleAir Synoptic objects — pas_getColumn" />
 <meta property="og:description" content="The incoming pas object is first filtered based on the 
-values of states, patter, isOutside and isParent.
+values of states, pattern, isOutside and isParent.
 The values associated with the name column are then returned.
 This function is useful for returning values associated with specific
 devices, which are represented by records with isParent = TRUE." />
@@ -80,7 +80,7 @@ devices, which are represented by records with isParent = TRUE." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.9</span>
       </span>
     </div>
 
@@ -103,13 +103,16 @@ devices, which are represented by records with isParent = TRUE." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/articles/AirSensorOverview.html">AirSensor Function Overview</a>
+      <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
     </li>
     <li>
       <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
     </li>
     <li>
       <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
+    </li>
+    <li>
+      <a href="../articles/articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
     </li>
     <li>
       <a href="../articles/articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
@@ -125,9 +128,6 @@ devices, which are represented by records with isParent = TRUE." />
     </li>
     <li>
       <a href="../articles/articles/working_with_wind_data.html">Working With Wind Data</a>
-    </li>
-    <li>
-      <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
     </li>
   </ul>
 </li>
@@ -162,7 +162,7 @@ devices, which are represented by records with isParent = TRUE." />
 
     <div class="ref-description">
     <p>The incoming <code>pas</code> object is first filtered based on the 
-values of <code>states</code>, <code>patter</code>, <code>isOutside</code> and <code>isParent</code>.
+values of <code>states</code>, <code>pattern</code>, <code>isOutside</code> and <code>isParent</code>.
 The values associated with the <code>name</code> column are then returned.</p>
 <p>This function is useful for returning values associated with specific
 <em>devices</em>, which are represented by records with <code>isParent = TRUE</code>.</p>
@@ -171,7 +171,6 @@ The values associated with the <code>name</code> column are then returned.</p>
     <pre class="usage"><span class='fu'>pas_getColumn</span>(
   <span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>states</span> <span class='kw'>=</span> <span class='kw pkg'>PWFSLSmoke</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/PWFSLSmoke/man/US_52.html'>US_52</a></span>,
   <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>".*"</span>,
   <span class='kw'>isOutside</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>isParent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
@@ -187,10 +186,6 @@ The values associated with the <code>name</code> column are then returned.</p>
     <tr>
       <th>name</th>
       <td><p>Name of the column to return.</p></td>
-    </tr>
-    <tr>
-      <th>states</th>
-      <td><p>Vector of recognized ISO state codes.</p></td>
     </tr>
     <tr>
       <th>pattern</th>

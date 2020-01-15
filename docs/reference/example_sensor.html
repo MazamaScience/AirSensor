@@ -45,14 +45,17 @@
 <meta property="og:title" content="Example AirSensor Timeseries dataset — example_sensor" />
 <meta property="og:description" content="The example_sensor dataset provides a quickly loadable version of
 an airsensor object for practicing and code examples.
-This dataset was was generated on 2019-07-06 by running:
+This dataset was was generated on 2020-01-03 by running:
 
-  pas &amp;lt;- pas_load()
-  example_sensor &amp;lt;- 
-    pat_createNew(pas, label = &quot;SCAN_14&quot;,
-                  startdate = &quot;2018-08-14&quot;,
-                  enddate = &quot;2018-09-07&quot;) 
+  example_sensor &amp;lt;-
+    pat_createNew(
+      label = &quot;SCAN_14&quot;,
+      pas = example_pas,
+      startdate = &quot;2018-08-14&quot;,
+      enddate = &quot;2018-09-07&quot;
+    ) 
     pat_createAirSensor(period = &quot;1 hour&quot;)
+  save(example_sensor, file = &quot;data/example_sensor.rda&quot;)
 
 " />
 <meta name="twitter:card" content="summary" />
@@ -87,7 +90,7 @@ This dataset was was generated on 2019-07-06 by running:
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.17</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.9</span>
       </span>
     </div>
 
@@ -113,28 +116,28 @@ This dataset was was generated on 2019-07-06 by running:
       <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
     </li>
     <li>
-      <a href="../articles/SoH_functions.html">SoH Functions</a>
+      <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
     </li>
     <li>
-      <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
+      <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
     </li>
     <li>
-      <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
+      <a href="../articles/articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
     </li>
     <li>
-      <a href="../articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
+      <a href="../articles/articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
     </li>
     <li>
-      <a href="../articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
+      <a href="../articles/articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
     </li>
     <li>
-      <a href="../articles/purpleair_qc.html">Purple Air Quality Control</a>
+      <a href="../articles/articles/purpleair_qc.html">Purple Air Quality Control</a>
     </li>
     <li>
-      <a href="../articles/purpleair_sensors.html">Purple Air Sensors</a>
+      <a href="../articles/articles/purpleair_sensors.html">Purple Air Sensors</a>
     </li>
     <li>
-      <a href="../articles/working_with_wind_data.html">Working With Wind Data</a>
+      <a href="../articles/articles/working_with_wind_data.html">Working With Wind Data</a>
     </li>
   </ul>
 </li>
@@ -170,14 +173,17 @@ This dataset was was generated on 2019-07-06 by running:
     <div class="ref-description">
     <p>The <code>example_sensor</code> dataset provides a quickly loadable version of
 an <em>airsensor</em> object for practicing and code examples.
-This dataset was was generated on 2019-07-06 by running:</p>
+This dataset was was generated on 2020-01-03 by running:</p>
 <pre>
-  pas &lt;- pas_load()
-  example_sensor &lt;- 
-    pat_createNew(pas, label = "SCAN_14",
-                  startdate = "2018-08-14",
-                  enddate = "2018-09-07") <!-- %&gt;% -->
+  example_sensor &lt;-
+    pat_createNew(
+      label = "SCAN_14",
+      pas = example_pas,
+      startdate = "2018-08-14",
+      enddate = "2018-09-07"
+    ) <!-- %&gt;% -->
     pat_createAirSensor(period = "1 hour")
+  save(example_sensor, file = "data/example_sensor.rda")
 </pre>
 
     </div>
