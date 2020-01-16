@@ -46,11 +46,12 @@
 <meta property="og:description" content="The example_pas_raw dataset provides a quickly loadable
 version of raw Purple Air synoptic data JSON for practicing and code
 examples. This dataset contains data for sensors in Washington and Oregon
-and was generated on 2019-12-23 by running:
+and was generated on 2020-01-03 by running:
 
   example_pas_raw &amp;lt;- 
     downloadParseSynopticData() 
     dplyr::filter(Lon &amp;gt; -125.0 &amp;amp; Lon &amp;lt; -117.0 &amp;amp; Lat &amp;gt; 42.0 &amp;amp; Lat &amp;lt; 49.0)
+  save(example_pas_raw, file = &quot;data/example_pas_raw.rda&quot;)
 
 
 This dataset can be converted into a standard pas dataset with:
@@ -90,7 +91,7 @@ This dataset can be converted into a standard pas dataset with:
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.9</span>
       </span>
     </div>
 
@@ -113,13 +114,16 @@ This dataset can be converted into a standard pas dataset with:
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/articles/AirSensorOverview.html">AirSensor Function Overview</a>
+      <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
     </li>
     <li>
       <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
     </li>
     <li>
       <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
+    </li>
+    <li>
+      <a href="../articles/articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
     </li>
     <li>
       <a href="../articles/articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
@@ -135,9 +139,6 @@ This dataset can be converted into a standard pas dataset with:
     </li>
     <li>
       <a href="../articles/articles/working_with_wind_data.html">Working With Wind Data</a>
-    </li>
-    <li>
-      <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
     </li>
   </ul>
 </li>
@@ -174,11 +175,12 @@ This dataset can be converted into a standard pas dataset with:
     <p>The <code>example_pas_raw</code> dataset provides a quickly loadable
 version of raw Purple Air synoptic data JSON for practicing and code
 examples. This dataset contains data for sensors in Washington and Oregon
-and was generated on 2019-12-23 by running:</p>
+and was generated on 2020-01-03 by running:</p>
 <pre>
   example_pas_raw &lt;- 
     downloadParseSynopticData() <!-- %&gt;% -->
     dplyr::filter(Lon &gt; -125.0 &amp; Lon &lt; -117.0 &amp; Lat &gt; 42.0 &amp; Lat &lt; 49.0)
+  save(example_pas_raw, file = "data/example_pas_raw.rda")
 </pre>
 
 <p>This dataset can be converted into a standard <em>pas</em> dataset with:</p>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Linear model fitting of PurpleAir and federal PWFSL time series data — pat_externalFit • AirSensor</title>
+<title>Return timeseries identifiers from filtered PurpleAir Synoptic objects — pas_getDeviceDeploymentIDs • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,10 +42,14 @@
 
 
 
-<meta property="og:title" content="Linear model fitting of PurpleAir and federal PWFSL time series data — pat_externalFit" />
-<meta property="og:description" content="Produces a linear model between data from PurpleAir and data 
-from the closest PWFSL monitor.
-A diagnostic plot is produced if `showPlot = TRUE`." />
+<meta property="og:title" content="Return timeseries identifiers from filtered PurpleAir Synoptic objects — pas_getDeviceDeploymentIDs" />
+<meta property="og:description" content="The incoming pas object is first filtered based on the 
+values of stateCodes, patter, isOutside and isParent.
+The values associated with the &quot;deviceDeploymentID&quot; column are then 
+returned.
+This function is useful for returning a vector of unique time series
+identifiers. These are used in the names of pre-generated pat files
+found in data archives." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -78,7 +82,7 @@ A diagnostic plot is produced if `showPlot = TRUE`." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.9</span>
       </span>
     </div>
 
@@ -101,13 +105,16 @@ A diagnostic plot is produced if `showPlot = TRUE`." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/articles/AirSensorOverview.html">AirSensor Function Overview</a>
+      <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
     </li>
     <li>
       <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
     </li>
     <li>
       <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
+    </li>
+    <li>
+      <a href="../articles/articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
     </li>
     <li>
       <a href="../articles/articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
@@ -123,9 +130,6 @@ A diagnostic plot is produced if `showPlot = TRUE`." />
     </li>
     <li>
       <a href="../articles/articles/working_with_wind_data.html">Working With Wind Data</a>
-    </li>
-    <li>
-      <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
     </li>
   </ul>
 </li>
@@ -153,134 +157,63 @@ A diagnostic plot is produced if `showPlot = TRUE`." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Linear model fitting of PurpleAir and federal PWFSL time series data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_externalFit.R'><code>R/pat_externalFit.R</code></a></small>
-    <div class="hidden name"><code>pat_externalFit.Rd</code></div>
+    <h1>Return timeseries identifiers from filtered PurpleAir Synoptic objects</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pas_getDeviceDeploymentIDs.R'><code>R/pas_getDeviceDeploymentIDs.R</code></a></small>
+    <div class="hidden name"><code>pas_getDeviceDeploymentIDs.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Produces a linear model between data from PurpleAir and data 
-from the closest PWFSL monitor.</p>
-<p>A diagnostic plot is produced if `showPlot = TRUE`.</p>
+    <p>The incoming <code>pas</code> object is first filtered based on the 
+values of <code>stateCodes</code>, <code>patter</code>, <code>isOutside</code> and <code>isParent</code>.
+The values associated with the <code>"deviceDeploymentID"</code> column are then 
+returned.</p>
+<p>This function is useful for returning a vector of unique time series
+identifiers. These are used in the names of pre-generated <em>pat</em> files
+found in data archives.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>pat_externalFit</span>(
-  <span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>showPlot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>pa_color</span> <span class='kw'>=</span> <span class='st'>"purple"</span>,
-  <span class='kw'>pwfsl_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
-  <span class='kw'>lr_shape</span> <span class='kw'>=</span> <span class='fl'>15</span>,
-  <span class='kw'>lr_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
-  <span class='kw'>lr_lwd</span> <span class='kw'>=</span> <span class='fl'>1.5</span>,
-  <span class='kw'>lr_lcolor</span> <span class='kw'>=</span> <span class='st'>"tomato"</span>,
-  <span class='kw'>lr_lalpha</span> <span class='kw'>=</span> <span class='fl'>0.45</span>,
-  <span class='kw'>ts_shape</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>xylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>channel</span> <span class='kw'>=</span> <span class='st'>"ab"</span>,
-  <span class='kw'>replaceOutliers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>qc_algorithm</span> <span class='kw'>=</span> <span class='st'>"hourly_AB_01"</span>,
-  <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>20</span>
+    <pre class="usage"><span class='fu'>pas_getDeviceDeploymentIDs</span>(
+  <span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>".*"</span>,
+  <span class='kw'>isOutside</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>isParent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pat</th>
-      <td><p>PurpleAir Timeseries <em>pat</em> object.</p></td>
+      <th>pas</th>
+      <td><p>PurpleAir Synoptic <em>pas</em> object.</p></td>
     </tr>
     <tr>
-      <th>showPlot</th>
-      <td><p>Logical specifying whether to generate a model fit plot.</p></td>
+      <th>pattern</th>
+      <td><p>Text pattern used to filter station labels.</p></td>
     </tr>
     <tr>
-      <th>size</th>
-      <td><p>Size of points.</p></td>
+      <th>isOutside</th>
+      <td><p>Logical, is the sensor located outside?</p></td>
     </tr>
     <tr>
-      <th>pa_color</th>
-      <td><p>Color of hourly points.</p></td>
-    </tr>
-    <tr>
-      <th>pwfsl_color</th>
-      <td><p>Color of hourly points.</p></td>
-    </tr>
-    <tr>
-      <th>alpha</th>
-      <td><p>Opacity of points.</p></td>
-    </tr>
-    <tr>
-      <th>lr_shape</th>
-      <td><p>Symbol to use for linear model points.</p></td>
-    </tr>
-    <tr>
-      <th>lr_color</th>
-      <td><p>Color of linear model plot points.</p></td>
-    </tr>
-    <tr>
-      <th>lr_lwd</th>
-      <td><p>Width of linear regression line.</p></td>
-    </tr>
-    <tr>
-      <th>lr_lcolor</th>
-      <td><p>Color of linear regression line.</p></td>
-    </tr>
-    <tr>
-      <th>lr_lalpha</th>
-      <td><p>Opacity of linear regression line.</p></td>
-    </tr>
-    <tr>
-      <th>ts_shape</th>
-      <td><p>Symbol to use for time series points.</p></td>
-    </tr>
-    <tr>
-      <th>xylim</th>
-      <td><p>Vector of (lo,hi) limits used as limits on the correlation plot 
-axes -- useful for zooming in.</p></td>
-    </tr>
-    <tr>
-      <th>channel</th>
-      <td><p>Data channel to use for PM2.5 -- one of "a", "b or "ab".</p></td>
-    </tr>
-    <tr>
-      <th>replaceOutliers</th>
-      <td><p>Logical specifying whether or not to replace outliers.</p></td>
-    </tr>
-    <tr>
-      <th>qc_algorithm</th>
-      <td><p>Named QC algorithm to apply to hourly aggregation stats.</p></td>
-    </tr>
-    <tr>
-      <th>min_count</th>
-      <td><p>Aggregation bins with fewer than `min_count` measurements
-will be marked as `NA`.</p></td>
+      <th>isParent</th>
+      <td><p>Logigal, is the sensor a parent station?</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A linear model, fitting the `pat` PurpleAir readings to the closest
-PWFSL monitor readings.</p>
+    <p>Vector of values.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
-<span class='fu'><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl</a></span>(<span class='st'>"http://smoke.mazamascience.com/data/PurpleAir"</span>)
-<<<<<<< HEAD
-<span class='no'>pat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pat_load.html'>pat_load</a></span>(<span class='st'>"SCAH_22"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in pat_load("SCAH_22"): Required parameter 'pas' is not a valid 'pa_synoptic' object.</span></div><div class='input'><span class='fu'>pat_externalFit</span>(<span class='no'>pat</span>)</div><div class='output co'>#&gt; <span class='error'>Error in MazamaCoreUtils::stopIfNull(pat): object 'pat' not found</span></div><div class='input'># }
-=======
-<span class='no'>pat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pat_load.html'>pat_load</a></span>(<span class='st'>"SCAH_22"</span>)
-<span class='fu'>pat_externalFit</span>(<span class='no'>pat</span>)</div><div class='output co'>#&gt; <span class='error'>Error in PWFSLSmoke::monitor_load(tlim[1], tlim[2], monitorIDs = monitorID): Requests covering multiple years are not supported</span></div><div class='input'># }
->>>>>>> master
-</div></pre>
+    <div class='dont-index'><p><code><a href='pas_getColumn.html'>pas_getColumn</a></code>,  <code><a href='pas_getLabels.html'>pas_getLabels</a></code></p></div>
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
-      <li><a href="#examples">Examples</a></li>
+      <li><a href="#see-also">See also</a></li>
     </ul>
 
   </div>

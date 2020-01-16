@@ -85,7 +85,7 @@ By default, the current month is loaded." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.9</span>
       </span>
     </div>
 
@@ -108,13 +108,16 @@ By default, the current month is loaded." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/articles/AirSensorOverview.html">AirSensor Function Overview</a>
+      <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
     </li>
     <li>
       <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
     </li>
     <li>
       <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
+    </li>
+    <li>
+      <a href="../articles/articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
     </li>
     <li>
       <a href="../articles/articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
@@ -130,9 +133,6 @@ By default, the current month is loaded." />
     </li>
     <li>
       <a href="../articles/articles/working_with_wind_data.html">Working With Wind Data</a>
-    </li>
-    <li>
-      <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
     </li>
   </ul>
 </li>
@@ -179,9 +179,9 @@ loaded from the archive set with either <code><a href='setArchiveBaseUrl.html'>s
     </div>
 
     <pre class="usage"><span class='fu'>pat_loadMonth</span>(
-  <span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>datestamp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='st'>"America/Los_Angeles"</span>
 )</pre>
@@ -190,16 +190,16 @@ loaded from the archive set with either <code><a href='setArchiveBaseUrl.html'>s
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pas</th>
-      <td><p>PurpleAir Synoptic <em>pas</em> object.</p></td>
+      <th>id</th>
+      <td><p>PurpleAir sensor 'deviceDeploymentID'.</p></td>
     </tr>
     <tr>
       <th>label</th>
       <td><p>PurpleAir sensor 'label'.</p></td>
     </tr>
     <tr>
-      <th>id</th>
-      <td><p>PurpleAir sensor 'ID'.</p></td>
+      <th>pas</th>
+      <td><p>PurpleAir Synoptic <em>pas</em> object.</p></td>
     </tr>
     <tr>
       <th>datestamp</th>
@@ -207,8 +207,7 @@ loaded from the archive set with either <code><a href='setArchiveBaseUrl.html'>s
     </tr>
     <tr>
       <th>timezone</th>
-      <td><p>Timezone used to interpret <code>datestamp</code>.
-<code><a href='https://rdrr.io/r/base/make.names.html'>make.names(label)</a></code> when assembilng the file path.</p></td>
+      <td><p>Timezone used to interpret <code>datestamp</code>.</p></td>
     </tr>
     </table>
 
@@ -218,10 +217,14 @@ loaded from the archive set with either <code><a href='setArchiveBaseUrl.html'>s
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>Starting with <span class="pkg">AirSensor</span> version 0.6, archive file names are 
-generated with a "device-deployment" identifier by combining a unique 
+generated with a unique "device-deployment" identifier by combining a unique 
 location ID with a unique device ID. These "device-deployment" identifiers 
 guarantee that movement of a sensor will result in the creation of a new
 time series.</p>
+<p>Users may request a <em>pat</em> object in one of two ways:</p>
+<p>1) Pass in <code>id</code> with a valid a <code>deviceDeploymentID</code></p>
+<p>2) Pass in both <code>label</code> and <code>pas</code> so that the 
+<code>deviceDeploymentID</code> can be looked up.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='pat_load.html'>pat_load</a></p>
@@ -232,7 +235,7 @@ time series.</p>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
 <span class='co'># TODO:  This needs to be updated to use USFS data</span>
 <span class='fu'><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl</a></span>(<span class='st'>"http://smoke.mazamascience.com/data/PurpleAir"</span>)
-<span class='no'>may</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_loadMonth</span>(<span class='st'>"SCNP_20"</span>, <span class='fl'>201905</span>)</div><div class='output co'>#&gt; <span class='error'>Error in pat_loadMonth("SCNP_20", 201905): Required parameter 'pas' is not a valid 'pa_synoptic' object.</span></div><div class='input'><span class='fu'><a href='pat_multiplot.html'>pat_multiplot</a></span>(<span class='no'>may</span>)</div><div class='output co'>#&gt; <span class='error'>Error in MazamaCoreUtils::stopIfNull(pat): object 'may' not found</span></div><div class='input'># }
+<span class='no'>may</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_loadMonth</span>(<span class='st'>"SCNP_20"</span>, <span class='fl'>201905</span>)</div><div class='output co'>#&gt; Error : Data file could not be loaded from: http://smoke.mazamascience.com/data/PurpleAir/pat/2020/01/pat_SCNP_20_202001.rda</div><div class='output co'>#&gt; <span class='error'>Error: Data file could not be loaded from: http://smoke.mazamascience.com/data/PurpleAir</span></div><div class='input'><span class='fu'><a href='pat_multiplot.html'>pat_multiplot</a></span>(<span class='no'>may</span>)</div><div class='output co'>#&gt; <span class='error'>Error in MazamaCoreUtils::stopIfNull(pat): object 'may' not found</span></div><div class='input'># }
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

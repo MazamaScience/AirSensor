@@ -44,8 +44,8 @@
 
 <meta property="og:title" content="Load PurpleAir time series data for a week — pat_loadLatest" />
 <meta property="og:description" content="A pre-generated PurpleAir Timeseries pat object will be 
-loaded containing data for the most recent 7-day interval. Data are loaded
-from the archive set with either setArchiveBaseUrl() or 
+loaded containing data for the most recent 7- or 45-day interval. Data are
+loaded from the archive set with either setArchiveBaseUrl() or 
 setArchiveBaseDir() for locally archived files." />
 <meta name="twitter:card" content="summary" />
 
@@ -79,7 +79,7 @@ setArchiveBaseDir() for locally archived files." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.9</span>
       </span>
     </div>
 
@@ -102,13 +102,16 @@ setArchiveBaseDir() for locally archived files." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/articles/AirSensorOverview.html">AirSensor Function Overview</a>
+      <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
     </li>
     <li>
       <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
     </li>
     <li>
       <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
+    </li>
+    <li>
+      <a href="../articles/articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
     </li>
     <li>
       <a href="../articles/articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
@@ -124,9 +127,6 @@ setArchiveBaseDir() for locally archived files." />
     </li>
     <li>
       <a href="../articles/articles/working_with_wind_data.html">Working With Wind Data</a>
-    </li>
-    <li>
-      <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
     </li>
   </ul>
 </li>
@@ -161,27 +161,31 @@ setArchiveBaseDir() for locally archived files." />
 
     <div class="ref-description">
     <p>A pre-generated PurpleAir Timeseries <em>pat</em> object will be 
-loaded containing data for the most recent 7-day interval. Data are loaded
-from the archive set with either <code><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl()</a></code> or 
+loaded containing data for the most recent 7- or 45-day interval. Data are
+loaded from the archive set with either <code><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl()</a></code> or 
 <code><a href='setArchiveBaseDir.html'>setArchiveBaseDir()</a></code> for locally archived files.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>pat_loadLatest</span>(<span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>pat_loadLatest</span>(<span class='kw'>id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>days</span> <span class='kw'>=</span> <span class='fl'>7</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pas</th>
-      <td><p>PurpleAir Synoptic <em>pas</em> object.</p></td>
+      <th>id</th>
+      <td><p>PurpleAir sensor 'deviceDeploymentID'.</p></td>
     </tr>
     <tr>
       <th>label</th>
       <td><p>PurpleAir sensor 'label'.</p></td>
     </tr>
     <tr>
-      <th>id</th>
-      <td><p>PurpleAir sensor 'ID'.</p></td>
+      <th>pas</th>
+      <td><p>PurpleAir Synoptic <em>pas</em> object.</p></td>
+    </tr>
+    <tr>
+      <th>days</th>
+      <td><p>Number of days of data to include (7 or 45).</p></td>
     </tr>
     </table>
 
@@ -191,10 +195,14 @@ from the archive set with either <code><a href='setArchiveBaseUrl.html'>setArchi
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>Starting with <span class="pkg">AirSensor</span> version 0.6, archive file names are 
-generated with a "device-deployment" identifier by combining a unique 
-location ID with a unique device ID. These "device-deployment" identifiers 
-guarantee that movement of a sensor will result in the creation of a new
-time series.</p>
+generated with a unique "device-deployment" identifier by combining a unique 
+location ID with a unique device ID. These <code>deviceDeploymentID</code> 
+identifiers guarantee that movement of a sensor will result in the creation 
+of a new time series.</p>
+<p>Users may request a <em>pat</em> object in one of two ways:</p>
+<p>1) Pass in <code>id</code> with a valid a <code>deviceDeploymentID</code></p>
+<p>2) Pass in both <code>label</code> and <code>pas</code> so that the 
+<code>deviceDeploymentID</code> can be looked up.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='pat_load.html'>pat_load</a></p>
@@ -205,7 +213,8 @@ time series.</p>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
 <span class='co'># TODO:  This needs to be updated to use USFS data</span>
 <span class='fu'><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl</a></span>(<span class='st'>"http://smoke.mazamascience.com/data/PurpleAir"</span>)
-<span class='no'>pat</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_loadLatest</span>(<span class='st'>"SCNP_20"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in pat_loadLatest("SCNP_20"): Required parameter 'pas' is not a valid 'pa_synoptic' object.</span></div><div class='input'><span class='fu'><a href='pat_multiplot.html'>pat_multiplot</a></span>(<span class='no'>pat</span>)</div><div class='output co'>#&gt; <span class='error'>Error in MazamaCoreUtils::stopIfNull(pat): object 'pat' not found</span></div><div class='input'># }
+<span class='no'>pat</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_loadLatest</span>(<span class='st'>"SCNP_20"</span>)
+<span class='fu'><a href='pat_multiplot.html'>pat_multiplot</a></span>(<span class='no'>pat</span>)</div><div class='img'><img src='pat_loadLatest-1.png' alt='' width='700' height='433' /></div><div class='input'># }
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
