@@ -34,6 +34,12 @@ The values associated with the \code{name} column are then returned.
 This function is useful for returning values associated with specific
 \emph{devices}, which are represented by records with \code{isParent = TRUE}.
 }
+\examples{
+pas <- example_pas
+latitude <- pas_getColumn(pas = pas, name = "latitude")
+
+
+}
 \seealso{
 \code{\link{pas_getIDs}},  \code{\link{pas_getLabels}}
 }

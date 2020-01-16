@@ -35,7 +35,7 @@ diamond_bar <-
                  latitude = 34.001667, 
                  radius = "20 km")
                  
-\dontrun{
+\donttest{
 pas_leaflet(diamond_bar)
 }
 }

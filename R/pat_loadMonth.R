@@ -44,10 +44,12 @@
 #' 
 #' @examples
 #' \donttest{
-#' # TODO:  This needs to be updated to use USFS data
-#' setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
-#' may <- pat_loadMonth("SCNP_20", 201905)
-#' pat_multiplot(may)
+#' 
+#' ### setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
+#' #### pas <- example_pas
+
+#' ### may <- pat_loadMonth(label = "SCNP_20", pas = pas, 201905)
+#' ### pat_multiplot(may)
 #' }
 
 pat_loadMonth <- function(

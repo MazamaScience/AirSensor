@@ -26,9 +26,9 @@
 #' @seealso \link{sensor_filterMeta}
 #' 
 #' @examples
-#' \dontrun{
+#'
 #' august <- sensor_filterDate(example_sensor, startdate = 20180801, enddate = 20180831)
-#' }
+#' 
 
 sensor_filterDate <- function(
   sensor = NULL, 

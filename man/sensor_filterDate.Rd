@@ -41,9 +41,9 @@ including either of the following recommended formats:
 }
 }
 \examples{
-\dontrun{
+
 august <- sensor_filterDate(example_sensor, startdate = 20180801, enddate = 20180831)
-}
+
 }
 \seealso{
 \link{sensor_filter}

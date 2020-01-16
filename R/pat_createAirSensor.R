@@ -39,13 +39,13 @@
 #' @seealso \link{PurpleAirQC_hourly_AB_01}
 #' 
 #' @examples 
-#' \dontrun{
+#' 
 #' sensor <- 
 #'   example_pat %>%
 #'   pat_filterDate(20180701, 20180901) %>%
 #'   pat_createAirSensor()
 #' PWFSLSmoke::monitor_dailyBarplot(sensor)
-#' }
+#' 
 
 pat_createAirSensor <- function(
   pat = NULL,

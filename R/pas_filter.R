@@ -29,10 +29,10 @@
 #'   pas_filter(stringr::str_detect(label, "^SCSB_"))
 #' nrow(scsb)
 #' 
-#' \dontrun{
+#'  \dontrun{
 #' pas_leaflet(ca)
 #' 
-#' pas_leaflet(scsb, maptype = "satellite")
+#' # pas_leaflet(scsb, maptype = "satellite")
 #' }
 
 pas_filter <- function(

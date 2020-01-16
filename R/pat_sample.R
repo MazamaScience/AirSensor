@@ -39,10 +39,10 @@
 #' }
 #' 
 #' @examples 
-#' \dontrun{
-#' pat <- pat_load("SCNP_20", 20190411, 20190521)
+#' 
+#' pat <- example_pat
 #' subset <- pat_sample(pat, sampleSize=1000, setSeed=1)
-#' }
+#' 
 #' 
 
 pat_sample <- function(

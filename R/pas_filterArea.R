@@ -28,7 +28,7 @@
 #' range(scsb$longitude)
 #' range(scsb$latitude)
 #' 
-#' \dontrun{
+#' \donttest{
 #' pas_leaflet(scsb)
 #' }
 

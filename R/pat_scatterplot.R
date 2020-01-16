@@ -36,6 +36,8 @@
 #' pat <- 
 #'   example_pat %>% 
 #'   pat_filterDate(20180811,20180818)
+#' # Warnings are generated when the pat contains NA values
+#' 
 #' pat_scatterplot(pat, sampleSize = 1000)
 #' }
 

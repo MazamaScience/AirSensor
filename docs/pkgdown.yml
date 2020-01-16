@@ -2,13 +2,13 @@ pandoc: 2.3.1
 pkgdown: 1.4.1
 pkgdown_sha: ~
 articles:
-  AirSensorOverview: articles/AirSensorOverview.html
+  AirSensorOverview: AirSensorOverview.html
   SoH_functions: articles/SoH_functions.html
   outlier_detection: articles/outlier_detection.html
+  pas_introduction: articles/pas_introduction.html
   pat_introduction: articles/pat_introduction.html
   purpleair_failure_modes: articles/purpleair_failure_modes.html
   purpleair_qc: articles/purpleair_qc.html
   purpleair_sensors: articles/purpleair_sensors.html
   working_with_wind_data: articles/working_with_wind_data.html
-  pas_introduction: pas_introduction.html
 

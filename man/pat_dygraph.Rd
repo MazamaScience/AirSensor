@@ -55,6 +55,7 @@ The list of available parameters include:
 }
 }
 \examples{
+
 \dontrun{
 nb <- pat_createNew(example_pas, 
                     "North Bend Weather", 

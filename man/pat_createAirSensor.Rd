@@ -56,13 +56,13 @@ gnerated from the \code{qc_algorithm} parameter with
 \code{paste0("PurpleAirQC_", qc_algorithm)}.
 }
 \examples{
-\dontrun{
+
 sensor <- 
   example_pat \%>\%
   pat_filterDate(20180701, 20180901) \%>\%
   pat_createAirSensor()
 PWFSLSmoke::monitor_dailyBarplot(sensor)
-}
+
 }
 \seealso{
 \link{PurpleAirQC_hourly_AB_00}

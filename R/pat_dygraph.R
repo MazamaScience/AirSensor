@@ -29,6 +29,7 @@
 #' @return Initiates the interactive dygraph plot in RStudio's 'Viewer' tab.
 #' 
 #' @examples
+#' 
 #' \dontrun{
 #' nb <- pat_createNew(example_pas, 
 #'                     "North Bend Weather", 
