@@ -44,14 +44,16 @@ this section of data throughout the rest of this example.
 
 ```{r, pat_muliplots fig-margin, fig.margin = FALSE}
 
-good_pat <- pat_createNew(pas, "SCAH_29", 
+good_pat <- pat_createNew(label = "SCAH_29", 
+                          pas = pas, 
                           startdate = "2019-05-27", 
                           enddate = "2019-06-22", 
                           timezone = "America/Los_Angeles")
 
 pat_multiplot(good_pat, sampleSize = 1e6)
 
-bad_pat <- pat_createNew(pas, "SCTV_16", 
+bad_pat <- pat_createNew(label = "SCTV_16", 
+                         pas = pas, 
                          startdate = "2019-05-27", 
                          enddate = "2019-06-22", 
                          timezone = "America/Los_Angeles")
