@@ -1,3 +1,7 @@
+# AirSensor 0.6.10
+
+* Improved error message in `downloadParseTimeseriesData()`.
+
 # AirSensor 0.6.9
 
 * Archive directory structure was changed so that monthly pat files are found

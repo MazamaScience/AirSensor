@@ -150,7 +150,7 @@ downloadParseTimeseriesData <- function(
   
   # Handle the response
   status_code <- httr::status_code(r)
-  content <- httr::content(r, as = "text") # don't interpret the JSON
+  A_content <- httr::content(r, as = "text") # don't interpret the JSON
   
   # Handle "no data" response by generating an empty but complete "pat" object
   err_JSON <- ('{
@@ -244,7 +244,7 @@ downloadParseTimeseriesData <- function(
     
     A_list <- 
       jsonlite::fromJSON(
-        content,
+        A_content,
         simplifyVector = TRUE,
         simplifyDataFrame = TRUE,
         simplifyMatrix = TRUE,
@@ -264,7 +264,7 @@ downloadParseTimeseriesData <- function(
   
   # Handle the response
   status_code <- httr::status_code(r)
-  content <- httr::content(r, as = "text") # don't interpret the JSON
+  B_content <- httr::content(r, as = "text") # don't interpret the JSON
   
   if ( httr::http_error(r) ) { # web service failed to respond
     
@@ -315,7 +315,7 @@ downloadParseTimeseriesData <- function(
     
     B_list <- 
       jsonlite::fromJSON(
-        content,
+        B_content,
         simplifyVector = TRUE,
         simplifyDataFrame = TRUE,
         simplifyMatrix = TRUE,
@@ -328,12 +328,14 @@ downloadParseTimeseriesData <- function(
   # Extra checks for some errors we have seen
   if ( !is.numeric(ncol(A_data)) ) {
     if ( logger.isInitialized() )
-      logger.warn("A_data is not a dataframe: %s", print(A_data))
+      logger.warn("A_data is not a dataframe. A_content: %s",
+                  stringr::str_sub(A_content, 1, 180))
   }
   
   if ( !is.numeric(ncol(B_data)) ) {
     if ( logger.isInitialized() )
-      logger.warn("B_data is not a dataframe: %s", print(B_data))
+      logger.warn("B_data is not a dataframe. B_content: %s", 
+                  stringr::str_sub(B_content, 1, 180))
   }
   
   # Sanity check for data -> fill if empty to avoid error 
