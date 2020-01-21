@@ -19,6 +19,15 @@
 #' 
 #' @seealso \code{\link{pas_getColumn}},  \code{\link{pas_getIDs}},  \code{\link{pas_getDeviceDeploymentIDs}}
 #' 
+#' @examples 
+#' 
+#' pas <- example_pas
+#' 
+#' labels <- pas_getLabels(pas = pas)
+#' 
+#' labels_back <- pas_getLabels(pas = pas, pattern = "back")
+#' 
+#' 
 pas_getLabels <- function(
   pas = NULL,
   pattern = ".*",

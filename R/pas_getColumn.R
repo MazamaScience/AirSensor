@@ -20,6 +20,11 @@
 #' 
 #' @seealso \code{\link{pas_getIDs}},  \code{\link{pas_getLabels}}
 #' 
+#' @examples
+#' pas <- example_pas
+#' latitude <- pas_getColumn(pas = pas, name = "latitude")
+#' 
+#' 
 pas_getColumn <- function(
   pas = NULL,
   name = NULL,

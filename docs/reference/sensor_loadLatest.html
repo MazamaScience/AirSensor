@@ -193,9 +193,9 @@ PurpleAir sensors.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
 <span class='co'># TODO:  This needs to be updated to use USFS data</span>
-<span class='fu'><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl</a></span>(<span class='st'>"http://smoke.mazamascience.com/data/PurpleAir"</span>)
+<span class='fu'><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl</a></span>(<span class='st'>"https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1"</span>)
 <span class='fu'>sensor_loadLatest</span>(<span class='st'>"scaqmd"</span>) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>PWFSLSmoke</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/PWFSLSmoke/man/monitor_timeseriesPlot.html'>monitor_timeseriesPlot</a></span>(<span class='kw'>style</span> <span class='kw'>=</span> <span class='st'>'gnats'</span>)</div><div class='img'><img src='sensor_loadLatest-1.png' alt='' width='700' height='433' /></div><div class='input'># }
+  <span class='kw pkg'>PWFSLSmoke</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/PWFSLSmoke/man/monitor_timeseriesPlot.html'>monitor_timeseriesPlot</a></span>(<span class='kw'>style</span> <span class='kw'>=</span> <span class='st'>'gnats'</span>)</div><div class='output co'>#&gt; Error : Data file could not be loaded from: https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1/airsensor/latest/airsensor_scaqmd_latest7.rda</div><div class='output co'>#&gt; <span class='error'>Error: Data file could not be loaded from: https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1</span></div><div class='input'># }
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

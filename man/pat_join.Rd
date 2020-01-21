@@ -22,7 +22,6 @@ An error is generated if the incoming \emph{pat} objects have
 non-identical metadata.
 }
 \examples{
-\dontrun{
 pat <- example_pat
 
 aug01_08 <- 
@@ -36,6 +35,6 @@ aug15_22 <-
 x <- pat_join(aug01_08, aug15_22)
 
 pat_multiplot(x, plottype = "pm25")
-}
+
 
 }

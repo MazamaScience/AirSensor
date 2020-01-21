@@ -197,8 +197,17 @@ the <em>sensor</em> object.</p>
 <p><a href='sensor_filterMeta.html'>sensor_filterMeta</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
-<span class='no'>twenties</span> <span class='kw'>&lt;-</span> <span class='fu'>sensor_filter</span>(<span class='no'>example_sensor</span>, <span class='no'>SCAN_14</span> <span class='kw'>&gt;=</span> <span class='fl'>20</span>, <span class='no'>SCAN_14</span> <span class='kw'>&lt;</span> <span class='fl'>30</span>)</div><div class='output co'>#&gt; <span class='error'>Error in ~SCAN_14 &gt;= 20: object 'SCAN_14' not found</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>twenties</span>$<span class='no'>data</span>)</div><div class='output co'>#&gt; <span class='error'>Error in head(twenties$data): object 'twenties' not found</span></div><div class='input'># }
+    <pre class="examples"><div class='input'>
+<span class='no'>twenties</span> <span class='kw'>&lt;-</span> <span class='fu'>sensor_filter</span>(<span class='no'>example_sensor</span>,
+                          <span class='no'>example_sensor</span>$<span class='no'>data</span>$<span class='no'>`392a12065eb9940d_5192`</span> <span class='kw'>&lt;</span>  <span class='fl'>30</span>,
+                          <span class='no'>example_sensor</span>$<span class='no'>data</span>$<span class='no'>`392a12065eb9940d_5192`</span> <span class='kw'>&gt;=</span> <span class='fl'>20</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>twenties</span>$<span class='no'>data</span>)</div><div class='output co'>#&gt;              datetime 392a12065eb9940d_5192
+#&gt; 1 2018-08-15 12:00:00              24.16577
+#&gt; 2 2018-08-15 13:00:00              20.53610
+#&gt; 3 2018-08-15 14:00:00              24.97167
+#&gt; 4 2018-08-15 15:00:00              29.99222
+#&gt; 5 2018-08-15 16:00:00              27.22522
+#&gt; 6 2018-08-15 17:00:00              26.27874</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

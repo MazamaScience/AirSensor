@@ -78,7 +78,7 @@ A diagnostic plot is produced if `showPlot = TRUE`." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.9</span>
       </span>
     </div>
 
@@ -101,13 +101,16 @@ A diagnostic plot is produced if `showPlot = TRUE`." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/articles/AirSensorOverview.html">AirSensor Function Overview</a>
+      <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
     </li>
     <li>
       <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
     </li>
     <li>
       <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
+    </li>
+    <li>
+      <a href="../articles/articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
     </li>
     <li>
       <a href="../articles/articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
@@ -123,9 +126,6 @@ A diagnostic plot is produced if `showPlot = TRUE`." />
     </li>
     <li>
       <a href="../articles/articles/working_with_wind_data.html">Working With Wind Data</a>
-    </li>
-    <li>
-      <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
     </li>
   </ul>
 </li>
@@ -265,14 +265,10 @@ will be marked as `NA`.</p></td>
 PWFSL monitor readings.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
-<span class='fu'><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl</a></span>(<span class='st'>"http://smoke.mazamascience.com/data/PurpleAir"</span>)
-<<<<<<< HEAD
-<span class='no'>pat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pat_load.html'>pat_load</a></span>(<span class='st'>"SCAH_22"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in pat_load("SCAH_22"): Required parameter 'pas' is not a valid 'pa_synoptic' object.</span></div><div class='input'><span class='fu'>pat_externalFit</span>(<span class='no'>pat</span>)</div><div class='output co'>#&gt; <span class='error'>Error in MazamaCoreUtils::stopIfNull(pat): object 'pat' not found</span></div><div class='input'># }
-=======
-<span class='no'>pat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pat_load.html'>pat_load</a></span>(<span class='st'>"SCAH_22"</span>)
-<span class='fu'>pat_externalFit</span>(<span class='no'>pat</span>)</div><div class='output co'>#&gt; <span class='error'>Error in PWFSLSmoke::monitor_load(tlim[1], tlim[2], monitorIDs = monitorID): Requests covering multiple years are not supported</span></div><div class='input'># }
->>>>>>> master
+    <pre class="examples"><div class='input'>
+<span class='co'># \donttest{</span>
+<span class='no'>pat</span> <span class='kw'>&lt;-</span> <span class='no'>example_pat</span>
+<span class='fu'>pat_externalFit</span>(<span class='no'>pat</span>)</div><div class='img'><img src='pat_externalFit-1.png' alt='' width='700' height='433' /></div><div class='input'># }
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

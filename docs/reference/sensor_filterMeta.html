@@ -80,7 +80,7 @@ are dropped." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.9</span>
       </span>
     </div>
 
@@ -103,13 +103,16 @@ are dropped." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/articles/AirSensorOverview.html">AirSensor Function Overview</a>
+      <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
     </li>
     <li>
       <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
     </li>
     <li>
       <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
+    </li>
+    <li>
+      <a href="../articles/articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
     </li>
     <li>
       <a href="../articles/articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
@@ -125,9 +128,6 @@ are dropped." />
     </li>
     <li>
       <a href="../articles/articles/working_with_wind_data.html">Working With Wind Data</a>
-    </li>
-    <li>
-      <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
     </li>
   </ul>
 </li>
@@ -197,11 +197,11 @@ the <em>sensor</em> object.</p>
 <p><a href='sensor_filterDate.html'>sensor_filterDate</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='fu'><a href='sensor_load.html'>sensor_load</a></span>(<span class='st'>"scaqmd"</span>, <span class='fl'>20190411</span>, <span class='fl'>20190521</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>sensor_filterMeta</span>(<span class='no'>communityRegion</span> <span class='kw'>==</span> <span class='st'>"Seal Beach"</span>) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>PWFSLSmoke</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/PWFSLSmoke/man/monitor_stamenmap.html'>monitor_stamenmap</a></span>(<span class='kw'>zoom</span> <span class='kw'>=</span> <span class='fl'>12</span>)</div><div class='img'><img src='sensor_filterMeta-1.png' alt='' width='700' height='433' /></div><div class='input'># }
-</div></pre>
+  <span class='kw pkg'>PWFSLSmoke</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/PWFSLSmoke/man/monitor_stamenmap.html'>monitor_stamenmap</a></span>(<span class='kw'>zoom</span> <span class='kw'>=</span> <span class='fl'>11</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

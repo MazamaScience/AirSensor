@@ -76,7 +76,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.9</span>
       </span>
     </div>
 
@@ -99,13 +99,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/articles/AirSensorOverview.html">AirSensor Function Overview</a>
+      <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
     </li>
     <li>
       <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
     </li>
     <li>
       <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
+    </li>
+    <li>
+      <a href="../articles/articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
     </li>
     <li>
       <a href="../articles/articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
@@ -121,9 +124,6 @@
     </li>
     <li>
       <a href="../articles/articles/working_with_wind_data.html">Working With Wind Data</a>
-    </li>
-    <li>
-      <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
     </li>
   </ul>
 </li>
@@ -203,9 +203,9 @@
                  <span class='kw'>s</span> <span class='kw'>=</span> <span class='fl'>33.75</span>,
                  <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>33.78</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/range.html'>range</a></span>(<span class='no'>scsb</span>$<span class='no'>longitude</span>)</div><div class='output co'>#&gt; [1] -118.0945 -118.0782</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/range.html'>range</a></span>(<span class='no'>scsb</span>$<span class='no'>latitude</span>)</div><div class='output co'>#&gt; [1] 33.75989 33.77767</div><div class='input'>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='co'># \donttest{</span>
 <span class='fu'><a href='pas_leaflet.html'>pas_leaflet</a></span>(<span class='no'>scsb</span>)
-}</div></pre>
+<span class='co'># }</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

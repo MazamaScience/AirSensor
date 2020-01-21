@@ -63,8 +63,7 @@ Users may request a \emph{pat} object in one of two ways:
 }
 \examples{
 \donttest{
-# TODO:  This needs to be updated to use USFS data
-setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
 pat <- pat_load("SCNP_20", 20190411, 20190521)
 pat_multiplot(pat)
 }

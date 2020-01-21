@@ -19,12 +19,8 @@ library(tidyr)
 library(ggplot2)
 library(RColorBrewer)
 setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
-pas <- pas_load(archival = TRUE)
-hum_color <- "forestgreen"
-pm25_A_color <- "goldenrod3"
-pm25_B_color <- "deepskyblue4"
-temp_color <- "plum4"
-colors <- c(pm25_A_color, pm25_B_color, hum_color, temp_color)
+pas <- example_pas
+
 ```
 
 ## "Good" and "Bad" data
@@ -43,17 +39,20 @@ A pm25 readings between June 10 and June 17 in the bad data, we will explore
 this section of data throughout the rest of this example.
 
 ```{r, pat_muliplots fig-margin, fig.margin = FALSE}
-
-good_pat <- pat_createNew(label = "SCAH_29", 
-                          pas = pas, 
+good_id <- pas_getDeviceDeploymentIDs(pas, pattern = "SCAH_29")
+good_pat <- pat_createNew(id = good_id,
+                          label = "SCAH_29",
+                          pas,
                           startdate = "2019-05-27", 
                           enddate = "2019-06-22", 
                           timezone = "America/Los_Angeles")
 
 pat_multiplot(good_pat, sampleSize = 1e6)
 
-bad_pat <- pat_createNew(label = "SCTV_16", 
-                         pas = pas, 
+bad_id <- pas_getDeviceDeploymentIDs(pas, pattern = "SCTV_16")
+bad_pat <- pat_createNew(id = bad_id, 
+                         label = "SCTV_16",
+                         pas,
                          startdate = "2019-05-27", 
                          enddate = "2019-06-22", 
                          timezone = "America/Los_Angeles")

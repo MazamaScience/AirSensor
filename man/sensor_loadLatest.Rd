@@ -24,7 +24,7 @@ PurpleAir sensors.
 \examples{
 \donttest{
 # TODO:  This needs to be updated to use USFS data
-setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
 sensor_loadLatest("scaqmd") \%>\%
   PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
 }

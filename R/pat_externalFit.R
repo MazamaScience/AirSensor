@@ -35,8 +35,10 @@
 #' PWFSL monitor readings.
 #' 
 #' @examples
+#' 
 #' \donttest{
-#' pat_externalFit(example_pat)
+#' pat <- example_pat
+#' pat_externalFit(pat)
 #' }
 
 pat_externalFit <- function(
