@@ -17,7 +17,9 @@
 #' \code{data} elements with timeseries metadata and data, respectively.
 #' 
 #' @description Downloads timeseries data for a specific PurpleAir sensor 
-#' from the ThingSpeak API and parses the content into a dataframe.
+#' from the ThingSpeak API and parses the content into a dataframe. This 
+#' function will always return dataframe with the appropriate columns even if no 
+#' data are returned from ThingSpeak.
 #'
 #' @references https://www2.purpleair.com/community/faq
 
@@ -30,6 +32,11 @@ downloadParseTimeseriesData <- function(
   timezone = NULL,
   baseURL = "https://api.thingspeak.com/channels/"
 ) {
+  
+  # NOTE:  This function should never stop(). Instead, if now data are returned
+  # NOTE:  from ThingSpeak, it will create log messages and return an empty
+  # NOTE:  dataframe with the proper columns so that pat_createNew() can use
+  # NOTE:  bind_rows().
   
   # ----- Validate parameters --------------------------------------------------
   
@@ -116,41 +123,7 @@ downloadParseTimeseriesData <- function(
   # Combine channel A and B monitor metadata
   meta <- dplyr::bind_rows(A_meta, B_meta)
   
-  # Generate Thingspeak request URLs
-  A_url <- 
-    paste0(
-      baseURL,
-      A_meta$THINGSPEAK_PRIMARY_ID,
-      "/feeds.json?api_key=",
-      A_meta$THINGSPEAK_PRIMARY_ID_READ_KEY,
-      "&start=", startString,
-      "&end=",
-      endString
-    )
-  B_url <-
-    paste0(
-      baseURL,
-      B_meta$THINGSPEAK_PRIMARY_ID,
-      "/feeds.json?api_key=",
-      B_meta$THINGSPEAK_PRIMARY_ID_READ_KEY,
-      "&start=", startString,
-      "&end=",
-      endString
-    )
-  
-  # ----- Request A channel data from Thingspeak -------------------------------
-  
-  webserviceUrl <- A_url
-  
-  # message(webserviceUrl)
-  
-  # NOTE:  using Hadley Wickham style:
-  # NOTE:  https://github.com/hadley/httr/blob/master/vignettes/quickstart.Rmd
-  r <- httr::GET(webserviceUrl)
-  
-  # Handle the response
-  status_code <- httr::status_code(r)
-  A_content <- httr::content(r, as = "text") # don't interpret the JSON
+  # ----- Create empty data JSON -----------------------------------------------
   
   # Handle "no data" response by generating an empty but complete "pat" object
   err_JSON <- ('{
@@ -196,6 +169,30 @@ downloadParseTimeseriesData <- function(
   ) 
   
   err_data <- err_list$feeds
+  
+  # ----- Request A channel data -----------------------------------------------
+  
+  # Generate Thingspeak request URLs
+  A_url <- 
+    paste0(
+      baseURL,
+      A_meta$THINGSPEAK_PRIMARY_ID,
+      "/feeds.json?api_key=",
+      A_meta$THINGSPEAK_PRIMARY_ID_READ_KEY,
+      "&start=", startString,
+      "&end=",
+      endString
+    )
+  
+  webserviceUrl <- A_url
+  
+  # NOTE:  using Hadley Wickham style:
+  # NOTE:  https://github.com/hadley/httr/blob/master/vignettes/quickstart.Rmd
+  r <- httr::GET(webserviceUrl)
+  
+  # Handle the response
+  status_code <- httr::status_code(r)
+  A_content <- httr::content(r, as = "text") # don't interpret the JSON
   
   if ( httr::http_error(r) ) { # web service failed to respond
     
@@ -250,11 +247,61 @@ downloadParseTimeseriesData <- function(
         simplifyMatrix = TRUE,
         flatten = FALSE
       )
-    A_data <- A_list$feeds
     
-  }
+    # Handle a variety of "successful" but invalid responses
+    
+    if ( !"feeds" %in% names(A_list) ) {
+      
+      A_data <- err_data
+      
+      err_msg <- 
+        sprintf("No A_data returned between %s and %s", startdate, enddate)
+      
+      if ( logger.isInitialized() )
+        logger.trace(err_msg)
+      
+    } else {
+      
+      A_data <- A_list$feeds
+
+      if ( class(A_data) == "data.frame" && ncol(A_data) == 10 ) {
+        
+        # A_data is OK
+        
+      } else {
+        
+        A_data <- err_data
+        
+        err_msg <- 
+          sprintf("No A_data returned between %s and %s", startdate, enddate)
+        
+        if ( logger.isInitialized() )
+          logger.trace(err_msg)
+        
+      }
+      
+    }
+    
+  } # END of Response successful
   
-  # ----- Request B channel data from Thingspeak -------------------------------
+  # Rename columns
+  names(A_data) <- c(
+    "datetime", "entry_id", "pm1_atm", "pm2.5_atm", "pm10_atm",
+    "uptime", "rssi", "temperature", "humidity", "pm2.5_cf1"
+  )
+  
+  # ----- Request B channel data -----------------------------------------------
+  
+  B_url <-
+    paste0(
+      baseURL,
+      B_meta$THINGSPEAK_PRIMARY_ID,
+      "/feeds.json?api_key=",
+      B_meta$THINGSPEAK_PRIMARY_ID_READ_KEY,
+      "&start=", startString,
+      "&end=",
+      endString
+    )
   
   webserviceUrl <- B_url
   
@@ -309,9 +356,7 @@ downloadParseTimeseriesData <- function(
     B_list <- err_list
     B_data <- err_data
     
-  } else {
-    
-    # Response successful
+  } else { # Response successful
     
     B_list <- 
       jsonlite::fromJSON(
@@ -321,54 +366,49 @@ downloadParseTimeseriesData <- function(
         simplifyMatrix = TRUE,
         flatten = FALSE
       )
-    B_data <- B_list$feeds
     
-  }
+    # Handle a variety of "successful" but invalid responses
+    
+    if ( !"feeds" %in% names(B_list) ) {
+      
+      B_data <- err_data
+      
+      err_msg <- 
+        sprintf("No B_data returned between %s and %s", startdate, enddate)
+      
+      if ( logger.isInitialized() )
+        logger.trace(err_msg)
+      
+    } else {
+      
+      B_data <- B_list$feeds
+      
+      if ( class(B_data) == "data.frame" && ncol(B_data) == 10 ) {
+        
+        # B_data is OK
+        
+      } else {
+        
+        B_data <- err_data
+        
+        err_msg <- 
+          sprintf("No B_data returned between %s and %s", startdate, enddate)
+        
+        if ( logger.isInitialized() )
+          logger.trace(err_msg)
+        
+      }
+      
+    }
+    
+  } # END of Response successful
   
-  # Extra checks for some errors we have seen
-  if ( !is.numeric(ncol(A_data)) ) {
-    if ( logger.isInitialized() )
-      logger.warn("A_data is not a dataframe. A_content: %s",
-                  stringr::str_sub(A_content, 1, 180))
-  }
-  
-  if ( !is.numeric(ncol(B_data)) ) {
-    if ( logger.isInitialized() )
-      logger.warn("B_data is not a dataframe. B_content: %s", 
-                  stringr::str_sub(B_content, 1, 180))
-  }
-  
-  # Sanity check for data -> fill if empty to avoid error 
-  if ( ncol(A_data) == 0 && ncol(B_data) == 0 ) {
-    A_data <- err_data
-    B_data <- err_data
-    warning(sprintf(
-      "Sensor %s -- %s: A & B channels for the requested time period do not exist.",
-      sensorID, sensorLabel
-    ))
-  } else if ( ncol(A_data) == 0) {
-    A_data <- err_data
-    warning(sprintf(
-      "Sensor %s -- %s: A channel for the requested time period does not exist.",
-      sensorID, sensorLabel
-    ))
-  } else if ( ncol(B_data) == 0) {
-    B_data <- err_data
-    warning(sprintf(
-      "Sensor %s -- %s: B channel for the requested time period does not exist",
-      sensorID, sensorLabel
-    ))
-  }
-  
-  # Rename columns
-  names(A_data) <- c(
-    "datetime", "entry_id", "pm1_atm", "pm2.5_atm", "pm10_atm",
-    "uptime", "rssi", "temperature", "humidity", "pm2.5_cf1"
-  )
   names(B_data) <- c(
     "datetime", "entry_id", "pm1_atm", "pm2.5_atm", "pm10_atm",
     "memory", "adc0", "unused1", "unused2", "pm2.5_cf1"
   )
+  
+  # ----- Combine A and B channels ---------------------------------------------
   
   # Add channel identifier
   A_data$channel <- "A"
@@ -429,16 +469,27 @@ downloadParseTimeseriesData <- function(
 # ===== DEBUGGING ==============================================================
 
 if ( FALSE ) {
-
-  # id <- NULL
-  # label <- "Seattle"
-  # pas <- example_pas
-  id <- "ebcb53584e44bb6f_3218"
+  
+  id <- "122c6aed66d0c29c_21067"
+  id <- "e8582a00f22db27f_12947"
+  id <- "cb5adde8c100d4fa_13081"
+  id <- "eaf020885e1bf678_21049"
+  id <- '78df3c292c8448f7_21257'
   label <- NULL
   pas <- example_pas
-  startdate <- "2018-08-01"
-  enddate <- "2018-08-28"
+  startdate <- 20190930
+  enddate <- 20191102
   timezone <- NULL
   baseURL <- "https://api.thingspeak.com/channels/"
+  
+  pat_raw <- downloadParseTimeseriesData(
+    id,
+    label,
+    pas,
+    startdate,
+    enddate,
+    timezone,
+    baseURL
+  )
   
 }

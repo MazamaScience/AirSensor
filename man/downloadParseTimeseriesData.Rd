@@ -35,7 +35,9 @@ List of type \code{pa_timeseries} containing \code{meta} and
 }
 \description{
 Downloads timeseries data for a specific PurpleAir sensor 
-from the ThingSpeak API and parses the content into a dataframe.
+from the ThingSpeak API and parses the content into a dataframe. This 
+function will always return dataframe with the appropriate columns even if no 
+data are returned from ThingSpeak.
 }
 \references{
 https://www2.purpleair.com/community/faq
