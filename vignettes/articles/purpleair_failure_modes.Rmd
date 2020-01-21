@@ -16,7 +16,7 @@ PurpleAir (PA-II) sensors.
 knitr::opts_chunk$set(fig.width=7, fig.height=5)
 library(AirSensor)
 setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
-pas <- pas_load(archival = TRUE)
+pas <- example_pas
 ```
 
 ## Channel A Moderate Noise
@@ -37,8 +37,11 @@ angled regression line.
 Channel A readings show extreme levels of noise.
 
 ```{r channel_a_noise_2, echo=FALSE}
-pat_a_noisy_2 <- pat_createNew(pas, 
+
+noisy_2_id <- pas_getDeviceDeploymentIDs(pas, pattern = "SCAP_14")
+pat_a_noisy_2 <- pat_createNew(id = noisy_2_id,
                                label = "SCAP_14", 
+                               pas, 
                                startdate = 20190701, 
                                enddate = 20190708,
                                timezone = "America/Los_Angeles")
@@ -69,7 +72,11 @@ The A channel PM2.5 sensor starts reflecting humidity readings instead of PM
 levels.
 
 ```{r channel_a_humidity_multi, echo=FALSE, warning=FALSE}
-pat_a_humidity <- pat_createNew(pas, "BikeSGV - West Pasadena", 
+humidity_id <- pas_getDeviceDeploymentIDs(pas, 
+                                          pattern = "BikeSGV - West Pasadena")
+pat_a_humidity <- pat_createNew(id = humidity_id,
+                                label = "BikeSGV - West Pasadena", 
+                                pas, 
                                 startdate = "2019-04-16", 
                                 enddate = "2019-04-24",
                                 timezone = "America/Los_Angeles")
@@ -100,7 +107,10 @@ The A channel is centered around a particular level but is sometimes affected
 by humidity when it goes past a certain threshold.
 
 ```{r, echo=FALSE, warning=FALSE}
-pat <- pat_createNew(pas, "SCEM_05", 
+id <- pas_getDeviceDeploymentIDs(pas, pattern = "SCEM_05")
+pat <- pat_createNew(id = id,
+                     label = "SCEM_05",
+                     pas,
                      startdate = 20190701, 
                      enddate = 20190710,
                      timezone = "America/Los_Angeles")
@@ -130,7 +140,11 @@ very straight line of points is visible at exactly 3333.0 ug/m3.
 Channel B measures no particulate matter at all.
 
 ```{r channel_b_zero, echo=FALSE}
-pat_b_zero <- pat_createNew(pas, "SCAP_46", 
+zero_id <- pas_getDeviceDeploymentIDs(pas, pattern = "SCAP_46")
+
+pat_b_zero <- pat_createNew(id = zero_id, 
+                            label = "SCAP_46", 
+                            pas,
                             startdate = "2019-07-01", 
                             enddate = "2019-07-08",
                             timezone = "America/Los_Angeles")

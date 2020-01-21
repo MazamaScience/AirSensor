@@ -83,7 +83,7 @@ We can view the locations of each sensor and the AQI (Air Quality Index) over
 the last hour using the pas_leaflet function.
 
 ```{r view_pas}
-pas_leaflet(pas)
+pas_leaflet(pas_au)
 ```
 
 ### Load time series data for Australia
@@ -101,8 +101,10 @@ filePath_jannali <- file.path(archiveBaseDir, "pat_jannali.rda")
 if ( file.exists(filePath_jannali) ) {
   pat_jannali <- get(load(filePath_jannali))
 } else {
-  pat_jannali <- pat_createNew(pas = pas, 
+  id_jannali <- pas_getDeviceDeploymentIDs(pas, pattern = "Jannali")
+  pat_jannali <- pat_createNew(id = id_jannali,
                                label = label, 
+                               pas = pas_au,
                                startdate = 20191229, 
                                enddate = 20200110)
   save(pat_jannali, file = filePath_jannali)
@@ -213,7 +215,9 @@ if ( file.exists(filePath_windang) ) {
   
   patList <- list()
   for ( label in unhealthy_labels ) {
-    patList[[label]] <- pat_createNew(label = label,
+    id <- pas_getDeviceDeploymentIDs(pas, pattern = label)
+    patList[[label]] <- pat_createNew(id = id, 
+                                      label = label,
                                       pas = pas_au, 
                                       startdate = 20191210, 
                                       enddate = 20200110) 
@@ -284,13 +288,18 @@ filePath_downer <- file.path(archiveBaseDir, "pat_downer.rda")
 if ( file.exists(filePath_downer) ) {
   pat_downer <- get(load(filePath_downer))
 } else {
-  pat_bungendore <- pat_createNew(label = "Bungendore, NSW Australia", 
+  id_bungendore <- pas_getDeviceDeploymentIDs(pas_au, 
+                                              pattern = "Bungendore, NSW Australia" )
+  pat_bungendore <- pat_createNew(id = id_bungendore, 
+                                  label = "Bungendore, NSW Australia", 
                                   pas = pas_au,
                                   startdate = 20191229, 
                                   enddate = 20200110)
   save(pat_bungendore, file = filePath_bungendore)
   
-  pat_downer <- pat_createNew(label = "Downer",
+  id_downer <- pas_getDeviceDeploymentIDs(pas_au, pattern = "Downer")
+  pat_downer <- pat_createNew(id = id_downer, 
+                              label = "Downer",
                               pas = pas_au,
                               startdate = 20191220, 
                               enddate = 20200110)

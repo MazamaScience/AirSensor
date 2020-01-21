@@ -44,10 +44,7 @@ library(AirSensor)
 
 pas <- AirSensor::example_pas
 
-id <- 
-  pas %>%
-  pas_filter(label == "Seattle") %>%
-  dplyr::pull(deviceDeploymentID)
+id <- pas_getDeviceDeploymentIDs(pas, "^Seattle$")
 
 pat <- pat_createNew(id = id, 
                      pas = pas, 
@@ -68,10 +65,7 @@ guaranteed to be unique. For example, if we were looking for a sensor called
 
 ```{r non_unique_pat}
 
-id_home <- 
-  pas %>%
-  pas_filter(label == "home") %>%
-  dplyr::pull(deviceDeploymentID)
+id_home <- pas_getDeviceDeploymentIDs(pas, "^Home$")
 
 length(id_home)
 
