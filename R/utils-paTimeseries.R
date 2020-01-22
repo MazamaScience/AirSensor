@@ -72,14 +72,14 @@ pat_isPat <- function(
 #' 
 #' @param pat \emph{pat} object
 #' @return \code{TRUE} if no data exist in \code{pat}, \code{FALSE} otherwise.
-#' @description Convenience function for \code{nrow(pat$meta) == 0}.
+#' @description Convenience function for \code{nrow(pat$data) == 0}.
 #' This makes for more readable code in functions that need to test for this.
 #' @examples
 #' pat_isEmpty(example_pat)
 #'
 pat_isEmpty <- function(pat) {
   if (!pat_isPat(pat)) stop("Not a valid 'pat' object.")
-  return( nrow(pat$meta) == 0 )
+  return( nrow(pat$data) == 0 )
 }
 
 

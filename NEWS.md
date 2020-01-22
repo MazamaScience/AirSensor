@@ -1,3 +1,8 @@
+# AirSensor 0.6.11
+
+* Fixed bug in `pat_isEmpty()` so that it test for an empty `data` dataframe
+rather than an empty `meta` dataframe.
+
 # AirSensor 0.6.10
 
 * Improved error message in `downloadParseTimeseriesData()`.
