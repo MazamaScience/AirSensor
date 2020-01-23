@@ -1,5 +1,5 @@
 # Single state statistics
-
+# start up code
 DATESTAMP <- "201901"
 
 library(ggplot2)
@@ -17,317 +17,212 @@ state_pas <-
 
 deviceDeploymentIDs <- pas_getDeviceDeploymentIDs(state_pas)
 
-# Get all PATs for January, 2019
+# The following monthly lists/variables are created from functions stored in 
+# local_kayleigh/SoH_stats_test_functions.R. The functions are stored there
+# to simplify the code in this testing document. They are a wip.
 
-patList <- list()
-patEmptyList <- list()
+#------------------------- January --------------------------------
+#load monthly pats:
+jan_patlist <- loadMonthlyPats(DATESTAMP = 201901, deviceDeploymentIDs = deviceDeploymentIDs)
+#create monthly soh list:
+jan_sohlist <- createSoHList(patList = jan_patlist)
+#create monthly single soh tibble: 
+jan_sohtbl <- createSingleSoHTbl(SoHList = jan_sohlist)
+#create monthly soh means:
+jan_sohmeans <- createMonthlyMeans(DATESTAMP = 201901, SoHList = jan_sohlist)
+#tidy means:
+jan_tidysohmeans <- createTidyMeans(SoHMeans = jan_sohmeans)
+####IMPORTANT: gather january deploymentdeviceIDs for further use:
+jan_devicedeploymentIDs <- jan_sohmeans$id
 
-count <- 0
-for ( id in deviceDeploymentIDs ) {
-  
-  count <- count + 1
-  logger.trace("%04d/%d -- pat_loadMonth(%s)", count, length(deviceDeploymentIDs), id)
-  
-  # Load Januar data and trim the date so we don't statistics for partial days
-  pat <- 
-    pat_loadMonth(id, datestamp = DATESTAMP) 
-  
-  # Can only trimDate if it isn't empty
-  if ( !pat_isEmpty(pat) )
-    pat <- pat_trimDate(pat)
-  
-  
-  if ( pat_isEmpty(pat) ) {
-    # TODO fix pat_isEmpty so it checks pat$data, not pat$meta
-    patEmptyList[[id]] <- pat
-  } else {
-    patList[[id]] <- pat
-  }
-  
-}
+#----------------------- February -------------------------------
+#load monthly pats:
+feb_patlist <- loadMonthlyPats(DATESTAMP = 201902, deviceDeploymentIDs = jan_devicedeploymentIDs)
+#create monthly soh list:
+feb_sohlist <- createSoHList(patList = feb_patlist)
+#create monthly single soh tibble: 
+feb_sohtbl <- createSingleSoHTbl(SoHList = feb_sohlist)
+#create monthly soh means:
+feb_sohmeans <- createMonthlyMeans(DATESTAMP = 201902, SoHList = feb_sohlist)
+#tidy means:
+feb_tidysohmeans <- createTidyMeans(SoHMeans = feb_sohmeans)
 
-logger.trace("%d pats with data, %d without", length(patList), length(patEmptyList))
+#----------------------- March -------------------------------
+#load monthly pats:
+mar_patlist <- loadMonthlyPats(DATESTAMP = 201903, deviceDeploymentIDs = jan_devicedeploymentIDs)
+#create monthly soh list:
+mar_sohlist <- createSoHList(patList = mar_patlist)
+#create monthly single soh tibble: 
+mar_sohtbl <- createSingleSoHTbl(SoHList = mar_sohlist)
+#create monthly soh means:
+mar_sohmeans <- createMonthlyMeans(DATESTAMP = 201903, SoHList = mar_sohlist)
+#tidy means:
+mar_tidysohmeans <- createTidyMeans(SoHMeans = feb_sohmeans)
 
-# Create State-of-Health metrics where we have data
 
-SoHList <- list()
 
-count <- 0
-for ( id in names(patList) ) {
-  
-  count <- count + 1
-  logger.trace("%04d/%d -- pat_dailySoH(%s)", count, length(patList), id)
-  
-  SoHList[[id]] <- pat_dailySoH(patList[[id]])
-  SoHList[[id]]$deviceDeploymentID <- id
-  
-}
 
-# Build one big tibble for use wigh ggplot
+#-------------------- Plots -----------------------------------
 
-SoH <- 
-  dplyr::bind_rows(SoHList) %>%
-  dplyr::mutate_if(is.numeric, ~replace(., is.nan(.), as.numeric(NA)))
+#### box plot: distribution of single metric from single month
 
-# Create a plot showing the range of temperature_pctReporting for every sensor
+monthlySoH_tbl <- jan_sohtbl
 
-ggplot(SoH, aes(x = reorder(deviceDeploymentID, temperature_pctReporting, mean), 
-                y = temperature_pctReporting)) +
+ggplot(monthlySoH_tbl, aes(x = reorder(deviceDeploymentID, pm25_A_pctReporting, mean), 
+                           y = pm25_A_pctReporting)) +
   geom_boxplot() +
   theme(axis.title.x = element_blank(),
         axis.text.x = element_blank(),
-        axis.ticks.x = element_blank())
-
-ggplot(SoH, aes(x = reorder(deviceDeploymentID, pm25_A_pctReporting, mean), 
-                y = pm25_A_pctReporting)) +
-  geom_boxplot() +
-  theme(axis.title.x = element_blank(),
-        axis.text.x = element_blank(),
-        axis.ticks.x = element_blank())
-
-ggplot(SoH, aes(x = reorder(deviceDeploymentID, pm25_B_pctReporting, mean), 
-                y = pm25_B_pctReporting)) +
-  geom_boxplot() +
-  theme(axis.title.x = element_blank(),
-        axis.text.x = element_blank(),
-        axis.ticks.x = element_blank())
-
-# Create a dataframe of monthly means for each sensor
-
-datetime <- MazamaCoreUtils::parseDatetime(DATESTAMP, timezone = "UTC")
-SoHMeansList <- list()
-
-for ( id in names(SoHList) ) {
-  
-  means <-
-    SoHList[[id]] %>%
-    dplyr::select_if(is.numeric) %>%
-    colMeans() %>%
-    as.list() %>%
-    dplyr::as_tibble()
-  
-  means$datetime <- datetime
-  means$id <- id
-  
-  SoHMeansList[[id]] <- means
-  
-}
-
-SoHMeans <- dplyr::bind_rows(SoHMeansList)
-
-# Now to plot boxplots for each metric showing the daily average across all sensors
-# See: https://stackoverflow.com/questions/14785530/ggplot-boxplot-of-multiple-column-values
-
-library(reshape2)
-tidyTbl <- 
-  SoHMeans %>%
-  dplyr::select(-datetime) %>%
-  melt(id.vars='id')
-
-orderedParams <- c(
-  "pm25_A_pctReporting",
-  "pm25_B_pctReporting",
-  "temperature_pctReporting",
-  "humidity_pctReporting",
-  "pm25_A_pctValid",
-  "pm25_B_pctValid",
-  "temperature_pctValid",
-  "humidity_pctValid",
-  "pm25_A_pctDC",
-  "pm25_B_pctDC",
-  "temperature_pctDC",
-  "humidity_pctDC",
-  "pm25_A_pm25_B_rsquared",
-  "pm25_A_pm25_B_slope",
-  "pm25_A_pm25_B_intercept",
-  "pm25_A_pm25_B_p_value",
-  "pm25_A_humidity_rsquared",
-  "pm25_A_temperature_rsquared",
-  "pm25_B_humidity_rsquared",
-  "pm25_B_temperature_rsquared"
-)
-
-tidyTbl$variable <- factor(tidyTbl$variable, levels = orderedParams, order = TRUE)
-
-ggplot(tidyTbl) +
-  geom_boxplot(aes(x = variable, y = value)) +
-  coord_flip()
-
-# TODO:  Could generate separate plot for the 0-100 and 0-1 variables
-
-# TODO:  Next level of roll-up statistics would be a set of monthly boxplots for
-# TODO:  a single parameter to see how it evolves with time. It is probably important
-# TODO:  to limit yourself to sensors that had data in January so we know we are
-# TODO:  talking about a non-changing set of sensors.
-
-#### ---- FEBRUARY ---------------------
-
-# only want to download sensors used for stats in January rather than incorporating
-# newly spun up sensors in February to avoid skewing the stats.
-
-jan_deviceDeploymendIDs <- SoHMeans$id
+        axis.ticks.x = element_blank()) +
+  geom_rug()
 
 
-DATESTAMP <- "201902"
 
-# Get all PATs for February, 2019
+#### box plot: one metric for all months
 
-feb_patList <- list()
-feb_patEmptyList <- list()
-
-count <- 0
-for ( id in jan_deviceDeploymendIDs ) {
-  
-  count <- count + 1
-  logger.trace("%04d/%d -- pat_loadMonth(%s)", count, length(jan_deviceDeploymendIDs), id)
-  
-  # Load Januar data and trim the date so we don't statistics for partial days
-  pat <- 
-    pat_loadMonth(id, datestamp = DATESTAMP) 
-  
-  # Can only trimDate if it isn't empty
-  if ( !pat_isEmpty(pat) )
-    pat <- pat_trimDate(pat)
-  
-  
-  if ( pat_isEmpty(pat) ) {
-    # TODO fix pat_isEmpty so it checks pat$data, not pat$meta
-    feb_patEmptyList[[id]] <- pat
-  } else {
-    feb_patList[[id]] <- pat
-  }
-  
-}
-
-logger.trace("%d pats with data, %d without", length(feb_patList), length(feb_patEmptyList))
-
-
-# Create State-of-Health metrics where we have data
-
-feb_SoHList <- list()
-
-count <- 0
-for ( id in names(feb_patList) ) {
-  
-  count <- count + 1
-  logger.trace("%04d/%d -- pat_dailySoH(%s)", count, length(feb_patList), id)
-  
-  feb_SoHList[[id]] <- pat_dailySoH(feb_patList[[id]])
-  feb_SoHList[[id]]$deviceDeploymentID <- id
-  
-}
-
-# Build one big tibble for use wigh ggplot
-
-feb_SoH <- 
-  dplyr::bind_rows(feb_SoHList) %>%
-  dplyr::mutate_if(is.numeric, ~replace(., is.nan(.), as.numeric(NA)))
-
-# Create a plot showing the range of temperature_pctReporting for every sensor
-
-ggplot(feb_SoH, aes(x = reorder(deviceDeploymentID, temperature_pctReporting, mean), 
-                y = temperature_pctReporting)) +
-  geom_boxplot() +
-  theme(axis.title.x = element_blank(),
-        axis.text.x = element_blank(),
-        axis.ticks.x = element_blank())
-
-ggplot(feb_SoH, aes(x = reorder(deviceDeploymentID, pm25_A_pctReporting, mean), 
-                y = pm25_A_pctReporting)) +
-  geom_boxplot() +
-  theme(axis.title.x = element_blank(),
-        axis.text.x = element_blank(),
-        axis.ticks.x = element_blank())
-
-ggplot(feb_SoH, aes(x = reorder(deviceDeploymentID, pm25_B_pctReporting, mean), 
-                y = pm25_B_pctReporting)) +
-  geom_boxplot() +
-  theme(axis.title.x = element_blank(),
-        axis.text.x = element_blank(),
-        axis.ticks.x = element_blank())
-
-# Create a dataframe of monthly means for each sensor
-
-datetime <- MazamaCoreUtils::parseDatetime(DATESTAMP, timezone = "UTC")
-feb_SoHMeansList <- list()
-
-for ( id in names(feb_SoHList) ) {
-  
-  means <-
-    feb_SoHList[[id]] %>%
-    dplyr::select_if(is.numeric) %>%
-    colMeans() %>%
-    as.list() %>%
-    dplyr::as_tibble()
-  
-  means$datetime <- datetime
-  means$id <- id
-  
-  feb_SoHMeansList[[id]] <- means
-  
-}
-
-feb_SoHMeans <- dplyr::bind_rows(feb_SoHMeansList)
-
-library(reshape2)
-feb_tidyTbl <- 
-  feb_SoHMeans %>%
-  dplyr::select(-datetime) %>%
-  melt(id.vars='id')
-
-orderedParams <- c(
-  "pm25_A_pctReporting",
-  "pm25_B_pctReporting",
-  "temperature_pctReporting",
-  "humidity_pctReporting",
-  "pm25_A_pctValid",
-  "pm25_B_pctValid",
-  "temperature_pctValid",
-  "humidity_pctValid",
-  "pm25_A_pctDC",
-  "pm25_B_pctDC",
-  "temperature_pctDC",
-  "humidity_pctDC",
-  "pm25_A_pm25_B_rsquared",
-  "pm25_A_pm25_B_slope",
-  "pm25_A_pm25_B_intercept",
-  "pm25_A_pm25_B_p_value",
-  "pm25_A_humidity_rsquared",
-  "pm25_A_temperature_rsquared",
-  "pm25_B_humidity_rsquared",
-  "pm25_B_temperature_rsquared"
-)
-
-feb_tidyTbl$variable <- factor(feb_tidyTbl$variable, levels = orderedParams, order = TRUE)
-
-ggplot(feb_tidyTbl) +
-  geom_boxplot(aes(x = variable, y = value)) +
-  coord_flip()
-
-# plot percent reporting montly boxplot
-
-soh_metric <- "pm25_B_pctReporting"
+soh_metric <- "pm25_A_pm25_B_p_value"
 
 jan_metric <- 
-  SoHMeans %>%
+  jan_sohmeans %>%
   dplyr::select(soh_metric, "datetime") %>%
   mutate(datetime = strftime(datetime, format = "%Y/%m", tz = "UTC"))
 
 feb_metric <- 
-  feb_SoHMeans %>%
+  feb_sohmeans %>%
   dplyr::select(soh_metric, "datetime") %>%
   mutate(datetime = strftime(datetime, format = "%Y/%m", tz = "UTC"))
 
+mar_metric <-
+  mar_sohmeans %>%
+  dplyr::select(soh_metric, "datetime") %>%
+  mutate(datetime = strftime(datetime, format = "%Y/%m", tz = "UTC"))
 
 monthly_metric <-
   jan_metric %>%
-  dplyr::bind_rows(feb_metric)
+  dplyr::bind_rows(feb_metric) %>%
+  dplyr::bind_rows(mar_metric)
 
 
 ggplot(monthly_metric) +
-  geom_boxplot(aes(x = datetime, y = pm25_B_pctReporting)) 
+  geom_boxplot(aes(x = datetime, y = pm25_A_pm25_B_p_value)) 
 
-#Everything in one plot:
+
+
+##### box plot: average of each metric for single month
+
+orderedParams <- c(
+  "pm25_A_pctReporting",
+  "pm25_B_pctReporting",
+  "temperature_pctReporting",
+  "humidity_pctReporting",
+  "pm25_A_pctValid",
+  "pm25_B_pctValid",
+  "temperature_pctValid",
+  "humidity_pctValid",
+  "pm25_A_pctDC",
+  "pm25_B_pctDC",
+  "temperature_pctDC",
+  "humidity_pctDC",
+  "pm25_A_pm25_B_rsquared",
+  "pm25_A_pm25_B_slope",
+  "pm25_A_pm25_B_intercept",
+  "pm25_A_pm25_B_p_value",
+  "pm25_A_humidity_rsquared",
+  "pm25_A_temperature_rsquared",
+  "pm25_B_humidity_rsquared",
+  "pm25_B_temperature_rsquared"
+)
+
+tidySoHMeans <- jan_tidysohmeans
+tidySoHMeans$variable <- factor(tidySoHMeans$variable, levels = orderedParams, order = TRUE)
+
+ggplot(tidySoHMeans) +
+  geom_boxplot(aes(x = variable, y = value)) +
+  coord_flip() +
+  labs(title = "January")
+
+
+##### box plot: single month metrics on scale from 0:150 percent
+
+orderedParams <- c(
+  "pm25_A_pctReporting",
+  "pm25_B_pctReporting",
+  "temperature_pctReporting",
+  "humidity_pctReporting",
+  "pm25_A_pctValid",
+  "pm25_B_pctValid",
+  "temperature_pctValid",
+  "humidity_pctValid",
+  "pm25_A_pctDC",
+  "pm25_B_pctDC",
+  "temperature_pctDC",
+  "humidity_pctDC"
+)
+
+tidySoHMeans <- jan_tidysohmeans
+
+tidySoHMeans <-
+  tidySoHMeans %>%
+  dplyr::filter(variable == "pm25_A_pctReporting"
+                | variable ==  "pm25_B_pctReporting"
+                | variable == "temperature_pctReporting"
+                | variable == "humidity_pctReporting"
+                | variable == "pm25_A_pctValid"
+                | variable == "pm25_B_pctValid"
+                | variable == "temperature_pctValid"
+                | variable == "humidity_pctValid"
+                | variable == "pm25_A_pctDC"
+                | variable == "pm25_B_pctDC"
+                | variable == "temperature_pctDC"
+                | variable == "humidity_pctDC")
+
+tidySoHMeans$variable <- factor(tidySoHMeans$variable, levels = orderedParams, order = TRUE)
+
+ggplot(tidySoHMeans) +
+  geom_boxplot(aes(x = variable, y = value)) +
+  coord_flip() +
+  labs(title = "January")
+
+
+
+##### box plot: single month metrics on smaller scale (ie, NOT 0-150%)
+
+orderedParams <- c(
+  "pm25_A_pm25_B_rsquared",
+  "pm25_A_pm25_B_slope",
+  "pm25_A_pm25_B_intercept",
+  "pm25_A_pm25_B_p_value",
+  "pm25_A_humidity_rsquared",
+  "pm25_A_temperature_rsquared",
+  "pm25_B_humidity_rsquared",
+  "pm25_B_temperature_rsquared"
+)
+
+tidySoHMeans <- jan_tidysohmeans
+
+tidySoHMeans <-
+  tidySoHMeans %>%
+  dplyr::filter(variable == "pm25_A_pm25_B_rsquared"
+                | variable ==  "pm25_A_pm25_B_slope"
+                | variable == "pm25_A_pm25_B_intercept"
+                | variable == "pm25_A_pm25_B_p_value"
+                | variable == "pm25_A_humidity_rsquared"
+                | variable == "pm25_A_temperature_rsquared"
+                | variable == "pm25_B_humidity_rsquared"
+                | variable == "pm25_B_temperature_rsquared")
+
+tidySoHMeans$variable <- factor(tidySoHMeans$variable, levels = orderedParams, order = TRUE)
+
+ggplot(tidySoHMeans) +
+  geom_boxplot(aes(x = variable, y = value)) +
+  coord_flip() +
+  labs(title = "January")
+
+
+
+
+##### box plot: all metrics, all months, aka chaos:
+
 jan_all_metrics <-
   tidyTbl %>%
   dplyr::mutate(datetime = MazamaCoreUtils::parseDatetime(datetime = "201901", timezone = "UTC")) %>%
@@ -370,10 +265,5 @@ ggplot(monthly_all_metrics) +
   geom_boxplot(aes(x = variable, y = value)) +
   coord_flip()+
   facet_grid(cols = vars(monthly_all_metrics$datetime))
-
-
-
-
-
 
 
