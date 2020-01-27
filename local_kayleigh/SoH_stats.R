@@ -32,6 +32,9 @@ jan_sohtbl <- createSingleSoHTbl(SoHList = jan_sohlist)
 jan_sohmeans <- createMonthlyMeans(DATESTAMP = 201901, SoHList = jan_sohlist)
 #tidy means:
 jan_tidysohmeans <- createTidyMeans(SoHMeans = jan_sohmeans)
+#soh index: 
+jan_sohindex <- monthlySOH_index(patList = jan_patlist)
+jan_monthlyindex <- createSingleSoH_Index_Tbl(indexList = jan_sohindex)
 ####IMPORTANT: gather january deploymentdeviceIDs for further use:
 jan_devicedeploymentIDs <- jan_sohmeans$id
 
@@ -59,14 +62,72 @@ mar_sohmeans <- createMonthlyMeans(DATESTAMP = 201903, SoHList = mar_sohlist)
 #tidy means:
 mar_tidysohmeans <- createTidyMeans(SoHMeans = feb_sohmeans)
 
+#----------------------- April -------------------------------
+#load monthly pats:
+apr_patlist <- loadMonthlyPats(DATESTAMP = 201904, deviceDeploymentIDs = jan_devicedeploymentIDs)
+#create monthly soh list:
+apr_sohlist <- createSoHList(patList = apr_patlist)
+#create monthly single soh tibble: 
+apr_sohtbl <- createSingleSoHTbl(SoHList = apr_sohlist)
+#create monthly soh means:
+apr_sohmeans <- createMonthlyMeans(DATESTAMP = 201904, SoHList = apr_sohlist)
+#tidy means:
+apr_tidysohmeans <- createTidyMeans(SoHMeans = apr_sohmeans)
+
+#----------------------- May -------------------------------
+#load monthly pats:
+may_patlist <- loadMonthlyPats(DATESTAMP = 201905, deviceDeploymentIDs = jan_devicedeploymentIDs)
+#create monthly soh list:
+may_sohlist <- createSoHList(patList = may_patlist)
+#create monthly single soh tibble: 
+may_sohtbl <- createSingleSoHTbl(SoHList = may_sohlist)
+#create monthly soh means:
+may_sohmeans <- createMonthlyMeans(DATESTAMP = 201905, SoHList = may_sohlist)
+#tidy means:
+may_tidysohmeans <- createTidyMeans(SoHMeans = may_sohmeans)
+
+#----------------------- June -------------------------------
+#load monthly pats:
+jun_patlist <- loadMonthlyPats(DATESTAMP = 201906, deviceDeploymentIDs = jan_devicedeploymentIDs)
+#create monthly soh list:
+jun_sohlist <- createSoHList(patList = jun_patlist)
+#create monthly single soh tibble: 
+jun_sohtbl <- createSingleSoHTbl(SoHList = jun_sohlist)
+#create monthly soh means:
+jun_sohmeans <- createMonthlyMeans(DATESTAMP = 201906, SoHList = jun_sohlist)
+#tidy means:
+jun_tidysohmeans <- createTidyMeans(SoHMeans = jun_sohmeans)
 
 
+#----------------------- July -------------------------------
+#load monthly pats:
+jul_patlist <- loadMonthlyPats(DATESTAMP = 201907, deviceDeploymentIDs = jan_devicedeploymentIDs)
+#create monthly soh list:
+jul_sohlist <- createSoHList(patList = jul_patlist)
+#create monthly single soh tibble: 
+jul_sohtbl <- createSingleSoHTbl(SoHList = jul_sohlist)
+#create monthly soh means:
+jul_sohmeans <- createMonthlyMeans(DATESTAMP = 201907, SoHList = jul_sohlist)
+#tidy means:
+jul_tidysohmeans <- createTidyMeans(SoHMeans = jul_sohmeans)
+
+#----------------------- August -------------------------------
+#load monthly pats:
+aug_patlist <- loadMonthlyPats(DATESTAMP = 201908, deviceDeploymentIDs = jan_devicedeploymentIDs)
+#create monthly soh list:
+aug_sohlist <- createSoHList(patList = aug_patlist)
+#create monthly single soh tibble: 
+aug_sohtbl <- createSingleSoHTbl(SoHList = aug_sohlist)
+#create monthly soh means:
+aug_sohmeans <- createMonthlyMeans(DATESTAMP = 201908, SoHList = aug_sohlist)
+#tidy means:
+aug_tidysohmeans <- createTidyMeans(SoHMeans = aug_sohmeans)
 
 #-------------------- Plots -----------------------------------
 
 #### box plot: distribution of single metric from single month
 
-monthlySoH_tbl <- jan_sohtbl
+monthlySoH_tbl <- jun_sohtbl
 
 ggplot(monthlySoH_tbl, aes(x = reorder(deviceDeploymentID, pm25_A_pctReporting, mean), 
                            y = pm25_A_pctReporting)) +
@@ -76,11 +137,57 @@ ggplot(monthlySoH_tbl, aes(x = reorder(deviceDeploymentID, pm25_A_pctReporting, 
         axis.ticks.x = element_blank()) +
   geom_rug()
 
+#### SoH index histogram for one month: 
+
+categorized_index <- 
+  jan_monthlyindex %>%
+  dplyr::mutate(category = case_when(index_bin == 1 ~ "poor",
+                                     index_bin == 2 ~ "fair",
+                                     index_bin == 3 ~ "good")) %>%
+  dplyr::filter(.data$datetime >= parseDatetime(datetime = "20190101", timezone = "America/Los_Angeles")) %>%
+  dplyr::filter(.data$datetime < parseDatetime(datetime = "20190201", timezone = "America/Los_Angeles")) #%>%
+  #dplyr::arrange(.data$datetime)
+
+test_index <- 
+  categorized_index %>%
+  #dplyr::mutate(daystamp = strftime(.data$datetime, "%Y%m%d", tz = "America/Los_Angeles")) %>%
+  dplyr::group_by(.data$datetime, .data$index_bin) %>%
+  dplyr::summarise_at(
+    .vars = c("category"),
+    .funs = function(x) { length(na.omit(x)) }
+  ) %>% #this is awesome, make a new column to store the total for each day, populate with the sum calculated based on when 
+  #the date is identical
+  dplyr::mutate(totals = case_when(identical(.data$datetime, .data$datetime) ~ sum(.data$category))) %>%
+  dplyr::mutate(percent = .data$category/.data$totals*100) %>%
+  dplyr::mutate(group = case_when(index_bin == 1 ~ "poor",
+                                     index_bin == 2 ~ "fair",
+                                     index_bin == 3 ~ "good"))
+
+
+colors <- c("firebrick", "goldenrod1", "seagreen3")
+fillColors <- colors[test_index$percent]
+colors <- c("good" = "seagreen3", "fair" = "goldenrod1", "poor" = "firebrick" )
+
+ordered_categories <- c("good", "fair", "poor")
+test_index$group <- factor(test_index$group, levels = ordered_categories, order = TRUE)
+
+ggplot(test_index, aes(x = datetime, y = percent, fill = group ) ) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = colors)
+
+# ggplot(test_index ) +
+#   geom_bar(aes(x = datetime, y = (..count..)/sum(..count..), fill = category )) +
+#   scale_fill_manual(values = colors) +
+#   scale_y_continuous(labels = percent_format())
+
+ggplot(categorized_index ) +
+  geom_freqpoly(aes(x = datetime, color = category))+
+  scale_color_manual(values = colors)
 
 
 #### box plot: one metric for all months
 
-soh_metric <- "pm25_A_pm25_B_p_value"
+soh_metric <- "temperature_pctReporting"
 
 jan_metric <- 
   jan_sohmeans %>%
@@ -97,14 +204,38 @@ mar_metric <-
   dplyr::select(soh_metric, "datetime") %>%
   mutate(datetime = strftime(datetime, format = "%Y/%m", tz = "UTC"))
 
+apr_metric <-
+  apr_sohmeans %>%
+  dplyr::select(soh_metric, "datetime") %>%
+  mutate(datetime = strftime(datetime, format = "%Y/%m", tz = "UTC"))
+
+may_metric <-
+  may_sohmeans %>%
+  dplyr::select(soh_metric, "datetime") %>%
+  mutate(datetime = strftime(datetime, format = "%Y/%m", tz = "UTC"))
+
+jun_metric <-
+  jun_sohmeans %>%
+  dplyr::select(soh_metric, "datetime") %>%
+  mutate(datetime = strftime(datetime, format = "%Y/%m", tz = "UTC"))
+
+jul_metric <-
+  jul_sohmeans %>%
+  dplyr::select(soh_metric, "datetime") %>%
+  mutate(datetime = strftime(datetime, format = "%Y/%m", tz = "UTC"))
+
 monthly_metric <-
   jan_metric %>%
   dplyr::bind_rows(feb_metric) %>%
-  dplyr::bind_rows(mar_metric)
+  dplyr::bind_rows(mar_metric) %>%
+  dplyr::bind_rows(apr_metric) %>%
+  dplyr::bind_rows(may_metric) %>%
+  dplyr::bind_rows(jun_metric) %>%
+  dplyr::bind_rows(jul_metric)
 
 
 ggplot(monthly_metric) +
-  geom_boxplot(aes(x = datetime, y = pm25_A_pm25_B_p_value)) 
+  geom_boxplot(aes(x = datetime, y = temperature_pctReporting)) 
 
 
 

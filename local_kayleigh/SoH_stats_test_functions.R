@@ -72,12 +72,12 @@ createSoHList <- function(
 createSingleSoHTbl <- function(
   SoHList = NULL
 ) {
-
-SoH <- 
-  dplyr::bind_rows(SoHList) %>%
-  dplyr::mutate_if(is.numeric, ~replace(., is.nan(.), as.numeric(NA)))
-
-return(SoH)
+  
+  SoH <- 
+    dplyr::bind_rows(SoHList) %>%
+    dplyr::mutate_if(is.numeric, ~replace(., is.nan(.), as.numeric(NA)))
+  
+  return(SoH)
 }
 
 ########################################### -----------------------------------
@@ -88,29 +88,29 @@ createMonthlyMeans <- function(
   DATESTAMP = NULL,
   SoHList = NULL
 ) {
-
-datetime <- MazamaCoreUtils::parseDatetime(DATESTAMP, timezone = "UTC")
-SoHMeansList <- list()
-
-for ( id in names(SoHList) ) {
   
-  means <-
-    SoHList[[id]] %>%
-    dplyr::select_if(is.numeric) %>%
-    colMeans() %>%
-    as.list() %>%
-    dplyr::as_tibble()
+  datetime <- MazamaCoreUtils::parseDatetime(DATESTAMP, timezone = "UTC")
+  SoHMeansList <- list()
   
-  means$datetime <- datetime
-  means$id <- id
+  for ( id in names(SoHList) ) {
+    
+    means <-
+      SoHList[[id]] %>%
+      dplyr::select_if(is.numeric) %>%
+      colMeans() %>%
+      as.list() %>%
+      dplyr::as_tibble()
+    
+    means$datetime <- datetime
+    means$id <- id
+    
+    SoHMeansList[[id]] <- means
+    
+  }
   
-  SoHMeansList[[id]] <- means
+  SoHMeans <- dplyr::bind_rows(SoHMeansList)
   
-}
-
-SoHMeans <- dplyr::bind_rows(SoHMeansList)
-
-return(SoHMeans)
+  return(SoHMeans)
 }
 
 ##################################### ----------------------------------------
@@ -120,15 +120,59 @@ return(SoHMeans)
 createTidyMeans <- function(
   SoHMeans = NULL
 ) {
-
-library(reshape2)
-tidyTbl <- 
-  SoHMeans %>%
-  dplyr::select(-datetime) %>%
-  melt(id.vars='id')
-
-return(tidyTbl)
+  
+  library(reshape2)
+  tidyTbl <- 
+    SoHMeans %>%
+    dplyr::select(-datetime) %>%
+    melt(id.vars='id')
+  
+  return(tidyTbl)
 }
+
+##################################### ----------------------------------------
+
+# Calculate the daily SoH INDEX for each day in the month 
+monthlySOH_index <- function(
+  patList = NULL
+) {
+  
+  indexList <- list()
+  
+  count <- 0
+  for ( id in names(patList) ) {
+    
+    count <- count + 1
+    logger.trace("%04d/%d -- pat_dailySoHIndex(%s)", count, length(patList), id)
+    
+    indexList[[id]] <- pat_dailySoHIndex_00(patList[[id]])
+    indexList[[id]]$deviceDeploymentID <- id
+    
+  }
+  
+  return(indexList)
+  
+}
+
+##################################### ----------------------------------------
+
+
+# build one big monthly SOH INDEX tibble 
+
+createSingleSoH_Index_Tbl <- function(
+  indexList = NULL
+) {
+  
+  index <- 
+    dplyr::bind_rows(indexList) %>%
+    dplyr::mutate_if(is.numeric, ~replace(., is.nan(.), as.numeric(NA)))
+  
+  return(index)
+}
+
+
+
+
 
 
 
