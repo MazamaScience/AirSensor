@@ -1,11 +1,12 @@
 # Single state statistics
 # start up code
-DATESTAMP <- "201901"
+
 
 library(ggplot2)
-
 library(MazamaCoreUtils)
 library(AirSensor)
+
+
 setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
 
 logger.setup()
@@ -15,7 +16,162 @@ state_pas <-
   pas_load(archival = TRUE) %>%
   pas_filter(stateCode == "WA")
 
-deviceDeploymentIDs <- pas_getDeviceDeploymentIDs(state_pas)
+
+archiveBaseDir <- path.expand("~/Data/MonthlySohStats_data") #check to see if the data directory exists, make it if not
+if ( !dir.exists(archiveBaseDir) ) {
+  dir.create(archiveBaseDir)
+}
+setArchiveBaseDir(archiveBaseDir)
+
+
+month_abbrev <- c("jan", "feb", "mar", "apr", "may", "jun", "jul", "aug")
+DATESTAMP <- c("201901", "201902", "201903", "201904", "201905", "201906", 
+               "201907", "201908")
+
+# NOTE: Check to see if the patlist for each month exists in the directory,
+# NOTE: load the months that exist and create the months that do not. This chunk
+# NOTE: assumes that the monthly pat data are available at the ArchiveBaseURL
+
+for (i in seq(month_abbrev)){
+  
+  logger.trace("loading for month %s", month_abbrev[i])
+  patList_filname <- paste0(month_abbrev[i], "_patlist.rda")
+  patList_filePath <- file.path(archiveBaseDir, patList_filname)
+  
+  if ( file.exists(patList_filePath) ) { #if the patlist already exists, load it
+    patList <- get(load(patList_filePath))
+  }
+  
+  jan_deviceDeploymentIds <- names(jan_patlist)
+  
+  if ( !file.exists(patList_filePath) ) {
+    
+    print(DATESTAMP[i])
+    
+    patList <- list()
+    patEmptyList <- list()
+    
+    count <- 0
+    for ( id in jan_deviceDeploymentIds ) {
+      
+      count <- count + 1
+      logger.trace("%04d/%d -- pat_loadMonth(%s)", count, length(jan_deviceDeploymentIds), id)
+      
+      # Load January data and trim the date so we don't statistics for partial days
+      pat <-
+        pat_loadMonth(id, datestamp = DATESTAMP[i])
+      
+      # Can only trimDate if it isn't empty
+      if ( !pat_isEmpty(pat) )
+        pat <- pat_trimDate(pat)
+      
+      if ( pat_isEmpty(pat) ) {
+        # TODO fix pat_isEmpty so it checks pat$data, not pat$meta
+        patEmptyList[[id]] <- pat
+      } else {
+        patList[[id]] <- pat
+      }
+      newname <- paste0(month_abbrev[i], "_patlist")
+      assign(newname, patList)
+    }
+    
+    logger.trace("%d pats with data, %d without", length(patList), length(patEmptyList))
+    save(list = newname, file = patList_filePath)
+  }
+}
+
+# NOTE: Check to see if the sohlist for each month exists in the directory,
+# NOTE: load the months that exist and create the months that do not. This chunk
+# NOTE: assumes that ALL monthly pat data are ALREADY LOADED
+
+for (i in seq(month_abbrev)){
+  
+  logger.trace("loading for month %s", month_abbrev[i])
+  sohList_filname <- paste0(month_abbrev[i], "_sohlist.rda")
+  sohList_filePath <- file.path(archiveBaseDir, sohList_filname)
+  
+  if ( file.exists(sohList_filePath) ) { #if the patlist already exists, load it
+    sohList <- get(load(sohList_filePath))
+  }
+  
+  jan_deviceDeploymentIds <- names(jan_patlist)
+  
+  if ( !file.exists(sohList_filePath) ) {
+    
+    patlist_ref <- paste0(month_abbrev[i], "_patlist")
+    patlist <- eval(as.symbol(patlist_ref))
+    
+    SoHList <- list()
+    
+    count <- 0
+    for ( id in names(patlist) ) {
+      
+      count <- count + 1
+      logger.trace("%04d/%d -- pat_dailySoH(%s)", count, length(patlist), id)
+      
+      SoHList[[id]] <- pat_dailySoH(patlist[[id]])
+      SoHList[[id]]$jan_deviceDeploymentIds <- id
+      newname <- paste0(month_abbrev[i], "_sohlist")
+      assign(newname, SoHList)
+    }
+    save(list = newname, file = sohList_filePath)
+  }
+}
+
+# NOTE: Check to see if the sohIndexList for each month exists in the directory,
+# NOTE: load the months that exist and create the months that do not. This chunk
+# NOTE: assumes that ALL monthly pat lists are ALREADY LOADED
+
+for (i in seq(month_abbrev)){
+  
+  logger.trace("loading for month %s", month_abbrev[i])
+  sohIndexList_filname <- paste0(month_abbrev[i], "_sohIndexList.rda")
+  sohIndexList_filePath <- file.path(archiveBaseDir, sohIndexList_filname)
+  
+  if ( file.exists(sohIndexList_filePath) ) { #if the patlist already exists, load it
+    sohIndexList <- get(load(sohIndexList_filePath))
+  }
+  
+  jan_deviceDeploymentIds <- names(jan_patlist)
+  
+  if ( !file.exists(sohIndexList_filePath) ) {
+    
+    patlist_ref <- paste0(month_abbrev[i], "_patlist")
+    patlist <- eval(as.symbol(patlist_ref))
+    indexList <- list()
+    
+    count <- 0
+    for ( id in names(patlist) ) {
+      
+      count <- count + 1
+      logger.trace("%04d/%d -- pat_dailySoHIndex(%s)", count, length(patlist), id)
+      
+      indexList[[id]] <- pat_dailySoHIndex_00(patlist[[id]])
+      indexList[[id]]$deviceDeploymentID <- id
+      newname <- paste0(month_abbrev[i], "_sohIndexlist")
+      assign(newname, indexList)
+    }
+
+    save(list = newname, file = sohIndexList_filePath)
+  }
+}
+
+# NOTE: The following processes do not take as long or require as much storage
+# NOTE: as the previous chunks so this chunk will not check for existence or save.
+# NOTE: Build one big SoH tibble per month
+
+for (i in seq(month_abbrev)){
+  logger.trace("Creating SoH tibble for month %s", month_abbrev[i])
+  sohtibble_name <- paste0(month_abbrev[i], "_sohtibble")
+  
+  SoHList <- paste0(month_abbrev[i], "_sohlist")
+  
+  SoH <- 
+    dplyr::bind_rows(SoHList) %>%
+    dplyr::mutate_if(is.numeric, ~replace(., is.nan(.), as.numeric(NA)))
+  
+  assign(sohtibble_name, SoH)
+}
 
 # The following monthly lists/variables are created from functions stored in 
 # local_kayleigh/SoH_stats_test_functions.R. The functions are stored there
@@ -185,6 +341,8 @@ soh_filename <- c("aug_sohlist.rda")
 soh_filepath <- file.path("/Users/kayleigh/Data/MonthlySohStats_data/", soh_filename)
 save(list = "aug_sohlist", file = soh_filepath)
 
+
+
 #-------------------- Plots -----------------------------------
 
 #### box plot: distribution of single metric from single month
@@ -208,7 +366,7 @@ categorized_index <-
                                      index_bin == 3 ~ "good")) %>%
   dplyr::filter(.data$datetime >= parseDatetime(datetime = "20190101", timezone = "America/Los_Angeles")) %>%
   dplyr::filter(.data$datetime < parseDatetime(datetime = "20190201", timezone = "America/Los_Angeles")) #%>%
-  #dplyr::arrange(.data$datetime)
+#dplyr::arrange(.data$datetime)
 
 test_index <- 
   categorized_index %>%
@@ -222,8 +380,8 @@ test_index <-
   dplyr::mutate(totals = case_when(identical(.data$datetime, .data$datetime) ~ sum(.data$category))) %>%
   dplyr::mutate(percent = .data$category/.data$totals*100) %>%
   dplyr::mutate(group = case_when(index_bin == 1 ~ "poor",
-                                     index_bin == 2 ~ "fair",
-                                     index_bin == 3 ~ "good"))
+                                  index_bin == 2 ~ "fair",
+                                  index_bin == 3 ~ "good"))
 
 
 colors <- c("firebrick", "goldenrod1", "seagreen3")

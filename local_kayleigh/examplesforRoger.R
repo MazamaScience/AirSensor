@@ -175,7 +175,8 @@ if ( !file.exists(goodPatList_filePath) ) {
     dplyr::bind_rows(sohindex_list_ids) %>%
     dplyr::mutate_if(is.numeric, ~replace(., is.nan(.), as.numeric(NA)))
   
-  # Pull the ids of the sensors that were "good" all week 
+  # Pull the ids of the sensors that were "good" all week by grouping by the id then summing the index for the week.
+  # If the sensor was "good" all week, the sum should be 21
   SoH_good_id <- 
     SoH_tidy %>%
     dplyr::group_by(.data$deviceDeploymentID) %>%
@@ -268,7 +269,7 @@ daily_averages_data <- monitor_singleList_dailyAvg$`America/Los_Angeles`$data
 daily_averages_meta <- monitor_singleList_dailyAvg$`America/Los_Angeles`$meta
 dates <- daily_averages_data$datetime
 
-
+# transpose the data dataframe to merge with the meta
 daily_averages_data_transpose <- as.data.frame(t(daily_averages_data[,-1]))
 colnames(daily_averages_data_transpose) <- paste0(dates, "_pm25_mean")
 
