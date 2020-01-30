@@ -1,11 +1,21 @@
 # Single state statistics
-# start up code
+# Kayleigh Wilson
 
+# This top portion of this script has several sections that loop through each month to complete 
+# various tasks including gathering all pat objects into a monthly list, calculating
+# an SoH object for each of those pat objects, calculating SoH Indices, forming lists
+# and tibbles. Some of these sections can take quite a while to run so the scripts first
+# check to see if the data exist locally and will load/save data accordingly.
+# The bottom portion of this script deals with plotting the data
 
 library(ggplot2)
 library(MazamaCoreUtils)
 library(AirSensor)
-
+library(reshape2)
+library(dbplyr)
+library(ggridges)
+library(viridis)
+library(hrbrthemes)
 
 setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
 
@@ -24,13 +34,14 @@ if ( !dir.exists(archiveBaseDir) ) {
 setArchiveBaseDir(archiveBaseDir)
 
 
-month_abbrev <- c("jan", "feb", "mar", "apr", "may", "jun", "jul", "aug")
+month_abbrev <- c("jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct")
 DATESTAMP <- c("201901", "201902", "201903", "201904", "201905", "201906", 
-               "201907", "201908")
+               "201907", "201908", "201909", "201910")
 
 # NOTE: Check to see if the patlist for each month exists in the directory,
 # NOTE: load the months that exist and create the months that do not. This chunk
-# NOTE: assumes that the monthly pat data are available at the ArchiveBaseURL
+# NOTE: assumes that the monthly pat data are available at the ArchiveBaseURL, 
+# NOTE: then loads and adds each pat object to a list for each month
 
 for (i in seq(month_abbrev)){
   
@@ -82,7 +93,8 @@ for (i in seq(month_abbrev)){
 
 # NOTE: Check to see if the sohlist for each month exists in the directory,
 # NOTE: load the months that exist and create the months that do not. This chunk
-# NOTE: assumes that ALL monthly pat data are ALREADY LOADED
+# NOTE: assumes that ALL monthly pat data are ALREADY LOADED, then creates a list
+# NOTE: for each month containing the SOH data for each pat object
 
 for (i in seq(month_abbrev)){
   
@@ -110,7 +122,7 @@ for (i in seq(month_abbrev)){
       logger.trace("%04d/%d -- pat_dailySoH(%s)", count, length(patlist), id)
       
       SoHList[[id]] <- pat_dailySoH(patlist[[id]])
-      SoHList[[id]]$jan_deviceDeploymentIds <- id
+      SoHList[[id]]$deviceDeploymentIds <- id
       newname <- paste0(month_abbrev[i], "_sohlist")
       assign(newname, SoHList)
     }
@@ -164,7 +176,8 @@ for (i in seq(month_abbrev)){
   logger.trace("Creating SoH tibble for month %s", month_abbrev[i])
   sohtibble_name <- paste0(month_abbrev[i], "_sohtibble")
   
-  SoHList <- paste0(month_abbrev[i], "_sohlist")
+  SoHList_ref <- paste0(month_abbrev[i], "_sohlist")
+  SoHList <- eval(as.symbol(SoHList_ref))
   
   SoH <- 
     dplyr::bind_rows(SoHList) %>%
@@ -173,183 +186,88 @@ for (i in seq(month_abbrev)){
   assign(sohtibble_name, SoH)
 }
 
-# The following monthly lists/variables are created from functions stored in 
-# local_kayleigh/SoH_stats_test_functions.R. The functions are stored there
-# to simplify the code in this testing document. They are a wip.
+# NOTE: The following processes do not take as long or require as much storage
+# NOTE: as the previous chunks so this chunk will not check for existence or save.
+# NOTE: Create a monthly dataframe of means for each sensor
 
-#------------------------- January --------------------------------
-#load monthly pats:
-jan_patlist <- loadMonthlyPats(DATESTAMP = 201901, deviceDeploymentIDs = deviceDeploymentIDs)
-#create monthly soh list:
-jan_sohlist <- createSoHList(patList = jan_patlist)
-#create monthly single soh tibble: 
-jan_sohtbl <- createSingleSoHTbl(SoHList = jan_sohlist)
-#create monthly soh means:
-jan_sohmeans <- createMonthlyMeans(DATESTAMP = 201901, SoHList = jan_sohlist)
-#tidy means:
-jan_tidysohmeans <- createTidyMeans(SoHMeans = jan_sohmeans)
-#soh index: 
-jan_sohindex <- monthlySOH_index(patList = jan_patlist)
-jan_monthlyindex <- createSingleSoH_Index_Tbl(indexList = jan_sohindex)
-####IMPORTANT: gather january deploymentdeviceIDs for further use:
-jan_devicedeploymentIDs <- jan_sohmeans$id
+for (i in seq(month_abbrev)){
+  logger.trace("Creating monthly means tibble for month %s", month_abbrev[i])
+  
+  datetime <- MazamaCoreUtils::parseDatetime(DATESTAMP[i], timezone = "UTC")
+  SoHList_ref <- paste0(month_abbrev[i], "_sohlist")
+  SoHList <- eval(as.symbol(SoHList_ref))
+  
+  SoHMeansList <- list()
+  
+  for ( id in names(SoHList) ) {
+    
+    means <-
+      SoHList[[id]] %>%
+      dplyr::select_if(is.numeric) %>%
+      colMeans() %>%
+      as.list() %>%
+      dplyr::as_tibble()
+    
+    means$datetime <- datetime
+    means$id <- id
+    
+    SoHMeansList[[id]] <- means
+    
+  }
 
-filename <- c("jan_patlist.rda")
-filepath <- file.path("/Users/kayleigh/Data/MonthlySohStats_data/", filename)
-save(list = "jan_patlist", file = filepath)
+  SoHMeans <- dplyr::bind_rows(SoHMeansList)
+  SoHMeans_name <- paste0(month_abbrev[i], "_sohMeanstibble") 
+  assign(SoHMeans_name, SoHMeans)
+}
 
-soh_filename <- c("jan_sohlist.rda")
-soh_filepath <- file.path("/Users/kayleigh/Data/MonthlySohStats_data/", soh_filename)
-save(list = "jan_sohlist", file = soh_filepath)
-#----------------------- February -------------------------------
-#load monthly pats:
-feb_patlist <- loadMonthlyPats(DATESTAMP = 201902, deviceDeploymentIDs = jan_devicedeploymentIDs)
-#create monthly soh list:
-feb_sohlist <- createSoHList(patList = feb_patlist)
-#create monthly single soh tibble: 
-feb_sohtbl <- createSingleSoHTbl(SoHList = feb_sohlist)
-#create monthly soh means:
-feb_sohmeans <- createMonthlyMeans(DATESTAMP = 201902, SoHList = feb_sohlist)
-#tidy means:
-feb_tidysohmeans <- createTidyMeans(SoHMeans = feb_sohmeans)
 
-filename <- c("feb_patlist.rda")
-filepath <- file.path("/Users/kayleigh/Data/MonthlySohStats_data/", filename)
-save(list = "feb_patlist", file = filepath)
+# NOTE: The following processes do not take as long or require as much storage
+# NOTE: as the previous chunks so this chunk will not check for existence or save.
+# NOTE: Create monthly tidy means without datetime 
 
-soh_filename <- c("feb_sohlist.rda")
-soh_filepath <- file.path("/Users/kayleigh/Data/MonthlySohStats_data/", soh_filename)
-save(list = "feb_sohlist", file = soh_filepath)
+for (i in seq(month_abbrev)){
+  logger.trace("Creating tidy monthly means for month %s", month_abbrev[i])
+  
+  SoHMeans_ref <- paste0(month_abbrev[i], "_sohMeanstibble")
+  SoHMeans <- eval(as.symbol(SoHMeans_ref))
+  
+  tidyTbl <- 
+    SoHMeans %>%
+    dplyr::select(-datetime) %>%
+    melt(id.vars='id')
+  
+  tidyTbl_name <- paste0(month_abbrev[i], "_sohMeansTidy") 
+  assign(tidyTbl_name, tidyTbl)
+  
+}
 
-#----------------------- March -------------------------------
-#load monthly pats:
-mar_patlist <- loadMonthlyPats(DATESTAMP = 201903, deviceDeploymentIDs = jan_devicedeploymentIDs)
-#create monthly soh list:
-mar_sohlist <- createSoHList(patList = mar_patlist)
-#create monthly single soh tibble: 
-mar_sohtbl <- createSingleSoHTbl(SoHList = mar_sohlist)
-#create monthly soh means:
-mar_sohmeans <- createMonthlyMeans(DATESTAMP = 201903, SoHList = mar_sohlist)
-#tidy means:
-mar_tidysohmeans <- createTidyMeans(SoHMeans = feb_sohmeans)
+# NOTE: The following processes do not take as long or require as much storage
+# NOTE: as the previous chunks so this chunk will not check for existence or save.
+# NOTE: build one big monthly SOH INDEX tibble 
 
-filename <- c("mar_patlist.rda")
-filepath <- file.path("/Users/kayleigh/Data/MonthlySohStats_data/", filename)
-save(list = "mar_patlist", file = filepath)
+for (i in seq(month_abbrev)){
+  logger.trace("Creating monthly Soh Index tibble for month %s", month_abbrev[i])
 
-soh_filename <- c("mar_sohlist.rda")
-soh_filepath <- file.path("/Users/kayleigh/Data/MonthlySohStats_data/", soh_filename)
-save(list = "mar_sohlist", file = soh_filepath)
+  SoHIndex_ref <- paste0(month_abbrev[i], "_sohIndexlist")
+  indexList <- eval(as.symbol(SoHIndex_ref))
+  
+  index <- 
+    dplyr::bind_rows(indexList) %>%
+    dplyr::mutate_if(is.numeric, ~replace(., is.nan(.), as.numeric(NA)))
+  
+  index_name <- paste0(month_abbrev[i], "_sohIndextibble") 
+  assign(index_name, index)
 
-#----------------------- April -------------------------------
-#load monthly pats:
-apr_patlist <- loadMonthlyPats(DATESTAMP = 201904, deviceDeploymentIDs = jan_devicedeploymentIDs)
-#create monthly soh list:
-apr_sohlist <- createSoHList(patList = apr_patlist)
-#create monthly single soh tibble: 
-apr_sohtbl <- createSingleSoHTbl(SoHList = apr_sohlist)
-#create monthly soh means:
-apr_sohmeans <- createMonthlyMeans(DATESTAMP = 201904, SoHList = apr_sohlist)
-#tidy means:
-apr_tidysohmeans <- createTidyMeans(SoHMeans = apr_sohmeans)
-
-filename <- c("apr_patlist.rda")
-filepath <- file.path("/Users/kayleigh/Data/MonthlySohStats_data/", filename)
-save(list = "apr_patlist", file = filepath)
-
-soh_filename <- c("apr_sohlist.rda")
-soh_filepath <- file.path("/Users/kayleigh/Data/MonthlySohStats_data/", soh_filename)
-save(list = "apr_sohlist", file = soh_filepath)
-
-#----------------------- May -------------------------------
-#load monthly pats:
-may_patlist <- loadMonthlyPats(DATESTAMP = 201905, deviceDeploymentIDs = jan_devicedeploymentIDs)
-#create monthly soh list:
-may_sohlist <- createSoHList(patList = may_patlist)
-#create monthly single soh tibble: 
-may_sohtbl <- createSingleSoHTbl(SoHList = may_sohlist)
-#create monthly soh means:
-may_sohmeans <- createMonthlyMeans(DATESTAMP = 201905, SoHList = may_sohlist)
-#tidy means:
-may_tidysohmeans <- createTidyMeans(SoHMeans = may_sohmeans)
-
-filename <- c("may_patlist.rda")
-filepath <- file.path("/Users/kayleigh/Data/MonthlySohStats_data/", filename)
-save(list = "may_patlist", file = filepath)
-
-soh_filename <- c("may_sohlist.rda")
-soh_filepath <- file.path("/Users/kayleigh/Data/MonthlySohStats_data/", soh_filename)
-save(list = "may_sohlist", file = soh_filepath)
-
-#----------------------- June -------------------------------
-#load monthly pats:
-jun_patlist <- loadMonthlyPats(DATESTAMP = 201906, deviceDeploymentIDs = jan_devicedeploymentIDs)
-#create monthly soh list:
-jun_sohlist <- createSoHList(patList = jun_patlist)
-#create monthly single soh tibble: 
-jun_sohtbl <- createSingleSoHTbl(SoHList = jun_sohlist)
-#create monthly soh means:
-jun_sohmeans <- createMonthlyMeans(DATESTAMP = 201906, SoHList = jun_sohlist)
-#tidy means:
-jun_tidysohmeans <- createTidyMeans(SoHMeans = jun_sohmeans)
-
-filename <- c("jun_patlist.rda")
-filepath <- file.path("/Users/kayleigh/Data/MonthlySohStats_data/", filename)
-save(list = "jun_patlist", file = filepath)
-
-soh_filename <- c("jun_sohlist.rda")
-soh_filepath <- file.path("/Users/kayleigh/Data/MonthlySohStats_data/", soh_filename)
-save(list = "jun_sohlist", file = soh_filepath)
-
-#----------------------- July -------------------------------
-#load monthly pats:
-jul_patlist <- loadMonthlyPats(DATESTAMP = 201907, deviceDeploymentIDs = jan_devicedeploymentIDs)
-#create monthly soh list:
-jul_sohlist <- createSoHList(patList = jul_patlist)
-#create monthly single soh tibble: 
-jul_sohtbl <- createSingleSoHTbl(SoHList = jul_sohlist)
-#create monthly soh means:
-jul_sohmeans <- createMonthlyMeans(DATESTAMP = 201907, SoHList = jul_sohlist)
-#tidy means:
-jul_tidysohmeans <- createTidyMeans(SoHMeans = jul_sohmeans)
-
-filename <- c("jul_patlist.rda")
-filepath <- file.path("/Users/kayleigh/Data/MonthlySohStats_data/", filename)
-save(list = "jul_patlist", file = filepath)
-
-soh_filename <- c("jul_sohlist.rda")
-soh_filepath <- file.path("/Users/kayleigh/Data/MonthlySohStats_data/", soh_filename)
-save(list = "jul_sohlist", file = soh_filepath)
-
-#----------------------- August -------------------------------
-#load monthly pats:
-aug_patlist <- loadMonthlyPats(DATESTAMP = 201908, deviceDeploymentIDs = jan_devicedeploymentIDs)
-#create monthly soh list:
-aug_sohlist <- createSoHList(patList = aug_patlist)
-#create monthly single soh tibble: 
-aug_sohtbl <- createSingleSoHTbl(SoHList = aug_sohlist)
-#create monthly soh means:
-aug_sohmeans <- createMonthlyMeans(DATESTAMP = 201908, SoHList = aug_sohlist)
-#tidy means:
-aug_tidysohmeans <- createTidyMeans(SoHMeans = aug_sohmeans)
-
-filename <- c("aug_patlist.rda")
-filepath <- file.path("/Users/kayleigh/Data/MonthlySohStats_data/", filename)
-save(list = "aug_patlist", file = filepath)
-
-soh_filename <- c("aug_sohlist.rda")
-soh_filepath <- file.path("/Users/kayleigh/Data/MonthlySohStats_data/", soh_filename)
-save(list = "aug_sohlist", file = soh_filepath)
-
+}
 
 
 #-------------------- Plots -----------------------------------
 
 #### box plot: distribution of single metric from single month
 
-monthlySoH_tbl <- jun_sohtbl
+monthlySoH_tbl <- sep_sohtibble
 
-ggplot(monthlySoH_tbl, aes(x = reorder(deviceDeploymentID, pm25_A_pctReporting, mean), 
+ggplot(monthlySoH_tbl, aes(x = reorder(deviceDeploymentIds, pm25_A_pctReporting, mean), 
                            y = pm25_A_pctReporting)) +
   geom_boxplot() +
   theme(axis.title.x = element_blank(),
@@ -359,104 +277,115 @@ ggplot(monthlySoH_tbl, aes(x = reorder(deviceDeploymentID, pm25_A_pctReporting, 
 
 #### SoH index histogram for one month: 
 
+soh_Indextibble <- sep_sohIndextibble
+startdate <- "20190901"
+enddate <- "20191001"
+
 categorized_index <- 
-  jan_monthlyindex %>%
-  dplyr::mutate(category = case_when(index_bin == 1 ~ "poor",
+  soh_Indextibble %>%
+  dplyr::mutate(category = dplyr::case_when(index_bin == 1 ~ "poor",
                                      index_bin == 2 ~ "fair",
                                      index_bin == 3 ~ "good")) %>%
-  dplyr::filter(.data$datetime >= parseDatetime(datetime = "20190101", timezone = "America/Los_Angeles")) %>%
-  dplyr::filter(.data$datetime < parseDatetime(datetime = "20190201", timezone = "America/Los_Angeles")) #%>%
-#dplyr::arrange(.data$datetime)
+  dplyr::filter(.data$datetime >= parseDatetime(datetime = startdate, timezone = "America/Los_Angeles")) %>%
+  dplyr::filter(.data$datetime < parseDatetime(datetime = enddate, timezone = "America/Los_Angeles")) 
 
-test_index <- 
+
+percent_index <- 
   categorized_index %>%
-  #dplyr::mutate(daystamp = strftime(.data$datetime, "%Y%m%d", tz = "America/Los_Angeles")) %>%
   dplyr::group_by(.data$datetime, .data$index_bin) %>%
   dplyr::summarise_at(
     .vars = c("category"),
     .funs = function(x) { length(na.omit(x)) }
   ) %>% #this is awesome, make a new column to store the total for each day, populate with the sum calculated based on when 
   #the date is identical
-  dplyr::mutate(totals = case_when(identical(.data$datetime, .data$datetime) ~ sum(.data$category))) %>%
+  dplyr::mutate(totals = dplyr::case_when(identical(.data$datetime, .data$datetime) ~ sum(.data$category))) %>%
   dplyr::mutate(percent = .data$category/.data$totals*100) %>%
-  dplyr::mutate(group = case_when(index_bin == 1 ~ "poor",
+  dplyr::mutate(group = dplyr::case_when(index_bin == 1 ~ "poor",
                                   index_bin == 2 ~ "fair",
                                   index_bin == 3 ~ "good"))
 
 
-colors <- c("firebrick", "goldenrod1", "seagreen3")
-fillColors <- colors[test_index$percent]
+#colors <- c("firebrick", "goldenrod1", "seagreen3")
+fillColors <- colors[percent_index$percent]
 colors <- c("good" = "seagreen3", "fair" = "goldenrod1", "poor" = "firebrick" )
 
 ordered_categories <- c("good", "fair", "poor")
-test_index$group <- factor(test_index$group, levels = ordered_categories, order = TRUE)
+percent_index$group <- factor(percent_index$group, levels = ordered_categories, order = TRUE)
 
-ggplot(test_index, aes(x = datetime, y = percent, fill = group ) ) +
+ggplot(percent_index, aes(x = datetime, y = percent, fill = group ) ) +
   geom_bar(stat = "identity") +
   scale_fill_manual(values = colors)
 
-# ggplot(test_index ) +
-#   geom_bar(aes(x = datetime, y = (..count..)/sum(..count..), fill = category )) +
-#   scale_fill_manual(values = colors) +
-#   scale_y_continuous(labels = percent_format())
 
-ggplot(categorized_index ) +
-  geom_freqpoly(aes(x = datetime, color = category))+
-  scale_color_manual(values = colors)
+
+
 
 
 #### box plot: one metric for all months
 
 soh_metric <- "temperature_pctReporting"
 
-jan_metric <- 
-  jan_sohmeans %>%
-  dplyr::select(soh_metric, "datetime") %>%
-  mutate(datetime = strftime(datetime, format = "%Y/%m", tz = "UTC"))
-
-feb_metric <- 
-  feb_sohmeans %>%
-  dplyr::select(soh_metric, "datetime") %>%
-  mutate(datetime = strftime(datetime, format = "%Y/%m", tz = "UTC"))
-
-mar_metric <-
-  mar_sohmeans %>%
-  dplyr::select(soh_metric, "datetime") %>%
-  mutate(datetime = strftime(datetime, format = "%Y/%m", tz = "UTC"))
-
-apr_metric <-
-  apr_sohmeans %>%
-  dplyr::select(soh_metric, "datetime") %>%
-  mutate(datetime = strftime(datetime, format = "%Y/%m", tz = "UTC"))
-
-may_metric <-
-  may_sohmeans %>%
-  dplyr::select(soh_metric, "datetime") %>%
-  mutate(datetime = strftime(datetime, format = "%Y/%m", tz = "UTC"))
-
-jun_metric <-
-  jun_sohmeans %>%
-  dplyr::select(soh_metric, "datetime") %>%
-  mutate(datetime = strftime(datetime, format = "%Y/%m", tz = "UTC"))
-
-jul_metric <-
-  jul_sohmeans %>%
-  dplyr::select(soh_metric, "datetime") %>%
-  mutate(datetime = strftime(datetime, format = "%Y/%m", tz = "UTC"))
-
 monthly_metric <-
-  jan_metric %>%
-  dplyr::bind_rows(feb_metric) %>%
-  dplyr::bind_rows(mar_metric) %>%
-  dplyr::bind_rows(apr_metric) %>%
-  dplyr::bind_rows(may_metric) %>%
-  dplyr::bind_rows(jun_metric) %>%
-  dplyr::bind_rows(jul_metric)
-
+  jan_sohMeanstibble %>%
+  dplyr::bind_rows(feb_sohMeanstibble) %>%
+  dplyr::bind_rows(mar_sohMeanstibble) %>%
+  dplyr::bind_rows(apr_sohMeanstibble) %>%
+  dplyr::bind_rows(may_sohMeanstibble) %>%
+  dplyr::bind_rows(jun_sohMeanstibble) %>%
+  dplyr::bind_rows(jul_sohMeanstibble) %>%
+  dplyr::bind_rows(aug_sohMeanstibble) %>%
+  dplyr::bind_rows(sep_sohMeanstibble) %>%
+  dplyr::bind_rows(oct_sohMeanstibble) %>%
+  dplyr::select(soh_metric, "datetime") %>%
+  dplyr::mutate(datetime = strftime(datetime, format = "%Y/%m", tz = "UTC"))
 
 ggplot(monthly_metric) +
-  geom_boxplot(aes(x = datetime, y = temperature_pctReporting)) 
+  geom_boxplot(aes(x = datetime, y = eval(rlang::parse_expr(soh_metric))))
 
+
+#### percent reporting all months ridgeline plot:
+
+ggplot(monthly_metric, aes(x = eval(rlang::parse_expr(soh_metric)), y = datetime, fill = ..x..)) +
+  geom_density_ridges_gradient(scale = 3, rel_min_height = 0.01) +
+  scale_fill_gradient2(low = "firebrick", high = "seagreen3", midpoint = 50) +
+  labs(title = eval(soh_metric)) +
+  xlab(label = eval(soh_metric)) +
+  theme(
+    legend.position="none",
+    panel.spacing = unit(0.1, "lines"),
+     strip.text.x = element_text(size = 8)
+  )
+
+#### SoH index ridgeline plot
+startdate <- "20190101"
+enddate <- "20191101"
+
+allmonths_sohIndex <-
+  jan_sohIndextibble %>%
+  dplyr::bind_rows(feb_sohIndextibble) %>%
+  dplyr::bind_rows(mar_sohIndextibble) %>%
+  dplyr::bind_rows(apr_sohIndextibble) %>%
+  dplyr::bind_rows(may_sohIndextibble) %>%
+  dplyr::bind_rows(jun_sohIndextibble) %>%
+  dplyr::bind_rows(jul_sohIndextibble) %>%
+  dplyr::bind_rows(aug_sohIndextibble) %>%
+  dplyr::bind_rows(sep_sohIndextibble) %>%
+  dplyr::bind_rows(oct_sohIndextibble)  %>%
+  dplyr::filter(.data$datetime >= parseDatetime(datetime = startdate, timezone = "America/Los_Angeles")) %>%
+  dplyr::filter(.data$datetime < parseDatetime(datetime = enddate, timezone = "America/Los_Angeles")) %>%
+  dplyr::mutate(datetime = strftime(datetime, format = "%Y/%m", tz = "UTC")) 
+
+breaks = c(0, .2, .8, 1)
+ggplot(allmonths_sohIndex, aes(x = index, y = datetime, fill = ..x..)) +
+  geom_density_ridges_gradient(scale = 3, rel_min_height = 0.01) +
+  scale_fill_gradient2(low = "firebrick", mid ="goldenrod1",  high = "seagreen3", midpoint = 0.4, breaks = breaks) +
+  labs(title = "SoH Index") +
+  xlab(label = "SoH Index") +
+  theme(
+    legend.position="none",
+    panel.spacing = unit(0.1, "lines"),
+    strip.text.x = element_text(size = 8)
+  )
 
 
 ##### box plot: average of each metric for single month
