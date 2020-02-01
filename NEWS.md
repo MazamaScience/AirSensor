@@ -2,6 +2,7 @@
 
 * Fixed bug in `pat_isEmpty()` so that it test for an empty `data` dataframe
 rather than an empty `meta` dataframe.
+* `pat_trimDate()` now preserves the first day if it begins at local midnight.
 
 # AirSensor 0.6.10
 
