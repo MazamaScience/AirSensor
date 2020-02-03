@@ -24,19 +24,70 @@ logger.setLevel(TRACE)
 
 state_pas <- 
   pas_load(archival = TRUE) %>%
-  pas_filter(stateCode == "WA")
+  pas_filter(stateCode == "WA")  #%>% # For testing or reducing the number of sensors
+  #pas_filter(stringr::str_detect(label, "^MV Clean Air Ambassador @ B"))
 
 
 archiveBaseDir <- path.expand("~/Data/MonthlySohStats_data") #check to see if the data directory exists, make it if not
+#archiveBaseDir <- path.expand("~/Data/MonthlySohStats_dataTEST") # For testing smaller batches of data
 if ( !dir.exists(archiveBaseDir) ) {
   dir.create(archiveBaseDir)
 }
 setArchiveBaseDir(archiveBaseDir)
 
+# NOTE: First, the patlist for January must be created because we need the list of 
+# NOTE: device deployment ID's to use for the rest of the year.
 
-month_abbrev <- c("jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct")
+patList_filename <-  "jan_patlist.rda"
+patList_filePath <- file.path(archiveBaseDir, patList_filename)
+if ( file.exists(patList_filePath) ) { #if the patlist already exists, load it
+  patList <- get(load(patList_filePath))
+}
+
+if ( !file.exists(patList_filePath) ) {
+  
+  initial_deviceDeploymentIds <- pas_getDeviceDeploymentIDs(state_pas)
+  DATESTAMP <- "201901"
+  jan_patlist <- list()
+  jan_patEmptyList <- list()
+  
+  count <- 0
+  for ( id in initial_deviceDeploymentIds ) {
+    
+    
+    
+    count <- count + 1
+    logger.trace("%04d/%d -- pat_loadMonth(%s)", count, length(initial_deviceDeploymentIds), id)
+    
+    # Load January data and trim the date so we don't statistics for partial days
+    pat <-
+      pat_loadMonth(id, datestamp = DATESTAMP)
+    
+    # Can only trimDate if it isn't empty
+    if ( !pat_isEmpty(pat) )
+      pat <- pat_trimDate(pat)
+    
+    if ( pat_isEmpty(pat) ) {
+      # TODO fix pat_isEmpty so it checks pat$data, not pat$meta
+      jan_patEmptyList[[id]] <- pat
+    } else {
+      jan_patlist[[id]] <- pat
+    }
+  }
+  
+  logger.trace("%d pats with data, %d without", length(jan_patlist), length(jan_patEmptyList))
+  
+  patList_filename <-  "jan_patlist.rda"
+  patList_filePath <- file.path(archiveBaseDir, patList_filename)
+  save(list = "jan_patlist", file = patList_filePath)
+}
+#NOTE: set up for data prep for the remainder of the year
+
+jan_deviceDeploymentIds <- names(jan_patlist)
+
+month_abbrev <- c("jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec")
 DATESTAMP <- c("201901", "201902", "201903", "201904", "201905", "201906", 
-               "201907", "201908", "201909", "201910")
+               "201907", "201908", "201909", "201910", "201911", "201912")
 
 # NOTE: Check to see if the patlist for each month exists in the directory,
 # NOTE: load the months that exist and create the months that do not. This chunk
@@ -46,14 +97,12 @@ DATESTAMP <- c("201901", "201902", "201903", "201904", "201905", "201906",
 for (i in seq(month_abbrev)){
   
   logger.trace("loading for month %s", month_abbrev[i])
-  patList_filname <- paste0(month_abbrev[i], "_patlist.rda")
-  patList_filePath <- file.path(archiveBaseDir, patList_filname)
+  patList_filename <- paste0(month_abbrev[i], "_patlist.rda")
+  patList_filePath <- file.path(archiveBaseDir, patList_filename)
   
   if ( file.exists(patList_filePath) ) { #if the patlist already exists, load it
     patList <- get(load(patList_filePath))
   }
-  
-  jan_deviceDeploymentIds <- names(jan_patlist)
   
   if ( !file.exists(patList_filePath) ) {
     
@@ -163,7 +212,7 @@ for (i in seq(month_abbrev)){
       newname <- paste0(month_abbrev[i], "_sohIndexlist")
       assign(newname, indexList)
     }
-
+    
     save(list = newname, file = sohIndexList_filePath)
   }
 }
@@ -214,7 +263,7 @@ for (i in seq(month_abbrev)){
     SoHMeansList[[id]] <- means
     
   }
-
+  
   SoHMeans <- dplyr::bind_rows(SoHMeansList)
   SoHMeans_name <- paste0(month_abbrev[i], "_sohMeanstibble") 
   assign(SoHMeans_name, SoHMeans)
@@ -247,7 +296,7 @@ for (i in seq(month_abbrev)){
 
 for (i in seq(month_abbrev)){
   logger.trace("Creating monthly Soh Index tibble for month %s", month_abbrev[i])
-
+  
   SoHIndex_ref <- paste0(month_abbrev[i], "_sohIndexlist")
   indexList <- eval(as.symbol(SoHIndex_ref))
   
@@ -257,7 +306,7 @@ for (i in seq(month_abbrev)){
   
   index_name <- paste0(month_abbrev[i], "_sohIndextibble") 
   assign(index_name, index)
-
+  
 }
 
 
@@ -265,7 +314,7 @@ for (i in seq(month_abbrev)){
 
 #### box plot: distribution of single metric from single month
 
-monthlySoH_tbl <- sep_sohtibble
+monthlySoH_tbl <- nov_sohtibble
 
 ggplot(monthlySoH_tbl, aes(x = reorder(deviceDeploymentIds, pm25_A_pctReporting, mean), 
                            y = pm25_A_pctReporting)) +
@@ -277,15 +326,15 @@ ggplot(monthlySoH_tbl, aes(x = reorder(deviceDeploymentIds, pm25_A_pctReporting,
 
 #### SoH index histogram for one month: 
 
-soh_Indextibble <- sep_sohIndextibble
-startdate <- "20190901"
-enddate <- "20191001"
+soh_Indextibble <- nov_sohIndextibble
+startdate <- "20191101"
+enddate <- "20191201"
 
 categorized_index <- 
   soh_Indextibble %>%
   dplyr::mutate(category = dplyr::case_when(index_bin == 1 ~ "poor",
-                                     index_bin == 2 ~ "fair",
-                                     index_bin == 3 ~ "good")) %>%
+                                            index_bin == 2 ~ "fair",
+                                            index_bin == 3 ~ "good")) %>%
   dplyr::filter(.data$datetime >= parseDatetime(datetime = startdate, timezone = "America/Los_Angeles")) %>%
   dplyr::filter(.data$datetime < parseDatetime(datetime = enddate, timezone = "America/Los_Angeles")) 
 
@@ -301,12 +350,12 @@ percent_index <-
   dplyr::mutate(totals = dplyr::case_when(identical(.data$datetime, .data$datetime) ~ sum(.data$category))) %>%
   dplyr::mutate(percent = .data$category/.data$totals*100) %>%
   dplyr::mutate(group = dplyr::case_when(index_bin == 1 ~ "poor",
-                                  index_bin == 2 ~ "fair",
-                                  index_bin == 3 ~ "good"))
+                                         index_bin == 2 ~ "fair",
+                                         index_bin == 3 ~ "good"))
 
 
 #colors <- c("firebrick", "goldenrod1", "seagreen3")
-fillColors <- colors[percent_index$percent]
+#fillColors <- colors[percent_index$percent]
 colors <- c("good" = "seagreen3", "fair" = "goldenrod1", "poor" = "firebrick" )
 
 ordered_categories <- c("good", "fair", "poor")
@@ -336,6 +385,7 @@ monthly_metric <-
   dplyr::bind_rows(aug_sohMeanstibble) %>%
   dplyr::bind_rows(sep_sohMeanstibble) %>%
   dplyr::bind_rows(oct_sohMeanstibble) %>%
+  dplyr::bind_rows(nov_sohMeanstibble) %>%
   dplyr::select(soh_metric, "datetime") %>%
   dplyr::mutate(datetime = strftime(datetime, format = "%Y/%m", tz = "UTC"))
 
@@ -353,12 +403,12 @@ ggplot(monthly_metric, aes(x = eval(rlang::parse_expr(soh_metric)), y = datetime
   theme(
     legend.position="none",
     panel.spacing = unit(0.1, "lines"),
-     strip.text.x = element_text(size = 8)
+    strip.text.x = element_text(size = 8)
   )
 
 #### SoH index ridgeline plot
 startdate <- "20190101"
-enddate <- "20191101"
+enddate <- "20191201"
 
 allmonths_sohIndex <-
   jan_sohIndextibble %>%
@@ -370,7 +420,8 @@ allmonths_sohIndex <-
   dplyr::bind_rows(jul_sohIndextibble) %>%
   dplyr::bind_rows(aug_sohIndextibble) %>%
   dplyr::bind_rows(sep_sohIndextibble) %>%
-  dplyr::bind_rows(oct_sohIndextibble)  %>%
+  dplyr::bind_rows(oct_sohIndextibble) %>%
+  dplyr::bind_rows(nov_sohIndextibble) %>%
   dplyr::filter(.data$datetime >= parseDatetime(datetime = startdate, timezone = "America/Los_Angeles")) %>%
   dplyr::filter(.data$datetime < parseDatetime(datetime = enddate, timezone = "America/Los_Angeles")) %>%
   dplyr::mutate(datetime = strftime(datetime, format = "%Y/%m", tz = "UTC")) 
@@ -413,7 +464,7 @@ orderedParams <- c(
   "pm25_B_temperature_rsquared"
 )
 
-tidySoHMeans <- jan_tidysohmeans
+tidySoHMeans <- jan_sohMeansTidy
 tidySoHMeans$variable <- factor(tidySoHMeans$variable, levels = orderedParams, order = TRUE)
 
 ggplot(tidySoHMeans) +
@@ -439,7 +490,7 @@ orderedParams <- c(
   "humidity_pctDC"
 )
 
-tidySoHMeans <- jan_tidysohmeans
+tidySoHMeans <- jan_sohMeansTidy
 
 tidySoHMeans <-
   tidySoHMeans %>%
@@ -478,7 +529,7 @@ orderedParams <- c(
   "pm25_B_temperature_rsquared"
 )
 
-tidySoHMeans <- jan_tidysohmeans
+tidySoHMeans <- jan_sohMeansTidy
 
 tidySoHMeans <-
   tidySoHMeans %>%
@@ -503,47 +554,47 @@ ggplot(tidySoHMeans) +
 
 ##### box plot: all metrics, all months, aka chaos:
 
-jan_all_metrics <-
-  tidyTbl %>%
-  dplyr::mutate(datetime = MazamaCoreUtils::parseDatetime(datetime = "201901", timezone = "UTC")) %>%
-  mutate(datetime = strftime(datetime, format = "%Y/%m", tz = "UTC"))
-feb_all_metrics <-
-  feb_tidyTbl %>%
-  dplyr::mutate(datetime = MazamaCoreUtils::parseDatetime(datetime = "201902", timezone = "UTC")) %>%
-  mutate(datetime = strftime(datetime, format = "%Y/%m", tz = "UTC"))
-
-monthly_all_metrics <-
-  jan_all_metrics %>%
-  dplyr::bind_rows(feb_all_metrics)
-
-orderedParams <- c(
-  "pm25_A_pctReporting",
-  "pm25_B_pctReporting",
-  "temperature_pctReporting",
-  "humidity_pctReporting",
-  "pm25_A_pctValid",
-  "pm25_B_pctValid",
-  "temperature_pctValid",
-  "humidity_pctValid",
-  "pm25_A_pctDC",
-  "pm25_B_pctDC",
-  "temperature_pctDC",
-  "humidity_pctDC",
-  "pm25_A_pm25_B_rsquared",
-  "pm25_A_pm25_B_slope",
-  "pm25_A_pm25_B_intercept",
-  "pm25_A_pm25_B_p_value",
-  "pm25_A_humidity_rsquared",
-  "pm25_A_temperature_rsquared",
-  "pm25_B_humidity_rsquared",
-  "pm25_B_temperature_rsquared"
-)
-
-monthly_all_metrics$variable <- factor(monthly_all_metrics$variable, levels = orderedParams, order = TRUE)
-
-ggplot(monthly_all_metrics) +
-  geom_boxplot(aes(x = variable, y = value)) +
-  coord_flip()+
-  facet_grid(cols = vars(monthly_all_metrics$datetime))
+# jan_all_metrics <-
+#   tidyTbl %>%
+#   dplyr::mutate(datetime = MazamaCoreUtils::parseDatetime(datetime = "201901", timezone = "UTC")) %>%
+#   mutate(datetime = strftime(datetime, format = "%Y/%m", tz = "UTC"))
+# feb_all_metrics <-
+#   feb_tidyTbl %>%
+#   dplyr::mutate(datetime = MazamaCoreUtils::parseDatetime(datetime = "201902", timezone = "UTC")) %>%
+#   mutate(datetime = strftime(datetime, format = "%Y/%m", tz = "UTC"))
+# 
+# monthly_all_metrics <-
+#   jan_all_metrics %>%
+#   dplyr::bind_rows(feb_all_metrics)
+# 
+# orderedParams <- c(
+#   "pm25_A_pctReporting",
+#   "pm25_B_pctReporting",
+#   "temperature_pctReporting",
+#   "humidity_pctReporting",
+#   "pm25_A_pctValid",
+#   "pm25_B_pctValid",
+#   "temperature_pctValid",
+#   "humidity_pctValid",
+#   "pm25_A_pctDC",
+#   "pm25_B_pctDC",
+#   "temperature_pctDC",
+#   "humidity_pctDC",
+#   "pm25_A_pm25_B_rsquared",
+#   "pm25_A_pm25_B_slope",
+#   "pm25_A_pm25_B_intercept",
+#   "pm25_A_pm25_B_p_value",
+#   "pm25_A_humidity_rsquared",
+#   "pm25_A_temperature_rsquared",
+#   "pm25_B_humidity_rsquared",
+#   "pm25_B_temperature_rsquared"
+# )
+# 
+# monthly_all_metrics$variable <- factor(monthly_all_metrics$variable, levels = orderedParams, order = TRUE)
+# 
+# ggplot(monthly_all_metrics) +
+#   geom_boxplot(aes(x = variable, y = value)) +
+#   coord_flip()+
+#   facet_grid(cols = vars(monthly_all_metrics$datetime))
 
 
