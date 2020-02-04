@@ -25,7 +25,7 @@ logger.setLevel(TRACE)
 state_pas <- 
   pas_load(archival = TRUE) %>%
   pas_filter(stateCode == "WA")  #%>% # For testing or reducing the number of sensors
-  #pas_filter(stringr::str_detect(label, "^MV Clean Air Ambassador @ B"))
+#pas_filter(stringr::str_detect(label, "^MV Clean Air Ambassador @ B"))
 
 
 archiveBaseDir <- path.expand("~/Data/MonthlySohStats_data") #check to see if the data directory exists, make it if not
@@ -85,9 +85,9 @@ if ( !file.exists(patList_filePath) ) {
 
 jan_deviceDeploymentIds <- names(jan_patlist)
 
-month_abbrev <- c("jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec")
+month_abbrev <- c("jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov")
 DATESTAMP <- c("201901", "201902", "201903", "201904", "201905", "201906", 
-               "201907", "201908", "201909", "201910", "201911", "201912")
+               "201907", "201908", "201909", "201910", "201911")
 
 # NOTE: Check to see if the patlist for each month exists in the directory,
 # NOTE: load the months that exist and create the months that do not. This chunk
@@ -215,6 +215,120 @@ for (i in seq(month_abbrev)){
     
     save(list = newname, file = sohIndexList_filePath)
   }
+}
+# NOTE: Check to see if the airsensor list for each month exists in the directory,
+# NOTE: load the months that exist and create the months that do not. This chunk
+# NOTE: assumes that ALL monthly pat lists are ALREADY LOADED
+
+for (i in seq(month_abbrev)){
+  
+  logger.trace("loading for month %s", month_abbrev[i])
+  airsensorList_filename <- paste0(month_abbrev[i], "_airsensorList.rda")
+  airsensorList_filePath <- file.path(archiveBaseDir, airsensorList_filename)
+  
+  if ( file.exists(airsensorList_filePath) ) { #if the patlist already exists, load it
+    airsensorList <- get(load(airsensorList_filePath))
+  }
+  
+  if ( !file.exists(airsensorList_filePath) ) {
+    
+    patlist_ref <- paste0(month_abbrev[i], "_patlist")
+    patlist <- eval(as.symbol(patlist_ref))
+    
+    airsensorList <- list()
+    count <- 0
+    
+    for (id in names(patlist)){
+      
+      count <- count + 1
+      logger.trace("%04d/%d -- pat_createAirSensor(%s)", count, length(patlist), id)
+      result <- try({
+        airsensorList[[id]] <-  
+          pat_createAirSensor(
+            pat = patlist[[id]],
+            period = "1 hour",
+            parameter = "pm25",
+            channel = "ab",
+            qc_algorithm = "hourly_AB_01",
+            min_count = 20,
+            aggregation_FUN = pat_aggregate
+          )
+        
+      }, silent = FALSE)
+      
+      if ("try-error" %in% class(result)) {
+        # place holder to handle error
+      }
+    }
+    newname <- paste0(month_abbrev[i], "_airsensorlist")
+    assign(newname, airsensorList)
+    save(list = newname, file = airsensorList_filePath)
+    
+  }
+}
+# NOTE: Check to see if the pat aggregation list for each month exists in the directory,
+# NOTE: load the months that exist and create the months that do not. This chunk
+# NOTE: assumes that ALL monthly pat lists are ALREADY LOADED
+
+for (i in seq(month_abbrev)){
+  
+  logger.trace("loading for month %s", month_abbrev[i])
+  aggpatList_filename <- paste0(month_abbrev[i], "_aggpatList.rda")
+  aggpatList_filePath <- file.path(archiveBaseDir, aggpatList_filename)
+  
+  if ( file.exists(aggpatList_filePath) ) { #if the patlist already exists, load it
+    aggpatList <- get(load(aggpatList_filePath))
+  }
+  
+  if ( !file.exists(aggpatList_filePath) ) {
+    
+    patlist_ref <- paste0(month_abbrev[i], "_patlist")
+    patlist <- eval(as.symbol(patlist_ref))
+    
+    aggpatList <- list()
+    patlist_filt <- list()
+    count <- 0
+    
+    for (id in names(patlist)){
+      
+      count <- count + 1
+      logger.trace("%04d/%d -- pat_aggregate(%s)", count, length(patlist), id)
+      result <- try({
+        aggpatList[[id]] <-  
+          pat_aggregate(
+            pat = patlist[[id]],
+            period = "1 day"
+          )
+        aggpatList[[id]]$deviceDeploymentIds <- id
+      }, silent = FALSE)
+      
+      if ("try-error" %in% class(result)) {
+        # place holder to handle error
+      }
+    }
+    newname <- paste0(month_abbrev[i], "_aggpatList")
+    assign(newname, aggpatList)
+    save(list = newname, file = aggpatList_filePath)
+    
+  }
+}
+
+# NOTE: The following processes do not take as long or require as much storage
+# NOTE: as the previous chunks so this chunk will not check for existence or save.
+# NOTE: Build one big aggregated pat tibble per month
+
+for (i in seq(month_abbrev)){
+  logger.trace("Creating aggregation tibble for month %s", month_abbrev[i])
+  aggtibble_name <- paste0(month_abbrev[i], "_aggtibble")
+  
+  patList_ref <- paste0(month_abbrev[i], "_aggpatList")
+  patList <- eval(as.symbol(patList_ref))
+  
+  aggtibble <- 
+    dplyr::bind_rows(patList) %>%
+    dplyr::mutate_if(is.numeric, ~replace(., is.nan(.), as.numeric(NA)))
+  
+  assign(aggtibble_name, aggtibble)
 }
 
 # NOTE: The following processes do not take as long or require as much storage
@@ -367,9 +481,6 @@ ggplot(percent_index, aes(x = datetime, y = percent, fill = group ) ) +
 
 
 
-
-
-
 #### box plot: one metric for all months
 
 soh_metric <- "temperature_pctReporting"
@@ -435,8 +546,8 @@ ggplot(allmonths_sohIndex, aes(x = index, y = datetime, fill = ..x..)) +
   theme(
     legend.position="none",
     panel.spacing = unit(0.1, "lines"),
-    strip.text.x = element_text(size = 8)
-  )
+    strip.text.x = element_text(size = 8)) +
+  scale_y_discrete(limits = rev(sort(allmonths_sohIndex$datetime)))
 
 
 ##### box plot: average of each metric for single month
