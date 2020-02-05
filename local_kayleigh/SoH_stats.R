@@ -549,6 +549,152 @@ ggplot(allmonths_sohIndex, aes(x = index, y = datetime, fill = ..x..)) +
     strip.text.x = element_text(size = 8)) +
   scale_y_discrete(limits = rev(sort(allmonths_sohIndex$datetime)))
 
+#### aggregated stats ridgeline plot
+startdate <- "20190101"
+enddate <- "20191130"
+x_metric <- "pm25_A_mean"
+
+allmonths_aggstats <-
+  jan_aggtibble %>%
+  dplyr::bind_rows(feb_aggtibble) %>%
+  dplyr::bind_rows(mar_aggtibble) %>%
+  dplyr::bind_rows(apr_aggtibble) %>%
+  dplyr::bind_rows(may_aggtibble) %>%
+  dplyr::bind_rows(jun_aggtibble) %>%
+  dplyr::bind_rows(jul_aggtibble) %>%
+  dplyr::bind_rows(aug_aggtibble) %>%
+  dplyr::bind_rows(sep_aggtibble) %>%
+  dplyr::bind_rows(oct_aggtibble) %>%
+  dplyr::bind_rows(nov_aggtibble) %>%
+  dplyr::filter(.data$datetime >= parseDatetime(datetime = startdate, timezone = "America/Los_Angeles")) %>%
+  dplyr::filter(.data$datetime < parseDatetime(datetime = enddate, timezone = "America/Los_Angeles")) 
+
+allmonths_aggstats_filt <-
+  allmonths_aggstats %>%
+  dplyr::filter(.data$temperature_mean > -40 ) %>%
+  dplyr::filter(.data$temperature_mean < 185 ) %>%
+  dplyr::filter(.data$pm25_A_mean < 300) %>%
+  dplyr::filter(.data$pm25_B_mean < 300) #%>%
+#dplyr::filter(.data$pm25_A_max < 1000) %>%
+#dplyr::filter(.data$pm25_B_max < 1000) 
+
+allmonths_aggstats_ridgeline <-
+  allmonths_aggstats %>%
+  dplyr::mutate(datetime = strftime(datetime, format = "%Y/%m", tz = "UTC")) %>%
+  dplyr::mutate(A_B_mean_diff = .data$pm25_A_mean - .data$pm25_B_mean) #%>%
+# dplyr::filter(.data$A_B_mean_diff <= 70) %>%
+# dplyr::filter(.data$A_B_mean_diff >= -50) 
+
+# Unfiltered ridgeline plot of one channel
+ggplot(allmonths_aggstats_ridgeline, aes(x = pm25_B_mean, y = datetime, fill = ..x..)) +
+  geom_density_ridges_gradient(scale = 3,rel_min_height = 0.01, na.rm = TRUE)+
+  xlim(-1, 100) +
+  theme(
+    legend.position="none",
+    panel.spacing = unit(0.1, "lines"),
+    strip.text.x = element_text(size = 8)) +
+  scale_y_discrete(limits = rev(sort(allmonths_aggstats_ridgeline$datetime))) 
+
+# Unfiltered ridgeline plot of both channels:
+ggplot(allmonths_aggstats_ridgeline ) +
+  geom_density_ridges_gradient(aes(x = pm25_A_mean, y = datetime, fill = ..x..), scale = 3,
+                               rel_min_height = 0.01, na.rm = TRUE, color = "red") +
+  geom_density_ridges_gradient(aes(x = pm25_B_mean, y = datetime, fill = ..x..), scale = 3,
+                               rel_min_height = 0.01, na.rm = TRUE, color = "blue")+
+  scale_fill_gradient2(low = "blue",  high = "white", midpoint = 50) +
+  xlim(-1, 100) +
+  theme(
+    legend.position="none",
+    panel.spacing = unit(0.1, "lines"),
+    strip.text.x = element_text(size = 8)) +
+  scale_y_discrete(limits = rev(sort(allmonths_aggstats_ridgeline$datetime))) 
+
+
+# Check out the difference between filtered and unfiltered means:
+ggplot(allmonths_aggstats, aes(x = datetime, y = pm25_A_mean )) +
+  geom_point() +
+  geom_point(data = allmonths_aggstats_filt, aes(x = datetime, y = pm25_A_mean ), color = "pink")
+
+# All unfiltered data, scatterplot, one channel
+ggplot(allmonths_aggstats, aes(x = datetime, y = pm25_A_mean )) +
+  geom_point(alpha = 0.2, shape = 15) +
+  geom_rug(sides = 'l', position = "jitter") +
+  geom_hline(data = AQI, yintercept = AQI$breaks_24[2:6], color = AQI$colors[2:6])
+
+# Filtered data, scatterplot, one channel
+ggplot(allmonths_aggstats_filt, aes(x = datetime, y = pm25_B_mean )) +
+  geom_point(alpha = 0.2, shape = 15) +
+  geom_rug(sides = 'l') +
+  geom_hline(data = AQI, yintercept = AQI$breaks_24[2:6], color = AQI$colors[2:6])
+
+# Channels A and B, filtered, with AQI lines, scatterplot:
+ggplot(allmonths_aggstats_filt) +
+  geom_point(aes(x = datetime, y = pm25_B_mean), color = "blue", alpha = 0.25, shape = 15) +
+  geom_point(aes(x = datetime, y = pm25_A_mean), color = "red", alpha = 0.25, shape = 15) +
+  geom_hline(data = AQI, yintercept = AQI$breaks_24[2:6], color = AQI$colors[2:6])
+
+# Channels A and B, unfiltered, scatterplot:
+ggplot(allmonths_aggstats) +
+  geom_point(aes(x = datetime, y = pm25_B_mean), color = "blue", alpha = 0.25, shape = 15) +
+  geom_point(aes(x = datetime, y = pm25_A_mean), color = "red", alpha = 0.25, shape = 15) 
+
+dropout_days <- 
+  jan_sohtibble %>%
+  dplyr::bind_rows(feb_sohtibble) %>%
+  dplyr::bind_rows(mar_sohtibble) %>%
+  dplyr::bind_rows(apr_sohtibble) %>%
+  dplyr::bind_rows(may_sohtibble) %>%
+  dplyr::bind_rows(jun_sohtibble) %>%
+  dplyr::bind_rows(jul_sohtibble) %>%
+  dplyr::bind_rows(aug_sohtibble) %>%
+  dplyr::bind_rows(sep_sohtibble) %>%
+  dplyr::bind_rows(oct_sohtibble) %>%
+  dplyr::bind_rows(nov_sohtibble) %>%
+  dplyr::filter(.data$pm25_A_pctReporting <= 50) %>%
+  dplyr::filter(.data$datetime >= parseDatetime(datetime = startdate, timezone = "America/Los_Angeles")) %>%
+  dplyr::filter(.data$datetime < parseDatetime(datetime = enddate, timezone = "America/Los_Angeles")) %>%
+  dplyr::mutate(datetime = strftime(datetime, format = "%Y/%m/%d", tz = "America/Los_Angeles")) %>%
+  dplyr::count(.data$datetime) %>%
+  dplyr::mutate(datetime = parseDatetime(.data$datetime, timezone = "America/Los_Angeles"))
+
+# Channels A and B, unfiltered, PLUS dropout days, scatterplot:
+ggplot(allmonths_aggstats_filt) +
+  geom_point(aes(x = datetime, y = pm25_B_mean), color = "blue", alpha = 0.25, shape = 15) +
+  geom_point(aes(x = datetime, y = pm25_A_mean), color = "red", alpha = 0.25, shape = 15) +
+  geom_point(data = dropout_days, aes(x = datetime, y = n))
+
+
+allmonths_R2 <-
+  jan_sohtibble%>%
+  dplyr::bind_rows(feb_sohtibble) %>%
+  dplyr::bind_rows(mar_sohtibble) %>%
+  dplyr::bind_rows(apr_sohtibble) %>%
+  dplyr::bind_rows(may_sohtibble) %>%
+  dplyr::bind_rows(jun_sohtibble) %>%
+  dplyr::bind_rows(jul_sohtibble) %>%
+  dplyr::bind_rows(aug_sohtibble) %>%
+  dplyr::bind_rows(sep_sohtibble) %>%
+  dplyr::bind_rows(oct_sohtibble) %>%
+  dplyr::bind_rows(nov_sohtibble) 
+
+
+deviceDeploymentIds_subset <- unique(allmonths_R2$deviceDeploymentIds)[1:300]
+allmonths_R2_device_subset<- dplyr::filter(allmonths_R2, 
+                                           stringr::str_detect(deviceDeploymentIds, paste(deviceDeploymentIds_subset, collapse="|") ))
+
+
+ggplot(allmonths_R2, aes(x = datetime, y = pm25_A_pm25_B_rsquared )) +
+  #geom_point(aes(x = datetime, y = pm25_A_pm25_B_rsquared, color = factor(deviceDeploymentIds))) +
+  #geom_line(aes(color = factor(allmonths_R2_device_subset$deviceDeploymentIds), alpha = 0.001)) +
+  # stat_smooth(geom = "line", method = "loess", se = FALSE, 
+  #             aes(alpha = 0.01, color = factor(allmonths_R2_device_subset$deviceDeploymentIds)))+
+  stat_smooth(geom = "line", method = "loess", se = FALSE, span =0.3,
+              aes( color = factor(allmonths_R2$deviceDeploymentIds)))+
+  scale_color_discrete(palette = function(n) {
+    rep(adjustcolor("black", alpha = 0.05), n)
+  }) +
+  theme(legend.position="none")
+  
 
 ##### box plot: average of each metric for single month
 
