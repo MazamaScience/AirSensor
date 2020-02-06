@@ -10,21 +10,14 @@
 
 # TODO:  Add roxygen2 docs
 
-# createLocalArchive <- function(
-#   year = 2019,
-#   stateCode = "WA",
-#   pattern = "^MV Clean Air Ambassador @ B",
-#   collection = "MVCAA_B",
-#   baseDir = path.expand("~/Data/PA_networks"),
-#   verbose = TRUE
-# ) {
-
-  year = 2019
-  stateCode = "WA"
-  pattern = "^MV Clean Air Ambassador @ B"
-  collection = "MVCAA_B"
-  baseDir = path.expand("~/Data/PA_networks")
+createLocalArchive <- function(
+  year = 2019,
+  stateCode = "WA",
+  pattern = "^MV Clean Air Ambassador @ B",
+  collection = "MVCAA_B",
+  baseDir = path.expand("~/Data/PA_networks"),
   verbose = TRUE
+) {
 
   # ----- Setup ----------------------------------------------------------------
   
@@ -43,7 +36,7 @@
   datestamps <- (year * 100) + 1:12
   
   
-  # ----- Get the PAS data for Jan 31, 2020 ------------------------------------
+  # ----- Get PAS data for Jan 31, 2020 ----------------------------------------
   
   # The PAS object contains all of the metadata associated with each sensor.
 
@@ -52,7 +45,7 @@
   if ( file.exists(filePath) ) {
     
     logger.trace("loading %s", filePath)
-    pas_20200131 <- get(load(filePath))
+    pas <- get(load(filePath)) # GLOBAL
     
   } else {
     
@@ -60,16 +53,18 @@
     removeArchiveBaseDir()
     setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
     
-    pas_20200131 <- 
+    pas <- 
       pas_load(datestamp = "20200131", archival = TRUE)
     
     # Save it
-    save(list = "pas_20200131", file = filePath)
+    save(list = "pas", file = filePath)
     
-  }
+  } # END create data
+  
+  assign("pas", pas, env = .GlobalEnv)
   
   
-  # ----- Get all PATs for January ---------------------------------------------
+  # ----- Get PAT data for Jan -------------------------------------------------
   
   # Each PAT contains all of the timeseries data for a single sensor. 
   #
@@ -104,7 +99,7 @@
     setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
     
     deviceDeploymentIDs <- 
-      pas_20200131 %>%
+      pas %>%
       pas_filter(stateCode == stateCode) %>%
       pas_getDeviceDeploymentIDs(pattern = pattern)
     
@@ -135,16 +130,16 @@
         patList[[id]] <- pat
       }
       
-    }
+    } # END id loop
     
     logger.trace("%d pats with data, %d without", length(patList), length(patEmptyList))
     
     save(list = "patList", file = filePath)
     
-  }
+  } # END create data
   
   objectName <- sprintf("patList_%s", month.abb[i])
-  assign(objectName, patList)
+  assign(objectName, patList, envir = .GlobalEnv)
   
   # Only use devices found in January
   deviceDeploymentIDs <- names(patList)
@@ -152,7 +147,7 @@
   idString <- paste0(deviceDeploymentIDs, collapse = ", ")
   logger.trace("January ids with data:\n%s", idString)
   
-  # ----- Get all PATs for Feb-Dec ---------------------------------------------
+  # ----- Get PAT data for Feb-Dec ---------------------------------------------
   
   # Each PAT contains all of the timeseries data for a single sensor. 
   #
@@ -209,20 +204,20 @@
           patList[[id]] <- pat
         }
         
-      }
+      } # # END id loop
       
       logger.trace("%d pats with data, %d without", length(patList), length(patEmptyList))
       
-      save(list = "patList", file = filePath)
+      save(patList, file = filePath)
       
-    }
+    } # END create data
     
     objectName <- sprintf("patList_%s", month.abb[i])
-    assign(objectName, patList)
+    assign(objectName, patList, envir = .GlobalEnv)
     
-  }
+  } # END month loop
   
-  # ----- Get all SoH data for Jan-Dec -----------------------------------------
+  # ----- Get SoH data for Jan-Dec ---------------------------------------------
   
   # The per-sensor State-of-Health dataframe (aka SoH) contains a bunch of daily 
   # metrics.  
@@ -232,24 +227,39 @@
 
   for ( i in 1:12 ) {
     
-    logger.trace("----- Working on SoHList for %s -----", month.name[i])
+    logger.trace("----- Working on SoH for %s -----", month.name[i])
     
     datestamp <- datestamps[i]
     
-    SoHList <- list()
-    
-    fileName <- sprintf("SoHList_%s_%s.rda", collection, datestamp)
+    # NOTE:  Assume that SoH, SoHMeans and SoHIndex are always created/found together
+    fileName <- sprintf("SoH_%s_%s.rda", collection, datestamp)
     filePath <- file.path(localArchiveDir, fileName)
+    
+    index_fileName <- sprintf("SoHIndex_%s_%s.rda", collection, datestamp)
+    index_filePath <- file.path(localArchiveDir, fileName)
+    
+    means_fileName <- sprintf("SoHMeans_%s_%s.rda", collection, datestamp)
+    means_filePath <- file.path(localArchiveDir, fileName)
     
     if ( file.exists(filePath) ) {
       
       logger.trace("loading %s", filePath)
-      SoHList <- get(load(filePath))
+      SoH <- get(load(filePath))
+
+      logger.trace("loading %s", index_filePath)
+      SoHIndex <- get(load(index_filePath))
+
+      logger.trace("loading %s", means_filePath)
+      SoHMeans <- get(load(means_filePath))
       
     } else {
       
       objectName <- sprintf("patList_%s", month.abb[i])
-      patList <- eval(as.symbol(objectName))
+      patList <- get(objectName)
+      
+      SoHList <- list()
+      SoHMeansList <- list()
+      SoHIndexList <- list()
       
       count <- 0
       for ( id in names(patList) ) {
@@ -257,161 +267,58 @@
         count <- count + 1
         logger.trace("%04d/%d -- pat_dailySoH(%s)", count, length(patList), id)
         
-        SoHList[[id]] <- pat_dailySoH(patList[[id]])
-        SoHList[[id]]$deviceDeploymentIDs <- id
+        SoHList[[id]] <- 
+          pat_dailySoH(patList[[id]]) %>%
+          dplyr::mutate_if(is.numeric, ~replace(., is.nan(.), as.numeric(NA)))
         
-        objectName <- sprintf("SoHList_%s", month.abb[i])
-        assign(objectName, SoHList)
-      }
-      
-      save(list = objectName, file = filePath)
-      
-    }
-    
-  }
-  
-  # ----- Get all SoHIndex data for Jan-Dec ------------------------------------
-  
-  # The per-sensor State-of-Health Index dataframe (aka SoH) contains a single 
-  # daily state-of-health metric between 0:1. 
-  #
-  # We will combine all of the SoHIndex dataframes for a single month into a 
-  # list object and then save the monthly collections of SoHIndexs.
-  
-  for ( i in 1:12 ) {
-    
-    logger.trace("----- Working on SoHIndexList for %s -----", month.name[i])
-    
-    datestamp <- datestamps[i]
-    
-    SoHIndexList <- list()
-    
-    fileName <- sprintf("SoHIndexList_%s_%s.rda", collection, datestamp)
-    filePath <- file.path(localArchiveDir, fileName)
-    
-    if ( file.exists(filePath) ) {
-      
-      logger.trace("loading %s", filePath)
-      SoHList <- get(load(filePath))
-      
-    } else {
-      
-      objectName <- sprintf("patList_%s", month.abb[i])
-      patList <- eval(as.symbol(objectName))
-      
-      count <- 0
-      for ( id in names(patList) ) {
+        SoHIndexList[[id]] <- PurpleAirSoH_dailyToIndex_00(SoHList[[id]])
         
-        count <- count + 1
-        logger.trace("%04d/%d -- pat_dailySoHIndex_00(%s)", count, length(patList), id)
+        SoHList[[id]]$deviceDeploymentID <- id
+        SoHIndexList[[id]]$deviceDeploymentID <- id
         
-        SoHIndexList[[id]] <- pat_dailySoHIndex_00(patList[[id]])
-        SoHIndexList[[id]]$deviceDeploymentIDs <- id
+        means <-
+          SoHList[[id]] %>%
+          dplyr::select_if(is.numeric) %>%
+          colMeans() %>%
+          as.list() %>%
+          dplyr::as_tibble()
         
-        objectName <- sprintf("SoHIndexList_%s", month.abb[i])
-        assign(objectName, SoHIndexList)
+        means$datetime <- MazamaCoreUtils::parseDatetime(datestamp, timezone = "UTC")
+        means$deviceDeploymentID <- id
         
-      }
+        SoHMeansList[[id]] <- means
+        
+      } # END id loop
       
-      save(list = objectName, file = filePath)
+      # * Combined SoH -----
+      SoH <- dplyr::bind_rows(SoHList)
+      save(SoH, file = filePath)
       
-    }
-    
-  }
-  
-  # TODO:  Should the steps below be part of the steps above?
-  
-  # ----- Create monthly SoH objects -------------------------------------------
-  
-  for ( i in 1:12 ) {
-    
-    logger.trace("----- Working on SoH for %s -----", month.name[i])
-    
-    SoHList <- get(sprintf("SoHList_%s", month.abb[i]))
-    
-    SoH <-
-      dplyr::bind_rows(SoHList) %>%
-      dplyr::mutate_if(is.numeric, ~replace(., is.nan(.), as.numeric(NA)))
+      # * Combined SoHMean -----
+      SoHMeans <- dplyr::bind_rows(SoHMeansList)
+      save(SoHMeans, file = means_filePath)
+      
+      # * Combined SoHIndex -----
+      SoHIndex <- dplyr::bind_rows(SoHIndexList)
+      save(SoHIndex, file = index_filePath)
+      
+      # Cleanup
+      
+    } # END create data
     
     objectName <- sprintf("SoH_%s", month.abb[i])
-    assign(objectName, SoH)
-    
-  }
-  
-  # ----- Create SoH means -----------------------------------------------------
-  
-  for ( i in 1:12 ) {
-    
-    logger.trace("----- Working on SoHMeans for %s -----", month.name[i])
-    
-    datetime <- MazamaCoreUtils::parseDatetime(datestamps[i], timezone = "UTC")
-    
-    SoHList <- get(sprintf("SoHList_%s", month.abb[i]))
-    
-    SoHMeansList <- list()
-    
-    for ( id in names(SoHList) ) {
-      
-      means <-
-        SoHList[[id]] %>%
-        dplyr::select_if(is.numeric) %>%
-        colMeans() %>%
-        as.list() %>%
-        dplyr::as_tibble()
-      
-      means$datetime <- datetime
-      means$id <- id
-      
-      SoHMeansList[[id]] <- means
-      
-    }
-    
-    SoHMeans <- dplyr::bind_rows(SoHMeansList)
+    assign(objectName, SoH, envir = .GlobalEnv)
     
     objectName <- sprintf("SoHMeans_%s", month.abb[i])
-    assign(objectName, SoHMeans)
-    
-  }
-  
-  
-  # ----- Create monthly tidySoHMeans objects ----------------------------------
-  
-  for ( i in 1:12 ) {
-    
-    logger.trace("----- Working on tidySoHMeans for %s -----", month.name[i])
-    
-    SoHMeans <- get(sprintf("SoHMeans_%s", month.abb[i]))
-    
-    tidyTbl <-
-      SoHMeans %>%
-      dplyr::select(-datetime) %>%
-      reshape2::melt(id.vars="id")
-    
-    objectName <- sprintf("tidySoHMeans_%s", month.abb[i])
-    assign(objectName, tidyTbl)
-    
-  }
-  
-  
-  # ----- Create monthly tidySoHIndex objects ----------------------------------
-  
-  for ( i in 1:12 ) {
-    
-    logger.trace("----- Working on tidySoHIndex for %s -----", month.name[i])
-    
-    SoHIndexList <- get(sprintf("SoHIndexList_%s", month.abb[i]))
-    
-    SoHIndex <-
-      dplyr::bind_rows(SoHIndexList) %>%
-      dplyr::mutate_if(is.numeric, ~replace(., is.nan(.), as.numeric(NA)))
+    assign(objectName, SoHMeans, envir = .GlobalEnv)
     
     objectName <- sprintf("SoHIndex_%s", month.abb[i])
-    assign(objectName, SoHIndex)
+    assign(objectName, SoHIndex, envir = .GlobalEnv)
     
-  }
+  } # END month loop
   
-  
-# }
+  ###rm(means, patList, SoH, SoHList, SoHMeans, SoHMeansList, SoHIndex, SoHIndexList)
+}
 
 # ===== DEBUGGING ==============================================================
 
@@ -422,13 +329,20 @@ if ( FALSE ) {
   library(MazamaCoreUtils)
   library(AirSensor)
   
+  year = 2019
+  stateCode = "WA"
+  pattern = "^MV Clean Air Ambassador @ B"
+  collection = "MVCAA_B"
+  baseDir = path.expand("~/Data/PA_networks")
+  verbose = TRUE
+  
   createLocalArchive(
-    year = 2019,
-    stateCode = "WA",
-    pattern = "^MV Clean Air Ambassador @ B",
-    collection = "MVCAA_B",
-    baseDir = path.expand("~/Data/PA_networks"),
-    verbose = TRUE
+    year = year,
+    stateCode = stateCode,
+    pattern = pattern,
+    collection = collection,
+    baseDir = baseDir,
+    verbose = verbose
   )  
   
 }

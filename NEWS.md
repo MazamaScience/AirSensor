@@ -1,3 +1,7 @@
+# AirSensor 0.6.12
+
+* Separated calculation of SoHIndex into `PurpleAirSoH_dailyToIndex()`
+
 # AirSensor 0.6.11
 
 * Fixed bug in `pat_isEmpty()` so that it test for an empty `data` dataframe
