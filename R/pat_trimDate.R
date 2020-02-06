@@ -47,8 +47,21 @@ pat_trimDate <- function(
   timeRange <- range(pat$data$datetime)
   timezone <- pat$meta$timezone
   
-  # NOTE:  The dateRange() is used to restrict the time range days that have
+  # NOTE:  The dateRange() is used to restrict the time range to days that have
   # NOTE:  complete data.
+  # NOTE:
+  # NOTE:  floor/ceiling the start date depending on whether you are already
+  # NOTE:  at the date boundary
+  
+  hour <- 
+    MazamaCoreUtils::parseDatetime(timeRange[1], timezone) %>%
+    lubridate::hour() # hour resolution is good enough to count as an entire day
+  
+  if ( hour == 0 ) {
+    ceilingStart = FALSE
+  } else {
+    ceilingStart = TRUE
+  }
   
   dateRange <-
     MazamaCoreUtils::dateRange(
@@ -56,7 +69,7 @@ pat_trimDate <- function(
       enddate = timeRange[2],
       timezone = timezone,
       unit = "sec",
-      ceilingStart = TRUE, # date boundary *after* the start
+      ceilingStart = ceilingStart, # date boundary *after* the start
       ceilingEnd = FALSE   # date boundary *before* the end
     )
   
