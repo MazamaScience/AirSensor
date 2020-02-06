@@ -7,3 +7,4 @@ monitor_loadAnnual(2019) %>%
 addAQIStackedBar()
 addAQILines()
 title("WA 2019 -- Federal Monitor Daily Average PM2.5")
+aqi <- AQI

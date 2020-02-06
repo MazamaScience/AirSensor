@@ -22,6 +22,11 @@ setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/Purpl
 logger.setup()
 logger.setLevel(TRACE)
 
+state_pas_UT <- 
+  pas_load(archival = TRUE) %>%
+  pas_filter(stateCode == "UT") 
+
+
 state_pas <- 
   pas_load(archival = TRUE) %>%
   pas_filter(stateCode == "WA")  #%>% # For testing or reducing the number of sensors
@@ -567,7 +572,8 @@ allmonths_aggstats <-
   dplyr::bind_rows(oct_aggtibble) %>%
   dplyr::bind_rows(nov_aggtibble) %>%
   dplyr::filter(.data$datetime >= parseDatetime(datetime = startdate, timezone = "America/Los_Angeles")) %>%
-  dplyr::filter(.data$datetime < parseDatetime(datetime = enddate, timezone = "America/Los_Angeles")) 
+  dplyr::filter(.data$datetime < parseDatetime(datetime = enddate, timezone = "America/Los_Angeles")) %>%
+  dplyr::mutate(A_B_mean_diff = .data$pm25_A_mean - .data$pm25_B_mean)
 
 allmonths_aggstats_filt <-
   allmonths_aggstats %>%
@@ -581,7 +587,7 @@ allmonths_aggstats_filt <-
 allmonths_aggstats_ridgeline <-
   allmonths_aggstats %>%
   dplyr::mutate(datetime = strftime(datetime, format = "%Y/%m", tz = "UTC")) %>%
-  dplyr::mutate(A_B_mean_diff = .data$pm25_A_mean - .data$pm25_B_mean) #%>%
+   #%>%
 # dplyr::filter(.data$A_B_mean_diff <= 70) %>%
 # dplyr::filter(.data$A_B_mean_diff >= -50) 
 
@@ -616,10 +622,22 @@ ggplot(allmonths_aggstats, aes(x = datetime, y = pm25_A_mean )) +
   geom_point(data = allmonths_aggstats_filt, aes(x = datetime, y = pm25_A_mean ), color = "pink")
 
 # All unfiltered data, scatterplot, one channel
-ggplot(allmonths_aggstats, aes(x = datetime, y = pm25_A_mean )) +
+ggplot(allmonths_aggstats, aes(x = datetime, y = A_B_mean_diff )) +
+  geom_point(alpha = 0.2, shape = 15) +
+  geom_smooth()+
+  ylim(-15, 200)
+
+ggplot(allmonths_aggstats, aes(x = datetime, y = humidity_mean )) +
+  geom_point(alpha = 0.2, shape = 15) +
+  geom_smooth() +
+  ylim(-15, 200)
+
+ggplot(allmonths_aggstats, aes(x = datetime, y = pm25_B_mean )) +
   geom_point(alpha = 0.2, shape = 15) +
   geom_rug(sides = 'l', position = "jitter") +
-  geom_hline(data = AQI, yintercept = AQI$breaks_24[2:6], color = AQI$colors[2:6])
+  geom_hline(data = AQI, yintercept = AQI$breaks_24[2:6], color = AQI$colors[2:6]) +
+  geom_smooth() +
+  ylim(-15, 250)
 
 # Filtered data, scatterplot, one channel
 ggplot(allmonths_aggstats_filt, aes(x = datetime, y = pm25_B_mean )) +
@@ -636,7 +654,10 @@ ggplot(allmonths_aggstats_filt) +
 # Channels A and B, unfiltered, scatterplot:
 ggplot(allmonths_aggstats) +
   geom_point(aes(x = datetime, y = pm25_B_mean), color = "blue", alpha = 0.25, shape = 15) +
-  geom_point(aes(x = datetime, y = pm25_A_mean), color = "red", alpha = 0.25, shape = 15) 
+  geom_point(aes(x = datetime, y = pm25_A_mean), color = "red", alpha = 0.25, shape = 15) +
+  stat_smooth(geom = "line", aes(x = datetime, y = pm25_B_mean, color = "blue")) +
+  stat_smooth(geom = "line", aes(x = datetime, y = pm25_A_mean, color = "red")) +
+  ylim(0, 300)
 
 dropout_days <- 
   jan_sohtibble %>%
@@ -661,9 +682,10 @@ dropout_days <-
 ggplot(allmonths_aggstats_filt) +
   geom_point(aes(x = datetime, y = pm25_B_mean), color = "blue", alpha = 0.25, shape = 15) +
   geom_point(aes(x = datetime, y = pm25_A_mean), color = "red", alpha = 0.25, shape = 15) +
-  geom_point(data = dropout_days, aes(x = datetime, y = n))
+  geom_point(data = dropout_days, aes(x = datetime, y = n))+
+  ylim(0, 50)
 
-
+# R2 line plot
 allmonths_R2 <-
   jan_sohtibble%>%
   dplyr::bind_rows(feb_sohtibble) %>%
@@ -677,24 +699,67 @@ allmonths_R2 <-
   dplyr::bind_rows(oct_sohtibble) %>%
   dplyr::bind_rows(nov_sohtibble) 
 
-
-deviceDeploymentIds_subset <- unique(allmonths_R2$deviceDeploymentIds)[1:300]
-allmonths_R2_device_subset<- dplyr::filter(allmonths_R2, 
-                                           stringr::str_detect(deviceDeploymentIds, paste(deviceDeploymentIds_subset, collapse="|") ))
-
-
 ggplot(allmonths_R2, aes(x = datetime, y = pm25_A_pm25_B_rsquared )) +
-  #geom_point(aes(x = datetime, y = pm25_A_pm25_B_rsquared, color = factor(deviceDeploymentIds))) +
-  #geom_line(aes(color = factor(allmonths_R2_device_subset$deviceDeploymentIds), alpha = 0.001)) +
-  # stat_smooth(geom = "line", method = "loess", se = FALSE, 
-  #             aes(alpha = 0.01, color = factor(allmonths_R2_device_subset$deviceDeploymentIds)))+
-  stat_smooth(geom = "line", method = "loess", se = FALSE, span =0.3,
+  stat_smooth(geom = "line", method = "loess", se = FALSE, span =0.2,
               aes( color = factor(allmonths_R2$deviceDeploymentIds)))+
   scale_color_discrete(palette = function(n) {
     rep(adjustcolor("black", alpha = 0.05), n)
   }) +
   theme(legend.position="none")
   
+# Separate East and West side of the state based on Leavenworth's longitude 
+mid_state_long <- -120.799722
+pas_WA_west <- state_pas %>% pas_filter(longitude <= mid_state_long )
+pas_WA_east <- state_pas %>% pas_filter(longitude >= mid_state_long )
+west_DDID <- pas_WA_west$deviceDeploymentID
+east_DDID <- pas_WA_east$deviceDeploymentID
+
+allmonths_R2_DDID_east<- dplyr::filter(allmonths_R2, 
+                                           stringr::str_detect(deviceDeploymentIds, paste(east_DDID, collapse="|") ))
+
+
+ggplot(allmonths_R2_DDID_east, aes(x = datetime, y = pm25_A_pm25_B_rsquared )) +
+  stat_smooth(geom = "line", method = "loess", se = FALSE, span =0.2,
+              aes( color = factor(allmonths_R2_DDID_east$deviceDeploymentIds)))+
+  scale_color_discrete(palette = function(n) {
+    rep(adjustcolor("black", alpha = 0.05), n)
+  }) +
+  theme(legend.position="none")+
+  labs(title = "R2 for sensors EAST of the Cascades")
+
+
+allmonths_R2_DDID_west<- dplyr::filter(allmonths_R2, 
+                                       stringr::str_detect(deviceDeploymentIds, paste(west_DDID, collapse="|") ))
+
+
+ggplot(allmonths_R2_DDID_west, aes(x = datetime, y = pm25_A_pm25_B_rsquared )) +
+  stat_smooth(geom = "line", method = "loess", se = FALSE, span =0.2,
+              aes( color = factor(allmonths_R2_DDID_west$deviceDeploymentIds)))+
+  scale_color_discrete(palette = function(n) {
+    rep(adjustcolor("black", alpha = 0.05), n)
+  }) +
+  theme(legend.position="none")+
+  labs(title = "R2 for sensors WEST of the Cascades")
+
+ggplot() +
+  stat_smooth(data = allmonths_R2_DDID_east, 
+              aes(x = allmonths_R2_DDID_east$datetime, y = allmonths_R2_DDID_east$pm25_A_pm25_B_rsquared ),
+              geom = "line", method = "loess", se = FALSE, span =0.2,
+              aes( color = factor(allmonths_R2_DDID_east$deviceDeploymentIds)))+
+  scale_color_discrete(palette = function(n) {
+    rep(adjustcolor("black", alpha = 0.05), n)
+  }) +
+  stat_smooth(data = allmonths_R2_DDID_west, 
+              aes(x = allmonths_R2_DDID_west$datetime, y =allmonths_R2_DDID_west$pm25_A_pm25_B_rsquared ),
+              geom = "line", method = "loess", se = FALSE, span =0.2,
+              aes( color = factor(allmonths_R2_DDID_west$deviceDeploymentIds)))+
+  scale_color_discrete(palette = function(n) {
+    rep(adjustcolor("black", alpha = 0.05), n)
+  }) +
+  theme(legend.position="none")+
+  labs(title = "R2 for sensors EAST of the Cascades")
+
+
 
 ##### box plot: average of each metric for single month
 
