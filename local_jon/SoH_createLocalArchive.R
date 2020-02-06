@@ -1,12 +1,12 @@
 # Network statistics
 # Kayleigh Wilson & Jonathan Callahan
 
-# This top portion of this script has several sections that loop through each month to complete 
+# This script has several sections that loop through each month to complete 
 # various tasks including gathering all pat objects into a monthly list, calculating
 # an SoH object for each of those pat objects, calculating SoH Indices, forming lists
 # and tibbles. Some of these sections can take quite a while to run so the scripts first
 # check to see if the data exist locally and will load/save data accordingly.
-# The bottom portion of this script deals with plotting the data
+
 
 # TODO:  Add roxygen2 docs
 
@@ -217,6 +217,68 @@ createLocalArchive <- function(
     
   } # END month loop
   
+  # ----- Get daily means for Jan-Dec ------------------------------------------
+  
+  # Each PAT contains all of the timeseries data for a single sensor. 
+  #
+  # We will combine all of the sensors for a single month into a 
+  # list object and then save the monthly collections of aggregated PAT stats.
+  
+  for ( i in 1:12 ) {
+    
+    logger.trace("----- Working on daily mean aggregation for %s -----", month.name[i])
+    
+    datestamp <- datestamps[i]
+    
+    fileName <- sprintf("dailyMeans_%s_%s.rda", collection, datestamp)
+    filePath <- file.path(localArchiveDir, fileName)
+    
+    if ( file.exists(filePath) ) {
+      
+      logger.trace("loading %s", filePath)
+      dailyMeans <- get(load(filePath))
+      
+    } else {
+      
+      objectName <- sprintf("patList_%s", month.abb[i])
+      patList <- get(objectName)
+      
+      dailyMeansList <- list()
+      
+      # Guarantee we look for data on the web
+      removeArchiveBaseDir()
+      setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
+      
+      count <- 0
+      for ( id in names(patList) ) {
+        
+        count <- count + 1
+        logger.trace("%04d/%d -- pat_aggregate(%s)", count, length(patList), id)
+        
+        dailyMeansList[[id]] <- 
+          pat_aggregate(
+            pat = patList[[id]],
+            period = "1 day"
+          )
+        dailyMeansList[[id]]$deviceDeploymentID <- id
+        
+        
+      } # # END id loop
+      
+      dailyMeans <- 
+        dplyr::bind_rows(dailyMeansList) %>%
+        dplyr::mutate_if(is.numeric, ~replace(., is.nan(.), as.numeric(NA)))
+      
+      save(dailyMeans, file = filePath)
+      
+    } # END create data
+    
+    objectName <- sprintf("dailyMeans_%s", month.abb[i])
+    assign(objectName, dailyMeans, envir = .GlobalEnv)
+    
+  } # END month loop
+  
+  
   # ----- Get SoH data for Jan-Dec ---------------------------------------------
   
   # The per-sensor State-of-Health dataframe (aka SoH) contains a bunch of daily 
@@ -317,7 +379,7 @@ createLocalArchive <- function(
     
   } # END month loop
   
-  ###rm(means, patList, SoH, SoHList, SoHMeans, SoHMeansList, SoHIndex, SoHIndexList)
+  #rm(means, patList, SoH, SoHList, SoHMeans, SoHMeansList, SoHIndex, SoHIndexList)
 }
 
 # ===== DEBUGGING ==============================================================
