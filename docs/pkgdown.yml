@@ -4,6 +4,7 @@ pkgdown_sha: ~
 articles:
   AirSensorOverview: AirSensorOverview.html
   SoH_functions: SoH_functions.html
+  DataFlowChart: articles/DataFlowChart.html
   outlier_detection: outlier_detection.html
   pas_introduction: pas_introduction.html
   pat_introduction: pat_introduction.html
