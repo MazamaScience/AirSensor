@@ -13,8 +13,8 @@
 createLocalArchive <- function(
   year = 2019,
   stateCode = "WA",
-  pattern = "^MV Clean Air Ambassador @ B",
-  collection = "MVCAA_B",
+  pattern = ".*",
+  collection = "DUMMY_NAME",
   baseDir = path.expand("~/Data/PA_networks"),
   verbose = TRUE
 ) {
@@ -100,7 +100,7 @@ createLocalArchive <- function(
     
     deviceDeploymentIDs <- 
       pas %>%
-      pas_filter(stateCode == stateCode) %>%
+      dplyr::filter(stateCode == !!stateCode) %>%
       pas_getDeviceDeploymentIDs(pattern = pattern)
     
     count <- 0
@@ -397,6 +397,10 @@ if ( FALSE ) {
   collection = "MVCAA_B"
   baseDir = path.expand("~/Data/PA_networks")
   verbose = TRUE
+
+  stateCode = "WA"
+  pattern = ".*"
+  collection = "WA"
   
   createLocalArchive(
     year = year,
