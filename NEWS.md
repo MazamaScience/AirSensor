@@ -1,3 +1,7 @@
+# AirSensor 0.5.18
+
+* Linted for timezones - fixed in Mutliplot and monitor comparison. 
+
 # AirSensor 0.5.17
 
 Minor documentation updates and package rebuild.
