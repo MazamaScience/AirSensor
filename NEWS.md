@@ -1,6 +1,7 @@
 # AirSensor 0.5.18
 
-* Linted for timezones - fixed in Mutliplot and monitor comparison. 
+* Improved timezone handling and labeling in `pat_multiplot()` and 
+`pat_monitorComparison()`. 
 
 # AirSensor 0.5.17
 

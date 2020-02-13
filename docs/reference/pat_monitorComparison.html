@@ -78,7 +78,7 @@ federal monitor from the PWFSL database." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.17</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.18</span>
       </span>
     </div>
 
@@ -182,7 +182,8 @@ federal monitor from the PWFSL database.</p>
   <span class='kw'>hourly_shape</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>hourly_stroke</span> <span class='kw'>=</span> <span class='fl'>0.6</span>,
   <span class='kw'>pa_color</span> <span class='kw'>=</span> <span class='st'>"purple"</span>,
-  <span class='kw'>pwfsl_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>
+  <span class='kw'>pwfsl_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
+  <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -248,6 +249,11 @@ federal monitor from the PWFSL database.</p>
     <tr>
       <th>pwfsl_color</th>
       <td><p>Color of hourly points</p></td>
+    </tr>
+    <tr>
+      <th>timezone</th>
+      <td><p>Olson timezone used for the time axis. (Defaults to 
+<code>pat</code> local time.)</p></td>
     </tr>
     </table>
 

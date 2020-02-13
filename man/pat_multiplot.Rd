@@ -23,7 +23,7 @@ pat_multiplot(
   h_shape = 15,
   h_color = "black",
   alpha = 0.5,
-  timezone = "UTC"
+  timezone = NULL
 )
 }
 \arguments{
@@ -64,7 +64,8 @@ defaults.}
 
 \item{alpha}{Opacity of points.}
 
-\item{timezone}{A string of the timezone conversion.}
+\item{timezone}{Olson timezone used for the time axis. (Defaults to 
+\code{pat} local time.)}
 }
 \value{
 A ggplot object.
@@ -93,6 +94,7 @@ cookbook-r.com.
 }
 \examples{
 \donttest{
+library(AirSensor)
 pat_multiplot(pat = example_pat, plottype = "pm25", alpha = 0.5)
 }
 }

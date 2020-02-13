@@ -20,7 +20,7 @@ pat_monitorComparison(
   hourly_stroke = 0.6,
   pa_color = "purple",
   pwfsl_color = "black",
-  timezone = "UTC"
+  timezone = NULL
 )
 }
 \arguments{
@@ -55,7 +55,8 @@ pat_monitorComparison(
 
 \item{pwfsl_color}{Color of hourly points}
 
-\item{timezone}{A string of the timezone conversion.}
+\item{timezone}{Olson timezone used for the time axis. (Defaults to 
+\code{pat} local time.)}
 }
 \value{
 A ggplot object.
