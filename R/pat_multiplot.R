@@ -23,6 +23,7 @@
 #' @param h_shape Symbol to use for humidity points.
 #' @param h_color Color of humidity points.
 #' @param alpha Opacity of points.
+#' @param timezone The a string of the timezone conversion. 
 #' 
 #' @description A plotting function that uses ggplot2 to display multiple 
 #' ggplot objects in a single pane. Can either be passed individual ggplot 
@@ -69,7 +70,8 @@ pat_multiplot <- function(
   h_size = 1,
   h_shape = 15,
   h_color = "black",
-  alpha = 0.5
+  alpha = 0.5,
+  timezone = "UTC"
 ) {
   
   # Suppress warnings until the end of this function
@@ -78,6 +80,7 @@ pat_multiplot <- function(
   # ----- Validate parameters --------------------------------------------------
   
   MazamaCoreUtils::stopIfNull(pat)
+  MazamaCoreUtils::stopIfNull(timezone) # Timezones!
   
   if ( !pat_isPat(pat) )
     stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")
@@ -107,13 +110,15 @@ pat_multiplot <- function(
   # ----- Create plots ---------------------------------------------------------
   
   # Labels
-  timezone <- pat$meta$timezone[1]
-  year <- strftime(pat$data$datetime[1], "%Y", tz=timezone)
+  
+  year <- strftime(pat$data$datetime[1], "%Y", tz = timezone)
+  # Force the timezones
+  lubridate::tz(pat$data$datetime) <- timezone
   
   # Create a tibble
   tbl <- 
     dplyr::tibble(
-      datetime = lubridate::with_tz(pat$data$datetime, tzone = timezone),
+      datetime = lubridate::ymd_hms(pat$data$datetime, tz = timezone),
       pm25_A = pat$data$pm25_A, 
       pm25_B = pat$data$pm25_B, 
       humidity = pat$data$humidity, 
@@ -133,50 +138,51 @@ pat_multiplot <- function(
   }
   
   channelA <- 
-    tbl %>% 
-    ggplot2::ggplot(ggplot2::aes(x = .data$datetime, y = .data$pm25_A)) + 
+    ggplot2::ggplot(pat$data) + 
     ggplot2::geom_point(
-      size = a_size, 
+      ggplot2::aes(.data$datetime, .data$pm25_A),
+      size = a_size,
       shape = a_shape,
       color = a_color,
       alpha = alpha
     ) + 
+    ggplot2::scale_x_datetime(breaks = '1 day', date_labels = '%b %d', timezone = timezone) + 
     ggplot2::ylim(ylim) +
     ggplot2::labs(
-      x = year, 
-      y = "\u03bcg / m\u00b3", 
-      title = expression("Channel A PM"[2.5]), 
+      x = year,
+      y = "\u03bcg / m\u00b3",
+      title = expression("Channel A PM"[2.5]),
       subtitle = pat$meta$label
-    ) + 
+    ) +
     ggplot2::theme(
       plot.title = ggplot2::element_text(size = 11),
       plot.subtitle = ggplot2::element_text(size = 8)
     )
   
-  channelB <-   
-    tbl %>% 
-    ggplot2::ggplot(ggplot2::aes(x = .data$datetime, y = .data$pm25_B)) + 
+  channelB <- 
+    ggplot2::ggplot(pat$data) + 
     ggplot2::geom_point(
-      size = b_size, 
-      shape = b_shape,
-      color = b_color,
+      ggplot2::aes(.data$datetime, .data$pm25_B),
+      size = a_size,
+      shape = a_shape,
+      color = a_color,
       alpha = alpha
     ) + 
+    ggplot2::scale_x_datetime(breaks = '1 day', date_labels = '%b %d', timezone = timezone) + 
     ggplot2::ylim(ylim) +
     ggplot2::labs(
-      x = year, 
-      y = "\u03bcg / m\u00b3", 
-      title = expression("Channel B PM"[2.5]), 
+      x = year,
+      y = "\u03bcg / m\u00b3",
+      title = expression("Channel B PM"[2.5]),
       subtitle = pat$meta$label
-    ) + 
+    ) +
     ggplot2::theme(
       plot.title = ggplot2::element_text(size = 11),
       plot.subtitle = ggplot2::element_text(size = 8)
     )
   
   channelAB <- 
-    tbl %>% 
-    ggplot2::ggplot() +
+    ggplot2::ggplot(pat$data) +
     ggplot2::geom_point(
       ggplot2::aes(x = .data$datetime, y = .data$pm25_A),
       size = a_size,
@@ -191,6 +197,7 @@ pat_multiplot <- function(
       color = b_color,
       alpha = alpha
     ) +
+    ggplot2::scale_x_datetime(breaks = '1 day', date_labels = '%b %d', timezone = timezone) + 
     ggplot2::ylim(ylim) +
     ggplot2::labs(
       x = year, 
@@ -204,9 +211,9 @@ pat_multiplot <- function(
     )
   
   temperature <-   
-    tbl %>% 
-    ggplot2::ggplot(ggplot2::aes(x = .data$datetime, y = .data$temp)) + 
+    ggplot2::ggplot(pat$data) + 
     ggplot2::geom_point(
+      ggplot2::aes(x = .data$datetime, y = .data$temperature),
       size = t_size, 
       shape = t_shape,
       color = t_color,
@@ -221,12 +228,15 @@ pat_multiplot <- function(
     ggplot2::theme(
       plot.title = ggplot2::element_text(size = 11),
       plot.subtitle = ggplot2::element_text(size = 8)
-    )
+    ) + 
+    ggplot2::scale_x_datetime(breaks = '1 day', date_labels = '%b %d', timezone = timezone)
+    
+    
   
   humidity <-   
-    tbl %>% 
-    ggplot2::ggplot(ggplot2::aes(x = .data$datetime, y = .data$humidity)) + 
+    ggplot2::ggplot(pat$data) + 
     ggplot2::geom_point(
+      ggplot2::aes(x = .data$datetime, y = .data$humidity), 
       size = h_size, 
       shape = h_shape,
       color = h_color,
@@ -241,7 +251,9 @@ pat_multiplot <- function(
     ggplot2::theme(
       plot.title = ggplot2::element_text(size = 12),
       plot.subtitle = ggplot2::element_text(size = 8)
-    )
+    ) + 
+    ggplot2::scale_x_datetime(breaks = '1 day', date_labels = '%b %d', timezone = timezone)
+    
   
   # Assemble multi_ggplot
   if ( plottype == "pm25" ) {

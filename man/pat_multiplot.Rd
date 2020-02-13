@@ -22,7 +22,8 @@ pat_multiplot(
   h_size = 1,
   h_shape = 15,
   h_color = "black",
-  alpha = 0.5
+  alpha = 0.5,
+  timezone = "UTC"
 )
 }
 \arguments{
@@ -62,6 +63,8 @@ defaults.}
 \item{h_color}{Color of humidity points.}
 
 \item{alpha}{Opacity of points.}
+
+\item{timezone}{The a string of the timezone conversion.}
 }
 \value{
 A ggplot object.
