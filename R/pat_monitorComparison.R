@@ -46,7 +46,8 @@ pat_monitorComparison <- function(
   hourly_shape = 1,
   hourly_stroke = 0.6,
   pa_color = "purple",
-  pwfsl_color = "black"
+  pwfsl_color = "black", 
+  timezone = "UTC"
 ) {
   
   # ----- Validate parameters --------------------------------------------------
@@ -108,7 +109,6 @@ pat_monitorComparison <- function(
   }
   
   # Labels
-  timezone <- pat$meta$timezone[1]
   year <- strftime(pat$data$datetime[1], "%Y", tz=timezone)
   title <- paste0(
     "Sensor / Monitor comparison -- PurpleAir: \"",
@@ -123,8 +123,8 @@ pat_monitorComparison <- function(
   # ----- Construct plot -------------------------------------------------------
   
   # Set time axis to sensor local time
-  pat$data$datetime <- lubridate::with_tz(pat$data$datetime, tzone = timezone)
-  tidy_data$datetime <- lubridate::with_tz(tidy_data$datetime, tzone = timezone)
+  lubridate::tz(pat$data$datetime) <- timezone
+  lubridate::tz(tidy_data$datetime) <- timezone
   
   pm25_plot <-
     pat$data %>%
@@ -149,7 +149,8 @@ pat_monitorComparison <- function(
     
     ggplot2::ylim(ylim) +
     
-    ggplot2::ggtitle(title) +
+    ggplot2::ggtitle(title) + 
+    ggplot2::scale_x_datetime(breaks = '1 day', date_labels = '%b %d', timezone = timezone) +
     ggplot2::xlab(year) + 
     ggplot2::ylab("\u03bcg / m\u00b3")
   
