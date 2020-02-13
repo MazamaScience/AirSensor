@@ -19,7 +19,8 @@ pat_monitorComparison(
   hourly_shape = 1,
   hourly_stroke = 0.6,
   pa_color = "purple",
-  pwfsl_color = "black"
+  pwfsl_color = "black",
+  timezone = "UTC"
 )
 }
 \arguments{
@@ -53,6 +54,8 @@ pat_monitorComparison(
 \item{pa_color}{Color of hourly points}
 
 \item{pwfsl_color}{Color of hourly points}
+
+\item{timezone}{A string of the timezone conversion.}
 }
 \value{
 A ggplot object.

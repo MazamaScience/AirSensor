@@ -23,7 +23,7 @@
 #' @param h_shape Symbol to use for humidity points.
 #' @param h_color Color of humidity points.
 #' @param alpha Opacity of points.
-#' @param timezone The a string of the timezone conversion. 
+#' @param timezone A string of the timezone conversion. 
 #' 
 #' @description A plotting function that uses ggplot2 to display multiple 
 #' ggplot objects in a single pane. Can either be passed individual ggplot 

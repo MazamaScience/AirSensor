@@ -19,6 +19,7 @@
 #' @param hourly_stroke Line width of hourly points
 #' @param pa_color Color of hourly points
 #' @param pwfsl_color Color of hourly points
+#' @param timezone A string of the timezone conversion. 
 #' 
 #' @description Creates and regurns a ggplot object that plots raw \emph{pat}
 #' data, hourly aggregated \emph{pat} data and hourly data from the nearest

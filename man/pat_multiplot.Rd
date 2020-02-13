@@ -64,7 +64,7 @@ defaults.}
 
 \item{alpha}{Opacity of points.}
 
-\item{timezone}{The a string of the timezone conversion.}
+\item{timezone}{A string of the timezone conversion.}
 }
 \value{
 A ggplot object.
