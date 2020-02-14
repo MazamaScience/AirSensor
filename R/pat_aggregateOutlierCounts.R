@@ -1,4 +1,4 @@
-#' @title Aggreagte data with count of outliers in each bin 
+#' @title Aggregate data with count of outliers in each bin 
 #'
 #' @param pat a PurpleAir Timeseries \emph{pat} object.
 #' @param period time period to average over. Can be "sec", "min", "hour", 
@@ -6,6 +6,9 @@
 #'  precede these options followed by a space (i.e. "2 day" or "37 min").
 #' @param windowSize the size of the rolling window
 #' @param thresholdMin the minimum threshold value to detect outliers
+#' @param replace string vector specifying measurements for which outliers should be replaced before aggregating values.
+#'  Can be any combination of "pm25_A", "pm25_B", "temperature", "humidity".
+#'  Default value is NULL, indicating no replacements.
 #'
 #' @return \code{data.frame} A data.frame with additional flag count vectors
 #' @export
@@ -36,11 +39,12 @@ pat_aggregateOutlierCounts <- function(
   pat = NULL,
   period = "1 hour",
   windowSize = 23,
-  thresholdMin = 8
+  thresholdMin = 8,
+  replace = NULL
 ) { 
   
   # ----- Validate parameters --------------------------------------------------
-
+  
   MazamaCoreUtils::stopIfNull(pat)
   
   if ( !pat_isPat(pat) )
@@ -48,6 +52,15 @@ pat_aggregateOutlierCounts <- function(
   
   if ( pat_isEmpty(pat) )
     stop("Required parameter 'pat' has no data.") 
+  
+  if ( !is.character(replace) & !is.null(replace) )
+    stop("replace must be a character string, vector of strings, or NULL.")
+  
+  if ( length(replace) > 4)
+    stop("If not NULL, replace must be a character string holding between 1 and 4 values.")
+  
+  if (!is.null(replace) & any(!replace %in% c("pm25_A", "pm25_B", "temperature", "humidity") ) )
+    stop("replace can only accept strings containing 'pm25_A', 'pm25_B', 'temperature', and 'humidity' as arguments.")
   
   # Remove any duplicate data records
   pat <- pat_distinct(pat)
@@ -77,44 +90,73 @@ pat_aggregateOutlierCounts <- function(
   
   periodSeconds <- periodCount * unitSecs 
   
-  # Name of applicable vectors
-  names2count <- 
-    list(
-      "pm25_A", 
-      "pm25_B", 
-      "humidity", 
-      "temperature"
-    )
-  
   # Create df to use functionally
   df2count <- 
     list(
-      data.frame("pm25_A" = pat$data$pm25_A), 
-      data.frame("pm25_B" = pat$data$pm25_B), 
-      data.frame("humidity" = pat$data$humidity),
-      data.frame("temperature" = pat$data$temperature)
+      "pm25_A" = data.frame("datetime" = pat$data$datetime,
+                            "pm25_A" = pat$data$pm25_A), 
+      "pm25_B" = data.frame("datetime" = pat$data$datetime,
+                            "pm25_B" = pat$data$pm25_B), 
+      "humidity" = data.frame("datetime" = pat$data$datetime,
+                              "humidity" = pat$data$humidity),
+      "temperature" = data.frame("datetime" = pat$data$datetime,
+                                 "temperature" = pat$data$temperature)
     )
   
+  df2count_data <- purrr::map(df2count, ~ .x[!is.na(.x[, 2]),])
+  df2count_missing <- purrr::map(df2count, ~ .x[is.na(.x[, 2]),])
+  
   # map .flagOutliers to all applicable vectors
+  # Ian: Why are we not filtering NA's before running through .flagOutlier? It appears to change behavior compared to pat_outliers.
   flagged_outliers<-
     purrr::map2(
-      df2count, 
-      names2count, 
+      df2count_data, 
+      names(df2count), 
       .flagOutliers, 
       windowSize, 
       thresholdMin
-    )
-  # lapply function to grab flag vectors -> binds columns
-  flags <- 
-    do.call(
-      "cbind",
-      lapply(
-        flagged_outliers, 
-        FUN = function(x) x[2]
+    ) 
+  
+  # Create median-fixed replacement values.
+  if ( !is.null(replace) ) {
+    replaced <- 
+      purrr::map2(
+        df2count_data[replace],
+        replace,
+        .replaceOutliers,
+        medWin = windowSize,
+        thresholdMin = thresholdMin
       )
+    
+    df2count_data[replace] <- replaced
+  }
+  
+  # Binding flagged_outliers columns df2count_data.
+  df_counted <-
+    purrr::map2(
+      df2count_data,
+      flagged_outliers,
+      .f = ~ dplyr::bind_cols(.x, .y[, 3, drop = FALSE])
+    )  %>% 
+    # Binding missing columns back to data columns.
+    purrr::map2(
+      .y = df2count_missing,
+      .f = dplyr::bind_rows
+    ) %>%
+    # Replacing NA's flagged column with FALSE.
+    purrr::map(
+      .f = function(x) dplyr::mutate_at(x, .vars = 3,
+                                        ~ifelse(is.na(.), FALSE, .))
+    ) %>% 
+    # Joining everything by datetime.
+    purrr::reduce(
+      full_join,
+      by = "datetime"
     )
   
-  pat[["data"]] <- cbind(pat[["data"]], flags)
+  # Adding new columns to pat.
+  pat[["data"]] <- select(pat[["data"]], -c("pm25_A", "pm25_B", "temperature", "humidity")) %>% 
+    full_join(y = df_counted, by = "datetime")
   
   counts <- 
     .pat_agg(
