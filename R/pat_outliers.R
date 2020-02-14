@@ -19,6 +19,7 @@
 #' @param outlier_size Size of outlier points.
 #' @param outlier_color Color of outlier points.
 #' @param outlier_alpha Opacity of outlier points.
+#' @param flag_columns Logical specifying whether to include columns indicating outlier was flagged.
 #' 
 #' @return A \emph{pat} object with outliers replaced by median values.
 #' 
@@ -46,6 +47,12 @@
 #' can create an highly smoothed, artificial dataset by setting 
 #' \code{thresholdMin = 1} or lower (but always above zero).
 #' 
+#' If \code{flag_columns = TRUE} returned dataframe has additional columns
+#' outlier_flagged_pm25_A and outlier_flagged_pm25_A.
+#' The values of these columns are \code{TRUE} if an outlier was flagged,
+#' \code{FALSE] if not, and \code{NA} if there was previously no channel value.
+#' 
+#' 
 #' @note Additional documentation on the algorithm is available in 
 #' \code{seismicRoll::findOutliers()}.
 #' 
@@ -69,7 +76,8 @@ pat_outliers <- function(
   outlier_shape = 8, 
   outlier_size = 1, 
   outlier_color = "red",
-  outlier_alpha = 1.0
+  outlier_alpha = 1.0,
+  flag_columns = FALSE
 ) {
   
   # ----- Validate parameters --------------------------------------------------
@@ -95,7 +103,7 @@ pat_outliers <- function(
   # NOTE:
   # NOTE:  We keep most columns in A_data and only pm25_B and datetime_B in B_data
   # NOTE:  so that we can dplyr::left_join() them together at the end.
-  
+  # NOTE IAN: Does this mess up the rolling window though, by removing NA values, are we messing up the time-series?
   A_data <- 
     dplyr::filter(pat$data, !is.na(.data$pm25_A)) %>% 
     dplyr::select( -.data$pm25_B, -.data$datetime_B)
@@ -134,18 +142,23 @@ pat_outliers <- function(
     which(B_flagged[,ncol(B_flagged)])
   
   # Create median-fixed replacement values
+  # IAN: .replaceOutliers isn't inheriteing windowSize or thresholdMin arguments. (I changed so it is.)
   if ( replace ) {
     
     A_fixed <- 
       .replaceOutliers(
         A_data, 
-        parameter = "pm25_A"
+        parameter = "pm25_A",
+        medWin = windowSize,
+        thresholdMin = thresholdMin
       )[["pm25_A"]]
     
     B_fixed <- 
       .replaceOutliers(
         B_data, 
-        parameter = "pm25_B"
+        parameter = "pm25_B",
+        medWin = windowSize,
+        thresholdMin = thresholdMin
       )[["pm25_B"]]
     
   } else { 
@@ -156,7 +169,8 @@ pat_outliers <- function(
     A_fixed[A_outlierIndices] <- NA
     B_fixed[B_outlierIndices] <- NA
     
-  }
+  } 
+  
   
   # ----- Plot the data --------------------------------------------------------
   
@@ -207,6 +221,12 @@ pat_outliers <- function(
   A_data$pm25_A <- A_fixed
   B_data$pm25_B <- B_fixed
   
+  # Adds columns outlier_flagged_pm25_A and outlier_flagged_pm25_B
+  if ( flag_columns ) {
+    A_data$outlier_flagged_pm25_A <- A_flagged$flag_outliers_pm25_A
+    B_data$outlier_flagged_pm25_B <- B_flagged$flag_outliers_pm25_B
+  }
+  
   # Add back records with missing values.
   # Save time -- don't arrange by datetime yet.
   A_full <- dplyr::bind_rows(A_data, A_missing)
@@ -217,10 +237,10 @@ pat_outliers <- function(
     dplyr::full_join(A_full, B_full, by = 'datetime') %>% 
     dplyr::arrange(.data$datetime)
   
-  data <- data[,c("datetime",    "pm25_A",      "pm25_B",     
-                  "temperature", "humidity",    "uptime",     
-                  "adc0",        "rssi",        "datetime_A", 
-                  "datetime_B")]
+  data <- dplyr::select(data,
+                        c("datetime", "pm25_A", "pm25_B", "temperature", "humidity", "uptime",     
+                          "adc0", "rssi", "datetime_A", "datetime_B"),
+                          dplyr::everything())
   
     
 
