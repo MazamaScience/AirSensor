@@ -1,3 +1,7 @@
+# AirSensor 0.6.13
+
+* Proper timezone handling in `pat_multiplot()` and `pat_monitorComparison()`
+
 # AirSensor 0.6.12
 
 * Separated calculation of SoHIndex into `PurpleAirSoH_dailyToIndex()`
