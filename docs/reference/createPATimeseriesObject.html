@@ -83,7 +83,7 @@ pm10_atm
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.13</span>
       </span>
     </div>
 
@@ -107,6 +107,12 @@ pm10_atm
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
+    </li>
+    <li>
+      <a href="../articles/articles/Australia_on_fire.html">Australia on Fire</a>
+    </li>
+    <li>
+      <a href="../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
     </li>
     <li>
       <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
@@ -189,6 +195,28 @@ In the process, the following columns of data are omitted:</p><ul>
 
     <p>List with original <code>meta</code> and restructured <code>data</code> elements</p>
 <p>"pa_timeseries" list of time series PurpleAir data</p>
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>On January 13, 2020 the PurpleAir FAQ "Whsat's the difference between CF_1
+and CF_ATM?" contained the following text:</p>
+<pre>
+The CF_ATM and CF_1 values are calculated from the particle count data with a 
+proprietary algorithm developed by the PMS5003 laser counter manufacturer, 
+PlanTower. The specifics of the calculation are not available to the public 
+(or us for that matter). However, to convert the particle count data (um/dl) 
+to a mass concentration (ug/m3) they must use an average particle density. 
+They do provide 2 different mass concentration conversion options; CF_1 uses 
+the "average particle density" for indoor particulate matter and CF_ATM uses 
+the "average particle density" for outdoor particulate matter. Depending on 
+the density of the particles you are measuring the sensor could appear to 
+read "high" or "low". Some groups have developed conversion factors to 
+convert the data from the sensor to match the unique average particle density 
+within their airshed. 
+</pre>
+
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>https://www2.purpleair.com/community/faq</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='downloadParseTimeseriesData.html'>downloadParseTimeseriesData</a></p></div>
@@ -213,6 +241,8 @@ In the process, the following columns of data are omitted:</p><ul>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#note">Note</a></li>
+      <li><a href="#references">References</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>

@@ -4,7 +4,9 @@
 \name{ArchiveBaseDir}
 \alias{ArchiveBaseDir}
 \title{Base directory for pre-generated data}
-\format{Directory string.}
+\format{
+Directory string.
+}
 \description{
 If an archive of pre-generated data files is available locally,
 users can set the location of this directory with\code{setArchiveBaseDir()}.

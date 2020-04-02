@@ -44,7 +44,9 @@
 
 <meta property="og:title" content="Download PurpleAir timeseries data — downloadParseTimeseriesData" />
 <meta property="og:description" content="Downloads timeseries data for a specific PurpleAir sensor 
-from the ThingSpeak API and parses the content into a dataframe." />
+from the ThingSpeak API and parses the content into a dataframe. This 
+function will always return dataframe with the appropriate columns even if no 
+data are returned from ThingSpeak." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -77,7 +79,7 @@ from the ThingSpeak API and parses the content into a dataframe." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.13</span>
       </span>
     </div>
 
@@ -101,6 +103,12 @@ from the ThingSpeak API and parses the content into a dataframe." />
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
+    </li>
+    <li>
+      <a href="../articles/articles/Australia_on_fire.html">Australia on Fire</a>
+    </li>
+    <li>
+      <a href="../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
     </li>
     <li>
       <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
@@ -159,7 +167,9 @@ from the ThingSpeak API and parses the content into a dataframe." />
 
     <div class="ref-description">
     <p>Downloads timeseries data for a specific PurpleAir sensor 
-from the ThingSpeak API and parses the content into a dataframe.</p>
+from the ThingSpeak API and parses the content into a dataframe. This 
+function will always return dataframe with the appropriate columns even if no 
+data are returned from ThingSpeak.</p>
     </div>
 
     <pre class="usage"><span class='fu'>downloadParseTimeseriesData</span>(

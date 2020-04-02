@@ -4,7 +4,9 @@
 \name{example_pat_failure_B}
 \alias{example_pat_failure_B}
 \title{Example PurpleAir Timeseries dataset exhibiting severe errors}
-\format{An S3 object composed of "meta" and "data" data.}
+\format{
+An S3 object composed of "meta" and "data" data.
+}
 \usage{
 example_pat_failure_B
 }

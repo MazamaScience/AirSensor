@@ -90,7 +90,7 @@ Available plottype options include:
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.13</span>
       </span>
     </div>
 
@@ -114,6 +114,12 @@ Available plottype options include:
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
+    </li>
+    <li>
+      <a href="../articles/articles/Australia_on_fire.html">Australia on Fire</a>
+    </li>
+    <li>
+      <a href="../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
     </li>
     <li>
       <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
@@ -206,7 +212,8 @@ argument to quickly display preformatted plots.</p>
   <span class='kw'>h_size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>h_shape</span> <span class='kw'>=</span> <span class='fl'>15</span>,
   <span class='kw'>h_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -285,6 +292,11 @@ defaults.</p></td>
       <th>alpha</th>
       <td><p>Opacity of points.</p></td>
     </tr>
+    <tr>
+      <th>timezone</th>
+      <td><p>Olson timezone used for the time axis. (Defaults to 
+<code>pat</code> local time.)</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -297,6 +309,7 @@ cookbook-r.com.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>AirSensor</span>)
 <span class='fu'>pat_multiplot</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='no'>example_pat</span>, <span class='kw'>plottype</span> <span class='kw'>=</span> <span class='st'>"pm25"</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</div><div class='img'><img src='pat_multiplot-1.png' alt='' width='700' height='433' /></div><div class='input'># }
 </div></pre>
   </div>

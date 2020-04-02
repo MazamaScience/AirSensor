@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.13</span>
       </span>
     </div>
 
@@ -60,13 +60,22 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../../articles/articles/AirSensorOverview.html">AirSensor Function Overview</a>
+      <a href="../../articles/AirSensorOverview.html">AirSensor Function Overview</a>
+    </li>
+    <li>
+      <a href="../../articles/articles/Australia_on_fire.html">Australia on Fire</a>
+    </li>
+    <li>
+      <a href="../../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
     </li>
     <li>
       <a href="../../articles/articles/SoH_functions.html">SoH Functions</a>
     </li>
     <li>
       <a href="../../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
+    </li>
+    <li>
+      <a href="../../articles/articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
     </li>
     <li>
       <a href="../../articles/articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
@@ -82,9 +91,6 @@
     </li>
     <li>
       <a href="../../articles/articles/working_with_wind_data.html">Working With Wind Data</a>
-    </li>
-    <li>
-      <a href="../../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
     </li>
   </ul>
 </li>
@@ -128,7 +134,7 @@
 <div id="raw-engineering-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#raw-engineering-data" class="anchor"></a>Raw “Engineering” Data</h2>
-<p>The <strong>AirSensor</strong> package <em>pat</em> data model and associated functions make it easy to work with raw Purple Air data. (<em>pat</em> is for <em>P</em>urple <em>A</em>ir <em>T</em>imeseries.) Each <em>pat</em> object provides unmodified data obtained from the <em>ThingSpeak</em> database. (ThingSpeak is the Internet of Things data provider that Purple Air has partnered with to handle access to archival data.)</p>
+<p>The <strong>AirSensor</strong> package <em>pat</em> data model and associated functions make it easy to work with raw PurpleAir data. (<em>pat</em> is for <em>P</em>urple <em>A</em>ir <em>T</em>imeseries.) Each <em>pat</em> object provides unmodified data obtained from the <em>ThingSpeak</em> database. (ThingSpeak is the Internet of Things data provider that Purple Air has partnered with to handle access to archival data.)</p>
 <p>See the pat_introduction vignette for details.</p>
 <div id="good-data" class="section level3">
 <h3 class="hasAnchor">
@@ -222,7 +228,7 @@
 <a href="#students-t-test" class="anchor"></a>Student’s t-Test</h3>
 <p>Every Purple Air II sensor has two separate particle detectors, each reporting on a separate channel: A and B. When measurements in both channels agree within measurement error then we have higher confidence in the measurements. Because the two particle detectors are so close together we shouldn’t expect any difference in the air entering detector A or B.</p>
 <p>The two-sample t-test is the standard statistical technique for determining whether a difference in two means is significant or can be attributed to random processes. The friendliest explanation of this statistical technique is available through a serires of <a href="https://www.khanacademy.org/math/ap-statistics/two-sample-inference#two-sample-t-test-means">Khan Academy videos</a></p>
-<p>When the Purple Air sensor is functioning properly we expect the hourly average of A channel PM2.5 measurements to be close to the average of B channel PM2.5 measurements. To determine whether this NULL hypothesis holds, the <code><a href="../../reference/pat_aggregate.html">pat_aggregate()</a></code> function does some additional work for PM2.5 and calculates the following addition two-sample t-test statistics:</p>
+<p>When the PurpleAir sensor is functioning properly we expect the hourly average of A channel PM2.5 measurements to be close to the average of B channel PM2.5 measurements. To determine whether this NULL hypothesis holds, the <code><a href="../../reference/pat_aggregate.html">pat_aggregate()</a></code> function does some additional work for PM2.5 and calculates the following addition two-sample t-test statistics:</p>
 <ul>
 <li>t – t-statistic</li>
 <li>p – p-value</li>
@@ -249,16 +255,16 @@
 <a class="sourceLine" id="cb11-17" data-line-number="17"><span class="co"># Look at a random sample of this new dataframe</span></a>
 <a class="sourceLine" id="cb11-18" data-line-number="18">dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(raw_data, <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>##      datetime channel  pm25
-## 1  2019061111  pm25_A  9.24
-## 2  2019061107  pm25_A 11.21
-## 3  2019061101  pm25_A 10.59
-## 4  2019061117  pm25_A  6.21
-## 5  2019061115  pm25_B 10.41
-## 6  2019061118  pm25_B 11.23
-## 7  2019061119  pm25_B  9.84
-## 8  2019061121  pm25_A 16.21
-## 9  2019061114  pm25_A  7.35
-## 10 2019061107  pm25_B  7.68</code></pre>
+## 1  2019061120  pm25_B 11.12
+## 2  2019061116  pm25_B  7.51
+## 3  2019061102  pm25_A  4.50
+## 4  2019061120  pm25_A 14.65
+## 5  2019061119  pm25_A  9.49
+## 6  2019061116  pm25_A  8.78
+## 7  2019061120  pm25_A 13.55
+## 8  2019061110  pm25_B  9.43
+## 9  2019061100  pm25_A  7.98
+## 10 2019061113  pm25_B  5.69</code></pre>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="co"># Create a timeseries using boxplots</span></a>
 <a class="sourceLine" id="cb13-2" data-line-number="2">colors &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="https://rdrr.io/r/grDevices/rgb.html">rgb</a></span>(<span class="fl">0.9</span>, <span class="fl">0.25</span>, <span class="fl">0.2</span>), <span class="kw"><a href="https://rdrr.io/r/grDevices/rgb.html">rgb</a></span>(<span class="fl">0.2</span>, <span class="fl">0.25</span>, <span class="fl">0.9</span>))</a>
 <a class="sourceLine" id="cb13-3" data-line-number="3"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(raw_data, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(datetime, pm25, <span class="dt">color =</span> channel)) <span class="op">+</span><span class="st"> </span></a>
@@ -281,16 +287,16 @@
 <p><img src="purpleair_qc_files/figure-html/AB_boxplot-2.png" width="672"></p>
 <p>And here is the same for a day with serious problems:</p>
 <pre><code>##      datetime channel    pm25
-## 1  2019061211  pm25_A   20.44
-## 2  2019061204  pm25_B   12.59
-## 3  2019061220  pm25_B   13.23
-## 4  2019061204  pm25_B   13.96
-## 5  2019061207  pm25_A 3332.86
-## 6  2019061213  pm25_B   18.09
-## 7  2019061212  pm25_A   18.27
-## 8  2019061202  pm25_B   12.66
-## 9  2019061213  pm25_A   20.91
-## 10 2019061203  pm25_B   13.08</code></pre>
+## 1  2019061207  pm25_A 3328.87
+## 2  2019061209  pm25_B   18.18
+## 3  2019061215  pm25_A   13.35
+## 4  2019061213  pm25_B   18.07
+## 5  2019061209  pm25_A   18.50
+## 6  2019061208  pm25_A 3332.84
+## 7  2019061207  pm25_B   14.17
+## 8  2019061200  pm25_A   31.40
+## 9  2019061203  pm25_B   13.08
+## 10 2019061216  pm25_B      NA</code></pre>
 <p><img src="purpleair_qc_files/figure-html/AB_boxplot_2-1.png" width="672"><img src="purpleair_qc_files/figure-html/AB_boxplot_2-2.png" width="672"></p>
 <p>We can see that the null hypothesis – the difference in means is entirely due to chance – is extremely unlikely <code>pm25_p &lt; 1e-30</code>, for example, only occur for hours where the A and B channels have hourly avergaes that are both highly precise (low std dev) and very different. We can thus use the <code>pm25_t</code> variable to flag those hours where the A and B channels disagree.</p>
 </div>
@@ -298,7 +304,7 @@
 <div id="hourly-averages" class="section level2">
 <h2 class="hasAnchor">
 <a href="#hourly-averages" class="anchor"></a>Hourly Averages</h2>
-<p>One of the most important data products we can create form raw Purple Air data is the hourly avergaged dataset that can be used for comparison with co-located federal regulatory monitors.</p>
+<p>One of the most important data products we can create form raw PurpleAir data is the hourly avergaged dataset that can be used for comparison with co-located federal regulatory monitors.</p>
 <p>The following steps are recommend for creating an hourly PM2.5 timeseries:</p>
 <ol style="list-style-type: decimal">
 <li>apply out-of-spec QC</li>

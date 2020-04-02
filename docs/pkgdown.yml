@@ -3,6 +3,8 @@ pkgdown: 1.4.1
 pkgdown_sha: ~
 articles:
   AirSensorOverview: AirSensorOverview.html
+  Australia_on_fire: articles/Australia_on_fire.html
+  DataFlowChart: articles/DataFlowChart.html
   SoH_functions: articles/SoH_functions.html
   outlier_detection: articles/outlier_detection.html
   pas_introduction: articles/pas_introduction.html

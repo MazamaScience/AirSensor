@@ -4,7 +4,9 @@
 \name{ArchiveBaseUrl}
 \alias{ArchiveBaseUrl}
 \title{Base URL for pre-generated data}
-\format{URL string.}
+\format{
+URL string.
+}
 \description{
 This package maintains an internal archive base URL which users 
 can set using \code{setArchiveBaseUrl()}. Alternatively, if an archive of 
