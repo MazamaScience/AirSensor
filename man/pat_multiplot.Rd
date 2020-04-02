@@ -22,7 +22,8 @@ pat_multiplot(
   h_size = 1,
   h_shape = 15,
   h_color = "black",
-  alpha = 0.5
+  alpha = 0.5,
+  timezone = NULL
 )
 }
 \arguments{
@@ -62,6 +63,9 @@ defaults.}
 \item{h_color}{Color of humidity points.}
 
 \item{alpha}{Opacity of points.}
+
+\item{timezone}{Olson timezone used for the time axis. (Defaults to 
+\code{pat} local time.)}
 }
 \value{
 A ggplot object.
@@ -90,6 +94,7 @@ cookbook-r.com.
 }
 \examples{
 \donttest{
+library(AirSensor)
 pat_multiplot(pat = example_pat, plottype = "pm25", alpha = 0.5)
 }
 }

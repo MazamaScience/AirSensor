@@ -1,3 +1,8 @@
+# AirSensor 0.5.18
+
+* Improved timezone handling and labeling in `pat_multiplot()` and 
+`pat_monitorComparison()`. 
+
 # AirSensor 0.5.17
 
 Minor documentation updates and package rebuild.
