@@ -4,7 +4,9 @@
 \name{example_sensor_scaqmd}
 \alias{example_sensor_scaqmd}
 \title{Example AirSensor Timeseries dataset}
-\format{An S3 object composed of "meta" and "data" data.}
+\format{
+An S3 object composed of "meta" and "data" data.
+}
 \usage{
 example_sensor_scaqmd
 }
