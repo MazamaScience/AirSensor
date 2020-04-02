@@ -31,6 +31,8 @@
 #' 
 #' @examples 
 #' \dontrun{
+#' library(AirSensor)
+#' 
 #' scsg_15 <- pat_load("SCSG_15", "2019-06-13", "2019-06-20")
 #' PurpleAirQC_validationPlot(scsg_15)
 #' 

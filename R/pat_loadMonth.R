@@ -5,8 +5,9 @@
 #' @title Load PurpleAir time series data for a month
 #' 
 #' @description A pre-generated PurpleAir Timeseries \emph{pat} object will be 
-#' loaded for the given month. Archived data for SCAQMD sensors go back to 
-#' January, 2018.
+#' loaded for the month requested with \code{datestamp} if available. Data are 
+#' loaded from the archive set with either \code{setArchiveBaseUrl()} or 
+#' \code{setArchiveBaseDir()} for locally archived files.
 #' 
 #' The \code{datestamp} must be in the following format:
 #' 
@@ -16,21 +17,24 @@
 #' 
 #' By default, the current month is loaded.
 #'
-#' @note Many Purple Air sensor labels have spaces and other special characters
-#' which make for awkward file names. Best practices would suggest creating
-#' file names without special characters by running the \code{label} string
-#' through \code{make.names()} first.
-#'  
-#' This function defaults to generating file names in this manner but allows
-#' users to override this in case some users have a compelling reason to create 
-#' filenames that exactly match the \code{pat$label} of the \emph{pat} object
-#' they contain.
+#' @note Starting with \pkg{AirSensor} version 0.6, archive file names are 
+#' generated with a unique "device-deployment" identifier by combining a unique 
+#' location ID with a unique device ID. These "device-deployment" identifiers 
+#' guarantee that movement of a sensor will result in the creation of a new
+#' time series.
 #' 
-#' @param label Purple Air sensor 'label'
+#' Users may request a \emph{pat} object in one of two ways:
+#' 
+#' 1) Pass in \code{id} with a valid a \code{deviceDeploymentID}
+#' 
+#' 2) Pass in both \code{label} and \code{pas} so that the 
+#' \code{deviceDeploymentID} can be looked up.
+#' 
+#' @param id PurpleAir sensor 'deviceDeploymentID'.
+#' @param label PurpleAir sensor 'label'.
+#' @param pas PurpleAir Synoptic \emph{pas} object.
 #' @param datestamp Date string in ymd order.
 #' @param timezone Timezone used to interpret \code{datestamp}.
-#' @param make.names Logical specifying whether to run 
-#' \code{make.names(label)} when assembilng the file path.
 #' 
 #' @return A PurpleAir Timeseries \emph{pat} object.
 #' 
@@ -40,24 +44,49 @@
 #' 
 #' @examples
 #' \donttest{
-#' setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
-#' may <- pat_loadMonth("SCNP_20", 201905)
-#' pat_multiplot(may)
+#' 
+#' ### setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
+#' #### pas <- example_pas
+
+#' ### may <- pat_loadMonth(label = "SCNP_20", pas = pas, 201905)
+#' ### pat_multiplot(may)
 #' }
 
 pat_loadMonth <- function(
+  id = NULL,
   label = NULL,
+  pas = NULL,
   datestamp = NULL,
-  timezone = "America/Los_Angeles",
-  make.names = TRUE
+  timezone = "America/Los_Angeles"
 ) {
   
   # ----- Validate parameters --------------------------------------------------
   
-  MazamaCoreUtils::stopIfNull(label)
-  
-  if ( make.names ) 
-    label <- make.names(label)
+  # Get the deviceDeploymentID
+  if ( is.null(id) && is.null(label) ) {
+    
+    stop(paste0("label or id must be provided"))
+    
+  } else if ( is.null(id) && !is.null(label) ) {
+    
+    if ( is.null(pas) )
+      stop(paste0("pas must be provided when loading by label"))
+    
+    if ( !label %in% pas$label )
+      stop(sprintf("label '%s' is not found in the 'pas' object", label))
+    
+    # Get the deviceDeploymentID from the label
+    deviceDeploymentID <- pas_getDeviceDeploymentIDs(pas, pattern = label)
+    
+    if ( length(deviceDeploymentID) > 1 )
+      stop(sprintf("label '%s' matches more than one sensor", label))
+    
+  } else {
+    
+    # Use id whenever it is defined, potentially ignoring label
+    deviceDeploymentID <- id
+    
+  }
   
   # ----- Create year and month stamps -----------------------------------------
   
@@ -74,21 +103,24 @@ pat_loadMonth <- function(
   datestamp <- strftime(datetime, "%Y%m%d", tz = "UTC")
   monthstamp <- strftime(datetime, "%Y%m", tz = "UTC")
   yearstamp <- strftime(datetime, "%Y", tz = "UTC")
+  mmstamp <- strftime(datetime, "%m", tz = "UTC")
   
   # ----- Load data from URL or directory --------------------------------------
+  
+  # Create filename
+  filename <- paste0("pat_", deviceDeploymentID, "_", monthstamp, ".rda")
   
   # Use package internal URL
   baseDir <- getArchiveBaseDir()
   baseUrl <- getArchiveBaseUrl()
   
-  filename <- paste0("pat_", label, "_", monthstamp, ".rda")
-  dataUrl <- paste0(baseUrl, '/pat/', yearstamp)
+  dataUrl <- paste0(baseUrl, '/pat/', yearstamp, '/', mmstamp)
   
   # dataDir should be NULL if baseDir is NULL
   if ( is.null(baseDir) ) {
     dataDir <- NULL
   } else {
-    dataDir <- paste0(baseDir, '/pat/', yearstamp)
+    dataDir <- paste0(baseDir, '/pat/', yearstamp, '/', mmstamp)
   }
   
   # Get data from URL or directory
@@ -102,9 +134,9 @@ pat_loadMonth <- function(
   
   if ( "try-error" %in% class(result) ) {
     if ( is.null(baseDir) ) {
-      stop(paste0("Data file could not be loaded from: ", baseUrl), call.=FALSE)
+      stop(paste0("Data file could not be loaded from: ", baseUrl), call. = FALSE)
     } else {
-      stop(paste0("Data file could not be loaded from: ", baseDir), call.=FALSE)
+      stop(paste0("Data file could not be loaded from: ", baseDir), call. = FALSE)
     }
   }
   

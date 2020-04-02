@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Load hourly-aggregated Purple Air data for a month — sensor_loadMonth • AirSensor</title>
+<title>Load hourly-aggregated PurpleAir data for a month — sensor_loadMonth • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,7 +42,7 @@
 
 
 
-<meta property="og:title" content="Load hourly-aggregated Purple Air data for a month — sensor_loadMonth" />
+<meta property="og:title" content="Load hourly-aggregated PurpleAir data for a month — sensor_loadMonth" />
 <meta property="og:description" content="A pre-generated airsensor object will be loaded for
 the given month. Archived data for SCAQMD sensors go back to January, 2018.
 The datestamp can must be in the following format:
@@ -52,7 +52,7 @@ The datestamp can must be in the following format:
 
 By default, the current month is loaded.
 Each airsensor object contains data from a named collection of 
-Purple Air sensors." />
+PurpleAir sensors." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -85,7 +85,7 @@ Purple Air sensors." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.18</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.9</span>
       </span>
     </div>
 
@@ -111,31 +111,28 @@ Purple Air sensors." />
       <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
     </li>
     <li>
-      <a href="../articles/SoH_functions.html">SoH Functions</a>
+      <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
     </li>
     <li>
-      <a href="../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
+      <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
     </li>
     <li>
-      <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
+      <a href="../articles/articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
     </li>
     <li>
-      <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
+      <a href="../articles/articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
     </li>
     <li>
-      <a href="../articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
+      <a href="../articles/articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
     </li>
     <li>
-      <a href="../articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
+      <a href="../articles/articles/purpleair_qc.html">Purple Air Quality Control</a>
     </li>
     <li>
-      <a href="../articles/purpleair_qc.html">Purple Air Quality Control</a>
+      <a href="../articles/articles/purpleair_sensors.html">Purple Air Sensors</a>
     </li>
     <li>
-      <a href="../articles/purpleair_sensors.html">Purple Air Sensors</a>
-    </li>
-    <li>
-      <a href="../articles/working_with_wind_data.html">Working With Wind Data</a>
+      <a href="../articles/articles/working_with_wind_data.html">Working With Wind Data</a>
     </li>
   </ul>
 </li>
@@ -163,7 +160,7 @@ Purple Air sensors." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Load hourly-aggregated Purple Air data for a month</h1>
+    <h1>Load hourly-aggregated PurpleAir data for a month</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/sensor_loadMonth.R'><code>R/sensor_loadMonth.R</code></a></small>
     <div class="hidden name"><code>sensor_loadMonth.Rd</code></div>
     </div>
@@ -178,7 +175,7 @@ the given month. Archived data for SCAQMD sensors go back to January, 2018.</p>
 
 <p>By default, the current month is loaded.</p>
 <p>Each <code>airsensor</code> object contains data from a named collection of 
-Purple Air sensors.</p>
+PurpleAir sensors.</p>
     </div>
 
     <pre class="usage"><span class='fu'>sensor_loadMonth</span>(
@@ -213,6 +210,7 @@ Purple Air sensors.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
+<span class='co'># TODO:  This needs to be updated to use USFS data</span>
 <span class='fu'><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl</a></span>(<span class='st'>"http://smoke.mazamascience.com/data/PurpleAir"</span>)
 <span class='fu'>sensor_loadMonth</span>(<span class='st'>"scaqmd"</span>, <span class='fl'>201905</span>) <span class='kw'>%&gt;%</span>
   <span class='kw pkg'>PWFSLSmoke</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/PWFSLSmoke/man/monitor_timeseriesPlot.html'>monitor_timeseriesPlot</a></span>(<span class='kw'>style</span> <span class='kw'>=</span> <span class='st'>'gnats'</span>)</div><div class='img'><img src='sensor_loadMonth-1.png' alt='' width='700' height='433' /></div><div class='input'># }

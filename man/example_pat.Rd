@@ -3,7 +3,7 @@
 \docType{data}
 \name{example_pat}
 \alias{example_pat}
-\title{Example Purple Air Timeseries dataset}
+\title{Example PurpleAir Timeseries dataset}
 \format{An S3 object composed of "meta" and "data" data.}
 \usage{
 example_pat
@@ -11,13 +11,17 @@ example_pat
 \description{
 The \code{example_pat} dataset provides a quickly loadable version of
 a \emph{pa_timeseries} object for practicing and code examples.
-This dataset was was generated on 2019-07-06 by running:
+This dataset was was generated on 2020-01-03 by running:
 
 \preformatted{
-  pas <- pas_load()
-  example_pat <- pat_createNew(pas, label = "Seattle",
-                               startdate = "2018-07-01",
-                               enddate = "2018-09-01")
+  example_pat <-
+    pat_createNew(
+      label = "Seattle",
+      pas = example_pas,
+      startdate = "2018-08-01",
+      enddate = "2018-08-28"
+    )
+  save(example_pat, file = "data/example_pat.rda")
 }
 }
 \seealso{

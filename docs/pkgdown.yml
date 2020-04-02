@@ -3,13 +3,12 @@ pkgdown: 1.4.1
 pkgdown_sha: ~
 articles:
   AirSensorOverview: AirSensorOverview.html
-  SoH_functions: SoH_functions.html
-  DataFlowChart: articles/DataFlowChart.html
-  outlier_detection: outlier_detection.html
-  pas_introduction: pas_introduction.html
-  pat_introduction: pat_introduction.html
-  purpleair_failure_modes: purpleair_failure_modes.html
-  purpleair_qc: purpleair_qc.html
-  purpleair_sensors: purpleair_sensors.html
-  working_with_wind_data: working_with_wind_data.html
+  SoH_functions: articles/SoH_functions.html
+  outlier_detection: articles/outlier_detection.html
+  pas_introduction: articles/pas_introduction.html
+  pat_introduction: articles/pat_introduction.html
+  purpleair_failure_modes: articles/purpleair_failure_modes.html
+  purpleair_qc: articles/purpleair_qc.html
+  purpleair_sensors: articles/purpleair_sensors.html
+  working_with_wind_data: articles/working_with_wind_data.html
 

@@ -2,13 +2,9 @@
 % Please edit documentation in R/enhanceSynopticData.R
 \name{enhanceSynopticData}
 \alias{enhanceSynopticData}
-\title{Enhance synoptic data from Purple Air}
+\title{Enhance synoptic data from PurpleAir}
 \usage{
-enhanceSynopticData(
-  pas_raw = NULL,
-  countryCodes = c("US"),
-  includePWFSL = TRUE
-)
+enhanceSynopticData(pas_raw = NULL, countryCodes = NULL, includePWFSL = TRUE)
 }
 \arguments{
 \item{pas_raw}{Dataframe returned by \code{downloadParseSynopticData()}.}
@@ -29,7 +25,7 @@ Steps include:
 
 1) Replace variable with more consistent, more human readable names.
 
-2) Add spatial metadata for each monitor including:
+2) Add spatial metadata for each sensor including:
 \itemize{
   \item{timezone -- olson timezone}
   \item{countryCode -- ISO 3166-1 alpha-2}
@@ -49,8 +45,9 @@ Steps include:
 \item{communityRegion -- (where known)}
 }
 
-Subsetting by country may be performed by specifying the \code{countryCodes} 
-argument.
+Filtering by country can speed up the process of enhancement and may be
+performed by providing a vector ISO country codes to the \code{countryCodes} 
+argument. By default, no subsetting is performed.
 
 Setting \code{outsideOnly = TRUE} will return only those records marked as 
 'outside'.
@@ -64,8 +61,7 @@ map.
 \examples{
 \dontrun{
 initializeMazamaSpatialUtils()
-pas_raw <- downloadParseSynopticData()
-pas <- enhanceSynopticData(pas_raw)
+pas <- enhanceSynopticData(example_pas_raw)
 setdiff(names(pas), names(pas_raw))
 View(pas[1:100,])
 }

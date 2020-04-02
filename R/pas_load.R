@@ -6,8 +6,8 @@
 #' @title Load PurpleAir synoptic data
 #' 
 #' @description A pre-generated \emph{pa_synoptic} object will be loaded for
-#'   the given date. These files are generated throughout each day and provide
-#'   a record of all currently installed Purple Air sensors for the day of 
+#'   the given date. These files are generated each day and provide
+#'   a record of all currently installed PurpleAir sensors for the day of 
 #'   interest. With default arguments, this function will always load data 
 #'   associated with the most recent pre-generated file -- typically less than 
 #'   one hour old.
@@ -39,7 +39,7 @@
 #' 
 #' @examples
 #' \dontrun{
-#' setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+#' setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir/v1")
 #' pas <- pas_load()
 #' pas %>% 
 #'   pas_filter(stateCode == "CA") %>%
@@ -55,10 +55,14 @@ pas_load <- function(
   
   # ----- Validate parameters --------------------------------------------------
   
+  MazamaCoreUtils::stopIfNull(retries)
+  MazamaCoreUtils::stopIfNull(timezone)
+  MazamaCoreUtils::stopIfNull(archival)
+  
   if ( !timezone %in% OlsonNames() ) {
     stop(paste0("Parameter 'timezone' is not recognized: ", timezone))
   }
-    
+  
   if ( is.null(datestamp) ) {
     # All .rda archive files are saved with UTC datestamp filenames
     datestamp <- 
@@ -78,7 +82,7 @@ pas_load <- function(
   
   # Allow datestamp to be one day past today to handle timezone differences
   tomorrowStamp <- 
-  { lubridate::now(tzone = timezone) + lubridate::ddays(1) } %>%
+    { lubridate::now(tzone = timezone) + lubridate::ddays(1) } %>%
     strftime("%Y%m%d", tz = timezone)
   
   if ( datestamp > tomorrowStamp )
@@ -86,8 +90,14 @@ pas_load <- function(
   
   # ----- Load data from URL or directory --------------------------------------
   
+  # Use baseDir if it is set
   baseDir <- getArchiveBaseDir()
-  baseUrl <- getArchiveBaseUrl()
+  
+  if ( is.null(baseDir) ) {
+    baseUrl <- getArchiveBaseUrl()
+  } else {
+    baseUrl <- NULL
+  }
   
   result <- NULL
   successful <- FALSE
@@ -108,18 +118,21 @@ pas_load <- function(
     } else {
       filename <- paste0("pas_", datestamp, ".rda")
     }
-    dataUrl <- paste0(baseUrl, '/pas/', yearstamp)
     
-    # dataDir should be NULL if baseDir is NULL
+    # Use baseDir if it is set
     if ( is.null(baseDir) ) {
       dataDir <- NULL
+      dataUrl <- paste0(baseUrl, '/pas/', yearstamp)
     } else {
       dataDir <- paste0(baseDir, '/pas/', yearstamp)
+      dataUrl <- NULL
     }
     
     # Get data from URL or directory
     result <- try({
-      suppressWarnings( pas <- loadDataFile(filename, dataUrl, dataDir) )
+      suppressWarnings({ 
+        pas <- loadDataFile(filename, dataUrl, dataDir) 
+      })
     }, silent = TRUE)
     
     successful <- !("try-error" %in% class(result))

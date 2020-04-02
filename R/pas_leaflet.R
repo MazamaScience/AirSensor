@@ -143,7 +143,7 @@ pas_leaflet <- function(
           pas, 
           paletteName = paletteName, 
           parameter = parameter, 
-          reverse=TRUE
+          reverse = TRUE
         )
         
         cols <- colorInfo$colors
@@ -247,7 +247,7 @@ pas_leaflet <- function(
                                      bins = 10, 
                                      na.color = "#bbbbbb")
       cols <- colorFunc(pas[[parameter]])
-      breaks <- seq(domain[1],domain[2],length.out=11)
+      breaks <- seq(domain[1],domain[2],length.out = 11)
       offset <- diff(breaks)[1] / 2
       levels <- signif(seq(breaks[1]+offset, breaks[11]-offset,length.out=10), digits=2)
       labels <- as.character(levels)
@@ -255,15 +255,16 @@ pas_leaflet <- function(
       value <- round(pas[[parameter]], 2)
       unit <- ''
       
-    } else {                                    # Other
+    } else {
       
-      domain <- range(pas[[parameter]], na.rm=TRUE)
+      # All other parameters
+      domain <- range(pas[[parameter]], na.rm = TRUE)
       colorFunc <- leaflet::colorNumeric("Purples", 
                                          domain = domain, 
                                          na.color = "#bbbbbb", 
-                                         reverse=FALSE)
+                                         reverse = FALSE)
       cols <- colorFunc(pas[[parameter]])
-      breaks <- seq(domain[1],domain[2],length.out=6)
+      breaks <- seq(domain[1], domain[2], length.out = 6)
       offset <- diff(breaks)[1] / 2
       levels <- signif(seq(breaks[1]+offset, breaks[6]-offset,length.out=5), digits=4)
       colors <- leaflet::colorBin("Purples", domain=range(breaks), bins=breaks, reverse=FALSE)(levels)
@@ -276,12 +277,13 @@ pas_leaflet <- function(
     # Create popupText
     pas$popupText <- paste0(
       "<b>", pas$label, "</b><br/>",
+      "<b>deviceDeploymentID = ", pas$deviceDeploymentID, "</b><br/>",
       "<b>", parameter, " = ", value, " ", unit, "</b><br/>",
       "temperature = ", round(pas$temperature, 0), " F<br/>",
       "humidity = ", round(pas$humidity, 0), "%<br/>",
       "pm25_1hr = ", round(pas$pm25_1hr, 1), " \U00B5g/m3<br/>",
       "pm25_1day = ", round(pas$pm25_1day, 1), " \U00B5g/m3<br/>",
-      "location_type = ", pas$DEVICE_LOCATIONTYPE, "<br/"
+      "location_type = ", pas$DEVICE_LOCATIONTYPE, "<br/>"
     )
     
   })
@@ -313,8 +315,8 @@ pas_leaflet <- function(
   
   # Convert locations to SpatialPointsDataFrame
   pas <- pas[!is.na(pas$latitude),]
-  SPDF <- sp::SpatialPointsDataFrame(coords=cbind(pas$longitude,pas$latitude),
-                                     data=as.data.frame(pas))
+  SPDF <- sp::SpatialPointsDataFrame(coords = cbind(pas$longitude,pas$latitude),
+                                     data = as.data.frame(pas))
   
   # Convert maptype to a character string that addProviderTiles can read
   if ( missing(maptype) || maptype == 'terrain') {

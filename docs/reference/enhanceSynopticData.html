@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Enhance synoptic data from Purple Air — enhanceSynopticData • AirSensor</title>
+<title>Enhance synoptic data from PurpleAir — enhanceSynopticData • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,12 +42,12 @@
 
 
 
-<meta property="og:title" content="Enhance synoptic data from Purple Air — enhanceSynopticData" />
+<meta property="og:title" content="Enhance synoptic data from PurpleAir — enhanceSynopticData" />
 <meta property="og:description" content="Enhance raw synoptic data from PurpleAir to create a generally 
 useful dataframe.
 Steps include:
 1) Replace variable with more consistent, more human readable names.
-2) Add spatial metadata for each monitor including:
+2) Add spatial metadata for each sensor including:
 timezone -- olson timezone
 countryCode -- ISO 3166-1 alpha-2
 stateCode -- ISO 3166-2 alpha-2
@@ -63,8 +63,9 @@ technologyType = &quot;consumer-grade&quot;
 communityRegion -- (where known)
 
 
-Subsetting by country may be performed by specifying the countryCodes 
-argument.
+Filtering by country can speed up the process of enhancement and may be
+performed by providing a vector ISO country codes to the countryCodes 
+argument. By default, no subsetting is performed.
 Setting outsideOnly = TRUE will return only those records marked as 
 'outside'." />
 <meta name="twitter:card" content="summary" />
@@ -99,7 +100,7 @@ Setting outsideOnly = TRUE will return only those records marked as
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.18</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.9</span>
       </span>
     </div>
 
@@ -125,31 +126,28 @@ Setting outsideOnly = TRUE will return only those records marked as
       <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
     </li>
     <li>
-      <a href="../articles/SoH_functions.html">SoH Functions</a>
+      <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
     </li>
     <li>
-      <a href="../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
+      <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
     </li>
     <li>
-      <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
+      <a href="../articles/articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
     </li>
     <li>
-      <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
+      <a href="../articles/articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
     </li>
     <li>
-      <a href="../articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
+      <a href="../articles/articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
     </li>
     <li>
-      <a href="../articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
+      <a href="../articles/articles/purpleair_qc.html">Purple Air Quality Control</a>
     </li>
     <li>
-      <a href="../articles/purpleair_qc.html">Purple Air Quality Control</a>
+      <a href="../articles/articles/purpleair_sensors.html">Purple Air Sensors</a>
     </li>
     <li>
-      <a href="../articles/purpleair_sensors.html">Purple Air Sensors</a>
-    </li>
-    <li>
-      <a href="../articles/working_with_wind_data.html">Working With Wind Data</a>
+      <a href="../articles/articles/working_with_wind_data.html">Working With Wind Data</a>
     </li>
   </ul>
 </li>
@@ -177,7 +175,7 @@ Setting outsideOnly = TRUE will return only those records marked as
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Enhance synoptic data from Purple Air</h1>
+    <h1>Enhance synoptic data from PurpleAir</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/enhanceSynopticData.R'><code>R/enhanceSynopticData.R</code></a></small>
     <div class="hidden name"><code>enhanceSynopticData.Rd</code></div>
     </div>
@@ -187,7 +185,7 @@ Setting outsideOnly = TRUE will return only those records marked as
 useful dataframe.</p>
 <p>Steps include:</p>
 <p>1) Replace variable with more consistent, more human readable names.</p>
-<p>2) Add spatial metadata for each monitor including:</p><ul>
+<p>2) Add spatial metadata for each sensor including:</p><ul>
 <li><p>timezone -- olson timezone</p></li>
 <li><p>countryCode -- ISO 3166-1 alpha-2</p></li>
 <li><p>stateCode -- ISO 3166-2 alpha-2</p></li>
@@ -203,17 +201,14 @@ useful dataframe.</p>
 <li><p>communityRegion -- (where known)</p></li>
 </ul>
 
-<p>Subsetting by country may be performed by specifying the <code>countryCodes</code> 
-argument.</p>
+<p>Filtering by country can speed up the process of enhancement and may be
+performed by providing a vector ISO country codes to the <code>countryCodes</code> 
+argument. By default, no subsetting is performed.</p>
 <p>Setting <code>outsideOnly = TRUE</code> will return only those records marked as 
 'outside'.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>enhanceSynopticData</span>(
-  <span class='kw'>pas_raw</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>countryCodes</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"US"</span>),
-  <span class='kw'>includePWFSL</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>enhanceSynopticData</span>(<span class='kw'>pas_raw</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>countryCodes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>includePWFSL</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -249,8 +244,7 @@ map.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='fu'><a href='initializeMazamaSpatialUtils.html'>initializeMazamaSpatialUtils</a></span>()
-<span class='no'>pas_raw</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='downloadParseSynopticData.html'>downloadParseSynopticData</a></span>()
-<span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='fu'>enhanceSynopticData</span>(<span class='no'>pas_raw</span>)
+<span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='fu'>enhanceSynopticData</span>(<span class='no'>example_pas_raw</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/sets.html'>setdiff</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>pas</span>), <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>pas_raw</span>))
 <span class='fu'><a href='https://rdrr.io/r/utils/View.html'>View</a></span>(<span class='no'>pas</span>[<span class='fl'>1</span>:<span class='fl'>100</span>,])
 }</div></pre>

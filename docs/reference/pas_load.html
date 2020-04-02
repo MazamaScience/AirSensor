@@ -44,8 +44,8 @@
 
 <meta property="og:title" content="Load PurpleAir synoptic data — pas_load" />
 <meta property="og:description" content="A pre-generated pa_synoptic object will be loaded for
-  the given date. These files are generated throughout each day and provide
-  a record of all currently installed Purple Air sensors for the day of 
+  the given date. These files are generated each day and provide
+  a record of all currently installed PurpleAir sensors for the day of 
   interest. With default arguments, this function will always load data 
   associated with the most recent pre-generated file -- typically less than 
   one hour old.
@@ -92,7 +92,7 @@ datestamp = &quot;YYYYmmddHH&quot;." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.18</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.9</span>
       </span>
     </div>
 
@@ -118,31 +118,28 @@ datestamp = &quot;YYYYmmddHH&quot;." />
       <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
     </li>
     <li>
-      <a href="../articles/SoH_functions.html">SoH Functions</a>
+      <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
     </li>
     <li>
-      <a href="../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
+      <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
     </li>
     <li>
-      <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
+      <a href="../articles/articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
     </li>
     <li>
-      <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
+      <a href="../articles/articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
     </li>
     <li>
-      <a href="../articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
+      <a href="../articles/articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
     </li>
     <li>
-      <a href="../articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
+      <a href="../articles/articles/purpleair_qc.html">Purple Air Quality Control</a>
     </li>
     <li>
-      <a href="../articles/purpleair_qc.html">Purple Air Quality Control</a>
+      <a href="../articles/articles/purpleair_sensors.html">Purple Air Sensors</a>
     </li>
     <li>
-      <a href="../articles/purpleair_sensors.html">Purple Air Sensors</a>
-    </li>
-    <li>
-      <a href="../articles/working_with_wind_data.html">Working With Wind Data</a>
+      <a href="../articles/articles/working_with_wind_data.html">Working With Wind Data</a>
     </li>
   </ul>
 </li>
@@ -177,8 +174,8 @@ datestamp = &quot;YYYYmmddHH&quot;." />
 
     <div class="ref-description">
     <p>A pre-generated <em>pa_synoptic</em> object will be loaded for
-  the given date. These files are generated throughout each day and provide
-  a record of all currently installed Purple Air sensors for the day of 
+  the given date. These files are generated each day and provide
+  a record of all currently installed PurpleAir sensors for the day of 
   interest. With default arguments, this function will always load data 
   associated with the most recent pre-generated file -- typically less than 
   one hour old.</p>
@@ -234,7 +231,7 @@ includes sensors that have stopped reporting.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl</a></span>(<span class='st'>"http://smoke.mazamascience.com/data/PurpleAir"</span>)
+<span class='fu'><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl</a></span>(<span class='st'>"http://smoke.mazamascience.com/data/PurpleAir/v1"</span>)
 <span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='fu'>pas_load</span>()
 <span class='no'>pas</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='pas_filter.html'>pas_filter</a></span>(<span class='no'>stateCode</span> <span class='kw'>==</span> <span class='st'>"CA"</span>) <span class='kw'>%&gt;%</span>

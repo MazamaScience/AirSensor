@@ -18,7 +18,7 @@ and presence of core metadata columns:
 \itemize{
   \item{ID -- Purple Air ID}
   \item{label -- location label}
-  \item{sensorType -- Purple Air sensor type}
+  \item{sensorType -- PurpleAir sensor type}
   \item{longitude -- decimal degrees E}
   \item{latitude -- decimal degrees N}
   \item{timezone -- Olson timezone}

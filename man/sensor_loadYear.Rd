@@ -2,7 +2,7 @@
 % Please edit documentation in R/sensor_loadYear.R
 \name{sensor_loadYear}
 \alias{sensor_loadYear}
-\title{Load hourly-aggregated Purple Air data for a month}
+\title{Load hourly-aggregated PurpleAir data for a month}
 \usage{
 sensor_loadYear(
   collection = "scaqmd",
@@ -33,7 +33,7 @@ The \code{datestamp} can must be in the following format:
 By default, the current month is loaded.
 
 Each \code{airsensor} object contains data from a named collection of 
-Purple Air sensors.
+PurpleAir sensors.
 }
 \examples{
 \donttest{

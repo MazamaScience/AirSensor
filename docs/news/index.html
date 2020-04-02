@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.18</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
       </span>
     </div>
 
@@ -97,34 +97,31 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
+      <a href="../articles/articles/AirSensorOverview.html">AirSensor Function Overview</a>
     </li>
     <li>
-      <a href="../articles/SoH_functions.html">SoH Functions</a>
+      <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
     </li>
     <li>
-      <a href="../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
+      <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
     </li>
     <li>
-      <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
+      <a href="../articles/articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
+    </li>
+    <li>
+      <a href="../articles/articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
+    </li>
+    <li>
+      <a href="../articles/articles/purpleair_qc.html">Purple Air Quality Control</a>
+    </li>
+    <li>
+      <a href="../articles/articles/purpleair_sensors.html">Purple Air Sensors</a>
+    </li>
+    <li>
+      <a href="../articles/articles/working_with_wind_data.html">Working With Wind Data</a>
     </li>
     <li>
       <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
-    </li>
-    <li>
-      <a href="../articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
-    </li>
-    <li>
-      <a href="../articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
-    </li>
-    <li>
-      <a href="../articles/purpleair_qc.html">Purple Air Quality Control</a>
-    </li>
-    <li>
-      <a href="../articles/purpleair_sensors.html">Purple Air Sensors</a>
-    </li>
-    <li>
-      <a href="../articles/working_with_wind_data.html">Working With Wind Data</a>
     </li>
   </ul>
 </li>
@@ -156,11 +153,53 @@
       <small>Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="airsensor-0-5-18" class="section level1">
+    <div id="airsensor-0-6-2" class="section level1">
 <h1 class="page-header">
-<a href="#airsensor-0-5-18" class="anchor"></a>AirSensor 0.5.18</h1>
+<a href="#airsensor-0-6-2" class="anchor"></a>AirSensor 0.6.2</h1>
 <ul>
-<li>Improved timezone handling and labeling in <code><a href="../reference/pat_multiplot.html">pat_multiplot()</a></code> and <code><a href="../reference/pat_monitorComparison.html">pat_monitorComparison()</a></code>.</li>
+<li>Documentation corrections.</li>
+<li>Recreated all <code>exaple_pat~</code> data files with so they have the new metadata fields: <code>sensorID</code>, <code>locationID</code> and <code>deviceDeploymentID</code>.</li>
+</ul>
+</div>
+    <div id="airsensor-0-6-1" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-6-1" class="anchor"></a>AirSensor 0.6.1</h1>
+<p>Revisited everything at the <code>pas</code> object level:</p>
+<ul>
+<li>Error message harmonization.</li>
+<li>Updated package data files.</li>
+<li>Updated documentation.</li>
+<li>Updated tests.</li>
+<li>Renamed <code>pas_sensorDeploymentID()</code> to <code><a href="../reference/pas_deviceDeploymentID.html">pas_deviceDeploymentID()</a></code>
+</li>
+</ul>
+</div>
+    <div id="airsensor-0-6-0" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-6-0" class="anchor"></a>AirSensor 0.6.0</h1>
+<p>Version 0.6 is a backwards <em>in</em>compatible release. It replaces <code>label</code> identifier with a proper “sensor-deployment” identifier and relies on the <em>MazamaLocationUtils</em> package to create location identifiers. Becuase of this change, archives must be regenerated and many functions must be refactored.</p>
+<p>New fields in <code>pat$meta</code> include:</p>
+<ul>
+<li>
+<code>sensorID</code> – same as <code>ID</code> but more explicit</li>
+<li>
+<code>locationID</code> – generated with <code><a href="https://rdrr.io/pkg/MazamaLocationUtils/man/location_createID.html">MazamaLocationUtils::location_createID()</a></code>
+</li>
+<li>
+<code>sensorDeploymentID</code> – combination of the above</li>
+</ul>
+<p>The following functions were added/refactored to use “sensor-deployment” identifiers:</p>
+<ul>
+<li>
+<code>pas_sensorDeploymentID()</code> creates a unique “sensor-deployment” identifier. This identifier is used in creation of file names in the archive database and as the unique time series identifer in <em>airsensor</em> objects.</li>
+<li>
+<code><a href="../reference/pas_getColumn.html">pas_getColumn()</a></code>, <code>past_getLabels()</code>, <code><a href="../reference/pas_getIDs.html">pas_getIDs()</a></code>
+</li>
+<li><code><a href="../reference/pat_createNew.html">pat_createNew()</a></code></li>
+<li>
+<code><a href="../reference/pat_load.html">pat_load()</a></code>, <code><a href="../reference/pat_loadLatest.html">pat_loadLatest()</a></code>, <code><a href="../reference/pat_loadMonth.html">pat_loadMonth()</a></code>
+</li>
+<li><code><a href="../reference/pat_createAirSensor.html">pat_createAirSensor()</a></code></li>
 </ul>
 </div>
     <div id="airsensor-0-5-17" class="section level1">
@@ -951,7 +990,9 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#airsensor-0-5-18">0.5.18</a></li>
+        <li><a href="#airsensor-0-6-2">0.6.2</a></li>
+        <li><a href="#airsensor-0-6-1">0.6.1</a></li>
+        <li><a href="#airsensor-0-6-0">0.6.0</a></li>
         <li><a href="#airsensor-0-5-17">0.5.17</a></li>
         <li><a href="#airsensor-0-5-16">0.5.16</a></li>
         <li><a href="#airsensor-0-5-15">0.5.15</a></li>

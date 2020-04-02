@@ -13,7 +13,7 @@ pat_isEmpty(pat)
 \code{TRUE} if no data exist in \code{pat}, \code{FALSE} otherwise.
 }
 \description{
-Convenience function for \code{nrow(pat$meta) == 0}.
+Convenience function for \code{nrow(pat$data) == 0}.
 This makes for more readable code in functions that need to test for this.
 }
 \examples{

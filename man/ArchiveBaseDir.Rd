@@ -6,7 +6,7 @@
 \title{Base directory for pre-generated data}
 \format{Directory string.}
 \description{
-If an archive of pre-generated data files is availalbe locally,
+If an archive of pre-generated data files is available locally,
 users can set the location of this directory with\code{setArchiveBaseDir()}.
 Otherwise, users must specify an external source of pre-generated datafiles 
 with \code{setArchiveBaseUrl()}.

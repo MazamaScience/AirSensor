@@ -10,7 +10,7 @@
 #' @param weeks Number of weeks to include in the filterDate interval.
 #' @param timezone Olson timezone used to interpret dates.
 #' 
-#' @description Subsets a Purple Air Timeseries object by date. 
+#' @description Subsets a PurpleAir Timeseries object by date. 
 #' 
 #' Dates can be anything that is understood by \code{lubrdiate::ymd()}
 #' including either of the following recommended formats:
@@ -29,10 +29,13 @@
 #' @return A subset of the given \emph{pat} object.
 #' 
 #' @examples
-#' \donttest{
-#' august <- pat_filterDate(example_pat, startdate = 20180801, enddate = 20180901)
-#' pat_multiplot(pat = august)
-#' }
+#' library(AirSensor)
+#' 
+#' august08_15 <- pat_filterDate(example_pat, 
+#'                               startdate = 20180808, 
+#'                               enddate = 20180815)
+#' pat_multiplot(pat = august08_15)
+#'
 
 pat_filterDate <- function(
   pat = NULL, 
@@ -101,8 +104,8 @@ pat_filterDate <- function(
   
   data <- 
     pat$data %>%
-    filter(.data$datetime >= dateRange[1]) %>%
-    filter(.data$datetime < dateRange[2])
+    dplyr::filter(.data$datetime >= dateRange[1]) %>%
+    dplyr::filter(.data$datetime < dateRange[2])
   
   pat$data <- data
   

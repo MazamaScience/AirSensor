@@ -29,9 +29,10 @@ Both \code{minPctReporting} and \code{breaks} are passed to
 }
 \examples{
 library(AirSensor)
-
+# warnings are generated due to special characters in y-axis label
+suppressWarnings(
 pat_dailySoHIndexPlot(example_pat_failure_A)
-
+)
 }
 \seealso{
 \link{pat_dailySoHIndex_00}

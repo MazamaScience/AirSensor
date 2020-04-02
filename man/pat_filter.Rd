@@ -23,10 +23,11 @@ evaluates to TRUE are kept.Rows where the condition evaluates to \code{NA}
 are dropped.
 }
 \examples{
-\dontrun{
+
+library(AirSensor)
 unhealthy <- pat_filter(example_pat, pm25_A > 55.5, pm25_B > 55.5)
-head(unhealthy)
-}
+head(unhealthy$data)
+
 }
 \seealso{
 \link{pat_filterDate}

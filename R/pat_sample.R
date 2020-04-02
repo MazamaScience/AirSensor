@@ -39,10 +39,10 @@
 #' }
 #' 
 #' @examples 
-#' \dontrun{
-#' pat <- pat_load("SCNP_20", 20190411, 20190521)
+#' 
+#' pat <- example_pat
 #' subset <- pat_sample(pat, sampleSize=1000, setSeed=1)
-#' }
+#' 
 #' 
 
 pat_sample <- function(
@@ -202,7 +202,7 @@ pat_sample <- function(
     dplyr::distinct() %>% 
     dplyr::arrange(.data$datetime)
   
-  # ----- Create the Purple Air Timeseries (pat) object ------------------------
+  # ----- Create the PurpleAir Timeseries (pat) object ------------------------
   
   # Combine meta and data dataframes into a list
   pat <- list(meta = pat$meta, data = data)

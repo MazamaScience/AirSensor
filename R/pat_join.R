@@ -14,21 +14,20 @@
 #' non-identical metadata.
 #' 
 #' @examples 
-#' \dontrun{
 #' pat <- example_pat
 #' 
-#' jul01_15 <- 
+#' aug01_08 <- 
 #'   pat %>%
-#'   pat_filterDate(20180701, 20180715)
+#'   pat_filterDate(20180801, 20180808)
 #' 
-#' aug09_22 <- 
+#' aug15_22 <- 
 #'   pat %>% 
-#'   pat_filterDate(20180809, 20180822)
+#'   pat_filterDate(20180815, 20180822)
 #'   
-#' x <- pat_join(jul01_15, aug09_22)
+#' x <- pat_join(aug01_08, aug15_22)
 #' 
 #' pat_multiplot(x, plottype = "pm25")
-#' }
+#' 
 #' 
 
 pat_join <- function(
@@ -95,7 +94,7 @@ pat_join <- function(
   meta <- patList[[1]]$meta
   data <- do.call(rbind, dataList) # duplicates removed below
   
-  # ----- Create the Purple Air Timeseries (pat) object ------------------------
+  # ----- Create the PurpleAir Timeseries (pat) object ------------------------
   
   pat <- list(meta = meta, data = data)
   class(pat) <- c("pa_timeseries", class(pat))

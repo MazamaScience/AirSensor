@@ -1,7 +1,116 @@
+# AirSensor 0.6.13
+
+* Proper timezone handling in `pat_multiplot()` and `pat_monitorComparison()`
+
+# AirSensor 0.6.12
+
+* Separated calculation of SoHIndex into `PurpleAirSoH_dailyToIndex()`
+
+# AirSensor 0.6.11
+
+* Fixed bug in `pat_isEmpty()` so that it test for an empty `data` dataframe
+rather than an empty `meta` dataframe.
+* `pat_trimDate()` now preserves the first day if it begins at local midnight.
+
+# AirSensor 0.6.10
+
+* Improved error message in `downloadParseTimeseriesData()`.
+
+# AirSensor 0.6.9
+
+* Archive directory structure was changed so that monthly pat files are found
+in a monthly directiory underneath `pat/YYYY/`. The `pat_loadMonth()` function
+was modified to search in this locaiton.
+* `pat$meta$pm25_A/B` values now come from the raw data _outdoor_ value
+` PM2.5 (ATM)` rather than the _indoor_ value `PM2.5 (CF=1)`. See
+https://www2.purpleair.com/community/faq#!hc-what-is-the-difference-between-cf-1-and-cf-atm
+* Added more logging to `downloadParseTimeseriesData()`.
+
+# AirSensor 0.6.8
+
+* Changed default value to `countryCodes = NULL` in `pas_createNew()` and
+`enhanceSynopticData()` so that it is easier to create _pas_ objects for other
+countries.
+* Removed `countryCode` and `stateCode` arguments from `pas_get~` functions.
+Filter should be done with `pas_filter()` before these functions are called.
+
+# AirSensor 0.6.7
+
+* Fixed bug in `enhanceSynopticData()` which failed to add `pwfsl~` columns when
+`includePWFSL = FALSE`. (The columns should still exist but with all NA.)
+* All `pas_get~()` functions now support subsetting by `countryCode` and US
+`stateCode`.
+
+# AirSensor 0.6.6
+
+* Added `days` argument to `pat_loadLatest()`.
+* `pat_load()` and `sensor_load()` default to the last 7 days when no dates
+are provided.
+* New `pat_trimDate()` function trims data to local time full days.
+* `pas_isPas()` no longer requires presence of optional `pwfsl_~` columns.
+
+# AirSensor 0.6.5
+
+* Reordered arguments in `pas_filterNear()` to package standard
+`longitude, latitude`.
+
+# AirSensor 0.6.4
+
+* Refactored _pas_ objects to include: `deviceID`, `locationID`, 
+`deviceDeploymentID`.
+* Refactored `pat_createNew() and `pat_load~()` functions so that the first `id` 
+argument is used as the `deviceDeploymentID` unique time series identifier.
+* The second and third arguments are now `label` and `pas` and provide an 
+alternative to specifying `id`.
+* Recreated example data with the new functions.
+
+# AirSensor 0.6.3
+
+* Improved examples.
+
+# AirSensor 0.6.2
+
+* Documentation corrections.
+* Recreated all `exaple_pat~` data files with so they have the new metadata
+fields: `sensorID`, `locationID` and `deviceDeploymentID`.
+
+# AirSensor 0.6.1
+
+Revisited everything at the `pas` object level:
+
+* Error message harmonization.
+* Updated package data files.
+* Updated documentation.
+* Updated tests.
+* Renamed `pas_sensorDeploymentID()` to `pas_deviceDeploymentID()`
+
+# AirSensor 0.6.0
+
+Version 0.6 is a backwards *in*compatible release. It replaces `label` identifier
+with a proper "sensor-deployment" identifier and relies on the
+*MazamaLocationUtils* package to create location identifiers. Becuase of this
+change, archives must be regenerated and many functions must be refactored.
+
+New fields in `pat$meta` include:
+
+* `sensorID` -- same as `ID` but more explicit
+* `locationID` -- generated with `MazamaLocationUtils::location_createID()`
+* `sensorDeploymentID` -- combination of the above
+
+The following functions were added/refactored to use "sensor-deployment"
+identifiers:
+
+* `pas_sensorDeploymentID()` creates a unique "sensor-deployment"
+identifier. This identifier is used in creation of file names in the archive
+database and as the unique time series identifer in _airsensor_ objects.
+* `pas_getColumn()`, `past_getLabels()`, `pas_getIDs()`
+* `pat_createNew()`
+* `pat_load()`, `pat_loadLatest()`, `pat_loadMonth()`
+* `pat_createAirSensor()` 
+
 # AirSensor 0.5.18
 
-* Improved timezone handling and labeling in `pat_multiplot()` and 
-`pat_monitorComparison()`. 
+* Linted for timezones - fixed in Mutliplot and monitor comparison. 
 
 # AirSensor 0.5.17
 

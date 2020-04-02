@@ -1,16 +1,17 @@
 #' @export
-#' @importFrom MazamaCoreUtils logger.error
+#' @importFrom MazamaCoreUtils logger.error logger.debug
 #' 
-#' @title Download synoptic data from Purple Air
+#' @title Download synoptic data from PurpleAir
 #' 
 #' @param baseUrl base URL for synoptic data
 #' @return Dataframe of synoptic PurpleAir data.
 #' @description Download and parse synoptic data from the Purple Air network
-#' of particulate monitors.
+#' of particulate sensors.
 #'
 #' The synoptic data provides a view of the entire Purple Air network and
-#' includes both metadata and recent PM2.5 averages for each deployed monitor.
-#' @references \href{https://www.purpleair.com/json}{json formatted Purple Air data}
+#' includes both metadata and recent PM2.5 averages for each deployed sensor.
+#' 
+#' @references \href{https://www.purpleair.com/json}{json formatted PurpleAir data}
 #' @seealso \link{enhanceSynopticData}
 #' @examples
 #' \dontrun{
@@ -20,13 +21,17 @@
 #' }
 
 downloadParseSynopticData <- function(
-  baseUrl = 'https://www.purpleair.com/json'
+  baseUrl = "https://www.purpleair.com/json"
 ) {
 
+  # ----- Validate parameters --------------------------------------------------
+  
+  MazamaCoreUtils::stopIfNull(baseUrl)
+  
   # ----- Download raw data ----------------------------------------------------
   
-  # Strip off any final '/'
-  baseUrl <- stringr::str_replace(baseUrl,'/$','')
+  # Strip off any final "/"
+  baseUrl <- stringr::str_replace(baseUrl,"/$","")
 
   # Placeholder in case things get more complicated
   webserviceUrl <- baseUrl
@@ -41,26 +46,27 @@ downloadParseSynopticData <- function(
 
   if ( httr::http_error(r) ) {  # web service failed to respond
     
-    # TODO:  Find a package with  web servivce status codes
+    # TODO:  Find a package with web servivce status codes
     
     # https://digitalocean.com/community/tutorials/how-to-troubleshoot-common-http-error-codes
     if ( httr::status_code(r) == 429 ) {
-      err_msg <- paste0("web service error 429: Too Many Requests from ",
-                        webserviceUrl)
+      err_msg <- paste0("web service error 429 from ", webserviceUrl, 
+                        ": Too Many Requests")
     } else if ( httr::status_code(r) == 500 ) {
-      err_msg <- paste0("web service error 500: Internal Server Error from ",
-                        webserviceUrl)
+      err_msg <- paste0("web service error 500 from ", webserviceUrl, 
+                        ": Internal Server Error")
     } else if ( httr::status_code(r) == 502 ) {
-      err_msg <- paste0("web service error 502: Bad Gateway from ", 
-                        webserviceUrl)
+      err_msg <- paste0("web service error 502", webserviceUrl, 
+                        ": Bad Gateway")
     } else if ( httr::status_code(r) == 503 ) {
-      err_msg <- paste0("web service error 503: Service Unavailable from ", 
-                        webserviceUrl)
+      err_msg <- paste0("web service error 503", webserviceUrl, 
+                        ": Service Unavailable")
     } else if ( httr::status_code(r) == 504 ) {
-      err_msg <- paste0("web service error 504: Gateway Timeout from ", 
+      err_msg <- paste0("web service error 504 from ", webserviceUrl, 
+                        ": Gateway Timeout from ", 
                         webserviceUrl)
     } else {
-      err_msg <- paste0('web service error ', httr::status_code(r), " from ", 
+      err_msg <- paste0("web service error ", httr::status_code(r), " from ", 
                         webserviceUrl)
     }
     
@@ -72,16 +78,18 @@ downloadParseSynopticData <- function(
   
   # Convert JSON to an R list
   PAList <- jsonlite::fromJSON(content,
-                               simplifyVector=TRUE,
-                               simplifyDataFrame=TRUE,
-                               simplifyMatrix=TRUE,
-                               flatten=FALSE)
+                               simplifyVector = TRUE,
+                               simplifyDataFrame = TRUE,
+                               simplifyMatrix = TRUE,
+                               flatten = FALSE)
 
   # > names(PAList)
   # [1] "mapVersion"       "baseVersion"      "mapVersionString" "results"
 
-  # TODO:  Opportunity to check versions
-
+  logger.debug("mapVersion = \"%s\"", PAList$mapVersion)
+  logger.debug("baseVersion = \"%s\"", PAList$baseVersion)
+  logger.debug("mapVersionString = \"%s\"", PAList$mapVersionString)
+  
   # Pull out the dataframe of results
   resultsDF <- PAList$results
 
@@ -105,10 +113,10 @@ downloadParseSynopticData <- function(
   )
 
   emptyStatsJSON <- jsonlite::toJSON(emptyStatsList, 
-                                     auto_unbox=TRUE, 
-                                     null='null', 
-                                     na='null', 
-                                     pretty=FALSE)
+                                     auto_unbox = TRUE, 
+                                     null = "null", 
+                                     na = "null", 
+                                     pretty = FALSE)
 
   # Add empty JSON string where needed
   missingStatsMask <- is.na(resultsDF$Stats)
@@ -119,7 +127,7 @@ downloadParseSynopticData <- function(
 
   statsList <- lapply(resultsDF$Stats, function(x) { jsonlite::fromJSON(x) } )
 
-  # NOTE:  At this point we have a statsList where every element is a list
+  # NOTE:  At this point we have a statsList where every element is a list.
   # NOTE:  Some Stats are missing 'pm', 'lastModified' and 'timeSinceModified'
   # NOTE:  but bind_rows() will take care of this by filling in those columns
   # NOTE:  with NA.
@@ -134,16 +142,16 @@ downloadParseSynopticData <- function(
 
   # Now create a new dataframe using the important columns from results and stats
 
-  # > names(resultsDF)
-  # [1] "ID"                               "ParentID"                         "Label"
-  # [4] "DEVICE_LOCATIONTYPE"              "THINGSPEAK_PRIMARY_ID"            "THINGSPEAK_PRIMARY_ID_READ_KEY"
-  # [7] "THINGSPEAK_SECONDARY_ID"          "THINGSPEAK_SECONDARY_ID_READ_KEY" "Lat"
-  # [10] "Lon"                              "PM2_5Value"                       "LastSeen"
-  # [13] "State"                            "Type"                             "Hidden"
-  # [16] "Flag"                             "isOwner"                          "A_H"
-  # [19] "temp_f"                           "humidity"                         "pressure"
-  # [22] "AGE"                              "Stats"
-
+  # > sort(names(resultsDF))
+  # [1] "A_H"                              "AGE"                              "DEVICE_LOCATIONTYPE"             
+  # [4] "Flag"                             "Hidden"                           "humidity"                        
+  # [7] "ID"                               "isOwner"                          "Label"                           
+  # [10] "LastSeen"                         "Lat"                              "Lon"                             
+  # [13] "Ozone1"                           "ParentID"                         "PM2_5Value"                      
+  # [16] "pressure"                         "Stats"                            "temp_f"                          
+  # [19] "THINGSPEAK_PRIMARY_ID"            "THINGSPEAK_PRIMARY_ID_READ_KEY"   "THINGSPEAK_SECONDARY_ID"         
+  # [22] "THINGSPEAK_SECONDARY_ID_READ_KEY" "Type"                             "Voc"                             
+  
   # > names(statsTbl)
   # [1] "v"                 "v1"                "v2"                "v3"                "v4"
   # [6] "v5"                "v6"                "pm"                "lastModified"      "timeSinceModified"

@@ -4,8 +4,9 @@
 #' @title Load PurpleAir time series data for a time period
 #' 
 #' @description A pre-generated PurpleAir Timeseries \emph{pat} object will be 
-#' loaded for the given time interval. Archived data for SCAQMD sensors go back 
-#' to January, 2018.
+#' loaded for the given time interval if available. Data are 
+#' loaded from the archive set with either \code{setArchiveBaseUrl()} or 
+#' \code{setArchiveBaseDir()} for locally archived files.
 #' 
 #' Dates can be anything that is understood by 
 #' \code{lubrdiate::parse_date_time()} including either of the following 
@@ -16,12 +17,25 @@
 #' \item{\code{"YYYY-mm-dd"}}
 #' }
 #' 
-#' By default, the current week is loaded.
-#'
+#' @note Starting with \pkg{AirSensor} version 0.6, archive file names are 
+#' generated with a unique "device-deployment" identifier by combining a unique 
+#' location ID with a unique device ID. These "device-deployment" identifiers 
+#' guarantee that movement of a sensor will result in the creation of a new
+#' time series.
+#' 
+#' Users may request a \emph{pat} object in one of two ways:
+#' 
+#' 1) Pass in \code{id} with a valid a \code{deviceDeploymentID}
+#' 
+#' 2) Pass in both \code{label} and \code{pas} so that the 
+#' \code{deviceDeploymentID} can be looked up.
+#' 
+#' @param id PurpleAir sensor 'deviceDeploymentID'.
 #' @param label PurpleAir sensor 'label'.
+#' @param pas PurpleAir Synoptic \emph{pas} object.
 #' @param startdate Desired start time (ISO 8601).
 #' @param enddate Desired end time (ISO 8601).
-#' @param days Number of days of data to include.
+#' @param days Number of days of data to include (7 or 45).
 #' @param timezone Timezone used to interpret start and end dates.
 #' 
 #' @return A PurpleAir Timeseries \emph{pat} object.
@@ -32,13 +46,15 @@
 #' 
 #' @examples
 #' \donttest{
-#' setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+#' setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
 #' pat <- pat_load("SCNP_20", 20190411, 20190521)
 #' pat_multiplot(pat)
 #' }
 
 pat_load <- function(
-  label = NULL, 
+  id = NULL,
+  label = NULL,
+  pas = NULL,
   startdate = NULL, 
   enddate = NULL, 
   days = 7, 
@@ -47,16 +63,42 @@ pat_load <- function(
   
   # ----- Validate parameters --------------------------------------------------
   
-  MazamaCoreUtils::stopIfNull(label)
+  MazamaCoreUtils::stopIfNull(timezone)
   
+  # Get the deviceDeploymentID
+  if ( is.null(id) && is.null(label) ) {
+    
+    stop(paste0("label or id must be provided"))
+    
+  } else if ( is.null(id) && !is.null(label) ) {
+    
+    if ( is.null(pas) )
+      stop(paste0("pas must be provided when loading by label"))
+    
+    if ( !label %in% pas$label )
+      stop(sprintf("label '%s' is not found in the 'pas' object", label))
+    
+    # Get the deviceDeploymentID from the label
+    deviceDeploymentID <- pas_getDeviceDeploymentIDs(pas, pattern = label)
+    
+    if ( length(deviceDeploymentID) > 1 )
+      stop(sprintf("label '%s' matches more than one sensor", label))
+    
+  } else {
+    
+    deviceDeploymentID <- id
+    
+  }
+  
+  # Quick return if no dates provided
+  if ( is.null(startdate) && is.null(enddate) ) 
+    return( pat_loadLatest(deviceDeploymentID) )
+  
+  # Get the date range
   dateRange <- MazamaCoreUtils::dateRange(startdate, 
                                           enddate, 
                                           timezone, 
                                           days = days)
-  
-  # Quick return if no dates provided
-  if ( is.null(startdate) && is.null(enddate) ) 
-    return( pat_loadLatest(label) )
   
   # ----- Asssemble monthly archive files --------------------------------------
   
@@ -88,7 +130,7 @@ pat_load <- function(
       
       patList[[datestamp]] <- 
         pat_loadMonth(
-          label = label, 
+          id = deviceDeploymentID,
           datestamp = datestamp, 
           timezone = timezone
         )

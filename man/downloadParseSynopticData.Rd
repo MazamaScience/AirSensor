@@ -2,7 +2,7 @@
 % Please edit documentation in R/downloadParseSynopticData.R
 \name{downloadParseSynopticData}
 \alias{downloadParseSynopticData}
-\title{Download synoptic data from Purple Air}
+\title{Download synoptic data from PurpleAir}
 \usage{
 downloadParseSynopticData(baseUrl = "https://www.purpleair.com/json")
 }
@@ -14,10 +14,10 @@ Dataframe of synoptic PurpleAir data.
 }
 \description{
 Download and parse synoptic data from the Purple Air network
-of particulate monitors.
+of particulate sensors.
 
 The synoptic data provides a view of the entire Purple Air network and
-includes both metadata and recent PM2.5 averages for each deployed monitor.
+includes both metadata and recent PM2.5 averages for each deployed sensor.
 }
 \examples{
 \dontrun{
@@ -27,7 +27,7 @@ View(pas_raw[1:100,])
 }
 }
 \references{
-\href{https://www.purpleair.com/json}{json formatted Purple Air data}
+\href{https://www.purpleair.com/json}{json formatted PurpleAir data}
 }
 \seealso{
 \link{enhanceSynopticData}

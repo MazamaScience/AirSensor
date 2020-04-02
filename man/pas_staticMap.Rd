@@ -81,12 +81,9 @@ Additional map tile info found at:
 \url{http://maps.stamen.com/}
 }
 \examples{
-\donttest{
-setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 LA_basin <- 
-  pas_load() \%>\% 
+  example_pas \%>\% 
   pas_filterArea(-118.5, -117.5, 33.5, 34.5)
 pas_staticMap(LA_basin, palette = "AQI", zoomAdjust = 1)
-}
 }
 \keyword{pa_synoptic}

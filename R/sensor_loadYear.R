@@ -2,7 +2,7 @@
 #' @importFrom rlang .data
 #' @importFrom MazamaCoreUtils logger.isInitialized
 #' 
-#' @title Load hourly-aggregated Purple Air data for a month
+#' @title Load hourly-aggregated PurpleAir data for a month
 #' 
 #' @description A pre-generated \code{airsensor} object will be loaded for
 #' the given month. Archived data for SCAQMD sensors go back to January, 2018.
@@ -16,7 +16,7 @@
 #' By default, the current month is loaded.
 #'
 #' Each \code{airsensor} object contains data from a named collection of 
-#' Purple Air sensors.
+#' PurpleAir sensors.
 #' 
 #' @param collection Name associated with the collection.
 #' @param datestamp A date string in ymd order.

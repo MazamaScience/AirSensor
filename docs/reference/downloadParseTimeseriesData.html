@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Download Purple Air timeseries data — downloadParseTimeseriesData • AirSensor</title>
+<title>Download PurpleAir timeseries data — downloadParseTimeseriesData • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,9 @@
 
 
 
-<meta property="og:title" content="Download Purple Air timeseries data — downloadParseTimeseriesData" />
-<meta property="og:description" content="Timeseries data from a specific PurpleAir can be retrieved from the Thingspeak API ." />
+<meta property="og:title" content="Download PurpleAir timeseries data — downloadParseTimeseriesData" />
+<meta property="og:description" content="Downloads timeseries data for a specific PurpleAir sensor 
+from the ThingSpeak API and parses the content into a dataframe." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -76,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.18</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.9</span>
       </span>
     </div>
 
@@ -102,31 +103,28 @@
       <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
     </li>
     <li>
-      <a href="../articles/SoH_functions.html">SoH Functions</a>
+      <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
     </li>
     <li>
-      <a href="../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
+      <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
     </li>
     <li>
-      <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
+      <a href="../articles/articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
     </li>
     <li>
-      <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
+      <a href="../articles/articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
     </li>
     <li>
-      <a href="../articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
+      <a href="../articles/articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
     </li>
     <li>
-      <a href="../articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
+      <a href="../articles/articles/purpleair_qc.html">Purple Air Quality Control</a>
     </li>
     <li>
-      <a href="../articles/purpleair_qc.html">Purple Air Quality Control</a>
+      <a href="../articles/articles/purpleair_sensors.html">Purple Air Sensors</a>
     </li>
     <li>
-      <a href="../articles/purpleair_sensors.html">Purple Air Sensors</a>
-    </li>
-    <li>
-      <a href="../articles/working_with_wind_data.html">Working With Wind Data</a>
+      <a href="../articles/articles/working_with_wind_data.html">Working With Wind Data</a>
     </li>
   </ul>
 </li>
@@ -154,19 +152,20 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Download Purple Air timeseries data</h1>
+    <h1>Download PurpleAir timeseries data</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/downloadParseTimeseriesData.R'><code>R/downloadParseTimeseriesData.R</code></a></small>
     <div class="hidden name"><code>downloadParseTimeseriesData.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Timeseries data from a specific PurpleAir can be retrieved from the Thingspeak API .</p>
+    <p>Downloads timeseries data for a specific PurpleAir sensor 
+from the ThingSpeak API and parses the content into a dataframe.</p>
     </div>
 
     <pre class="usage"><span class='fu'>downloadParseTimeseriesData</span>(
-  <span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -177,24 +176,24 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pas</th>
-      <td><p>Purple Air 'enhanced' synoptic data</p></td>
+      <th>id</th>
+      <td><p>PurpleAir sensor 'deviceDeploymentID'.</p></td>
     </tr>
     <tr>
       <th>label</th>
-      <td><p>Purple Air 'label'</p></td>
+      <td><p>PurpleAir sensor 'label'.</p></td>
     </tr>
     <tr>
-      <th>id</th>
-      <td><p>Purple Air 'ID'</p></td>
+      <th>pas</th>
+      <td><p>PurpleAir Synoptic <em>pas</em> object.</p></td>
     </tr>
     <tr>
       <th>startdate</th>
-      <td><p>Desired UTC start time (ISO 8601)</p></td>
+      <td><p>Desired start time (ISO 8601).</p></td>
     </tr>
     <tr>
       <th>enddate</th>
-      <td><p>Desired UTC end time (ISO 8601)</p></td>
+      <td><p>Desired end time (ISO 8601).</p></td>
     </tr>
     <tr>
       <th>timezone</th>
@@ -202,13 +201,17 @@
     </tr>
     <tr>
       <th>baseURL</th>
-      <td><p>Base URL for Thingspeak API</p></td>
+      <td><p>Base URL for Thingspeak API.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The monitor time series given broken up into metadata and readings data</p>
+    <p>List of type <code>pa_timeseries</code> containing <code>meta</code> and 
+<code>data</code> elements with timeseries metadata and data, respectively.</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>https://www2.purpleair.com/community/faq</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -216,6 +219,7 @@
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#references">References</a></li>
     </ul>
 
   </div>

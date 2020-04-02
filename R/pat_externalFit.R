@@ -35,9 +35,9 @@
 #' PWFSL monitor readings.
 #' 
 #' @examples
+#' 
 #' \donttest{
-#' setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
-#' pat <- pat_load("SCAH_22")
+#' pat <- example_pat
 #' pat_externalFit(pat)
 #' }
 

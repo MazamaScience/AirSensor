@@ -19,9 +19,10 @@
 #' 
 #' @examples
 #' library(AirSensor)
-#' 
+#' # warnings are generated due to special characters in y-axis label
+#' suppressWarnings(
 #' pat_dailySoHIndexPlot(example_pat_failure_A)
-#' 
+#' )
 
 pat_dailySoHIndexPlot <- function(
   pat = NULL,

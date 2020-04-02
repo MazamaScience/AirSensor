@@ -5,13 +5,13 @@ test_that("baseUrl input validation works", {
   expect_error(pas_createNew(baseUrl = "https://www.purpleair.com/DUMMY"))
 })
 
-test_that("loads correct class", {
-  skip_on_cran()
-  skip_on_travis()
-  setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
-  expect_true(pas_isPas(pas_load()))
-  # expect_true(pas_isPas(pas_createNew()))
-})
+# test_that("loads correct class", {
+#   skip_on_cran()
+#   skip_on_travis()
+#   setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+#   expect_true(pas_isPas(pas_load()))
+#   # expect_true(pas_isPas(pas_createNew()))
+# })
 
 test_that("bad datestamps are rejected", {
   futureStamp <- 
