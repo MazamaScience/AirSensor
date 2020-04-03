@@ -1,3 +1,8 @@
+# AirSensor 0.6.14
+
+* PAS function documentation typo fixes
+
+
 # AirSensor 0.6.13
 
 * Proper timezone handling in `pat_multiplot()` and `pat_monitorComparison()`
