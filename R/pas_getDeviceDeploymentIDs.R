@@ -9,7 +9,7 @@
 #' @param isParent Logical, is the sensor a parent station?
 #' 
 #' @description The incoming \code{pas} object is first filtered based on the 
-#' values of \code{stateCodes}, \code{patter}, \code{isOutside} and \code{isParent}.
+#' values of \code{stateCodes}, \code{pattern}, \code{isOutside} and \code{isParent}.
 #' The values associated with the \code{"deviceDeploymentID"} column are then 
 #' returned.
 #' 
