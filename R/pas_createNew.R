@@ -73,7 +73,7 @@ pas_createNew <- function(
     
   }
   
-  # Gaurantee includePWFSL is a logial value
+  # Gaurantee includePWFSL is a logical value
   if ( !is.logical(includePWFSL) )
     stop("parameter 'includePWFSL' must be a logical value")
   

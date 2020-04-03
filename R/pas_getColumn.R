@@ -7,7 +7,7 @@
 #' @param name Name of the column to return.
 #' @param pattern Text pattern used to filter station labels.
 #' @param isOutside Logical, is the sensor located outside?
-#' @param isParent Logigal, is the sensor a parent station?
+#' @param isParent Logical, is the sensor a parent station?
 #' 
 #' @description The incoming \code{pas} object is first filtered based on the 
 #' values of \code{states}, \code{pattern}, \code{isOutside} and \code{isParent}.
