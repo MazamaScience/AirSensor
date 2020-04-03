@@ -72,12 +72,17 @@ pas_staticMap <- function(
   
   # ----- Validate parameters --------------------------------------------------
   
-  parameter <- tolower(parameter)
-  
   MazamaCoreUtils::stopIfNull(pas)
+  MazamaCoreUtils::stopIfNull(parameter)
+  
+  parameter <- tolower(parameter)
   
   if ( pas_isEmpty(pas) ) {
     stop("Required parameter 'pas' is empty.")
+  }
+  
+  if ( !pas_isPas(pas) ) {
+    stop("Required parameter 'pas' is not a valid 'pa_synoptic' object.")
   }
   
   # ----- Color scale ----------------------------------------------------------
