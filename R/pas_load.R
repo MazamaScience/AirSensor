@@ -21,14 +21,14 @@
 #' \item{\code{"YYYY-mm-dd"}}
 #' }
 #' 
-#' By default, today's date is used.
+#' By default, the host computer's date is used.
 #' 
 #' The \emph{pas} object for a specific hour may be loaded by specifying 
 #' \code{datestamp = "YYYYmmddHH"}.
 #'
-#' @param datestamp Local date string in ymd order.
+#' @param datestamp Local date string in valid YYYY-mm-dd format. See description. 
 #' @param retries Max number of days to go back and try to load if requested 
-#'   date cannot be retrieved.
+#' date cannot be retrieved.
 #' @param timezone Timezone used to interpret \code{datestamp}.
 #' @param archival Logical specifying whether a version should be loaded that
 #' includes sensors that have stopped reporting.
@@ -77,16 +77,19 @@ pas_load <- function(
     stop("Parameter 'datestamp' must bee in 'YYYYmmdd' format.")
   }
   
-  if ( datestamp <= "20190404" ) 
-    stop("No 'pas' data available prior to April 5, 2019.")
+  if ( datestamp <= "20190404" ) {
+    # NOTE: The inequality operator coerces a string into numeric
+    stop("No 'pas' data available prior to April 5, 2019.") 
+  }
   
   # Allow datestamp to be one day past today to handle timezone differences
   tomorrowStamp <- 
     { lubridate::now(tzone = timezone) + lubridate::ddays(1) } %>%
     strftime("%Y%m%d", tz = timezone)
   
-  if ( datestamp > tomorrowStamp )
+  if ( datestamp > tomorrowStamp ) {
     stop("No data available for future dates.")
+  }
   
   # ----- Load data from URL or directory --------------------------------------
   
