@@ -103,7 +103,7 @@ pat_loadLatest <- function(
   # Get data from URL or directory
   result <- try({
     suppressWarnings({ 
-      pat <- loadDataFile(filename, dataUrl, dataDir)
+      pat <- MazamaCoreUtils::loadDataFile(filename, dataUrl, dataDir)
     })
   }, silent = TRUE)
   

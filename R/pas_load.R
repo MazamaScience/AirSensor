@@ -134,7 +134,7 @@ pas_load <- function(
     # Get data from URL or directory
     result <- try({
       suppressWarnings({ 
-        pas <- loadDataFile(filename, dataUrl, dataDir) 
+        pas <- MazamaCoreUtils::loadDataFile(filename, dataUrl, dataDir) 
       })
     }, silent = TRUE)
     

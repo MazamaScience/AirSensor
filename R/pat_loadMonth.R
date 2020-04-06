@@ -125,7 +125,7 @@ pat_loadMonth <- function(
   
   # Get data from URL or directory
   result <- try({
-    suppressWarnings( pat <- loadDataFile(filename, dataUrl, dataDir) )
+    suppressWarnings( pat <- MazamaCoreUtils::loadDataFile(filename, dataUrl, dataDir) )
   }, silent = TRUE)
   
   # NOTE:  We used suppressWarnings() above so that we can have a more
