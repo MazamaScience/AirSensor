@@ -12,7 +12,7 @@ pas_load(
 )
 }
 \arguments{
-\item{datestamp}{Local date string in ymd order.}
+\item{datestamp}{Local date string in valid YYYY-mm-dd format. See description.}
 
 \item{retries}{Max number of days to go back and try to load if requested 
 date cannot be retrieved.}
@@ -42,7 +42,7 @@ A pre-generated \emph{pa_synoptic} object will be loaded for
 \item{\code{"YYYY-mm-dd"}}
 }
 
-By default, today's date is used.
+By default, the host computer's date is used.
 
 The \emph{pas} object for a specific hour may be loaded by specifying 
 \code{datestamp = "YYYYmmddHH"}.

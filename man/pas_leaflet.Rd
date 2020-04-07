@@ -55,7 +55,7 @@ values from one of:
 \item{"pm25_1week"}
 }
 
-Auxillary \code{parameter} arguments can be used to display various Purple Air 
+Auxiliary \code{parameter} arguments can be used to display various Purple Air 
 sensor data. Currently supported \code{parameter} arguments include:
 \itemize{
 \item{"humidity"}

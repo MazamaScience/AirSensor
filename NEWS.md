@@ -1,6 +1,7 @@
 # AirSensor 0.6.14
 
-* PAS function documentation typo fixes
+* PAS function documentation typo fixes.
+* Added "Developer Style Guide" article.
 
 # AirSensor 0.6.13
 
