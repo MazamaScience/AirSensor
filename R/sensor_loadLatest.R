@@ -60,7 +60,7 @@ sensor_loadLatest <- function(
   # Get data from URL or directory
   result <- try({
     suppressWarnings({
-      sensor <- loadDataFile(filename, dataUrl, dataDir) 
+      sensor <- MazamaCoreUtils::loadDataFile(filename, dataUrl, dataDir) 
     })
   }, silent = TRUE)
   

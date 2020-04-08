@@ -79,7 +79,7 @@ sensor_loadMonth <- function(
   # Get data from URL or directory
   result <- try({
     suppressWarnings({ 
-      airsensor <- loadDataFile(filename, dataUrl, dataDir) 
+      airsensor <- MazamaCoreUtils::loadDataFile(filename, dataUrl, dataDir) 
     })
   }, silent = TRUE)
   

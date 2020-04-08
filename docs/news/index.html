@@ -168,6 +168,8 @@
 <ul>
 <li>PAS function documentation typo fixes.</li>
 <li>Added “Developer Style Guide” article.</li>
+<li>Updated to use <code>MazamaCoreUtils::loadDatafile()</code> function .</li>
+<li>Added more unit testing for <code>pas_~()</code> functions.</li>
 </ul>
 </div>
     <div id="airsensor-0-6-13" class="section level1">
@@ -383,7 +385,7 @@
 <a href="#airsensor-0-5-10" class="anchor"></a>AirSensor 0.5.10</h1>
 <p>Removed <code>logger.error()</code> statements from the following low-level functions as they couldn’t be turned off and ended up cluttering the log files:</p>
 <ul>
-<li><code><a href="../reference/loadDataFile.html">loadDataFile()</a></code></li>
+<li><code>loadDataFile()</code></li>
 <li><code><a href="../reference/pas_load.html">pas_load()</a></code></li>
 <li><code><a href="../reference/pat_createNew.html">pat_createNew()</a></code></li>
 <li><code><a href="../reference/pat_loadLatest.html">pat_loadLatest()</a></code></li>
@@ -473,8 +475,8 @@
 <h1 class="page-header">
 <a href="#airsensor-0-5-1" class="anchor"></a>AirSensor 0.5.1</h1>
 <ul>
-<li>Upudated data loding to allow for loading data from a local archive. New functions include: <code><a href="../reference/loadDataFile.html">loadDataFile()</a></code>, <code><a href="../reference/getArchiveBaseDir.html">getArchiveBaseDir()</a></code>, <code><a href="../reference/setArchiveBaseDir.html">setArchiveBaseDir()</a></code>.</li>
-<li>All <code>~_load()</code> and <code>~_loadLatest()</code> functions now call <code><a href="../reference/loadDataFile.html">loadDataFile()</a></code>
+<li>Upudated data loding to allow for loading data from a local archive. New functions include: <code>loadDataFile()</code>, <code><a href="../reference/getArchiveBaseDir.html">getArchiveBaseDir()</a></code>, <code><a href="../reference/setArchiveBaseDir.html">setArchiveBaseDir()</a></code>.</li>
+<li>All <code>~_load()</code> and <code>~_loadLatest()</code> functions now call <code>loadDataFile()</code>
 </li>
 <li>
 <code><a href="../reference/pat_load.html">pat_load()</a></code> now continues working in the face of missing data files. under the hood and will work with data archives found at <code>archiveBaseDir</code>.</li>
