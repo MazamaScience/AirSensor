@@ -21,7 +21,7 @@ pas_getColumn(
 
 \item{isOutside}{Logical, is the sensor located outside?}
 
-\item{isParent}{Logigal, is the sensor a parent station?}
+\item{isParent}{Logical, is the sensor a parent station?}
 }
 \value{
 Vector of values.

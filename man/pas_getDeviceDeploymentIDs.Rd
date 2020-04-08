@@ -18,14 +18,14 @@ pas_getDeviceDeploymentIDs(
 
 \item{isOutside}{Logical, is the sensor located outside?}
 
-\item{isParent}{Logigal, is the sensor a parent station?}
+\item{isParent}{Logical, is the sensor a parent station?}
 }
 \value{
 Vector of values.
 }
 \description{
 The incoming \code{pas} object is first filtered based on the 
-values of \code{stateCodes}, \code{patter}, \code{isOutside} and \code{isParent}.
+values of \code{stateCodes}, \code{pattern}, \code{isOutside} and \code{isParent}.
 The values associated with the \code{"deviceDeploymentID"} column are then 
 returned.
 

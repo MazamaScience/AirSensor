@@ -76,7 +76,7 @@ sensor_loadYear <- function(
   
   # Get data from URL or directory
   result <- try({
-    suppressWarnings( airsensor <- loadDataFile(filename, dataUrl, dataDir) )
+    suppressWarnings( airsensor <- MazamaCoreUtils::loadDataFile(filename, dataUrl, dataDir) )
   }, silent = TRUE)
   
   # NOTE:  We used suppressWarnings() above so that we can have a more
