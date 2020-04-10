@@ -1,16 +1,16 @@
 ---
-title: "An Introduction to PurpleAir TimeSeries Data"
+title: "PurpleAir TimeSeries Data"
 author: "Mazama Science"
 date: "2019-04-19"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{An Introduction to PurpleAir TimeSeries Data}
+  %\VignetteIndexEntry{PurpleAir TimeSeries Data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE, message=FALSE}
-knitr::opts_chunk$set(fig.width=7, fig.height=5)
+knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
 library(MazamaCoreUtils)
 library(AirSensor)
 library(dplyr)

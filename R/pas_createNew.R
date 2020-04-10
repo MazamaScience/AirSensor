@@ -58,20 +58,17 @@ pas_createNew <- function(
   
   # ----- Validate parameters --------------------------------------------------
 
+  MazamaCoreUtils::stopIfNull(countryCodes)
   MazamaCoreUtils::stopIfNull(includePWFSL)
   MazamaCoreUtils::stopIfNull(lookbackDays)
   MazamaCoreUtils::stopIfNull(baseUrl)
   
-  if ( !is.null(countryCodes) ) {
-    
-    # Guarantee uppercase codes
-    countryCodes <- toupper(countryCodes)
-    
-    # Validate countryCodes
-    if ( any(!(countryCodes %in% countrycode::codelist$iso2c)) ) 
-      stop("parameter 'countryCodes' has values that are not recognized as ISO-2 country codes")
-    
-  }
+  # Guarantee uppercase codes
+  countryCodes <- toupper(countryCodes)
+  
+  # Validate countryCodes
+  if ( any(!(countryCodes %in% countrycode::codelist$iso2c)) ) 
+    stop("parameter 'countryCodes' has values that are not recognized as ISO-2 country codes")
   
   # Gaurantee includePWFSL is a logical value
   if ( !is.logical(includePWFSL) )
@@ -112,7 +109,7 @@ pas_createNew <- function(
 if ( FALSE ) {
   
   baseUrl <- 'https://www.purpleair.com/json'
-  countryCodes <- c('US')
+  countryCodes <- NULL
   includePWFSL <- TRUE
   lookbackDays <- 1
   

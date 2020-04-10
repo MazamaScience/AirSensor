@@ -1,75 +1,120 @@
 ---
-title: "An Introduction to PurpleAir Synoptic Data"
+title: "PurpleAir Synoptic Data"
 author: "Mazama Science"
-date: "2020-04-08"
+date: "2020-04-10"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{An Introduction to PurpleAir Synoptic Data}
+  %\VignetteIndexEntry{PurpleAir Synoptic Data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE, message=FALSE}
-
-
 library(AirSensor)
 library(dplyr)
 library(ggplot2)
 
-knitr::opts_chunk$set(fig.width=7, fig.height=5)
+knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
 
 # NOTE: Use example PAS data for vignettes to avoid long wait-times
 data("example_pas")
 pas <- example_pas
 ```
 
-_Synoptic data_ provides a synopsis - a comprehensive and nearly instantaneous 
-picture of the state of the atmosphere. This vignette demonstrates an example 
-workflow for exploring air quality synoptic data using the AirSensor 
+_Synoptic data_ provides a synopsis - a comprehensive view of something at a
+moment in time. This vignette demonstrates an example 
+workflow for exploring air quality synoptic data using the **AirSensor**
 R package and data captured by [PurpleAir](https://www.purpleair.com/) air 
 quality sensors.
 
-### Loading PurpleAir Data
-PurpleAir sensor readings are uploaded to the cloud every 80-120 seconds 
-where they are stored for download and displayed on the PurpleAir website. In 
-order to capture and download the latest synoptic dataset, begin by importing 
-the required Mazama Science packages, setting the location of pre-generated
-archive files and loading the most recent PurpleAir Synoptic ("`pas`") data.   
+## Creating Current Synoptic Data (slow)
 
-```{r, eval=FALSE}
-library(AirSensor)
-library(dplyr)
+PurpleAir sensor readings are uploaded to the cloud every 120 seconds.
+(Every 80 seconds prior to a May 31, 2019 firmware upgrade.)
+Data are processed by PurpleAir and a version of the data is displayed on the 
+PurpleAir website. 
 
-setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
+You can generate a current PurpleAir Synoptic (PAS) object (hereafter called
+a `pas`) by using the `pas_createNew()` function. A `pas` object is just a large
+dataframe with `r ncol(pas)` data columns and a record for each
+PurupleAir sensor channel (2 channels per sensor).
 
-pas <- pas_load()
-```
-
-The `pas_load()` function is a wrapper function that will: 
+The `pas_createNew()` function perfoms the following tasks under the hood: 
 
 1. Download a raw dataset of the entire PurpleAir network that includes both 
 metadata and recent PM2.5 averages for each deployed sensor across the globe. 
 See `downloadParseSynopticData()` for more info.
 
-2. Enhance the raw dataset by replacing variables with more consistent and 
-human readable names, adds spatial metadata for each sensor, and lists the 
+2. Subset and nhance the raw dataset by replacing variables with more consistent
+and human readable names; adding spatial metadata for each sensor including the 
 nearest official air quality monitor. For a more in depth explanation, see 
 `enhanceSynopticData()`.
 
-### PurpleAir Synoptic Data
+To create a new `pas` object you must first properly initialize the 
+**MazamaSpatialUtils** package. The following example will create a brand new 
+`pas` object with up-to-the-minute data:
+
+_**NOTE: This can take up to a minute to process.**_
+
+```{r pas_createNew, eval = FALSE}
+library(AirSensor)
+
+# Initialize spatial data processing 
+library(MazamaSpatialUtils)
+initializeMazamaSpatialUtils()
+
+# Create a 'pas' object with current data
+pas <- pas_createNew(countryCodes = "US")
+```
+
+## Loading Pre-generatted Synoptic Data (fast)
+
+It is also possible to load pre-generated `pas` objects from a data archive.
+These objects are updated regularly throughout each day and are typically used 
+by other package functions primarily for the location metadata they contain. 
+Archived `pas` objects from previous days will thus have data associated with 
+near midnight of that date.
+
+The archived `pas` objects can be loaded very quickly with the `pas_load()` 
+function which obtains `pas` objects from the archive specified with
+`setArchvieBaseUrl()`. When used without specifying the `datestamp` argument,
+`pas_load()` will obtain the most recently processed `pas` object -- typically
+less than an hour old.
+
+```{r user_setup, eval = FALSE}
+# Load packages
+library(AirSensor)
+library(dplyr)
+library(ggplot2)
+
+# Set location of pre-generated data files
+setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
+
+# Load the most recent archived 'pas' object
+pas <- pas_load()
+```
+
+## PAS Data Structure
+
 The `pas` dataset contains 45 columns, and each row corresponds to different 
-PurpleAir sensors. For the scope of this example we will focus on the columns
+PurpleAir sensors. For the data anlysis examples we will focus on the columns
 labeled `stateCode`, `pm25_*`, `humidity`, `pressure`, `temperature`, and 
 `pwfsl_closestDistance`. 
 
-The `pm25_*` column is short-hand for all the columns containing PM2.5 data. 
-The extended names are fairly obvious; the `pm25_current` column contains data for 
-the most recent air data, `pm25_10min` contains a 10-minute average of PM2.5 
-data, and so on. 
+The complete list of columns is given below. Names in `ALL_CAPS` have been
+retained from the PurpleAir .json file. Other columns have been renamed for
+human readability.
+
+```{r pas_names, echo = FALSE}
+names(pas)
+```
+
+Let's take a quick peek at some of the PM2.5 data:
 
 ```{r}
 pas %>% 
   select(starts_with("pm25_")) %>% 
+  round(2) %>%
   head(5) %>% 
   knitr::kable()
 ``` 
@@ -119,9 +164,14 @@ pas %>%
 
 ### Exploring PurpleAir data
 
-Because the `pas` object is a dataframe, we can use functionality from various other R packages. For example, `pas` can conform to "tidyverse" syntax so we can use **dplyr**, **ggplot2**, and **sf** to help transform, summarize, and visualize `pas` data in a _tidy_ way.
+Because the `pas` object is a dataframe, we can use functionality from various 
+other R packages. For example, `pas` can conform to "tidyverse" syntax so we can 
+use **dplyr**, **ggplot2**, and **sf** to help transform, summarize, and 
+visualize `pas` data in a _tidy_ way.
 
-Below, we demonstrate the flexibility of **AirSensor**'s `pas` data objects and a few examples of exploratory data analysis pipelines, focusing on the state of Califronia and their PurpleAir sensor data. 
+Below, we demonstrate the flexibility of **AirSensor**'s `pas` data objects and 
+a few examples of exploratory data analysis pipelines, focusing on the state of 
+Califronia and their PurpleAir sensor data. 
 
 ```{r init_explore, message=FALSE, warning=FALSE}
 # Load the extra libraries
@@ -148,7 +198,10 @@ ca_pas <-
 
 #### Region Mointor Count
 
-Using our California county feature data, we can count the number of PurpleAir sensors that exist in the each region feature. This is an important metric to determine statistical confidence we might have - i.e. the more sensors a region contains the more confidence we can have in our data aggregations.  
+Using our California county feature data, we can count the number of PurpleAir 
+sensors that exist in the each region feature. This is an important metric to 
+determine statistical confidence we might have - i.e. the more sensors a region 
+contains the more confidence we can have in our data aggregations.  
 
 ```{r n_sensors, message=FALSE, warning=FALSE}
 # count the number of PurpleAir sensors in each County polygon feature
@@ -170,7 +223,9 @@ n_sensors %>%
 
 #### Chloropleth
 
-Alternatively, we can visualize the amount of PurpleAir sensors per county using **ggplot2**, as a chloropleth map, where each county is filled with a color representing the number of PurpleAir sensors it contains. 
+Alternatively, we can visualize the amount of PurpleAir sensors per county using 
+**ggplot2**, as a chloropleth map, where each county is filled with a color 
+representing the number of PurpleAir sensors it contains. 
 
 ```{r n_sensors_chloropleth}
 ggplot(n_sensors) + 
@@ -181,7 +236,9 @@ ggplot(n_sensors) +
 
 #### Barplot
 
-Sometimes a barplot is more useful for visualizing lots of values. Here is an example showing the top 15 counties with the the most PurpleAir sensors that are active.  
+Sometimes a barplot is more useful for visualizing lots of values. Here is an 
+example showing the top 15 counties with the the most PurpleAir sensors that are 
+active.  
 
 ```{r n_sensors_barplot, fig.height=7}
 # sort the counties by the number of PurpleAir sensors and select the top 15
@@ -204,7 +261,10 @@ ggplot(top15_n_sensors) +
 
 #### Region Averaged Sensor Data
 
-Our `pas` object contains not only latest ~2-minute resolution PM2.5 data (`pm25_current`), it also contains other, longer interval averages of PM2.5, e.g. `pm25_1week`, which we can use to calculate region averaged weekly PM2.5 sensor data.  
+Our `pas` object contains not only latest ~2-minute resolution PM2.5 data 
+(`pm25_current`), it also contains other, longer interval averages of PM2.5, 
+e.g. `pm25_1week`, which we can use to calculate region averaged weekly PM2.5 
+sensor data.  
 
 ```{r mean_pm25, warning=FALSE, message=FALSE}
 # NOTE: We join the purple air data to our county data then calculate the mean per county
@@ -224,11 +284,13 @@ mean_pm25 %>%
   knitr::kable()
 ```
 
-It is important to clarify that this data **_does not_** represent a regions air quality distribution and instead is only a summary of the avliable PurpleAir data. 
+It is important to clarify that this data **_does not_** represent a regions air 
+quality distribution and instead is only a summary of the avliable PurpleAir data. 
 
 #### Chloropleth 
 
-In a similar fashion to that illustrated above, we can also create a 1-week PurpleAir averages per county chloropleth map.  
+In a similar fashion to that illustrated above, we can also create a 1-week 
+PurpleAir averages per county chloropleth map.  
 
 ```{r mean_pm25_chloropleth, warning=FALSE, message=FALSE}
 ggplot(mean_pm25) + 
@@ -239,7 +301,8 @@ ggplot(mean_pm25) +
 
 #### Barplot
 
-Just as before, a barplot is sometimes a better choice. Below is an example of plotting the Top 15 1-week PurpleAir county averages.
+Just as before, a barplot is sometimes a better choice. Below is an example of 
+plotting the Top 15 1-week PurpleAir county averages.
 
 ```{r mean_pm25_barplot, fig.height=7, warning=FALSE, message=FALSE}
 # Sort the weekly averages per county and select the top 15

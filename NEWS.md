@@ -1,3 +1,8 @@
+# AirSensor 0.6.15
+
+* Fixed bug in `enhanceSynopticData()` when `countryCodes = NULL`. This was
+encountered when running `pas_createNew()` with `countryCodes = NULL`.
+
 # AirSensor 0.6.14
 
 * PAS function documentation typo fixes.
