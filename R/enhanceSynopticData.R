@@ -70,17 +70,17 @@ enhanceSynopticData <- function(
   
   MazamaCoreUtils::stopIfNull(pas_raw)
 
-  if ( !("data.frame" %in% class(pas_raw)) )
+  if ( !("data.frame" %in% class(pas_raw)) ) {
     stop("parameter 'pas_raw' parameter is not a dataframe")
-  
+  }
   # Guarantee uppercase codes
   countryCodes <- toupper(countryCodes)
-  if ( any(!(countryCodes %in% countrycode::codelist$iso2c)) ) 
+  if ( any(!(countryCodes %in% countrycode::codelist$iso2c)) ) {
     stop("parameter 'countryCodes' has values that are not recognized as ISO-2 country codes")
-  
-  if ( !is.logical(includePWFSL) )
+  }
+  if ( !is.logical(includePWFSL) ) {
     stop("parameter 'includePWFSL' is not a logical value")
-  
+  }
   # ----- Discard unwanted columns ---------------------------------------------
   
   # Prior to 2019-09-05, a "State" column existed
@@ -189,9 +189,9 @@ enhanceSynopticData <- function(
     }
   }
   
-  if ( logger.isInitialized() )
+  if ( logger.isInitialized() ) {
     logger.trace("Adding spatial metadata")
-  
+  }
   # Assign countryCodes
   result <- try({
     pas$countryCode <- MazamaSpatialUtils::getCountryCode(pas$longitude,
@@ -214,9 +214,9 @@ enhanceSynopticData <- function(
   suppressWarnings({
     
     #  Subset to countries of interest
-    if ( !is.null(countryCodes) )
+    if ( !is.null(countryCodes) ) {
       pas <- subset(pas, pas$countryCode %in% countryCodes)
-    
+    }
     # Assign stateCodes
     pas$stateCode <- MazamaSpatialUtils::getStateCode(pas$longitude,
                                                       pas$latitude,
@@ -315,12 +315,12 @@ enhanceSynopticData <- function(
   
   if ( includePWFSL ) {
     
-    if ( logger.isInitialized() )
+    if ( logger.isInitialized() ) {
       logger.trace("Adding PWFSL monitor metadata")
-    
-    if ( !exists('pwfsl') )
+    }
+    if ( !exists('pwfsl') ) {
       pwfsl <- PWFSLSmoke::loadLatest()
-    
+    }
     for ( i in seq_len(nrow(pas)) ) {
       distances <- PWFSLSmoke::monitor_distance(pwfsl,
                                                 pas$longitude[i],
