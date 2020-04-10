@@ -87,12 +87,12 @@ pas_leaflet <- function(
   
   MazamaCoreUtils::stopIfNull(pas)
   
-  if ( !pas_isPas(pas) )
+  if ( !pas_isPas(pas) ) {
     stop("Required parameter 'pas' is not a valid 'pa_synoptic' object.")
-  
-  if ( pas_isEmpty(pas) )
+  }
+  if ( pas_isEmpty(pas) ) {
     stop("Required parameter 'pas' has no data.") 
-  
+  }
   if ( !(parameter %in% c('pm25_current', 
                           'pm25_10min', 
                           'pm25_30min', 
@@ -103,15 +103,15 @@ pas_leaflet <- function(
                           'humidity',
                           'pressure', 
                           'temperature', 
-                          'pwfsl_closestDistance')) ) 
+                          'pwfsl_closestDistance')) ) {
     stop("Required parameter 'parameter' is invalid.")
-  
-  if ( !is.logical(outsideOnly) )
+  }
+  if ( !is.logical(outsideOnly) ) {
     stop(paste0('outsideOnly parameter should be TRUE/FALSE'))
-  
-  if ( !is.numeric(radius) )
+  }
+  if ( !is.numeric(radius) ) {
     stop(paste0('radius parameter is non-numeric'))
-  
+  }
   
   # ----- outsideOnly subsetting -----------------------------------------------
   
