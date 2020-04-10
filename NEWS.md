@@ -1,9 +1,9 @@
 # AirSensor 0.6.14
 
-* PAS function documentation typo fixes
-* Updated to MazamaCoreUtils `loadDatafile` function 
-* Added more unit testing
-
+* PAS function documentation typo fixes.
+* Added "Developer Style Guide" article.
+* Updated to use `MazamaCoreUtils::loadDatafile()` function .
+* Added more unit testing for `pas_~()` functions.
 
 # AirSensor 0.6.13
 
