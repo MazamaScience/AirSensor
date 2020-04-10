@@ -173,6 +173,7 @@ getArchiveBaseUrl <- function() {
 #' Known base URLs include:
 #' \itemize{
 #' \item{http://smoke.mazamascience.com/data/PurpleAir}
+#' \item{https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1}
 #' }
 #' 
 #' @return Silently returns previous value of base URL.
