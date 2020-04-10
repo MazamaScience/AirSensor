@@ -44,11 +44,29 @@ pas_isPas <- function(
   if ( !"pa_synoptic" %in% class(pas) ) return(FALSE)
   
   parameters <- c(
-    "ID", "label", "sensorType",
-    "longitude", "latitude", 
-    "timezone", "countryCode", "stateCode",
-    "pm25_1hr", "pm25_1day", "temperature", "humidity", "pressure",
-    "deviceID", "locationID", "deviceDeploymentID"
+    "ID",                               "label",                            
+    "DEVICE_LOCATIONTYPE",              "THINGSPEAK_PRIMARY_ID",           
+    "THINGSPEAK_PRIMARY_ID_READ_KEY",   "THINGSPEAK_SECONDARY_ID",          
+    "THINGSPEAK_SECONDARY_ID_READ_KEY", "latitude",                        
+    "longitude",                        "pm25",                             
+    "lastSeenDate",                     "sensorType",                      
+    "flag_hidden",                      "isOwner",                          
+    "humidity",                         "temperature",                     
+    "pressure",                         "age",                              
+    "parentID",                         "flag_highValue",                  
+    "flag_attenuation_hardware",        "Voc",                              
+    "Ozone1",                           "pm25_current",                   
+    "pm25_10min",                       "pm25_30min",                       
+    "pm25_1hr",                         "pm25_6hr",                        
+    "pm25_1day",                        "pm25_1week",                       
+    "statsLastModifiedDate",            "statsLastModifiedInterval",       
+    "deviceID",                         "locationID",                       
+    "deviceDeploymentID",               "countryCode",                     
+    "stateCode",                        "timezone",                         
+    "airDistrict",                      "pwfsl_closestDistance",           
+    "pwfsl_closestMonitorID",           "sensorManufacturer",               
+    "targetPollutant",                  "technologyType",                  
+    "communityRegion"
   )
   
   if ( !all(parameters %in% names(pas)) ) return(FALSE)

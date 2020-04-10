@@ -69,12 +69,15 @@ enhanceSynopticData <- function(
   # ----- Validate Parameters --------------------------------------------------
   
   MazamaCoreUtils::stopIfNull(pas_raw)
-
+  MazamaCoreUtils::stopIfNull(countryCodes)
+  
   if ( !("data.frame" %in% class(pas_raw)) )
     stop("parameter 'pas_raw' parameter is not a dataframe")
   
   # Guarantee uppercase codes
   countryCodes <- toupper(countryCodes)
+  
+  # Validate countryCodes
   if ( any(!(countryCodes %in% countrycode::codelist$iso2c)) ) 
     stop("parameter 'countryCodes' has values that are not recognized as ISO-2 country codes")
   
@@ -192,6 +195,11 @@ enhanceSynopticData <- function(
   if ( logger.isInitialized() )
     logger.trace("Adding spatial metadata")
   
+  # TODO:  Could optimize spatial data assignment by only calculating spatial
+  # TODO:  data for the A channel and then copying that info to the B channel.
+  # TODO:  This will result in more complex code but would shave a few seconds
+  # TODO:  off of this step if that becomes critical.
+
   # Assign countryCodes
   result <- try({
     pas$countryCode <- MazamaSpatialUtils::getCountryCode(pas$longitude,
@@ -214,8 +222,7 @@ enhanceSynopticData <- function(
   suppressWarnings({
     
     #  Subset to countries of interest
-    if ( !is.null(countryCodes) )
-      pas <- subset(pas, pas$countryCode %in% countryCodes)
+    pas <- subset(pas, pas$countryCode %in% countryCodes)
     
     # Assign stateCodes
     pas$stateCode <- MazamaSpatialUtils::getStateCode(pas$longitude,
