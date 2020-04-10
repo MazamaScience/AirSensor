@@ -128,15 +128,15 @@ pas_upgrade <- function(
 
   # ----- Post-upgrade validation ----------------------------------------------
   
+  # Re-oder columns and remove any that are not valid
+  pas <- pas[,upgradedCols]
+  
   if ( !pas_isPas(pas) ) {
     stop('Error: pa_synoptic object failed to upgrade.')
   }
   if ( pas_isEmpty(pas) ) {
     stop("Required parameter 'pas' has no data.")
   }
-  
-  # Re-oder columns and remove any that are not valid
-  pas <- pas[,upgradedCols]
   
   # ----- Return ---------------------------------------------------------------
   
