@@ -44,27 +44,35 @@
 
 <meta property="og:title" content="Test for correct structure in a <em>pa_synoptic</em> object — pas_isPas" />
 <meta property="og:description" content="The pas is checked for the &quot;pas&quot; class name
-and presence of core metadata columns:
-ID -- Purple Air ID
-label -- location label
-sensorType -- PurpleAir sensor type
-longitude -- decimal degrees E
-latitude -- decimal degrees N
-timezone -- Olson timezone
-countryCode -- ISO 3166-1 alpha-2
-stateCode -- ISO 3166-2 alpha-2
-pm25_1hr -- hourly PM2.5
-pm25_1day -- daily PM2.5
-temperature -- deg F
-humidity -- %
-pressure -- mb
-deviceID -- unique device identifier
-locationID -- unique location identifier
-deviceDeploymentID -- unique time series identifier
+and presence of all metadata columns:
+
+&quot;ID&quot;,                               &quot;label&quot;,
+&quot;DEVICE_LOCATIONTYPE&quot;,              &quot;THINGSPEAK_PRIMARY_ID&quot;,
+&quot;THINGSPEAK_PRIMARY_ID_READ_KEY&quot;,   &quot;THINGSPEAK_SECONDARY_ID&quot;,
+&quot;THINGSPEAK_SECONDARY_ID_READ_KEY&quot;, &quot;latitude&quot;,
+&quot;longitude&quot;,                        &quot;pm25&quot;,
+&quot;lastSeenDate&quot;,                     &quot;sensorType&quot;,
+&quot;flag_hidden&quot;,                      &quot;isOwner&quot;,
+&quot;humidity&quot;,                         &quot;temperature&quot;,
+&quot;pressure&quot;,                         &quot;age&quot;,
+&quot;parentID&quot;,                         &quot;flag_highValue&quot;,
+&quot;flag_attenuation_hardware&quot;,        &quot;Voc&quot;,
+&quot;Ozone1&quot;,                           &quot;pm25_current&quot;,
+&quot;pm25_10min&quot;,                       &quot;pm25_30min&quot;,
+&quot;pm25_1hr&quot;,                         &quot;pm25_6hr&quot;,
+&quot;pm25_1day&quot;,                        &quot;pm25_1week&quot;,
+&quot;statsLastModifiedDate&quot;,            &quot;statsLastModifiedInterval&quot;,
+&quot;deviceID&quot;,                         &quot;locationID&quot;,
+&quot;deviceDeploymentID&quot;,               &quot;countryCode&quot;,
+&quot;stateCode&quot;,                        &quot;timezone&quot;,
+&quot;airDistrict&quot;,                      &quot;pwfsl_closestDistance&quot;,
+&quot;pwfsl_closestMonitorID&quot;,           &quot;sensorManufacturer&quot;,
+&quot;targetPollutant&quot;,                  &quot;technologyType&quot;,
+&quot;communityRegion&quot;
 
 
-The &quot;pwfsl&quot;, official, monitors are obtained from the USFS AirFire site 
-using the PWFSLSmoke R package." />
+The pwfsl_, &quot;official&quot;, monitors are obtained from the USFS AirFire 
+site using the PWFSLSmoke R package." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -97,7 +105,7 @@ using the PWFSLSmoke R package." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.14</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.15</span>
       </span>
     </div>
 
@@ -138,10 +146,10 @@ using the PWFSLSmoke R package." />
       <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
     </li>
     <li>
-      <a href="../articles/articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
+      <a href="../articles/articles/pas_introduction.html">PurpleAir Synoptic Data</a>
     </li>
     <li>
-      <a href="../articles/articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
+      <a href="../articles/articles/pat_introduction.html">PurpleAir TimeSeries Data</a>
     </li>
     <li>
       <a href="../articles/articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
@@ -188,27 +196,35 @@ using the PWFSLSmoke R package." />
 
     <div class="ref-description">
     <p>The <code>pas</code> is checked for the "pas" class name
-and presence of core metadata columns:</p><ul>
-<li><p>ID -- Purple Air ID</p></li>
-<li><p>label -- location label</p></li>
-<li><p>sensorType -- PurpleAir sensor type</p></li>
-<li><p>longitude -- decimal degrees E</p></li>
-<li><p>latitude -- decimal degrees N</p></li>
-<li><p>timezone -- Olson timezone</p></li>
-<li><p>countryCode -- ISO 3166-1 alpha-2</p></li>
-<li><p>stateCode -- ISO 3166-2 alpha-2</p></li>
-<li><p>pm25_1hr -- hourly PM2.5</p></li>
-<li><p>pm25_1day -- daily PM2.5</p></li>
-<li><p>temperature -- deg F</p></li>
-<li><p>humidity -- %</p></li>
-<li><p>pressure -- mb</p></li>
-<li><p>deviceID -- unique device identifier</p></li>
-<li><p>locationID -- unique location identifier</p></li>
-<li><p>deviceDeploymentID -- unique time series identifier</p></li>
-</ul>
+and presence of <strong>all</strong> metadata columns:</p>
+<pre>
+"ID",                               "label",
+"DEVICE_LOCATIONTYPE",              "THINGSPEAK_PRIMARY_ID",
+"THINGSPEAK_PRIMARY_ID_READ_KEY",   "THINGSPEAK_SECONDARY_ID",
+"THINGSPEAK_SECONDARY_ID_READ_KEY", "latitude",
+"longitude",                        "pm25",
+"lastSeenDate",                     "sensorType",
+"flag_hidden",                      "isOwner",
+"humidity",                         "temperature",
+"pressure",                         "age",
+"parentID",                         "flag_highValue",
+"flag_attenuation_hardware",        "Voc",
+"Ozone1",                           "pm25_current",
+"pm25_10min",                       "pm25_30min",
+"pm25_1hr",                         "pm25_6hr",
+"pm25_1day",                        "pm25_1week",
+"statsLastModifiedDate",            "statsLastModifiedInterval",
+"deviceID",                         "locationID",
+"deviceDeploymentID",               "countryCode",
+"stateCode",                        "timezone",
+"airDistrict",                      "pwfsl_closestDistance",
+"pwfsl_closestMonitorID",           "sensorManufacturer",
+"targetPollutant",                  "technologyType",
+"communityRegion"
+</pre>
 
-<p>The "pwfsl", official, monitors are obtained from the USFS AirFire site 
-using the <span class="pkg">PWFSLSmoke</span> R package.</p>
+<p>The <code>pwfsl_</code>, "official", monitors are obtained from the USFS AirFire 
+site using the <span class="pkg">PWFSLSmoke</span> R package.</p>
     </div>
 
     <pre class="usage"><span class='fu'>pas_isPas</span>(<span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>

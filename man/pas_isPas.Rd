@@ -14,28 +14,36 @@ pas_isPas(pas = NULL)
 }
 \description{
 The \code{pas} is checked for the "pas" class name
-and presence of core metadata columns:
-\itemize{
-  \item{ID -- Purple Air ID}
-  \item{label -- location label}
-  \item{sensorType -- PurpleAir sensor type}
-  \item{longitude -- decimal degrees E}
-  \item{latitude -- decimal degrees N}
-  \item{timezone -- Olson timezone}
-  \item{countryCode -- ISO 3166-1 alpha-2}
-  \item{stateCode -- ISO 3166-2 alpha-2}
-  \item{pm25_1hr -- hourly PM2.5}
-  \item{pm25_1day -- daily PM2.5}
-  \item{temperature -- deg F}
-  \item{humidity -- \%}
-  \item{pressure -- mb}
-  \item{deviceID -- unique device identifier}
-  \item{locationID -- unique location identifier}
-  \item{deviceDeploymentID -- unique time series identifier}
+and presence of \strong{all} metadata columns:
+
+\preformatted{
+"ID",                               "label",
+"DEVICE_LOCATIONTYPE",              "THINGSPEAK_PRIMARY_ID",
+"THINGSPEAK_PRIMARY_ID_READ_KEY",   "THINGSPEAK_SECONDARY_ID",
+"THINGSPEAK_SECONDARY_ID_READ_KEY", "latitude",
+"longitude",                        "pm25",
+"lastSeenDate",                     "sensorType",
+"flag_hidden",                      "isOwner",
+"humidity",                         "temperature",
+"pressure",                         "age",
+"parentID",                         "flag_highValue",
+"flag_attenuation_hardware",        "Voc",
+"Ozone1",                           "pm25_current",
+"pm25_10min",                       "pm25_30min",
+"pm25_1hr",                         "pm25_6hr",
+"pm25_1day",                        "pm25_1week",
+"statsLastModifiedDate",            "statsLastModifiedInterval",
+"deviceID",                         "locationID",
+"deviceDeploymentID",               "countryCode",
+"stateCode",                        "timezone",
+"airDistrict",                      "pwfsl_closestDistance",
+"pwfsl_closestMonitorID",           "sensorManufacturer",
+"targetPollutant",                  "technologyType",
+"communityRegion"
 }
 
-The "pwfsl", official, monitors are obtained from the USFS AirFire site 
-using the \pkg{PWFSLSmoke} R package.
+The \code{pwfsl_}, "official", monitors are obtained from the USFS AirFire 
+site using the \pkg{PWFSLSmoke} R package.
 }
 \examples{
 pas_isPas(example_pas)
