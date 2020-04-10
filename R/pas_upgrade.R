@@ -100,7 +100,7 @@ pas_upgrade <- function(
     )
   
   
-  if ( any(!upgradedCols %in% names(pas)) ) {
+  if ( !all(upgradedCols %in% names(pas)) ) {
     # Does not contain all the columns -> upgrade
     
     # define the missing columns from the upgraded columns
@@ -125,11 +125,11 @@ pas_upgrade <- function(
     }
     
   }
-
-  # ----- Post-upgrade validation ----------------------------------------------
   
   # Re-oder columns and remove any that are not valid
   pas <- pas[,upgradedCols]
+
+  # ----- Post-upgrade validation ----------------------------------------------
   
   if ( !pas_isPas(pas) ) {
     stop('Error: pa_synoptic object failed to upgrade.')
