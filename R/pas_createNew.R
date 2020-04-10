@@ -68,30 +68,32 @@ pas_createNew <- function(
     countryCodes <- toupper(countryCodes)
     
     # Validate countryCodes
-    if ( any(!(countryCodes %in% countrycode::codelist$iso2c)) ) 
+    if ( any(!(countryCodes %in% countrycode::codelist$iso2c)) ) {
       stop("parameter 'countryCodes' has values that are not recognized as ISO-2 country codes")
+    }
     
   }
   
   # Gaurantee includePWFSL is a logical value
-  if ( !is.logical(includePWFSL) )
+  if ( !is.logical(includePWFSL) ) {
     stop("parameter 'includePWFSL' must be a logical value")
-  
+  }
   # Guarantee lookbackDays at least 1
-  if ( lookbackDays < 1 )
+  if ( lookbackDays < 1 ) {
     stop("parameter 'lookbackDays' must be >= 1")
-  
+  }
   # ----- Load data ------------------------------------------------------------
   
   # Download, parse and enhance synoptic data
-  if ( logger.isInitialized() )
+  if ( logger.isInitialized() ) {
     logger.debug("----- downloadParseSynopticData() -----")
-    
+  }
   pas_raw <- downloadParseSynopticData(baseUrl)
   
-  if ( logger.isInitialized() )
+  if ( logger.isInitialized() ) {
     logger.debug("----- enhanceSynopticData() -----")
-    
+  }
+  
   pas <- enhanceSynopticData(pas_raw, countryCodes, includePWFSL)
   
   # Filter for age
