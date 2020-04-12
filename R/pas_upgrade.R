@@ -1,13 +1,14 @@
 #' @keywords pas
 #' @export
 #' 
-#' @title Test for correct structure in a \emph{pa_synoptic} object
+#' @title Upgrade \emph{pa_synoptic} object format
 #' 
 #' @param pas A \emph{pa_synoptic} object.
+#' @param verbose (logical) Display upgrade messages.
 #' 
 #' @return \code{TRUE} if \code{pas} has the correct structure, \code{FALSE} otherwise.
 #' 
-#' @description The \code{pas} is checked for the "pas" class name
+#' @description The \code{pas} is checked for the latest pa_synoptic format
 #' and presence of core metadata columns:
 #' \itemize{
 #'   \item{ID -- Purple Air ID}
@@ -58,24 +59,28 @@
 #'   \item{communityRegion -- defined regional community.}
 #' }
 #' 
-#' The "pwfsl", official, monitors are obtained from the USFS AirFire site 
-#' using the \pkg{PWFSLSmoke} R package.
-#' 
 #' @examples
-#' pas_isPas(example_pas)
-#' pas_isPas(1:10)
+#' # Use outdated pa_synoptic database
+#' setArchiveBaseUrl('http://smoke.mazamascience.com/data/PurpleAir/')
+#' pas <- 
+#'   pas_load() %>%
+#'   pas_upgrade() 
 
-pas_isPas <- function(
-  pas = NULL
+pas_upgrade <- function(
+  pas = NULL, 
+  verbose = TRUE
 ) {
   
-  # Test a variety of things that could go wrong
-  if ( is.null(pas) ) return(FALSE)
-  if ( !"pa_synoptic" %in% class(pas) ) return(FALSE)
+  # ----- Validate Parameters --------------------------------------------------
+  
+  MazamaCoreUtils::stopIfNull(pas)
+  MazamaCoreUtils::stopIfNull(verbose)
+  
+  # ----- pa_synoptic Upgrade --------------------------------------------------
   
   # NOTE: Upgraded pa_synoptic data columns generated 2020-04-09
   #       via `AirSensor::pas_createNew()`
-  parameters <- 
+  upgradedCols <- 
     c(
       "ID",                               "label",                            "DEVICE_LOCATIONTYPE",             
       "THINGSPEAK_PRIMARY_ID",            "THINGSPEAK_PRIMARY_ID_READ_KEY",   "THINGSPEAK_SECONDARY_ID",         
@@ -94,40 +99,49 @@ pas_isPas <- function(
       "targetPollutant",                  "technologyType",                   "communityRegion"
     )
   
-  if ( !all(parameters %in% names(pas)) ) {
+  
+  if ( !all(upgradedCols %in% names(pas)) ) {
+    # Does not contain all the columns -> upgrade
     
-    message('Deprecated pa_synoptic format. See `pas_upgrade()` to upgrade the format.')
+    # define the missing columns from the upgraded columns
+    missingCols <- upgradedCols[!upgradedCols %in% names(pas)]
     
-    return(FALSE)
+    # Add new columns
+    for ( i in missingCols ) {
+      pas[[i]] <- NA
+    }
+    
+    # Show user format has upgraded
+    if ( verbose ) {
+      message('pa_synoptic object format upgraded.')
+    }
     
   } else {
-   
-    # Nothing failed so return TRUE
-    return(TRUE)
-     
+    # Does contain all the columns -> skip. 
+    
+    # Show user format does not require upgrade.
+    if ( verbose ) {
+      message('pa_synoptic object does not require upgrade ... Skipping.')
+    }
+    
   }
+  
+  # Re-oder columns and remove any that are not valid
+  pas <- pas[,upgradedCols]
+
+  # ----- Post-upgrade validation ----------------------------------------------
+  
+  if ( !pas_isPas(pas) ) {
+    stop('Error: pa_synoptic object failed to upgrade.')
+  }
+  if ( pas_isEmpty(pas) ) {
+    stop("Required parameter 'pas' has no data.")
+  }
+  
+  # ----- Return ---------------------------------------------------------------
+  
+  return(pas)
   
 }
 
 
-#' @export
-#' 
-#' @title Test for an empty \emph{pa_synoptic} object
-#' 
-#' @param pas A \emph{pa_synoptic} object.
-#' 
-#' @return \code{TRUE} if no data exist in \code{pas}, \code{FALSE} otherwise.
-#' 
-#' @description Convenience function for \code{nrow(pas) == 0}.
-#' This makes for more readable code in functions that need to test for this.
-#' 
-#' @examples
-#' pas <- example_pas
-#' pas_isEmpty(pas)
-#' pas <- pas %>% pas_filter(ID < 0)
-#' pas_isEmpty(pas)
-
-pas_isEmpty <- function(pas) {
-  if (!pas_isPas(pas)) stop("Not a valid 'pas' object.")
-  return( nrow(pas) == 0 )
-}

@@ -1,3 +1,8 @@
+# AirSensor 0.6.16
+
+* New `pas_upgrade()` function to upgrade `pas` files created with 
+**AirSensor** version 0.5.
+
 # AirSensor 0.6.15
 
 * Fixed bug in `enhanceSynopticData()` when `countryCodes = NULL`. This was
@@ -6,6 +11,7 @@ encountered when running `pas_createNew()` with `countryCodes = NULL`.
 # AirSensor 0.6.14
 
 * PAS function documentation typo fixes.
+* Added "Developer Style Guide" article.
 * Updated to use `MazamaCoreUtils::loadDatafile()` function .
 * Added more unit testing for `pas_~()` functions.
 

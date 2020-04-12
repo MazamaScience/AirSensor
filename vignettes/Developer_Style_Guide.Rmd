@@ -1,0 +1,169 @@
+---
+title: "Developer Style Guide"
+author: "Mazama Science"
+date: "2020-04-06"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Developer Style Guide}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# R Style Guide
+
+This document describes the coding style used within the package.  Having a
+consistent style enhances the readability and "understandability" of the code 
+and make it easier for users and developers to work with this package and
+with other, related packages from [Mazama Science](http://mazamascience.com).
+
+## Naming Objects
+
+Naming variables is one of the most important things to get right to make your 
+code readable and understandable to future readers of the code _(perhaps even 
+yourself!)_. Having a system for creating names also makes it easier to come up 
+with new ones.
+
+Mazama Science embraces **`lowerCamelCase`** for object names.
+
+With the casing settled, we use an ornithologist’s sensibility for how to 
+identify things:
+
+* What is it? — a `bird`
+* What kind of bird  is it? — a `blackBird`
+* What kind of blackBird  is it? — a `redwingedBlackBird`
+
+It’s a simple system:  start with a noun and prefix it with descriptors until 
+it is uniquely identified.
+
+In this system we would never have a variable called: `num_hours`. Instead we go 
+through our process:
+
+* What is it? — _(Hmmm. What noun describes this? Ah yes!)_ — a `count`
+* What kind of count  is it? — _(It's not a "head count" or a "body count".)_ 
+It's an `hourCount`.
+
+For complex objects it is often helpful to give readers of the code a hint as to 
+what type of object it is so they will know how to work with it. We often use 
+variable names like:
+
+* `patList`  — a `list` of `pat` objects
+* `SPDF`  — a `SpatialPolygonsDataFrame`
+* `statsTbl`  — a `tibble` of statistical results
+
+We occasionally use ‘_’ to create classes of similar variables that are 
+otherwise hard to name, e.g.:
+
+```
+SoH_sub
+SoH_tbl
+SoH_tidy
+```
+
+## Naming Functions
+
+Most functions should strive to be atomic in nature and should do one thing 
+really well. Think of them as individual _Lego_ bricks that we click together
+to achieve more advanced functionality. Where objects are _**well described nouns**_, 
+functions are _**well described verbs**_ that describe what they do as in:
+
+```
+pas_createNew()
+pas_filter()
+pas_filterArea()
+pas_filterNear()
+pas_getColumn()
+pas_getDeviceDeploymentIDs()
+pas_getIDs()
+...
+```
+
+All of these functions begin with `pas_` because they are for creating or working
+with `pas` objects. Many of these functions accept a `pas` object as their first 
+argument and return a modified `pas`. This means that they can be used with the
+"pipe" operator and chained together as in:
+
+```
+Nipomo_labels <-
+  pas_load() %>%
+  pas_filterNear(
+    longitude = -120.476,
+    latitude = 35.043,
+    radius = "10 km"
+  ) %>%
+  pas_getLabels()
+```  
+
+Sometimes functions are named after the object they return. The initial 
+`create` in these function names is understood. This is especially true with 
+plotting functions. Examples include:
+
+```
+pat_dygraph()
+pat_leaflet()
+pat_multiplot()
+pat_scatterplot()
+```
+
+## Naming Files
+
+Each file should contain a single function of the same name. Thus, the function 
+named `createAPIList()` is defined in `createAPIList.R`. An exception is made
+for small, mostly internal functions used in conjuction with a particular type
+of object or activity. These can be stored together in a file named `utils-~`:
+
+```
+utils-outliers.R
+utils-paSynoptic.R
+utils-paTimeseries.R
+utils-pipe.R
+utils-plot.R
+utils-sampling.R
+utils-sensor.R
+```
+
+## Syntax
+
+We generally adhere to the [Wickham Style Guide](http://adv-r.had.co.nz/Style.html) 
+for syntax with a few exceptions:
+
+### Spacing
+
+**Do** place spaces around code in parentheses if it is an `if` test:
+
+```
+if ( <logical expression part1> && <logical expression part2> ) {
+  ...
+}
+```
+
+When debugging, this makes it much easier to select the logical test with a 
+cursor and paste it into the RStudio console.
+
+### Lists
+
+We generally like to specify R lists with each `parameter = value` pair on a 
+separate line. This goes for regular lists and for named argument lists passed 
+to a function:
+
+```
+diamond_bar <-
+  pas_load() %>%
+  pas_filterNear(
+    longitude = -117.820833,
+    latitude = 34.001667, 
+    radius = "20 km"
+  )
+```
+
+Coding this way makes it easy to see which function arguments are being passed.
+It also eases future refactoring of the code when additional arguments need to
+be added or the order of arguments need to be changed.
+
+-----
+
+It is our belief that good code should be both readable and understandable and
+should inspire others to copy and innovate on their own.
+
+**_Mazama Science_**
+
+

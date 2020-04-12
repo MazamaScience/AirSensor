@@ -57,7 +57,7 @@ The datestamp can be anything that is understood by
 &quot;YYYY-mm-dd&quot;
 
 
-By default, today's date is used.
+By default, the host computer's date is used.
 The pas object for a specific hour may be loaded by specifying 
 datestamp = &quot;YYYYmmddHH&quot;." />
 <meta name="twitter:card" content="summary" />
@@ -92,7 +92,7 @@ datestamp = &quot;YYYYmmddHH&quot;." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.13</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.14</span>
       </span>
     </div>
 
@@ -115,7 +115,10 @@ datestamp = &quot;YYYYmmddHH&quot;." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
+      <a href="../articles/AirSensor_Function_Overview.html">AirSensor Function Overview</a>
+    </li>
+    <li>
+      <a href="../articles/Developer_Style_Guide.html">Developer Style Guide</a>
     </li>
     <li>
       <a href="../articles/articles/Australia_on_fire.html">Australia on Fire</a>
@@ -193,7 +196,7 @@ datestamp = &quot;YYYYmmddHH&quot;." />
 <li><p><code>"YYYY-mm-dd"</code></p></li>
 </ul>
 
-<p>By default, today's date is used.</p>
+<p>By default, the host computer's date is used.</p>
 <p>The <em>pas</em> object for a specific hour may be loaded by specifying 
 <code>datestamp = "YYYYmmddHH"</code>.</p>
     </div>
@@ -210,7 +213,7 @@ datestamp = &quot;YYYYmmddHH&quot;." />
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>datestamp</th>
-      <td><p>Local date string in ymd order.</p></td>
+      <td><p>Local date string in valid YYYY-mm-dd format. See description.</p></td>
     </tr>
     <tr>
       <th>retries</th>
