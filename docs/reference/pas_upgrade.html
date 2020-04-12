@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot flagged outliers — .plotOutliers • AirSensor</title>
+<title>Upgrade <em>pa_synoptic</em> object format — pas_upgrade • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,57 @@
 
 
 
-<meta property="og:title" content="Plot flagged outliers — .plotOutliers" />
-<meta property="og:description" content="An internal capability to quickly plot outlier data." />
+<meta property="og:title" content="Upgrade <em>pa_synoptic</em> object format — pas_upgrade" />
+<meta property="og:description" content="The pas is checked for the latest pa_synoptic format
+and presence of core metadata columns:
+ID -- Purple Air ID
+label -- location label
+DEVICE_LOCATIONTYPE -- location descriptor
+THINGSPEAK_PRIMARY_ID -- Thingspeak API access ID
+THINGSPEAK_PRIMARY_ID_READ_KEY -- Thingspeak API access key
+THINGSPEAK_SECONDARY_ID -- Thingspeak API access ID
+THINGSPEAK_SECONDARY_ID_READ_KEY -- Thingspeak API access key
+longitude -- decimal degrees E
+latitude -- decimal degrees N
+pm25 -- latest PM25
+lasteSeenDate -- last update datetime
+sensorType -- PurpleAir sensor type
+flag_hidden -- hidden flag
+isOwner -- owner logical
+humidity -- %
+temperature -- deg F
+pressure -- mb
+age -- sensor age
+parentID -- device parent ID
+timezone -- Olson timezone
+flag_highValue -- out of spec flag
+flag_attenutation_hardware -- hardware failure flag
+Ozone1 -- latest ozone data
+Voc -- latest voc data
+pm25_current -- current PM2.5 data
+pm25_10min -- 10-minute average PM2.5 data
+pm25_30min -- 30-minute average PM2.5 data
+pm25_1hr -- 1-hour average PM2.5 data
+pm25_6hr -- 6-hour average PM2.5 data
+pm25_1day -- 1-day PM2.5 average data
+pm25_1week -- 1-week PM2.5 average data
+statsLastModifiedDate -- last modified date
+statsLastModifiedInterval -- interval between modified date
+deviceID -- unique device identifier
+locationID -- generated location ID
+deviveDeploymentID -- generated unique ID
+countryCode -- ISO 3166-1 alpha-2
+stateCode -- ISO 3166-2 alpha-2
+timezone -- location timezone
+airDistrict -- Air district, if any
+pwfsl_closestDistance -- nearest regulatory monitor distance, meters
+pwfsl_closestMonitorID -- nearest regularoty monitor ID
+sensorManufacturer -- hardware manufacturer
+targetPollutant -- target pollutant data
+technologyType -- type of sensor technology
+communityRegion -- defined regional community.
+
+" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -160,108 +209,96 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plot flagged outliers</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/utils-outliers.R'><code>R/utils-outliers.R</code></a></small>
-    <div class="hidden name"><code>dot-plotOutliers.Rd</code></div>
+    <h1>Upgrade <em>pa_synoptic</em> object format</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pas_upgrade.R'><code>R/pas_upgrade.R</code></a></small>
+    <div class="hidden name"><code>pas_upgrade.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>An internal capability to quickly plot outlier data.</p>
+    <p>The <code>pas</code> is checked for the latest pa_synoptic format
+and presence of core metadata columns:</p><ul>
+<li><p>ID -- Purple Air ID</p></li>
+<li><p>label -- location label</p></li>
+<li><p>DEVICE_LOCATIONTYPE -- location descriptor</p></li>
+<li><p>THINGSPEAK_PRIMARY_ID -- Thingspeak API access ID</p></li>
+<li><p>THINGSPEAK_PRIMARY_ID_READ_KEY -- Thingspeak API access key</p></li>
+<li><p>THINGSPEAK_SECONDARY_ID -- Thingspeak API access ID</p></li>
+<li><p>THINGSPEAK_SECONDARY_ID_READ_KEY -- Thingspeak API access key</p></li>
+<li><p>longitude -- decimal degrees E</p></li>
+<li><p>latitude -- decimal degrees N</p></li>
+<li><p>pm25 -- latest PM25</p></li>
+<li><p>lasteSeenDate -- last update datetime</p></li>
+<li><p>sensorType -- PurpleAir sensor type</p></li>
+<li><p>flag_hidden -- hidden flag</p></li>
+<li><p>isOwner -- owner logical</p></li>
+<li><p>humidity -- %</p></li>
+<li><p>temperature -- deg F</p></li>
+<li><p>pressure -- mb</p></li>
+<li><p>age -- sensor age</p></li>
+<li><p>parentID -- device parent ID</p></li>
+<li><p>timezone -- Olson timezone</p></li>
+<li><p>flag_highValue -- out of spec flag</p></li>
+<li><p>flag_attenutation_hardware -- hardware failure flag</p></li>
+<li><p>Ozone1 -- latest ozone data</p></li>
+<li><p>Voc -- latest voc data</p></li>
+<li><p>pm25_current -- current PM2.5 data</p></li>
+<li><p>pm25_10min -- 10-minute average PM2.5 data</p></li>
+<li><p>pm25_30min -- 30-minute average PM2.5 data</p></li>
+<li><p>pm25_1hr -- 1-hour average PM2.5 data</p></li>
+<li><p>pm25_6hr -- 6-hour average PM2.5 data</p></li>
+<li><p>pm25_1day -- 1-day PM2.5 average data</p></li>
+<li><p>pm25_1week -- 1-week PM2.5 average data</p></li>
+<li><p>statsLastModifiedDate -- last modified date</p></li>
+<li><p>statsLastModifiedInterval -- interval between modified date</p></li>
+<li><p>deviceID -- unique device identifier</p></li>
+<li><p>locationID -- generated location ID</p></li>
+<li><p>deviveDeploymentID -- generated unique ID</p></li>
+<li><p>countryCode -- ISO 3166-1 alpha-2</p></li>
+<li><p>stateCode -- ISO 3166-2 alpha-2</p></li>
+<li><p>timezone -- location timezone</p></li>
+<li><p>airDistrict -- Air district, if any</p></li>
+<li><p>pwfsl_closestDistance -- nearest regulatory monitor distance, meters</p></li>
+<li><p>pwfsl_closestMonitorID -- nearest regularoty monitor ID</p></li>
+<li><p>sensorManufacturer -- hardware manufacturer</p></li>
+<li><p>targetPollutant -- target pollutant data</p></li>
+<li><p>technologyType -- type of sensor technology</p></li>
+<li><p>communityRegion -- defined regional community.</p></li>
+</ul>
+
     </div>
 
-    <pre class="usage"><span class='fu'>.plotOutliers</span>(
-  <span class='kw'>df</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>"pm25"</span>,
-  <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Date"</span>,
-  <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"μg / m³"</span>,
-  <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"default"</span>,
-  <span class='kw'>subtitle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>data_shape</span> <span class='kw'>=</span> <span class='fl'>18</span>,
-  <span class='kw'>data_size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>data_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
-  <span class='kw'>data_alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
-  <span class='kw'>outlier_shape</span> <span class='kw'>=</span> <span class='fl'>8</span>,
-  <span class='kw'>outlier_size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>outlier_color</span> <span class='kw'>=</span> <span class='st'>"red"</span>,
-  <span class='kw'>outlier_alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>
-)</pre>
+    <pre class="usage"><span class='fu'>pas_upgrade</span>(<span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>df</th>
-      <td><p>data frame that contains datetime, PM2.5, and outlier boolean flags</p></td>
+      <th>pas</th>
+      <td><p>A <em>pa_synoptic</em> object.</p></td>
     </tr>
     <tr>
-      <th>parameter</th>
-      <td><p>the parameter with the associated outliers flag</p></td>
-    </tr>
-    <tr>
-      <th>ylim</th>
-      <td><p>y axis limits</p></td>
-    </tr>
-    <tr>
-      <th>xlab</th>
-      <td><p>x axis label</p></td>
-    </tr>
-    <tr>
-      <th>ylab</th>
-      <td><p>y axis label</p></td>
-    </tr>
-    <tr>
-      <th>title</th>
-      <td><p>plot title</p></td>
-    </tr>
-    <tr>
-      <th>subtitle</th>
-      <td><p>plot substitle</p></td>
-    </tr>
-    <tr>
-      <th>data_shape</th>
-      <td><p>shape of points</p></td>
-    </tr>
-    <tr>
-      <th>data_size</th>
-      <td><p>size of points</p></td>
-    </tr>
-    <tr>
-      <th>data_color</th>
-      <td><p>color of points</p></td>
-    </tr>
-    <tr>
-      <th>data_alpha</th>
-      <td><p>alpha of points</p></td>
-    </tr>
-    <tr>
-      <th>outlier_shape</th>
-      <td><p>outlier point shape</p></td>
-    </tr>
-    <tr>
-      <th>outlier_size</th>
-      <td><p>outlier point size</p></td>
-    </tr>
-    <tr>
-      <th>outlier_color</th>
-      <td><p>outlier point color</p></td>
-    </tr>
-    <tr>
-      <th>outlier_alpha</th>
-      <td><p>outlier point alpha</p></td>
+      <th>verbose</th>
+      <td><p>(logical) Display upgrade messages.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>gg object</p>
+    <p><code>TRUE</code> if <code>pas</code> has the correct structure, <code>FALSE</code> otherwise.</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># Use outdated pa_synoptic database</span>
+<span class='fu'><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl</a></span>(<span class='st'>'http://smoke.mazamascience.com/data/PurpleAir/'</span>)
+<span class='no'>pas</span> <span class='kw'>&lt;-</span>
+  <span class='fu'><a href='pas_load.html'>pas_load</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>pas_upgrade</span>()</div><div class='output co'>#&gt; <span class='message'>pa_synoptic object format upgraded.</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

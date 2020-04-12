@@ -249,10 +249,16 @@ filled with a color representing the number of PurpleAir sensors it contains.
 ```{r n_sensors_chloropleth}
 library(tmap)
 
+# Set up breaks
+my_breaks = c(0,20,50,100,200,500,1000,Inf)
+my_labels <- c("0 to 20", "20 to 50", "50 to 100", "100 to 200",
+               "200 to 500", "500 to 1,000", "1,000 or more")
+
 tm_shape(n_sensors) +
   tm_polygons(
     col = "sensorCount",
-    breaks = c(0,10,20,50,100,200,500,1000,Inf)
+    palette = "YlOrBr",
+    breaks = my_breaks
   )
 ```
 
@@ -263,25 +269,26 @@ example showing the top 15 counties with the the most PurpleAir sensors that are
 active.  
 
 ```{r n_sensors_barplot, fig.width = 5}
-# sort the counties by the number of PurpleAir sensors and select the top 15
-top15_n_sensors <- 
+# Sort the counties by the number of PurpleAir sensors
+sorted_n_sensors <- 
   n_sensors %>% 
-  arrange(desc(sensorCount)) %>% 
-  head(n = 15)
+  arrange(desc(sensorCount))
 
-ggplot(top15_n_sensors) + 
+ggplot(sorted_n_sensors) + 
   geom_col(aes(
     x = reorder(name, sensorCount), 
     y = sensorCount, 
-    fill = sensorCount)) + 
-  scale_fill_distiller(
-    breaks = c(0,10,20,50,100,200,500,1000,Inf),
+    fill = cut_number(sensorCount, n = 8, breaks = my_breaks, labels = my_labels)
+  )) + 
+  scale_fill_brewer(
     palette = "YlOrBr", 
     direction = 1
   ) +
-   xlab('County') + 
+  labs(fill = "Sensor Count") +
+  xlab('County') + 
   theme_minimal() + 
   coord_flip() 
+
 ```
 
 #### Region Averaged Sensor Data
@@ -298,7 +305,6 @@ mean_pm25 <-
   st_join(ca_pas) %>% 
   group_by(name) %>% 
   summarise(pm25_weeklyMean = round(mean(pm25_1week, na.rm = TRUE), 1))
-
 
 mean_pm25 %>% 
   select(name, pm25_weeklyMean) %>% 
@@ -322,9 +328,14 @@ In a similar fashion to that illustrated above, we can also create a 1-week
 PurpleAir averages per county chloropleth map.  
 
 ```{r mean_pm25_chloropleth, warning=FALSE, message=FALSE}
+# Set up breaks
+my_breaks = seq(0,40,5)
+my_labels <- paste(my_breaks[1:8], my_breaks[2:9], sep = " to ")
+
 tm_shape(mean_pm25) +
   tm_polygons(
     col = "pm25_weeklyMean",
+    palette = "YlOrBr",
     breaks = seq(0,40,5)
   )
 ```
@@ -341,17 +352,20 @@ top15_mean_pm25 <-
   arrange(desc(pm25_weeklyMean)) %>% 
   head(n = 15)
 
-# NOTE: the color legend is not identical to the legend above
+# NOTE:  The color legend is not identical to the legend above becuase we are
+# NOTE:  only plotting a subset of all counties.
+
 ggplot(top15_mean_pm25) + 
   geom_col(aes(
     x = reorder(name, pm25_weeklyMean), 
     y = pm25_weeklyMean, 
-    fill = pm25_weeklyMean)) + 
-  scale_fill_distiller(
-    breaks = seq(0,40,5),
+    fill = cut_number(pm25_weeklyMean, n = 8, breaks = my_breaks, labels = my_labels)
+  )) +
+  scale_fill_brewer(
     palette = "YlOrBr", 
     direction = 1
   ) +
+  labs(fill = "Sensor Count") +
   xlab('County') + 
   theme_minimal() + 
   coord_flip() 

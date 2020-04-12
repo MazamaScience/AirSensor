@@ -44,31 +44,53 @@
 
 <meta property="og:title" content="Test for correct structure in a <em>pa_synoptic</em> object — pas_isPas" />
 <meta property="og:description" content="The pas is checked for the &quot;pas&quot; class name
-and presence of all metadata columns:
-
-&quot;ID&quot;,                               &quot;label&quot;,
-&quot;DEVICE_LOCATIONTYPE&quot;,              &quot;THINGSPEAK_PRIMARY_ID&quot;,
-&quot;THINGSPEAK_PRIMARY_ID_READ_KEY&quot;,   &quot;THINGSPEAK_SECONDARY_ID&quot;,
-&quot;THINGSPEAK_SECONDARY_ID_READ_KEY&quot;, &quot;latitude&quot;,
-&quot;longitude&quot;,                        &quot;pm25&quot;,
-&quot;lastSeenDate&quot;,                     &quot;sensorType&quot;,
-&quot;flag_hidden&quot;,                      &quot;isOwner&quot;,
-&quot;humidity&quot;,                         &quot;temperature&quot;,
-&quot;pressure&quot;,                         &quot;age&quot;,
-&quot;parentID&quot;,                         &quot;flag_highValue&quot;,
-&quot;flag_attenuation_hardware&quot;,        &quot;Voc&quot;,
-&quot;Ozone1&quot;,                           &quot;pm25_current&quot;,
-&quot;pm25_10min&quot;,                       &quot;pm25_30min&quot;,
-&quot;pm25_1hr&quot;,                         &quot;pm25_6hr&quot;,
-&quot;pm25_1day&quot;,                        &quot;pm25_1week&quot;,
-&quot;statsLastModifiedDate&quot;,            &quot;statsLastModifiedInterval&quot;,
-&quot;deviceID&quot;,                         &quot;locationID&quot;,
-&quot;deviceDeploymentID&quot;,               &quot;countryCode&quot;,
-&quot;stateCode&quot;,                        &quot;timezone&quot;,
-&quot;airDistrict&quot;,                      &quot;pwfsl_closestDistance&quot;,
-&quot;pwfsl_closestMonitorID&quot;,           &quot;sensorManufacturer&quot;,
-&quot;targetPollutant&quot;,                  &quot;technologyType&quot;,
-&quot;communityRegion&quot;
+and presence of core metadata columns:
+ID -- Purple Air ID
+label -- location label
+DEVICE_LOCATIONTYPE -- location descriptor
+THINGSPEAK_PRIMARY_ID -- Thingspeak API access ID
+THINGSPEAK_PRIMARY_ID_READ_KEY -- Thingspeak API access key
+THINGSPEAK_SECONDARY_ID -- Thingspeak API access ID
+THINGSPEAK_SECONDARY_ID_READ_KEY -- Thingspeak API access key
+longitude -- decimal degrees E
+latitude -- decimal degrees N
+pm25 -- latest PM25
+lasteSeenDate -- last update datetime
+sensorType -- PurpleAir sensor type
+flag_hidden -- hidden flag
+isOwner -- owner logical
+humidity -- %
+temperature -- deg F
+pressure -- mb
+age -- sensor age
+parentID -- device parent ID
+timezone -- Olson timezone
+flag_highValue -- out of spec flag
+flag_attenutation_hardware -- hardware failure flag
+Ozone1 -- latest ozone data
+Voc -- latest voc data
+pm25_current -- current PM2.5 data
+pm25_10min -- 10-minute average PM2.5 data
+pm25_30min -- 30-minute average PM2.5 data
+pm25_1hr -- 1-hour average PM2.5 data
+pm25_6hr -- 6-hour average PM2.5 data
+pm25_1day -- 1-day PM2.5 average data
+pm25_1week -- 1-week PM2.5 average data
+statsLastModifiedDate -- last modified date
+statsLastModifiedInterval -- interval between modified date
+deviceID -- unique device identifier
+locationID -- generated location ID
+deviveDeploymentID -- generated unique ID
+countryCode -- ISO 3166-1 alpha-2
+stateCode -- ISO 3166-2 alpha-2
+timezone -- location timezone
+airDistrict -- Air district, if any
+pwfsl_closestDistance -- nearest regulatory monitor distance, meters
+pwfsl_closestMonitorID -- nearest regularoty monitor ID
+sensorManufacturer -- hardware manufacturer
+targetPollutant -- target pollutant data
+technologyType -- type of sensor technology
+communityRegion -- defined regional community.
 
 
 The pwfsl_, &quot;official&quot;, monitors are obtained from the USFS AirFire 
@@ -105,7 +127,7 @@ site using the PWFSLSmoke R package." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.15</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.16</span>
       </span>
     </div>
 
@@ -196,32 +218,54 @@ site using the PWFSLSmoke R package." />
 
     <div class="ref-description">
     <p>The <code>pas</code> is checked for the "pas" class name
-and presence of <strong>all</strong> metadata columns:</p>
-<pre>
-"ID",                               "label",
-"DEVICE_LOCATIONTYPE",              "THINGSPEAK_PRIMARY_ID",
-"THINGSPEAK_PRIMARY_ID_READ_KEY",   "THINGSPEAK_SECONDARY_ID",
-"THINGSPEAK_SECONDARY_ID_READ_KEY", "latitude",
-"longitude",                        "pm25",
-"lastSeenDate",                     "sensorType",
-"flag_hidden",                      "isOwner",
-"humidity",                         "temperature",
-"pressure",                         "age",
-"parentID",                         "flag_highValue",
-"flag_attenuation_hardware",        "Voc",
-"Ozone1",                           "pm25_current",
-"pm25_10min",                       "pm25_30min",
-"pm25_1hr",                         "pm25_6hr",
-"pm25_1day",                        "pm25_1week",
-"statsLastModifiedDate",            "statsLastModifiedInterval",
-"deviceID",                         "locationID",
-"deviceDeploymentID",               "countryCode",
-"stateCode",                        "timezone",
-"airDistrict",                      "pwfsl_closestDistance",
-"pwfsl_closestMonitorID",           "sensorManufacturer",
-"targetPollutant",                  "technologyType",
-"communityRegion"
-</pre>
+and presence of core metadata columns:</p><ul>
+<li><p>ID -- Purple Air ID</p></li>
+<li><p>label -- location label</p></li>
+<li><p>DEVICE_LOCATIONTYPE -- location descriptor</p></li>
+<li><p>THINGSPEAK_PRIMARY_ID -- Thingspeak API access ID</p></li>
+<li><p>THINGSPEAK_PRIMARY_ID_READ_KEY -- Thingspeak API access key</p></li>
+<li><p>THINGSPEAK_SECONDARY_ID -- Thingspeak API access ID</p></li>
+<li><p>THINGSPEAK_SECONDARY_ID_READ_KEY -- Thingspeak API access key</p></li>
+<li><p>longitude -- decimal degrees E</p></li>
+<li><p>latitude -- decimal degrees N</p></li>
+<li><p>pm25 -- latest PM25</p></li>
+<li><p>lasteSeenDate -- last update datetime</p></li>
+<li><p>sensorType -- PurpleAir sensor type</p></li>
+<li><p>flag_hidden -- hidden flag</p></li>
+<li><p>isOwner -- owner logical</p></li>
+<li><p>humidity -- %</p></li>
+<li><p>temperature -- deg F</p></li>
+<li><p>pressure -- mb</p></li>
+<li><p>age -- sensor age</p></li>
+<li><p>parentID -- device parent ID</p></li>
+<li><p>timezone -- Olson timezone</p></li>
+<li><p>flag_highValue -- out of spec flag</p></li>
+<li><p>flag_attenutation_hardware -- hardware failure flag</p></li>
+<li><p>Ozone1 -- latest ozone data</p></li>
+<li><p>Voc -- latest voc data</p></li>
+<li><p>pm25_current -- current PM2.5 data</p></li>
+<li><p>pm25_10min -- 10-minute average PM2.5 data</p></li>
+<li><p>pm25_30min -- 30-minute average PM2.5 data</p></li>
+<li><p>pm25_1hr -- 1-hour average PM2.5 data</p></li>
+<li><p>pm25_6hr -- 6-hour average PM2.5 data</p></li>
+<li><p>pm25_1day -- 1-day PM2.5 average data</p></li>
+<li><p>pm25_1week -- 1-week PM2.5 average data</p></li>
+<li><p>statsLastModifiedDate -- last modified date</p></li>
+<li><p>statsLastModifiedInterval -- interval between modified date</p></li>
+<li><p>deviceID -- unique device identifier</p></li>
+<li><p>locationID -- generated location ID</p></li>
+<li><p>deviveDeploymentID -- generated unique ID</p></li>
+<li><p>countryCode -- ISO 3166-1 alpha-2</p></li>
+<li><p>stateCode -- ISO 3166-2 alpha-2</p></li>
+<li><p>timezone -- location timezone</p></li>
+<li><p>airDistrict -- Air district, if any</p></li>
+<li><p>pwfsl_closestDistance -- nearest regulatory monitor distance, meters</p></li>
+<li><p>pwfsl_closestMonitorID -- nearest regularoty monitor ID</p></li>
+<li><p>sensorManufacturer -- hardware manufacturer</p></li>
+<li><p>targetPollutant -- target pollutant data</p></li>
+<li><p>technologyType -- type of sensor technology</p></li>
+<li><p>communityRegion -- defined regional community.</p></li>
+</ul>
 
 <p>The <code>pwfsl_</code>, "official", monitors are obtained from the USFS AirFire 
 site using the <span class="pkg">PWFSLSmoke</span> R package.</p>

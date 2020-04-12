@@ -1,3 +1,8 @@
+# AirSensor 0.6.16
+
+* New `pas_upgrade()` function to upgrade `pas` files created with 
+**AirSensor** version 0.5.
+
 # AirSensor 0.6.15
 
 * Fixed bug in `enhanceSynopticData()` when `countryCodes = NULL`. This was
