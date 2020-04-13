@@ -32,7 +32,7 @@
 #' This dataset can be converted into a standard \emph{pas} dataset with:
 #' 
 #' \preformatted{
-#'   pas <- enhanceSynopticData(example_pas_raw)
+#'   pas <- pas_enhanceData(example_pas_raw)
 #' }
 #' 
 #' @seealso example_pas

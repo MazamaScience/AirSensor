@@ -12,7 +12,7 @@
 #' includes both metadata and recent PM2.5 averages for each deployed sensor.
 #' 
 #' @references \href{https://www.purpleair.com/json}{json formatted PurpleAir data}
-#' @seealso \link{enhanceSynopticData}
+#' @seealso \link{pas_enhanceData}
 #' @examples
 #' \dontrun{
 #' initializeMazamaSpatialUtils()

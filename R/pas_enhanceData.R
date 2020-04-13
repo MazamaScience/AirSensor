@@ -55,12 +55,12 @@
 #' @examples
 #' \dontrun{
 #' initializeMazamaSpatialUtils()
-#' pas <- enhanceSynopticData(example_pas_raw)
+#' pas <- pas_enhanceData(example_pas_raw)
 #' setdiff(names(pas), names(pas_raw))
 #' View(pas[1:100,])
 #' }
 
-enhanceSynopticData <- function(
+pas_enhanceData <- function(
   pas_raw = NULL,
   countryCodes = NULL,
   includePWFSL = TRUE

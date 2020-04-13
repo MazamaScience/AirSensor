@@ -30,5 +30,5 @@ View(pas_raw[1:100,])
 \href{https://www.purpleair.com/json}{json formatted PurpleAir data}
 }
 \seealso{
-\link{enhanceSynopticData}
+\link{pas_enhanceData}
 }
