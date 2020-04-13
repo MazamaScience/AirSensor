@@ -62,5 +62,5 @@ pas \%>\%
 \seealso{
 \link{pas_load}
 
-\link{downloadParseSynopticData}
+\link{pas_downloadParseData}
 }

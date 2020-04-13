@@ -7,7 +7,7 @@
 enhanceSynopticData(pas_raw = NULL, countryCodes = NULL, includePWFSL = TRUE)
 }
 \arguments{
-\item{pas_raw}{Dataframe returned by \code{downloadParseSynopticData()}.}
+\item{pas_raw}{Dataframe returned by \code{pas_downloadParseData()}.}
 
 \item{countryCodes}{ISO country codes used to subset the data.}
 
@@ -67,5 +67,5 @@ View(pas[1:100,])
 }
 }
 \seealso{
-\link{downloadParseSynopticData}
+\link{pas_downloadParseData}
 }

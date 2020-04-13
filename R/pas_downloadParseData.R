@@ -16,11 +16,11 @@
 #' @examples
 #' \dontrun{
 #' initializeMazamaSpatialUtils()
-#' pas_raw <- downloadParseSynopticData()
+#' pas_raw <- pas_downloadParseData()
 #' View(pas_raw[1:100,])
 #' }
 
-downloadParseSynopticData <- function(
+pas_downloadParseData <- function(
   baseUrl = "https://www.purpleair.com/json"
 ) {
 
