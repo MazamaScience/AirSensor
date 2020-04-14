@@ -55,7 +55,7 @@
 #' @examples
 #' \dontrun{
 #' initializeMazamaSpatialUtils()
-#' pas <- pas_enhanceData(example_pas_raw)
+#' pas <- pas_enhanceData(example_pas_raw, 'US')
 #' setdiff(names(pas), names(pas_raw))
 #' View(pas[1:100,])
 #' }
@@ -103,7 +103,7 @@ pas_enhanceData <- function(
   # [28] "v3"                               "v4"                               "v5"                              
   # [31] "v6"                              
 
-  # On 2019-09-05, the data columns look like this:
+  # On 2020-04-14, the data columns look like this:
   #
   # [1] "A_H"                              "AGE"                              "DEVICE_LOCATIONTYPE"             
   # [4] "Flag"                             "Hidden"                           "humidity"                        
@@ -158,127 +158,17 @@ pas_enhanceData <- function(
       statsLastModifiedInterval = .data$timeSinceModified
     )
   
-  # ----- Add unique identifiers -----------------------------------------------
-  
-  # Device ID based on A channel ID
-  pas$deviceID <- pas$ID
-  # Ensure that B channel records use the parent (A channel) ID
-  childMask <- !is.na(pas$parentID)
-  pas$deviceID[childMask] <- pas$parentID[childMask]
-  
-  # Location ID
-  pas$locationID <- MazamaLocationUtils::location_createID(pas$longitude, pas$latitude)
-  
-  # Device Deployment ID
-  pas$deviceDeploymentID <- paste0(pas$locationID, "_", pas$deviceID)
-  
   # ----- Add spatial metadata -------------------------------------------------
   
-  preValidationRows <- nrow(pas)
+  pas <- pas_addSpatialMetadata(pas, countryCodes)
   
-  # First, remove records with invalid locations
-  pas <-
-    pas %>%
-    dplyr::filter( !is.na(.data$longitude) & !is.na(.data$latitude) ) %>%
-    dplyr::filter( .data$longitude >= -180 & .data$longitude <= 180 ) %>%
-    dplyr::filter( .data$latitude >= -90 & .data$latitude <= 90 )
+  # ----- Add unique identifiers -----------------------------------------------
   
-  badLocationCount <- preValidationRows - nrow(pas)
+  pas <- pas_addUniqueIDs(pas)
   
-  if ( badLocationCount > 0 ) {
-    if ( logger.isInitialized() ) {
-      logger.trace("%d records removed because of invalid location data.", 
-                   badLocationCount)
-    }
-  }
+  # ----- Add an Air district --------------------------------------------------
   
-  if ( logger.isInitialized() )
-    logger.trace("Adding spatial metadata")
-
-  # TODO:  Could optimize spatial data assignment by only calculating spatial
-  # TODO:  data for the A channel and then copying that info to the B channel.
-  # TODO:  This will result in more complex code but would shave a few seconds
-  # TODO:  off of this step if that becomes critical.
-
-  # Assign countryCodes
-  result <- try({
-    pas$countryCode <- MazamaSpatialUtils::getCountryCode(pas$longitude,
-                                                          pas$latitude,
-                                                          useBuffering = TRUE)
-  }, silent = TRUE)
-  
-  if ( "try-error" %in% class(result) ) {
-    err_msg <- geterrmessage()
-    if ( logger.isInitialized() ) {
-      logger.error(err_msg)
-      logger.fatal("Unable to assign countryCodes.")
-    }
-    stop(paste0("Unable to assign countryCodes: ", err_msg))
-  }  
-  
-  # On with the rest of the spatial data
-  
-  # Suppress annoying 'deprecated' messages
-  suppressWarnings({
-    
-    #  Subset to countries of interest
-    pas <- subset(pas, pas$countryCode %in% countryCodes)
-    
-    # Assign stateCodes
-    pas$stateCode <- MazamaSpatialUtils::getStateCode(pas$longitude,
-                                                      pas$latitude,
-                                                      countryCodes = countryCodes,
-                                                      useBuffering = TRUE)
-    
-    # Assign timezones
-    pas$timezone <- MazamaSpatialUtils::getTimezone(pas$longitude,
-                                                    pas$latitude,
-                                                    countryCodes = countryCodes,
-                                                    useBuffering = TRUE)
-    
-    # CARB Air Districts
-    result <- try({ 
-      CA_AirBasins <- get(MazamaSpatialUtils::loadSpatialData("CA_AirBasins_01"))
-    }, silent = TRUE)
-    
-    if ( "try-error" %in% class(result) ) {
-      
-      logger.warn("Unable to load spatial data 'CA_AirBasins'.")
-      
-    } else {
-      
-      pas_CA <- 
-        pas %>% 
-        dplyr::filter(.data$countryCode == "US" & .data$stateCode == "CA")
-      
-      if ( nrow(pas_CA) > 0 ) {
-        
-        pas_CA$airDistrict <- 
-          MazamaSpatialUtils::getSpatialData(
-            pas_CA$longitude,
-            pas_CA$latitude,
-            CA_AirBasins,
-            useBuffering = TRUE
-          ) %>%
-          dplyr::pull("name")
-        
-        pas_nonCA <-  
-          pas %>% 
-          dplyr::filter(.data$countryCode != "US" | .data$stateCode != "CA")
-        
-        pas_nonCA$airDistrict <- as.character(NA)
-        
-        pas <- dplyr::bind_rows(pas_CA, pas_nonCA)
-        
-      }
-      
-    }
-    
-    # Add airDistrict if it hasn't already been added
-    if ( !"airDistrict" %in% names(pas) ) 
-      pas$airDistrict <- as.character(NA)
-    
-  })
+  pas <- pas_addAirDistrict(pas)
   
   # ----- Convert times to POSIXct ---------------------------------------------
   
@@ -351,44 +241,7 @@ pas_enhanceData <- function(
   
   # ----- Add communityRegion --------------------------------------------------
   
-  pas$communityRegion <- as.character(NA)
-  label <- tolower(pas$label)
-  
-  # SCAQMD communities
-  # NOTE:  Need to match "sctv_15 (dawson canyon) b"
-  scah_mask <- stringr::str_detect(label, "^scah_[0-9][0-9]( ?.*$)")
-  scan_mask <- stringr::str_detect(label, "^scan_[0-9][0-9]( ?.*$)")
-  scap_mask <- stringr::str_detect(label, "^scap_[0-9][0-9]( ?.*$)")
-  scbb_mask <- stringr::str_detect(label, "^scbb_[0-9][0-9]( ?.*$)")
-  scem_mask <- stringr::str_detect(label, "^scem_[0-9][0-9]( ?.*$)")
-  schs_mask <- stringr::str_detect(label, "^schs_[0-9][0-9]( ?.*$)")
-  sciv_mask <- stringr::str_detect(label, "^sciv_[0-9][0-9]( ?.*$)")
-  scnp_mask <- stringr::str_detect(label, "^scnp_[0-9][0-9]( ?.*$)")
-  scpr_mask <- stringr::str_detect(label, "^scpr_[0-9][0-9]( ?.*$)")
-  scsb_mask <- stringr::str_detect(label, "^scsb_[0-9][0-9]( ?.*$)")
-  scsc_mask <- stringr::str_detect(label, "^scsc_[0-9][0-9]( ?.*$)")
-  scsg_mask <- stringr::str_detect(label, "^scsg_[0-9][0-9]( ?.*$)")
-  scsh_mask <- stringr::str_detect(label, "^scsh_[0-9][0-9]( ?.*$)")
-  scsj_mask <- stringr::str_detect(label, "^scsj_[0-9][0-9]( ?.*$)")
-  sctv_mask <- stringr::str_detect(label, "^sctv_[0-9][0-9]( ?.*$)")
-  scuv_mask <- stringr::str_detect(label, "^scuv_[0-9][0-9]( ?.*$)")
-  
-  pas$communityRegion[scah_mask] <- "SCAH"
-  pas$communityRegion[scan_mask] <- "SCAN"
-  pas$communityRegion[scap_mask] <- "Alhambra/Monterey Park"
-  pas$communityRegion[scbb_mask] <- "Big Bear Lake"
-  pas$communityRegion[scem_mask] <- "El Monte"
-  pas$communityRegion[schs_mask] <- "Sycamore Canyon"   # typo on someone's part
-  pas$communityRegion[sciv_mask] <- "Imperial Valley"
-  pas$communityRegion[scnp_mask] <- "Nipomo"
-  pas$communityRegion[scpr_mask] <- "Paso Robles"
-  pas$communityRegion[scsb_mask] <- "Seal Beach"
-  pas$communityRegion[scsc_mask] <- "Seal Beach"        # typo on someone's part
-  pas$communityRegion[scsg_mask] <- "South Gate"
-  pas$communityRegion[scsh_mask] <- "Sycamore Canyon"
-  pas$communityRegion[scsj_mask] <- "San Jacinto"
-  pas$communityRegion[sctv_mask] <- "Temescal Valley"
-  pas$communityRegion[scuv_mask] <- "SCUV"
+  pas <- pas_addCommunityRegion(pas)
   
   # ----- Return ---------------------------------------------------------------
   
