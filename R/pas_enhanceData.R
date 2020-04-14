@@ -73,17 +73,17 @@ pas_enhanceData <- function(
   
   if ( !("data.frame" %in% class(pas_raw)) )
     stop("parameter 'pas_raw' parameter is not a dataframe")
-
+  
   # Guarantee uppercase codes
   countryCodes <- toupper(countryCodes)
-
+  
   # Validate countryCodes
   if ( any(!(countryCodes %in% countrycode::codelist$iso2c)) ) 
     stop("parameter 'countryCodes' has values that are not recognized as ISO-2 country codes")
-
+  
   if ( !is.logical(includePWFSL) )
     stop("parameter 'includePWFSL' is not a logical value")
-
+  
   # ----- Discard unwanted columns ---------------------------------------------
   
   # Prior to 2019-09-05, a "State" column existed
@@ -102,7 +102,7 @@ pas_enhanceData <- function(
   # [25] "v"                                "v1"                               "v2"                              
   # [28] "v3"                               "v4"                               "v5"                              
   # [31] "v6"                              
-
+  
   # On 2020-04-14, the data columns look like this:
   #
   # [1] "A_H"                              "AGE"                              "DEVICE_LOCATIONTYPE"             
@@ -232,7 +232,7 @@ pas_enhanceData <- function(
     }
     
   }
-
+  
   # ----- Addditional metadata per SCAQMD request ------------------------------
   
   pas$sensorManufacturer <- "Purple Air"

@@ -25,7 +25,7 @@
 #'   pas_addSpatialMetadata() %>% 
 #'   pas_addUniqueIDs()
 #'   }
- 
+
 pas_addUniqueIDs <- function(
   pas = NULL
 ) {
@@ -33,13 +33,13 @@ pas_addUniqueIDs <- function(
   # ----- Validate Parameters --------------------------------------------------
   
   MazamaCoreUtils::stopIfNull(pas)
-
+  
   if ( !pas_hasSpatial(pas) ) {
     stop('Parameter `pas` does not contain required spatial metadata. 
           See `pas_addSpatialMetadata()` to add spatial meta data.')
   }
   
-  if ( !c('ID', 'parentID') %in% names(pas) ) {
+  if ( !'ID' %in% names(pas) || !'parentID' %in% names(pas) ) {
     stop('Invalid pa_synotpic data: does not contain required columns.')
   }
   
@@ -52,7 +52,8 @@ pas_addUniqueIDs <- function(
   pas$deviceID[childMask] <- pas$parentID[childMask]
   
   # Location ID
-  pas$locationID <- MazamaLocationUtils::location_createID(pas$longitude, pas$latitude)
+  pas$locationID <- 
+    MazamaLocationUtils::location_createID(pas$longitude, pas$latitude)
   
   # Device Deployment ID
   pas$deviceDeploymentID <- paste0(pas$locationID, "_", pas$deviceID)

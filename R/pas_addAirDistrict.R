@@ -82,7 +82,7 @@ pas_addAirDistrict <- function(
   if ( !"airDistrict" %in% names(pas) ) {
     pas$airDistrict <- as.character(NA)
   }
-    
+  
   return(pas)
   
 }
