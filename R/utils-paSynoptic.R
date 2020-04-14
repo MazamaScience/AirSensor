@@ -12,54 +12,23 @@
 #' \itemize{
 #'   \item{ID -- Purple Air ID}
 #'   \item{label -- location label}
-#'   \item{DEVICE_LOCATIONTYPE -- location descriptor}
-#'   \item{THINGSPEAK_PRIMARY_ID -- Thingspeak API access ID}
-#'   \item{THINGSPEAK_PRIMARY_ID_READ_KEY -- Thingspeak API access key}
-#'   \item{THINGSPEAK_SECONDARY_ID -- Thingspeak API access ID}
-#'   \item{THINGSPEAK_SECONDARY_ID_READ_KEY -- Thingspeak API access key}
+#'   \item{sensorType -- PurpleAir sensor type}
 #'   \item{longitude -- decimal degrees E}
 #'   \item{latitude -- decimal degrees N}
-#'   \item{pm25 -- latest PM25}
-#'   \item{lasteSeenDate -- last update datetime}
-#'   \item{sensorType -- PurpleAir sensor type}
-#'   \item{flag_hidden -- hidden flag}
-#'   \item{isOwner -- owner logical}
-#'   \item{humidity -- \%}
-#'   \item{temperature -- deg F}
-#'   \item{pressure -- mb}
-#'   \item{age -- sensor age}
-#'   \item{parentID -- device parent ID}
 #'   \item{timezone -- Olson timezone}
-#'   \item{flag_highValue -- out of spec flag}
-#'   \item{flag_attenutation_hardware -- hardware failure flag}
-#'   \item{Ozone1 -- latest ozone data}
-#'   \item{Voc -- latest voc data}
-#'   \item{pm25_current -- current PM2.5 data}
-#'   \item{pm25_10min -- 10-minute average PM2.5 data}
-#'   \item{pm25_30min -- 30-minute average PM2.5 data}
-#'   \item{pm25_1hr -- 1-hour average PM2.5 data}
-#'   \item{pm25_6hr -- 6-hour average PM2.5 data}
-#'   \item{pm25_1day -- 1-day PM2.5 average data}
-#'   \item{pm25_1week -- 1-week PM2.5 average data}
-#'   \item{statsLastModifiedDate -- last modified date}
-#'   \item{statsLastModifiedInterval -- interval between modified date}
-#'   \item{deviceID -- unique device identifier}
-#'   \item{locationID -- generated location ID}
-#'   \item{deviveDeploymentID -- generated unique ID}
 #'   \item{countryCode -- ISO 3166-1 alpha-2}
 #'   \item{stateCode -- ISO 3166-2 alpha-2}
-#'   \item{timezone -- location timezone}
-#'   \item{airDistrict -- Air district, if any}
-#'   \item{pwfsl_closestDistance -- nearest regulatory monitor distance, meters}
-#'   \item{pwfsl_closestMonitorID -- nearest regularoty monitor ID}
-#'   \item{sensorManufacturer -- hardware manufacturer}
-#'   \item{targetPollutant -- target pollutant data}
-#'   \item{technologyType -- type of sensor technology}
-#'   \item{communityRegion -- defined regional community.}
+#'   \item{pm25_1hr -- hourly PM2.5}
+#'   \item{pm25_1day -- daily PM2.5}
+#'   \item{temperature -- deg F}
+#'   \item{humidity -- \%}
+#'   \item{pressure -- mb}
+#'   \item{deviceID -- unique device identifier}
+#'   \item{locationID -- unique location identifier}
+#'   \item{deviceDeploymentID -- unique time series identifier}
 #' }
 #' 
-#' The \code{pwfsl_}, "official", monitors are obtained from the USFS AirFire 
-#' site using the \pkg{PWFSLSmoke} R package.
+#' @seealso \link{pas_enhanceData}
 #' 
 #' @examples
 #' pas_isPas(example_pas)
@@ -75,28 +44,17 @@ pas_isPas <- function(
   
   # NOTE: Upgraded pa_synoptic data columns generated 2020-04-09
   #       via `AirSensor::pas_createNew()`
-  parameters <- 
-    c(
-      "ID",                               "label",                            "DEVICE_LOCATIONTYPE",             
-      "THINGSPEAK_PRIMARY_ID",            "THINGSPEAK_PRIMARY_ID_READ_KEY",   "THINGSPEAK_SECONDARY_ID",         
-      "THINGSPEAK_SECONDARY_ID_READ_KEY", "latitude",                         "longitude",                       
-      "pm25",                             "lastSeenDate",                     "sensorType",                      
-      "flag_hidden",                      "isOwner",                          "humidity",                        
-      "temperature",                      "pressure",                         "age",                             
-      "parentID",                         "flag_highValue",                   "flag_attenuation_hardware",       
-      "Ozone1",                           "Voc",                              "pm25_current",                    
-      "pm25_10min",                       "pm25_30min",                       "pm25_1hr",                        
-      "pm25_6hr",                         "pm25_1day",                        "pm25_1week",                      
-      "statsLastModifiedDate",            "statsLastModifiedInterval",        "deviceID",                        
-      "locationID",                       "deviceDeploymentID",               "countryCode",                     
-      "stateCode",                        "timezone",                         "airDistrict",                     
-      "pwfsl_closestDistance",            "pwfsl_closestMonitorID",           "sensorManufacturer",              
-      "targetPollutant",                  "technologyType",                   "communityRegion"
-    )
+  parameters <- c(
+    "ID", "label", "sensorType",
+    "longitude", "latitude", 
+    "timezone", "countryCode", "stateCode",
+    "pm25_1hr", "pm25_1day", "temperature", "humidity", "pressure",
+    "deviceID", "locationID", "deviceDeploymentID"
+  )
   
   if ( !all(parameters %in% names(pas)) ) {
     
-    message('Deprecated pa_synoptic format. See `pas_upgrade()` to upgrade the format.')
+    message('Invalid pa_synoptic format. See `pas_upgrade()` to upgrade the format.')
     
     return(FALSE)
     
@@ -130,4 +88,41 @@ pas_isPas <- function(
 pas_isEmpty <- function(pas) {
   if (!pas_isPas(pas)) stop("Not a valid 'pas' object.")
   return( nrow(pas) == 0 )
+}
+
+#' @export
+#' 
+#' @title Test for spatial metadata in \emph{pa_synoptic} object
+#' 
+#' @param pas A \emph{pa_synoptic} object.
+#' 
+#' @return \code{TRUE} if no data exist in \code{pas}, \code{FALSE} otherwise.
+#' 
+#' @description Convenience function for \code{nrow(pas) == 0}.
+#' This makes for more readable code in functions that need to test for this.
+#' 
+#' @examples
+#' pas <- example_pas
+#' pas_hasSpatial(pas)
+
+pas_hasSpatial <- function(pas) {
+  
+  if ( is.null(pas) ) return(FALSE)
+  
+  # Test the following -- added via pas_addSpatialMetadata
+  parameters <- c(
+    "longitude", "latitude", "timezone", "countryCode", "stateCode"
+  )
+  
+  if ( !all(parameters %in% names(pas)) ) {
+    
+    return(FALSE)
+    
+  } else {
+    
+    # Nothing failed so return TRUE
+    return(TRUE)
+    
+  }
+  
 }
