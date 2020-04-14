@@ -13,9 +13,8 @@ pas_addCommunityRegion(pas = NULL)
 A pa_synoptic dataframe
 }
 \description{
-Adds an air district (if any) to a pa_synoptic object via the 
-\code{MazamaSpatialUtils} Package using PurpleAir location coordinates to 
-determine the air basin the sensor is in.
+Adds a community region (if any) to a pa_synoptic object via the 
+pa_synotpic object via pre-defined labeling shcema.
 }
 \note{
 As of 2020-04-14, only California air basins is supported.

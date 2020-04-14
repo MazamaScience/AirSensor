@@ -98,16 +98,23 @@ pas_addSpatialMetadata <- function(
     }
     
     # Assign stateCodes
-    pas$stateCode <- MazamaSpatialUtils::getStateCode(pas$longitude,
-                                                      pas$latitude,
-                                                      countryCodes = pas$countryCode,
-                                                      useBuffering = TRUE)
+    # NOTE: Using the countryCodes added from logic above
+    pas$stateCode <- 
+      MazamaSpatialUtils::getStateCode(
+        pas$longitude,
+        pas$latitude,
+        countryCodes = pas$countryCode,
+        useBuffering = TRUE
+      )
     
     # Assign timezones
-    pas$timezone <- MazamaSpatialUtils::getTimezone(pas$longitude,
-                                                    pas$latitude,
-                                                    countryCodes = pas$countryCode,
-                                                    useBuffering = TRUE)
+    pas$timezone <-
+      MazamaSpatialUtils::getTimezone(
+        pas$longitude,
+        pas$latitude,
+        countryCodes = pas$countryCode,
+        useBuffering = TRUE
+      )
     
   })
   

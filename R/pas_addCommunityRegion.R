@@ -5,9 +5,8 @@
 #'
 #' @title Add an air district to PurpleAir Synoptic Data
 #'
-#' @description Adds an air district (if any) to a pa_synoptic object via the 
-#' \code{MazamaSpatialUtils} Package using PurpleAir location coordinates to 
-#' determine the air basin the sensor is in. 
+#' @description Adds a community region (if any) to a pa_synoptic object via the 
+#' pa_synotpic object via pre-defined labeling shcema. 
 #' 
 #' @note As of 2020-04-14, only California air basins is supported. 
 #'
@@ -37,7 +36,7 @@ pas_addCommunityRegion <- function(
   } 
   
   # Extract labels with `labels` or `Labels` column vector
-  label <- pas[[stringr::str_which(names(pas), '^[lL]abel')]]
+  label <- tolower(pas[[stringr::str_which(names(pas), '^[lL]abel')]])
   
   # Create empty community region
   pas$communityRegion <- as.character(NA)
