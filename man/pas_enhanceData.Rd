@@ -61,7 +61,7 @@ map.
 \examples{
 \dontrun{
 initializeMazamaSpatialUtils()
-pas <- pas_enhanceData(example_pas_raw)
+pas <- pas_enhanceData(example_pas_raw, 'US')
 setdiff(names(pas), names(pas_raw))
 View(pas[1:100,])
 }
