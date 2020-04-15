@@ -23,7 +23,7 @@ test_that(
   'random missing columns are added', 
   {
     data('example_pas')
-    test_pas <- example_pas[,1:runif(1, 1, ncol(example_pas))]
+    test_pas <- example_pas[,-c(11,13,17,21,23)]
     expect_equal(names(pas_upgrade(test_pas)), names(example_pas))
   }
 )
