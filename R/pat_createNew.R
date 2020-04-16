@@ -18,7 +18,7 @@
 #' specific PurpleAir sensors.
 #' 
 #' Dates can be anything that is understood by 
-#' \code{lubrdiate::parse_date_time()} including either of the following 
+#' \code{lubridate::parse_date_time()} including either of the following 
 #' recommended formats:
 #' 
 #' \itemize{
@@ -105,7 +105,7 @@ pat_createNew <- function(
     dplyr::filter(.data$deviceDeploymentID == !!deviceDeploymentID)
   
   if ( nrow(pas_single) > 1 ) {
-    stop(paste0("Multilpe sensors share deviceDeploymentID: ",
+    stop(paste0("Multiple sensors share deviceDeploymentID: ",
                 deviceDeploymentID, "'"))
   } 
 

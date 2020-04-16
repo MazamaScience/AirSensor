@@ -4,7 +4,7 @@
 #' @title Apply quality control on PurpleAir Timeseries object
 #' 
 #' @param pat PurpleAir Timeseries \emph{pat} object
-#' @param removeOutOfSpec Logical determinging whether measurements that are
+#' @param removeOutOfSpec Logical determining whether measurements that are
 #' out of instrument specs should be invalidated.
 #' @param max_humidity Maximum humidity threshold above which pm25 measurements
 #' are invalidated. Disabled unless explicitly set.

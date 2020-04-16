@@ -15,7 +15,7 @@
 #' @return A subset of the given \emph{pat} object.
 #' 
 #' @description A sampling function that accepts PurpleAir timeseries dataframes
-#' and reduces them by randomly selecting distinct rows of the users choosen 
+#' and reduces them by randomly selecting distinct rows of the users chosen 
 #' size. 
 #' 
 #' If both `sampleSize` and `sampleFraction` are unspecified,

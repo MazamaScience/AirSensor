@@ -37,7 +37,7 @@ pat_join <- function(
   # ----- Validate parameters --------------------------------------------------
   
   
-  # ----- Join (concaenate) timeseries -----------------------------------------
+  # ----- Join (concatenate) timeseries ----------------------------------------
   
   # Accept any number of pat objects
   patList <- list(...)  
@@ -68,7 +68,7 @@ pat_join <- function(
   }
   
   # TODO:  We have a basic problem with the pwfsl_closest~ variables.
-  # TODO:  These can change whan a new, temprary monitor gets installed.
+  # TODO:  These can change when a new, temporary monitor gets installed.
   # TODO:  We don't want to have two separate metadata records for a single 
   # TODO:  Sensor as the metadata is supposed to be location-specific and
   # TODO:  not time-dependent. Unfortunately, the location of the nearest
