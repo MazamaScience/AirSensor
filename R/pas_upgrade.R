@@ -76,6 +76,13 @@ pas_upgrade <- function(
   MazamaCoreUtils::stopIfNull(pas)
   MazamaCoreUtils::stopIfNull(verbose)
   
+  # Check if Mazama Spatial Utilites has been initialized 
+  if ( !as.logical(Sys.getenv('SPATIAL_INIT')) || 
+       Sys.getenv('SPATIAL_INIT') == '' ) {
+    stop('MazamaSpatialUtils uninitialized. 
+         Please initialize with `initializeMazamaSpatialUtils()`')
+  }
+  
   # ----- pa_synoptic Upgrade --------------------------------------------------
   
   # NOTE: Upgraded pa_synoptic data columns generated 2020-04-09
@@ -115,7 +122,6 @@ pas_upgrade <- function(
       if ( verbose ) {
         message('Adding spatial metadata...')
       }
-      initializeMazamaSpatialUtils()
       pas <- pas_addSpatialMetadata(pas)
     }
 
