@@ -69,6 +69,8 @@ and presence of core metadata columns:
 \examples{
 # Use outdated pa_synoptic database
 setArchiveBaseUrl('http://smoke.mazamascience.com/data/PurpleAir/')
+# Initialize the required spatial utilities
+initializeMazamaSpatialUtils()
 pas <- 
   pas_load() \%>\%
   pas_upgrade() 

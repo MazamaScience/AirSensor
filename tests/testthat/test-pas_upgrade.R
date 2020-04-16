@@ -1,5 +1,7 @@
 context('test-pas_upgrade') 
 
+initializeMazamaSpatialUtils()
+
 test_that(
   'input validation works', 
   {
