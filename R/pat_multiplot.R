@@ -40,7 +40,7 @@
 #' \item{\code{"pm25_b"} -- PM2.5 from channel B only}
 #' \item{\code{"pm25"} -- PM2.5 from channels A and B in separate plots}
 #' \item{\code{"pm25_over"} -- PM2.5 from channels A and B in the same plot}
-#' \item{\code{"aux"} -- auxillary data (temperature, humidity)}
+#' \item{\code{"aux"} -- auxiliary data (temperature, humidity)}
 #' } 
 #' 
 #' @return A ggplot object.

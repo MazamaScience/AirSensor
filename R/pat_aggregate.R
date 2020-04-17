@@ -155,7 +155,7 @@ pat_aggregate <- function(
   if ( stat == "min"        ) func <- function(x) min(na.omit(x))
   if ( stat == "tstats"     ) func <- function(x) list(x) 
   
-  # Remove dupicated time entries and create datetime axis (if any)
+  # Remove duplicated time entries and create datetime axis (if any)
   datetime <- 
     pat$data$datetime[which(!duplicated.POSIXlt(pat$data$datetime))]
   
@@ -167,7 +167,7 @@ pat_aggregate <- function(
   
   # NOTE:  Calling aggregate() will dispatch to aggregate.zoo() because the
   # NOTE:  argument is a "zoo" object. Unfortunately, we cannot call 
-  # NOTE:  zoo::aggregate.zoo() explicitly because this funciton is not
+  # NOTE:  zoo::aggregate.zoo() explicitly because this function is not
   # NOTE:  exported by the zoo package.
   
   # Aggregate
@@ -213,7 +213,7 @@ pat_aggregate <- function(
 
     }
     
-    # NOTE:  X below ends up with a two-column matix where each cell contains an
+    # NOTE:  X below ends up with a two-column matrix where each cell contains an
     # NOTE:  unnamed List of length one containing a numeric vector. Each
     # NOTE:  row of the matrix thus contains a vector of pm25_A and pm25_B
     # NOTE:  in columns 1 and 2.

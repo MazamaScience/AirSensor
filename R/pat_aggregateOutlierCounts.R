@@ -1,4 +1,4 @@
-#' @title Aggreagte data with count of outliers in each bin 
+#' @title Aggregate data with count of outliers in each bin 
 #'
 #' @param pat a PurpleAir Timeseries \emph{pat} object.
 #' @param period time period to average over. Can be "sec", "min", "hour", 

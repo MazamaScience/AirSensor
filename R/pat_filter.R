@@ -9,7 +9,7 @@
 #' 
 #' @description A generalized data filter for \emph{pat} objects to 
 #' choose rows/cases where conditions are true.  Multiple conditions are 
-#' combined with \code{&} or seperated by a comma. Only rows where the condition 
+#' combined with \code{&} or separated by a comma. Only rows where the condition 
 #' evaluates to TRUE are kept.Rows where the condition evaluates to \code{NA}
 #' are dropped.
 #' 

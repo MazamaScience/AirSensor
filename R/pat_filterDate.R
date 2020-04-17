@@ -12,7 +12,7 @@
 #' 
 #' @description Subsets a PurpleAir Timeseries object by date. 
 #' 
-#' Dates can be anything that is understood by \code{lubrdiate::ymd()}
+#' Dates can be anything that is understood by \code{lubridate::ymd()}
 #' including either of the following recommended formats:
 #' 
 #' \itemize{

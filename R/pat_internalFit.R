@@ -157,7 +157,7 @@ pat_internalFit <- function(
     
     
     # Gather and arrange the linear regression and time series plots with a banner title
-    bannerText <- paste0("A / B Channel Comparision -- ", pat$meta$label)
+    bannerText <- paste0("A / B Channel Comparison -- ", pat$meta$label)
     bannerGrob <- grid::textGrob(bannerText,
                                  just = "left",
                                  x = 0.025,

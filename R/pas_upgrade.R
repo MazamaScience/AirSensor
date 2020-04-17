@@ -62,6 +62,8 @@
 #' @examples
 #' # Use outdated pa_synoptic database
 #' setArchiveBaseUrl('http://smoke.mazamascience.com/data/PurpleAir/')
+#' # Initialize the required spatial utilities
+#' initializeMazamaSpatialUtils()
 #' pas <- 
 #'   pas_load() %>%
 #'   pas_upgrade() 
@@ -75,6 +77,13 @@ pas_upgrade <- function(
   
   MazamaCoreUtils::stopIfNull(pas)
   MazamaCoreUtils::stopIfNull(verbose)
+  
+  # Check if Mazama Spatial Utilites has been initialized 
+  if ( !as.logical(Sys.getenv('SPATIAL_INIT')) || 
+       Sys.getenv('SPATIAL_INIT') == '' ) {
+    stop('MazamaSpatialUtils uninitialized. 
+         Please initialize with `initializeMazamaSpatialUtils()`')
+  }
   
   # ----- pa_synoptic Upgrade --------------------------------------------------
   
@@ -103,12 +112,43 @@ pas_upgrade <- function(
   if ( !all(upgradedCols %in% names(pas)) ) {
     # Does not contain all the columns -> upgrade
     
+    # NOTE: This is where to add more 'intelligent' upgrading if necessary --
+    # NOTE: which is essentially just "enhancing" but without an assumed 
+    # NOTE: `pas_downloadParseData` structure.
+    
     # define the missing columns from the upgraded columns
     missingCols <- upgradedCols[!upgradedCols %in% names(pas)]
     
-    # Add new columns
-    for ( i in missingCols ) {
-      pas[[i]] <- NA
+    # Add spatial metadata 
+    if ( any(c('latitude', 'longitude', 'stateCode', 'countryCode', 'timezone') %in% missingCols) ) {
+      if ( verbose ) {
+        message('Adding spatial metadata...')
+      }
+      pas <- pas_addSpatialMetadata(pas)
+    }
+
+    # Add unique IDs
+    if ( any(c('deviceID', 'locationID', 'deviceDeploymentID') %in% missingCols) ) {
+      if ( verbose ) {
+        message('Adding unique IDs...')
+      }
+      pas <- pas_addUniqueIDs(pas)
+    }
+    
+    # Add air district
+    if ( 'airDistrict' %in% missingCols ) {
+      if ( verbose ) {
+        message('Adding air district...')
+      }
+      pas <- pas_addAirDistrict(pas)
+    }
+    
+    # Add community region 
+    if ( 'communityRegion' %in% missingCols ) {
+      if ( verbose ) {
+        message('Adding community region...')
+      }
+      pas <- pas_addCommunityRegion(pas)
     }
     
     # Show user format has upgraded
@@ -125,6 +165,29 @@ pas_upgrade <- function(
     }
     
   }
+  
+  # Check for missing columns after "upgrading", add filled with NA if necessary
+  missingColsCheck <- upgradedCols[!upgradedCols %in% names(pas)]
+  for ( i in missingColsCheck ) {
+    pas[[i]] <- NA
+  }
+  
+  # NOTE: Above fixes vectorised missing data, whereas below fixes element-wise
+  # NOTE: missing data. 
+  # TODO: FIXME. Find out why errors are produced with dplyr 
+  # Find missing entries
+  # fixedMissingRecords <- 
+  #   pas %>%  
+  #   dplyr::filter(is.na(.data$stateCode) | is.na(.data$countryCode)) %>% 
+  #   pas_addSpatialMetadata()
+  # 
+  # # Find non-missing entries
+  # nonMissingRecords <- 
+  #   pas %>% 
+  #   dplyr::filter(!is.na(.data$stateCode) & !is.na(.data$countryCode))
+  # 
+  # # Combine the fixed with the valid
+  # pas <- dplyr::bind_rows(nonMissingRecords,fixedMissingRecords)
   
   # Re-oder columns and remove any that are not valid
   pas <- pas[,upgradedCols]

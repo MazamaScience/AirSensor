@@ -38,7 +38,7 @@
 #' @return A PurpleAir Synoptic \emph{pas} object.
 #' 
 #' @seealso \link{pas_load}
-#' @seealso \link{downloadParseSynopticData}
+#' @seealso \link{pas_downloadParseData}
 #' 
 #' @examples
 #' \dontrun{
@@ -82,15 +82,15 @@ pas_createNew <- function(
   
   # Download, parse and enhance synoptic data
   if ( logger.isInitialized() ) {
-    logger.debug("----- downloadParseSynopticData() -----")
+    logger.debug("----- pas_downloadParseData() -----")
   }
-  pas_raw <- downloadParseSynopticData(baseUrl)
+  pas_raw <- pas_downloadParseData(baseUrl)
   
   if ( logger.isInitialized() ) {
-    logger.debug("----- enhanceSynopticData() -----")
+    logger.debug("----- pas_enhanceData() -----")
   }
   
-  pas <- enhanceSynopticData(pas_raw, countryCodes, includePWFSL)
+  pas <- pas_enhanceData(pas_raw, countryCodes, includePWFSL)
   
   # Filter for age
   starttime <- lubridate::now(tzone = "UTC") - lubridate::ddays(lookbackDays)

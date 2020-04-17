@@ -21,7 +21,7 @@ and was generated on 2020-01-03 by running:
 
 \preformatted{
   example_pas_raw <- 
-    downloadParseSynopticData() %>%
+    pas_downloadParseData() %>%
     dplyr::filter(Lon > -125.0 & Lon < -117.0 & Lat > 42.0 & Lat < 49.0)
   save(example_pas_raw, file = "data/example_pas_raw.rda")
 }
@@ -29,7 +29,7 @@ and was generated on 2020-01-03 by running:
 This dataset can be converted into a standard \emph{pas} dataset with:
 
 \preformatted{
-  pas <- enhanceSynopticData(example_pas_raw)
+  pas <- pas_enhanceData(example_pas_raw)
 }
 }
 \seealso{

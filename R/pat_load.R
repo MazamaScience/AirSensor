@@ -9,7 +9,7 @@
 #' \code{setArchiveBaseDir()} for locally archived files.
 #' 
 #' Dates can be anything that is understood by 
-#' \code{lubrdiate::parse_date_time()} including either of the following 
+#' \code{lubridate::parse_date_time()} including either of the following 
 #' recommended formats:
 #' 
 #' \itemize{
@@ -100,7 +100,7 @@ pat_load <- function(
                                           timezone, 
                                           days = days)
   
-  # ----- Asssemble monthly archive files --------------------------------------
+  # ----- Assemble monthly archive files ---------------------------------------
   
   # NOTE:  datestamps here are created with the local timezone. It is the job of
   # NOTE:  pat_loadMonth() to convert these into UTC for use in constructing

@@ -28,9 +28,9 @@
 #' 
 #' @note
 #' The \code{aggregation_FUN}, allows users to pass in custom functions that 
-#' generate new aggrregation statistics. These statistics can then be utilitized 
+#' generate new aggregation statistics. These statistics can then be utilized 
 #' in a custom QC algorithm function. The algorithm function applied is
-#' gnerated from the \code{qc_algorithm} parameter with 
+#' generated from the \code{qc_algorithm} parameter with 
 #' \code{paste0("PurpleAirQC_", qc_algorithm)}.
 #'
 #' @return An "airsensor" object of aggregated PurpleAir Timeseries data.
