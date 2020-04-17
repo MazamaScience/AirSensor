@@ -39,7 +39,7 @@ loaded from the archive set with either \code{setArchiveBaseUrl()} or
 \code{setArchiveBaseDir()} for locally archived files.
 
 Dates can be anything that is understood by 
-\code{lubrdiate::parse_date_time()} including either of the following 
+\code{lubridate::parse_date_time()} including either of the following 
 recommended formats:
 
 \itemize{

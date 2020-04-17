@@ -9,7 +9,7 @@ pat_qc(pat = NULL, removeOutOfSpec = TRUE, max_humidity = NULL)
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object}
 
-\item{removeOutOfSpec}{Logical determinging whether measurements that are
+\item{removeOutOfSpec}{Logical determining whether measurements that are
 out of instrument specs should be invalidated.}
 
 \item{max_humidity}{Maximum humidity threshold above which pm25 measurements
