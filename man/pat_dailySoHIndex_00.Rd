@@ -61,7 +61,7 @@ The \code{index} is calculated in the following manner:
 \item{Otherwise, \code{index = pm25_A_pm25_B_rsquared}}
 }
 
-The \code{breaks} are used to convert \code{index} into the \code{indenx_bin}
+The \code{breaks} are used to convert \code{index} into the \code{index_bin}
 poor-fair-good values.
 }
 \examples{

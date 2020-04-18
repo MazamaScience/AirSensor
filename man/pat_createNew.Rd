@@ -37,7 +37,7 @@ Retrieve and parse timeseries data from the Thingspeak API for
 specific PurpleAir sensors.
 
 Dates can be anything that is understood by 
-\code{lubrdiate::parse_date_time()} including either of the following 
+\code{lubridate::parse_date_time()} including either of the following 
 recommended formats:
 
 \itemize{
