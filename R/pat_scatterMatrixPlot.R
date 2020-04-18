@@ -1,7 +1,7 @@
 #' @export
 #' @import graphics
 #' 
-#' @title Compare all variables in a PurpleAir Timeseries object
+#' @title Draw a matrix of PurpleAir Timeseries data scatter plots
 #' 
 #' @description Creates a multi-panel scatterplot comparing all variables in the
 #' \emph{pat} object. If any variables have no valid data, they are omitted from
@@ -38,10 +38,10 @@
 #'   pat_filterDate(20180811,20180818)
 #' # Warnings are generated when the pat contains NA values
 #' 
-#' pat_scatterplot(pat, sampleSize = 1000)
+#' pat_scatterMatrixPlot(pat, sampleSize = 1000)
 #' }
 
-pat_scatterplot <- function(
+pat_scatterMatrixPlot <- function(
   pat = NULL,
   parameters = c('datetime', 'pm25_A', 'pm25_B', 'temperature', 'humidity'),
   sampleSize = 5000,

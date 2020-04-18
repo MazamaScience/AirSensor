@@ -118,14 +118,14 @@ pat_august %>%
   pat_multiplot(plottype = "pm25_over")
 ```
 
-We can look for correlations in the raw data with `pat_scatterplot()`. When a
+We can look for correlations in the raw data with `pat_scatterMatrixPlot()`. When a
 sensor is properly functioning, the only correlations will be a strong positive
 one between between the A and B channels (`pm25_A:pm25_B`) and a strong
 negative one between temperature and humidity.
 
 ```{r scatterplot, message = FALSE, warning = FALSE}
   pat_august %>%
-    pat_scatterplot()
+    pat_scatterMatrixPlot()
 ```
 
 ## Outlier Detection
