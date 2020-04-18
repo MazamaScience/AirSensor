@@ -101,7 +101,7 @@ plotting functions. Examples include:
 pat_dygraph()
 pat_leaflet()
 pat_multiplot()
-pat_scatterplot()
+pat_scatterMatrixPlot()
 ```
 
 ## Naming Files

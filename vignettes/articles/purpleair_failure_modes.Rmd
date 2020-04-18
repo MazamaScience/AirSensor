@@ -89,7 +89,7 @@ jumps into the thousands and starts tracing the trend of the humidity data
 (plotted directly below).
 
 ```{r, channel_a_humidity_scatter, echo=FALSE, warning=FALSE}
-pat_scatterplot(pat_a_humidity)
+pat_scatterMatrixPlot(pat_a_humidity)
 ```
 
 A glance at these scatterplots gives a us another look at just how uncorrelated 
