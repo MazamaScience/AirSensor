@@ -103,8 +103,8 @@ pat_createAirSensor <- function(
   # ----- Temporal aggregation -------------------------------------------------
   
   # NOTE: For clarification, this function acts to route the aggregation 
-  #       parameters to th respective function. Currently, this method assumes 
-  #       that the function is not annonymous and accepts a pat object and period. 
+  # NOTE: parameters to th respective function. Currently, this method assumes 
+  # NOTE: that the function is not annonymous and accepts a pat object and period. 
   aggregationStats <- aggregation_FUN(pat,
                                       period = period)
   
