@@ -47,54 +47,22 @@
 and presence of core metadata columns:
 ID -- Purple Air ID
 label -- location label
-DEVICE_LOCATIONTYPE -- location descriptor
-THINGSPEAK_PRIMARY_ID -- Thingspeak API access ID
-THINGSPEAK_PRIMARY_ID_READ_KEY -- Thingspeak API access key
-THINGSPEAK_SECONDARY_ID -- Thingspeak API access ID
-THINGSPEAK_SECONDARY_ID_READ_KEY -- Thingspeak API access key
+sensorType -- PurpleAir sensor type
 longitude -- decimal degrees E
 latitude -- decimal degrees N
-pm25 -- latest PM25
-lasteSeenDate -- last update datetime
-sensorType -- PurpleAir sensor type
-flag_hidden -- hidden flag
-isOwner -- owner logical
-humidity -- %
-temperature -- deg F
-pressure -- mb
-age -- sensor age
-parentID -- device parent ID
 timezone -- Olson timezone
-flag_highValue -- out of spec flag
-flag_attenutation_hardware -- hardware failure flag
-Ozone1 -- latest ozone data
-Voc -- latest voc data
-pm25_current -- current PM2.5 data
-pm25_10min -- 10-minute average PM2.5 data
-pm25_30min -- 30-minute average PM2.5 data
-pm25_1hr -- 1-hour average PM2.5 data
-pm25_6hr -- 6-hour average PM2.5 data
-pm25_1day -- 1-day PM2.5 average data
-pm25_1week -- 1-week PM2.5 average data
-statsLastModifiedDate -- last modified date
-statsLastModifiedInterval -- interval between modified date
-deviceID -- unique device identifier
-locationID -- generated location ID
-deviveDeploymentID -- generated unique ID
 countryCode -- ISO 3166-1 alpha-2
 stateCode -- ISO 3166-2 alpha-2
-timezone -- location timezone
-airDistrict -- Air district, if any
-pwfsl_closestDistance -- nearest regulatory monitor distance, meters
-pwfsl_closestMonitorID -- nearest regularoty monitor ID
-sensorManufacturer -- hardware manufacturer
-targetPollutant -- target pollutant data
-technologyType -- type of sensor technology
-communityRegion -- defined regional community.
+pm25_1hr -- hourly PM2.5
+pm25_1day -- daily PM2.5
+temperature -- deg F
+humidity -- %
+pressure -- mb
+deviceID -- unique device identifier
+locationID -- unique location identifier
+deviceDeploymentID -- unique time series identifier
 
-
-The pwfsl_, &quot;official&quot;, monitors are obtained from the USFS AirFire 
-site using the PWFSLSmoke R package." />
+" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -127,7 +95,7 @@ site using the PWFSLSmoke R package." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.17</span>
       </span>
     </div>
 
@@ -221,54 +189,22 @@ site using the PWFSLSmoke R package." />
 and presence of core metadata columns:</p><ul>
 <li><p>ID -- Purple Air ID</p></li>
 <li><p>label -- location label</p></li>
-<li><p>DEVICE_LOCATIONTYPE -- location descriptor</p></li>
-<li><p>THINGSPEAK_PRIMARY_ID -- Thingspeak API access ID</p></li>
-<li><p>THINGSPEAK_PRIMARY_ID_READ_KEY -- Thingspeak API access key</p></li>
-<li><p>THINGSPEAK_SECONDARY_ID -- Thingspeak API access ID</p></li>
-<li><p>THINGSPEAK_SECONDARY_ID_READ_KEY -- Thingspeak API access key</p></li>
+<li><p>sensorType -- PurpleAir sensor type</p></li>
 <li><p>longitude -- decimal degrees E</p></li>
 <li><p>latitude -- decimal degrees N</p></li>
-<li><p>pm25 -- latest PM25</p></li>
-<li><p>lasteSeenDate -- last update datetime</p></li>
-<li><p>sensorType -- PurpleAir sensor type</p></li>
-<li><p>flag_hidden -- hidden flag</p></li>
-<li><p>isOwner -- owner logical</p></li>
-<li><p>humidity -- %</p></li>
-<li><p>temperature -- deg F</p></li>
-<li><p>pressure -- mb</p></li>
-<li><p>age -- sensor age</p></li>
-<li><p>parentID -- device parent ID</p></li>
 <li><p>timezone -- Olson timezone</p></li>
-<li><p>flag_highValue -- out of spec flag</p></li>
-<li><p>flag_attenutation_hardware -- hardware failure flag</p></li>
-<li><p>Ozone1 -- latest ozone data</p></li>
-<li><p>Voc -- latest voc data</p></li>
-<li><p>pm25_current -- current PM2.5 data</p></li>
-<li><p>pm25_10min -- 10-minute average PM2.5 data</p></li>
-<li><p>pm25_30min -- 30-minute average PM2.5 data</p></li>
-<li><p>pm25_1hr -- 1-hour average PM2.5 data</p></li>
-<li><p>pm25_6hr -- 6-hour average PM2.5 data</p></li>
-<li><p>pm25_1day -- 1-day PM2.5 average data</p></li>
-<li><p>pm25_1week -- 1-week PM2.5 average data</p></li>
-<li><p>statsLastModifiedDate -- last modified date</p></li>
-<li><p>statsLastModifiedInterval -- interval between modified date</p></li>
-<li><p>deviceID -- unique device identifier</p></li>
-<li><p>locationID -- generated location ID</p></li>
-<li><p>deviveDeploymentID -- generated unique ID</p></li>
 <li><p>countryCode -- ISO 3166-1 alpha-2</p></li>
 <li><p>stateCode -- ISO 3166-2 alpha-2</p></li>
-<li><p>timezone -- location timezone</p></li>
-<li><p>airDistrict -- Air district, if any</p></li>
-<li><p>pwfsl_closestDistance -- nearest regulatory monitor distance, meters</p></li>
-<li><p>pwfsl_closestMonitorID -- nearest regularoty monitor ID</p></li>
-<li><p>sensorManufacturer -- hardware manufacturer</p></li>
-<li><p>targetPollutant -- target pollutant data</p></li>
-<li><p>technologyType -- type of sensor technology</p></li>
-<li><p>communityRegion -- defined regional community.</p></li>
+<li><p>pm25_1hr -- hourly PM2.5</p></li>
+<li><p>pm25_1day -- daily PM2.5</p></li>
+<li><p>temperature -- deg F</p></li>
+<li><p>humidity -- %</p></li>
+<li><p>pressure -- mb</p></li>
+<li><p>deviceID -- unique device identifier</p></li>
+<li><p>locationID -- unique location identifier</p></li>
+<li><p>deviceDeploymentID -- unique time series identifier</p></li>
 </ul>
 
-<p>The <code>pwfsl_</code>, "official", monitors are obtained from the USFS AirFire 
-site using the <span class="pkg">PWFSLSmoke</span> R package.</p>
     </div>
 
     <pre class="usage"><span class='fu'>pas_isPas</span>(<span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
@@ -285,6 +221,9 @@ site using the <span class="pkg">PWFSLSmoke</span> R package.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>TRUE</code> if <code>pas</code> has the correct structure, <code>FALSE</code> otherwise.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='pas_enhanceData.html'>pas_enhanceData</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>pas_isPas</span>(<span class='no'>example_pas</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>pas_isPas</span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='output co'>#&gt; [1] FALSE</div></pre>
@@ -294,6 +233,7 @@ site using the <span class="pkg">PWFSLSmoke</span> R package.</p>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

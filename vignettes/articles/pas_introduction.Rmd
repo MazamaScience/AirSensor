@@ -236,13 +236,13 @@ n_sensors %>%
   arrange(desc(sensorCount)) %>% 
   knitr::kable(
     col.names = c("Sensor Count", "County"),
-    caption = "Counties with >50 PurpleAir Sensors"
+    caption = "Counties with >50 Sensors"
   )
 ```
 
 #### Chloropleth Map
 
-We can visualize the amount of PurpleAir sensors per county using the
+We can visualize the number of PurpleAir sensors per county using the
 **tmap** package. Here we create a "chloropleth" map, where each county is 
 filled with a color representing the number of PurpleAir sensors it contains. 
 
@@ -268,7 +268,7 @@ Sometimes a barplot is preferable for reading off values. Here is an
 example showing the top 15 counties with the the most PurpleAir sensors that are 
 active.  
 
-```{r n_sensors_barplot, fig.width = 5}
+```{r n_sensors_barplot, fig.width = 7, fig.height = 7}
 # Sort the counties by the number of PurpleAir sensors
 sorted_n_sensors <- 
   n_sensors %>% 
@@ -322,7 +322,7 @@ It is important to clarify that this data **_does not_** represent a region's
 avaliable PurpleAir sensors without any regard for how they are spatially
 distributed.
 
-### Chloropleth 
+### PM2.5 Weekly Average Map 
 
 In a similar fashion to that illustrated above, we can also create a 1-week 
 PurpleAir averages per county chloropleth map.  
@@ -340,7 +340,7 @@ tm_shape(mean_pm25) +
   )
 ```
 
-#### Barplot
+#### PM2.5 Weekly Average Barplot
 
 Just as before, a barplot is sometimes a better choice. Below is an example of 
 plotting the Top 15 1-week PurpleAir county averages.
@@ -350,10 +350,10 @@ plotting the Top 15 1-week PurpleAir county averages.
 top15_mean_pm25 <- 
   mean_pm25 %>% 
   arrange(desc(pm25_weeklyMean)) %>% 
-  head(n = 15)
+  head(n = 30)
 
-# NOTE:  The color legend is not identical to the legend above becuase we are
-# NOTE:  only plotting a subset of all counties.
+# NOTE:  The color legend may not be identical to the legend above becuase we
+# NOTE:  are only plotting a subset of all counties.
 
 ggplot(top15_mean_pm25) + 
   geom_col(aes(

@@ -50,6 +50,6 @@ initializeMazamaSpatialUtils <- function(
   MazamaSpatialUtils::loadSpatialData(stateCodeDataset)
   
   # Add env varibale for initialization detection
-  Sys.setenv(SPATIAL_INIT = TRUE)
+  Sys.setenv(SPATIAL_IS_INITIALIZED = "TRUE")
   
 }

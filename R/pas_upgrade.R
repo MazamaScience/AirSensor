@@ -60,13 +60,15 @@
 #' }
 #' 
 #' @examples
+#' \donttest{
 #' # Use outdated pa_synoptic database
 #' setArchiveBaseUrl('http://smoke.mazamascience.com/data/PurpleAir/')
 #' # Initialize the required spatial utilities
 #' initializeMazamaSpatialUtils()
 #' pas <- 
 #'   pas_load() %>%
-#'   pas_upgrade() 
+#'   pas_upgrade()
+#' } 
 
 pas_upgrade <- function(
   pas = NULL, 
@@ -79,16 +81,17 @@ pas_upgrade <- function(
   MazamaCoreUtils::stopIfNull(verbose)
   
   # Check if Mazama Spatial Utilites has been initialized 
-  if ( !as.logical(Sys.getenv('SPATIAL_INIT')) || 
-       Sys.getenv('SPATIAL_INIT') == '' ) {
-    stop('MazamaSpatialUtils uninitialized. 
-         Please initialize with `initializeMazamaSpatialUtils()`')
+  if ( !as.logical(Sys.getenv("SPATIAL_IS_INITIALIZED")) || 
+       Sys.getenv("SPATIAL_IS_INITIALIZED") == "" ) {
+    stop("MazamaSpatialUtils is not initialized. 
+         Please initialize with initializeMazamaSpatialUtils()")
   }
   
   # ----- pa_synoptic Upgrade --------------------------------------------------
   
-  # NOTE: Upgraded pa_synoptic data columns generated 2020-04-09
-  #       via `AirSensor::pas_createNew()`
+  # NOTE:  Upgraded pa_synoptic data columns generated 2020-04-09
+  # NOTE:  via `AirSensor::pas_createNew()`
+  
   upgradedCols <- 
     c(
       "ID",                               "label",                            "DEVICE_LOCATIONTYPE",             
@@ -116,7 +119,7 @@ pas_upgrade <- function(
     # NOTE: which is essentially just "enhancing" but without an assumed 
     # NOTE: `pas_downloadParseData` structure.
     
-    # define the missing columns from the upgraded columns
+    # Define the missing columns from the upgraded columns
     missingCols <- upgradedCols[!upgradedCols %in% names(pas)]
     
     # Add spatial metadata 

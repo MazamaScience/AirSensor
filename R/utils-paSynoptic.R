@@ -96,10 +96,22 @@ pas_isEmpty <- function(pas) {
 #' 
 #' @param pas A \emph{pa_synoptic} object.
 #' 
-#' @return \code{TRUE} if no data exist in \code{pas}, \code{FALSE} otherwise.
+#' @return \code{TRUE} if \code{pas} contains core spatial metadata, 
+#' \code{FALSE} otherwise.
 #' 
-#' @description Convenience function for \code{nrow(pas) == 0}.
-#' This makes for more readable code in functions that need to test for this.
+#' @description Tests for the existence of the following core spatial metadata 
+#' columns:
+#' 
+#' \itemize{
+#'   \item{longitude -- decimal degrees E}
+#'   \item{latitude -- decimal degrees N}
+#'   \item{timezone -- Olson timezone}
+#'   \item{countryCode -- ISO 3166-1 alpha-2}
+#'   \item{stateCode -- ISO 3166-2 alpha-2}
+#' }
+#' 
+#' If these columns are missing, they can be added by with
+#' \code{\link{pas_addSpatialMetadata}}.
 #' 
 #' @examples
 #' pas <- example_pas
@@ -109,19 +121,18 @@ pas_hasSpatial <- function(pas) {
   
   if ( is.null(pas) ) return(FALSE)
   
-  # Test the following -- added via pas_addSpatialMetadata
+  # Test the following -- added via pas_addSpatialMetadata()
   parameters <- c(
     "longitude", "latitude", "timezone", "countryCode", "stateCode"
   )
   
-  if ( !all(parameters %in% names(pas)) ) {
+  if ( all(parameters %in% names(pas)) ) {
     
-    return(FALSE)
+    return(TRUE)
     
   } else {
     
-    # Nothing failed so return TRUE
-    return(TRUE)
+    return(FALSE)
     
   }
   

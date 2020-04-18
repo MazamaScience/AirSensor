@@ -49,13 +49,13 @@ pas object:
 &quot;pm25&quot; &quot;temperature&quot; &quot;humidity&quot; &quot;pressure&quot; 
  &quot;pm25_current&quot; &quot;pm25_10min&quot; &quot;pm25_30min&quot; &quot;pm25_1hr&quot; &quot;pm25_6hr&quot; 
  &quot;pm25_1day&quot; &quot;pm25_1week&quot; &quot;pwfsl_closestDistance&quot;
-Available palette options include an &quot;AQI&quot; color palette, 
+Available paletteName options include an &quot;AQI&quot; color palette, 
 as well as a suite of sequential and diverging palettes from the 
 RColorBrewer R package.
-The sequential palettes names are 
+The sequential palette names are 
 &quot;Blues&quot; &quot;BuGn&quot; &quot;BuPu&quot; &quot;GnBu&quot; &quot;Greens&quot; &quot;Greys&quot; &quot;Oranges&quot; &quot;OrRd&quot; &quot;PuBu&quot; 
  &quot;PuBuGn&quot; &quot;PuRd&quot; &quot;Purples&quot; &quot;RdPu&quot; &quot;Reds&quot; &quot;YlGn&quot; &quot;YlGnBu&quot; &quot;YlOrBr&quot; &quot;YlOrRd&quot;
-The diverging palettes are
+The diverging palette names are
 &quot;BrBG&quot; &quot;PiYG&quot; &quot;PRGn&quot; &quot;PuOr&quot; &quot;RdBu&quot; &quot;RdGy&quot; &quot;RdYlBu&quot; &quot;RdYlGn&quot; &quot;Spectral&quot;
 Additional map tile info found at:
 http://maps.stamen.com/" />
@@ -91,7 +91,7 @@ http://maps.stamen.com/" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.17</span>
       </span>
     </div>
 
@@ -187,13 +187,13 @@ http://maps.stamen.com/" />
 <p><code>"pm25" "temperature" "humidity" "pressure" 
  "pm25_current" "pm25_10min" "pm25_30min" "pm25_1hr" "pm25_6hr" 
  "pm25_1day" "pm25_1week" "pwfsl_closestDistance"</code></p>
-<p>Available <code>palette</code> options include an <code>"AQI"</code> color palette, 
+<p>Available <code>paletteName</code> options include an <code>"AQI"</code> color palette, 
 as well as a suite of sequential and diverging palettes from the 
 <span class="pkg">RColorBrewer</span> R package.</p>
-<p>The sequential palettes names are</p> 
+<p>The sequential palette names are</p> 
 <p><code>"Blues" "BuGn" "BuPu" "GnBu" "Greens" "Greys" "Oranges" "OrRd" "PuBu" 
  "PuBuGn" "PuRd" "Purples" "RdPu" "Reds" "YlGn" "YlGnBu" "YlOrBr" "YlOrRd"</code></p>
-<p>The diverging palettes are</p>
+<p>The diverging palette names are</p>
 <p><code>"BrBG" "PiYG" "PRGn" "PuOr" "RdBu" "RdGy" "RdYlBu" "RdYlGn" "Spectral"</code></p>
 <p>Additional map tile info found at:
 <a href='http://maps.stamen.com/'>http://maps.stamen.com/</a></p>
@@ -202,7 +202,7 @@ as well as a suite of sequential and diverging palettes from the
     <pre class="usage"><span class='fu'>pas_staticMap</span>(
   <span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>"pm25_1hr"</span>,
-  <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"Purples"</span>,
+  <span class='kw'>paletteName</span> <span class='kw'>=</span> <span class='st'>"Purples"</span>,
   <span class='kw'>mapTheme</span> <span class='kw'>=</span> <span class='st'>"terrain"</span>,
   <span class='kw'>mapShape</span> <span class='kw'>=</span> <span class='st'>"sq"</span>,
   <span class='kw'>direction</span> <span class='kw'>=</span> <span class='fl'>1</span>,
@@ -228,8 +228,8 @@ as well as a suite of sequential and diverging palettes from the
       <td><p>Value to plot, e.g. <code>pm25_1hr</code>.</p></td>
     </tr>
     <tr>
-      <th>palette</th>
-      <td><p>Base color or palette to be used.</p></td>
+      <th>paletteName</th>
+      <td><p>Base color or palette name to be used.</p></td>
     </tr>
     <tr>
       <th>mapTheme</th>
@@ -286,7 +286,7 @@ and renamed with <code>name= "Example name"</code>.</p></td>
     <pre class="examples"><div class='input'><span class='no'>LA_basin</span> <span class='kw'>&lt;-</span>
   <span class='no'>example_pas</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='pas_filterArea.html'>pas_filterArea</a></span>(-<span class='fl'>118.5</span>, -<span class='fl'>117.5</span>, <span class='fl'>33.5</span>, <span class='fl'>34.5</span>)
-<span class='fu'>pas_staticMap</span>(<span class='no'>LA_basin</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"AQI"</span>, <span class='kw'>zoomAdjust</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='img'><img src='pas_staticMap-1.png' alt='' width='700' height='433' /></div></pre>
+<span class='fu'>pas_staticMap</span>(<span class='no'>LA_basin</span>, <span class='kw'>paletteName</span> <span class='kw'>=</span> <span class='st'>"AQI"</span>, <span class='kw'>zoomAdjust</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='img'><img src='pas_staticMap-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

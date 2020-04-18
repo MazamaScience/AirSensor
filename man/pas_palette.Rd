@@ -29,3 +29,7 @@ calculated color values from PurpleAir sensors
 Generates color palettes for PurpleAir synoptic data with the 
 intention of having a reproducible functional color generator.
 }
+\note{
+The \code{paletteName} parameter can take the name of an RColorBrewer
+paeltte, \emph{e.g.} \code{"BuPu"} or \code{"Greens"}.
+}

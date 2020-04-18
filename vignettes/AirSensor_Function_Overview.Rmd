@@ -24,21 +24,21 @@ following functions are the most common end-user functions:
 | function | params |
 |:------|:-----|
 | **Creating a `pas`** |  |
-| `pas_createNew()` | `baseUrl, countryCodes, includePWFSL, lookbackDays` |
+| `pas_createNew()` | `countryCodes, includePWFSL, lookbackDays, baseUrl` |
 | **Loading a `pas`** |  |
 | `pas_load()` | `datestamp, retries, timezone, archival` | 
 | **Obtaining information from a `pas`** |  |
-| `pas_getColumn()` | `pas, name, states, pattern, isOutside, isParent` |
-| `pas_getDeviceDeploymentIDs()` | `pas, states, pattern, isOutside, isParent` |
-| `pas_getIDs()` | `pas, states, pattern, isOutside, isParent` |
-| `pas_getLabels()` | `pas, states, pattern, isOutside, isParent` |
+| `pas_getColumn()` | `pas, name, pattern, isOutside, isParent` |
+| `pas_getDeviceDeploymentIDs()` | `pas, pattern, isOutside, isParent` |
+| `pas_getIDs()` | `pas, pattern, isOutside, isParent` |
+| `pas_getLabels()` | `pas, pattern, isOutside, isParent` |
 | **Mainpulating a `pas`** |  |
 | `pas_filter()` | `pas, ...` |
 | `pas_filterArea()` | `pas, w, e, s, n` |
 | `pas_filterNear()` | `pas, longitude, latitude, radius` |
 | **Plotting a `pas`** | |
-| `pas_leaflet()` | `pas, parameter, ...` |
-| `pas_staticMap()` | `pas, parameter, ...` |
+| `pas_leaflet()` | `pas, parameter, paletteName, ...` |
+| `pas_staticMap()` | `pas, parameter, paletteName, ...` |
 
 ## Timeseries Data
 

@@ -2,6 +2,20 @@
 #' 
 #' @title Leaflet interactive map of PurpleAir sensors
 #' 
+#' @param pas PurpleAir Synoptic \emph{pas} object.
+#' @param parameter Value to plot, e.g. \code{pm25_1hr}.
+#' @param paletteName Predefined color palette name. Can be of the following:
+#' \itemize{
+#' \item{"AQI"}
+#' \item{"humidity}
+#' \item{"temperature}
+#' \item{"distance"}
+#' }
+#' @param radius Radius (pixels) of monitor circles.
+#' @param opacity Opacity of monitor circles.
+#' @param maptype Optional name of leaflet ProviderTiles to use, e.g. \code{terrain}. 
+#' @param outsideOnly Logical specifying subsetting for monitors marked as 'outside'.
+#' 
 #' @description This function creates interactive maps that will be displayed in 
 #'   RStudio's 'Viewer' tab.
 #'
@@ -40,19 +54,8 @@
 #' \url{https://leaflet-extras.github.io/leaflet-providers/} for a list of 
 #' "provider tiles" to use as the background map.
 #' 
-#' @param pas PurpleAir Synoptic \emph{pas} object.
-#' @param parameter Value to plot, e.g. \code{pm25_1hr}.
-#' @param paletteName Predefined color palette name. Can be of the following:
-#' \itemize{
-#' \item{"AQI"}
-#' \item{"humidity}
-#' \item{"temperature}
-#' \item{"distance"}
-#' }
-#' @param radius Radius (pixels) of monitor circles.
-#' @param opacity Opacity of monitor circles.
-#' @param maptype Optional name of leaflet ProviderTiles to use, e.g. \code{terrain}. 
-#' @param outsideOnly Logical specifying subsetting for monitors marked as 'outside'.
+#' @note The \code{paletteName} parameter can take the name of an RColorBrewer
+#' paeltte, \emph{e.g.} \code{"BuPu"} or \code{"Greens"}.
 #' 
 #' @return A leaflet "plot" object which, if not assigned, is rendered in 
 #' Rstudio's 'Viewer' tab.

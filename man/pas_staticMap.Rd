@@ -7,7 +7,7 @@
 pas_staticMap(
   pas = NULL,
   parameter = "pm25_1hr",
-  palette = "Purples",
+  paletteName = "Purples",
   mapTheme = "terrain",
   mapShape = "sq",
   direction = 1,
@@ -26,7 +26,7 @@ pas_staticMap(
 
 \item{parameter}{Value to plot, e.g. \code{pm25_1hr}.}
 
-\item{palette}{Base color or palette to be used.}
+\item{paletteName}{Base color or palette name to be used.}
 
 \item{mapTheme}{Default is "terrain", see description for additional options.}
 
@@ -64,16 +64,16 @@ Users can create a map using any numeric data column within the
  "pm25_current" "pm25_10min" "pm25_30min" "pm25_1hr" "pm25_6hr" 
  "pm25_1day" "pm25_1week" "pwfsl_closestDistance"}
 
-Available \code{palette} options include an \code{"AQI"} color palette, 
+Available \code{paletteName} options include an \code{"AQI"} color palette, 
 as well as a suite of sequential and diverging palettes from the 
 \pkg{RColorBrewer} R package.
 
-The sequential palettes names are
+The sequential palette names are
  
 \code{"Blues" "BuGn" "BuPu" "GnBu" "Greens" "Greys" "Oranges" "OrRd" "PuBu" 
  "PuBuGn" "PuRd" "Purples" "RdPu" "Reds" "YlGn" "YlGnBu" "YlOrBr" "YlOrRd"}
 
-The diverging palettes are 
+The diverging palette names are 
 
 \code{"BrBG" "PiYG" "PRGn" "PuOr" "RdBu" "RdGy" "RdYlBu" "RdYlGn" "Spectral"}
 
@@ -84,6 +84,6 @@ Additional map tile info found at:
 LA_basin <- 
   example_pas \%>\% 
   pas_filterArea(-118.5, -117.5, 33.5, 34.5)
-pas_staticMap(LA_basin, palette = "AQI", zoomAdjust = 1)
+pas_staticMap(LA_basin, paletteName = "AQI", zoomAdjust = 1)
 }
 \keyword{pa_synoptic}

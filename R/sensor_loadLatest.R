@@ -21,11 +21,11 @@
 #' 
 #' @examples
 #' \donttest{
-#' # TODO:  This needs to be updated to use USFS data
-#' setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
-#' sensor_loadLatest("scaqmd") %>%
-#'   PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
-#' }
+#' ## TODO:  Update sensor_loadLatest() example when USFS airsensor data becomes available.
+#' #setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
+#' #sensor_loadLatest("scaqmd") %>%
+#' #  PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
+#' #}
 
 sensor_loadLatest <- function(
   collection = "scaqmd",

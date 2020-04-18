@@ -1,3 +1,11 @@
+# AirSensor 0.6.17
+
+* Renamed `downloadParseSynopticData()` to `pas_downloadParseData()`.
+* Renamed `enhanceSynopticData()` to `pas_enhanceData()`.
+* New functions used in creating `pas` objects: `pas_addAirDistrict()`,
+`pas_addSpatialMetadata()`, `pas_addUniqueIDs()`, `pas_addUniqueIDs()`,
+`pas_hasSpatial()`.
+
 # AirSensor 0.6.16
 
 * New `pas_upgrade()` function to upgrade `pas` files created with 

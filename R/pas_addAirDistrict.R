@@ -33,50 +33,56 @@ pas_addAirDistrict <- function(
   MazamaCoreUtils::stopIfNull(pas)
   
   if ( !pas_hasSpatial(pas) ) {
-    stop('Parameter `pas` does not contain required spatial metadata.
-          See `pas_addSpatialMetadata()` to add spatial meta data.')
+    stop("Parameter 'pas' does not contain required spatial metadata.
+          See 'pas_addSpatialMetadata()' to add spatial meta data.")
   }
   
   # ----- CARB Air Districts ---------------------------------------------------
   
   # NOTE: Currently (2020-04) only California Air basins is supported. 
   
-  result <- try({ 
-    CA_AirBasins <- get(MazamaSpatialUtils::loadSpatialData("CA_AirBasins_01"))
-  }, silent = TRUE)
-  
-  if ( "try-error" %in% class(result) ) {
+  if ( "CA" %in% pas$stateCode ) {
     
-    logger.warn("Unable to load spatial data 'CA_AirBasins'.")
+    result <- try({ 
+      CA_AirBasins <- get(MazamaSpatialUtils::loadSpatialData("CA_AirBasins_01"))
+    }, silent = TRUE)
     
-  } else {
-    
-    pas_CA <- 
-      pas %>% 
-      dplyr::filter(.data$countryCode == "US" & .data$stateCode == "CA")
-    
-    if ( nrow(pas_CA) > 0 ) {
+    if ( "try-error" %in% class(result) ) {
       
-      pas_CA$airDistrict <- 
-        MazamaSpatialUtils::getSpatialData(
-          pas_CA$longitude,
-          pas_CA$latitude,
-          CA_AirBasins,
-          useBuffering = TRUE
-        ) %>%
-        dplyr::pull("name")
+      logger.warn("Unable to load spatial data 'CA_AirBasins'.")
       
-      pas_nonCA <-  
+    } else {
+      
+      pas_CA <- 
         pas %>% 
-        dplyr::filter(.data$countryCode != "US" | .data$stateCode != "CA")
+        dplyr::filter(.data$countryCode == "US" & .data$stateCode == "CA")
       
-      pas_nonCA$airDistrict <- as.character(NA)
+      if ( nrow(pas_CA) > 0 ) {
+        
+        pas_CA$airDistrict <- 
+          MazamaSpatialUtils::getSpatialData(
+            pas_CA$longitude,
+            pas_CA$latitude,
+            CA_AirBasins,
+            useBuffering = TRUE
+          ) %>%
+          dplyr::pull("name")
+        
+        pas_nonCA <-  
+          pas %>% 
+          dplyr::filter(.data$countryCode != "US" | .data$stateCode != "CA")
+        
+        pas_nonCA$airDistrict <- as.character(NA)
+        
+        pas <- dplyr::bind_rows(pas_CA, pas_nonCA)
+        
+      }
       
-      pas <- dplyr::bind_rows(pas_CA, pas_nonCA)
-      
-    }
+    } # END of CA_AirBasins exists
     
-  }
+  } # END of "CA" %in% pas$stateCode
+ 
+  # ----- Return --------------------------------------------------------------- 
   
   # Add airDistrict if it hasn't already been added
   if ( !"airDistrict" %in% names(pas) ) {
