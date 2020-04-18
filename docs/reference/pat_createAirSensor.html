@@ -43,9 +43,10 @@
 
 
 <meta property="og:title" content="Create an Air Sensor object — pat_createAirSensor" />
-<meta property="og:description" content="Aggregates data from a pat object into an 
-airsensor object that has appropriate metadata to be used with the 
-*PWFSLSmoke* package.
+<meta property="og:description" content="Converts data from a pat object with an irregular time 
+axis to an airsensor object where the numeric data has been aggregated 
+along a standardized hourly time axis, as well as adding additional required 
+metadata for compatibility with the *PWFSLSmoke* package.
 Current QC algorithms exist for channel = &quot;ab&quot; and include:
 hourly_AB_00
 hourly_AB_01
@@ -83,7 +84,7 @@ hourly_AB_01
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.17</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0</span>
       </span>
     </div>
 
@@ -173,9 +174,10 @@ hourly_AB_01
     </div>
 
     <div class="ref-description">
-    <p>Aggregates data from a <em>pat</em> object into an 
-<em>airsensor</em> object that has appropriate metadata to be used with the 
-*PWFSLSmoke* package.</p>
+    <p>Converts data from a <em>pat</em> object with an irregular time 
+axis to an <em>airsensor</em> object where the numeric data has been aggregated 
+along a standardized hourly time axis, as well as adding additional required 
+metadata for compatibility with the *PWFSLSmoke* package.</p>
 <p>Current QC algorithms exist for <code>channel = "ab"</code> and include:</p><ul>
 <li><p><code>hourly_AB_00</code></p></li>
 <li><p><code>hourly_AB_01</code></p></li>
@@ -244,7 +246,8 @@ generated from the <code>qc_algorithm</code> parameter with
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='PurpleAirQC_hourly_AB_00.html'>PurpleAirQC_hourly_AB_00</a></p>
-<p><a href='PurpleAirQC_hourly_AB_01.html'>PurpleAirQC_hourly_AB_01</a></p></div>
+<p><a href='PurpleAirQC_hourly_AB_01.html'>PurpleAirQC_hourly_AB_01</a></p>
+<p><a href='pat_aggregate.html'>pat_aggregate</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>

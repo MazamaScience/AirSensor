@@ -1,4 +1,4 @@
-FROM mazamascience/pwfslsmoke:1.2.100
+FROM mazamascience/pwfslsmoke:1.2.106
 MAINTAINER "Jonathan Callahan" jonathan@mazamascience.com
 
 #######################################################################
@@ -43,7 +43,7 @@ RUN installGithub.r \
 
 WORKDIR /
 
-COPY AirSensor_0.6.10.tar.gz /
+COPY AirSensor_0.7.0.tar.gz /
 
-RUN R CMD INSTALL AirSensor_0.6.10.tar.gz
+RUN R CMD INSTALL AirSensor_0.7.0.tar.gz
 

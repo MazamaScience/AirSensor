@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.17</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0</span>
       </span>
     </div>
 
@@ -258,16 +258,16 @@
 <a class="sourceLine" id="cb11-17" data-line-number="17"><span class="co"># Look at a random sample of this new dataframe</span></a>
 <a class="sourceLine" id="cb11-18" data-line-number="18">dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(raw_data, <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>##      datetime channel  pm25
-## 1  2019061101  pm25_B  8.94
-## 2  2019061120  pm25_A 11.96
-## 3  2019061111  pm25_A 12.94
-## 4  2019061122  pm25_A 15.77
-## 5  2019061111  pm25_A  9.24
-## 6  2019061114  pm25_A  6.12
-## 7  2019061105  pm25_B  4.97
-## 8  2019061103  pm25_B  4.57
-## 9  2019061115  pm25_B  9.83
-## 10 2019061110  pm25_A 11.67</code></pre>
+## 1  2019061119  pm25_B  8.97
+## 2  2019061103  pm25_B  4.79
+## 3  2019061110  pm25_B  7.29
+## 4  2019061119  pm25_A 11.20
+## 5  2019061118  pm25_B  7.76
+## 6  2019061104  pm25_B  4.24
+## 7  2019061119  pm25_A  9.62
+## 8  2019061105  pm25_A  9.18
+## 9  2019061107  pm25_A  9.68
+## 10 2019061109  pm25_B  7.50</code></pre>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="co"># Create a timeseries using boxplots</span></a>
 <a class="sourceLine" id="cb13-2" data-line-number="2">colors &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="https://rdrr.io/r/grDevices/rgb.html">rgb</a></span>(<span class="fl">0.9</span>, <span class="fl">0.25</span>, <span class="fl">0.2</span>), <span class="kw"><a href="https://rdrr.io/r/grDevices/rgb.html">rgb</a></span>(<span class="fl">0.2</span>, <span class="fl">0.25</span>, <span class="fl">0.9</span>))</a>
 <a class="sourceLine" id="cb13-3" data-line-number="3"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(raw_data, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(datetime, pm25, <span class="dt">color =</span> channel)) <span class="op">+</span><span class="st"> </span></a>
@@ -290,16 +290,16 @@
 <p><img src="purpleair_qc_files/figure-html/AB_boxplot-2.png" width="672"></p>
 <p>And here is the same for a day with serious problems:</p>
 <pre><code>##      datetime channel    pm25
-## 1  2019061208  pm25_A 3328.93
-## 2  2019061206  pm25_A   68.46
-## 3  2019061213  pm25_B   15.81
-## 4  2019061216  pm25_B      NA
-## 5  2019061203  pm25_B   13.17
-## 6  2019061209  pm25_B   18.18
-## 7  2019061218  pm25_A   13.52
-## 8  2019061211  pm25_B   18.43
-## 9  2019061210  pm25_B   15.24
-## 10 2019061201  pm25_B   13.65</code></pre>
+## 1  2019061209  pm25_A   19.60
+## 2  2019061202  pm25_B   12.44
+## 3  2019061200  pm25_A   24.74
+## 4  2019061222  pm25_A 3333.22
+## 5  2019061219  pm25_B   11.46
+## 6  2019061202  pm25_A   16.71
+## 7  2019061215  pm25_A   15.78
+## 8  2019061214  pm25_B   15.91
+## 9  2019061214  pm25_B   15.65
+## 10 2019061219  pm25_B   11.33</code></pre>
 <p><img src="purpleair_qc_files/figure-html/AB_boxplot_2-1.png" width="672"><img src="purpleair_qc_files/figure-html/AB_boxplot_2-2.png" width="672"></p>
 <p>We can see that the null hypothesis – the difference in means is entirely due to chance – is extremely unlikely <code>pm25_p &lt; 1e-30</code>, for example, only occur for hours where the A and B channels have hourly avergaes that are both highly precise (low std dev) and very different. We can thus use the <code>pm25_t</code> variable to flag those hours where the A and B channels disagree.</p>
 </div>

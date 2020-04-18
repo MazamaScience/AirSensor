@@ -1,3 +1,7 @@
+# AirSensor 0.7.0
+
+* Renamed `pat_scatterplot()` to `pat_scatterMatrixPlot()`.
+
 # AirSensor 0.6.17
 
 * Renamed `downloadParseSynopticData()` to `pas_downloadParseData()`.
