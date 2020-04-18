@@ -18,7 +18,7 @@ library(rmarkdown)
 library(tidyr)
 library(ggplot2)
 library(RColorBrewer)
-setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 pas <- example_pas
 
 ```

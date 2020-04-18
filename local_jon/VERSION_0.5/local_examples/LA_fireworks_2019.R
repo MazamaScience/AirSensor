@@ -2,7 +2,7 @@ library(PWFSLSmoke)
 library(AirMonitorPlots)
 library(AirSensor)
 
-setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 
 # Download hourly data and use PWFSLSmoke routines to manipulate it
 scap_hourly <-

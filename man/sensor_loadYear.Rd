@@ -37,9 +37,9 @@ PurpleAir sensors.
 }
 \examples{
 \donttest{
-setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
-sensor_loadYear("scaqmd", 2018) \%>\%
-  PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
+#setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+#sensor_loadYear("scaqmd", 2018) \%>\%
+#   PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
 }
 }
 \seealso{

@@ -9,7 +9,7 @@ library(skimr)
 library(MazamaLocationUtils)
 library(AirSensor)
 
-setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 
 pas <- pas_load()
 

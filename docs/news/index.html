@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.1</span>
       </span>
     </div>
 
@@ -129,9 +129,6 @@
     <li>
       <a href="../articles/articles/purpleair_sensors.html">Purple Air Sensors</a>
     </li>
-    <li>
-      <a href="../articles/articles/working_with_wind_data.html">Working With Wind Data</a>
-    </li>
   </ul>
 </li>
 <li>
@@ -162,11 +159,18 @@
       <small>Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="airsensor-0-7-1" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-7-1" class="anchor"></a>AirSensor 0.7.1</h1>
+<ul>
+<li>Updated example <code>archiveBaseUrl</code> from <code>http://smoke.mazamascience.com/data/PurpleAir</code> to <code>http://data.mazamascience.com/PurpleAir/v1</code>.</li>
+</ul>
+</div>
     <div id="airsensor-0-7-0" class="section level1">
 <h1 class="page-header">
 <a href="#airsensor-0-7-0" class="anchor"></a>AirSensor 0.7.0</h1>
 <ul>
-<li>Renamed <code><a href="../reference/pat_scatterplot.html">pat_scatterplot()</a></code> to <code>pat_scatterMatrixPlot()</code>.</li>
+<li>Renamed <code>pat_scatterplot()</code> to <code><a href="../reference/pat_scatterMatrixPlot.html">pat_scatterMatrixPlot()</a></code>.</li>
 </ul>
 </div>
     <div id="airsensor-0-6-17" class="section level1">
@@ -622,7 +626,7 @@
 <li>New <code><a href="../reference/setArchiveBaseUrl.html">setArchiveBaseUrl()</a></code> and <code><a href="../reference/getArchiveBaseUrl.html">getArchiveBaseUrl()</a></code> functions allow per session specification of the location of pre-generated data files.</li>
 <li>Removed <code>baseUrl</code> parameter from all data loading functions. Now users must begin a session with <code><a href="../reference/setArchiveBaseUrl.html">setArchiveBaseUrl()</a></code>.</li>
 <li>Modified behavior of <code><a href="../reference/sensor_load.html">sensor_load()</a></code> to trim data to the requested time range.</li>
-<li>Fixed bug in <code><a href="../reference/pat_scatterplot.html">pat_scatterplot()</a></code> that generated an error when the number of records in the <code>pat</code> object was fewer than the <code>sampleSize</code> parameter.</li>
+<li>Fixed bug in <code>pat_scatterplot()</code> that generated an error when the number of records in the <code>pat</code> object was fewer than the <code>sampleSize</code> parameter.</li>
 </ul>
 </div>
     <div id="airsensor-0-3-15" class="section level1">
@@ -723,7 +727,7 @@
 </li>
 <li>Default required data retentaion rate during hourly aggregation was increased from 10/30 to 20/30 (<code>min_count = 20</code>).</li>
 <li>Improved examples in the documentation.</li>
-<li>Suppressing warnings from <code><a href="../reference/pat_scatterplot.html">pat_scatterplot()</a></code>.</li>
+<li>Suppressing warnings from <code>pat_scatterplot()</code>.</li>
 <li>Updated “PurpleAir Timeseries” vignette.</li>
 <li>Added <code>returnAllColumns</code> option to `PurpleAirQC_~1 functions.</li>
 <li>New <code>PurpleQC_validationPlot()</code> function.</li>
@@ -844,7 +848,7 @@
 <h1 class="page-header">
 <a href="#airsensor-0-2-15" class="anchor"></a>AirSensor 0.2.15</h1>
 <ul>
-<li>Fixed default parameters bug in <code><a href="../reference/pat_scatterplot.html">pat_scatterplot()</a></code>
+<li>Fixed default parameters bug in <code>pat_scatterplot()</code>
 </li>
 <li>New shiny utilities for AirShiny</li>
 </ul>
@@ -1003,7 +1007,7 @@
 <code><a href="../reference/pat_multiplot.html">pat_multiplot()</a></code> time axis now in sensor local time</li>
 <li>
 <code><a href="../reference/pat_multiplot.html">pat_multiplot()</a></code> has a new <code>pm25_over</code> plottype</li>
-<li>much improved <code><a href="../reference/pat_scatterplot.html">pat_scatterplot()</a></code>
+<li>much improved <code>pat_scatterplot()</code>
 </li>
 </ul>
 </div>
@@ -1028,7 +1032,7 @@
 <ul>
 <li>renamed package to <em>AirSensor</em>
 </li>
-<li>renamed <code>pat_internalData()</code> to <code><a href="../reference/pat_scatterplot.html">pat_scatterplot()</a></code> with improved functionality</li>
+<li>renamed <code>pat_internalData()</code> to <code>pat_scatterplot()</code> with improved functionality</li>
 <li>renamed <code><a href="../reference/pat_outliers.html">pat_outliers()</a></code> to <code><a href="../reference/pat_outliers.html">pat_outliers()</a></code> with improved functionality</li>
 <li>new utility functions <code><a href="../reference/pat_isPat.html">pat_isPat()</a></code>, <code><a href="../reference/pat_isEmpty.html">pat_isEmpty()</a></code>, <code><a href="../reference/pat_extractDataFrame.html">pat_extractMeta()</a></code>, <code><a href="../reference/pat_extractDataFrame.html">pat_extractData()</a></code>
 </li>
@@ -1142,6 +1146,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#airsensor-0-7-1">0.7.1</a></li>
         <li><a href="#airsensor-0-7-0">0.7.0</a></li>
         <li><a href="#airsensor-0-6-17">0.6.17</a></li>
         <li><a href="#airsensor-0-6-16">0.6.16</a></li>

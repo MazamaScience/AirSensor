@@ -120,7 +120,7 @@ removeArchiveBaseDir <- function() {
 
 #' Known base URLs include:
 #' \itemize{
-#' \item{http://smoke.mazamascience.com/data/PurpleAir}
+#' \item{http://data.mazamascience.com/PurpleAir/v1}
 #' }
 #' 
 #' Package functions that load pre-generated data files download data from this
@@ -172,7 +172,7 @@ getArchiveBaseUrl <- function() {
 #' 
 #' Known base URLs include:
 #' \itemize{
-#' \item{http://smoke.mazamascience.com/data/PurpleAir}
+#' \item{http://data.mazamascience.com/PurpleAir/v1}
 #' \item{https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1}
 #' }
 #' 

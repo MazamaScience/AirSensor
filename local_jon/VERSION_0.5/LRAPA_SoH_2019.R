@@ -3,7 +3,7 @@ library(AirSensor)
 # ===== PWFSL 2019 for OR, WA ==================================================
 
 setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
-###setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+###setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 pas <- pas_load()
 
 # Find the labels of interest, only one per sensor

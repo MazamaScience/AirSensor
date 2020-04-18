@@ -3,7 +3,7 @@ library(PWFSLSmoke)
 library(AirSensor)
 library(AirMonitorPlots)
 
-setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 
 # ----- Using purr::map() to work with lists of PAT objects --------------------
 

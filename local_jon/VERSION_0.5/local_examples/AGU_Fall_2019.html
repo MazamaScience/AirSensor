@@ -9996,7 +9996,7 @@ summary {
 <p>The AirSensor R package provides functions to access, regularize and QC data from over 9000 PurpleAir sensors with a simple, readable syntax. With AirSensor, analysts can access up-to-the-hour PurpleAir data as well as historical time series. Accessing PurpleAir synoptic and timeseries data can be achieved with the code below.</p>
 <pre class="r"><code># Import the library and set the URL to gather the Synoptic Data list
 library(AirSensor)
-setArchiveBaseUrl(&quot;http://smoke.mazamascience.com/data/PurpleAir&quot;)
+setArchiveBaseUrl(&quot;http://data.mazamascience.com/PurpleAir/v1&quot;)
 
 # Load the Synoptic PurpleAir Sensor data
 pa_synoptic &lt;- pas_load()

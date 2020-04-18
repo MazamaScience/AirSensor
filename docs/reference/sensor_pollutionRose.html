@@ -76,7 +76,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.1</span>
       </span>
     </div>
 
@@ -130,9 +130,6 @@
     </li>
     <li>
       <a href="../articles/articles/purpleair_sensors.html">Purple Air Sensors</a>
-    </li>
-    <li>
-      <a href="../articles/articles/working_with_wind_data.html">Working With Wind Data</a>
     </li>
   </ul>
 </li>
@@ -277,18 +274,16 @@ that direction is low. A line showing the probability that the wind.</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
 <span class='co'># Set default location of pre-generated data files</span>
-<span class='fu'><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl</a></span>(<span class='st'>"http://smoke.mazamascience.com/data/PurpleAir"</span>)
+<span class='fu'><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl</a></span>(<span class='st'>"http://data.mazamascience.com/PurpleAir/v1"</span>)
 
-<span class='no'>sensor</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sensor_load.html'>sensor_load</a></span>(<span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fl'>20190601</span>, <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='fl'>20190630</span>)
-<span class='no'>sensor</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sensor_filterMeta.html'>sensor_filterMeta</a></span>(<span class='no'>sensor</span>, <span class='no'>monitorID</span> <span class='kw'>==</span> <span class='st'>"SCSB_02"</span>)
-
+<span class='no'>sensor</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sensor_load.html'>sensor_load</a></span>(<span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fl'>20190601</span>, <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='fl'>20190630</span>)</div><div class='output co'>#&gt; <span class='error'>Error in sensor_load(startdate = 20190601, enddate = 20190630): No data found in the archive covering the period 2019-06-01 to 2019-06-29 PDT</span></div><div class='input'><span class='no'>sensor</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sensor_filterMeta.html'>sensor_filterMeta</a></span>(<span class='no'>sensor</span>, <span class='no'>monitorID</span> <span class='kw'>==</span> <span class='st'>"SCSB_02"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in "ws_monitor" %in% class(ws_monitor): object 'sensor' not found</span></div><div class='input'>
 <span class='co'># Load wind data from NOAA</span>
 <span class='no'>windData</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>worldmet</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/worldmet/man/importNOAA.html'>importNOAA</a></span>(<span class='kw'>code</span> <span class='kw'>=</span> <span class='st'>"722975-53141"</span>, <span class='kw'>year</span> <span class='kw'>=</span> <span class='fl'>2019</span>,
                                  <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='no'>windData</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>windData</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"date"</span>, <span class='st'>"wd"</span>, <span class='st'>"ws"</span>))
 
 <span class='co'># Plot rose using mean binning</span>
-<span class='fu'>sensor_pollutionRose</span>(<span class='no'>sensor</span>, <span class='no'>windData</span>, <span class='kw'>statistic</span> <span class='kw'>=</span> <span class='st'>"prop.mean"</span>)</div><div class='img'><img src='sensor_pollutionRose-1.png' alt='' width='700' height='433' /></div><div class='input'># }
+<span class='fu'>sensor_pollutionRose</span>(<span class='no'>sensor</span>, <span class='no'>windData</span>, <span class='kw'>statistic</span> <span class='kw'>=</span> <span class='st'>"prop.mean"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in MazamaCoreUtils::stopIfNull(sensor): object 'sensor' not found</span></div><div class='input'># }
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

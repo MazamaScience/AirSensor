@@ -14,7 +14,7 @@ library(skimr)
 setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
 pas <- pas_load()
 
-setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 pas <- pas_load(archival = TRUE)
 
 ## bad sensors to test ------------
@@ -87,7 +87,7 @@ ggplot(soh_emmett) +
 
 # --------- time testings -----------------------------------------------------
 
-setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 pas <- pas_load(archival = TRUE)
 pat <- pat_createNew(pas,"GRIZZLY WAY", startdate = 20191001, enddate = 20191118,
                      baseURL = "https://api.thingspeak.com/channels/")

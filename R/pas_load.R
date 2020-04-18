@@ -39,7 +39,7 @@
 #' 
 #' @examples
 #' \dontrun{
-#' setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir/v1")
+#' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 #' pas <- pas_load()
 #' pas %>% 
 #'   pas_filter(stateCode == "CA") %>%

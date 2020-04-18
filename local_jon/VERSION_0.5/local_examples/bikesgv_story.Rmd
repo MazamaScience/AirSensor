@@ -15,7 +15,7 @@ list of US PurpleAir sensors:
 ```{r setup}
 library(AirSensor)
 
-setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 
 pas <- pas_load()
 pas_bikesgv <- pas_filter(pas, label == "BikeSGV - West Pasadena")

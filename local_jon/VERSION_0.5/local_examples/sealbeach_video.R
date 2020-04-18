@@ -1,7 +1,7 @@
 library(AirSensor)
 library(MazamaSpatialUtils)
 
-setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 
 sensor <- sensor_load()
 

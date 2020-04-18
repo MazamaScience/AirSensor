@@ -2,7 +2,7 @@
 library(PWFSLSmoke)
 library(AirSensor)
 
-setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 
 # ------ Create annual airsensor object ----------------------------------------
 

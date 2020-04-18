@@ -8,7 +8,7 @@ test_that("baseUrl input validation works", {
 # test_that("loads correct class", {
 #   skip_on_cran()
 #   skip_on_travis()
-#   setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+#   setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 #   expect_true(pas_isPas(pas_load()))
 #   # expect_true(pas_isPas(pas_createNew()))
 # })

@@ -28,7 +28,7 @@ pat <- pat_createNew(label = "Seattle", pas = pas, startdate = 20180701, enddate
 ## purpleair_failure_modes
 
 setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
-#setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+#setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 pas <- pas_load(archival = TRUE)
 pas <- example_pas
 noisy_2_id <- pas_getDeviceDeploymentIDs(pas, pattern = "SCAP_14")

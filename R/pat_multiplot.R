@@ -343,7 +343,7 @@ pat_multiplot <- function(
 
 if ( FALSE ) {
   
-  setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+  setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
   
   pat <- 
     pat_load(

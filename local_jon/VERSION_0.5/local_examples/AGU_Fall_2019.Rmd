@@ -24,7 +24,7 @@ The AirSensor R package provides functions to access, regularize and QC data fro
 ```{r}
 # Import the library and set the URL to gather the Synoptic Data list
 library(AirSensor)
-setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 
 # Load the Synoptic PurpleAir Sensor data
 pa_synoptic <- pas_load()

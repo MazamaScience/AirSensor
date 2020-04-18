@@ -7,7 +7,7 @@ library(stringr)
 library(purrr)
 
 # Set up dataset for testing plot
-setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 
 # Get pas for a state
 pas <- pas_load()

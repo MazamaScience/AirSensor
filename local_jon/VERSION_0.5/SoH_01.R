@@ -38,7 +38,7 @@ SoH_Willowbrook %>% timeseriesTbl_multiplot(pattern = "pm25_A_pm25_B", style = "
 
 
 # ===== Mazama Science 2019 for SCAQMD =========================================
-setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 pas <- pas_load()
 
 # ----- A-channel "magic number" -----------------------------------------------

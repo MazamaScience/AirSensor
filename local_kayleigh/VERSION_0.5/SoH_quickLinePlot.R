@@ -18,7 +18,7 @@ pat <- pat_load("Spokane South Hill #1", startdate = 20190101, enddate = 2019102
 
 # ------ data from California from Oct 2017 - South Coast -----------
 
-setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 ca <- pas_load() %>% pas_filter(stateCode == "CA")
 scaqmd <- ca %>% pas_filter(stringr::str_detect(label, "SC.._"))
 pas_leaflet(scaqmd)  

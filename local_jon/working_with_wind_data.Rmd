@@ -71,7 +71,7 @@ And now we can generate rose and polar plots with our wind data and a sensor
 object in the same timeframe.
 
 ```{r plot_data, echo=TRUE, warning=FALSE}
-setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 
 sensor <- 
   AirSensor::sensor_load(startdate = start, enddate = end) %>%
