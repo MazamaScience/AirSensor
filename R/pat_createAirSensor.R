@@ -16,9 +16,10 @@
 #' @param aggregation_FUN Function used to convert a \emph{pat} object into a
 #' tibble of hourly statistics. 
 #'  
-#' @description Aggregates data from a \emph{pat} object into an 
-#' \emph{airsensor} object that has appropriate metadata to be used with the 
-#' *PWFSLSmoke* package.
+#' @description Converts data from a \emph{pat} object with an irregular time 
+#' axis to an \emph{airsensor} object where the numeric data has been aggregated 
+#' along a standardized hourly time axis, as well as adding additional required 
+#' metadata for compatibility with the *PWFSLSmoke* package.
 #'
 #' Current QC algorithms exist for \code{channel = "ab"} and include:
 #' \itemize{
@@ -37,6 +38,7 @@
 #' 
 #' @seealso \link{PurpleAirQC_hourly_AB_00}
 #' @seealso \link{PurpleAirQC_hourly_AB_01}
+#' @seealso \link{pat_aggregate}
 #' 
 #' @examples 
 #' 
@@ -100,6 +102,9 @@ pat_createAirSensor <- function(
   
   # ----- Temporal aggregation -------------------------------------------------
   
+  # NOTE: For clarification, this function acts to route the aggregation 
+  #       parameters to th respective function. Currently, this method assumes 
+  #       that the function is not annonymous and accepts a pat object and period. 
   aggregationStats <- aggregation_FUN(pat,
                                       period = period)
   
