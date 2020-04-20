@@ -96,7 +96,7 @@ pat_createAirSensor <- function(
   # Check if deviceDeploymentID is in the meta data. If not, add uniqueIDs.
   # NOTE: This is necessary as of 2020-04-20 to avoid errors with deprecated pas
   # NOTE: format. Used when assigning data column name on line #206. 
-  # NOTE: Perhaps this use pas_upgrade instead?
+  # NOTE: Perhaps use pas_upgrade instead?
   if ( !'deviceDeploymentID' %in% names(pat$meta) ) {
     pat$meta <- pas_addUniqueIDs(pat$meta)
   }
