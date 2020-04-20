@@ -93,6 +93,14 @@ pat_createAirSensor <- function(
                 "(Pass in the function with no quotes and no parentheses.)"))
   }
   
+  # Check if deviceDeploymentID is in the meta data. If not, add uniqueIDs.
+  # NOTE: This is necessary as of 2020-04-20 to avoid errors with deprecated pas
+  # NOTE: format. Used when assigning data column name on line #206. 
+  # NOTE: Perhaps this use pas_upgrade instead?
+  if ( !'deviceDeploymentID' %in% names(pat$meta) ) {
+    pat$meta <- pas_addUniqueIDs(pat$meta)
+  }
+  
   # ----- Raw data QC ----------------------------------------------------------
   
   # Invalidate out-of-spec values. Don't invalidate based on humidity
@@ -104,7 +112,7 @@ pat_createAirSensor <- function(
   
   # NOTE: For clarification, this function acts to route the aggregation 
   # NOTE: parameters to th respective function. Currently, this method assumes 
-  # NOTE: that the function is not annonymous and accepts a pat object and period. 
+  # NOTE: that the function is not anonymous and accepts a pat object and period. 
   aggregationStats <- aggregation_FUN(pat,
                                       period = period)
   

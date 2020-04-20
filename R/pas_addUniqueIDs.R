@@ -39,10 +39,10 @@ pas_addUniqueIDs <- function(
           See `pas_addSpatialMetadata()` to add spatial meta data.')
   }
   
-  if ( !'ID' %in% names(pas) || !'parentID' %in% names(pas) ) {
-    stop('Invalid pa_synotpic data: does not contain required columns.')
+  if ( !'ID' %in% names(pas) ) {
+    stop('Invalid pa_synotpic data. Does not contain required columns: `ID`.')
   }
-  
+
   # ----- Generate Unique IDs --------------------------------------------------
   
   # Device ID based on A channel ID
