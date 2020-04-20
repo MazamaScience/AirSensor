@@ -27,7 +27,7 @@ use with the **PWFSLSmoke** package
 ## Institutional Support
 
 The initial development of this package was funded by the South Coast Air 
-Quality Managment District with funds from an EPA STAR grant. The following 
+Quality Management District with funds from an EPA STAR grant. The following 
 disclaimer applies:
 
 > This package was prepared as part of a project funded through a Science to Achieve Results (STAR) grant award (RD83618401) from the U.S. Environmental Protection Agency to the South Coast Air Quality Management District (South Coast AQMD). The opinions, findings, conclusions, and recommendations are those of the author and do not necessarily represent the views of the U.S. EPA or the South Coast AQMD, nor does mention of trade names or commercial products constitute endorsement or recommendation for use. The U.S. EPA, the South Coast AQMD, their officers, employees, contractors, and subcontractors make no warranty, expressed or implied, and assume no legal liability for the information in this package. The U.S. EPA and South Coast AQMD have not approved or disapproved this package, and neither have passed upon the accuracy or adequacy of the information contained herein.
