@@ -112,17 +112,21 @@ pas_upgrade <- function(
     )
   
   
-  if ( !all(upgradedCols %in% names(pas)) ) {
-    # Does not contain all the columns -> upgrade
+  if ( all(upgradedCols %in% names(pas)) ) {
+    # Contains all columns -> skip. 
     
-    # NOTE: This is where to add more 'intelligent' upgrading if necessary --
-    # NOTE: which is essentially just "enhancing" but without an assumed 
-    # NOTE: `pas_downloadParseData` structure.
+    # Show user format does not require upgrade.
+    if ( verbose ) {
+      message('pa_synoptic object does not require upgrade ... Skipping.')
+    }
+    
+  } else {
+    # Columns missing -> upgrade
     
     # Define the missing columns from the upgraded columns
     missingCols <- upgradedCols[!upgradedCols %in% names(pas)]
     
-    # Add spatial metadata 
+    # * Add spatial metadata -----
     if ( any(c('latitude', 'longitude', 'stateCode', 'countryCode', 'timezone') %in% missingCols) ) {
       if ( verbose ) {
         message('Adding spatial metadata...')
@@ -130,7 +134,7 @@ pas_upgrade <- function(
       pas <- pas_addSpatialMetadata(pas)
     }
 
-    # Add unique IDs
+    # * Add unique IDs -----
     if ( any(c('deviceID', 'locationID', 'deviceDeploymentID') %in% missingCols) ) {
       if ( verbose ) {
         message('Adding unique IDs...')
@@ -138,7 +142,7 @@ pas_upgrade <- function(
       pas <- pas_addUniqueIDs(pas)
     }
     
-    # Add air district
+    # * Add air district -----
     if ( 'airDistrict' %in% missingCols ) {
       if ( verbose ) {
         message('Adding air district...')
@@ -146,7 +150,13 @@ pas_upgrade <- function(
       pas <- pas_addAirDistrict(pas)
     }
     
-    # Add community region 
+    # * Addditional SCAQMD metadata -----
+    
+    pas$sensorManufacturer <- "Purple Air"
+    pas$targetPollutant <- "PM"
+    pas$technologyType <- "consumer-grade"
+    
+    # * Add community region -----
     if ( 'communityRegion' %in% missingCols ) {
       if ( verbose ) {
         message('Adding community region...')
@@ -159,21 +169,15 @@ pas_upgrade <- function(
       message('pa_synoptic object format upgraded.')
     }
     
-  } else {
-    # Does contain all the columns -> skip. 
-    
-    # Show user format does not require upgrade.
-    if ( verbose ) {
-      message('pa_synoptic object does not require upgrade ... Skipping.')
-    }
-    
   }
   
-  # Check for missing columns after "upgrading", add filled with NA if necessary
+  # * Fill any other missing columns with NA
   missingColsCheck <- upgradedCols[!upgradedCols %in% names(pas)]
   for ( i in missingColsCheck ) {
     pas[[i]] <- NA
   }
+  
+  
   
   # NOTE: Above fixes vectorised missing data, whereas below fixes element-wise
   # NOTE: missing data. 
