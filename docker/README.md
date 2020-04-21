@@ -16,7 +16,7 @@ You should then be able to see something like the following:
 $ docker images
 REPOSITORY                    TAG         IMAGE ID            CREATED             SIZE
 ...
-mazamascience/airsensor       0.7.0       796ae3ba57e5        2 minutes ago       3.74GB
+mazamascience/airsensor       0.7.2       796ae3ba57e5        2 minutes ago       3.74GB
 mazamascience/airsensor       latest      796ae3ba57e5        2 minutes ago       3.74GB
 ...
 ```
@@ -81,7 +81,7 @@ pas %>%
 ```
 docker login
 ...
-docker push mazamascience/airsensor:0.7.0
+docker push mazamascience/airsensor:0.7.2
 ```
 
 
@@ -90,6 +90,6 @@ docker push mazamascience/airsensor:0.7.0
 A recent image can also be obtained from DockerHub with:
 
 ```
-docker pull mazamascience/airsensor:0.7.0
+docker pull mazamascience/airsensor:0.7.2
 ```
 
