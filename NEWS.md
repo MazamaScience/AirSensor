@@ -1,3 +1,8 @@
+# AirSensor 0.7.2
+
+* Updated `pas_upgrade()` to add `sensorManufacturer`, `targetPollutant` and
+`technologyType` columns.
+
 # AirSensor 0.7.1
 
 * Updated example `archiveBaseUrl` from `http://smoke.mazamascience.com/data/PurpleAir`
