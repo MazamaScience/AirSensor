@@ -1,31 +1,3 @@
----
-title: "R Notebook"
-output: html_notebook
----
-
-```{r}
-library(AirSensor)
-```
-
-
-
-```{r}
-setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
-pat <- pat_load('SCSC_33')
-
-str(pat$data)
-```
-
-While useful, the new dataframe produce via `pat_aggregate()` does not follow the typical `pat` format. It returns a different format dataframe albiet useful. 
-
-```{r}
-pat_old_agg <- pat_aggregate(pat)
-str(pat_old_agg)
-```
-
-Ideally our goal should be to maintain the integrity of the aggregated data or change the name. 
-
-```{r}
 pat_agg_00 <- function(pat, FUN, ...) {
   
   # Convert to eXtensible Time Series (xts) data.frame
@@ -64,7 +36,7 @@ pat_agg_00 <- function(pat, FUN, ...) {
   # and consistency among the package. 
   pat$data <- data.frame(
     'datetime' = datetime, 
-     do.call(rbind, mapped), 
+    do.call(rbind, mapped), 
     'datetime_A' = datetime, 
     'datetime_B' = datetime
   )
@@ -73,6 +45,13 @@ pat_agg_00 <- function(pat, FUN, ...) {
   return(pat)
 }
 
+# --- Tests -----
+
+setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
+pat <- pat_load('SCSC_33')
+
+str(pat$data)
+
 counts_pat <- pat_agg_00(pat, function(x) length(na.omit(x)))
 max_pat <- pat_agg_00(pat, function(x) max(x, na.rm = TRUE))
 avg_pat <- pat_agg_00(pat, function(x) mean(x, na.rm = TRUE)) # identical to pat_agg_00(pat, mean)
@@ -80,6 +59,3 @@ MAD_pat <- pat_agg_00(pat, function(x) mad(x, na.rm = TRUE))
 
 
 microbenchmark::microbenchmark(pat_aggregate(pat), pat_agg_00(pat, function(x) mean(x, na.rm = T)), times = 10)
-
-```
-
