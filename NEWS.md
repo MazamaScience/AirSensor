@@ -1,3 +1,7 @@
+# AirSensor 0.7.4
+
+* Renamed `downloadParseTimeseriesData()` to `pat_downloadParseData()`.
+
 # AirSensor 0.7.3
 
 * Improved error messaging in `pas_load()`.

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Metadata filtering for AirSensor objects — sensor_filterMeta • AirSensor</title>
+<title>Download PurpleAir timeseries data — pat_downloadParseData • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,12 +42,11 @@
 
 
 
-<meta property="og:title" content="Metadata filtering for AirSensor objects — sensor_filterMeta" />
-<meta property="og:description" content="A generalized data filter for sensor objects to 
-choose rows/cases where conditions are true.  Multiple conditions are 
-combined with &amp;amp; or seperated by a comma. Only rows where the condition 
-evaluates to TRUE are kept.Rows where the condition evaluates to NA
-are dropped." />
+<meta property="og:title" content="Download PurpleAir timeseries data — pat_downloadParseData" />
+<meta property="og:description" content="Downloads timeseries data for a specific PurpleAir sensor 
+from the ThingSpeak API and parses the content into a dataframe. This 
+function will always return dataframe with the appropriate columns even if no 
+data are returned from ThingSpeak." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -161,62 +160,76 @@ are dropped." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Metadata filtering for AirSensor objects</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/sensor_filterMeta.R'><code>R/sensor_filterMeta.R</code></a></small>
-    <div class="hidden name"><code>sensor_filterMeta.Rd</code></div>
+    <h1>Download PurpleAir timeseries data</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_downloadParseData.R'><code>R/pat_downloadParseData.R</code></a></small>
+    <div class="hidden name"><code>pat_downloadParseData.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>A generalized data filter for <em>sensor</em> objects to 
-choose rows/cases where conditions are true.  Multiple conditions are 
-combined with <code>&amp;</code> or seperated by a comma. Only rows where the condition 
-evaluates to TRUE are kept.Rows where the condition evaluates to <code>NA</code>
-are dropped.</p>
+    <p>Downloads timeseries data for a specific PurpleAir sensor 
+from the ThingSpeak API and parses the content into a dataframe. This 
+function will always return dataframe with the appropriate columns even if no 
+data are returned from ThingSpeak.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>sensor_filterMeta</span>(<span class='kw'>sensor</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>pat_downloadParseData</span>(
+  <span class='kw'>id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>baseURL</span> <span class='kw'>=</span> <span class='st'>"https://api.thingspeak.com/channels/"</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>sensor</th>
-      <td><p>An AirSensor object.</p></td>
+      <th>id</th>
+      <td><p>PurpleAir sensor 'deviceDeploymentID'.</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>Logical predicates defined in terms of the variables in 
-<code>sensor$meta</code>.</p></td>
+      <th>label</th>
+      <td><p>PurpleAir sensor 'label'.</p></td>
+    </tr>
+    <tr>
+      <th>pas</th>
+      <td><p>PurpleAir Synoptic <em>pas</em> object.</p></td>
+    </tr>
+    <tr>
+      <th>startdate</th>
+      <td><p>Desired start time (ISO 8601).</p></td>
+    </tr>
+    <tr>
+      <th>enddate</th>
+      <td><p>Desired end time (ISO 8601).</p></td>
+    </tr>
+    <tr>
+      <th>timezone</th>
+      <td><p>Timezone used to interpret start and end dates.</p></td>
+    </tr>
+    <tr>
+      <th>baseURL</th>
+      <td><p>Base URL for Thingspeak API.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A subset of the incoming <em>sensor</em>.</p>
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+    <p>List of type <code>pa_timeseries</code> containing <code>meta</code> and 
+<code>data</code> elements with timeseries metadata and data, respectively.</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Filtering predicates are applied to the <code>meta</code> dataframe within
-the <em>sensor</em> object.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <p>https://www2.purpleair.com/community/faq</p>
 
-    <div class='dont-index'><p><a href='sensor_filter.html'>sensor_filter</a></p>
-<p><a href='sensor_filterDate.html'>sensor_filterDate</a></p></div>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='sensor_load.html'>sensor_load</a></span>(<span class='st'>"scaqmd"</span>, <span class='fl'>20190411</span>, <span class='fl'>20190521</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>sensor_filterMeta</span>(<span class='no'>communityRegion</span> <span class='kw'>==</span> <span class='st'>"Seal Beach"</span>) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>PWFSLSmoke</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/PWFSLSmoke/man/monitor_stamenmap.html'>monitor_stamenmap</a></span>(<span class='kw'>zoom</span> <span class='kw'>=</span> <span class='fl'>11</span>)
-}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
-      <li><a href="#note">Note</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
+      <li><a href="#references">References</a></li>
     </ul>
 
   </div>
