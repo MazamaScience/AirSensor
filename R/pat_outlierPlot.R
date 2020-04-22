@@ -4,7 +4,6 @@ pat_outlierPlot <- function(
   pat = NULL,
   windowSize = 23,
   thresholdMin = 8,
-  showPlot = TRUE,
   data_shape = 18, 
   data_size = 1, 
   data_color = "black",
@@ -139,7 +138,6 @@ pat_outlierPlot <- function(
     chA +
     geom_point(data = filter(A_flagged, flag_outliers_pm25_A),
                aes(y = imputed), color = replacement_color, alpha = replacement_alpha)
-  
   chB <- 
     chB +
     geom_point(data = filter(B_flagged, flag_outliers_pm25_B), 

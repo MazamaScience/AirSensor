@@ -142,7 +142,7 @@ pat_outliers <- function(
     which(B_flagged[,ncol(B_flagged)])
   
   # Create median-fixed replacement values
-  # IAN: .replaceOutliers isn't inheriteing windowSize or thresholdMin arguments. (I changed so it is.)
+  # IAN: .replaceOutliers isn't inheriting windowSize or thresholdMin arguments. (I changed so it is.)
   if ( replace ) {
     
     A_fixed <- 
