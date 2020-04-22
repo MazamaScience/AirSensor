@@ -1,64 +1,82 @@
 #' @export
 #' @title Pollution rose plot
-#' 
+#'
 #' @param sensor an 'airsensor' object
 #' @param windData a dataframe containing columns "date", "ws", and "wd".
-#' @param statistic The statistic to be applied to each data bin in the plot. 
-#' Options currently include “prop.count”, “prop.mean” and “abs.count”. 
-#' The default “prop.count” sizes bins according to the proportion of the 
-#' frequency of measurements. Similarly, “prop.mean” sizes bins according to 
-#' their relative contribution to the mean. “abs.count” provides the absolute 
-#' count of measurements in each bin. 
-#' @param key control of the scale key via drawOpenKey. See drawOpenKey for 
-#' further details.
-#' @param keyPosition location where the scale key is to plotted. Allowed 
-#' arguments currently include “top”, “right”, “bottom” and “left”.
-#' @param annotate If TRUE then the percentage calm and mean values are printed 
-#' in each panel together with a description of the statistic below the plot. 
-#' If " " then only the stastic is below the plot. Custom annotations may be 
-#' added by setting value to c("annotation 1", "annotation 2").
+#' @param statistic The statistic to be applied to each data bin in the plot.
+#'   Options currently include “prop.count”, “prop.mean” and “abs.count”. The
+#'   default “prop.count” sizes bins according to the proportion of the
+#'   frequency of measurements. Similarly, “prop.mean” sizes bins according to
+#'   their relative contribution to the mean. “abs.count” provides the absolute
+#'   count of measurements in each bin.
+#' @param key control of the scale key via drawOpenKey. See drawOpenKey for
+#'   further details.
+#' @param keyPosition location where the scale key is to plotted. Allowed
+#'   arguments currently include “top”, “right”, “bottom” and “left”.
+#' @param annotate If TRUE then the percentage calm and mean values are printed
+#'   in each panel together with a description of the statistic below the plot.
+#'   If " " then only the stastic is below the plot. Custom annotations may be
+#'   added by setting value to c("annotation 1", "annotation 2").
 #' @param angle default angle of “spokes” is 30. Other potentially useful angles
-#' are 45 and 10. Note: the width of the wind speed interval may need adjusting
-#' using width.
-#' @param angleScale The wind speed scale is by default shown at a 315 degree 
-#' angle. Sometimes the placement of the scale may interfere with an interesting
-#' feature. The user can therefore set angle.scale to another value (between 0 
-#' and 360 degrees) to mitigate such problems. For example angleScale = 45 will
-#' draw the scale heading in a NE direction.
-#' @param gridLine Grid line interval to use. If NULL, as in default, this is 
-#' assigned by based on the available data range. However, it can also 
-#' be forced to a specific value, e.g. gridLine = 10. grid.line can also be a 
-#' list to control the interval, line type and colour. For example 
-#' gridLine = list(value = 10, lty = 5, col = "purple").
+#'   are 45 and 10. Note: the width of the wind speed interval may need
+#'   adjusting using width.
+#' @param angleScale The wind speed scale is by default shown at a 315 degree
+#'   angle. Sometimes the placement of the scale may interfere with an
+#'   interesting feature. The user can therefore set angle.scale to another
+#'   value (between 0 and 360 degrees) to mitigate such problems. For example
+#'   angleScale = 45 will draw the scale heading in a NE direction.
+#' @param gridLine Grid line interval to use. If NULL, as in default, this is
+#'   assigned by based on the available data range. However, it can also be
+#'   forced to a specific value, e.g. gridLine = 10. grid.line can also be a
+#'   list to control the interval, line type and colour. For example gridLine =
+#'   list(value = 10, lty = 5, col = "purple").
 #' @param breaks the number of break points for wind speed in pollutant
-#' @param paddle Either TRUE (default) or FALSE. If TRUE plots rose using 
-#' ‘paddle’ style spokes. If FALSE plots rose using ‘wedge’ style spokes.
+#' @param cols vector of colors to be used for plotting, passed to
+#'   openair::polutionRose().
+#' @param paddle Either TRUE (default) or FALSE. If TRUE plots rose using
+#'   ‘paddle’ style spokes. If FALSE plots rose using ‘wedge’ style spokes.
 #' @param seg determines with width of the segments. For example, seg = 0.5 will
-#'  produce segments 0.5 * angle.
-#' @param normalize if TRUE each wind direction segment is normalized to equal 
-#' one. This is useful for showing how the concentrations (or other parameters) 
-#' contribute to each wind sector when the proprtion of time the wind is from 
-#' that direction is low. A line showing the probability that the wind.
-#' 
+#'   produce segments 0.5 * angle.
+#' @param normalize if TRUE each wind direction segment is normalized to equal
+#'   one. This is useful for showing how the concentrations (or other
+#'   parameters) contribute to each wind sector when the proprtion of time the
+#'   wind is from that direction is low. A line showing the probability that the
+#'   wind.
+#' @param type type determines how the data are split i.e. conditioned, and then
+#'   plotted. The default is will produce a single plot using the entire data.
+#'   Type can be one of the built-in types as detailed in cutData e.g. “season”,
+#'   “year”, “weekday” and so on. For example, type = "season" will produce four
+#'   plots — one for each season.
+#'   
+#'   It is also possible to choose type as another variable in the data frame. 
+#'   If that variable is numeric, then the data will be split into four quantiles
+#'   (if possible) and labelled accordingly. If type is an existing character or
+#'   factor variable, then those categories/levels will be used directly. This
+#'   offers great flexibility for understanding the variation of different
+#'   variables and how they depend on one another. 
+#'   
+#'   Type can be up length two e.g. type = c("season", "weekday")
+#'   will produce a 2x2 plot split by season and day of the week. Note, when two
+#'   types are provided the first forms the columns and the second the rows
+#'
 #' @description Plots a traditional wind rose plot for wind direction and PM2.5.
 #'
 #' @return a plot or a dataframe
-#' @seealso 
-#' \url{http://davidcarslaw.github.io/openair/reference/windRose.html}
+#' @seealso \url{http://davidcarslaw.github.io/openair/reference/windRose.html}
 #'
 #' @examples
 #' \donttest{
 #' # Set default location of pre-generated data files
 #' setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
-#' 
+#'
 #' sensor <- sensor_load(startdate = 20190601, enddate = 20190630)
 #' sensor <- sensor_filterMeta(sensor, monitorID == "SCSB_02")
-#' 
+#'
 #' # Load wind data from NOAA
-#' windData <- worldmet::importNOAA(code = "722975-53141", year = 2019, 
+#' windData <- worldmet::importNOAA(code = "722975-53141", year = 2019,
 #'                                  parallel = FALSE)
 #' windData <- dplyr::select(windData, c("date", "wd", "ws"))
-#' 
+#'
 #' # Plot rose using mean binning
 #' sensor_pollutionRose(sensor, windData, statistic = "prop.mean")
 #' }
@@ -74,9 +92,11 @@ sensor_pollutionRose <- function(
   angleScale = 315,
   gridLine = NULL,
   breaks = 6, 
+  cols = "default",
   paddle = FALSE, 
   seg = 0.9, 
-  normalize = FALSE
+  normalize = FALSE,
+  type = "default"
 ) {
   
   # ----- Validate parameters --------------------------------------------------
@@ -144,9 +164,11 @@ sensor_pollutionRose <- function(
       key = key,
       annotate = annotate,
       breaks = breaks,
+      cols = cols,
       paddle= paddle,
       seg = seg,
       normalise = normalize,
+      type = type,
       angle = angle,
       angle.scale = angleScale,
       statistic = statistic,
