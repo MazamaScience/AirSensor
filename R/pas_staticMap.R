@@ -6,7 +6,7 @@
 #' 
 #' @param pas PurpleAir Synoptic \emph{pas} object.
 #' @param parameter Value to plot, e.g. \code{pm25_1hr}.
-#' @param palette Base color or palette to be used. 
+#' @param paletteName Base color or palette name to be used. 
 #' @param mapTheme Default is "terrain", see description for additional options.
 #' @param mapShape Default is "square", can also be "natural".
 #' @param direction Legend color direction.
@@ -31,16 +31,16 @@
 #'  "pm25_current" "pm25_10min" "pm25_30min" "pm25_1hr" "pm25_6hr" 
 #'  "pm25_1day" "pm25_1week" "pwfsl_closestDistance"}
 #' 
-#' Available \code{palette} options include an \code{"AQI"} color palette, 
+#' Available \code{paletteName} options include an \code{"AQI"} color palette, 
 #' as well as a suite of sequential and diverging palettes from the 
 #' \pkg{RColorBrewer} R package.
 #' 
-#' The sequential palettes names are
+#' The sequential palette names are
 #'  
 #' \code{"Blues" "BuGn" "BuPu" "GnBu" "Greens" "Greys" "Oranges" "OrRd" "PuBu" 
 #'  "PuBuGn" "PuRd" "Purples" "RdPu" "Reds" "YlGn" "YlGnBu" "YlOrBr" "YlOrRd"}
 #' 
-#' The diverging palettes are 
+#' The diverging palette names are 
 #' 
 #' \code{"BrBG" "PiYG" "PRGn" "PuOr" "RdBu" "RdGy" "RdYlBu" "RdYlGn" "Spectral"}
 #' 
@@ -48,18 +48,15 @@
 #' \url{http://maps.stamen.com/}
 #'
 #' @examples
-#' \donttest{
-#' setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 #' LA_basin <- 
-#'   pas_load() %>% 
+#'   example_pas %>% 
 #'   pas_filterArea(-118.5, -117.5, 33.5, 34.5)
-#' pas_staticMap(LA_basin, palette = "AQI", zoomAdjust = 1)
-#' }
+#' pas_staticMap(LA_basin, paletteName = "AQI", zoomAdjust = 1)
 
 pas_staticMap <- function(
   pas = NULL, 
   parameter = "pm25_1hr",
-  palette = "Purples", 
+  paletteName = "Purples", 
   mapTheme = "terrain",
   mapShape = "sq",
   direction = 1,
@@ -75,21 +72,26 @@ pas_staticMap <- function(
   
   # ----- Validate parameters --------------------------------------------------
   
-  parameter <- tolower(parameter)
-  
   MazamaCoreUtils::stopIfNull(pas)
+  MazamaCoreUtils::stopIfNull(parameter)
+  
+  parameter <- tolower(parameter)
   
   if ( pas_isEmpty(pas) ) {
     stop("Required parameter 'pas' is empty.")
   }
   
+  if ( !pas_isPas(pas) ) {
+    stop("Required parameter 'pas' is not a valid 'pa_synoptic' object.")
+  }
+  
   # ----- Color scale ----------------------------------------------------------
   
-  if ( tolower(palette) == "aqi" ) { # AQI COLORS
+  if ( tolower(paletteName) == "aqi" ) { # AQI COLORS
     
     options(warn = -1)
     
-    colorInfo <- pas_palette(pas, palette)
+    colorInfo <- pas_palette(pas, paletteName)
     
     colors <- colorInfo$colors
     breaks <- c(colorInfo$key[,2], "grey50")
@@ -104,7 +106,7 @@ pas_staticMap <- function(
         guide = "legend"
       )
     
-  } else if ( tolower(palette) == "humidity"  ) { # HUMIDITY 
+  } else if ( tolower(paletteName) == "humidity"  ) { # HUMIDITY 
     
     colorInfo <- pas_palette(pas, "humidity")
     
@@ -121,7 +123,7 @@ pas_staticMap <- function(
         guide = "legend"
       )
     
-  }  else if ( tolower(palette) == "temperature" ) { # TEMPERATURE
+  }  else if ( tolower(paletteName) == "temperature" ) { # TEMPERATURE
     
     colorInfo <- pas_palette(pas, "temperature")
     
@@ -139,7 +141,7 @@ pas_staticMap <- function(
       )
     
     options(warn = 0)
-  } else if ( tolower(palette) == "distance" ) { # PWFLS distance
+  } else if ( tolower(paletteName) == "distance" ) { # PWFLS distance
     
     colorInfo <- pas_palette(pas, "distance")
     
@@ -164,7 +166,7 @@ pas_staticMap <- function(
       grDevices::colorRampPalette(
         RColorBrewer::brewer.pal(
           n = 8, 
-          name = palette
+          name = paletteName
         )
       )
     

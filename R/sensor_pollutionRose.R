@@ -67,8 +67,13 @@
 #' @examples
 #' \donttest{
 #' # Set default location of pre-generated data files
+<<<<<<< HEAD
 #' setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 #'
+=======
+#' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+#' 
+>>>>>>> 72d1f2297f2af03dcd85852b27ca5437d8ac6368
 #' sensor <- sensor_load(startdate = 20190601, enddate = 20190630)
 #' sensor <- sensor_filterMeta(sensor, monitorID == "SCSB_02")
 #'

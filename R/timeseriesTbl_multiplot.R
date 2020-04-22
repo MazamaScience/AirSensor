@@ -21,12 +21,12 @@
 #' \code{autoRange}.
 #' 
 #' @examples 
-#' \donttest{
+#' 
 #' tbl <- pat_aggregateOutlierCounts(example_pat_failure_A)
 #' timeseriesTbl_multiplot(tbl, 
 #'                         pattern = "humidity_m|temperature_m", 
 #'                         nrow = 2)
-#' }
+#' 
 
 timeseriesTbl_multiplot <- function(
   tbl = NULL, 

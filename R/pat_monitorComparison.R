@@ -19,6 +19,8 @@
 #' @param hourly_stroke Line width of hourly points
 #' @param pa_color Color of hourly points
 #' @param pwfsl_color Color of hourly points
+#' @param timezone Olson timezone used for the time axis. (Defaults to 
+#' \code{pat} local time.)
 #' 
 #' @description Creates and regurns a ggplot object that plots raw \emph{pat}
 #' data, hourly aggregated \emph{pat} data and hourly data from the nearest
@@ -46,7 +48,8 @@ pat_monitorComparison <- function(
   hourly_shape = 1,
   hourly_stroke = 0.6,
   pa_color = "purple",
-  pwfsl_color = "black"
+  pwfsl_color = "black", 
+  timezone = NULL
 ) {
   
   # ----- Validate parameters --------------------------------------------------
@@ -61,6 +64,10 @@ pat_monitorComparison <- function(
 
   # Remove any duplicate data records
   pat <- pat_distinct(pat)
+  
+  # Use sensor timezone as default
+  if ( is.null(timezone) )
+    timezone <- pat$meta$timezone
   
   # ----- Assemble data --------------------------------------------------------
   
@@ -99,6 +106,11 @@ pat_monitorComparison <- function(
   
   # ----- Plot styling ---------------------------------------------------------
 
+  # NOTE:  Convert time axes to the selected timezone for proper formatting
+  # NOTE:  by ggplot2.
+  tidy_data$datetime <- lubridate::with_tz(tidy_data$datetime, tzone = timezone)
+  pat$data$datetime <- lubridate::with_tz(pat$data$datetime, tzone = timezone)
+  
   if ( is.null(ylim) ) {
     dataMin <- min(c(0, pat$data$pm25_A, pat$data$pm25_B, tidy_data$pm25), 
                    na.rm = TRUE)
@@ -108,8 +120,8 @@ pat_monitorComparison <- function(
   }
   
   # Labels
-  timezone <- pat$meta$timezone[1]
-  year <- strftime(pat$data$datetime[1], "%Y", tz=timezone)
+  yearLabel <- strftime(pat$data$datetime[1], "%Y (%Z)", tz = timezone)
+  
   title <- paste0(
     "Sensor / Monitor comparison -- PurpleAir: \"",
     pat$meta$label,
@@ -122,48 +134,62 @@ pat_monitorComparison <- function(
   
   # ----- Construct plot -------------------------------------------------------
   
-  # Set time axis to sensor local time
-  pat$data$datetime <- lubridate::with_tz(pat$data$datetime, tzone = timezone)
-  tidy_data$datetime <- lubridate::with_tz(tidy_data$datetime, tzone = timezone)
+  ### # Set time axis to sensor local time
+  ### lubridate::tz(pat$data$datetime) <- timezone
+  ### lubridate::tz(tidy_data$datetime) <- timezone
   
   pm25_plot <-
     pat$data %>%
     ggplot2::ggplot() +
-    ggplot2::geom_point(ggplot2::aes(x = .data$datetime, y = .data$pm25_A),
-                        size = a_size,
-                        shape = a_shape,
-                        color = a_color,
-                        alpha = ab_alpha) +
-    ggplot2::geom_point(ggplot2::aes(x = .data$datetime, y = .data$pm25_B),
-                        size = b_size,
-                        shape = b_shape,
-                        color = b_color,
-                        alpha = ab_alpha) +
-    ggplot2::geom_point(data = tidy_data,
-                        ggplot2::aes(x = .data$datetime, y = .data$pm25, color = source),
-                        size = hourly_size,
-                        shape = hourly_shape,
-                        stroke = hourly_stroke,
-                        alpha = 1) +
-    ggplot2::scale_color_manual(values=c(pa_color, pwfsl_color)) +
-    
+    ggplot2::geom_point(
+      ggplot2::aes(x = .data$datetime, y = .data$pm25_A),
+      size = a_size,
+      shape = a_shape,
+      color = a_color,
+      alpha = ab_alpha
+    ) +
+    ggplot2::geom_point(
+      ggplot2::aes(x = .data$datetime, y = .data$pm25_B),
+      size = b_size,
+      shape = b_shape,
+      color = b_color,
+      alpha = ab_alpha
+    ) +
+    ggplot2::geom_point(
+      data = tidy_data,
+      ggplot2::aes(x = .data$datetime, y = .data$pm25, color = source),
+      size = hourly_size,
+      shape = hourly_shape,
+      stroke = hourly_stroke,
+      alpha = 1
+    ) +
+    ggplot2::scale_color_manual(values = c(pa_color, pwfsl_color)) +
     ggplot2::ylim(ylim) +
+    ggplot2::scale_x_datetime(breaks = '1 day', date_labels = '%b %d') +
+    ggplot2::xlab(yearLabel) + 
+    ggplot2::ylab("\u03bcg / m\u00b3") +
+    ggplot2::ggtitle(title)
     
-    ggplot2::ggtitle(title) +
-    ggplot2::xlab(year) + 
-    ggplot2::ylab("\u03bcg / m\u00b3")
-  
   # ----- Return ---------------------------------------------------------------
   
   return(pm25_plot)
 
 }
 
-# ===== DEBUGGING ============================================================
+# ===== DEBUGGING ==============================================================
 
 if ( FALSE ) {
   
-  pat <- pat_load("SCPR_19", 20190618, 20190629)
+  setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+  
+  pat <- 
+    pat_load(
+      label = "SCPR_19", 
+      startdate = "2020-02-10",   # from beginning of start
+      enddate = "2020-02-15",     # to *beginning* of end
+      timezone = "America/Los_Angeles"
+    )
+  
   ylim <- NULL
   replaceOutliers <- TRUE
   a_size <- 1
@@ -178,6 +204,26 @@ if ( FALSE ) {
   hourly_stroke <- 0.6
   pa_color <- "purple"
   pwfsl_color <- "black"
+  timezone <- NULL
+
+  pat_monitorComparison(
+    pat = pat,
+    ylim = NULL,
+    replaceOutliers = TRUE,
+    a_size = 1,
+    a_shape = 15,
+    a_color = "gray80", # rgb(0.9, 0.25, 0.2),
+    b_size = 1,
+    b_shape = 15,
+    b_color = "gray80", # rgb(0.2, 0.25, 0.9),
+    ab_alpha = 0.5,
+    hourly_size = 2,
+    hourly_shape = 1,
+    hourly_stroke = 0.6,
+    pa_color = "purple",
+    pwfsl_color = "black", 
+    timezone = timezone
+  )  
   
 }
 

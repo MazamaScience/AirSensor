@@ -13,21 +13,13 @@
 #' 
 #' 
 #' @examples  
+#' library(AirSensor)
+#' 
 #' tbl <- 
 #'   example_pat_failure_A %>%
 #'   PurpleAirSoH_dailyABtTest() 
 #'   
-#' timeseriesTbl_multiplot(
-#'   tbl, 
-#'   ncol = 2,
-#'   style = "line"
-#' )
-#' 
-#' timeseriesTbl_multiplot(
-#'   tbl, 
-#'   autoRange = TRUE, 
-#'   style = "line"
-#' )
+#' timeseriesTbl_multiplot(tbl)
 #' 
 
 PurpleAirSoH_dailyABtTest <- function(

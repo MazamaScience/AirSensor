@@ -38,9 +38,10 @@ tibble of hourly statistics.}
 An "airsensor" object of aggregated PurpleAir Timeseries data.
 }
 \description{
-Aggregates data from a \emph{pat} object into an 
-\emph{airsensor} object that has appropriate metadata to be used with the 
-*PWFSLSmoke* package.
+Converts data from a \emph{pat} object with an irregular time 
+axis to an \emph{airsensor} object where the numeric data has been aggregated 
+along a standardized hourly time axis, as well as adding additional required 
+metadata for compatibility with the *PWFSLSmoke* package.
 
 Current QC algorithms exist for \code{channel = "ab"} and include:
 \itemize{
@@ -50,22 +51,24 @@ Current QC algorithms exist for \code{channel = "ab"} and include:
 }
 \note{
 The \code{aggregation_FUN}, allows users to pass in custom functions that 
-generate new aggrregation statistics. These statistics can then be utilitized 
+generate new aggregation statistics. These statistics can then be utilized 
 in a custom QC algorithm function. The algorithm function applied is
-gnerated from the \code{qc_algorithm} parameter with 
+generated from the \code{qc_algorithm} parameter with 
 \code{paste0("PurpleAirQC_", qc_algorithm)}.
 }
 \examples{
-\dontrun{
+
 sensor <- 
   example_pat \%>\%
   pat_filterDate(20180701, 20180901) \%>\%
   pat_createAirSensor()
 PWFSLSmoke::monitor_dailyBarplot(sensor)
-}
+
 }
 \seealso{
 \link{PurpleAirQC_hourly_AB_00}
 
 \link{PurpleAirQC_hourly_AB_01}
+
+\link{pat_aggregate}
 }

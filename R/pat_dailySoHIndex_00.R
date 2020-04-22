@@ -25,7 +25,7 @@
 #' \item{Otherwise, \code{index = pm25_A_pm25_B_rsquared}}
 #' }
 #' 
-#' The \code{breaks} are used to convert \code{index} into the \code{indenx_bin}
+#' The \code{breaks} are used to convert \code{index} into the \code{index_bin}
 #' poor-fair-good values.
 #' 
 #' @examples  
@@ -77,20 +77,7 @@ pat_dailySoHIndex_00 <- function(
   
   # ----- Create the SoHIndex tibble -------------------------------------------
   
-  # The 00 version is based on AB r squared
-  SoHIndex <- 
-    SoH %>%
-    dplyr::select(.data$datetime, .data$pm25_A_pm25_B_rsquared) %>%
-    dplyr::rename("index" = "pm25_A_pm25_B_rsquared") %>%
-    # Replace NA with 0
-    dplyr::mutate_if(is.numeric, ~replace(., is.na(.), 0))
-  
-  # Mark any days with < minPctReporting as poor
-  mask <- SoH$pm25_A_pctReporting < minPctReporting | SoH$pm25_B_pctReporting < minPctReporting
-  SoHIndex$index[mask] <- 0
-
-  # Use breaks to create index_bin
-  SoHIndex$index_bin <- .bincode(SoHIndex$index, breaks, include.lowest = TRUE)
+  SoHIndex <- PurpleAirSoH_dailyToIndex_00(SoH, minPctReporting, breaks)
 
   # ----- Return ---------------------------------------------------------------
   

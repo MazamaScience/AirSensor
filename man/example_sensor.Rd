@@ -4,22 +4,27 @@
 \name{example_sensor}
 \alias{example_sensor}
 \title{Example AirSensor Timeseries dataset}
-\format{An S3 object composed of "meta" and "data" data.}
+\format{
+An S3 object composed of "meta" and "data" data.
+}
 \usage{
 example_sensor
 }
 \description{
 The \code{example_sensor} dataset provides a quickly loadable version of
 an \emph{airsensor} object for practicing and code examples.
-This dataset was was generated on 2019-07-06 by running:
+This dataset was was generated on 2020-01-03 by running:
 
 \preformatted{
-  pas <- pas_load()
-  example_sensor <- 
-    pat_createNew(pas, label = "SCAN_14",
-                  startdate = "2018-08-14",
-                  enddate = "2018-09-07") %>%
+  example_sensor <-
+    pat_createNew(
+      label = "SCAN_14",
+      pas = example_pas,
+      startdate = "2018-08-14",
+      enddate = "2018-09-07"
+    ) %>%
     pat_createAirSensor(period = "1 hour")
+  save(example_sensor, file = "data/example_sensor.rda")
 }
 }
 \keyword{datasets}

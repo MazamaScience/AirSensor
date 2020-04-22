@@ -18,7 +18,7 @@ and presence of core metadata columns:
 \itemize{
   \item{ID -- Purple Air ID}
   \item{label -- location label}
-  \item{sensorType -- Purple Air sensor type}
+  \item{sensorType -- PurpleAir sensor type}
   \item{longitude -- decimal degrees E}
   \item{latitude -- decimal degrees N}
   \item{timezone -- Olson timezone}
@@ -29,15 +29,16 @@ and presence of core metadata columns:
   \item{temperature -- deg F}
   \item{humidity -- \%}
   \item{pressure -- mb}
-  \item{pwfsl_closestDistance -- distance in meters from an official monitor}
-  \item{pwfsl_closestMonitorID -- identifer for the nearest official monitor}
+  \item{deviceID -- unique device identifier}
+  \item{locationID -- unique location identifier}
+  \item{deviceDeploymentID -- unique time series identifier}
 }
-
-The "pwfsl", official, monitors are obtained from the USFS AirFire site 
-using the \pkg{PWFSLSmoke} R package.
 }
 \examples{
 pas_isPas(example_pas)
 pas_isPas(1:10)
+}
+\seealso{
+\link{pas_enhanceData}
 }
 \keyword{pas}

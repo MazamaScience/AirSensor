@@ -43,8 +43,8 @@
 
 
 <meta property="og:title" content="Date filtering for PurpleAir Timeseries objects — pat_filterDate" />
-<meta property="og:description" content="Subsets a Purple Air Timeseries object by date.
-Dates can be anything that is understood by lubrdiate::ymd()
+<meta property="og:description" content="Subsets a PurpleAir Timeseries object by date.
+Dates can be anything that is understood by lubridate::ymd()
 including either of the following recommended formats:
 
 &quot;YYYYmmdd&quot;
@@ -83,7 +83,7 @@ including either of the following recommended formats:
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.17</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.1</span>
       </span>
     </div>
 
@@ -106,34 +106,37 @@ including either of the following recommended formats:
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
+      <a href="../articles/AirSensor_Function_Overview.html">AirSensor Function Overview</a>
     </li>
     <li>
-      <a href="../articles/SoH_functions.html">SoH Functions</a>
+      <a href="../articles/Developer_Style_Guide.html">Developer Style Guide</a>
+    </li>
+    <li>
+      <a href="../articles/articles/Australia_on_fire.html">Australia on Fire</a>
     </li>
     <li>
       <a href="../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
     </li>
     <li>
-      <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
+      <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
     </li>
     <li>
-      <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
+      <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
     </li>
     <li>
-      <a href="../articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
+      <a href="../articles/articles/pas_introduction.html">PurpleAir Synoptic Data</a>
     </li>
     <li>
-      <a href="../articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
+      <a href="../articles/articles/pat_introduction.html">PurpleAir TimeSeries Data</a>
     </li>
     <li>
-      <a href="../articles/purpleair_qc.html">Purple Air Quality Control</a>
+      <a href="../articles/articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
     </li>
     <li>
-      <a href="../articles/purpleair_sensors.html">Purple Air Sensors</a>
+      <a href="../articles/articles/purpleair_qc.html">Purple Air Quality Control</a>
     </li>
     <li>
-      <a href="../articles/working_with_wind_data.html">Working With Wind Data</a>
+      <a href="../articles/articles/purpleair_sensors.html">Purple Air Sensors</a>
     </li>
   </ul>
 </li>
@@ -167,8 +170,8 @@ including either of the following recommended formats:
     </div>
 
     <div class="ref-description">
-    <p>Subsets a Purple Air Timeseries object by date.</p>
-<p>Dates can be anything that is understood by <code>lubrdiate::ymd()</code>
+    <p>Subsets a PurpleAir Timeseries object by date.</p>
+<p>Dates can be anything that is understood by <code><a href='http://lubridate.tidyverse.org/reference/ymd.html'>lubridate::ymd()</a></code>
 including either of the following recommended formats:</p>
 <ul>
 <li><p><code>"YYYYmmdd"</code></p></li>
@@ -227,9 +230,12 @@ with <code>enddate</code> will be returned. The exception being when
 single day is returned.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
-<span class='no'>august</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_filterDate</span>(<span class='no'>example_pat</span>, <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fl'>20180801</span>, <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='fl'>20180901</span>)
-<span class='fu'><a href='pat_multiplot.html'>pat_multiplot</a></span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='no'>august</span>)</div><div class='img'><img src='pat_filterDate-1.png' alt='' width='700' height='433' /></div><div class='input'># }
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>AirSensor</span>)
+
+<span class='no'>august08_15</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_filterDate</span>(<span class='no'>example_pat</span>,
+                              <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fl'>20180808</span>,
+                              <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='fl'>20180815</span>)
+<span class='fu'><a href='pat_multiplot.html'>pat_multiplot</a></span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='no'>august08_15</span>)</div><div class='img'><img src='pat_filterDate-1.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

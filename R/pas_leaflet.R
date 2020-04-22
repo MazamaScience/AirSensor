@@ -2,6 +2,20 @@
 #' 
 #' @title Leaflet interactive map of PurpleAir sensors
 #' 
+#' @param pas PurpleAir Synoptic \emph{pas} object.
+#' @param parameter Value to plot, e.g. \code{pm25_1hr}.
+#' @param paletteName Predefined color palette name. Can be of the following:
+#' \itemize{
+#' \item{"AQI"}
+#' \item{"humidity}
+#' \item{"temperature}
+#' \item{"distance"}
+#' }
+#' @param radius Radius (pixels) of monitor circles.
+#' @param opacity Opacity of monitor circles.
+#' @param maptype Optional name of leaflet ProviderTiles to use, e.g. \code{terrain}. 
+#' @param outsideOnly Logical specifying subsetting for monitors marked as 'outside'.
+#' 
 #' @description This function creates interactive maps that will be displayed in 
 #'   RStudio's 'Viewer' tab.
 #'
@@ -17,7 +31,7 @@
 #' \item{"pm25_1week"}
 #' }
 #' 
-#' Auxillary \code{parameter} arguments can be used to display various Purple Air 
+#' Auxiliary \code{parameter} arguments can be used to display various Purple Air 
 #' sensor data. Currently supported \code{parameter} arguments include:
 #' \itemize{
 #' \item{"humidity"}
@@ -40,19 +54,8 @@
 #' \url{https://leaflet-extras.github.io/leaflet-providers/} for a list of 
 #' "provider tiles" to use as the background map.
 #' 
-#' @param pas PurpleAir Synoptic \emph{pas} object.
-#' @param parameter Value to plot, e.g. \code{pm25_1hr}.
-#' @param paletteName Predefined color palette name. Can be of the following:
-#' \itemize{
-#' \item{"AQI"}
-#' \item{"humidity}
-#' \item{"temperature}
-#' \item{"distance"}
-#' }
-#' @param radius Radius (pixels) of monitor circles.
-#' @param opacity Opacity of monitor circles.
-#' @param maptype Optional name of leaflet ProviderTiles to use, e.g. \code{terrain}. 
-#' @param outsideOnly Logical specifying subsetting for monitors marked as 'outside'.
+#' @note The \code{paletteName} parameter can take the name of an RColorBrewer
+#' paeltte, \emph{e.g.} \code{"BuPu"} or \code{"Greens"}.
 #' 
 #' @return A leaflet "plot" object which, if not assigned, is rendered in 
 #' Rstudio's 'Viewer' tab.
@@ -87,12 +90,12 @@ pas_leaflet <- function(
   
   MazamaCoreUtils::stopIfNull(pas)
   
-  if ( !pas_isPas(pas) )
+  if ( !pas_isPas(pas) ) {
     stop("Required parameter 'pas' is not a valid 'pa_synoptic' object.")
-  
-  if ( pas_isEmpty(pas) )
+  }
+  if ( pas_isEmpty(pas) ) {
     stop("Required parameter 'pas' has no data.") 
-  
+  }
   if ( !(parameter %in% c('pm25_current', 
                           'pm25_10min', 
                           'pm25_30min', 
@@ -103,15 +106,15 @@ pas_leaflet <- function(
                           'humidity',
                           'pressure', 
                           'temperature', 
-                          'pwfsl_closestDistance')) ) 
+                          'pwfsl_closestDistance')) ) {
     stop("Required parameter 'parameter' is invalid.")
-  
-  if ( !is.logical(outsideOnly) )
+  }
+  if ( !is.logical(outsideOnly) ) {
     stop(paste0('outsideOnly parameter should be TRUE/FALSE'))
-  
-  if ( !is.numeric(radius) )
+  }
+  if ( !is.numeric(radius) ) {
     stop(paste0('radius parameter is non-numeric'))
-  
+  }
   
   # ----- outsideOnly subsetting -----------------------------------------------
   
@@ -143,7 +146,7 @@ pas_leaflet <- function(
           pas, 
           paletteName = paletteName, 
           parameter = parameter, 
-          reverse=TRUE
+          reverse = TRUE
         )
         
         cols <- colorInfo$colors
@@ -247,7 +250,7 @@ pas_leaflet <- function(
                                      bins = 10, 
                                      na.color = "#bbbbbb")
       cols <- colorFunc(pas[[parameter]])
-      breaks <- seq(domain[1],domain[2],length.out=11)
+      breaks <- seq(domain[1],domain[2],length.out = 11)
       offset <- diff(breaks)[1] / 2
       levels <- signif(seq(breaks[1]+offset, breaks[11]-offset,length.out=10), digits=2)
       labels <- as.character(levels)
@@ -255,15 +258,16 @@ pas_leaflet <- function(
       value <- round(pas[[parameter]], 2)
       unit <- ''
       
-    } else {                                    # Other
+    } else {
       
-      domain <- range(pas[[parameter]], na.rm=TRUE)
+      # All other parameters
+      domain <- range(pas[[parameter]], na.rm = TRUE)
       colorFunc <- leaflet::colorNumeric("Purples", 
                                          domain = domain, 
                                          na.color = "#bbbbbb", 
-                                         reverse=FALSE)
+                                         reverse = FALSE)
       cols <- colorFunc(pas[[parameter]])
-      breaks <- seq(domain[1],domain[2],length.out=6)
+      breaks <- seq(domain[1], domain[2], length.out = 6)
       offset <- diff(breaks)[1] / 2
       levels <- signif(seq(breaks[1]+offset, breaks[6]-offset,length.out=5), digits=4)
       colors <- leaflet::colorBin("Purples", domain=range(breaks), bins=breaks, reverse=FALSE)(levels)
@@ -276,12 +280,13 @@ pas_leaflet <- function(
     # Create popupText
     pas$popupText <- paste0(
       "<b>", pas$label, "</b><br/>",
+      "<b>deviceDeploymentID = ", pas$deviceDeploymentID, "</b><br/>",
       "<b>", parameter, " = ", value, " ", unit, "</b><br/>",
       "temperature = ", round(pas$temperature, 0), " F<br/>",
       "humidity = ", round(pas$humidity, 0), "%<br/>",
       "pm25_1hr = ", round(pas$pm25_1hr, 1), " \U00B5g/m3<br/>",
       "pm25_1day = ", round(pas$pm25_1day, 1), " \U00B5g/m3<br/>",
-      "location_type = ", pas$DEVICE_LOCATIONTYPE, "<br/"
+      "location_type = ", pas$DEVICE_LOCATIONTYPE, "<br/>"
     )
     
   })
@@ -313,8 +318,8 @@ pas_leaflet <- function(
   
   # Convert locations to SpatialPointsDataFrame
   pas <- pas[!is.na(pas$latitude),]
-  SPDF <- sp::SpatialPointsDataFrame(coords=cbind(pas$longitude,pas$latitude),
-                                     data=as.data.frame(pas))
+  SPDF <- sp::SpatialPointsDataFrame(coords = cbind(pas$longitude,pas$latitude),
+                                     data = as.data.frame(pas))
   
   # Convert maptype to a character string that addProviderTiles can read
   if ( missing(maptype) || maptype == 'terrain') {

@@ -4,7 +4,9 @@
 \name{ArchiveBaseUrl}
 \alias{ArchiveBaseUrl}
 \title{Base URL for pre-generated data}
-\format{URL string.}
+\format{
+URL string.
+}
 \description{
 This package maintains an internal archive base URL which users 
 can set using \code{setArchiveBaseUrl()}. Alternatively, if an archive of 
@@ -15,7 +17,7 @@ To avoid internet latency, specification of BASE_DIR will always take
 precedence over specification of BASE_URL.
 Known base URLs include:
 \itemize{
-\item{http://smoke.mazamascience.com/data/PurpleAir}
+\item{http://data.mazamascience.com/PurpleAir/v1}
 }
 
 Package functions that load pre-generated data files download data from this

@@ -16,8 +16,8 @@ You should then be able to see something like the following:
 $ docker images
 REPOSITORY                    TAG         IMAGE ID            CREATED             SIZE
 ...
-mazamascience/airsensor       0.5.16      796ae3ba57e5        2 minutes ago       2.81GB
-mazamascience/airsensor       latest      796ae3ba57e5        2 minutes ago       2.81GB
+mazamascience/airsensor       0.7.2       796ae3ba57e5        2 minutes ago       3.74GB
+mazamascience/airsensor       latest      796ae3ba57e5        2 minutes ago       3.74GB
 ...
 ```
 
@@ -40,8 +40,7 @@ library(AirSensor)
 data(example_pas)
 pas <- example_pas
 
-names(pas)
-
+> names(pas)
  [1] "ID"                               "label"                           
  [3] "DEVICE_LOCATIONTYPE"              "THINGSPEAK_PRIMARY_ID"           
  [5] "THINGSPEAK_PRIMARY_ID_READ_KEY"   "THINGSPEAK_SECONDARY_ID"         
@@ -49,19 +48,22 @@ names(pas)
  [9] "longitude"                        "pm25"                            
 [11] "lastSeenDate"                     "sensorType"                      
 [13] "flag_hidden"                      "isOwner"                         
-[15] "temperature"                      "humidity"                        
+[15] "humidity"                         "temperature"                     
 [17] "pressure"                         "age"                             
 [19] "parentID"                         "flag_highValue"                  
-[21] "flag_attenuation_hardware"        "pm25_current"                    
-[23] "pm25_10min"                       "pm25_30min"                      
-[25] "pm25_1hr"                         "pm25_6hr"                        
-[27] "pm25_1day"                        "pm25_1week"                      
-[29] "statsLastModifiedDate"            "statsLastModifiedInterval"       
-[31] "countryCode"                      "stateCode"                       
-[33] "timezone"                         "airDistrict"                     
-[35] "pwfsl_closestDistance"            "pwfsl_closestMonitorID"          
-[37] "sensorManufacturer"               "targetPollutant"                 
-[39] "technologyType"                   "communityRegion"                 
+[21] "flag_attenuation_hardware"        "Ozone1"                          
+[23] "Voc"                              "pm25_current"                    
+[25] "pm25_10min"                       "pm25_30min"                      
+[27] "pm25_1hr"                         "pm25_6hr"                        
+[29] "pm25_1day"                        "pm25_1week"                      
+[31] "statsLastModifiedDate"            "statsLastModifiedInterval"       
+[33] "deviceID"                         "locationID"                      
+[35] "deviceDeploymentID"               "countryCode"                     
+[37] "stateCode"                        "timezone"                        
+[39] "airDistrict"                      "pwfsl_closestDistance"           
+[41] "pwfsl_closestMonitorID"           "sensorManufacturer"              
+[43] "targetPollutant"                  "technologyType"                  
+[45] "communityRegion"                 
 
 pas %>% 
   pas_filter(stateCode == 'CA') %>% 
@@ -79,7 +81,7 @@ pas %>%
 ```
 docker login
 ...
-docker push mazamascience/airsensor:0.5.16
+docker push mazamascience/airsensor:0.7.2
 ```
 
 
@@ -88,6 +90,6 @@ docker push mazamascience/airsensor:0.5.16
 A recent image can also be obtained from DockerHub with:
 
 ```
-docker pull mazamascience/airsensor:0.5.16
+docker pull mazamascience/airsensor:0.7.2
 ```
 

@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.17</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.1</span>
       </span>
     </div>
 
@@ -97,34 +97,37 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
+      <a href="../articles/AirSensor_Function_Overview.html">AirSensor Function Overview</a>
     </li>
     <li>
-      <a href="../articles/SoH_functions.html">SoH Functions</a>
+      <a href="../articles/Developer_Style_Guide.html">Developer Style Guide</a>
+    </li>
+    <li>
+      <a href="../articles/articles/Australia_on_fire.html">Australia on Fire</a>
     </li>
     <li>
       <a href="../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
     </li>
     <li>
-      <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
+      <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
     </li>
     <li>
-      <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
+      <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
     </li>
     <li>
-      <a href="../articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
+      <a href="../articles/articles/pas_introduction.html">PurpleAir Synoptic Data</a>
     </li>
     <li>
-      <a href="../articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
+      <a href="../articles/articles/pat_introduction.html">PurpleAir TimeSeries Data</a>
     </li>
     <li>
-      <a href="../articles/purpleair_qc.html">Purple Air Quality Control</a>
+      <a href="../articles/articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
     </li>
     <li>
-      <a href="../articles/purpleair_sensors.html">Purple Air Sensors</a>
+      <a href="../articles/articles/purpleair_qc.html">Purple Air Quality Control</a>
     </li>
     <li>
-      <a href="../articles/working_with_wind_data.html">Working With Wind Data</a>
+      <a href="../articles/articles/purpleair_sensors.html">Purple Air Sensors</a>
     </li>
   </ul>
 </li>
@@ -156,6 +159,205 @@
       <small>Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="airsensor-0-7-1" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-7-1" class="anchor"></a>AirSensor 0.7.1</h1>
+<ul>
+<li>Updated example <code>archiveBaseUrl</code> from <code>http://smoke.mazamascience.com/data/PurpleAir</code> to <code>http://data.mazamascience.com/PurpleAir/v1</code>.</li>
+</ul>
+</div>
+    <div id="airsensor-0-7-0" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-7-0" class="anchor"></a>AirSensor 0.7.0</h1>
+<ul>
+<li>Renamed <code>pat_scatterplot()</code> to <code><a href="../reference/pat_scatterMatrixPlot.html">pat_scatterMatrixPlot()</a></code>.</li>
+</ul>
+</div>
+    <div id="airsensor-0-6-17" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-6-17" class="anchor"></a>AirSensor 0.6.17</h1>
+<ul>
+<li>Renamed <code>downloadParseSynopticData()</code> to <code><a href="../reference/pas_downloadParseData.html">pas_downloadParseData()</a></code>.</li>
+<li>Renamed <code>enhanceSynopticData()</code> to <code><a href="../reference/pas_enhanceData.html">pas_enhanceData()</a></code>.</li>
+<li>New functions used in creating <code>pas</code> objects: <code><a href="../reference/pas_addAirDistrict.html">pas_addAirDistrict()</a></code>, <code><a href="../reference/pas_addSpatialMetadata.html">pas_addSpatialMetadata()</a></code>, <code><a href="../reference/pas_addUniqueIDs.html">pas_addUniqueIDs()</a></code>, <code><a href="../reference/pas_addUniqueIDs.html">pas_addUniqueIDs()</a></code>, <code><a href="../reference/pas_hasSpatial.html">pas_hasSpatial()</a></code>.</li>
+</ul>
+</div>
+    <div id="airsensor-0-6-16" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-6-16" class="anchor"></a>AirSensor 0.6.16</h1>
+<ul>
+<li>New <code><a href="../reference/pas_upgrade.html">pas_upgrade()</a></code> function to upgrade <code>pas</code> files created with <strong>AirSensor</strong> version 0.5.</li>
+</ul>
+</div>
+    <div id="airsensor-0-6-15" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-6-15" class="anchor"></a>AirSensor 0.6.15</h1>
+<ul>
+<li>Fixed bug in <code>enhanceSynopticData()</code> when <code>countryCodes = NULL</code>. This was encountered when running <code><a href="../reference/pas_createNew.html">pas_createNew()</a></code> with <code>countryCodes = NULL</code>.</li>
+<li>Added “PurpleAir Synoptic Data” article.</li>
+</ul>
+</div>
+    <div id="airsensor-0-6-14" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-6-14" class="anchor"></a>AirSensor 0.6.14</h1>
+<ul>
+<li>PAS function documentation typo fixes.</li>
+<li>Added “Developer Style Guide” article.</li>
+<li>Updated to use <code>MazamaCoreUtils::loadDatafile()</code> function .</li>
+<li>Added more unit testing for <code>pas_~()</code> functions.</li>
+</ul>
+</div>
+    <div id="airsensor-0-6-13" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-6-13" class="anchor"></a>AirSensor 0.6.13</h1>
+<ul>
+<li>Proper timezone handling in <code><a href="../reference/pat_multiplot.html">pat_multiplot()</a></code> and <code><a href="../reference/pat_monitorComparison.html">pat_monitorComparison()</a></code>
+</li>
+</ul>
+</div>
+    <div id="airsensor-0-6-12" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-6-12" class="anchor"></a>AirSensor 0.6.12</h1>
+<ul>
+<li>Separated calculation of SoHIndex into <code>PurpleAirSoH_dailyToIndex()</code>
+</li>
+</ul>
+</div>
+    <div id="airsensor-0-6-11" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-6-11" class="anchor"></a>AirSensor 0.6.11</h1>
+<ul>
+<li>Fixed bug in <code><a href="../reference/pat_isEmpty.html">pat_isEmpty()</a></code> so that it test for an empty <code>data</code> dataframe rather than an empty <code>meta</code> dataframe.</li>
+<li>
+<code><a href="../reference/pat_trimDate.html">pat_trimDate()</a></code> now preserves the first day if it begins at local midnight.</li>
+</ul>
+</div>
+    <div id="airsensor-0-6-10" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-6-10" class="anchor"></a>AirSensor 0.6.10</h1>
+<ul>
+<li>Improved error message in <code><a href="../reference/downloadParseTimeseriesData.html">downloadParseTimeseriesData()</a></code>.</li>
+</ul>
+</div>
+    <div id="airsensor-0-6-9" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-6-9" class="anchor"></a>AirSensor 0.6.9</h1>
+<ul>
+<li>Archive directory structure was changed so that monthly pat files are found in a monthly directiory underneath <code>pat/YYYY/</code>. The <code><a href="../reference/pat_loadMonth.html">pat_loadMonth()</a></code> function was modified to search in this locaiton.</li>
+<li>
+<code>pat$meta$pm25_A/B</code> values now come from the raw data <em>outdoor</em> value <code>PM2.5 (ATM)</code> rather than the <em>indoor</em> value <code>PM2.5 (CF=1)</code>. See <a href="https://www2.purpleair.com/community/faq#!hc-what-is-the-difference-between-cf-1-and-cf-atm" class="uri">https://www2.purpleair.com/community/faq#!hc-what-is-the-difference-between-cf-1-and-cf-atm</a>
+</li>
+<li>Added more logging to <code><a href="../reference/downloadParseTimeseriesData.html">downloadParseTimeseriesData()</a></code>.</li>
+</ul>
+</div>
+    <div id="airsensor-0-6-8" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-6-8" class="anchor"></a>AirSensor 0.6.8</h1>
+<ul>
+<li>Changed default value to <code>countryCodes = NULL</code> in <code><a href="../reference/pas_createNew.html">pas_createNew()</a></code> and <code>enhanceSynopticData()</code> so that it is easier to create <em>pas</em> objects for other countries.</li>
+<li>Removed <code>countryCode</code> and <code>stateCode</code> arguments from <code>pas_get~</code> functions. Filter should be done with <code><a href="../reference/pas_filter.html">pas_filter()</a></code> before these functions are called.</li>
+</ul>
+</div>
+    <div id="airsensor-0-6-7" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-6-7" class="anchor"></a>AirSensor 0.6.7</h1>
+<ul>
+<li>Fixed bug in <code>enhanceSynopticData()</code> which failed to add <code>pwfsl~</code> columns when <code>includePWFSL = FALSE</code>. (The columns should still exist but with all NA.)</li>
+<li>All <code>pas_get~()</code> functions now support subsetting by <code>countryCode</code> and US <code>stateCode</code>.</li>
+</ul>
+</div>
+    <div id="airsensor-0-6-6" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-6-6" class="anchor"></a>AirSensor 0.6.6</h1>
+<ul>
+<li>Added <code>days</code> argument to <code><a href="../reference/pat_loadLatest.html">pat_loadLatest()</a></code>.</li>
+<li>
+<code><a href="../reference/pat_load.html">pat_load()</a></code> and <code><a href="../reference/sensor_load.html">sensor_load()</a></code> default to the last 7 days when no dates are provided.</li>
+<li>New <code><a href="../reference/pat_trimDate.html">pat_trimDate()</a></code> function trims data to local time full days.</li>
+<li>
+<code><a href="../reference/pas_isPas.html">pas_isPas()</a></code> no longer requires presence of optional <code>pwfsl_~</code> columns.</li>
+</ul>
+</div>
+    <div id="airsensor-0-6-5" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-6-5" class="anchor"></a>AirSensor 0.6.5</h1>
+<ul>
+<li>Reordered arguments in <code><a href="../reference/pas_filterNear.html">pas_filterNear()</a></code> to package standard <code>longitude, latitude</code>.</li>
+</ul>
+</div>
+    <div id="airsensor-0-6-4" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-6-4" class="anchor"></a>AirSensor 0.6.4</h1>
+<ul>
+<li>Refactored <em>pas</em> objects to include: <code>deviceID</code>, <code>locationID</code>, <code>deviceDeploymentID</code>.</li>
+<li>Refactored <code>pat_createNew() and</code>pat_load~()<code>functions so that the first</code>id<code>argument is used as the</code>deviceDeploymentID` unique time series identifier.</li>
+<li>The second and third arguments are now <code>label</code> and <code>pas</code> and provide an alternative to specifying <code>id</code>.</li>
+<li>Recreated example data with the new functions.</li>
+</ul>
+</div>
+    <div id="airsensor-0-6-3" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-6-3" class="anchor"></a>AirSensor 0.6.3</h1>
+<ul>
+<li>Improved examples.</li>
+</ul>
+</div>
+    <div id="airsensor-0-6-2" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-6-2" class="anchor"></a>AirSensor 0.6.2</h1>
+<ul>
+<li>Documentation corrections.</li>
+<li>Recreated all <code>exaple_pat~</code> data files with so they have the new metadata fields: <code>sensorID</code>, <code>locationID</code> and <code>deviceDeploymentID</code>.</li>
+</ul>
+</div>
+    <div id="airsensor-0-6-1" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-6-1" class="anchor"></a>AirSensor 0.6.1</h1>
+<p>Revisited everything at the <code>pas</code> object level:</p>
+<ul>
+<li>Error message harmonization.</li>
+<li>Updated package data files.</li>
+<li>Updated documentation.</li>
+<li>Updated tests.</li>
+<li>Renamed <code>pas_sensorDeploymentID()</code> to <code>pas_deviceDeploymentID()</code>
+</li>
+</ul>
+</div>
+    <div id="airsensor-0-6-0" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-6-0" class="anchor"></a>AirSensor 0.6.0</h1>
+<p>Version 0.6 is a backwards <em>in</em>compatible release. It replaces <code>label</code> identifier with a proper “sensor-deployment” identifier and relies on the <em>MazamaLocationUtils</em> package to create location identifiers. Becuase of this change, archives must be regenerated and many functions must be refactored.</p>
+<p>New fields in <code>pat$meta</code> include:</p>
+<ul>
+<li>
+<code>sensorID</code> – same as <code>ID</code> but more explicit</li>
+<li>
+<code>locationID</code> – generated with <code><a href="https://rdrr.io/pkg/MazamaLocationUtils/man/location_createID.html">MazamaLocationUtils::location_createID()</a></code>
+</li>
+<li>
+<code>sensorDeploymentID</code> – combination of the above</li>
+</ul>
+<p>The following functions were added/refactored to use “sensor-deployment” identifiers:</p>
+<ul>
+<li>
+<code>pas_sensorDeploymentID()</code> creates a unique “sensor-deployment” identifier. This identifier is used in creation of file names in the archive database and as the unique time series identifer in <em>airsensor</em> objects.</li>
+<li>
+<code><a href="../reference/pas_getColumn.html">pas_getColumn()</a></code>, <code>past_getLabels()</code>, <code><a href="../reference/pas_getIDs.html">pas_getIDs()</a></code>
+</li>
+<li><code><a href="../reference/pat_createNew.html">pat_createNew()</a></code></li>
+<li>
+<code><a href="../reference/pat_load.html">pat_load()</a></code>, <code><a href="../reference/pat_loadLatest.html">pat_loadLatest()</a></code>, <code><a href="../reference/pat_loadMonth.html">pat_loadMonth()</a></code>
+</li>
+<li><code><a href="../reference/pat_createAirSensor.html">pat_createAirSensor()</a></code></li>
+</ul>
+</div>
+    <div id="airsensor-0-5-18" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-5-18" class="anchor"></a>AirSensor 0.5.18</h1>
+<ul>
+<li>Linted for timezones - fixed in Mutliplot and monitor comparison.</li>
+</ul>
+</div>
     <div id="airsensor-0-5-17" class="section level1">
 <h1 class="page-header">
 <a href="#airsensor-0-5-17" class="anchor"></a>AirSensor 0.5.17</h1>
@@ -218,7 +420,7 @@
 <a href="#airsensor-0-5-10" class="anchor"></a>AirSensor 0.5.10</h1>
 <p>Removed <code>logger.error()</code> statements from the following low-level functions as they couldn’t be turned off and ended up cluttering the log files:</p>
 <ul>
-<li><code><a href="../reference/loadDataFile.html">loadDataFile()</a></code></li>
+<li><code>loadDataFile()</code></li>
 <li><code><a href="../reference/pas_load.html">pas_load()</a></code></li>
 <li><code><a href="../reference/pat_createNew.html">pat_createNew()</a></code></li>
 <li><code><a href="../reference/pat_loadLatest.html">pat_loadLatest()</a></code></li>
@@ -308,8 +510,8 @@
 <h1 class="page-header">
 <a href="#airsensor-0-5-1" class="anchor"></a>AirSensor 0.5.1</h1>
 <ul>
-<li>Upudated data loding to allow for loading data from a local archive. New functions include: <code><a href="../reference/loadDataFile.html">loadDataFile()</a></code>, <code><a href="../reference/getArchiveBaseDir.html">getArchiveBaseDir()</a></code>, <code><a href="../reference/setArchiveBaseDir.html">setArchiveBaseDir()</a></code>.</li>
-<li>All <code>~_load()</code> and <code>~_loadLatest()</code> functions now call <code><a href="../reference/loadDataFile.html">loadDataFile()</a></code>
+<li>Upudated data loding to allow for loading data from a local archive. New functions include: <code>loadDataFile()</code>, <code><a href="../reference/getArchiveBaseDir.html">getArchiveBaseDir()</a></code>, <code><a href="../reference/setArchiveBaseDir.html">setArchiveBaseDir()</a></code>.</li>
+<li>All <code>~_load()</code> and <code>~_loadLatest()</code> functions now call <code>loadDataFile()</code>
 </li>
 <li>
 <code><a href="../reference/pat_load.html">pat_load()</a></code> now continues working in the face of missing data files. under the hood and will work with data archives found at <code>archiveBaseDir</code>.</li>
@@ -386,7 +588,7 @@
 <li>Updated requirements: MazamaCoreUtils (&gt;= 0.3.5).</li>
 <li>All time-related functions now specify a timezone explicitly so as to avoid confusion related to the default <code><a href="https://rdrr.io/r/base/timezones.html">base::Sys.timezone()</a></code>.</li>
 <li>
-<code><a href="../reference/enhanceSynopticData.html">enhanceSynopticData()</a></code> now handles presence or absence of <code>State</code> column in raw data obtained from PurpleAir. This was apparently removed some time during the summer of 2019.</li>
+<code>enhanceSynopticData()</code> now handles presence or absence of <code>State</code> column in raw data obtained from PurpleAir. This was apparently removed some time during the summer of 2019.</li>
 </ul>
 </div>
     <div id="airsensor-0-4-3" class="section level1">
@@ -424,7 +626,7 @@
 <li>New <code><a href="../reference/setArchiveBaseUrl.html">setArchiveBaseUrl()</a></code> and <code><a href="../reference/getArchiveBaseUrl.html">getArchiveBaseUrl()</a></code> functions allow per session specification of the location of pre-generated data files.</li>
 <li>Removed <code>baseUrl</code> parameter from all data loading functions. Now users must begin a session with <code><a href="../reference/setArchiveBaseUrl.html">setArchiveBaseUrl()</a></code>.</li>
 <li>Modified behavior of <code><a href="../reference/sensor_load.html">sensor_load()</a></code> to trim data to the requested time range.</li>
-<li>Fixed bug in <code><a href="../reference/pat_scatterplot.html">pat_scatterplot()</a></code> that generated an error when the number of records in the <code>pat</code> object was fewer than the <code>sampleSize</code> parameter.</li>
+<li>Fixed bug in <code>pat_scatterplot()</code> that generated an error when the number of records in the <code>pat</code> object was fewer than the <code>sampleSize</code> parameter.</li>
 </ul>
 </div>
     <div id="airsensor-0-3-15" class="section level1">
@@ -525,7 +727,7 @@
 </li>
 <li>Default required data retentaion rate during hourly aggregation was increased from 10/30 to 20/30 (<code>min_count = 20</code>).</li>
 <li>Improved examples in the documentation.</li>
-<li>Suppressing warnings from <code><a href="../reference/pat_scatterplot.html">pat_scatterplot()</a></code>.</li>
+<li>Suppressing warnings from <code>pat_scatterplot()</code>.</li>
 <li>Updated “PurpleAir Timeseries” vignette.</li>
 <li>Added <code>returnAllColumns</code> option to `PurpleAirQC_~1 functions.</li>
 <li>New <code>PurpleQC_validationPlot()</code> function.</li>
@@ -646,7 +848,7 @@
 <h1 class="page-header">
 <a href="#airsensor-0-2-15" class="anchor"></a>AirSensor 0.2.15</h1>
 <ul>
-<li>Fixed default parameters bug in <code><a href="../reference/pat_scatterplot.html">pat_scatterplot()</a></code>
+<li>Fixed default parameters bug in <code>pat_scatterplot()</code>
 </li>
 <li>New shiny utilities for AirShiny</li>
 </ul>
@@ -719,7 +921,7 @@
 <code>ast_createAirSensor()</code> converts <code>ast</code> objects into “airsensor” objects that are compatible with the <em>PWFSLSmoke</em> package</li>
 <li>
 <code><a href="../reference/initializeMazamaSpatialUtils.html">initializeMazamaSpatialUtils()</a></code> now imports all datasets need to create <code>pas</code> objects</li>
-<li>updated <code>example_pas</code> data file has additional fields introduced by the 0.2.8 version of <code><a href="../reference/enhanceSynopticData.html">enhanceSynopticData()</a></code>
+<li>updated <code>example_pas</code> data file has additional fields introduced by the 0.2.8 version of <code>enhanceSynopticData()</code>
 </li>
 <li>removed first attempt <code>pat_timeAverage()</code> function</li>
 <li>new <code><a href="../reference/pat_aggregate.html">pat_aggregate()</a></code> function performs temporal aggregation</li>
@@ -729,7 +931,7 @@
 <h1 class="page-header">
 <a href="#airsensor-0-2-8" class="anchor"></a>AirSensor 0.2.8</h1>
 <ul>
-<li>improvements in <code><a href="../reference/enhanceSynopticData.html">enhanceSynopticData()</a></code> now handle changing order of json properties and validate locations before adding spatial metadata</li>
+<li>improvements in <code>enhanceSynopticData()</code> now handle changing order of json properties and validate locations before adding spatial metadata</li>
 <li>new <code>pat_createASTimeseries()</code> function handles conversion of Purple Air-specific “pat” objects into sensor-generic “ast” objects.</li>
 <li>new <code>ast_createAirSensor()</code> objects converts “ast” objects into a “as” data type that is compatible with the “ws_monitor” data type used in the <em>PWFSLSmoke</em> package</li>
 </ul>
@@ -805,7 +1007,7 @@
 <code><a href="../reference/pat_multiplot.html">pat_multiplot()</a></code> time axis now in sensor local time</li>
 <li>
 <code><a href="../reference/pat_multiplot.html">pat_multiplot()</a></code> has a new <code>pm25_over</code> plottype</li>
-<li>much improved <code><a href="../reference/pat_scatterplot.html">pat_scatterplot()</a></code>
+<li>much improved <code>pat_scatterplot()</code>
 </li>
 </ul>
 </div>
@@ -830,7 +1032,7 @@
 <ul>
 <li>renamed package to <em>AirSensor</em>
 </li>
-<li>renamed <code>pat_internalData()</code> to <code><a href="../reference/pat_scatterplot.html">pat_scatterplot()</a></code> with improved functionality</li>
+<li>renamed <code>pat_internalData()</code> to <code>pat_scatterplot()</code> with improved functionality</li>
 <li>renamed <code><a href="../reference/pat_outliers.html">pat_outliers()</a></code> to <code><a href="../reference/pat_outliers.html">pat_outliers()</a></code> with improved functionality</li>
 <li>new utility functions <code><a href="../reference/pat_isPat.html">pat_isPat()</a></code>, <code><a href="../reference/pat_isEmpty.html">pat_isEmpty()</a></code>, <code><a href="../reference/pat_extractDataFrame.html">pat_extractMeta()</a></code>, <code><a href="../reference/pat_extractDataFrame.html">pat_extractData()</a></code>
 </li>
@@ -944,6 +1146,27 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#airsensor-0-7-1">0.7.1</a></li>
+        <li><a href="#airsensor-0-7-0">0.7.0</a></li>
+        <li><a href="#airsensor-0-6-17">0.6.17</a></li>
+        <li><a href="#airsensor-0-6-16">0.6.16</a></li>
+        <li><a href="#airsensor-0-6-15">0.6.15</a></li>
+        <li><a href="#airsensor-0-6-14">0.6.14</a></li>
+        <li><a href="#airsensor-0-6-13">0.6.13</a></li>
+        <li><a href="#airsensor-0-6-12">0.6.12</a></li>
+        <li><a href="#airsensor-0-6-11">0.6.11</a></li>
+        <li><a href="#airsensor-0-6-10">0.6.10</a></li>
+        <li><a href="#airsensor-0-6-9">0.6.9</a></li>
+        <li><a href="#airsensor-0-6-8">0.6.8</a></li>
+        <li><a href="#airsensor-0-6-7">0.6.7</a></li>
+        <li><a href="#airsensor-0-6-6">0.6.6</a></li>
+        <li><a href="#airsensor-0-6-5">0.6.5</a></li>
+        <li><a href="#airsensor-0-6-4">0.6.4</a></li>
+        <li><a href="#airsensor-0-6-3">0.6.3</a></li>
+        <li><a href="#airsensor-0-6-2">0.6.2</a></li>
+        <li><a href="#airsensor-0-6-1">0.6.1</a></li>
+        <li><a href="#airsensor-0-6-0">0.6.0</a></li>
+        <li><a href="#airsensor-0-5-18">0.5.18</a></li>
         <li><a href="#airsensor-0-5-17">0.5.17</a></li>
         <li><a href="#airsensor-0-5-16">0.5.16</a></li>
         <li><a href="#airsensor-0-5-15">0.5.15</a></li>

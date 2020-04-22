@@ -12,7 +12,7 @@ pas_load(
 )
 }
 \arguments{
-\item{datestamp}{Local date string in ymd order.}
+\item{datestamp}{Local date string in valid YYYY-mm-dd format. See description.}
 
 \item{retries}{Max number of days to go back and try to load if requested 
 date cannot be retrieved.}
@@ -27,8 +27,8 @@ A PurpleAir Synoptic \emph{pas} object.
 }
 \description{
 A pre-generated \emph{pa_synoptic} object will be loaded for
-  the given date. These files are generated throughout each day and provide
-  a record of all currently installed Purple Air sensors for the day of 
+  the given date. These files are generated each day and provide
+  a record of all currently installed PurpleAir sensors for the day of 
   interest. With default arguments, this function will always load data 
   associated with the most recent pre-generated file -- typically less than 
   one hour old.
@@ -42,14 +42,14 @@ A pre-generated \emph{pa_synoptic} object will be loaded for
 \item{\code{"YYYY-mm-dd"}}
 }
 
-By default, today's date is used.
+By default, the host computer's date is used.
 
 The \emph{pas} object for a specific hour may be loaded by specifying 
 \code{datestamp = "YYYYmmddHH"}.
 }
 \examples{
 \dontrun{
-setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 pas <- pas_load()
 pas \%>\% 
   pas_filter(stateCode == "CA") \%>\%

@@ -2,12 +2,12 @@
 % Please edit documentation in R/createPATimeseriesObject.R
 \name{createPATimeseriesObject}
 \alias{createPATimeseriesObject}
-\title{Create a Purple Air Timeseries object}
+\title{Create a PurpleAir Timeseries object}
 \usage{
 createPATimeseriesObject(pat_raw = NULL)
 }
 \arguments{
-\item{pat_raw}{Raw Purple Air timeseries data from \code{downloadParseTimeseriesData()}}
+\item{pat_raw}{Raw PurpleAir timeseries data from \code{downloadParseTimeseriesData()}}
 }
 \value{
 List with original \code{meta} and restructured \code{data} elements
@@ -24,18 +24,42 @@ In the process, the following columns of data are omitted:
 \item{\code{pm10_atm}}
 }
 }
+\note{
+On January 13, 2020 the PurpleAir FAQ "Whsat's the difference between CF_1
+and CF_ATM?" contained the following text:
+
+\preformatted{
+The CF_ATM and CF_1 values are calculated from the particle count data with a 
+proprietary algorithm developed by the PMS5003 laser counter manufacturer, 
+PlanTower. The specifics of the calculation are not available to the public 
+(or us for that matter). However, to convert the particle count data (um/dl) 
+to a mass concentration (ug/m3) they must use an average particle density. 
+They do provide 2 different mass concentration conversion options; CF_1 uses 
+the "average particle density" for indoor particulate matter and CF_ATM uses 
+the "average particle density" for outdoor particulate matter. Depending on 
+the density of the particles you are measuring the sensor could appear to 
+read "high" or "low". Some groups have developed conversion factors to 
+convert the data from the sensor to match the unique average particle density 
+within their airshed. 
+}
+}
 \examples{
 \dontrun{
+library(AirSensor)
 initializeMazamaSpatialUtils()
-pas <- pas_load()
+
 pat_raw <- downloadParseTimeseriesData(
-  pas, 
-  label = 'North Bend Weather', 
+  label = 'North Bend Weather',
+  pas = example_pas,
   startdate = 20180908
 )
+
 pat <- createPATimeseriesObject(pat_raw)
 pat_multiplot(pat)
 }
+}
+\references{
+https://www2.purpleair.com/community/faq
 }
 \seealso{
 \link{downloadParseTimeseriesData}

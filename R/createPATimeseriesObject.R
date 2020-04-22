@@ -2,9 +2,9 @@
 #' @importFrom rlang .data
 #' @import dplyr
 #' 
-#' @title Create a Purple Air Timeseries object
+#' @title Create a PurpleAir Timeseries object
 #' 
-#' @param pat_raw Raw Purple Air timeseries data from \code{downloadParseTimeseriesData()}
+#' @param pat_raw Raw PurpleAir timeseries data from \code{downloadParseTimeseriesData()}
 #' 
 #' @return List with original \code{meta} and restructured \code{data} elements
 #' 
@@ -17,19 +17,41 @@
 #' \item{\code{pm10_atm}}
 #' }
 #' 
+#' @note 
+#' On January 13, 2020 the PurpleAir FAQ "Whsat's the difference between CF_1
+#' and CF_ATM?" contained the following text:
+#' 
+#' \preformatted{
+#' The CF_ATM and CF_1 values are calculated from the particle count data with a 
+#' proprietary algorithm developed by the PMS5003 laser counter manufacturer, 
+#' PlanTower. The specifics of the calculation are not available to the public 
+#' (or us for that matter). However, to convert the particle count data (um/dl) 
+#' to a mass concentration (ug/m3) they must use an average particle density. 
+#' They do provide 2 different mass concentration conversion options; CF_1 uses 
+#' the "average particle density" for indoor particulate matter and CF_ATM uses 
+#' the "average particle density" for outdoor particulate matter. Depending on 
+#' the density of the particles you are measuring the sensor could appear to 
+#' read "high" or "low". Some groups have developed conversion factors to 
+#' convert the data from the sensor to match the unique average particle density 
+#' within their airshed. 
+#' }
+#' 
 #' @return "pa_timeseries" list of time series PurpleAir data
 #' 
 #' @seealso \link{downloadParseTimeseriesData}
+#' @references https://www2.purpleair.com/community/faq
 #' 
 #' @examples 
 #' \dontrun{
+#' library(AirSensor)
 #' initializeMazamaSpatialUtils()
-#' pas <- pas_load()
+#' 
 #' pat_raw <- downloadParseTimeseriesData(
-#'   pas, 
-#'   label = 'North Bend Weather', 
+#'   label = 'North Bend Weather',
+#'   pas = example_pas,
 #'   startdate = 20180908
 #' )
+#' 
 #' pat <- createPATimeseriesObject(pat_raw)
 #' pat_multiplot(pat)
 #' }
@@ -44,6 +66,31 @@ createPATimeseriesObject <- function(
   
   # ----- Simplify meta --------------------------------------------------------
 
+  # > names(pat_raw$meta)
+  # [1] "ID"                               "label"                           
+  # [3] "DEVICE_LOCATIONTYPE"              "THINGSPEAK_PRIMARY_ID"           
+  # [5] "THINGSPEAK_PRIMARY_ID_READ_KEY"   "THINGSPEAK_SECONDARY_ID"         
+  # [7] "THINGSPEAK_SECONDARY_ID_READ_KEY" "latitude"                        
+  # [9] "longitude"                        "pm25"                            
+  # [11] "lastSeenDate"                     "sensorType"                      
+  # [13] "flag_hidden"                      "isOwner"                         
+  # [15] "humidity"                         "temperature"                     
+  # [17] "pressure"                         "age"                             
+  # [19] "parentID"                         "flag_highValue"                  
+  # [21] "flag_attenuation_hardware"        "Ozone1"                          
+  # [23] "Voc"                              "pm25_current"                    
+  # [25] "pm25_10min"                       "pm25_30min"                      
+  # [27] "pm25_1hr"                         "pm25_6hr"                        
+  # [29] "pm25_1day"                        "pm25_1week"                      
+  # [31] "statsLastModifiedDate"            "statsLastModifiedInterval"       
+  # [33] "deviceID"                         "locationID"                      
+  # [35] "deviceDeploymentID"               "countryCode"                     
+  # [37] "stateCode"                        "timezone"                        
+  # [39] "airDistrict"                      "pwfsl_closestDistance"           
+  # [41] "pwfsl_closestMonitorID"           "sensorManufacturer"              
+  # [43] "targetPollutant"                  "technologyType"                  
+  # [45] "communityRegion"                 
+  
   meta <- 
     pat_raw$meta %>%
     dplyr::filter(is.na(.data$parentID)) %>%
@@ -58,6 +105,9 @@ createPATimeseriesObject <- function(
                   .data$countryCode, 
                   .data$stateCode, 
                   .data$timezone, 
+                  .data$deviceID, 
+                  .data$locationID, 
+                  .data$deviceDeploymentID, 
                   .data$pwfsl_closestDistance, 
                   .data$pwfsl_closestMonitorID,
                   .data$sensorManufacturer,
@@ -87,8 +137,16 @@ createPATimeseriesObject <- function(
                   .data$rssi, 
                   .data$temperature, 
                   .data$humidity, 
+                  .data$pm1_atm, 
+                  .data$pm2.5_atm, 
+                  .data$pm10_atm, 
                   .data$pm2.5_cf1) %>%
-    dplyr::rename(datetime_A = .data$datetime, pm25_A = .data$pm2.5_cf1)
+    dplyr::rename(datetime_A = .data$datetime, 
+                  pm1_atm_A = .data$pm1_atm,
+                  pm25_atm_A = .data$pm2.5_atm,
+                  pm10_atm_A = .data$pm10_atm,
+                  pm25_cf1_A = .data$pm2.5_cf1) %>%
+    dplyr::mutate(pm25_A = .data$pm25_atm_A)
   
   # NOTE:  Expedient conversion to a minute axis with floor_date() 
   A$datetime <- lubridate::floor_date(A$datetime_A, unit="min")
@@ -102,8 +160,16 @@ createPATimeseriesObject <- function(
     dplyr::select(.data$datetime, 
                   .data$memory, 
                   .data$adc0, 
+                  .data$pm1_atm, 
+                  .data$pm2.5_atm, 
+                  .data$pm10_atm, 
                   .data$pm2.5_cf1) %>%
-    dplyr::rename(datetime_B = .data$datetime, pm25_B = .data$pm2.5_cf1)
+    dplyr::rename(datetime_B = .data$datetime, 
+                  pm1_atm_B = .data$pm1_atm,
+                  pm25_atm_B = .data$pm2.5_atm,
+                  pm10_atm_B = .data$pm10_atm,
+                  pm25_cf1_B = .data$pm2.5_cf1) %>%
+    dplyr::mutate(pm25_B = .data$pm25_atm_B)
   
   # NOTE:  Expedient conversion to a minute axis with floor_date() 
   B$datetime <- lubridate::floor_date(B$datetime_B, unit="min")
@@ -116,6 +182,14 @@ createPATimeseriesObject <- function(
     dplyr::select(.data$datetime, 
                   .data$pm25_A, 
                   .data$pm25_B, 
+                  .data$pm1_atm_A, 
+                  .data$pm1_atm_B, 
+                  .data$pm25_atm_A, 
+                  .data$pm25_atm_B, 
+                  .data$pm10_atm_A, 
+                  .data$pm10_atm_B, 
+                  .data$pm25_cf1_A, 
+                  .data$pm25_cf1_B, 
                   .data$temperature, 
                   .data$humidity,
                   .data$uptime, 
@@ -125,11 +199,11 @@ createPATimeseriesObject <- function(
                   .data$datetime_B) %>%
     dplyr::arrange(.data$datetime)
   
-  # Fillin adc0 and rssi using last observation carry forward so both 
+  # Fill in adc0 and rssi using last observation carry forward so both 
   # channels have these (they don't change much)
   data <- tidyr::fill(data, .data$adc0, .data$rssi)
   
-  # ----- Create the Purple Air Timeseries (pat) object ------------------------
+  # ----- Create the PurpleAir Timeseries (pat) object ------------------------
   
   # Combine meta and data dataframes into a list
   pat <- list(meta = meta, data = data)

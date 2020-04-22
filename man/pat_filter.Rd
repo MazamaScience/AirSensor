@@ -18,15 +18,16 @@ A subset of the incoming \code{pat}.
 \description{
 A generalized data filter for \emph{pat} objects to 
 choose rows/cases where conditions are true.  Multiple conditions are 
-combined with \code{&} or seperated by a comma. Only rows where the condition 
+combined with \code{&} or separated by a comma. Only rows where the condition 
 evaluates to TRUE are kept.Rows where the condition evaluates to \code{NA}
 are dropped.
 }
 \examples{
-\dontrun{
+
+library(AirSensor)
 unhealthy <- pat_filter(example_pat, pm25_A > 55.5, pm25_B > 55.5)
-head(unhealthy)
-}
+head(unhealthy$data)
+
 }
 \seealso{
 \link{pat_filterDate}

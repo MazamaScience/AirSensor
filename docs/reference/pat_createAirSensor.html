@@ -43,9 +43,10 @@
 
 
 <meta property="og:title" content="Create an Air Sensor object — pat_createAirSensor" />
-<meta property="og:description" content="Aggregates data from a pat object into an 
-airsensor object that has appropriate metadata to be used with the 
-*PWFSLSmoke* package.
+<meta property="og:description" content="Converts data from a pat object with an irregular time 
+axis to an airsensor object where the numeric data has been aggregated 
+along a standardized hourly time axis, as well as adding additional required 
+metadata for compatibility with the *PWFSLSmoke* package.
 Current QC algorithms exist for channel = &quot;ab&quot; and include:
 hourly_AB_00
 hourly_AB_01
@@ -83,7 +84,7 @@ hourly_AB_01
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.17</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.1</span>
       </span>
     </div>
 
@@ -106,34 +107,37 @@ hourly_AB_01
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
+      <a href="../articles/AirSensor_Function_Overview.html">AirSensor Function Overview</a>
     </li>
     <li>
-      <a href="../articles/SoH_functions.html">SoH Functions</a>
+      <a href="../articles/Developer_Style_Guide.html">Developer Style Guide</a>
+    </li>
+    <li>
+      <a href="../articles/articles/Australia_on_fire.html">Australia on Fire</a>
     </li>
     <li>
       <a href="../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
     </li>
     <li>
-      <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
+      <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
     </li>
     <li>
-      <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
+      <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
     </li>
     <li>
-      <a href="../articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
+      <a href="../articles/articles/pas_introduction.html">PurpleAir Synoptic Data</a>
     </li>
     <li>
-      <a href="../articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
+      <a href="../articles/articles/pat_introduction.html">PurpleAir TimeSeries Data</a>
     </li>
     <li>
-      <a href="../articles/purpleair_qc.html">Purple Air Quality Control</a>
+      <a href="../articles/articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
     </li>
     <li>
-      <a href="../articles/purpleair_sensors.html">Purple Air Sensors</a>
+      <a href="../articles/articles/purpleair_qc.html">Purple Air Quality Control</a>
     </li>
     <li>
-      <a href="../articles/working_with_wind_data.html">Working With Wind Data</a>
+      <a href="../articles/articles/purpleair_sensors.html">Purple Air Sensors</a>
     </li>
   </ul>
 </li>
@@ -167,9 +171,10 @@ hourly_AB_01
     </div>
 
     <div class="ref-description">
-    <p>Aggregates data from a <em>pat</em> object into an 
-<em>airsensor</em> object that has appropriate metadata to be used with the 
-*PWFSLSmoke* package.</p>
+    <p>Converts data from a <em>pat</em> object with an irregular time 
+axis to an <em>airsensor</em> object where the numeric data has been aggregated 
+along a standardized hourly time axis, as well as adding additional required 
+metadata for compatibility with the *PWFSLSmoke* package.</p>
 <p>Current QC algorithms exist for <code>channel = "ab"</code> and include:</p><ul>
 <li><p><code>hourly_AB_00</code></p></li>
 <li><p><code>hourly_AB_01</code></p></li>
@@ -231,23 +236,24 @@ tibble of hourly statistics.</p></td>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>The <code>aggregation_FUN</code>, allows users to pass in custom functions that 
-generate new aggrregation statistics. These statistics can then be utilitized 
+generate new aggregation statistics. These statistics can then be utilized 
 in a custom QC algorithm function. The algorithm function applied is
-gnerated from the <code>qc_algorithm</code> parameter with 
+generated from the <code>qc_algorithm</code> parameter with 
 <code><a href='https://rdrr.io/r/base/paste.html'>paste0("PurpleAirQC_", qc_algorithm)</a></code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='PurpleAirQC_hourly_AB_00.html'>PurpleAirQC_hourly_AB_00</a></p>
-<p><a href='PurpleAirQC_hourly_AB_01.html'>PurpleAirQC_hourly_AB_01</a></p></div>
+<p><a href='PurpleAirQC_hourly_AB_01.html'>PurpleAirQC_hourly_AB_01</a></p>
+<p><a href='pat_aggregate.html'>pat_aggregate</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'>
 <span class='no'>sensor</span> <span class='kw'>&lt;-</span>
   <span class='no'>example_pat</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='pat_filterDate.html'>pat_filterDate</a></span>(<span class='fl'>20180701</span>, <span class='fl'>20180901</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>pat_createAirSensor</span>()
-<span class='kw pkg'>PWFSLSmoke</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/PWFSLSmoke/man/monitor_dailyBarplot.html'>monitor_dailyBarplot</a></span>(<span class='no'>sensor</span>)
-}</div></pre>
+<span class='kw pkg'>PWFSLSmoke</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/PWFSLSmoke/man/monitor_dailyBarplot.html'>monitor_dailyBarplot</a></span>(<span class='no'>sensor</span>)</div><div class='img'><img src='pat_createAirSensor-1.png' alt='' width='700' height='433' /></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

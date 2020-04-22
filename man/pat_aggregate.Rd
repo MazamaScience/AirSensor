@@ -18,7 +18,7 @@ Returns a dataframe with aggregation statistics.
 }
 \description{
 Calculates statistics associated with the aggregation of raw 
-Purple Air Timeseries data onto a regular time axis.
+PurpleAir Timeseries data onto a regular time axis.
 
 Temporal aggregation involves creating time period bins defined by
 \code{period} and then calculating the statistics associated with the raw

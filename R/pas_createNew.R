@@ -1,6 +1,6 @@
 #' @export
 #' @importFrom rlang .data
-#' @importFrom MazamaCoreUtils logger.debug
+#' @importFrom MazamaCoreUtils logger.isInitialized logger.debug
 #' 
 #' @title Load latest PurpleAir synoptic data
 #' 
@@ -13,7 +13,7 @@
 #'
 #' 2) Replace variable with more consistent, more human readable names.
 #'
-#' 3) Add spatial metadata for each monitor including:
+#' 3) Add spatial metadata for each sensor including:
 #' \itemize{
 #'   \item{timezone -- olson timezone}
 #'   \item{countryCode -- ISO 3166-1 alpha-2}
@@ -24,21 +24,21 @@
 #'
 #' 5) Add distance and monitorID for the closest PWFSL monitor
 #'
-#' Subsetting by country may be performed by specifying the \code{countryCodes}
+#' Filtering by country may be performed by specifying the \code{countryCodes}
 #' argument.
 #'
-#' @param baseUrl Base URL for synoptic data.
 #' @param countryCodes ISO country codes used to subset the data.
 #' @param includePWFSL Logical specifying whether to calculate distances from 
 #'   PWFSL monitors.
 #' @param lookbackDays Number of days to "look back" for valid data. Data are
 #'   filtered to only include sensors with data more recent than 
 #'   \code{lookbackDays} ago.
+#' @param baseUrl Base URL for synoptic data.
 #' 
 #' @return A PurpleAir Synoptic \emph{pas} object.
 #' 
 #' @seealso \link{pas_load}
-#' @seealso \link{downloadParseSynopticData}
+#' @seealso \link{pas_downloadParseData}
 #' 
 #' @examples
 #' \dontrun{
@@ -50,39 +50,47 @@
 #' }
 
 pas_createNew <- function(
-  baseUrl = 'https://www.purpleair.com/json',
-  countryCodes = c('US'),
+  countryCodes = NULL,
   includePWFSL = TRUE,
-  lookbackDays = 1
+  lookbackDays = 1,
+  baseUrl = 'https://www.purpleair.com/json'
 ) {
   
   # ----- Validate parameters --------------------------------------------------
 
+  MazamaCoreUtils::stopIfNull(countryCodes)
+  MazamaCoreUtils::stopIfNull(includePWFSL)
+  MazamaCoreUtils::stopIfNull(lookbackDays)
+  MazamaCoreUtils::stopIfNull(baseUrl)
+  
   # Guarantee uppercase codes
   countryCodes <- toupper(countryCodes)
+  
+  # Validate countryCodes
   if ( any(!(countryCodes %in% countrycode::codelist$iso2c)) ) 
     stop("parameter 'countryCodes' has values that are not recognized as ISO-2 country codes")
-  
-  # Gaurantee includePWFSL is a logial value
-  if ( !is.logical(includePWFSL) )
-    stop("parameter 'includePWFSL' is not a logical value")
-  
+
+  # Gaurantee includePWFSL is a logical value
+  if ( !is.logical(includePWFSL) ) {
+    stop("parameter 'includePWFSL' must be a logical value")
+  }
   # Guarantee lookbackDays at least 1
-  if ( lookbackDays < 1 )
-    stop("parameter 'lookbackDays' is less than one")
-  
+  if ( lookbackDays < 1 ) {
+    stop("parameter 'lookbackDays' must be >= 1")
+  }
   # ----- Load data ------------------------------------------------------------
   
   # Download, parse and enhance synoptic data
-  if ( logger.isInitialized() )
-    logger.debug("----- downloadParseSynopticData() -----")
-    
-  pas_raw <- downloadParseSynopticData(baseUrl)
+  if ( logger.isInitialized() ) {
+    logger.debug("----- pas_downloadParseData() -----")
+  }
+  pas_raw <- pas_downloadParseData(baseUrl)
   
-  if ( logger.isInitialized() )
-    logger.debug("----- enhanceParseSynopticData() -----")
-    
-  pas <- enhanceSynopticData(pas_raw, countryCodes, includePWFSL)
+  if ( logger.isInitialized() ) {
+    logger.debug("----- pas_enhanceData() -----")
+  }
+  
+  pas <- pas_enhanceData(pas_raw, countryCodes, includePWFSL)
   
   # Filter for age
   starttime <- lubridate::now(tzone = "UTC") - lubridate::ddays(lookbackDays)
@@ -102,7 +110,7 @@ pas_createNew <- function(
 if ( FALSE ) {
   
   baseUrl <- 'https://www.purpleair.com/json'
-  countryCodes <- c('US')
+  countryCodes <- NULL
   includePWFSL <- TRUE
   lookbackDays <- 1
   

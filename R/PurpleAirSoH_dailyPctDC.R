@@ -15,6 +15,8 @@
 #' 
 #' 
 #' @examples  
+#' library(AirSensor)
+#' 
 #' tbl <- 
 #'   example_pat_failure_A %>%
 #'   PurpleAirSoH_dailyPctDC() 

@@ -1,0 +1,380 @@
+---
+title: "PurpleAir Synoptic Data"
+author: "Mazama Science"
+date: "2020-04-10"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{PurpleAir Synoptic Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE, message=FALSE}
+library(AirSensor)
+library(dplyr)
+library(ggplot2)
+
+knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
+
+# NOTE: Use example PAS data for vignettes to avoid long wait-times
+data("example_pas")
+pas <- example_pas
+```
+
+_Synoptic data_ provides a synopsis - a comprehensive view of something at a
+moment in time. This vignette demonstrates an example 
+workflow for exploring air quality synoptic data using the **AirSensor**
+R package and data captured by [PurpleAir](https://www.purpleair.com/) air 
+quality sensors.
+
+## Synoptic Data Basics
+
+### Creating Current Synoptic Data (slow)
+
+PurpleAir sensor readings are uploaded to the cloud every 120 seconds.
+(Every 80 seconds prior to a May 31, 2019 firmware upgrade.)
+Data are processed by PurpleAir and a version of the data is displayed on the 
+PurpleAir website. 
+
+You can generate a current PurpleAir Synoptic (PAS) object (hereafter called
+a `pas`) by using the `pas_createNew()` function. A `pas` object is just a large
+dataframe with `r ncol(pas)` data columns and a record for each
+PurupleAir sensor channel (2 channels per sensor).
+
+The `pas_createNew()` function perfoms the following tasks under the hood: 
+
+1. Download a raw dataset of the entire PurpleAir network that includes both 
+metadata and recent PM2.5 averages for each deployed sensor across the globe. 
+See `downloadParseSynopticData()` for more info.
+
+2. Subset and enhance the raw dataset by replacing variables with more consistent,
+human readable names amd adding spatial metadata for each sensor including the 
+nearest official air quality monitor. For a more in depth explanation, see 
+`enhanceSynopticData()`.
+
+To create a new `pas` object you must first properly initialize the 
+**MazamaSpatialUtils** package. The following example will create a brand new 
+`pas` object with up-to-the-minute data:
+
+_**NOTE: This can take up to a minute to process.**_
+
+```{r pas_createNew, eval = FALSE}
+library(AirSensor)
+
+# Initialize spatial data processing 
+library(MazamaSpatialUtils)
+initializeMazamaSpatialUtils()
+
+# Create a 'pas' object with current data
+pas <- pas_createNew(countryCodes = "US")
+```
+
+### Loading Pre-generatted Synoptic Data (fast)
+
+It is also possible to load pre-generated `pas` objects from a data archive.
+These objects are updated regularly throughout each day and are typically used 
+by other package functions primarily for the location metadata they contain. 
+Archived `pas` objects from previous days will thus have data associated with 
+near midnight of that date.
+
+The archived `pas` objects can be loaded very quickly with the `pas_load()` 
+function which obtains `pas` objects from the archive specified with
+`setArchvieBaseUrl()`. When used without specifying the `datestamp` argument,
+`pas_load()` will obtain the most recently processed `pas` object -- typically
+less than an hour old.
+
+```{r user_setup, eval = FALSE}
+# Load packages
+library(AirSensor)
+library(dplyr)
+library(ggplot2)
+
+# Set location of pre-generated data files
+setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
+
+# Load the most recent archived 'pas' object
+pas <- pas_load()
+```
+
+### PAS Data Structure
+
+The `pas` dataset contains 45 columns, and each row corresponds to different 
+PurpleAir sensors. For the data anlysis examples we will focus on the columns
+labeled `stateCode`, `pm25_*`, `humidity`, `pressure`, `temperature`, and 
+`pwfsl_closestDistance`. 
+
+The complete list of columns is given below. Names in `ALL_CAPS` have been
+retained from the PurpleAir .json file. Other columns have been renamed for
+human readability.
+
+```{r pas_names, echo = FALSE}
+names(pas)
+```
+
+Let's take a quick peek at some of the PM2.5 data:
+
+```{r kable}
+# Extract and round just the PM2.5 data
+pm25_data <-
+  pas %>% 
+  select(starts_with("pm25_")) %>% 
+  round(1)
+
+# Combine sensor label and pm2.5 data 
+bind_cols(label = pas$label, pm25_data) %>%
+  head(10) %>% 
+  knitr::kable(
+    col.names = c("label", "current", "10 min", "30 min", "1 hr", "6 hr", "1 day", "1 wk"),
+    caption = "PAS PM2.5 Values"
+  )
+``` 
+
+### Mapping `pas` PM2.5 Data
+
+To visually explore a region, we can use our `pas` data with the `pas_leaflet()`
+function to plot an interactive [leaflet](https://leafletjs.com/) map.
+By default, `pas_leaflet()` will map the coordinates of each PurpleAir sensor 
+and the hourly PM2.5 data. Clicking on a sensor will show sensor metadata.
+
+```{r leaflet}
+pas %>% 
+  pas_leaflet()
+```
+
+If we want to narrow our selection, for example to California, we can look at which 
+locations have a moderate to unhealthy 6-hour average air quality rating with
+the following shor script that uses the `%>%` "pipe" operator:
+
+```{r leaflet_pm25_6hr}
+pas %>% 
+  pas_filter(stateCode == 'CA') %>% 
+  pas_filter(pm25_6hr >= 25.0) %>% 
+  pas_leaflet(parameter = "pm25_6hr")
+```
+
+This code pipes our `pas` data into `pas_filter()` where we can set our 
+selection criteria. The `stateCode` is the ISO 3166-2 state code, 
+which tells `pas_filter()`  to subset for only those station sin California. 
+The `pm25_6hr > 25.0` filter selects those records where the 6-hour average is 
+above 25.0. The final funciton in the pipeline plots the remaining sensors
+colored by `pm25_6hr`.
+
+### Mapping `pas` Auxillary Data
+
+We can also explore and utilize other PurpleAir sensor data. Check the 
+`pas_leaflet()` documentation for all supported parameters.
+
+Here is an example of humidity data captured from PurpleAir sensors across the 
+state of California.
+
+```{r leaflet_humidity}
+pas %>% 
+  pas_filter(stateCode == "CA") %>% 
+  pas_leaflet(parameter = "humidity")
+```
+
+## Exploring PurpleAir Data
+
+Because the `pas` object is a dataframe, we can use functionality from various 
+other R packages. For example, `pas` data is compatible with "tidyverse" syntax 
+so we can use **dplyr**, **ggplot2**, and **sf** to help transform, summarize, 
+and visualize `pas` data in a _tidy_ way.
+
+Below, we demonstrate the flexibility of **AirSensor**'s `pas` data objects and 
+a few examples of exploratory data analysis pipelines, focusing on the state of 
+Califronia and their PurpleAir sensor data. 
+
+```{r init_explore, message=FALSE, warning=FALSE}
+# Load the extra libraries
+library(sf) 
+library(ggplot2)
+
+# Load spatial data with US counties
+MazamaSpatialUtils::setSpatialDataDir('~/Data/Spatial/')
+MazamaSpatialUtils::loadSpatialData("USCensusCounties")
+
+# Subset to California and convert to an 'sf' spatial object
+ca_counties <- 
+  subset(USCensusCounties, stateCode == "CA") %>% 
+  st_as_sf()
+
+# Subset the 'pas' data to Californa and convert to `sf`
+ca_pas <- 
+  pas %>% 
+  pas_filter(stateCode == 'CA') %>% 
+  # Be sure to set the reference system 
+  st_as_sf(
+    coords = c('longitude', 'latitude'),  # identify coordinate variables
+    crs = st_crs(ca_counties)             # set the reference system
+  ) 
+```
+
+### County Mointor Counts
+
+Using our California county spatial data, we can count the number of PurpleAir 
+sensors that exist in the each region "feature" (aka polygon). This is an important metric to 
+determine statistical confidence we might have -- _i.e._ the more sensors a region 
+contains the more confidence we can have in any county-wide, aggregated statistic.  
+
+(The `mutate()` function comes from **dplyr** while the `st_contains()` comes 
+from **sf**. Some familiarity with these packages is required.)
+
+```{r n_sensors, message=FALSE, warning=FALSE}
+# Count the number of PurpleAir sensors in each County polygon feature
+n_sensors <- 
+  ca_counties %>% 
+  mutate(sensorCount = lengths(st_contains(., ca_pas)))
+```
+
+Let's take a look at the counties that contain the most PurpleAir sensors.
+
+```{r n_sensors_table, warning=FALSE, message=FALSE}
+n_sensors %>% 
+  select(sensorCount, name) %>% 
+  filter(sensorCount > 50) %>%
+  st_drop_geometry() %>% 
+  arrange(desc(sensorCount)) %>% 
+  knitr::kable(
+    col.names = c("Sensor Count", "County"),
+    caption = "Counties with >50 Sensors"
+  )
+```
+
+#### Chloropleth Map
+
+We can visualize the number of PurpleAir sensors per county using the
+**tmap** package. Here we create a "chloropleth" map, where each county is 
+filled with a color representing the number of PurpleAir sensors it contains. 
+
+```{r n_sensors_chloropleth}
+library(tmap)
+
+# Set up breaks
+my_breaks = c(0,20,50,100,200,500,1000,Inf)
+my_labels <- c("0 to 20", "20 to 50", "50 to 100", "100 to 200",
+               "200 to 500", "500 to 1,000", "1,000 or more")
+
+tm_shape(n_sensors) +
+  tm_polygons(
+    col = "sensorCount",
+    palette = "YlOrBr",
+    breaks = my_breaks
+  )
+```
+
+#### Barplot
+
+Sometimes a barplot is preferable for reading off values. Here is an 
+example showing the top 15 counties with the the most PurpleAir sensors that are 
+active.  
+
+```{r n_sensors_barplot, fig.width = 7, fig.height = 7}
+# Sort the counties by the number of PurpleAir sensors
+sorted_n_sensors <- 
+  n_sensors %>% 
+  arrange(desc(sensorCount))
+
+ggplot(sorted_n_sensors) + 
+  geom_col(aes(
+    x = reorder(name, sensorCount), 
+    y = sensorCount, 
+    fill = cut_number(sensorCount, n = 8, breaks = my_breaks, labels = my_labels)
+  )) + 
+  scale_fill_brewer(
+    palette = "YlOrBr", 
+    direction = 1
+  ) +
+  labs(fill = "Sensor Count") +
+  xlab('County') + 
+  theme_minimal() + 
+  coord_flip() 
+
+```
+
+#### Region Averaged Sensor Data
+
+Our `pas` object contains the latest ~2-minute resolution PM2.5 data 
+(`pm25_current`) as well as other, longer interval averages of PM2.5, 
+_e.g._ `pm25_1week`, which we can use to calculate region averaged weekly PM2.5 
+sensor data.  
+
+```{r mean_pm25, warning=FALSE, message=FALSE}
+# Join the PurpleAir and county data and calculate the mean per county
+mean_pm25 <- 
+  ca_counties %>%
+  st_join(ca_pas) %>% 
+  group_by(name) %>% 
+  summarise(pm25_weeklyMean = round(mean(pm25_1week, na.rm = TRUE), 1))
+
+mean_pm25 %>% 
+  select(name, pm25_weeklyMean) %>% 
+  st_drop_geometry() %>% 
+  arrange(desc(pm25_weeklyMean)) %>% 
+  head(20) %>%
+  knitr::kable(
+    col.names = c("County", "Mean Sensor PM2.5"),
+    caption = "Counties with Highest weekly PM2.5"
+  )
+```
+
+It is important to clarify that this data **_does not_** represent a region's 
+"spatially averaged" air quality. It is only a sipmle summary of data from the 
+avaliable PurpleAir sensors without any regard for how they are spatially
+distributed.
+
+### PM2.5 Weekly Average Map 
+
+In a similar fashion to that illustrated above, we can also create a 1-week 
+PurpleAir averages per county chloropleth map.  
+
+```{r mean_pm25_chloropleth, warning=FALSE, message=FALSE}
+# Set up breaks
+my_breaks = seq(0,40,5)
+my_labels <- paste(my_breaks[1:8], my_breaks[2:9], sep = " to ")
+
+tm_shape(mean_pm25) +
+  tm_polygons(
+    col = "pm25_weeklyMean",
+    palette = "YlOrBr",
+    breaks = seq(0,40,5)
+  )
+```
+
+#### PM2.5 Weekly Average Barplot
+
+Just as before, a barplot is sometimes a better choice. Below is an example of 
+plotting the Top 15 1-week PurpleAir county averages.
+
+```{r mean_pm25_barplot, fig.width = 5, warning=FALSE, message=FALSE}
+# Sort the weekly averages per county and select the top 15
+top15_mean_pm25 <- 
+  mean_pm25 %>% 
+  arrange(desc(pm25_weeklyMean)) %>% 
+  head(n = 30)
+
+# NOTE:  The color legend may not be identical to the legend above becuase we
+# NOTE:  are only plotting a subset of all counties.
+
+ggplot(top15_mean_pm25) + 
+  geom_col(aes(
+    x = reorder(name, pm25_weeklyMean), 
+    y = pm25_weeklyMean, 
+    fill = cut_number(pm25_weeklyMean, n = 8, breaks = my_breaks, labels = my_labels)
+  )) +
+  scale_fill_brewer(
+    palette = "YlOrBr", 
+    direction = 1
+  ) +
+  labs(fill = "Sensor Count") +
+  xlab('County') + 
+  theme_minimal() + 
+  coord_flip() 
+```
+
+_Happy Exploring!_
+
+----
+
+_Mazama Science_
+
+

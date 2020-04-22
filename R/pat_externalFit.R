@@ -35,9 +35,9 @@
 #' PWFSL monitor readings.
 #' 
 #' @examples
+#' 
 #' \donttest{
-#' setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
-#' pat <- pat_load("SCAH_22")
+#' pat <- example_pat
 #' pat_externalFit(pat)
 #' }
 
@@ -193,7 +193,7 @@ pat_externalFit <- function(
     
     # Gather and arrange the linear regression and time series plots with a banner title
     roundedDistance <- round((pat$meta$pwfsl_closestDistance / 1000), 1)
-    bannerText <- paste0("Sensor / Monitor Comparision -- Distance: ",
+    bannerText <- paste0("Sensor / Monitor Comparison -- Distance: ",
                          roundedDistance, "km")
     bannerGrob <- grid::textGrob(bannerText,
                              just = "left",

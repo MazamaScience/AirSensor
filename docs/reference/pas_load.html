@@ -44,8 +44,8 @@
 
 <meta property="og:title" content="Load PurpleAir synoptic data — pas_load" />
 <meta property="og:description" content="A pre-generated pa_synoptic object will be loaded for
-  the given date. These files are generated throughout each day and provide
-  a record of all currently installed Purple Air sensors for the day of 
+  the given date. These files are generated each day and provide
+  a record of all currently installed PurpleAir sensors for the day of 
   interest. With default arguments, this function will always load data 
   associated with the most recent pre-generated file -- typically less than 
   one hour old.
@@ -57,7 +57,7 @@ The datestamp can be anything that is understood by
 &quot;YYYY-mm-dd&quot;
 
 
-By default, today's date is used.
+By default, the host computer's date is used.
 The pas object for a specific hour may be loaded by specifying 
 datestamp = &quot;YYYYmmddHH&quot;." />
 <meta name="twitter:card" content="summary" />
@@ -92,7 +92,7 @@ datestamp = &quot;YYYYmmddHH&quot;." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.17</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.1</span>
       </span>
     </div>
 
@@ -115,34 +115,37 @@ datestamp = &quot;YYYYmmddHH&quot;." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
+      <a href="../articles/AirSensor_Function_Overview.html">AirSensor Function Overview</a>
     </li>
     <li>
-      <a href="../articles/SoH_functions.html">SoH Functions</a>
+      <a href="../articles/Developer_Style_Guide.html">Developer Style Guide</a>
+    </li>
+    <li>
+      <a href="../articles/articles/Australia_on_fire.html">Australia on Fire</a>
     </li>
     <li>
       <a href="../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
     </li>
     <li>
-      <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
+      <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
     </li>
     <li>
-      <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
+      <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
     </li>
     <li>
-      <a href="../articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
+      <a href="../articles/articles/pas_introduction.html">PurpleAir Synoptic Data</a>
     </li>
     <li>
-      <a href="../articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
+      <a href="../articles/articles/pat_introduction.html">PurpleAir TimeSeries Data</a>
     </li>
     <li>
-      <a href="../articles/purpleair_qc.html">Purple Air Quality Control</a>
+      <a href="../articles/articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
     </li>
     <li>
-      <a href="../articles/purpleair_sensors.html">Purple Air Sensors</a>
+      <a href="../articles/articles/purpleair_qc.html">Purple Air Quality Control</a>
     </li>
     <li>
-      <a href="../articles/working_with_wind_data.html">Working With Wind Data</a>
+      <a href="../articles/articles/purpleair_sensors.html">Purple Air Sensors</a>
     </li>
   </ul>
 </li>
@@ -177,8 +180,8 @@ datestamp = &quot;YYYYmmddHH&quot;." />
 
     <div class="ref-description">
     <p>A pre-generated <em>pa_synoptic</em> object will be loaded for
-  the given date. These files are generated throughout each day and provide
-  a record of all currently installed Purple Air sensors for the day of 
+  the given date. These files are generated each day and provide
+  a record of all currently installed PurpleAir sensors for the day of 
   interest. With default arguments, this function will always load data 
   associated with the most recent pre-generated file -- typically less than 
   one hour old.</p>
@@ -190,7 +193,7 @@ datestamp = &quot;YYYYmmddHH&quot;." />
 <li><p><code>"YYYY-mm-dd"</code></p></li>
 </ul>
 
-<p>By default, today's date is used.</p>
+<p>By default, the host computer's date is used.</p>
 <p>The <em>pas</em> object for a specific hour may be loaded by specifying 
 <code>datestamp = "YYYYmmddHH"</code>.</p>
     </div>
@@ -207,7 +210,7 @@ datestamp = &quot;YYYYmmddHH&quot;." />
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>datestamp</th>
-      <td><p>Local date string in ymd order.</p></td>
+      <td><p>Local date string in valid YYYY-mm-dd format. See description.</p></td>
     </tr>
     <tr>
       <th>retries</th>
@@ -234,7 +237,7 @@ includes sensors that have stopped reporting.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl</a></span>(<span class='st'>"http://smoke.mazamascience.com/data/PurpleAir"</span>)
+<span class='fu'><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl</a></span>(<span class='st'>"http://data.mazamascience.com/PurpleAir/v1"</span>)
 <span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='fu'>pas_load</span>()
 <span class='no'>pas</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='pas_filter.html'>pas_filter</a></span>(<span class='no'>stateCode</span> <span class='kw'>==</span> <span class='st'>"CA"</span>) <span class='kw'>%&gt;%</span>

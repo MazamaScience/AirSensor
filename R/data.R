@@ -1,33 +1,38 @@
 #' @title Example Purple Air Synoptic dataset
-#' @format A tibble with 7113 rows and 35 columns of data.
+#' @format A tibble with 10220 rows and 45 columns of data.
 #' @description The \code{example_pas} dataset provides a quickly loadable
 #' version of a \emph{pa_synoptic} object for practicing and code examples.
-#' This dataset was generatedon 2019-07-06 by running:
-#' 
+#' This dataset was generatedon 2020-01-03 by running:
+#'
 #' \preformatted{
 #'   initializeMazamaSpatialUtils()
 #'   example_pas <- pas_createNew()
+#'   save(example_pas, file = "data/example_pas.rda")
 #' }
-#' 
+#'
 #' @seealso example_pas_raw
 #' @source https://www.purpleair.com/json
 "example_pas"
 
 
 #' @title Example raw Purple Air Synoptic dataset
-#' @format A tibble with 12657 rows and 32 columns of data.
+#' @format A tibble with 961 rows and 33 columns of data.
 #' @description The \code{example_pas_raw} dataset provides a quickly loadable
 #' version of raw Purple Air synoptic data JSON for practicing and code
-#' examples. This dataset was was generated on 2019-07-06 by running:
+#' examples. This dataset contains data for sensors in Washington and Oregon
+#' and was generated on 2020-01-03 by running:
 #' 
 #' \preformatted{
-#'   example_pas_raw <- downloadParseSynopticData()
+#'   example_pas_raw <- 
+#'     pas_downloadParseData() %>%
+#'     dplyr::filter(Lon > -125.0 & Lon < -117.0 & Lat > 42.0 & Lat < 49.0)
+#'   save(example_pas_raw, file = "data/example_pas_raw.rda")
 #' }
 #' 
 #' This dataset can be converted into a standard \emph{pas} dataset with:
 #' 
 #' \preformatted{
-#'   pas <- enhanceSynopticData(example_pas_raw)
+#'   pas <- pas_enhanceData(example_pas_raw)
 #' }
 #' 
 #' @seealso example_pas
@@ -35,53 +40,63 @@
 "example_pas_raw"
 
 
-#' @title Example Purple Air Timeseries dataset
+#' @title Example PurpleAir Timeseries dataset
 #' @format An S3 object composed of "meta" and "data" data.
 #' @description The \code{example_pat} dataset provides a quickly loadable version of
 #' a \emph{pa_timeseries} object for practicing and code examples.
-#' This dataset was was generated on 2019-07-06 by running:
-#' 
+#' This dataset was was generated on 2020-01-03 by running:
+#'
 #' \preformatted{
-#'   pas <- pas_load()
-#'   example_pat <- pat_createNew(pas, label = "Seattle",
-#'                                startdate = "2018-07-01",
-#'                                enddate = "2018-09-01")
+#'   example_pat <-
+#'     pat_createNew(
+#'       label = "Seattle",
+#'       pas = example_pas,
+#'       startdate = "2018-08-01",
+#'       enddate = "2018-08-28"
+#'     )
+#'   save(example_pat, file = "data/example_pat.rda")
 #' }
 #' @seealso example_pat_failure_A
 #' @seealso example_pat_failure_B
 "example_pat"
 
- 
-#' @title Example Purple Air Timeseries dataset exhibiting moderate errors
+
+#' @title Example PurpleAir Timeseries dataset exhibiting moderate errors
 #' @format An S3 object composed of "meta" and "data" data.
-#' @description The example_pat_failure_A dataset provides a quickly loadable
-#' version of a \emph{pa_timeseries} object for practicing and code examples. 
-#' This dataset was was generated on 2019-07-06 by running:
-#' 
+#' @description The \code{example_pat_failure_A} dataset provides a quickly loadable
+#' version of a \emph{pa_timeseries} object for practicing and code examples.
+#' This dataset was was generated on 2020-01-03 by running:
+#'
 #' \preformatted{
-#'   pas <- pas_load()
-#'   example_pat_failure_A <- 
-#'     pat_createNew(pas, label = "SCNP_20",
-#'                   startdate = "2019-04-01",
-#'                   enddate = "2019-04-18")
+#'   example_pat_failure_A <-
+#'     pat_createNew(
+#'       label = "SCNP_20",
+#'       pas = example_pas,
+#'       startdate = "2019-04-01",
+#'       enddate = "2019-04-18"
+#'     )
+#'   save(example_pat_failure_A, file = "data/example_pat_failure_A.rda")
 #' }
 #' @seealso example_pat
 #' @seealso example_pat_failure_B
 "example_pat_failure_A"
 
 
-#' @title Example Purple Air Timeseries dataset exhibiting severe errors
+#' @title Example PurpleAir Timeseries dataset exhibiting severe errors
 #' @format An S3 object composed of "meta" and "data" data.
 #' @description The \code{example_pat_failure_B} dataset provides a quickly loadable
-#' version of a \emph{pa_timeseries} object for practicing and code examples. 
-#' This dataset was was generated on 2019-07-06 by running:
-#' 
+#' version of a \emph{pa_timeseries} object for practicing and code examples.
+#' This dataset was was generated on 2020-01-03 by running:
+#'
 #' \preformatted{
-#'   pas <- pas_load()
-#'   example_pat_failure_B <- 
-#'     pat_createNew(pas, label = "SCTV_16",
-#'                   startdate = "2019-06-01",
-#'                   enddate = "2019-06-18")
+#'   example_pat_failure_B <-
+#'     pat_createNew(
+#'       label = "SCTV_16",
+#'       pas = example_pas,
+#'       startdate = "2019-06-01",
+#'       enddate = "2019-06-18"
+#'     )
+#'   save(example_pat_failure_B, file = "data/example_pat_failure_B.rda")
 #' }
 #' @seealso example_pat
 #' @seealso example_pat_failure_A
@@ -92,27 +107,30 @@
 #' @format An S3 object composed of "meta" and "data" data.
 #' @description The \code{example_sensor} dataset provides a quickly loadable version of
 #' an \emph{airsensor} object for practicing and code examples.
-#' This dataset was was generated on 2019-07-06 by running:
-#' 
+#' This dataset was was generated on 2020-01-03 by running:
+#'
 #' \preformatted{
-#'   pas <- pas_load()
-#'   example_sensor <- 
-#'     pat_createNew(pas, label = "SCAN_14",
-#'                   startdate = "2018-08-14",
-#'                   enddate = "2018-09-07") %>%
+#'   example_sensor <-
+#'     pat_createNew(
+#'       label = "SCAN_14",
+#'       pas = example_pas,
+#'       startdate = "2018-08-14",
+#'       enddate = "2018-09-07"
+#'     ) %>%
 #'     pat_createAirSensor(period = "1 hour")
+#'   save(example_sensor, file = "data/example_sensor.rda")
 #' }
 "example_sensor"
 
 
-#' @title Example AirSensor Timeseries dataset
-#' @format An S3 object composed of "meta" and "data" data.
-#' @description The \code{example_sensor_scaqmd} dataset provides a quickly 
-#' loadable version of a multi-sensor \emph{airsensor} object for practicing and 
-#' code examples. This dataset was was generated on 2019-07-10 by running:
-#' 
-#' \preformatted{
-#'   example_sensor_scaqmd <- 
-#'     sensor_load("scaqmd", startdate = 20190701, enddate = 20190708)
-#' }
-"example_sensor_scaqmd"
+#' #' @title Example AirSensor Timeseries dataset
+#' #' @format An S3 object composed of "meta" and "data" data.
+#' #' @description The \code{example_sensor_scaqmd} dataset provides a quickly 
+#' #' loadable version of a multi-sensor \emph{airsensor} object for practicing and 
+#' #' code examples. This dataset was was generated on 2019-07-10 by running:
+#' #' 
+#' #' \preformatted{
+#' #'   example_sensor_scaqmd <- 
+#' #'     sensor_load("scaqmd", startdate = 20190701, enddate = 20190708)
+#' #' }
+#' "example_sensor_scaqmd"

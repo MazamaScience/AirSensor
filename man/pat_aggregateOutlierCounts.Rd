@@ -2,7 +2,7 @@
 % Please edit documentation in R/pat_aggregateOutlierCounts.R
 \name{pat_aggregateOutlierCounts}
 \alias{pat_aggregateOutlierCounts}
-\title{Aggreagte data with count of outliers in each bin}
+\title{Aggregate data with count of outliers in each bin}
 \usage{
 pat_aggregateOutlierCounts(
   pat = NULL,
@@ -26,7 +26,7 @@ pat_aggregateOutlierCounts(
 \code{data.frame} A data.frame with additional flag count vectors
 }
 \description{
-Aggreagte data with count of outliers in each bin
+Aggregate data with count of outliers in each bin
 }
 \examples{
 \donttest{

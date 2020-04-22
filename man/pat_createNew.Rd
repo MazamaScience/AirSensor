@@ -5,9 +5,9 @@
 \title{Load latest PurpleAir time series data}
 \usage{
 pat_createNew(
-  pas = NULL,
-  label = NULL,
   id = NULL,
+  label = NULL,
+  pas = NULL,
   startdate = NULL,
   enddate = NULL,
   timezone = NULL,
@@ -15,11 +15,11 @@ pat_createNew(
 )
 }
 \arguments{
-\item{pas}{PurpleAir Synoptic \emph{pas} object.}
+\item{id}{PurpleAir sensor 'deviceDeploymentID'.}
 
 \item{label}{PurpleAir sensor 'label'.}
 
-\item{id}{PurpleAir sensor 'ID'.}
+\item{pas}{PurpleAir Synoptic \emph{pas} object.}
 
 \item{startdate}{Desired UTC start time (ISO 8601).}
 
@@ -35,16 +35,41 @@ A PurpleAir Timeseries \emph{pat} object.
 \description{
 Retrieve and parse timeseries data from the Thingspeak API for 
 specific PurpleAir sensors.
+
+Dates can be anything that is understood by 
+\code{lubridate::parse_date_time()} including either of the following 
+recommended formats:
+
+\itemize{
+\item{\code{"YYYYmmdd"}}
+\item{\code{"YYYY-mm-dd"}}
+}
 }
 \note{
 When \code{timezone = NULL}, the default, dates are interpreted to be 
 in the local timezone for the sensor of interest.
+
+Starting with \pkg{AirSensor} version 0.6, archive file names are 
+generated with a unique "device-deployment" identifier by combining a unique 
+location ID with a unique device ID. These "device-deployment" identifiers 
+guarantee that movement of a sensor will result in the creation of a new
+time series.
+
+Users may request a \emph{pat} object in one of two ways:
+
+1) Pass in \code{id} with a valid a \code{deviceDeploymentID}
+
+2) Pass in both \code{label} and \code{pas} so that the 
+\code{deviceDeploymentID} can be looked up.
 }
 \examples{
 \donttest{
-setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
-pas <- pas_load()
-pat <- pat_createNew(pas, "Seattle", startdate = 20180701, enddate = 20180901)
+pat <- pat_createNew(
+  label = "Seattle", 
+  pas = example_pas, 
+  startdate = 20180701, 
+  enddate = 20180901
+)
 pat_multiplot(pat)
 }
 }

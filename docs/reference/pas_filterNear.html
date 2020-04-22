@@ -43,7 +43,7 @@
 
 
 <meta property="og:title" content="Find PurpleAir sensors within radial distance — pas_filterNear" />
-<meta property="og:description" content="Filter for Purple Air sensors within a specified distance from 
+<meta property="og:description" content="Filter for PurpleAir sensors within a specified distance from 
 specified target coordinates." />
 <meta name="twitter:card" content="summary" />
 
@@ -77,7 +77,7 @@ specified target coordinates." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.17</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.1</span>
       </span>
     </div>
 
@@ -100,34 +100,37 @@ specified target coordinates." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
+      <a href="../articles/AirSensor_Function_Overview.html">AirSensor Function Overview</a>
     </li>
     <li>
-      <a href="../articles/SoH_functions.html">SoH Functions</a>
+      <a href="../articles/Developer_Style_Guide.html">Developer Style Guide</a>
+    </li>
+    <li>
+      <a href="../articles/articles/Australia_on_fire.html">Australia on Fire</a>
     </li>
     <li>
       <a href="../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
     </li>
     <li>
-      <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
+      <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
     </li>
     <li>
-      <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
+      <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
     </li>
     <li>
-      <a href="../articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
+      <a href="../articles/articles/pas_introduction.html">PurpleAir Synoptic Data</a>
     </li>
     <li>
-      <a href="../articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
+      <a href="../articles/articles/pat_introduction.html">PurpleAir TimeSeries Data</a>
     </li>
     <li>
-      <a href="../articles/purpleair_qc.html">Purple Air Quality Control</a>
+      <a href="../articles/articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
     </li>
     <li>
-      <a href="../articles/purpleair_sensors.html">Purple Air Sensors</a>
+      <a href="../articles/articles/purpleair_qc.html">Purple Air Quality Control</a>
     </li>
     <li>
-      <a href="../articles/working_with_wind_data.html">Working With Wind Data</a>
+      <a href="../articles/articles/purpleair_sensors.html">Purple Air Sensors</a>
     </li>
   </ul>
 </li>
@@ -161,11 +164,11 @@ specified target coordinates." />
     </div>
 
     <div class="ref-description">
-    <p>Filter for Purple Air sensors within a specified distance from 
+    <p>Filter for PurpleAir sensors within a specified distance from 
 specified target coordinates.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>pas_filterNear</span>(<span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>latitude</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>longitude</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>radius</span> <span class='kw'>=</span> <span class='st'>"1 km"</span>)</pre>
+    <pre class="usage"><span class='fu'>pas_filterNear</span>(<span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>longitude</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>latitude</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>radius</span> <span class='kw'>=</span> <span class='st'>"1 km"</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -175,12 +178,12 @@ specified target coordinates.</p>
       <td><p>PurpleAir <em>pas</em> object.</p></td>
     </tr>
     <tr>
-      <th>latitude</th>
-      <td><p>a Target latitude.</p></td>
-    </tr>
-    <tr>
       <th>longitude</th>
       <td><p>a Target longitude.</p></td>
+    </tr>
+    <tr>
+      <th>latitude</th>
+      <td><p>a Target latitude.</p></td>
     </tr>
     <tr>
       <th>radius</th>
@@ -193,7 +196,7 @@ specified target coordinates.</p>
     <p>A subset of the given <em>pas</em> object.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>radius</code> Should be a numeric string with provided metric unit 
+    <p><code>radius</code> Should be a numeric string with a metric unit 
 separated by a space, such as <code>"250 m"</code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -201,16 +204,17 @@ separated by a space, such as <code>"250 m"</code>.</p>
 <p><a href='pas_filterArea.html'>pas_filterArea</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='co'># Near Diamond Bar, CA</span>
+    <pre class="examples"><div class='input'><span class='co'># Near Diamond Bar, CA</span>
+<span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='no'>example_pas</span>
 <span class='no'>diamond_bar</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='pas_load.html'>pas_load</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>pas_filterNear</span>(<span class='kw'>latitude</span> <span class='kw'>=</span> <span class='fl'>34.001667</span>,
-                 <span class='kw'>longitude</span> <span class='kw'>=</span> -<span class='fl'>117.820833</span>,
+  <span class='no'>pas</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>pas_filterNear</span>(<span class='kw'>longitude</span> <span class='kw'>=</span> -<span class='fl'>117.820833</span>,
+                 <span class='kw'>latitude</span> <span class='kw'>=</span> <span class='fl'>34.001667</span>,
                  <span class='kw'>radius</span> <span class='kw'>=</span> <span class='st'>"20 km"</span>)
 
+<span class='co'># \donttest{</span>
 <span class='fu'><a href='pas_leaflet.html'>pas_leaflet</a></span>(<span class='no'>diamond_bar</span>)
-}</div></pre>
+<span class='co'># }</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

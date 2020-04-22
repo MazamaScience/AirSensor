@@ -3,22 +3,27 @@
 \docType{data}
 \name{example_pat_failure_A}
 \alias{example_pat_failure_A}
-\title{Example Purple Air Timeseries dataset exhibiting moderate errors}
-\format{An S3 object composed of "meta" and "data" data.}
+\title{Example PurpleAir Timeseries dataset exhibiting moderate errors}
+\format{
+An S3 object composed of "meta" and "data" data.
+}
 \usage{
 example_pat_failure_A
 }
 \description{
-The example_pat_failure_A dataset provides a quickly loadable
-version of a \emph{pa_timeseries} object for practicing and code examples. 
-This dataset was was generated on 2019-07-06 by running:
+The \code{example_pat_failure_A} dataset provides a quickly loadable
+version of a \emph{pa_timeseries} object for practicing and code examples.
+This dataset was was generated on 2020-01-03 by running:
 
 \preformatted{
-  pas <- pas_load()
-  example_pat_failure_A <- 
-    pat_createNew(pas, label = "SCNP_20",
-                  startdate = "2019-04-01",
-                  enddate = "2019-04-18")
+  example_pat_failure_A <-
+    pat_createNew(
+      label = "SCNP_20",
+      pas = example_pas,
+      startdate = "2019-04-01",
+      enddate = "2019-04-18"
+    )
+  save(example_pat_failure_A, file = "data/example_pat_failure_A.rda")
 }
 }
 \seealso{

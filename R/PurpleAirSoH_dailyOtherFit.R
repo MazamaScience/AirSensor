@@ -14,7 +14,9 @@
 #' functioning sensor.
 #' 
 #' 
-#' @examples  
+#' @examples 
+#' library(AirSensor)
+#'  
 #' tbl <- 
 #'   example_pat_failure_A %>%
 #'   PurpleAirSoH_dailyOtherFit() 
@@ -84,7 +86,7 @@ PurpleAirSoH_dailyOtherFit <- function(
   # because lm() has a built-in method for handling incomplete pairing between
   # channels. To ground truth that this method produces the same results as 
   # stats::cor(), run this example:
-  # setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+  # setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
   # pas <- pas_load(archival = TRUE)
   # pat <- pat_createNew(pas, "SCAP_19",
   #                      startdate = "2019-09-10",

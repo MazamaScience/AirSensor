@@ -2,14 +2,14 @@
 % Please edit documentation in R/sensor_loadLatest.R
 \name{sensor_loadLatest}
 \alias{sensor_loadLatest}
-\title{Load hourly-aggregated Purple Air data for a week}
+\title{Load hourly-aggregated PurpleAir data for a week}
 \usage{
-sensor_loadLatest(collection = "scaqmd", days = 45)
+sensor_loadLatest(collection = "scaqmd", days = 7)
 }
 \arguments{
 \item{collection}{Name associated with the collection.}
 
-\item{days}{file identifer, either 7 or 45}
+\item{days}{Number of days of data to include (7 or 45).}
 }
 \value{
 An object of class "pa_timeseries".
@@ -19,14 +19,15 @@ A pre-generated \code{airsensor} object will be loaded
 containing data for the most recent 7 or 45-day interval.
 
 Each \code{airsensor} object contains data from a named collection of 
-Purple Air sensors.
+PurpleAir sensors.
 }
 \examples{
 \donttest{
-setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
-sensor_loadLatest("scaqmd") \%>\%
-  PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
-}
+## TODO:  Update sensor_loadLatest() example when USFS airsensor data becomes available.
+#setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
+#sensor_loadLatest("scaqmd") \%>\%
+#  PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
+#}
 }
 \seealso{
 \link{sensor_load}

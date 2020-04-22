@@ -2,7 +2,7 @@
 #' @importFrom rlang .data
 #' @importFrom MazamaCoreUtils logger.isInitialized
 #' 
-#' @title Load hourly-aggregated Purple Air data for a month
+#' @title Load hourly-aggregated PurpleAir data for a month
 #' 
 #' @description A pre-generated \code{airsensor} object will be loaded for
 #' the given month. Archived data for SCAQMD sensors go back to January, 2018.
@@ -16,7 +16,7 @@
 #' By default, the current month is loaded.
 #'
 #' Each \code{airsensor} object contains data from a named collection of 
-#' Purple Air sensors.
+#' PurpleAir sensors.
 #' 
 #' @param collection Name associated with the collection.
 #' @param datestamp A date string in ymd order.
@@ -28,9 +28,10 @@
 #' 
 #' @examples
 #' \donttest{
-#' setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
-#' sensor_loadMonth("scaqmd", 201905) %>%
-#'   PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
+#' # TODO:  This needs to be updated to use USFS data
+#' #setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+#' #sensor_loadMonth("scaqmd", 201905) %>%
+#' #  PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
 #' }
 
 sensor_loadMonth <- function(
@@ -77,7 +78,9 @@ sensor_loadMonth <- function(
   
   # Get data from URL or directory
   result <- try({
-    suppressWarnings( airsensor <- loadDataFile(filename, dataUrl, dataDir) )
+    suppressWarnings({ 
+      airsensor <- MazamaCoreUtils::loadDataFile(filename, dataUrl, dataDir) 
+    })
   }, silent = TRUE)
   
   # NOTE:  We used suppressWarnings() above so that we can have a more
@@ -86,9 +89,9 @@ sensor_loadMonth <- function(
   
   if ( "try-error" %in% class(result) ) {
     if ( is.null(baseDir) ) {
-      stop(paste0("Data file could not be loaded from: ", baseUrl), call.=FALSE)
+      stop(paste0("Data file could not be loaded from: ", baseUrl), call. = FALSE)
     } else {
-      stop(paste0("Data file could not be loaded from: ", baseDir), call.=FALSE)
+      stop(paste0("Data file could not be loaded from: ", baseDir), call. = FALSE)
     }
   }
   

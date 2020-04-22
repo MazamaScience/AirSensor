@@ -301,7 +301,7 @@ if ( FALSE ) {
 
   library(MazamaSpatialUtils) # for timeInfo()
   
-  setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
+  setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
   
   # Get dates
   dateRange <- MazamaCoreUtils::dateRange(

@@ -5,15 +5,13 @@
 \title{Load latest PurpleAir synoptic data}
 \usage{
 pas_createNew(
-  baseUrl = "https://www.purpleair.com/json",
-  countryCodes = c("US"),
+  countryCodes = NULL,
   includePWFSL = TRUE,
-  lookbackDays = 1
+  lookbackDays = 1,
+  baseUrl = "https://www.purpleair.com/json"
 )
 }
 \arguments{
-\item{baseUrl}{Base URL for synoptic data.}
-
 \item{countryCodes}{ISO country codes used to subset the data.}
 
 \item{includePWFSL}{Logical specifying whether to calculate distances from 
@@ -22,6 +20,8 @@ PWFSL monitors.}
 \item{lookbackDays}{Number of days to "look back" for valid data. Data are
 filtered to only include sensors with data more recent than 
 \code{lookbackDays} ago.}
+
+\item{baseUrl}{Base URL for synoptic data.}
 }
 \value{
 A PurpleAir Synoptic \emph{pas} object.
@@ -36,7 +36,7 @@ Steps include:
 
 2) Replace variable with more consistent, more human readable names.
 
-3) Add spatial metadata for each monitor including:
+3) Add spatial metadata for each sensor including:
 \itemize{
   \item{timezone -- olson timezone}
   \item{countryCode -- ISO 3166-1 alpha-2}
@@ -47,7 +47,7 @@ Steps include:
 
 5) Add distance and monitorID for the closest PWFSL monitor
 
-Subsetting by country may be performed by specifying the \code{countryCodes}
+Filtering by country may be performed by specifying the \code{countryCodes}
 argument.
 }
 \examples{
@@ -62,5 +62,5 @@ pas \%>\%
 \seealso{
 \link{pas_load}
 
-\link{downloadParseSynopticData}
+\link{pas_downloadParseData}
 }

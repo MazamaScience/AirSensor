@@ -30,9 +30,9 @@ pat_filterDate(
 A subset of the given \emph{pat} object.
 }
 \description{
-Subsets a Purple Air Timeseries object by date. 
+Subsets a PurpleAir Timeseries object by date. 
 
-Dates can be anything that is understood by \code{lubrdiate::ymd()}
+Dates can be anything that is understood by \code{lubridate::ymd()}
 including either of the following recommended formats:
 
 \itemize{
@@ -48,8 +48,11 @@ with \code{enddate} will be returned. The exception being when
 single day is returned.
 }
 \examples{
-\donttest{
-august <- pat_filterDate(example_pat, startdate = 20180801, enddate = 20180901)
-pat_multiplot(pat = august)
-}
+library(AirSensor)
+
+august08_15 <- pat_filterDate(example_pat, 
+                              startdate = 20180808, 
+                              enddate = 20180815)
+pat_multiplot(pat = august08_15)
+
 }

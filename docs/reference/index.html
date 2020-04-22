@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.17</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.1</span>
       </span>
     </div>
 
@@ -97,34 +97,37 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
+      <a href="../articles/AirSensor_Function_Overview.html">AirSensor Function Overview</a>
     </li>
     <li>
-      <a href="../articles/SoH_functions.html">SoH Functions</a>
+      <a href="../articles/Developer_Style_Guide.html">Developer Style Guide</a>
+    </li>
+    <li>
+      <a href="../articles/articles/Australia_on_fire.html">Australia on Fire</a>
     </li>
     <li>
       <a href="../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
     </li>
     <li>
-      <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
+      <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
     </li>
     <li>
-      <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
+      <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
     </li>
     <li>
-      <a href="../articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
+      <a href="../articles/articles/pas_introduction.html">PurpleAir Synoptic Data</a>
     </li>
     <li>
-      <a href="../articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
+      <a href="../articles/articles/pat_introduction.html">PurpleAir TimeSeries Data</a>
     </li>
     <li>
-      <a href="../articles/purpleair_qc.html">Purple Air Quality Control</a>
+      <a href="../articles/articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
     </li>
     <li>
-      <a href="../articles/purpleair_sensors.html">Purple Air Sensors</a>
+      <a href="../articles/articles/purpleair_qc.html">Purple Air Quality Control</a>
     </li>
     <li>
-      <a href="../articles/working_with_wind_data.html">Working With Wind Data</a>
+      <a href="../articles/articles/purpleair_sensors.html">Purple Air Sensors</a>
     </li>
   </ul>
 </li>
@@ -175,7 +178,7 @@
         <td>
           <p><code><a href="AirSensor.html">AirSensor</a></code> </p>
         </td>
-        <td><p>Data access and analysis functions for Purple Air sensor data</p></td>
+        <td><p>Data access and analysis functions for PurpleAir sensor data</p></td>
       </tr><tr>
         
         <td>
@@ -245,27 +248,21 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="createPATimeseriesObject.html">createPATimeseriesObject()</a></code> </p>
+          <p><code><a href="PurpleAirSoH_dailyToIndex_00.html">PurpleAirSoH_dailyToIndex_00()</a></code> </p>
         </td>
-        <td><p>Create a Purple Air Timeseries object</p></td>
+        <td><p>Daily state of health index</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="downloadParseSynopticData.html">downloadParseSynopticData()</a></code> </p>
+          <p><code><a href="createPATimeseriesObject.html">createPATimeseriesObject()</a></code> </p>
         </td>
-        <td><p>Download synoptic data from Purple Air</p></td>
+        <td><p>Create a PurpleAir Timeseries object</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="downloadParseTimeseriesData.html">downloadParseTimeseriesData()</a></code> </p>
         </td>
-        <td><p>Download Purple Air timeseries data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="enhanceSynopticData.html">enhanceSynopticData()</a></code> </p>
-        </td>
-        <td><p>Enhance synoptic data from Purple Air</p></td>
+        <td><p>Download PurpleAir timeseries data</p></td>
       </tr><tr>
         
         <td>
@@ -283,29 +280,23 @@
         <td>
           <p><code><a href="example_pat.html">example_pat</a></code> </p>
         </td>
-        <td><p>Example Purple Air Timeseries dataset</p></td>
+        <td><p>Example PurpleAir Timeseries dataset</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="example_pat_failure_A.html">example_pat_failure_A</a></code> </p>
         </td>
-        <td><p>Example Purple Air Timeseries dataset exhibiting moderate errors</p></td>
+        <td><p>Example PurpleAir Timeseries dataset exhibiting moderate errors</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="example_pat_failure_B.html">example_pat_failure_B</a></code> </p>
         </td>
-        <td><p>Example Purple Air Timeseries dataset exhibiting severe errors</p></td>
+        <td><p>Example PurpleAir Timeseries dataset exhibiting severe errors</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="example_sensor.html">example_sensor</a></code> </p>
-        </td>
-        <td><p>Example AirSensor Timeseries dataset</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="example_sensor_scaqmd.html">example_sensor_scaqmd</a></code> </p>
         </td>
         <td><p>Example AirSensor Timeseries dataset</p></td>
       </tr><tr>
@@ -335,9 +326,45 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="pas_addAirDistrict.html">pas_addAirDistrict()</a></code> </p>
+        </td>
+        <td><p>Add an air district to PurpleAir Synoptic Data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="pas_addCommunityRegion.html">pas_addCommunityRegion()</a></code> </p>
+        </td>
+        <td><p>Add an air district to PurpleAir Synoptic Data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="pas_addSpatialMetadata.html">pas_addSpatialMetadata()</a></code> </p>
+        </td>
+        <td><p>Add Spatial Metadata to PurpleAIr Synoptic Data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="pas_addUniqueIDs.html">pas_addUniqueIDs()</a></code> </p>
+        </td>
+        <td><p>Add Unique Identifiers to PurpleAir Synoptic Data</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="pas_createNew.html">pas_createNew()</a></code> </p>
         </td>
         <td><p>Load latest PurpleAir synoptic data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="pas_downloadParseData.html">pas_downloadParseData()</a></code> </p>
+        </td>
+        <td><p>Download synoptic data from PurpleAir</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="pas_enhanceData.html">pas_enhanceData()</a></code> </p>
+        </td>
+        <td><p>Enhance synoptic data from PurpleAir</p></td>
       </tr><tr>
         
         <td>
@@ -359,9 +386,33 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="pas_getColumn.html">pas_getColumn()</a></code> </p>
+        </td>
+        <td><p>Return column of data from filtered PurpleAir Synoptic objects</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="pas_getDeviceDeploymentIDs.html">pas_getDeviceDeploymentIDs()</a></code> </p>
+        </td>
+        <td><p>Return timeseries identifiers from filtered PurpleAir Synoptic objects</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="pas_getIDs.html">pas_getIDs()</a></code> </p>
+        </td>
+        <td><p>Return IDs from filtered PurpleAir Synoptic objects</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="pas_getLabels.html">pas_getLabels()</a></code> </p>
         </td>
-        <td><p>Return station labels from filtered PurpleAir Synoptic objects</p></td>
+        <td><p>Return labels from filtered PurpleAir Synoptic objects</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="pas_hasSpatial.html">pas_hasSpatial()</a></code> </p>
+        </td>
+        <td><p>Test for spatial metadata in <em>pa_synoptic</em> object</p></td>
       </tr><tr>
         
         <td>
@@ -401,6 +452,12 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="pas_upgrade.html">pas_upgrade()</a></code> </p>
+        </td>
+        <td><p>Upgrade <em>pa_synoptic</em> object format</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="pat_aggregate.html">pat_aggregate()</a></code> </p>
         </td>
         <td><p>Aggregation statistics for PurpleAir Timeseries objects</p></td>
@@ -409,7 +466,7 @@
         <td>
           <p><code><a href="pat_aggregateOutlierCounts.html">pat_aggregateOutlierCounts()</a></code> </p>
         </td>
-        <td><p>Aggreagte data with count of outliers in each bin</p></td>
+        <td><p>Aggregate data with count of outliers in each bin</p></td>
       </tr><tr>
         
         <td>
@@ -437,7 +494,7 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="pat_dailySoHIndex_00.html">pat_dailySoHIndex_00()</a></code> </p>
+          <p><code><a href="pat_dailySoHIndex_00.html">pat_dailySoHIndex_00()</a></code> <code><a href="pat_dailySoHIndex_00.html">pat_dailySoHIndex_00()</a></code> </p>
         </td>
         <td><p>State of Health index plot</p></td>
       </tr><tr>
@@ -557,9 +614,15 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="pat_scatterplot.html">pat_scatterplot()</a></code> </p>
+          <p><code><a href="pat_scatterMatrixPlot.html">pat_scatterMatrixPlot()</a></code> </p>
         </td>
-        <td><p>Compare all variables in a PurpleAir Timeseries object</p></td>
+        <td><p>Draw a matrix of PurpleAir Timeseries data scatter plots</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="pat_trimDate.html">pat_trimDate()</a></code> </p>
+        </td>
+        <td><p>Trim a PurpleAir Timeseries object to full days</p></td>
       </tr><tr>
         
         <td>
@@ -619,25 +682,25 @@
         <td>
           <p><code><a href="sensor_load.html">sensor_load()</a></code> </p>
         </td>
-        <td><p>Load hourly-aggregated Purple Air data</p></td>
+        <td><p>Load hourly-aggregated PurpleAir data</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="sensor_loadLatest.html">sensor_loadLatest()</a></code> </p>
         </td>
-        <td><p>Load hourly-aggregated Purple Air data for a week</p></td>
+        <td><p>Load hourly-aggregated PurpleAir data for a week</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="sensor_loadMonth.html">sensor_loadMonth()</a></code> </p>
         </td>
-        <td><p>Load hourly-aggregated Purple Air data for a month</p></td>
+        <td><p>Load hourly-aggregated PurpleAir data for a month</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="sensor_loadYear.html">sensor_loadYear()</a></code> </p>
         </td>
-        <td><p>Load hourly-aggregated Purple Air data for a month</p></td>
+        <td><p>Load hourly-aggregated PurpleAir data for a month</p></td>
       </tr><tr>
         
         <td>

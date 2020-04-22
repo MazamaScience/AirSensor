@@ -1,6 +1,6 @@
 Type: Package
 Package: AirSensor
-Version: 0.5.17
+Version: 0.7.2
 Title: Process and Display data from Air Quality Sensors
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
@@ -37,7 +37,8 @@ Imports:
     jsonlite,
     leaflet,
     lubridate,
-    MazamaCoreUtils (>= 0.4.1),
+    MazamaCoreUtils (>= 0.4.2),
+    MazamaLocationUtils (>= 0.1.6),
     MazamaSpatialUtils (>= 0.6.3),
     openair,
     plyr, 
@@ -72,4 +73,5 @@ VignetteBuilder: knitr
 Repository: CRAN
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
+Language: en-US

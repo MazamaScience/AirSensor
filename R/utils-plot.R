@@ -140,9 +140,6 @@ multi_ggplot <- function(
 #' 
 #' @title Color palettes for PurpleAir
 #' 
-#' @description Generates color palettes for PurpleAir synoptic data with the 
-#' intention of having a reproducible functional color generator. 
-#'
 #' @param pas Enhanced data frame of PurpleAir synoptic data.
 #' @param paletteName A predefined color palette name. Can be of the following:
 #' \itemize{
@@ -153,6 +150,12 @@ multi_ggplot <- function(
 #' }
 #' @param parameter Value to generate colors for, e.g. \code{pm25_1hr}.
 #' @param ... Additional arguments passed on to \code{leaflet::color~} functions.
+#' 
+#' @description Generates color palettes for PurpleAir synoptic data with the 
+#' intention of having a reproducible functional color generator. 
+#'
+#' @note The \code{paletteName} parameter can take the name of an RColorBrewer
+#' paeltte, \emph{e.g.} \code{"BuPu"} or \code{"Greens"}.
 #' 
 #' @return An object that consists of a label and color dataframe, and
 #' calculated color values from PurpleAir sensors
