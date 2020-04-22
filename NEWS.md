@@ -1,3 +1,7 @@
+# AirSensor 0.7.3
+
+* Improved error messaging in `pas_load()`.
+
 # AirSensor 0.7.2
 
 * Updated `pas_upgrade()` to add `sensorManufacturer`, `targetPollutant` and

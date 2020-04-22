@@ -1,5 +1,9 @@
 context("test-pas_load")
 
+test_that("baseDir input validation works", {
+  expect_error(pas_load(baseDir = "/var/DUMMY"))
+})
+
 test_that("baseUrl input validation works", {
   expect_error(downloadParseSynopticData(baseUrl = "https://www.purpleair.com/DUMMY"))
   expect_error(pas_createNew(baseUrl = "https://www.purpleair.com/DUMMY"))
