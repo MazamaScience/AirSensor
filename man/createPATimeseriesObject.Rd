@@ -7,7 +7,7 @@
 createPATimeseriesObject(pat_raw = NULL)
 }
 \arguments{
-\item{pat_raw}{Raw PurpleAir timeseries data from \code{downloadParseTimeseriesData()}}
+\item{pat_raw}{Raw PurpleAir timeseries data from \code{pat_downloadParseData()}}
 }
 \value{
 List with original \code{meta} and restructured \code{data} elements
@@ -48,7 +48,7 @@ within their airshed.
 library(AirSensor)
 initializeMazamaSpatialUtils()
 
-pat_raw <- downloadParseTimeseriesData(
+pat_raw <- pat_downloadParseData(
   label = 'North Bend Weather',
   pas = example_pas,
   startdate = 20180908
@@ -62,5 +62,5 @@ pat_multiplot(pat)
 https://www2.purpleair.com/community/faq
 }
 \seealso{
-\link{downloadParseTimeseriesData}
+\link{pat_downloadParseData}
 }
