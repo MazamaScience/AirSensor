@@ -96,10 +96,14 @@ pas_load <- function(
   # Use baseDir if it is set
   baseDir <- getArchiveBaseDir()
   
-  if ( is.null(baseDir) ) {
-    baseUrl <- getArchiveBaseUrl()
+  if ( !is.null(baseDir) ) {
+    if ( !dir.exists(baseDir) ) {
+      stop(sprintf("Directory baseDir = '%s' does not exist.", baseDir))
+    } else {
+      baseUrl <- NULL
+    }
   } else {
-    baseUrl <- NULL
+    baseUrl <- getArchiveBaseUrl()
   }
   
   result <- NULL

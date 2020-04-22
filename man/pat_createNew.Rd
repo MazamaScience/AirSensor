@@ -74,5 +74,5 @@ pat_multiplot(pat)
 }
 }
 \seealso{
-\link{downloadParseTimeseriesData}
+\link{pat_downloadParseData}
 }

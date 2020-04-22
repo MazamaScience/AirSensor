@@ -23,7 +23,7 @@
 #'
 #' @references https://www2.purpleair.com/community/faq
 
-downloadParseTimeseriesData <- function(
+pat_downloadParseData <- function(
   id = NULL,
   label = NULL,
   pas = NULL,
@@ -482,7 +482,7 @@ if ( FALSE ) {
   timezone <- NULL
   baseURL <- "https://api.thingspeak.com/channels/"
   
-  pat_raw <- downloadParseTimeseriesData(
+  pat_raw <- pat_downloadParseData(
     id,
     label,
     pas,

@@ -41,7 +41,7 @@
 #' 
 #' 2) Pass in both \code{label} and \code{pas} so that the 
 #' \code{deviceDeploymentID} can be looked up.
-#' @seealso \link{downloadParseTimeseriesData}
+#' @seealso \link{pat_downloadParseData}
 #' 
 #' @examples
 #' \donttest{
@@ -141,7 +141,7 @@ pat_createNew <- function(
   # ----- Load data from URL ---------------------------------------------------
   
   # Use more specific ID rather than the label
-  pat_raw <- downloadParseTimeseriesData(
+  pat_raw <- pat_downloadParseData(
     id = pas_single$deviceDeploymentID,
     label = NULL,
     pas = pas,
@@ -154,7 +154,7 @@ pat_createNew <- function(
   if ( length(dateSeq) > 2 ) {
     
     for ( i in 2:(length(dateSeq) - 1) ) {
-      new_pat_raw <- downloadParseTimeseriesData(
+      new_pat_raw <- pat_downloadParseData(
         id = pas_single$deviceDeploymentID,
         label = NULL,
         pas = pas,

@@ -4,7 +4,7 @@
 #' 
 #' @title Create a PurpleAir Timeseries object
 #' 
-#' @param pat_raw Raw PurpleAir timeseries data from \code{downloadParseTimeseriesData()}
+#' @param pat_raw Raw PurpleAir timeseries data from \code{pat_downloadParseData()}
 #' 
 #' @return List with original \code{meta} and restructured \code{data} elements
 #' 
@@ -38,7 +38,7 @@
 #' 
 #' @return "pa_timeseries" list of time series PurpleAir data
 #' 
-#' @seealso \link{downloadParseTimeseriesData}
+#' @seealso \link{pat_downloadParseData}
 #' @references https://www2.purpleair.com/community/faq
 #' 
 #' @examples 
@@ -46,7 +46,7 @@
 #' library(AirSensor)
 #' initializeMazamaSpatialUtils()
 #' 
-#' pat_raw <- downloadParseTimeseriesData(
+#' pat_raw <- pat_downloadParseData(
 #'   label = 'North Bend Weather',
 #'   pas = example_pas,
 #'   startdate = 20180908
