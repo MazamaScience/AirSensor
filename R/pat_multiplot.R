@@ -293,41 +293,7 @@ pat_multiplot <- function(
     
     if ( is.null(columns) ) columns <- 2
     
-    # Get ordering right
-    if ( columns == 1 ) {
-      
-      gg <- 
-        multi_ggplot(
-          channelA, 
-          channelB, 
-          humidity, 
-          temperature, 
-          cols = columns
-        )
-      
-    } else if ( columns == 2 ) {
-      
-      gg <- 
-        multi_ggplot(
-          channelA, 
-          humidity, 
-          channelB,
-          temperature, 
-          cols = columns
-        )
-      
-    } else {
-      
-      gg <- 
-        multi_ggplot(
-          channelA, 
-          channelB, 
-          humidity, 
-          temperature, 
-          cols = columns
-        )
-      
-    }
+    gg <- multi_ggplot(channelA, channelB, humidity, temperature, cols = columns)
     
   }
   

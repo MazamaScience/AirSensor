@@ -94,7 +94,6 @@ scatterplot <- function(
 #' @param ... any number of ggobjects to be plotted
 #' @param plotList a list() of any number of ggplot objects to plot on a single pane
 #' @param cols Number of columns in the plot layout
-#' @param layout A matrix specifying the layout. If present, 'cols' is ignored.
 #' 
 #' @description # A plotting function that uses ggplot2 to display multiple 
 #' ggplot objects in a single pane. 
@@ -105,34 +104,36 @@ scatterplot <- function(
 multi_ggplot <- function(
   ..., 
   plotList = NULL, 
-  cols = 1, 
-  layout = NULL
+  cols = 1
 ) {
   
   plots <- c(list(...), plotList)
   numPlots <- length(plots)
   
-  if ( is.null(layout) ) {
-    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
-                     ncol = cols, nrow = ceiling(numPlots/cols))
-  }
-  
-  if ( numPlots == 1 ) {
-    print(plots[[1]])
-    
-  } else {
-    grid::grid.newpage()
-    grid::pushViewport(
-      grid::viewport(layout = grid::grid.layout(nrow(layout), ncol(layout))) )
-    
-    for ( i in 1:numPlots ) {
-      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
-      print(plots[[i]], vp = grid::viewport(layout.pos.row = matchidx$row,
-                                            layout.pos.col = matchidx$col))
-    }
-  }
-  
+  # NOTE: Deprecated method. cowplot Package instead. 
   # TODO:  Does multi_ggplot() return anything?
+  # if ( is.null(layout) ) {
+  #   layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+  #                    ncol = cols, nrow = ceiling(numPlots/cols))
+  # }
+  # 
+  # if ( numPlots == 1 ) {
+  #   print(plots[[1]])
+  #   
+  # } else {
+  #   grid::grid.newpage()
+  #   grid::pushViewport(
+  #     grid::viewport(layout = grid::grid.layout(nrow(layout), ncol(layout))) )
+  #   
+  #   for ( i in 1:numPlots ) {
+  #     matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+  #     print(plots[[i]], vp = grid::viewport(layout.pos.row = matchidx$row,
+  #                                           layout.pos.col = matchidx$col))
+  #   }
+  # }
+  
+  # Use cowplot package to return ggplot grid
+  cowplot::plot_grid(plotlist = plots, ncol = cols, align = 'v')
   
 } 
 
