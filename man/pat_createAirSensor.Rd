@@ -6,33 +6,21 @@
 \usage{
 pat_createAirSensor(
   pat = NULL,
-  period = "1 hour",
   parameter = "pm25",
-  channel = "ab",
-  qc_algorithm = "hourly_AB_01",
-  min_count = 20,
-  aggregation_FUN = pat_aggregate
+  FUN = PurpleAirQC_hourly_AB_02,
+  ...
 )
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}
 
-\item{period}{Time period to average over. Can be "sec", "min", "hour", 
-"day", "DSTday", "week", "month", "quarter" or "year". A number can also
- precede these options followed by a space (i.e. "2 day" or "37 min").}
+\item{parameter}{Parameter for which to create an univariate \emph{airsensor} 
+object. See details.}
 
-\item{parameter}{Parameter for which to create an \emph{as} object -- one of
-"pm25", "humidity" or "temperature".}
+\item{FUN}{Algorithm applied to \emph{pat} object for hourly aggregation and 
+quality control. See details.}
 
-\item{channel}{Data channel to use for PM2.5 -- one of "a", "b or "ab".}
-
-\item{qc_algorithm}{Named QC algorithm to apply to hourly aggregation stats.}
-
-\item{min_count}{Aggregation bins with fewer than `min_count` measurements
-will be marked as `NA`.}
-
-\item{aggregation_FUN}{Function used to convert a \emph{pat} object into a
-tibble of hourly statistics.}
+\item{...}{(optional) Additional parameters passed into \code{FUN}.}
 }
 \value{
 An "airsensor" object of aggregated PurpleAir Timeseries data.
@@ -42,33 +30,46 @@ Converts data from a \emph{pat} object with an irregular time
 axis to an \emph{airsensor} object where the numeric data has been aggregated 
 along a standardized hourly time axis, as well as adding additional required 
 metadata for compatibility with the *PWFSLSmoke* package.
+}
+\details{
+\code{FUN} allows users to provide custom aggregation and 
+quality-control functions that are used to create an \emph{airsensor} object. 
+The \code{FUN} must accept a \emph{pat} object and return a \emph{pat} object 
+with a regular hourly datetime axis. \code{FUN} can access and utilize any 
+component of a standard \emph{pat} object (e.g pm25_A, temperature, etc.) 
+as well as define new variables in the \emph{pat} data. See examples. 
 
-Current QC algorithms exist for \code{channel = "ab"} and include:
-\itemize{
-\item{\code{hourly_AB_00}}
-\item{\code{hourly_AB_01}}
-}
-}
-\note{
-The \code{aggregation_FUN}, allows users to pass in custom functions that 
-generate new aggregation statistics. These statistics can then be utilized 
-in a custom QC algorithm function. The algorithm function applied is
-generated from the \code{qc_algorithm} parameter with 
-\code{paste0("PurpleAirQC_", qc_algorithm)}.
+\code{parameter} allows user to select which variable to use for the 
+univariate \emph{airsensor} object (e.g 'pm25_A', 'humidity', etc.). 
+Futhermore the \code{parameter} can be a new variable created via \code{FUN} 
+evaluation. See examples.
+
+\code{...} Additional optional parameters or data that a user may implement 
+support for in the \code{FUN}.
 }
 \examples{
+# Default FUN
+sensor <- pat_createAirSensor(pat)
 
-sensor <- 
-  example_pat \%>\%
-  pat_filterDate(20180701, 20180901) \%>\%
-  pat_createAirSensor()
-PWFSLSmoke::monitor_dailyBarplot(sensor)
+# Package included aggregation FUN
+sensor <- pat_createAirSensor(pat, parameter = 'pm25', FUN = AirSensor::PurpleAirQC_hourly_02)
 
+# Custom FUN
+add_jitter <- function(pat, y) {
+  # Create `custom_pm` variable 
+  pat$data$custom_pm <- pat$data$pm25_A + y
+  # Default hourly aggregation
+  pat <- pat_aggregate(pat)
+  return(pat)
+} 
+# Create noise
+jitter <- rnorm(n = nrow(pat$data))
+
+# Evaluate custom aggregation FUN with parameters 
+sensor <- pat_createAirSensor(pat, parameter = 'custom_pm', FUN = add_jitter, y = jitter)
 }
 \seealso{
-\link{PurpleAirQC_hourly_AB_00}
-
-\link{PurpleAirQC_hourly_AB_01}
+\link{PurpleAirQC_hourly_AB_02}
 
 \link{pat_aggregate}
 }

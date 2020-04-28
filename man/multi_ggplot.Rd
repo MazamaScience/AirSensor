@@ -4,7 +4,7 @@
 \alias{multi_ggplot}
 \title{Display multiple plots on one page}
 \usage{
-multi_ggplot(..., plotList = NULL, cols = 1, layout = NULL)
+multi_ggplot(..., plotList = NULL, cols = 1)
 }
 \arguments{
 \item{...}{any number of ggobjects to be plotted}
@@ -12,8 +12,6 @@ multi_ggplot(..., plotList = NULL, cols = 1, layout = NULL)
 \item{plotList}{a list() of any number of ggplot objects to plot on a single pane}
 
 \item{cols}{Number of columns in the plot layout}
-
-\item{layout}{A matrix specifying the layout. If present, 'cols' is ignored.}
 }
 \description{
 # A plotting function that uses ggplot2 to display multiple 
