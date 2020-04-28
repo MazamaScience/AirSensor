@@ -1,6 +1,5 @@
 #' @export
 #' @importFrom rlang .data
-#' @importFrom stats mad
 #' 
 #' @title Apply QC to Aggregation Statistics
 #' 
@@ -11,7 +10,8 @@
 #' @param max_diff A maximum percentage difference between pat channels (50% = 0.5). 
 #'  
 #' @description Creates a \code{pm25} timeseries by averaging aggregated data
-#' from the A and B channels and applying the following QC logic:
+#' from the A and B channels, calculates MAD within the threshold, and values 
+#' within a maxium percentage difference. 
 #'
 #' @note Purple Air II sensors reporting after the June, 2019 firmware
 #' upgrade report data every 2 minutes or 30 measurements per hour. The default
@@ -21,10 +21,8 @@
 #' @return Data frame with columns \code{datetime} and \code{pm25}.
 #' 
 #' @examples 
-#' \dontrun{
 #' QCed <- PurpleAirQC_hourly_AB_02(example_pat)
-#' }
-
+#' 
 PurpleAirQC_hourly_AB_02 <- function(
   pat = NULL, 
   min_count = 20, 
@@ -42,7 +40,7 @@ PurpleAirQC_hourly_AB_02 <- function(
    bad_min_count <- pmin(hour_count$pm25_A, hour_count$pm25_B, na.rm = TRUE) < min_count
    
    # mad 
-   hour_mad <- pat_aggregate(pat, FUN = function(x) mad(x, na.rm = TRUE))$data
+   hour_mad <- pat_aggregate(pat, FUN = function(x) stats::mad(x, na.rm = TRUE))$data
    bad_mad_diff <- percent_diff(hour_mad$pm25_A, hour_mad$pm25_B) > max_diff 
    
    bad_mad_A <- bad_mad_diff & hour_mad$pm25_A > threshold

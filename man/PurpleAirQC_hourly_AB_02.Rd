@@ -17,16 +17,17 @@ PurpleAirQC_hourly_AB_02(
 \item{min_count}{Aggregation bins with fewer than `min_count` measurements
 will be marked as `NA`.}
 
-\item{threshold}{poop.}
+\item{threshold}{A maximum median absolute deviation threshold.}
 
-\item{max_diff}{poop.}
+\item{max_diff}{A maximum percentage difference between pat channels (50% = 0.5).}
 }
 \value{
 Data frame with columns \code{datetime} and \code{pm25}.
 }
 \description{
 Creates a \code{pm25} timeseries by averaging aggregated data
-from the A and B channels and applying the following QC logic:
+from the A and B channels, calculates MAD within the threshold, and values 
+within a maxium percentage difference.
 }
 \note{
 Purple Air II sensors reporting after the June, 2019 firmware
@@ -35,7 +36,6 @@ setting of \code{min_count = 20} is equivalent to a required data recovery
 rate of 67%.
 }
 \examples{
-\dontrun{
 QCed <- PurpleAirQC_hourly_AB_02(example_pat)
-}
+
 }
