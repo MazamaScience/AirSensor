@@ -25,6 +25,7 @@ Depends:
     R (>= 3.5.0)
 Imports:
     countrycode,
+    cowplot,
     dplyr (>= 0.8.3),
     dygraphs,
     geodist,
