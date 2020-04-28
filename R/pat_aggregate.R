@@ -52,7 +52,7 @@
 #' 
 #' @examples
 #' \dontrun{
-#' avg_pat <- pat_aggregate(pat, mean)
+#' avg_pat <- pat_aggregate(pat, mean, na.rm = TRUE)
 #' }
 #' 
 

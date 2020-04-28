@@ -1,7 +1,7 @@
 #' @export
 #' @importFrom rlang .data
 #' 
-#' @title Create an Air Sensor object
+#' @title Create an Air Sensor object (old)
 #' 
 #' @param pat PurpleAir Timeseries \emph{pat} object.
 #' @param period Time period to average over. Can be "sec", "min", "hour", 
@@ -41,24 +41,26 @@
 #' @seealso \link{pat_aggregate}
 #' 
 #' @examples 
-#' 
+#' \dontrun{
 #' sensor <- 
 #'   example_pat %>%
 #'   pat_filterDate(20180701, 20180901) %>%
-#'   pat_createAirSensor()
+#'   pat_createAirSensor_old()
 #' PWFSLSmoke::monitor_dailyBarplot(sensor)
-#' 
+#' }
 
 pat_createAirSensor_old <- function(
   pat = NULL,
+  period = "1 hour",
   parameter = "pm25",
   channel = "ab",
+  qc_algorithm = "hourly_AB_01",
   min_count = 20,
-  qc_FUN =  PurpleAirQC_hourly_AB_02
+  aggregation_FUN = pat_aggregate
 ) {
   
   # ----- Validate Parameters --------------------------------------------------
-
+  
   period <- tolower(period)
   parameter <- tolower(parameter)
   channel <- tolower(channel)
@@ -82,11 +84,11 @@ pat_createAirSensor_old <- function(
       stop("Required parameter 'channel' must be one of 'a', 'b' or 'ab'")
   }
   
-  # if ( !qc_algorithm %in% c("hourly_AB_00", "hourly_AB_01") ) {
-  #   stop("Required parameter 'qc_algorithm' must be one of 'hourly_AB_00' or 'hourly_AB_01'")
-  # }
+  if ( !qc_algorithm %in% c("hourly_AB_00", "hourly_AB_01") ) {
+    stop("Required parameter 'qc_algorithm' must be one of 'hourly_AB_00' or 'hourly_AB_01'")
+  }
   
-  if ( !rlang::is_closure(qc_FUN) ) {
+  if ( !rlang::is_closure(aggregation_FUN) ) {
     stop(paste0("Parameter 'aggregation_FUN' is not a function.",
                 "(Pass in the function with no quotes and no parentheses.)"))
   }
@@ -108,62 +110,68 @@ pat_createAirSensor_old <- function(
   
   # ----- Temporal aggregation -------------------------------------------------
   
-  hourly_pat <- pat_aggregate(pat, FUN = function(x) { mean(x, na.rm = TRUE) })
-  hourly_counts <- pat_aggregate(pat, FUN = function(x) { length(na.omit(x)) })
+  # NOTE: For clarification, this function acts to route the aggregation 
+  # NOTE: parameters to th respective function. Currently, this method assumes 
+  # NOTE: that the function is not anonymous and accepts a pat object and period. 
+  aggregationStats <- aggregation_FUN(pat,
+                                      period = period)
   
   # ----- Aggregation QC -------------------------------------------------------
   
   if ( parameter == "pm25" ) {
-
+    
     if ( channel == "a" ) {
       
-      hourly_pat$data <-
-        hourly_pat$data %>%
-        dplyr::mutate(pm25 = .data$pm25_A) %>%
-        dplyr::mutate(pm25 = replace(.data$pm25, which(hourly_counts$data$pm25_A < min_count), NA)) %>%
+      # Simple min_count QC
+      hourlyData <-
+        aggregationStats %>%
+        dplyr::mutate(pm25 = .data$pm25_A_mean) %>%
+        dplyr::mutate(pm25 = replace(.data$pm25, which(.data$pm25_A_count < min_count), NA) ) %>%
         dplyr::select(.data$datetime, .data$pm25)
       
     } else if ( channel == "b" ) {
       
-      # # Simple min_count QC
-      hourly_pat$data <-
-        hourly_pat$data %>%
-        dplyr::mutate(pm25 = .data$pm25_B) %>%
-        dplyr::mutate(pm25 = replace(.data$pm25, which(hourly_counts$data$pm25_B < min_count), NA)) %>%
+      # Simple min_count QC
+      hourlyData <-
+        aggregationStats %>%
+        dplyr::mutate(pm25 = .data$pm25_B_mean) %>%
+        dplyr::mutate(pm25 = replace(.data$pm25, which(.data$pm25_B_count < min_count), NA) ) %>%
         dplyr::select(.data$datetime, .data$pm25)
       
     } else if ( channel == "ab" ) {
       
-      hourly_pat <- match.fun(qc_FUN)(pat)
+      # Apply qc_algorithm function
+      functionName <- paste0("PurpleAirQC_", qc_algorithm)
+      FUN <- get(functionName)
+      hourlyData <- FUN(aggregationStats)
       
     }
     
   } else if ( parameter == "temperature" ) {
     
-    hourly_pat$data <-
-      hourly_pat$data %>%
+    hourlyData <-
+      aggregationStats %>%
       # Use the period averaged mean
-      dplyr::mutate(temperature = .data$temperature) %>%
+      dplyr::mutate(temperature = .data$temperature_mean) %>%
       # Invalidate data where there are too few measurements
-      dplyr::mutate(temperature = replace(.data$temperature, which(hourly_count$temperature < min_count), NA) ) %>%
+      dplyr::mutate(temperature = replace(.data$temperature, which(.data$temperature < min_count), NA) ) %>%
       dplyr::select(.data$datetime, .data$temperature)
     
   } else if ( parameter == "humidity" ) {
     
-    hourly_pat$data <-
-       hourly_pat$data %>%
+    hourlyData <-
+      aggregationStats %>%
       # Use the period averaged mean
-      dplyr::mutate(humidity = .data$humidity) %>%
+      dplyr::mutate(humidity = .data$humidity_mean) %>%
       # Invalidate data where there are too few measurements
-      dplyr::mutate(humidity = replace(.data$humidity, which(hourly_count$humidity < min_count), NA) ) %>%
+      dplyr::mutate(humidity = replace(.data$humidity, which(.data$humidity < min_count), NA) ) %>%
       dplyr::select(.data$datetime, .data$humidity)
     
   }
   
   # Cleanup any NaN or Inf that might have snuck in
   data <-
-    hourly_pat$data %>%
-    dplyr::select(.data$datetime, .data$pm25) %>% 
+    hourlyData %>%
     dplyr::mutate_all( function(x) replace(x, which(is.nan(x)), NA) ) %>%
     dplyr::mutate_all( function(x) replace(x, which(is.infinite(x)), NA) )
   
@@ -195,15 +203,16 @@ pat_createAirSensor_old <- function(
   
   # NOTE:  As of 2019-05-14, the PWFSLSmoke meta dataframe still has rownames
   # There should only be a single row in meta
-  #rownames(meta) <- colnames(data)[-1]
+  rownames(meta) <- colnames(data)[-1]
   
   # Add QC algorithm to metadata
-  # meta$PurpleAirQC_algorithm <- paste0(
-  #   "qc_FUN = ", (function(x) as.character(substitute(x)))(qc_FUN),
-  #   "; parameter = ", parameter,
-  #   "; channel = ", channel,
-  #   "; min_count = ", min_count
-  # )
+  meta$PurpleAirQC_algorithm <- paste0(
+    "qc_algorithm = ", qc_algorithm,
+    "; period = ", period,
+    "; parameter = ", parameter,
+    "; channel = ", channel,
+    "; min_count = ", min_count
+  )
   
   as_object <- list(
     meta = meta, 
@@ -228,4 +237,3 @@ if ( FALSE ) {
   min_count <- 20
   
 }  
-

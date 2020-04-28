@@ -1,25 +1,17 @@
 #' @export
 #' @importFrom rlang .data
+#' @importFrom stats mad
 #' 
 #' @title Apply QC to Aggregation Statistics
 #' 
-#' @param aggregationStats Dataframe of statistics as returned by
-#' \code{pat_aggregate()}.
+#' @param pat A PurpleAir timeseries object.
 #' @param min_count Aggregation bins with fewer than `min_count` measurements
 #' will be marked as `NA`.
-#' @param returnAllColumns Logical specifying whether to return all columns
-#' of statistical data generated for QC algorithm or just the final `pm25` 
-#' result.
+#' @param threshold A maximum median absolute deviation threshold.  
+#' @param max_diff A maximum percentage difference between pat channels (50% = 0.5). 
 #'  
 #' @description Creates a \code{pm25} timeseries by averaging aggregated data
 #' from the A and B channels and applying the following QC logic:
-#' 
-#' \enumerate{
-#' \item{Create pm25 by averaging the A and B channel aggregation means}
-#' \item{Invalidate data where:  (min_count < 20)}
-#' \item{Invalidate data where:  (p-value < 1e-4) & (mean_diff > 10)}
-#' \item{Invalidate data where:  (pm25 < 100) & (mean_diff > 20)}
-#' }
 #'
 #' @note Purple Air II sensors reporting after the June, 2019 firmware
 #' upgrade report data every 2 minutes or 30 measurements per hour. The default
@@ -30,6 +22,7 @@
 #' 
 #' @examples 
 #' \dontrun{
+#' QCed <- PurpleAirQC_hourly_AB_02(example_pat)
 #' }
 
 PurpleAirQC_hourly_AB_02 <- function(
@@ -57,7 +50,7 @@ PurpleAirQC_hourly_AB_02 <- function(
    # 
    
    hour_mean$data <- hour_mean$data %>% 
-     dplyr::mutate(pm25 = ch_pm25_avg) %>% 
+     dplyr::mutate(pm25 = ch_mean) %>% 
      dplyr::mutate(pm25 = replace(.data$pm25, bad_min_count, NA)) %>% 
      dplyr::mutate(pm25 = replace(.data$pm25, bad_ch_diff, NA)) %>% 
      dplyr::mutate(pm25 = replace(.data$pm25, bad_mad_A | bad_mad_B, NA))

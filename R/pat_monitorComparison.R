@@ -77,7 +77,7 @@ pat_monitorComparison <- function(
   # Get the hourly aggregated data
   paHourly_data <-
     pat %>% 
-    pat_createAirSensor(period = "1 hour") %>%
+    pat_createAirSensor(parameter = 'pm25', FUN = AirSensor::PurpleAirQC_hourly_AB_02) %>%
     PWFSLSmoke::monitor_extractData()
   
   names(paHourly_data) <- c("datetime", "PA hourly")

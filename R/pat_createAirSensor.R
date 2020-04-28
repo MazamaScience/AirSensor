@@ -42,14 +42,18 @@
 #' sensor <- pat_createAirSensor(example_pat)
 #' 
 #' # Package included aggregation FUN
-#' sensor <- pat_createAirSensor(example_pat, parameter = 'pm25', FUN = AirSensor::PurpleAirQC_hourly_02)
+#' sensor <- pat_createAirSensor(
+#'   example_pat, 
+#'   parameter = 'pm25', 
+#'   FUN = AirSensor::PurpleAirQC_hourly_AB_02
+#' )
 #' 
 #' # Custom FUN
 #' add_jitter <- function(pat, y) {
 #'   # Create `custom_pm` variable 
 #'   pat$data$custom_pm <- pat$data$pm25_A + y
 #'   # Default hourly aggregation
-#'   pat <- pat_aggregate(pat)
+#'   pat <- pat_aggregate(pat, mean, na.rm = TRUE)
 #'   return(pat)
 #' } 
 #' # Create noise
@@ -61,7 +65,7 @@
 pat_createAirSensor <- function(
   pat = NULL,
   parameter = 'pm25', 
-  FUN = PurpleAirQC_hourly_AB_02, 
+  FUN = NULL, 
   ...
 ) {
   
@@ -75,9 +79,11 @@ pat_createAirSensor <- function(
   if ( pat_isEmpty(pat) )
     stop("Required parameter 'pat' has no data.") 
   
-  if ( !rlang::is_closure(qc_FUN) ) {
-    stop(paste0("Parameter 'aggregation_FUN' is not a function.",
-                "(Pass in the function with no quotes and no parentheses.)"))
+  if ( !is.null(FUN) ) {
+    if ( !rlang::is_closure(FUN) ) {
+      stop(paste0("Provided 'FUN' is not a function.",
+                  "(Pass in the function with no quotes and no parentheses.)"))
+    }
   }
   
   # Check if deviceDeploymentID is in the meta data. If not, add uniqueIDs.
@@ -97,7 +103,7 @@ pat_createAirSensor <- function(
   # ----- Apply FUN ------------------------------------------------------------
   
   # NOTE: If FUN is null: 
-  # NOTE: use a mean aggregation with no qc and average both channels
+  # NOTE: use a mean aggregation with no qc and average both s
   if ( is.null(FUN) ) {
     FUN <- function(x, ...) {
       tmp_pat <- pat_aggregate(x, function(x_, ...) mean(x_, na.rm = FALSE, ...))
