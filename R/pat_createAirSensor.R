@@ -4,66 +4,68 @@
 #' @title Create an Air Sensor object
 #' 
 #' @param pat PurpleAir Timeseries \emph{pat} object.
-#' @param period Time period to average over. Can be "sec", "min", "hour", 
-#' "day", "DSTday", "week", "month", "quarter" or "year". A number can also
-#'  precede these options followed by a space (i.e. "2 day" or "37 min").
-#' @param parameter Parameter for which to create an \emph{as} object -- one of
-#' "pm25", "humidity" or "temperature".
-#' @param channel Data channel to use for PM2.5 -- one of "a", "b or "ab".
-#' @param qc_algorithm Named QC algorithm to apply to hourly aggregation stats.
-#' @param min_count Aggregation bins with fewer than `min_count` measurements
-#' will be marked as `NA`.
-#' @param aggregation_FUN Function used to convert a \emph{pat} object into a
-#' tibble of hourly statistics. 
+#' @param parameter Parameter for which to create an univariate \emph{airsensor} 
+#' object. See details.
+#' @param FUN Algorithm applied to \emph{pat} object for hourly aggregation and 
+#' quality control. See details.
+#' @param ... (optional) Additional parameters passed into \code{FUN}.
 #'  
 #' @description Converts data from a \emph{pat} object with an irregular time 
 #' axis to an \emph{airsensor} object where the numeric data has been aggregated 
 #' along a standardized hourly time axis, as well as adding additional required 
 #' metadata for compatibility with the *PWFSLSmoke* package.
 #'
-#' Current QC algorithms exist for \code{channel = "ab"} and include:
-#' \itemize{
-#' \item{\code{hourly_AB_00}}
-#' \item{\code{hourly_AB_01}}
-#' }
+#' @details 
+#' \code{FUN} allows users to provide custom aggregation and 
+#' quality-control functions that are used to create an \emph{airsensor} object. 
+#' The \code{FUN} must accept a \emph{pat} object as the first argument and 
+#' return a \emph{pat} object with a regular hourly datetime axis. \code{FUN} 
+#' can access and utilize any component of a standard \emph{pat} object 
+#' (e.g pm25_A, temperature, etc.) as well as define new variables in the 
+#' \emph{pat} data. See examples. 
 #' 
-#' @note
-#' The \code{aggregation_FUN}, allows users to pass in custom functions that 
-#' generate new aggregation statistics. These statistics can then be utilized 
-#' in a custom QC algorithm function. The algorithm function applied is
-#' generated from the \code{qc_algorithm} parameter with 
-#' \code{paste0("PurpleAirQC_", qc_algorithm)}.
+#' \code{parameter} allows user to select which variable to use for the 
+#' univariate \emph{airsensor} object (e.g 'pm25_A', 'humidity', etc.). 
+#' Futhermore the \code{parameter} can be a new variable created via \code{FUN} 
+#' evaluation. See examples.
+#' 
+#' \code{...} Additional optional parameters or data that a user may implement 
+#' support for in the \code{FUN}.  
 #'
 #' @return An "airsensor" object of aggregated PurpleAir Timeseries data.
 #' 
-#' @seealso \link{PurpleAirQC_hourly_AB_00}
-#' @seealso \link{PurpleAirQC_hourly_AB_01}
+#' @seealso \link{PurpleAirQC_hourly_AB_02}
 #' @seealso \link{pat_aggregate}
 #' 
 #' @examples 
+#' # Default FUN
+#' sensor <- pat_createAirSensor(example_pat)
 #' 
-#' sensor <- 
-#'   example_pat %>%
-#'   pat_filterDate(20180701, 20180901) %>%
-#'   pat_createAirSensor()
-#' PWFSLSmoke::monitor_dailyBarplot(sensor)
+#' # Package included aggregation FUN
+#' sensor <- pat_createAirSensor(example_pat, parameter = 'pm25', FUN = AirSensor::PurpleAirQC_hourly_02)
 #' 
+#' # Custom FUN
+#' add_jitter <- function(pat, y) {
+#'   # Create `custom_pm` variable 
+#'   pat$data$custom_pm <- pat$data$pm25_A + y
+#'   # Default hourly aggregation
+#'   pat <- pat_aggregate(pat)
+#'   return(pat)
+#' } 
+#' # Create noise
+#' jitter <- rnorm(n = nrow(example_pat$data))
+#' 
+#' # Evaluate custom aggregation FUN with parameters 
+#' sensor <- pat_createAirSensor(example_pat, parameter = 'custom_pm', FUN = add_jitter, y = jitter)
 
 pat_createAirSensor <- function(
   pat = NULL,
-  period = "1 hour",
-  parameter = "pm25",
-  channel = "ab",
-  qc_algorithm = "hourly_AB_01",
-  min_count = 20,
-  aggregation_FUN = pat_aggregate
+  parameter = 'pm25', 
+  FUN = PurpleAirQC_hourly_AB_02, 
+  ...
 ) {
   
-  # ----- Validate Parameters --------------------------------------------------
-
-  period <- tolower(period)
-  parameter <- tolower(parameter)
-  channel <- tolower(channel)
+  # ----- Validate input PAT parameters ----------------------------------------
   
   MazamaCoreUtils::stopIfNull(pat)
   
@@ -73,22 +75,7 @@ pat_createAirSensor <- function(
   if ( pat_isEmpty(pat) )
     stop("Required parameter 'pat' has no data.") 
   
-  # Remove any duplicate data records
-  pat <- pat_distinct(pat)
-  
-  if ( !parameter %in% c("pm25", "humidity", "temperature") )
-    stop("Required parameter 'parameter' must be one of 'pm25', 'humidity' or 'temperature'")
-  
-  if ( !is.null(channel) ) {
-    if ( !channel %in% c("a", "b", "ab") )
-      stop("Required parameter 'channel' must be one of 'a', 'b' or 'ab'")
-  }
-  
-  if ( !qc_algorithm %in% c("hourly_AB_00", "hourly_AB_01") ) {
-    stop("Required parameter 'qc_algorithm' must be one of 'hourly_AB_00' or 'hourly_AB_01'")
-  }
-  
-  if ( !rlang::is_closure(aggregation_FUN) ) {
+  if ( !rlang::is_closure(qc_FUN) ) {
     stop(paste0("Parameter 'aggregation_FUN' is not a function.",
                 "(Pass in the function with no quotes and no parentheses.)"))
   }
@@ -101,77 +88,61 @@ pat_createAirSensor <- function(
     pat$meta <- pas_addUniqueIDs(pat$meta)
   }
   
-  # ----- Raw data QC ----------------------------------------------------------
+  # Remove any duplicate data records
+  pat <- pat_distinct(pat)
   
-  # Invalidate out-of-spec values. Don't invalidate based on humidity
-  pat <- pat_qc(pat, 
-                removeOutOfSpec = TRUE,
-                max_humidity = NULL)
+  # Remove out of spec
+  pat <- pat_qc(pat, removeOutOfSpec = TRUE, max_humidity = NULL)
   
-  # ----- Temporal aggregation -------------------------------------------------
+  # ----- Apply FUN ------------------------------------------------------------
   
-  # NOTE: For clarification, this function acts to route the aggregation 
-  # NOTE: parameters to th respective function. Currently, this method assumes 
-  # NOTE: that the function is not anonymous and accepts a pat object and period. 
-  aggregationStats <- aggregation_FUN(pat,
-                                      period = period)
-  
-  # ----- Aggregation QC -------------------------------------------------------
-  
-  if ( parameter == "pm25" ) {
-
-    if ( channel == "a" ) {
-      
-      # Simple min_count QC
-      hourlyData <-
-        aggregationStats %>%
-        dplyr::mutate(pm25 = .data$pm25_A_mean) %>%
-        dplyr::mutate(pm25 = replace(.data$pm25, which(.data$pm25_A_count < min_count), NA) ) %>%
-        dplyr::select(.data$datetime, .data$pm25)
-      
-    } else if ( channel == "b" ) {
-      
-      # Simple min_count QC
-      hourlyData <-
-        aggregationStats %>%
-        dplyr::mutate(pm25 = .data$pm25_B_mean) %>%
-        dplyr::mutate(pm25 = replace(.data$pm25, which(.data$pm25_B_count < min_count), NA) ) %>%
-        dplyr::select(.data$datetime, .data$pm25)
-      
-    } else if ( channel == "ab" ) {
-      
-      # Apply qc_algorithm function
-      functionName <- paste0("PurpleAirQC_", qc_algorithm)
-      FUN <- get(functionName)
-      hourlyData <- FUN(aggregationStats)
-      
+  # NOTE: If FUN is null: 
+  # NOTE: use a mean aggregation with no qc and average both channels
+  if ( is.null(FUN) ) {
+    FUN <- function(x, ...) {
+      tmp_pat <- pat_aggregate(x, function(x_, ...) mean(x_, na.rm = FALSE, ...))
+      tmp_pat$data <- 
+        tmp_pat$data %>% 
+        dplyr::mutate(pm25 = rowMeans(cbind(.data$pm25_A, .data$pm25_B), na.rm = TRUE))
+      return(tmp_pat)
     }
-    
-  } else if ( parameter == "temperature" ) {
-    
-    hourlyData <-
-      aggregationStats %>%
-      # Use the period averaged mean
-      dplyr::mutate(temperature = .data$temperature_mean) %>%
-      # Invalidate data where there are too few measurements
-      dplyr::mutate(temperature = replace(.data$temperature, which(.data$temperature < min_count), NA) ) %>%
-      dplyr::select(.data$datetime, .data$temperature)
-    
-  } else if ( parameter == "humidity" ) {
-    
-    hourlyData <-
-      aggregationStats %>%
-      # Use the period averaged mean
-      dplyr::mutate(humidity = .data$humidity_mean) %>%
-      # Invalidate data where there are too few measurements
-      dplyr::mutate(humidity = replace(.data$humidity, which(.data$humidity < min_count), NA) ) %>%
-      dplyr::select(.data$datetime, .data$humidity)
-    
   }
   
-  # Cleanup any NaN or Inf that might have snuck in
+  # Evaluate FUN function
+  result <- try(
+    expr = { eval_pat <- match.fun(FUN)(pat, ...) }, #? FUN(...) or match.fun(FUN)(...)
+    silent = TRUE 
+  )
+  
+  # Handle FUN errors 
+  if ( 'try-error' %in% class(result) ) {
+    stop('`FUN(pat, ...)` failed to evaluate. 
+         Please check `FUN` and see `?pat_createAirSensor` for details.')
+  }
+  
+  # ----- Validate evaluated PAT -----------------------------------------------
+  
+  # Check hourly axis in eval pat
+  # NOTE: Any missing hour is filled in with NA, so no gaps _other_ than 1 hour 
+  # NOTE: and -23 should exist with index lag = 1. 
+  if ( !all(diff(lubridate::hour(eval_pat$data$datetime)) == 1 | 
+            diff(lubridate::hour(eval_pat$data$datetime)) == -23) ) {
+    stop('Error: `FUN(pat, ...)` does not return regular hourly datetime axis. 
+         Please see `?pat_createAirSensor` for details.')
+  }
+  
+  # Check if parameter is defined in eval pat
+  if ( !parameter %in% names(eval_pat$data) ) {
+    stop('`parameter` is not defined in `FUN(pat, ...)` output. 
+    Please see `?pat_createAirSensor` for details.')
+  }
+  
+  # ----- Create data ----------------------------------------------------------
+  
+  # Select data and cleanup any NaN or Inf that might have snuck in
   data <-
-    hourlyData %>%
+    eval_pat$data %>%
+    dplyr::select(.data$datetime, .data[[parameter]]) %>% 
     dplyr::mutate_all( function(x) replace(x, which(is.nan(x)), NA) ) %>%
     dplyr::mutate_all( function(x) replace(x, which(is.infinite(x)), NA) )
   
@@ -181,7 +152,7 @@ pat_createAirSensor <- function(
   
   # Copy metadata from pat object
   meta <- 
-    pat$meta %>% 
+    eval_pat$meta %>% 
     as.data.frame()
   
   # Add metadata found in PWFSLSmoke ws_monitor objects
@@ -199,20 +170,7 @@ pat_createAirSensor <- function(
   meta$telemetryAggregator <- as.character(NA)
   meta$telemetryUnitID <- as.character(NA)
   
-  # ----- Return ---------------------------------------------------------------
-  
-  # NOTE:  As of 2019-05-14, the PWFSLSmoke meta dataframe still has rownames
-  # There should only be a single row in meta
-  rownames(meta) <- colnames(data)[-1]
-  
-  # Add QC algorithm to metadata
-  meta$PurpleAirQC_algorithm <- paste0(
-    "qc_algorithm = ", qc_algorithm,
-    "; period = ", period,
-    "; parameter = ", parameter,
-    "; channel = ", channel,
-    "; min_count = ", min_count
-  )
+  # ----- Return ws_monitor object ---------------------------------------------
   
   as_object <- list(
     meta = meta, 
@@ -224,17 +182,3 @@ pat_createAirSensor <- function(
   return(as_object)
   
 }
-
-# ===== DEBUG ================================================================
-
-if ( FALSE ) {
-  
-  pat <- example_pat
-  period <- "1 hour"
-  parameter <- "pm25"
-  channel <- "ab"
-  qc_algorithm <- "hourly_AB_01"
-  min_count <- 20
-  
-}  
-
