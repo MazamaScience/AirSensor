@@ -39,6 +39,8 @@ pat_aggregateOutlierCounts <- function(
   thresholdMin = 8
 ) { 
   
+  # TODO: 20200427: Update to work with new aggregation function
+  
   # ----- Validate parameters --------------------------------------------------
 
   MazamaCoreUtils::stopIfNull(pat)
@@ -136,7 +138,7 @@ pat_aggregateOutlierCounts <- function(
   
   agg <- 
     dplyr::left_join(
-      pat_aggregate(pat, period), 
+      pat_aggregate(pat, na.rm = TRUE)$data, 
       counts, 
       by = "datetime"
     )

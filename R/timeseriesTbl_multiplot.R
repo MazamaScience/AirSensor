@@ -21,12 +21,12 @@
 #' \code{autoRange}.
 #' 
 #' @examples 
-#' 
+#' \dontrun{
 #' tbl <- pat_aggregateOutlierCounts(example_pat_failure_A)
 #' timeseriesTbl_multiplot(tbl, 
 #'                         pattern = "humidity_m|temperature_m", 
 #'                         nrow = 2)
-#' 
+#' }
 
 timeseriesTbl_multiplot <- function(
   tbl = NULL, 
@@ -38,6 +38,8 @@ timeseriesTbl_multiplot <- function(
   ylim = NULL,
   style = "line"
 ) {
+  
+  # TODO: Update to work with new agg function
   
   # ----- Validate parameters --------------------------------------------------
   

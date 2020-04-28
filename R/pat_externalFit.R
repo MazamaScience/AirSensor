@@ -61,6 +61,8 @@ pat_externalFit <- function(
   min_count = 20
 ) {
   
+  # TODO: Update to work with new aggregate function
+  
   # ----- Validate parameters --------------------------------------------------
   
   MazamaCoreUtils::stopIfNull(pat)
@@ -86,10 +88,7 @@ pat_externalFit <- function(
   # Get the hourly aggregated PurpleAir data
   paHourly_data <-
     pat %>% 
-    pat_createAirSensor(period = "1 hour", 
-                        channel = channel,
-                        qc_algorithm = qc_algorithm,
-                        min_count = min_count) %>%
+    pat_createAirSensor(parameter = 'pm25') %>% 
     PWFSLSmoke::monitor_extractData()
   names(paHourly_data) <- c("datetime", "pa_pm25")
   
