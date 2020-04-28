@@ -66,6 +66,12 @@ pas_createNew <- function(
   # Guarantee uppercase codes
   countryCodes <- toupper(countryCodes)
   
+  # Check if MazamaSpatialUtils package has been initialized 
+  # via initializeMazamaSpatialUtils()
+  if ( !spatialIsInitialized() ) {
+    stop('`pas_createNew` requires MazamaSpatialUtils to be initialized. 
+         Please see `?initializeMazamaSpatialUtils() for more details.') 
+  }
   # Validate countryCodes
   if ( any(!(countryCodes %in% countrycode::codelist$iso2c)) ) 
     stop("parameter 'countryCodes' has values that are not recognized as ISO-2 country codes")

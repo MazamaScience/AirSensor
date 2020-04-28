@@ -51,5 +51,16 @@ initializeMazamaSpatialUtils <- function(
   
   # Add env variable for initialization detection
   Sys.setenv(SPATIAL_IS_INITIALIZED = "TRUE")
-  
+}
+
+#' @keywords Internal
+#' @title Check if MazamaSpatialUtils has been initialized 
+#' 
+#' @description Logical convenience function to check if 
+#' \code{initializeMazamaSpatialUtils()} has been run.
+#' 
+#' @return Logical.  
+
+spatialIsInitialized <- function() {
+  as.logical(Sys.getenv('SPATIAL_IS_INITIALIZED'))
 }
