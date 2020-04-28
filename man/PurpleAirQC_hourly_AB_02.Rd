@@ -12,15 +12,14 @@ PurpleAirQC_hourly_AB_02(
 )
 }
 \arguments{
+\item{pat}{A PurpleAir timeseries object.}
+
 \item{min_count}{Aggregation bins with fewer than `min_count` measurements
 will be marked as `NA`.}
 
-\item{aggregationStats}{Dataframe of statistics as returned by
-\code{pat_aggregate()}.}
+\item{threshold}{poop.}
 
-\item{returnAllColumns}{Logical specifying whether to return all columns
-of statistical data generated for QC algorithm or just the final `pm25` 
-result.}
+\item{max_diff}{poop.}
 }
 \value{
 Data frame with columns \code{datetime} and \code{pm25}.
@@ -28,13 +27,6 @@ Data frame with columns \code{datetime} and \code{pm25}.
 \description{
 Creates a \code{pm25} timeseries by averaging aggregated data
 from the A and B channels and applying the following QC logic:
-
-\enumerate{
-\item{Create pm25 by averaging the A and B channel aggregation means}
-\item{Invalidate data where:  (min_count < 20)}
-\item{Invalidate data where:  (p-value < 1e-4) & (mean_diff > 10)}
-\item{Invalidate data where:  (pm25 < 100) & (mean_diff > 20)}
-}
 }
 \note{
 Purple Air II sensors reporting after the June, 2019 firmware
@@ -44,5 +36,6 @@ rate of 67%.
 }
 \examples{
 \dontrun{
+QCed <- PurpleAirQC_hourly_AB_02(example_pat)
 }
 }

@@ -4,12 +4,7 @@
 \alias{pat_createAirSensor}
 \title{Create an Air Sensor object}
 \usage{
-pat_createAirSensor(
-  pat = NULL,
-  parameter = "pm25",
-  FUN = PurpleAirQC_hourly_AB_02,
-  ...
-)
+pat_createAirSensor(pat = NULL, parameter = "pm25", FUN = NULL, ...)
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}
@@ -34,10 +29,11 @@ metadata for compatibility with the *PWFSLSmoke* package.
 \details{
 \code{FUN} allows users to provide custom aggregation and 
 quality-control functions that are used to create an \emph{airsensor} object. 
-The \code{FUN} must accept a \emph{pat} object and return a \emph{pat} object 
-with a regular hourly datetime axis. \code{FUN} can access and utilize any 
-component of a standard \emph{pat} object (e.g pm25_A, temperature, etc.) 
-as well as define new variables in the \emph{pat} data. See examples. 
+The \code{FUN} must accept a \emph{pat} object as the first argument and 
+return a \emph{pat} object with a regular hourly datetime axis. \code{FUN} 
+can access and utilize any component of a standard \emph{pat} object 
+(e.g pm25_A, temperature, etc.) as well as define new variables in the 
+\emph{pat} data. See examples. 
 
 \code{parameter} allows user to select which variable to use for the 
 univariate \emph{airsensor} object (e.g 'pm25_A', 'humidity', etc.). 
@@ -49,24 +45,28 @@ support for in the \code{FUN}.
 }
 \examples{
 # Default FUN
-sensor <- pat_createAirSensor(pat)
+sensor <- pat_createAirSensor(example_pat)
 
 # Package included aggregation FUN
-sensor <- pat_createAirSensor(pat, parameter = 'pm25', FUN = AirSensor::PurpleAirQC_hourly_02)
+sensor <- pat_createAirSensor(
+  example_pat, 
+  parameter = 'pm25', 
+  FUN = AirSensor::PurpleAirQC_hourly_AB_02
+)
 
 # Custom FUN
 add_jitter <- function(pat, y) {
   # Create `custom_pm` variable 
   pat$data$custom_pm <- pat$data$pm25_A + y
   # Default hourly aggregation
-  pat <- pat_aggregate(pat)
+  pat <- pat_aggregate(pat, mean, na.rm = TRUE)
   return(pat)
 } 
 # Create noise
-jitter <- rnorm(n = nrow(pat$data))
+jitter <- rnorm(n = nrow(example_pat$data))
 
 # Evaluate custom aggregation FUN with parameters 
-sensor <- pat_createAirSensor(pat, parameter = 'custom_pm', FUN = add_jitter, y = jitter)
+sensor <- pat_createAirSensor(example_pat, parameter = 'custom_pm', FUN = add_jitter, y = jitter)
 }
 \seealso{
 \link{PurpleAirQC_hourly_AB_02}

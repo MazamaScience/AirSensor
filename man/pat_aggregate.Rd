@@ -58,7 +58,7 @@ values based on \code{sd}, \code{count} or \code{pm25_t}.
 }
 \examples{
 \dontrun{
-avg_pat <- pat_aggregate(pat, mean)
+avg_pat <- pat_aggregate(pat, mean, na.rm = TRUE)
 }
 
 }

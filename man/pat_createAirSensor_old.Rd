@@ -2,32 +2,34 @@
 % Please edit documentation in R/pat_createAirSensor_old.R
 \name{pat_createAirSensor_old}
 \alias{pat_createAirSensor_old}
-\title{Create an Air Sensor object}
+\title{Create an Air Sensor object (old)}
 \usage{
 pat_createAirSensor_old(
   pat = NULL,
+  period = "1 hour",
   parameter = "pm25",
   channel = "ab",
+  qc_algorithm = "hourly_AB_01",
   min_count = 20,
-  qc_FUN = PurpleAirQC_hourly_AB_02
+  aggregation_FUN = pat_aggregate
 )
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}
+
+\item{period}{Time period to average over. Can be "sec", "min", "hour", 
+"day", "DSTday", "week", "month", "quarter" or "year". A number can also
+ precede these options followed by a space (i.e. "2 day" or "37 min").}
 
 \item{parameter}{Parameter for which to create an \emph{as} object -- one of
 "pm25", "humidity" or "temperature".}
 
 \item{channel}{Data channel to use for PM2.5 -- one of "a", "b or "ab".}
 
+\item{qc_algorithm}{Named QC algorithm to apply to hourly aggregation stats.}
+
 \item{min_count}{Aggregation bins with fewer than `min_count` measurements
 will be marked as `NA`.}
-
-\item{period}{Time period to average over. Can be "sec", "min", "hour", 
-"day", "DSTday", "week", "month", "quarter" or "year". A number can also
- precede these options followed by a space (i.e. "2 day" or "37 min").}
-
-\item{qc_algorithm}{Named QC algorithm to apply to hourly aggregation stats.}
 
 \item{aggregation_FUN}{Function used to convert a \emph{pat} object into a
 tibble of hourly statistics.}
@@ -55,13 +57,13 @@ generated from the \code{qc_algorithm} parameter with
 \code{paste0("PurpleAirQC_", qc_algorithm)}.
 }
 \examples{
-
+\dontrun{
 sensor <- 
   example_pat \%>\%
   pat_filterDate(20180701, 20180901) \%>\%
-  pat_createAirSensor()
+  pat_createAirSensor_old()
 PWFSLSmoke::monitor_dailyBarplot(sensor)
-
+}
 }
 \seealso{
 \link{PurpleAirQC_hourly_AB_00}

@@ -23,7 +23,7 @@ This dataset was was generated on 2020-01-03 by running:
       startdate = "2018-08-14",
       enddate = "2018-09-07"
     ) %>%
-    pat_createAirSensor(period = "1 hour")
+    pat_createAirSensor(parameter = 'pm25', FUN = AirSensor::PurpleAirQC_hourly_AB_02)
   save(example_sensor, file = "data/example_sensor.rda")
 }
 }
