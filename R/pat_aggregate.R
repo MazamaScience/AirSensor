@@ -3,31 +3,34 @@
 #' @importFrom rlang .data
 #' @importFrom stats aggregate median na.omit quantile sd t.test time
 #'
-#' @title Aggregation statistics for PurpleAir Timeseries objects
+#' @title Aggregate PurpleAir Timeseries objects
 #' 
 #' @param pat PurpleAir Timeseries \emph{pat} object.
 #' @param FUN The function to be applied to each vector of numeric \code{pat} data.
-#' @param ... (optional) Additional arguments for \code{FUN}.
+#' @param ... (optional) Additional arguments.
 #' 
-#' @description Calculates statistics associated with the aggregation of raw 
-#' PurpleAir Timeseries data onto a regular time axis.
+#' @description Aggregate PurpleAir timeseries (\emph{pat}) objects along its 
+#' datetime axis. Temporal aggregation involves splitting a \emph{pat} object into
+#' seperate bins along its datetime axis. \code{FUN} is mapped to the \emph{pat}
+#' numeric variables in each bin, and recombined back into an aggregated valid 
+#' \emph{pat} object.
 #' 
-#' Temporal aggregation involves creating time period bins defined by
-#' \code{period} and then calculating the statistics associated with the raw
-#' data measurements that fall within each bin. The result is a dataframe with
-#' a regular time axis and multiple columns of output for every column of
-#' input.
+#' @details \code{FUN} must operate on univariate numeric vectors and return a 
+#' scalar value. 
 #' 
+#' \code{...} Optional arguments or data can be explicitly provided for 
+#' \code{FUN}. Additionally, advanced usage of \code{xts::split.xts} for 
+#' custom aggregation is also valid. 
 #' 
-#' FUN is found by a call to match.fun and typically is specified as a function 
-#' or a symbol (e.g., a backquoted name) or a character string specifying a 
-#' function to be searched for from the environment of the call to.
-#' 
-#' @return Returns a dataframe with aggregation statistics.
+#' @return Returns an aggregated \emph{pat} object.
 #' 
 #' @examples
 #' \dontrun{
-#' avg_pat <- pat_aggregate(pat, mean, na.rm = TRUE)
+#' # Standard hourly mean aggregation
+#' avg <- pat_aggregate(pat, mean, na.rm = TRUE)
+#' 
+#' # Alternative 30 minute aggregation (advanced users only - see details.)
+#' avg <- pat_aggregate(pat, f = 'minutes', k = 30, FUN = mean, na.rm = TRUE)
 #' }
 
 pat_aggregate <- function(
@@ -39,6 +42,7 @@ pat_aggregate <- function(
   # ----- Validate parameters --------------------------------------------------
   
   MazamaCoreUtils::stopIfNull(pat)
+  MazamaCoreUtils::stopIfNull(FUN)
   
   if ( !pat_isPat(pat) )
     stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")
@@ -50,7 +54,7 @@ pat_aggregate <- function(
   pat <- pat_distinct(pat)
   
   # ----- Aggregate Data -------------------------------------------------------
-  
+
   # Only use numeric columns for aggregation matrix
   numeric_cols <- which(unlist(lapply(pat$data, is.numeric)))
   
@@ -87,7 +91,7 @@ pat_aggregate <- function(
   # function f applied via apply to each vector in the mapped data.frame
   mapped <- Map( 
     df_bins, 
-    f = function(x, f = FUN) {
+    f = function(x, f = FUN, ...) {
       apply(
         X = x, 
         MARGIN = 2, 
