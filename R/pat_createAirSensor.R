@@ -26,7 +26,7 @@
 #' 
 #' \code{parameter} allows user to select which variable to use for the 
 #' univariate \emph{airsensor} object (e.g 'pm25_A', 'humidity', etc.). 
-#' Futhermore the \code{parameter} can be a new variable created via \code{FUN} 
+#' Furthermore the \code{parameter} can be a new variable created via \code{FUN} 
 #' evaluation. See examples.
 #' 
 #' \code{...} Additional optional parameters or data that a user may implement 
@@ -41,7 +41,7 @@
 #' # Default FUN
 #' sensor <- pat_createAirSensor(example_pat)
 #' 
-#' # Package included aggregation FUN
+#' # Package included aggregation/QC FUN
 #' sensor <- pat_createAirSensor(
 #'   example_pat, 
 #'   parameter = 'pm25', 
@@ -50,7 +50,7 @@
 #' 
 #' # Custom FUN
 #' add_jitter <- function(pat, y) {
-#'   # Create `custom_pm` variable 
+#'   # Create custom_pm variable 
 #'   pat$data$custom_pm <- pat$data$pm25_A + y
 #'   # Default hourly aggregation
 #'   pat <- pat_aggregate(pat, mean, na.rm = TRUE)
@@ -59,7 +59,7 @@
 #' # Create noise
 #' jitter <- rnorm(n = nrow(example_pat$data))
 #' 
-#' # Evaluate custom aggregation FUN with parameters 
+#' # Evaluate custom FUN with parameters 
 #' sensor <- pat_createAirSensor(example_pat, parameter = 'custom_pm', FUN = add_jitter, y = jitter)
 
 pat_createAirSensor <- function(
@@ -69,15 +69,18 @@ pat_createAirSensor <- function(
   ...
 ) {
   
-  # ----- Validate input PAT parameters ----------------------------------------
+  # ----- Validate input -------------------------------------------------------
   
   MazamaCoreUtils::stopIfNull(pat)
+  MazamaCoreUtils::stopIfNull(parameter)
   
-  if ( !pat_isPat(pat) )
+  if ( !pat_isPat(pat) ) {
     stop("Required parameter 'pat' is not a valid 'pa_timeseries' object.")
+  }
   
-  if ( pat_isEmpty(pat) )
+  if ( pat_isEmpty(pat) ) {
     stop("Required parameter 'pat' has no data.") 
+  }
   
   if ( !is.null(FUN) ) {
     if ( !rlang::is_closure(FUN) ) {
@@ -88,7 +91,7 @@ pat_createAirSensor <- function(
   
   # Check if deviceDeploymentID is in the meta data. If not, add uniqueIDs.
   # NOTE: This is necessary as of 2020-04-20 to avoid errors with deprecated pas
-  # NOTE: format. Used when assigning data column name on line #206. 
+  # NOTE: format. 
   # NOTE: Perhaps use pas_upgrade instead?
   if ( !'deviceDeploymentID' %in% names(pat$meta) ) {
     pat$meta <- pas_addUniqueIDs(pat$meta)
@@ -103,7 +106,7 @@ pat_createAirSensor <- function(
   # ----- Apply FUN ------------------------------------------------------------
   
   # NOTE: If FUN is null: 
-  # NOTE: use a mean aggregation with no qc and average both s
+  # NOTE: use a mean aggregation with no qc and average both channels 
   if ( is.null(FUN) ) {
     FUN <- function(x, ...) {
       tmp_pat <- pat_aggregate(x, function(x_, ...) mean(x_, na.rm = FALSE, ...))
@@ -150,9 +153,12 @@ pat_createAirSensor <- function(
     eval_pat$data %>%
     dplyr::select(.data$datetime, .data[[parameter]]) %>% 
     dplyr::mutate_all( function(x) replace(x, which(is.nan(x)), NA) ) %>%
-    dplyr::mutate_all( function(x) replace(x, which(is.infinite(x)), NA) )
+    dplyr::mutate_all( function(x) replace(x, which(is.infinite(x)), NA) ) 
   
-  names(data) <- c("datetime", pat$meta$deviceDeploymentID)
+  names(data) <- c("datetime", pat$meta$deviceDeploymentID) 
+  
+  # Round the datetime axis to the nearest hour 
+  data$datetime <- lubridate::round_date(data$datetime, 'hour')
   
   # ----- Create metadata  -----------------------------------------------------
   
