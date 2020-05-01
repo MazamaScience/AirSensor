@@ -13,4 +13,4 @@ Logical.
 Logical convenience function to check if 
 \code{initializeMazamaSpatialUtils()} has been run.
 }
-\keyword{Internal}
+\keyword{internal}

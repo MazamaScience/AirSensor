@@ -37,7 +37,7 @@ can access and utilize any component of a standard \emph{pat} object
 
 \code{parameter} allows user to select which variable to use for the 
 univariate \emph{airsensor} object (e.g 'pm25_A', 'humidity', etc.). 
-Futhermore the \code{parameter} can be a new variable created via \code{FUN} 
+Furthermore the \code{parameter} can be a new variable created via \code{FUN} 
 evaluation. See examples.
 
 \code{...} Additional optional parameters or data that a user may implement 
@@ -47,7 +47,7 @@ support for in the \code{FUN}.
 # Default FUN
 sensor <- pat_createAirSensor(example_pat)
 
-# Package included aggregation FUN
+# Package included aggregation/QC FUN
 sensor <- pat_createAirSensor(
   example_pat, 
   parameter = 'pm25', 
@@ -56,7 +56,7 @@ sensor <- pat_createAirSensor(
 
 # Custom FUN
 add_jitter <- function(pat, y) {
-  # Create `custom_pm` variable 
+  # Create custom_pm variable 
   pat$data$custom_pm <- pat$data$pm25_A + y
   # Default hourly aggregation
   pat <- pat_aggregate(pat, mean, na.rm = TRUE)
@@ -65,7 +65,7 @@ add_jitter <- function(pat, y) {
 # Create noise
 jitter <- rnorm(n = nrow(example_pat$data))
 
-# Evaluate custom aggregation FUN with parameters 
+# Evaluate custom FUN with parameters 
 sensor <- pat_createAirSensor(example_pat, parameter = 'custom_pm', FUN = add_jitter, y = jitter)
 }
 \seealso{
