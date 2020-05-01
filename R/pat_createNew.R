@@ -96,6 +96,12 @@ pat_createNew <- function(
     
   }
   
+  # Check if spatial utils has been initialized
+  if ( !spatialIsInitialized() ) {
+    stop('Required MazamaSpatialUtils has not been initialized. 
+    Please see `?initializeMazamaSpatialUtils` for details.')
+  }
+  
   # ----- Determine date sequence ----------------------------------------------
   
   # Find a single, parent record
