@@ -2,7 +2,7 @@
 % Please edit documentation in R/pat_aggregate.R
 \name{pat_aggregate}
 \alias{pat_aggregate}
-\title{Aggregation PurpleAir Timeseries objects}
+\title{Aggregate PurpleAir Timeseries objects}
 \usage{
 pat_aggregate(pat, FUN = mean, ...)
 }

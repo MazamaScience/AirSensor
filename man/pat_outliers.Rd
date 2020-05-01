@@ -6,7 +6,7 @@
 \usage{
 pat_outliers(
   pat = NULL,
-  windowSize = 23,
+  windowSize = 15,
   thresholdMin = 8,
   replace = FALSE,
   showPlot = TRUE,
@@ -65,10 +65,10 @@ distribution and therefore very likely to be an outlier. By choosing a
 relatively large value for `thresholdMin`` we make it less likely that we 
 will generate false positives.
 
-The default setting of the window size \code{windowSize = 23} means that 23 samples
+The default setting of the window size \code{windowSize = 15} means that 15 samples
 from a single channel are used to determine the distribution of values for
 which a median is calculated. Each PurpleAir channel makes a measurement
-approximately every 80 seconds so the temporal window is 23 * 80 sec or
+approximately every 120 seconds so the temporal window is 15 * 120 sec or
 approximately 30 minutes. This seems like a reasonable period of time over
 which to evaluate PM2.5 measurements.
 
