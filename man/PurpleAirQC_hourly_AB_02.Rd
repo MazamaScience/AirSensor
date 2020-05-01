@@ -7,19 +7,19 @@
 PurpleAirQC_hourly_AB_02(
   pat = NULL,
   min_count = 20,
-  threshold = 3,
+  tolerance = 3,
   max_diff = 0.5
 )
 }
 \arguments{
 \item{pat}{A PurpleAir timeseries object.}
 
-\item{min_count}{Aggregation bins with fewer than `min_count` measurements
-will be marked as `NA`.}
+\item{min_count}{Aggregation bins with fewer than \code{min_count} measurements
+will be marked as NA.}
 
-\item{threshold}{A maximum median absolute deviation threshold.}
+\item{tolerance}{A maximum median absolute deviation threshold.}
 
-\item{max_diff}{A maximum percentage difference between pat channels (50% = 0.5).}
+\item{max_diff}{A maximum percentage difference between pat channels (50\% = 0.5).}
 }
 \value{
 Data frame with columns \code{datetime} and \code{pm25}.
@@ -33,7 +33,7 @@ within a maxium percentage difference.
 Purple Air II sensors reporting after the June, 2019 firmware
 upgrade report data every 2 minutes or 30 measurements per hour. The default
 setting of \code{min_count = 20} is equivalent to a required data recovery
-rate of 67%.
+rate of 67\%.
 }
 \examples{
 QCed <- PurpleAirQC_hourly_AB_02(example_pat)
