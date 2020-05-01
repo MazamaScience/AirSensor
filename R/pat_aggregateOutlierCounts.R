@@ -38,8 +38,8 @@ pat_aggregateOutlierCounts <- function(
   windowSize = 23,
   thresholdMin = 8
 ) { 
-  
-  # TODO: 20200427: Update to work with new aggregation function
+
+  # TODO: Reimplement .pat_agg and .flagOutliers into something better
   
   # ----- Validate parameters --------------------------------------------------
 
