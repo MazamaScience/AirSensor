@@ -4,7 +4,7 @@
 #' @param sensor an 'airsensor' object
 #' @param windData a dataframe containing columns "date", "ws", and "wd".
 #' @param statistic The statistic to be applied to each data bin in the plot.
-#'   Options currently include “prop.count”, “prop.mean” and “abs.count”. The
+#'   Options currently include "prop.count", "prop.mean" and "abs.count". The
 #'   default “prop.count” sizes bins according to the proportion of the
 #'   frequency of measurements. Similarly, “prop.mean” sizes bins according to
 #'   their relative contribution to the mean. “abs.count” provides the absolute
@@ -44,9 +44,9 @@
 #'   wind.
 #' @param type type determines how the data are split i.e. conditioned, and then
 #'   plotted. The default is will produce a single plot using the entire data.
-#'   Type can be one of the built-in types as detailed in cutData e.g. “season”,
-#'   “year”, “weekday” and so on. For example, type = "season" will produce four
-#'   plots — one for each season.
+#'   Type can be one of the built-in types as detailed in cutData e.g. season,
+#'   year, weekday and so on. For example, type = "season" will produce four
+#'   plots one for each season.
 #'   
 #'   It is also possible to choose type as another variable in the data frame. 
 #'   If that variable is numeric, then the data will be split into four quantiles
@@ -67,13 +67,11 @@
 #' @examples
 #' \donttest{
 #' # Set default location of pre-generated data files
-<<<<<<< HEAD
+#' 
 #' setArchiveBaseUrl("http://smoke.mazamascience.com/data/PurpleAir")
 #'
-=======
 #' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 #' 
->>>>>>> 72d1f2297f2af03dcd85852b27ca5437d8ac6368
 #' sensor <- sensor_load(startdate = 20190601, enddate = 20190630)
 #' sensor <- sensor_filterMeta(sensor, monitorID == "SCSB_02")
 #'

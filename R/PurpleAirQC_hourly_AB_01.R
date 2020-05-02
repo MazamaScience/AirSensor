@@ -46,35 +46,38 @@ PurpleAirQC_hourly_AB_01 <- function(
   
   MazamaCoreUtils::stopIfNull(aggregationStats)
   
-  # Rename min_count argument so it can be used in logical filtering.
-  minimum_measurements <- min_count
-  
   # ----- hourly_AB_01 ---------------------------------------------------------
   
   hourlyData <-
     aggregationStats %>%
     dplyr::mutate(
       # Create pm25 by averaging the A and B channel aggregation means
-      pm25 = ((pm25_A_mean + pm25_B_mean) / 2),
+      pm25 = ((.data$pm25_A_mean + .data$pm25_B_mean) / 2),
       # Calculate min_count and mean_diff for use in QC
-      min_count = pmin(pm25_A_count, pm25_B_count, na.rm = TRUE),
-      mean_diff = abs(pm25_A_mean - pm25_B_mean)
+      min_count = pmin(.data$pm25_A_count, .data$pm25_B_count, na.rm = TRUE),
+      mean_diff = abs(.data$pm25_A_mean - .data$pm25_B_mean)
     ) %>%
     # hourly_AB_01 follows
     # When only a fraction of the data are reporting, something is wrong.
     # Invalidate data where:  (min_count < SOME_THRESHOLD)
     dplyr::mutate(
-      pm25 = ifelse(min_count < minimum_measurements, NA_real_, pm25) 
+      pm25 = dplyr::if_else(.data$min_count < min_count,
+                            NA_real_,
+                            .data$pm25) 
     ) %>% 
     # When the means are significantly different AND 'large', something is wrong.
     # Invalidate data where:  (p-value < 1e-4) & (mean_diff > 10)
     dplyr::mutate(
-      pm25 = ifelse((pm25_p < 1e-4) & (mean_diff > 10), NA_real_, pm25)
+      pm25 = dplyr::if_else((.data$pm25_p < 1e-4) & (.data$mean_diff > 10),
+                            NA_real_,
+                            .data$pm25)
     ) %>% 
     # A difference of 20 ug/m3 should only be seen at very high levels.
     # Invalidate data where:  (mean < 100) & (mean_diff > 20)
     dplyr::mutate(
-      pm25 = dplyr::if_else((pm25 < 100) & (mean_diff > 20), NA_real_, pm25)
+      pm25 = dplyr::if_else((.data$pm25 < 100) & (.data$mean_diff > 20),
+                            NA_real_,
+                            .data$pm25)
     )
   
   if ( !returnAllColumns ) {

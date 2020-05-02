@@ -1,4 +1,42 @@
-#TODO: Roxygenize.
+#' @export
+#' @import graphics
+#' 
+#' @title Visualize outlier detection and imputation.
+#'
+#' @param pat Purple Air TimeSeries \emph{pat}  object
+#' @param windowSize Integer window size for outlier detection.
+#' @param thresholdMin Threshold value for outlier detection.
+#' @param data_shape non-outlier, non-imputed value point shape. Default is 18.
+#' @param data_size non-outlier, non-imputed value point size. Default is 1.
+#' @param data_color non-outlier, non-imputed value point color Default is
+#'   "black".
+#' @param data_alpha non-outlier, non-imputed value point opacity (value between
+#'   0 and 1). Default is 0.5.
+#' @param outlier_shape outlier point shape. Default is 8
+#' @param outlier_size outlier point size. Default is 1.
+#' @param outlier_color outlier point color. Default is "red".
+#' @param outlier_alpha outlier point opacity (value between 0 and 1). Default
+#'   is 1.
+#' @param replacement_shape imputed value point shape. Default is 8.
+#' @param replacement_size imputed value point size. Default is 1.
+#' @param replacement_color imputed value point color . Default is "green".
+#' @param replacement_alpha imputed value point opacity (value between 0 and 1).
+#'   Default is 1.
+#'
+#' @description Wrapper around pat_outliers that returns the plot output
+#'   instead of the dataset, with replacement values shown as points.
+#'
+#' @return a ggplot object.
+#'
+#' @example 
+#' \dontrun{
+#' outlier_plot <- 
+#'    example_pat() %>% 
+#'      pat_qc() %>% 
+#'      pat_outliersPlot()
+#'      
+#' print(plot)
+#' }
 
 pat_outlierPlot <- function(
   pat = NULL,
@@ -136,12 +174,14 @@ pat_outlierPlot <- function(
   
   chA <- 
     chA +
-    geom_point(data = filter(A_flagged, flag_outliers_pm25_A),
-               aes(y = imputed), color = replacement_color, alpha = replacement_alpha)
+    geom_point(data = filter(A_flagged, .data$flag_outliers_pm25_A),
+               aes(y = .data$imputed), shape = 8, size = 1, 
+               color = replacement_color, alpha = replacement_alpha)
   chB <- 
     chB +
-    geom_point(data = filter(B_flagged, flag_outliers_pm25_B), 
-               aes(y = imputed), color = replacement_color, alpha = replacement_alpha)
+    geom_point(data = filter(B_flagged, .data$flag_outliers_pm25_B), 
+               aes(y = .data$imputed), shape = 8, size = 1, 
+               color = replacement_color, alpha = replacement_alpha)
   
   multi_ggplot(plotList = list(chA, chB))
 }
