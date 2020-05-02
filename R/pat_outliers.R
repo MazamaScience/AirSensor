@@ -28,33 +28,33 @@
 #'   that are very far out in the tails of the distribution of values within the
 #'   window.
 #'
-#'   The \code{thresholdMin} level is similar to a sigma value for normally
-#'   distributed data. The default threshold setting \code{thresholdMin = 8}
+#'   The `thresholdMin` level is similar to a sigma value for normally
+#'   distributed data. The default threshold setting `thresholdMin = 8`
 #'   identifies points that are extremely unlikely to be part of a normal
 #'   distribution and therefore very likely to be an outlier. By choosing a
 #'   relatively large value for `thresholdMin`` we make it less likely that we
 #'   will generate false positives.
 #'
-#'   The default setting of the window size \code{windowSize = 23} means that 23
+#'   The default setting of the window size `windowSize = 23`` means that 23
 #'   samples from a single channel are used to determine the distribution of
 #'   values for which a median is calculated. Each PurpleAir channel makes a
 #'   measurement approximately every 80 seconds so the temporal window is 23 *
 #'   80 sec or approximately 30 minutes. This seems like a reasonable period of
 #'   time over which to evaluate PM2.5 measurements.
 #'
-#'   Specifying \code{replace = TRUE} allows you to perform smoothing by
-#'   replacing outliers with the window median value. Using this technique, you
-#'   can create an highly smoothed, artificial dataset by setting
-#'   \code{thresholdMin = 1} or lower (but always above zero).
+#'   Specifying `replace = TRUE` allows you to perform smoothing by replacing
+#'   outliers with the window median value. Using this technique, you can create
+#'   an highly smoothed, artificial dataset by setting `thresholdMin = 1` or
+#'   lower (but always above zero).
 #'
-#'   If \code{flag_columns = TRUE} returned dataframe has additional columns
+#'   If `flag_columns = TRUE` returned dataframe has additional columns
 #'   boolean outlier_flagged_pm25_A and outlier_flagged_pm25_B. The values of
-#'   these columns are \code{TRUE} if an outlier was flagged, \code{FALSE] if
-#'   not, and \code{NA} if there was previously no channel value.
+#'   these columns are `TRUE` if an outlier was flagged, `FALSE` if
+#'   not, and `NA` if there was previously no channel value.
 #'
 #'
 #' @note Additional documentation on the algorithm is available in
-#'   \code{seismicRoll::findOutliers()}.
+#'   `seismicRoll::findOutliers()`.
 #'
 #' @examples
 #' \donttest{

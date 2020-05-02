@@ -50,6 +50,8 @@ pat_outlierPlot <- function(
   outlier_size = 1, 
   outlier_color = "red",
   outlier_alpha = 1.0,
+  replacement_shape = 8,
+  replacement_size = 1,
   replacement_color = "green",
   replacement_alpha = 1.0
 ) {
@@ -175,12 +177,14 @@ pat_outlierPlot <- function(
   chA <- 
     chA +
     geom_point(data = filter(A_flagged, .data$flag_outliers_pm25_A),
-               aes(y = .data$imputed), shape = 8, size = 1, 
-               color = replacement_color, alpha = replacement_alpha)
+               aes(y = .data$imputed), 
+               color = replacement_color, alpha = replacement_alpha,
+               shape = replacement_shape, size = replacement_size)
   chB <- 
     chB +
     geom_point(data = filter(B_flagged, .data$flag_outliers_pm25_B), 
-               aes(y = .data$imputed), shape = 8, size = 1, 
+               aes(y = .data$imputed),
+               shape = replacement_shape, size = replacement_size, 
                color = replacement_color, alpha = replacement_alpha)
   
   multi_ggplot(plotList = list(chA, chB))
