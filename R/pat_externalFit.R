@@ -90,7 +90,7 @@ pat_externalFit <- function(
       parameter = 'pm25',
       FUN = PurpleAirQC_hourly_AB_02,
       min_count = 20, 
-      threshold = 3, 
+      tolerance = 3,
       max_diff = 0.5
     ) %>% 
     PWFSLSmoke::monitor_extractData()
