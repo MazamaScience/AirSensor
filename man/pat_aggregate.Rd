@@ -4,14 +4,21 @@
 \alias{pat_aggregate}
 \title{Aggregate PurpleAir Timeseries objects}
 \usage{
-pat_aggregate(pat, FUN = mean, ...)
+pat_aggregate(
+  pat,
+  FUN = function(x) {     mean(x, na.rm = TRUE) },
+  unit = "minutes",
+  count = 60
+)
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}
 
 \item{FUN}{The function to be applied to each vector of numeric \code{pat} data.}
 
-\item{...}{(optional) Additional arguments.}
+\item{unit}{Character string specifying temporal units for binning.}
+
+\item{count}{Number of units per bin.}
 }
 \value{
 Returns an aggregated \emph{pat} object.
@@ -20,24 +27,53 @@ Returns an aggregated \emph{pat} object.
 Aggregate PurpleAir timeseries (\emph{pat}) objects along its 
 datetime axis. Temporal aggregation involves splitting a \emph{pat} object into
 seperate bins along its datetime axis. \code{FUN} is mapped to the \emph{pat}
-numeric variables in each bin, and recombined back into an aggregated valid 
-\emph{pat} object.
+numeric variables in each bin, which are then recombined into an aggregated 
+\emph{pat} object containing the same metadata as the incomting \code{pat}.
 }
 \details{
 \code{FUN} must operate on univariate numeric vectors and return a 
-scalar value. 
-
-\code{...} Optional arguments or data can be explicitly provided for 
-\code{FUN}. Additionally, advanced usage of \code{xts::split.xts} for 
-custom aggregation is also valid.
+scalar value. Besides the data variable, no additional arguments will be 
+provided to this function. This means that functions like \code{mean} and
+\code{max} will need to be wrapped in a function that specifies 
+\code{na.rm = TRUE}. See the examples below.
 }
 \examples{
-\dontrun{
-# Standard hourly mean aggregation
-avg <- pat_aggregate(pat, mean, na.rm = TRUE)
+library(AirSensor)
 
-# Alternative 30 minute aggregation (advanced users only - see details.)
-avg <- pat_aggregate(pat, f = 'minutes', k = 30, FUN = mean, na.rm = TRUE)
-}
+# Single day subset
+pat <- 
+  example_pat \%>\% 
+  pat_filterDate(20180813, 20180814)
+
+# Create aggregation functions
+FUN_mean <- function(x) mean(x, na.rm = TRUE)
+FUN_max <- function(x) max(x, na.rm = TRUE)
+FUN_count <- function(x) length(na.omit(x))
+
+# Hourly means
+pat \%>\%
+  pat_aggregate(FUN_mean) \%>\% 
+  pat_extractData() \%>\% 
+  dplyr::select(1:9)
+
+# Hourly maxes
+pat \%>\%
+  pat_aggregate(FUN_max) \%>\% 
+  pat_extractData() \%>\% 
+  dplyr::select(1:9)
+
+# Hourly counts
+pat \%>\%
+  pat_aggregate(FUN_count) \%>\% 
+  pat_extractData() \%>\% 
+  dplyr::select(1:9)
+
+# Alternative 10 minute aggregation (advanced users only - see details.)
+pat \%>\%
+  pat_aggregate(FUN_max, unit = "minutes", count = 10) \%>\%
+  pat_extractData() \%>\%
+  dplyr::select(1:9) \%>\%
+  dplyr::slice(1:6)
+  
 }
 \keyword{pa_timeseries}

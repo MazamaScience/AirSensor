@@ -31,7 +31,8 @@ PurpleAirQC_hourly_AB_02 <- function(
 ) { 
   
    # Create function to calculate the percent difference between chA and chB
-   percent_diff <- function(x,y) { abs(x-y)/((x+y)/2) }
+   # NOTE:  Add 0.01 to avoid division by zero
+   percent_diff <- function(x,y) { abs(x-y)/((x+y+0.01)/2) }
    
    # Aggregate hourly pat mean
    patMean <- pat_aggregate(pat, FUN = function(x) mean(x, na.rm = TRUE))

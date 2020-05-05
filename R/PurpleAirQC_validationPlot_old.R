@@ -43,7 +43,7 @@
 #' PurpleAirQC_validationPlot(scem_05)
 #' }
 
-PurpleAirQC_validationPlot <- function(
+PurpleAirQC_validationPlot_old <- function(
   pat = NULL,
   period = "1 hour",
   qc_algorithm = "hourly_AB_01",
@@ -74,7 +74,7 @@ PurpleAirQC_validationPlot <- function(
   hourlyData <-
     pat %>%
     pat_qc() %>%
-    pat_aggregate(period = "1 hour")
+    pat_aggregate_old(period = "1 hour")
   
   FUN <- get(paste0("PurpleAirQC_", qc_algorithm))
   

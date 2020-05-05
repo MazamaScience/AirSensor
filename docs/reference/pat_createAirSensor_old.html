@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create an Air Sensor object — pat_createAirSensor • AirSensor</title>
+<title>Create an Air Sensor object (old) — pat_createAirSensor_old • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,11 +42,16 @@
 
 
 
-<meta property="og:title" content="Create an Air Sensor object — pat_createAirSensor" />
+<meta property="og:title" content="Create an Air Sensor object (old) — pat_createAirSensor_old" />
 <meta property="og:description" content="Converts data from a pat object with an irregular time 
 axis to an airsensor object where the numeric data has been aggregated 
 along a standardized hourly time axis, as well as adding additional required 
-metadata for compatibility with the *PWFSLSmoke* package." />
+metadata for compatibility with the *PWFSLSmoke* package.
+Current QC algorithms exist for channel = &quot;ab&quot; and include:
+hourly_AB_00
+hourly_AB_01
+
+" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -160,9 +165,9 @@ metadata for compatibility with the *PWFSLSmoke* package." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create an Air Sensor object</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_createAirSensor.R'><code>R/pat_createAirSensor.R</code></a></small>
-    <div class="hidden name"><code>pat_createAirSensor.Rd</code></div>
+    <h1>Create an Air Sensor object (old)</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_createAirSensor_old.R'><code>R/pat_createAirSensor_old.R</code></a></small>
+    <div class="hidden name"><code>pat_createAirSensor_old.Rd</code></div>
     </div>
 
     <div class="ref-description">
@@ -170,9 +175,22 @@ metadata for compatibility with the *PWFSLSmoke* package." />
 axis to an <em>airsensor</em> object where the numeric data has been aggregated 
 along a standardized hourly time axis, as well as adding additional required 
 metadata for compatibility with the *PWFSLSmoke* package.</p>
+<p>Current QC algorithms exist for <code>channel = "ab"</code> and include:</p><ul>
+<li><p><code>hourly_AB_00</code></p></li>
+<li><p><code>hourly_AB_01</code></p></li>
+</ul>
+
     </div>
 
-    <pre class="usage"><span class='fu'>pat_createAirSensor</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>"pm25"</span>, <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>pat_createAirSensor_old</span>(
+  <span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>period</span> <span class='kw'>=</span> <span class='st'>"1 hour"</span>,
+  <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>"pm25"</span>,
+  <span class='kw'>channel</span> <span class='kw'>=</span> <span class='st'>"ab"</span>,
+  <span class='kw'>qc_algorithm</span> <span class='kw'>=</span> <span class='st'>"hourly_AB_01"</span>,
+  <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>20</span>,
+  <span class='kw'>aggregation_FUN</span> <span class='kw'>=</span> <span class='no'>pat_aggregate</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -182,75 +200,67 @@ metadata for compatibility with the *PWFSLSmoke* package.</p>
       <td><p>PurpleAir Timeseries <em>pat</em> object.</p></td>
     </tr>
     <tr>
+      <th>period</th>
+      <td><p>Time period to average over. Can be "sec", "min", "hour", 
+"day", "DSTday", "week", "month", "quarter" or "year". A number can also
+ precede these options followed by a space (i.e. "2 day" or "37 min").</p></td>
+    </tr>
+    <tr>
       <th>parameter</th>
-      <td><p>Parameter for which to create an univariate <em>airsensor</em> 
-object. See details.</p></td>
+      <td><p>Parameter for which to create an <em>as</em> object -- one of
+"pm25", "humidity" or "temperature".</p></td>
     </tr>
     <tr>
-      <th>FUN</th>
-      <td><p>Algorithm applied to <em>pat</em> object for hourly aggregation and 
-quality control. See details.</p></td>
+      <th>channel</th>
+      <td><p>Data channel to use for PM2.5 -- one of "a", "b or "ab".</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>(optional) Additional parameters passed into <code>FUN</code>.</p></td>
+      <th>qc_algorithm</th>
+      <td><p>Named QC algorithm to apply to hourly aggregation stats.</p></td>
+    </tr>
+    <tr>
+      <th>min_count</th>
+      <td><p>Aggregation bins with fewer than `min_count` measurements
+will be marked as `NA`.</p></td>
+    </tr>
+    <tr>
+      <th>aggregation_FUN</th>
+      <td><p>Function used to convert a <em>pat</em> object into a
+tibble of hourly statistics.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An "airsensor" object of aggregated PurpleAir Timeseries data.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p><code>FUN</code> allows users to provide custom aggregation and 
-quality-control functions that are used to create an <em>airsensor</em> object. 
-The <code>FUN</code> must accept a <em>pat</em> object as the first argument and 
-return a <em>pat</em> object with a regular hourly datetime axis. <code>FUN</code> 
-can access and utilize any component of a standard <em>pat</em> object 
-(e.g pm25_A, temperature, etc.) as well as define new variables in the 
-<em>pat</em> data. See examples.</p>
-<p><code>parameter</code> allows user to select which variable to use for the 
-univariate <em>airsensor</em> object (e.g 'pm25_A', 'humidity', etc.). 
-Furthermore the <code>parameter</code> can be a new variable created via <code>FUN</code> 
-evaluation. See examples.</p>
-<p><code>...</code> Additional optional parameters or data that a user may implement 
-support for in the <code>FUN</code>.</p>
+    <p>The <code>aggregation_FUN</code>, allows users to pass in custom functions that 
+generate new aggregation statistics. These statistics can then be utilized 
+in a custom QC algorithm function. The algorithm function applied is
+generated from the <code>qc_algorithm</code> parameter with 
+<code><a href='https://rdrr.io/r/base/paste.html'>paste0("PurpleAirQC_", qc_algorithm)</a></code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='PurpleAirQC_hourly_AB_02.html'>PurpleAirQC_hourly_AB_02</a></p>
+    <div class='dont-index'><p><a href='PurpleAirQC_hourly_AB_00.html'>PurpleAirQC_hourly_AB_00</a></p>
+<p><a href='PurpleAirQC_hourly_AB_01.html'>PurpleAirQC_hourly_AB_01</a></p>
 <p><a href='pat_aggregate.html'>pat_aggregate</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Default FUN</span>
-<span class='no'>sensor</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_createAirSensor</span>(<span class='no'>example_pat</span>)
-
-<span class='co'># Package included aggregation/QC FUN</span>
-<span class='no'>sensor</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_createAirSensor</span>(
-  <span class='no'>example_pat</span>,
-  <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>'pm25'</span>,
-  <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='kw pkg'>AirSensor</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/AirSensor/man/PurpleAirQC_hourly_AB_02.html'>PurpleAirQC_hourly_AB_02</a></span>
-)
-
-<span class='co'># Custom FUN</span>
-<span class='no'>add_jitter</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>pat</span>, <span class='no'>y</span>) {
-  <span class='co'># Create custom_pm variable </span>
-  <span class='no'>pat</span>$<span class='no'>data</span>$<span class='no'>custom_pm</span> <span class='kw'>&lt;-</span> <span class='no'>pat</span>$<span class='no'>data</span>$<span class='no'>pm25_A</span> + <span class='no'>y</span>
-  <span class='co'># Default hourly aggregation</span>
-  <span class='no'>pat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pat_aggregate.html'>pat_aggregate</a></span>(<span class='no'>pat</span>)
-  <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='no'>pat</span>)
-}
-<span class='co'># Create noise</span>
-<span class='no'>jitter</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>example_pat</span>$<span class='no'>data</span>))
-
-<span class='co'># Evaluate custom FUN with parameters </span>
-<span class='no'>sensor</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_createAirSensor</span>(<span class='no'>example_pat</span>, <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>'custom_pm'</span>, <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='no'>add_jitter</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>jitter</span>)</div></pre>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='no'>sensor</span> <span class='kw'>&lt;-</span>
+  <span class='no'>example_pat</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='pat_filterDate.html'>pat_filterDate</a></span>(<span class='fl'>20180701</span>, <span class='fl'>20180901</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>pat_createAirSensor_old</span>()
+<span class='kw pkg'>PWFSLSmoke</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/PWFSLSmoke/man/monitor_dailyBarplot.html'>monitor_dailyBarplot</a></span>(<span class='no'>sensor</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
+      <li><a href="#note">Note</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>

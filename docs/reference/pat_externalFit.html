@@ -274,7 +274,8 @@ PWFSL monitor readings.</p>
     <pre class="examples"><div class='input'>
 <span class='co'># \donttest{</span>
 <span class='no'>pat</span> <span class='kw'>&lt;-</span> <span class='no'>example_pat</span>
-<span class='fu'>pat_externalFit</span>(<span class='no'>pat</span>)</div><div class='output co'>#&gt; <span class='message'>`geom_smooth()` using formula 'y ~ x'</span></div><div class='output co'>#&gt; <span class='message'>`geom_smooth()` using formula 'y ~ x'</span></div><div class='img'><img src='pat_externalFit-1.png' alt='' width='700' height='433' /></div><div class='input'># }
+<span class='fu'>pat_externalFit</span>(<span class='no'>pat</span>)</div><div class='output co'>#&gt; <span class='error'>Error in pat_createAirSensor(., parameter = "pm25", FUN = PurpleAirQC_hourly_AB_02,     min_count = 20, threshold = 3, max_diff = 0.5): `FUN(pat, ...)` failed to evaluate. </span>
+#&gt; <span class='error'>         Please check `FUN` and see `?pat_createAirSensor` for details.</span></div><div class='input'># }
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

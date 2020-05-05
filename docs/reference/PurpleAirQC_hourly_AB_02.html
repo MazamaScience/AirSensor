@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create an Air Sensor object — pat_createAirSensor • AirSensor</title>
+<title>Apply QC to Aggregation Statistics — PurpleAirQC_hourly_AB_02 • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,11 +42,10 @@
 
 
 
-<meta property="og:title" content="Create an Air Sensor object — pat_createAirSensor" />
-<meta property="og:description" content="Converts data from a pat object with an irregular time 
-axis to an airsensor object where the numeric data has been aggregated 
-along a standardized hourly time axis, as well as adding additional required 
-metadata for compatibility with the *PWFSLSmoke* package." />
+<meta property="og:title" content="Apply QC to Aggregation Statistics — PurpleAirQC_hourly_AB_02" />
+<meta property="og:description" content="Creates a pm25 timeseries by averaging aggregated data
+from the A and B channels, calculates MAD within the threshold, and values 
+within a maxium percentage difference." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -160,98 +159,65 @@ metadata for compatibility with the *PWFSLSmoke* package." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create an Air Sensor object</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_createAirSensor.R'><code>R/pat_createAirSensor.R</code></a></small>
-    <div class="hidden name"><code>pat_createAirSensor.Rd</code></div>
+    <h1>Apply QC to Aggregation Statistics</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/PurpleAirQC_hourly_AB_02.R'><code>R/PurpleAirQC_hourly_AB_02.R</code></a></small>
+    <div class="hidden name"><code>PurpleAirQC_hourly_AB_02.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Converts data from a <em>pat</em> object with an irregular time 
-axis to an <em>airsensor</em> object where the numeric data has been aggregated 
-along a standardized hourly time axis, as well as adding additional required 
-metadata for compatibility with the *PWFSLSmoke* package.</p>
+    <p>Creates a <code>pm25</code> timeseries by averaging aggregated data
+from the A and B channels, calculates MAD within the threshold, and values 
+within a maxium percentage difference.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>pat_createAirSensor</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>"pm25"</span>, <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>PurpleAirQC_hourly_AB_02</span>(
+  <span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>20</span>,
+  <span class='kw'>tolerance</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>max_diff</span> <span class='kw'>=</span> <span class='fl'>0.5</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pat</th>
-      <td><p>PurpleAir Timeseries <em>pat</em> object.</p></td>
+      <td><p>A PurpleAir timeseries object.</p></td>
     </tr>
     <tr>
-      <th>parameter</th>
-      <td><p>Parameter for which to create an univariate <em>airsensor</em> 
-object. See details.</p></td>
+      <th>min_count</th>
+      <td><p>Aggregation bins with fewer than <code>min_count</code> measurements
+will be marked as NA.</p></td>
     </tr>
     <tr>
-      <th>FUN</th>
-      <td><p>Algorithm applied to <em>pat</em> object for hourly aggregation and 
-quality control. See details.</p></td>
+      <th>tolerance</th>
+      <td><p>A maximum median absolute deviation threshold.</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>(optional) Additional parameters passed into <code>FUN</code>.</p></td>
+      <th>max_diff</th>
+      <td><p>A maximum percentage difference between pat channels (50% = 0.5).</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An "airsensor" object of aggregated PurpleAir Timeseries data.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <p>Data frame with columns <code>datetime</code> and <code>pm25</code>.</p>
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p><code>FUN</code> allows users to provide custom aggregation and 
-quality-control functions that are used to create an <em>airsensor</em> object. 
-The <code>FUN</code> must accept a <em>pat</em> object as the first argument and 
-return a <em>pat</em> object with a regular hourly datetime axis. <code>FUN</code> 
-can access and utilize any component of a standard <em>pat</em> object 
-(e.g pm25_A, temperature, etc.) as well as define new variables in the 
-<em>pat</em> data. See examples.</p>
-<p><code>parameter</code> allows user to select which variable to use for the 
-univariate <em>airsensor</em> object (e.g 'pm25_A', 'humidity', etc.). 
-Furthermore the <code>parameter</code> can be a new variable created via <code>FUN</code> 
-evaluation. See examples.</p>
-<p><code>...</code> Additional optional parameters or data that a user may implement 
-support for in the <code>FUN</code>.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><a href='PurpleAirQC_hourly_AB_02.html'>PurpleAirQC_hourly_AB_02</a></p>
-<p><a href='pat_aggregate.html'>pat_aggregate</a></p></div>
+    <p>Purple Air II sensors reporting after the June, 2019 firmware
+upgrade report data every 2 minutes or 30 measurements per hour. The default
+setting of <code>min_count = 20</code> is equivalent to a required data recovery
+rate of 67%.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Default FUN</span>
-<span class='no'>sensor</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_createAirSensor</span>(<span class='no'>example_pat</span>)
-
-<span class='co'># Package included aggregation/QC FUN</span>
-<span class='no'>sensor</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_createAirSensor</span>(
-  <span class='no'>example_pat</span>,
-  <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>'pm25'</span>,
-  <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='kw pkg'>AirSensor</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/AirSensor/man/PurpleAirQC_hourly_AB_02.html'>PurpleAirQC_hourly_AB_02</a></span>
-)
-
-<span class='co'># Custom FUN</span>
-<span class='no'>add_jitter</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>pat</span>, <span class='no'>y</span>) {
-  <span class='co'># Create custom_pm variable </span>
-  <span class='no'>pat</span>$<span class='no'>data</span>$<span class='no'>custom_pm</span> <span class='kw'>&lt;-</span> <span class='no'>pat</span>$<span class='no'>data</span>$<span class='no'>pm25_A</span> + <span class='no'>y</span>
-  <span class='co'># Default hourly aggregation</span>
-  <span class='no'>pat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pat_aggregate.html'>pat_aggregate</a></span>(<span class='no'>pat</span>)
-  <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='no'>pat</span>)
-}
-<span class='co'># Create noise</span>
-<span class='no'>jitter</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>example_pat</span>$<span class='no'>data</span>))
-
-<span class='co'># Evaluate custom FUN with parameters </span>
-<span class='no'>sensor</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_createAirSensor</span>(<span class='no'>example_pat</span>, <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>'custom_pm'</span>, <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='no'>add_jitter</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>jitter</span>)</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>QCed</span> <span class='kw'>&lt;-</span> <span class='fu'>PurpleAirQC_hourly_AB_02</span>(<span class='no'>example_pat</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#see-also">See also</a></li>
+      <li><a href="#note">Note</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

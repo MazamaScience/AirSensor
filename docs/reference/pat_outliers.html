@@ -53,10 +53,10 @@ identifies points that are extremely unlikely to be part of a normal
 distribution and therefore very likely to be an outlier. By choosing a 
 relatively large value for `thresholdMin`` we make it less likely that we 
 will generate false positives.
-The default setting of the window size windowSize = 23 means that 23 samples
+The default setting of the window size windowSize = 15 means that 15 samples
 from a single channel are used to determine the distribution of values for
 which a median is calculated. Each PurpleAir channel makes a measurement
-approximately every 80 seconds so the temporal window is 23 * 80 sec or
+approximately every 120 seconds so the temporal window is 15 * 120 sec or
 approximately 30 minutes. This seems like a reasonable period of time over
 which to evaluate PM2.5 measurements.
 Specifying replace = TRUE allows you to perform smoothing by 
@@ -192,10 +192,10 @@ identifies points that are extremely unlikely to be part of a normal
 distribution and therefore very likely to be an outlier. By choosing a 
 relatively large value for `thresholdMin`` we make it less likely that we 
 will generate false positives.</p>
-<p>The default setting of the window size <code>windowSize = 23</code> means that 23 samples
+<p>The default setting of the window size <code>windowSize = 15</code> means that 15 samples
 from a single channel are used to determine the distribution of values for
 which a median is calculated. Each PurpleAir channel makes a measurement
-approximately every 80 seconds so the temporal window is 23 * 80 sec or
+approximately every 120 seconds so the temporal window is 15 * 120 sec or
 approximately 30 minutes. This seems like a reasonable period of time over
 which to evaluate PM2.5 measurements.</p>
 <p>Specifying <code>replace = TRUE</code> allows you to perform smoothing by 
@@ -206,7 +206,7 @@ can create an highly smoothed, artificial dataset by setting
 
     <pre class="usage"><span class='fu'>pat_outliers</span>(
   <span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>windowSize</span> <span class='kw'>=</span> <span class='fl'>23</span>,
+  <span class='kw'>windowSize</span> <span class='kw'>=</span> <span class='fl'>15</span>,
   <span class='kw'>thresholdMin</span> <span class='kw'>=</span> <span class='fl'>8</span>,
   <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>showPlot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,

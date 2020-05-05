@@ -53,7 +53,7 @@
 #'   # Create custom_pm variable 
 #'   pat$data$custom_pm <- pat$data$pm25_A + y
 #'   # Default hourly aggregation
-#'   pat <- pat_aggregate(pat, mean, na.rm = TRUE)
+#'   pat <- pat_aggregate(pat)
 #'   return(pat)
 #' } 
 #' # Create noise

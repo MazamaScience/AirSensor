@@ -266,7 +266,8 @@ federal monitor from the PWFSL database.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
-<span class='fu'>pat_monitorComparison</span>(<span class='no'>example_pat</span>)</div><div class='img'><img src='pat_monitorComparison-1.png' alt='' width='700' height='433' /></div><div class='input'># }
+<span class='fu'>pat_monitorComparison</span>(<span class='no'>example_pat</span>)</div><div class='output co'>#&gt; <span class='error'>Error in pat_createAirSensor(., parameter = "pm25", FUN = AirSensor::PurpleAirQC_hourly_AB_02,     min_count = 20, threshold = 3, max_diff = 0.5): `FUN(pat, ...)` failed to evaluate. </span>
+#&gt; <span class='error'>         Please check `FUN` and see `?pat_createAirSensor` for details.</span></div><div class='input'># }
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
