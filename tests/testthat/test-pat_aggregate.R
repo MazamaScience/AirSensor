@@ -8,8 +8,8 @@ test_that('Alternative aggregation', {
                   FUN = function(x) mean(x,na.rm = TRUE)), 
     pat_aggregate(example_pat, 
                   FUN = function(x) mean(x, na.rm = TRUE), 
-                  f = 'minutes', 
-                  k = 60)
+                  unit = 'minutes', 
+                  count = 60)
   ))
   
 })

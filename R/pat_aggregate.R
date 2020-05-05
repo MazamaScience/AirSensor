@@ -7,36 +7,67 @@
 #' 
 #' @param pat PurpleAir Timeseries \emph{pat} object.
 #' @param FUN The function to be applied to each vector of numeric \code{pat} data.
-#' @param ... (optional) Additional arguments.
+#' @param unit Character string specifying temporal units for binning.
+#' @param count Number of units per bin.
 #' 
 #' @description Aggregate PurpleAir timeseries (\emph{pat}) objects along its 
 #' datetime axis. Temporal aggregation involves splitting a \emph{pat} object into
 #' seperate bins along its datetime axis. \code{FUN} is mapped to the \emph{pat}
-#' numeric variables in each bin, and recombined back into an aggregated valid 
-#' \emph{pat} object.
+#' numeric variables in each bin, which are then recombined into an aggregated 
+#' \emph{pat} object containing the same metadata as the incomting \code{pat}.
 #' 
 #' @details \code{FUN} must operate on univariate numeric vectors and return a 
-#' scalar value. 
-#' 
-#' \code{...} Optional arguments or data can be explicitly provided for 
-#' \code{FUN}. Additionally, advanced usage of \code{xts::split.xts} for 
-#' custom aggregation is also valid. 
+#' scalar value. Besides the data variable, no additional arguments will be 
+#' provided to this function. This means that functions like \code{mean} and
+#' \code{max} will need to be wrapped in a function that specifies 
+#' \code{na.rm = TRUE}. See the examples below.
 #' 
 #' @return Returns an aggregated \emph{pat} object.
 #' 
 #' @examples
-#' \dontrun{
-#' # Standard hourly mean aggregation
-#' avg <- pat_aggregate(pat, mean, na.rm = TRUE)
+#' library(AirSensor)
 #' 
-#' # Alternative 30 minute aggregation (advanced users only - see details.)
-#' avg <- pat_aggregate(pat, f = 'minutes', k = 30, FUN = mean, na.rm = TRUE)
-#' }
+#' # Single day subset
+#' pat <- 
+#'   example_pat %>% 
+#'   pat_filterDate(20180813, 20180814)
+#' 
+#' # Create aggregation functions
+#' FUN_mean <- function(x) mean(x, na.rm = TRUE)
+#' FUN_max <- function(x) max(x, na.rm = TRUE)
+#' FUN_count <- function(x) length(na.omit(x))
+#' 
+#' # Hourly means
+#' pat %>%
+#'   pat_aggregate(FUN_mean) %>% 
+#'   pat_extractData() %>% 
+#'   dplyr::select(1:9)
+#'
+#' # Hourly maxes
+#' pat %>%
+#'   pat_aggregate(FUN_max) %>% 
+#'   pat_extractData() %>% 
+#'   dplyr::select(1:9)
+#'
+#' # Hourly counts
+#' pat %>%
+#'   pat_aggregate(FUN_count) %>% 
+#'   pat_extractData() %>% 
+#'   dplyr::select(1:9)
+#'
+#' # Alternative 10 minute aggregation (advanced users only - see details.)
+#' pat %>%
+#'   pat_aggregate(FUN_max, unit = "minutes", count = 10) %>%
+#'   pat_extractData() %>%
+#'   dplyr::select(1:9) %>%
+#'   dplyr::slice(1:6)
+#'   
 
 pat_aggregate <- function(
   pat, 
-  FUN = mean, 
-  ...
+  FUN = function(x) { mean(x, na.rm = TRUE) }, 
+  unit = "minutes",
+  count = 60
 ) {
   
   # ----- Validate parameters --------------------------------------------------
@@ -67,14 +98,14 @@ pat_aggregate <- function(
     tzone = 'UTC'
   )
 
-  # Split the xts into list of hourly binned xts matrices  
-  # NOTE: By not being explicit about period parameter f we can allow the use 
-  # NOTE: of ... to add more flexibility when aggregating. For example, if an 
-  # NOTE: advanced/clever user wants to aggregate by 30 min they can explicitly 
-  # NOTE: provide f = 'minutes' and k = 30 as parameters.
-  df_bins <- xts::split.xts(df, 'hours', drop = FALSE, ...)
+  # Split the xts into a list of binned xts matrices  
+  df_bins <- xts::split.xts(
+    df, 
+    f = unit, 
+    drop = FALSE, 
+    k = count
+  )
   
-  # Align the binned data frames to its rounded next hour period (60 * 60 sec)
   # Get the first index of aligned time for future use.
   datetime <- as.numeric(
     lapply(
@@ -87,17 +118,19 @@ pat_aggregate <- function(
   class(datetime) <- c("POSIXct", "POSIXt")
   attr(datetime, 'tzone') <- 'UTC'
   
+  # NOTE:  See ?Map and also ?mapply to understand the mapping below.
+  
   # Map each binned hourly data.frame to the user defined lambda-like 
   # function f applied via apply to each vector in the mapped data.frame
-  mapped <- Map( 
-    df_bins, 
-    f = function(x, f = FUN, ...) {
+  mapped <- base::Map( 
+    f = function(x, f = FUN) {
       apply(
         X = x, 
         MARGIN = 2, 
-        FUN = function(x_, ...) { f(x_, ...) }
+        FUN = FUN
       )
-    }
+    },
+    x = df_bins
   )
   
   # ----- Bind & Return PAT ----------------------------------------------------
@@ -113,4 +146,5 @@ pat_aggregate <- function(
   
   # Return 
   return(pat)
+  
 }

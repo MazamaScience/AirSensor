@@ -54,7 +54,7 @@ This dataset was was generated on 2020-01-03 by running:
       startdate = &quot;2018-08-14&quot;,
       enddate = &quot;2018-09-07&quot;
     ) 
-    pat_createAirSensor(period = &quot;1 hour&quot;)
+    pat_createAirSensor(parameter = 'pm25', FUN = AirSensor::PurpleAirQC_hourly_AB_02)
   save(example_sensor, file = &quot;data/example_sensor.rda&quot;)
 
 " />
@@ -188,7 +188,7 @@ This dataset was was generated on 2020-01-03 by running:</p>
       startdate = "2018-08-14",
       enddate = "2018-09-07"
     ) <!-- %&gt;% -->
-    pat_createAirSensor(period = "1 hour")
+    pat_createAirSensor(parameter = 'pm25', FUN = AirSensor::PurpleAirQC_hourly_AB_02)
   save(example_sensor, file = "data/example_sensor.rda")
 </pre>
 

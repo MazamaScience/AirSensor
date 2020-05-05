@@ -138,7 +138,7 @@ pat_aggregateOutlierCounts <- function(
   
   agg <- 
     dplyr::left_join(
-      pat_aggregate(pat, na.rm = TRUE)$data, 
+      pat_aggregate(pat)$data, 
       counts, 
       by = "datetime"
     )

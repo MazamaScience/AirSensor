@@ -65,7 +65,7 @@ scatterplot <- function(
   
   # ----- Create plot ----------------------------------------------------------
   
-  gg_scatterplot <- 
+  gg <- 
     GGally::ggpairs( 
       data,
       mapping = ggplot2::aes(alpha = 0.15),
@@ -83,7 +83,7 @@ scatterplot <- function(
     ) + 
     ggplot2::theme_bw()
   
-  return(gg_scatterplot)
+  return(gg)
   
 }
 
@@ -110,30 +110,10 @@ multi_ggplot <- function(
   plots <- c(list(...), plotList)
   numPlots <- length(plots)
   
-  # NOTE: Deprecated method. cowplot Package instead. 
-  # TODO:  Does multi_ggplot() return anything?
-  # if ( is.null(layout) ) {
-  #   layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
-  #                    ncol = cols, nrow = ceiling(numPlots/cols))
-  # }
-  # 
-  # if ( numPlots == 1 ) {
-  #   print(plots[[1]])
-  #   
-  # } else {
-  #   grid::grid.newpage()
-  #   grid::pushViewport(
-  #     grid::viewport(layout = grid::grid.layout(nrow(layout), ncol(layout))) )
-  #   
-  #   for ( i in 1:numPlots ) {
-  #     matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
-  #     print(plots[[i]], vp = grid::viewport(layout.pos.row = matchidx$row,
-  #                                           layout.pos.col = matchidx$col))
-  #   }
-  # }
-  
   # Use cowplot package to return ggplot grid
-  cowplot::plot_grid(plotlist = plots, ncol = cols, align = 'v')
+  gg <- cowplot::plot_grid(plotlist = plots, ncol = cols, align = 'v')
+  
+  return(gg)
   
 } 
 
@@ -192,14 +172,14 @@ pas_palette <- function(
         ...
       )
     
-    breaks <- seq(0,100,length.out=11)
-    levels <- seq(5,95,length.out=10)
+    breaks <- seq(0,100,length.out = 11)
+    levels <- seq(5,95,length.out = 10)
     
     colorBreaks <- 
       leaflet::colorBin(
         "BrBG", 
-        domain=range(breaks), 
-        bins=breaks, 
+        domain = range(breaks), 
+        bins = breaks, 
         ...)(levels)
     
     labels <- 
@@ -228,14 +208,14 @@ pas_palette <- function(
         ...
       )
     
-    breaks <- seq(-20,120,length.out=15)
-    levels <- seq(-15,115,length.out=14)
+    breaks <- seq(-20,120,length.out = 15)
+    levels <- seq(-15,115,length.out = 14)
     
     colorBreaks <- 
       leaflet::colorBin(
         "RdYlBu", 
-        domain=range(breaks), 
-        bins=breaks, 
+        domain = range(breaks), 
+        bins = breaks, 
         ...)(levels)
     
     labels <- 
@@ -315,14 +295,14 @@ pas_palette <- function(
         ... 
       )
     
-    breaks <- seq(0,200,length.out=7)
-    levels <- seq(5,195,length.out=6)
+    breaks <- seq(0,200,length.out = 7)
+    levels <- seq(5,195,length.out = 6)
     
     colorBreaks <- 
       leaflet::colorBin(
         palette = paletteName, 
-        domain=range(breaks), 
-        bins=breaks, 
+        domain = range(breaks), 
+        bins = breaks, 
         ...)(levels)
     
     labels <- PWFSLSmoke::AQI$names
