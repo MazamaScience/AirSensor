@@ -1,3 +1,20 @@
+# AirSensor 0.7.5
+
+This release completely refactors the way that aggregation and QC are 
+performed. The changes should make the code easier to maintain, faster and
+much more flexible for those developing QC algorithms.
+
+* New `pat_aggregate()` and `pat_createAirSensor()` functions.
+* New default QC function `PurpleAirQC_hourly_AB_02()`.
+* `pat_externalFit()` and `pat_monitorComparison()` updated to use new 
+aggegation/QC functions.
+* Previous version of `pat_aggregate()` and `pat_createAirSensor()` are now
+now available as `pat_aggregate_old` and `pat_createAirSensor_old()`.
+* `PurpleAirQC_validationPlot()` renamed to `PurpleAirQC_validationPlot_old()`.
+* `pat_outliers()` defaults updated to reflect current default 120 second sample
+interval.
+* `pat_multiplot()` now returns a `ggplot2` object which can be manipulated.
+
 # AirSensor 0.7.4
 
 * Renamed `downloadParseTimeseriesData()` to `pat_downloadParseData()`.
