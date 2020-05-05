@@ -19,6 +19,7 @@ library(tidyr)
 library(ggplot2)
 library(RColorBrewer)
 setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+initializeMazamaSpatialUtils()
 pas <- example_pas
 
 ```

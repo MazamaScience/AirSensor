@@ -72,7 +72,7 @@ following functions are the most common end-user functions:
 | `pat_dailySoHIndexPlot()` | `pat, minPctReporting, breaks, SoHIndex_FUN` |
 | `pat_dailySoHPlot()` | `pat, ncol` |
 | **Other functions** | |
-| `pat_aggregate()` | `pat, period` |
+| `pat_aggregate()` | `pat, FUN, ...` |
 | `pat_aggregateOutliserCounts()` | `pat, period, windowSize, thresholdMin` |
 | `pat_externalFit()` | `pat, ...` |
 | `pat_internalFit()` | `pat, ...` |
@@ -89,7 +89,7 @@ the most common end-user functions:
 | function | params |
 |:------|:-----|
 | **Creating an `airsensor`** |  |
-| `pat_createAirSensor()` | `pat, period, parameter, channel, qc_algorithm, ...` |
+| `pat_createAirSensor()` | `pat, parameter, FUN, ...` |
 | **Loading an `airsensor`** |  |
 | `sensor_load()` | `collection, startdate, enddate, days, timezone` | 
 | `sensor_loadLatest()` | `collection, days` | 

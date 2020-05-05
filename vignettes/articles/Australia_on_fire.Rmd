@@ -189,7 +189,7 @@ the _pas_ for the sensors that have a reported `pm25` value higher than 150.
 
 It is important to note here that the sensors listed in the _pas_ after 
 filtering will depend on the date that the original _pas_ was generated. Since 
-dat avalues are only valid for the time a _pas_ is created, the _pas_ that you use 
+data values are only valid for the time a _pas_ is created, the _pas_ that you use
 may show different for the same sensors generated with _pas_ that we are 
 using here. This document was created using a _pas_ with data from January 
 15, 2020.
@@ -221,7 +221,7 @@ in the local data directory, if not, they will be downloaded.
 
 ```{r explore_pat}
 
-startdate <- 10191210
+startdate <- 20191210
 enddate <- 20200110
 
 filePath_chisholm <- file.path(archiveBaseDir, "pat_chisholm.rda")
@@ -377,7 +377,7 @@ have noticed that the _pat_ data quality can degrade over time. A quick way to
 quantify data quality is to simply calculate the r^2^ value between channels A 
 the daily data quality is categorized as good, fair, or poor. Typically, new 
 sensors have not had time for outside factors to degrade data quality, but for a 
-quick sanity check, we can use the `pat_dailySoHIndexPlot()` function to plot the 
+quick sanity check, we can use the `pat_dailySoHIndexPlot()` function to plot the
 daily State-of-Health index. This function plots both channels A and B with 
 a daily State-of-Health index along the bottom.
 

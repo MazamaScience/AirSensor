@@ -15,6 +15,7 @@ library(MazamaCoreUtils)
 library(AirSensor)
 library(dplyr)
 library(ggplot2)
+initializeMazamaSpatialUtils()
 # NOTE: Use example PAS and PAT data for vignettes to avoid long wait-times
 pas <- AirSensor::example_pas
 pat <- AirSensor::example_pat

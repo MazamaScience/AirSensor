@@ -16,6 +16,7 @@ PurpleAir (PA-II) sensors.
 knitr::opts_chunk$set(fig.width=7, fig.height=5)
 library(AirSensor)
 setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+initializeMazamaSpatialUtils()
 pas <- example_pas
 ```
 
