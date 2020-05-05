@@ -42,7 +42,7 @@ p1
 Using `pat_aggregate()` we can aggregate the `pat` object to an hourly average of the data.
 
 ```{r}
-hourly_pat <- pat_aggregate(pat, mean, na.rm = TRUE)
+hourly_pat <- pat_aggregate(pat)
 nrow(hourly_pat$data)
 ```
 As we'd expect, an hourly aggregated `pat` contains 24 entries, an entry every hour.
@@ -63,7 +63,7 @@ You can create different aggregation periods by explicitly providing `f`, string
 
 ```{r}
 # Aggregate the standard deviation of 15-minute periods
-sd_fifteen_minute_pat <- pat_aggregate(pat, sd, na.rm = TRUE, f = 'minutes', k = 15)
+sd_fifteen_minute_pat <- pat_aggregate(pat, function(x) { sd(x, na.rm = TRUE) }, unit = 'minutes', count = 15)
 
 # View first 5 entries of data
 head(sd_fifteen_minute_pat$data)

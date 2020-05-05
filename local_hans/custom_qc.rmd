@@ -89,12 +89,12 @@ z_score_qc <- function(pat) {
       y <- mean(x, na.rm = TRUE)
       return(y)
     },
-    f = 'minutes',
-    k = 20
+    unit = 'minutes',
+    count = 20
   )
 
   # Re-aggregate to an 1-hour average of the data
-  pat <- pat_aggregate(pat_z_scored_20min_avg, mean, na.rm = TRUE)
+  pat <- pat_aggregate(pat_z_scored_20min_avg)
 
   return(pat)
 
