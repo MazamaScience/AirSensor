@@ -109,7 +109,7 @@ pat_createAirSensor <- function(
   # NOTE: use a mean aggregation with no qc and average both channels 
   if ( is.null(FUN) ) {
     FUN <- function(x, ...) {
-      tmp_pat <- pat_aggregate(x, function(x_, ...) mean(x_, na.rm = FALSE, ...))
+      tmp_pat <- pat_aggregate(x, function(x_, ...) mean(x_, na.rm = TRUE, ...))
       tmp_pat$data <- 
         tmp_pat$data %>% 
         dplyr::mutate(pm25 = rowMeans(cbind(.data$pm25_A, .data$pm25_B), na.rm = TRUE))
