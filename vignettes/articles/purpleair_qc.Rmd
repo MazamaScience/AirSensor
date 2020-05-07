@@ -105,23 +105,18 @@ pat_multiplot(pat, sampleSize = NULL)
 
 ## Aggregation
 
-The `pat_aggregate()` function is used in the conversion of *pat* data objects
-into dataframes with a uniform, typically hourly, time axis. The 
-aggregation process involves creating regular time bins and
-then calculating a variety of statistics for the data within each bin. We end
-up with a dataframe with a regular time axis and multiple columns of statistics
-for each input variable.
+The `pat_aggregate()` function is used in the conversion of the *pat* time axis into data with a uniform, typically hourly, time axis. The aggregation process involves creating regular time bins and then calculating a variety of statistics for the data within each bin utilizing a user provided function.
 
 Applying our uncontroversial `pat_qc()` as the first step in the pipeline, we
 can review which statistics are calculated:
 
 ```{r pat_aggregate}
-df <-
+pat <-
   example_pat_failure_A %>%
   pat_qc() %>%
-  pat_aggregate(FUN = mean, na.rm = TRUE)
-class(df)
-names(df)
+  pat_aggregate()
+class(pat)
+names(pat)
 ```
 
 ### Aggregation statistics
@@ -195,22 +190,11 @@ ggplot(raw_data, aes(datetime, pm25, color = channel)) +
   scale_color_manual(values=colors) +
   geom_point(pch=15, cex=0.2, position = position_jitterdodge()) +
   ggtitle("A/B hourly averages")
-
-# Compare the t-statistic for that day
-agg_data <-
-  example_pat_failure_B %>%
-  pat_filterDate(20190611,20190612) %>%
-  pat_aggregate(FUN = mean, na.rm = TRUE)
-
-ggplot(agg_data$data, aes(datetime, pm25_)) +
-  geom_point() +
-  scale_y_log10() +
-  ggtitle("t-test p-value")
 ```
 
 And here is the same for a day with serious problems:
 
-```{r AB_boxplot_2, echo = FALSE}
+```{r AB_boxplot_2, echo = FALSE, warning=FALSE}
 library(ggplot2)
 
 # Grab a 1-day subset of the data
@@ -236,15 +220,18 @@ ggplot(raw_data, aes(datetime, pm25, color = channel)) +
   geom_point(pch=15, cex=0.2, position = position_jitterdodge()) +
   ggtitle("A/B hourly averages")
 
-# Compare the t-statistic for that day
+# Compare the t-statistic of channels A and B for that day
 agg_data <-
   example_pat_failure_B %>%
   pat_filterDate(20190612,20190613) %>%
-  pat_aggregate(FUN = mean, na.rm = TRUE)
+  pat_aggregate(FUN = function(x) { 
+    tt <- t.test(x$pm25_A, x$pm25_B)
+    return(c('p.value' = tt$p.value))
+  }, level  = 1)
 
-ggplot(agg_data, aes(datetime, pm25_p)) +
+ggplot(agg_data, aes(datetime, p.value)) + 
   geom_point() +
-  scale_y_log10() +
+  scale_y_log10() + 
   ggtitle("t-test p-value")
 ```
 
