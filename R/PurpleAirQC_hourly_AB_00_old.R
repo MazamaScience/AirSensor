@@ -32,35 +32,31 @@
 #' df <- 
 #'   example_pat %>%
 #'   pat_qc() %>%
+#'   pat_aggregate() %>%
 #'   PurpleAirQC_hourly_AB_00()
 #'   
 #' plot(df)
 #' }
 
 PurpleAirQC_hourly_AB_00 <- function(
-  pat = NULL,
+  aggregationStats = NULL,
   min_count = 20,
   returnAllColumns = FALSE
 ) {
   
   # ----- Validate parameters --------------------------------------------------
   
-  MazamaCoreUtils::stopIfNull(pat)
+  MazamaCoreUtils::stopIfNull(aggregationStats)
   
   # ----- hourly_AB_01 ---------------------------------------------------------
   
-  countData <- pat_aggregate(pat, function(x) { length(na.omit(x)) }) %>% 
-    pat_extractData()
-  meanData <- pat_aggregate(pat, function(x) { mean(x, na.rm = TRUE) }) %>% 
-    pat_extractData()
-  
-  hourlyData <- 
-    dplyr::tibble(datetime = meanData$datetime) %>%
+  hourlyData <-
+    aggregationStats %>%
     # Create pm25 by averaging the A and B channel aggregation means
-    dplyr::mutate(pm25 = (meanData$pm25_A + meanData$pm25_B) / 2) %>%
+    dplyr::mutate(pm25 = (.data$pm25_A_mean + .data$pm25_B_mean) / 2) %>%
     # Calculate min_count and mean_diff for use in QC
-    dplyr::mutate(min_count = pmin(countData$pm25_A, countData$pm25_B, na.rm = TRUE)) %>%
-    dplyr::mutate(mean_diff = abs(meanData$pm25_A - meanData$pm25_B)) %>%
+    dplyr::mutate(min_count = pmin(.data$pm25_A_count, .data$pm25_B_count, na.rm = TRUE)) %>%
+    dplyr::mutate(mean_diff = abs(.data$pm25_A_mean - .data$pm25_B_mean)) %>%
     # hourly_AB_00 follows
     # When only a fraction of the data are reporting, something is wrong.
     # Invalidate data where:  (min_count < SOME_THRESHOLD)
