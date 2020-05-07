@@ -59,7 +59,7 @@ p2
 In order to write custom aggregation functions for use with `pat_aggregate()`, we must first familiarize ourselves with `pat_aggregate()`'s underlying algorithm. When executed, `pat_aggregate(pat, FUN)` utilizes the `datetime` axis of a PurpleAir time series object (`pat`) to split the data into time-granular bins. Each bin has the supplied function `FUN` mapped to the numeric vectors within the `pat` data. `FUN` is capable of accepting _any_ valid R function, and as with any great power comes great responsibility. The only requirements for the function are `FUN` _must_ operate on univariate numeric data and return a scalar value (think`sum`, or `mean`). The last step in `pat_aggregate()` is to combine the transformed bins along a shortened `datetime` axis and return a data object of the same `pat` class (`pa_timeseries`).
 
 With care, we can extend the use of `pat_aggregate()` to summarize time series `pat` data of nearly _any_ period.
-You can create different aggregation periods by explicitly providing `f`, string describing the period to split by `f =` `'hours'`, `'minutes'`, `'weeks'`, `'months'`, etc. and `k`, a number of periods to aggregate in each bin. For example, a 15-minute standard deviation (`sd`) aggregation would look as follows:
+You can create different aggregation periods by explicitly providing `unit`, a string describing the period to split by `unit =` `'hours'`, `'minutes'`, `'weeks'`, `'months'`, etc. and `count`, a number of periods to aggregate in each bin. For example, a 15-minute standard deviation (`sd`) aggregation would look as follows:
 
 ```{r}
 # Aggregate the standard deviation of 15-minute periods
