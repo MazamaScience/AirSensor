@@ -40,30 +40,24 @@
 #' }
 
 PurpleAirQC_hourly_AB_01 <- function(
-  pat = NULL,
+  aggregationStats = NULL,
   min_count = 20,
   returnAllColumns = FALSE
 ) {
   
   # ----- Validate parameters --------------------------------------------------
   
-  MazamaCoreUtils::stopIfNull(pat)
+  MazamaCoreUtils::stopIfNull(aggregationStats)
   
   # ----- hourly_AB_01 ---------------------------------------------------------
   
-  countData <- pat_aggregate(pat, function(x) { length(na.omit(x)) }) %>% 
-    pat_extractData()
-  meanData <- pat_aggregate(pat, function(x) { mean(x, na.rm = TRUE) }) %>% 
-    pat_extractData()
-  ttestData <- pat_aggregate(pat, function(x) { t.test(x$pm25_A, x$pm25_B, paired = FALSE)})
-  
   hourlyData <-
-    dplyr::tibble(datetime = meanData$datetime) %>% 
+    aggregationStats %>%
     # Create pm25 by averaging the A and B channel aggregation means
-    dplyr::mutate(pm25 = (meanData$pm25_A + meanData$pm25_B) / 2) %>%
+    dplyr::mutate(pm25 = (.data$pm25_A_mean + .data$pm25_B_mean) / 2) %>%
     # Calculate min_count and mean_diff for use in QC
-    dplyr::mutate(min_count = pmin(countData$pm25_A, countData$pm25_B, na.rm = TRUE)) %>%
-    dplyr::mutate(mean_diff = abs(meanData$pm25_A - meanData$pm25_B)) %>%
+    dplyr::mutate(min_count = pmin(.data$pm25_A_count, .data$pm25_B_count, na.rm = TRUE)) %>%
+    dplyr::mutate(mean_diff = abs(.data$pm25_A_mean - .data$pm25_B_mean)) %>%
     # hourly_AB_01 follows
     # When only a fraction of the data are reporting, something is wrong.
     # Invalidate data where:  (min_count < SOME_THRESHOLD)
@@ -76,7 +70,7 @@ PurpleAirQC_hourly_AB_01 <- function(
     # Invalidate data where:  (p-value < 1e-4) & (mean_diff > 10)
     dplyr::mutate(pm25 = replace(
       .data$pm25,
-      which( (ttestData$p.value < 1e-4) & (.data$mean_diff > 10) ),
+      which( (.data$pm25_p < 1e-4) & (.data$mean_diff > 10) ),
       NA)
     ) %>% 
     # A difference of 20 ug/m3 should only be seen at very high levels.
