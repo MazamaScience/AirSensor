@@ -2,11 +2,22 @@
 % Please edit documentation in R/pat_aggregate.R
 \name{pat_aggregate}
 \alias{pat_aggregate}
-\title{Aggregate PurpleAir Timeseries objects}
+\alias{pat_aggregate.pa_timeseries}
+\alias{pat_aggregate.data.frame}
+\title{Aggregate PurpleAir Timeseries Data}
 \usage{
-pat_aggregate(
+pat_aggregate(pat, FUN, unit, count)
+
+\method{pat_aggregate}{pa_timeseries}(
   pat,
   FUN = function(x) {     mean(x, na.rm = TRUE) },
+  unit = "minutes",
+  count = 60
+)
+
+\method{pat_aggregate}{data.frame}(
+  df,
+  FUN = function(df) {     mean(df$pm25_A + df$pm25_B, na.rm = TRUE) },
   unit = "minutes",
   count = 60
 )
@@ -22,21 +33,31 @@ pat_aggregate(
 }
 \value{
 Returns an aggregated \emph{pat} object.
+
+Returns a data.frame object.
 }
 \description{
-Aggregate PurpleAir timeseries (\emph{pat}) objects along its 
+Aggregate PurpleAir timeseries (\emph{pat}) objects along its
 datetime axis. Temporal aggregation involves splitting a \emph{pat} object into
 seperate bins along its datetime axis. \code{FUN} is mapped to the \emph{pat}
-numeric variables in each bin, which are then recombined into an aggregated 
+numeric variables in each bin, which are then recombined into an aggregated
 \emph{pat} object containing the same metadata as the incomting \code{pat}.
 }
 \details{
-\code{FUN} must operate on univariate numeric vectors and return a 
-scalar value. Besides the data variable, no additional arguments will be 
+\code{FUN} must operate on univariate numeric vectors and return a
+scalar value. Besides the data variable, no additional arguments will be
 provided to this function. This means that functions like \code{mean} and
-\code{max} will need to be wrapped in a function that specifies 
+\code{max} will need to be wrapped in a function that specifies
 \code{na.rm = TRUE}. See the examples below.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{pa_timeseries}: The default S3 method for \emph{pa_timeseries} objects.
+
+\item \code{data.frame}: Recommended for advanced users only.
+Operate numeric data.frames that contain a valid 'datetime' column.
+}}
+
 \examples{
 library(AirSensor)
 
@@ -75,5 +96,14 @@ pat \%>\%
   dplyr::select(1:9) \%>\%
   dplyr::slice(1:6)
   
+# Two Sample Student T-Test (advanced users only - see details.)
+FUN_ttest <- function(data) {
+  t.test(data$pm25_A, data$pm25_B)
+}
+
+pat \%>\%
+  pat_extractData() \%>\%
+  pat_aggregate(FUN_ttest)
+
 }
 \keyword{pa_timeseries}
