@@ -20,6 +20,10 @@
 # RStudio files
 .Rproj.user/
 
+
+# ItelliJ Pycharm Files
+.idea/
+
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf
