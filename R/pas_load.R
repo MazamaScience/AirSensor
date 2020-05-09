@@ -32,6 +32,7 @@
 #' @param timezone Timezone used to interpret \code{datestamp}.
 #' @param archival Logical specifying whether a version should be loaded that
 #' includes sensors that have stopped reporting.
+#' @param verbose Logical to specify warning and error message display.
 #' 
 #' @return A PurpleAir Synoptic \emph{pas} object.
 #' 
@@ -50,7 +51,8 @@ pas_load <- function(
   datestamp = NULL,
   retries = 30,
   timezone = "America/Los_Angeles",
-  archival = FALSE
+  archival = FALSE,
+  verbose = TRUE
 ) {
   
   # ----- Validate parameters --------------------------------------------------
@@ -137,11 +139,16 @@ pas_load <- function(
     
     # Get data from URL or directory
     result <- try({
-      suppressWarnings({ 
-        pas <- MazamaCoreUtils::loadDataFile(filename, dataUrl, dataDir) 
+      suppressWarnings({
+        if ( verbose ) {
+          pas <- MazamaCoreUtils::loadDataFile(filename, dataUrl, dataDir)
+        } else {
+          # Suppress any messages from `loadDataFile` such as `Error : Data file could not be loaded from: `, etc.
+          invisible(capture.output(pas <- MazamaCoreUtils::loadDataFile(filename, dataUrl, dataDir)))
+        }
       })
     }, silent = TRUE)
-    
+
     successful <- !("try-error" %in% class(result))
     localDate <- localDate - lubridate::days(1)
     tries <- tries + 1
@@ -151,11 +158,12 @@ pas_load <- function(
   # NOTE:  We used suppressWarnings() above so that we can have a more
   # NOTE:  uniform error response for the large variety of reasons that
   # NOTE:  loading might fail.
-  
+
   if ( !successful ) {
-    stop(paste0("Data file could not be loaded after ", retries, " tries"), 
+    stop(paste-1("Data file could not be loaded after ", retries, " tries"),
          call.=FALSE)
   }
+
   
   # ----- Return ---------------------------------------------------------------
   
