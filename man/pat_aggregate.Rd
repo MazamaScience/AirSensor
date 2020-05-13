@@ -2,22 +2,11 @@
 % Please edit documentation in R/pat_aggregate.R
 \name{pat_aggregate}
 \alias{pat_aggregate}
-\alias{pat_aggregate.pa_timeseries}
-\alias{pat_aggregate.data.frame}
-\title{Aggregate PurpleAir Timeseries Data}
+\title{Aggregate PurpleAir Timeseries Object}
 \usage{
-pat_aggregate(pat, FUN, unit, count)
-
-\method{pat_aggregate}{pa_timeseries}(
+pat_aggregate(
   pat,
   FUN = function(x) {     mean(x, na.rm = TRUE) },
-  unit = "minutes",
-  count = 60
-)
-
-\method{pat_aggregate}{data.frame}(
-  pat,
-  FUN = function(df) {     mean(df$pm25_A + df$pm25_B, na.rm = TRUE) },
   unit = "minutes",
   count = 60
 )
@@ -37,9 +26,9 @@ Returns an aggregated \emph{pat} object.
 \description{
 Aggregate PurpleAir timeseries (\emph{pat}) objects along its
 datetime axis. Temporal aggregation involves splitting a \emph{pat} object into
-seperate bins along its datetime axis. \code{FUN} is mapped to the \emph{pat}
+separate bins along its datetime axis. \code{FUN} is mapped to the \emph{pat}
 numeric variables in each bin, which are then recombined into an aggregated
-\emph{pat} object containing the same metadata as the incomting \code{pat}.
+\emph{pat} object containing the same metadata as the incoming \code{pat}.
 }
 \details{
 \code{FUN} must operate on univariate numeric vectors and return a
@@ -48,15 +37,6 @@ provided to this function. This means that functions like \code{mean} and
 \code{max} will need to be wrapped in a function that specifies
 \code{na.rm = TRUE}. See the examples below.
 }
-\section{Methods (by class)}{
-\itemize{
-\item \code{pa_timeseries}: The default S3 method for \emph{pa_timeseries} objects.
-
-\item \code{data.frame}: Recommended for advanced users only.
-Evaluate \code{FUN} on a data.frame that contain a valid 'datetime' column.
-Returns a data.frame object.
-}}
-
 \examples{
 library(AirSensor)
 
@@ -94,15 +74,5 @@ pat \%>\%
   pat_extractData() \%>\%
   dplyr::select(1:9) \%>\%
   dplyr::slice(1:6)
-  
-# Two Sample Student T-Test (advanced users only - see details.)
-FUN_ttest <- function(data) {
-  t.test(data$pm25_A, data$pm25_B)
-}
-
-pat \%>\%
-  pat_extractData() \%>\%
-  pat_aggregate(FUN_ttest)
-
 }
 \keyword{pa_timeseries}

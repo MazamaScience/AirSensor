@@ -3,7 +3,7 @@
 #' @importFrom rlang .data
 #' @importFrom stats aggregate median na.omit quantile sd t.test time
 #'
-#' @title Aggregate PurpleAir Timeseries Data
+#' @title Aggregate PurpleAir Timeseries Object
 #' 
 #' @param pat PurpleAir Timeseries \emph{pat} object.
 #' @param FUN The function to be applied to each vector of numeric \code{pat} data.
@@ -12,9 +12,9 @@
 #'
 #' @description Aggregate PurpleAir timeseries (\emph{pat}) objects along its
 #' datetime axis. Temporal aggregation involves splitting a \emph{pat} object into
-#' seperate bins along its datetime axis. \code{FUN} is mapped to the \emph{pat}
+#' separate bins along its datetime axis. \code{FUN} is mapped to the \emph{pat}
 #' numeric variables in each bin, which are then recombined into an aggregated
-#' \emph{pat} object containing the same metadata as the incomting \code{pat}.
+#' \emph{pat} object containing the same metadata as the incoming \code{pat}.
 #'
 #' @details \code{FUN} must operate on univariate numeric vectors and return a
 #' scalar value. Besides the data variable, no additional arguments will be
@@ -61,23 +61,8 @@
 #'   pat_extractData() %>%
 #'   dplyr::select(1:9) %>%
 #'   dplyr::slice(1:6)
-#'   
-#' # Two Sample Student T-Test (advanced users only - see details.)
-#' FUN_ttest <- function(data) {
-#'   t.test(data$pm25_A, data$pm25_B)
-#' }
-#' 
-#' pat %>%
-#'   pat_extractData() %>%
-#'   pat_aggregate(FUN_ttest)
-#'
-pat_aggregate <- function(pat, FUN, unit, count) {
-  UseMethod('pat_aggregate', pat)
-}
 
-#' @export
-#' @describeIn pat_aggregate The default S3 method for \emph{pa_timeseries} objects.
-pat_aggregate.pa_timeseries <- function(
+pat_aggregate <- function(
   pat, 
   FUN = function(x) { mean(x, na.rm = TRUE) }, 
   unit = "minutes",
@@ -161,74 +146,3 @@ pat_aggregate.pa_timeseries <- function(
 
 }
 
-#' @export
-#' @describeIn pat_aggregate  Recommended for advanced users only.
-#' Evaluate \code{FUN} on a data.frame that contain a valid 'datetime' column.
-#' Returns a data.frame object.
-pat_aggregate.data.frame <- function(
-  pat,
-  FUN = function(df) { mean(df$pm25_A + df$pm25_B, na.rm = TRUE) },
-  unit = 'minutes',
-  count = 60
-) {
-
-  MazamaCoreUtils::stopIfNull(pat)
-  MazamaCoreUtils::stopIfNull(FUN)
-  MazamaCoreUtils::stopIfNull(unit)
-  MazamaCoreUtils::stopIfNull(count)
-
-  
-  # Eh. Not ideal. 
-  df <- pat
-  
-  # ----- Aggregate Data -------------------------------------------------------
-
-  # Only use numeric columns for aggregation matrix
-  numeric_cols <- which(unlist(lapply(df, is.numeric)))
-
-  # Convert to eXtensible Time Series (xts) data.frame
-  # Separate only useful data for calculation (i.e. only numeric)
-  df <- xts::xts(
-    x = df[numeric_cols],
-    order.by = df$datetime,
-    unique = TRUE,
-    tzone = 'UTC'
-  )
-
-  # Split the xts into a list of binned xts matrices
-  df_bins <- xts::split.xts(
-    df,
-    f = unit,
-    drop = FALSE,
-    k = count
-  )
-
-  # Get the first index of aligned time for future use.
-  datetime <- as.numeric(
-    lapply(
-      X = df_bins,
-      # Select first datetime index in bin to use as aggregated datetime axis
-      FUN = function(x) zoo::index(x)[1] ## First # [nrow(x)] ## Last
-    )
-  )
-  # Convert saved datetime vector back to posix* from int
-  class(datetime) <- c("POSIXct", "POSIXt")
-  attr(datetime, 'tzone') <- 'UTC'
-
-  # Map the function FUN to each bin data.frame.
-  mapped <- base::Map(
-    df_bins,
-    f = function(df, f = FUN) { f(df) }
-  )
-
-  # Return a data.frame of aggregate data
-  aggData <- data.frame(
-    'datetime' = datetime,
-    do.call(rbind, mapped),
-    fix.empty.names = FALSE,
-    check.rows = FALSE,
-    check.names = FALSE
-  )
-
-  return(aggData)
-}
