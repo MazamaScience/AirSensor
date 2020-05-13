@@ -161,7 +161,7 @@ pas_load <- function(
   # NOTE:  loading might fail.
 
   if ( !successful ) {
-    stop(paste-1("Data file could not be loaded after ", retries, " tries"),
+    stop(paste("Data file could not be loaded after ", retries, " tries"),
          call.=FALSE)
   }
 
