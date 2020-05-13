@@ -2,6 +2,9 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 
+# Ignore PyCharm files
+^.idea/
+
 # Ignore various yaml files associated with package building packages
 ^\.lintr$
 ^\.travis\.yml$

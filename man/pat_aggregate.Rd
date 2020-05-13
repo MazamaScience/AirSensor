@@ -16,7 +16,7 @@ pat_aggregate(pat, FUN, unit, count)
 )
 
 \method{pat_aggregate}{data.frame}(
-  df,
+  pat,
   FUN = function(df) {     mean(df$pm25_A + df$pm25_B, na.rm = TRUE) },
   unit = "minutes",
   count = 60
@@ -33,8 +33,6 @@ pat_aggregate(pat, FUN, unit, count)
 }
 \value{
 Returns an aggregated \emph{pat} object.
-
-Returns a data.frame object.
 }
 \description{
 Aggregate PurpleAir timeseries (\emph{pat}) objects along its
@@ -55,7 +53,8 @@ provided to this function. This means that functions like \code{mean} and
 \item \code{pa_timeseries}: The default S3 method for \emph{pa_timeseries} objects.
 
 \item \code{data.frame}: Recommended for advanced users only.
-Operate numeric data.frames that contain a valid 'datetime' column.
+Evaluate \code{FUN} on a data.frame that contain a valid 'datetime' column.
+Returns a data.frame object.
 }}
 
 \examples{

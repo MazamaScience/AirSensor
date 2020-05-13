@@ -2,6 +2,7 @@
 #' @importFrom rlang .data
 #' @importFrom dplyr filter
 #' @importFrom MazamaCoreUtils logger.isInitialized
+#' @importFrom utils capture.output
 #' 
 #' @title Load PurpleAir synoptic data
 #' 

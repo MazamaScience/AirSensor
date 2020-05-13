@@ -8,7 +8,8 @@ pas_load(
   datestamp = NULL,
   retries = 30,
   timezone = "America/Los_Angeles",
-  archival = FALSE
+  archival = FALSE,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -21,6 +22,8 @@ date cannot be retrieved.}
 
 \item{archival}{Logical specifying whether a version should be loaded that
 includes sensors that have stopped reporting.}
+
+\item{verbose}{Logical to specify warning and error message display.}
 }
 \value{
 A PurpleAir Synoptic \emph{pas} object.

@@ -160,22 +160,27 @@ pat_aggregate.pa_timeseries <- function(
     return(pat)
 
 }
+
 #' @export
 #' @describeIn pat_aggregate  Recommended for advanced users only.
 #' Evaluate \code{FUN} on a data.frame that contain a valid 'datetime' column.
 #' Returns a data.frame object.
 pat_aggregate.data.frame <- function(
-  df,
+  pat,
   FUN = function(df) { mean(df$pm25_A + df$pm25_B, na.rm = TRUE) },
   unit = 'minutes',
   count = 60
 ) {
 
-  MazamaCoreUtils::stopIfNull(df)
+  MazamaCoreUtils::stopIfNull(pat)
   MazamaCoreUtils::stopIfNull(FUN)
   MazamaCoreUtils::stopIfNull(unit)
   MazamaCoreUtils::stopIfNull(count)
 
+  
+  # Eh. Not ideal. 
+  df <- pat
+  
   # ----- Aggregate Data -------------------------------------------------------
 
   # Only use numeric columns for aggregation matrix

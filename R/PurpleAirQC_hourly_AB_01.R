@@ -51,11 +51,18 @@ PurpleAirQC_hourly_AB_01 <- function(
   
   # ----- hourly_AB_01 ---------------------------------------------------------
   
-  countData <- pat_aggregate(pat, function(x) { length(na.omit(x)) }) %>% 
+  countData <- pat %>%
+    pat_aggregate(function(x) { length(na.omit(x)) }) %>%
     pat_extractData()
-  meanData <- pat_aggregate(pat, function(x) { mean(x, na.rm = TRUE) }) %>% 
+
+  meanData <-
+    pat %>%
+    pat_aggregate(function(x) { mean(x, na.rm = TRUE) }) %>%
     pat_extractData()
-  ttestData <- pat_aggregate(pat, function(x) { t.test(x$pm25_A, x$pm25_B, paired = FALSE)})
+
+  ttestData <- pat %>%
+    pat_extractData() %>%
+    pat_aggregate(function(x) { t.test(x$pm25_A, x$pm25_B, paired = FALSE)})
   
   hourlyData <-
     dplyr::tibble(datetime = meanData$datetime) %>% 
