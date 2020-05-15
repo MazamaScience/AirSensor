@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Apply QC to Aggregation Statistics — PurpleAirQC_hourly_AB_02 • AirSensor</title>
+<title>Apply hourly aggregation QC using "AB_O2" algorithm — PurpleAirQC_hourly_AB_02 • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,10 +42,17 @@
 
 
 
-<meta property="og:title" content="Apply QC to Aggregation Statistics — PurpleAirQC_hourly_AB_02" />
+<meta property="og:title" content="Apply hourly aggregation QC using "AB_O2" algorithm — PurpleAirQC_hourly_AB_02" />
 <meta property="og:description" content="Creates a pm25 timeseries by averaging aggregated data
-from the A and B channels, calculates MAD within the threshold, and values 
-within a maxium percentage difference." />
+from the A and B channels and applying the following QC logic:
+
+Create pm25 by averaging the A and B channel aggregation means
+Invalidate data where:  (min_count &amp;lt; 20)
+Invalidate data where:  (A/B hourly MAD &amp;gt; 3)
+Invalidate data where:  (A/B hourly pct_diff &amp;gt; 0.5)
+
+
+MAD = &quot;Median Absolute Deviation&quot;" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -78,7 +85,7 @@ within a maxium percentage difference." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.6</span>
       </span>
     </div>
 
@@ -159,23 +166,25 @@ within a maxium percentage difference." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Apply QC to Aggregation Statistics</h1>
+    <h1>Apply hourly aggregation QC using "AB_O2" algorithm</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/PurpleAirQC_hourly_AB_02.R'><code>R/PurpleAirQC_hourly_AB_02.R</code></a></small>
     <div class="hidden name"><code>PurpleAirQC_hourly_AB_02.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>Creates a <code>pm25</code> timeseries by averaging aggregated data
-from the A and B channels, calculates MAD within the threshold, and values 
-within a maxium percentage difference.</p>
+from the A and B channels and applying the following QC logic:</p>
+<ol>
+<li><p>Create pm25 by averaging the A and B channel aggregation means</p></li>
+<li><p>Invalidate data where:  (min_count &lt; 20)</p></li>
+<li><p>Invalidate data where:  (A/B hourly MAD &gt; 3)</p></li>
+<li><p>Invalidate data where:  (A/B hourly pct_diff &gt; 0.5)</p></li>
+</ol>
+
+<p>MAD = "Median Absolute Deviation"</p>
     </div>
 
-    <pre class="usage"><span class='fu'>PurpleAirQC_hourly_AB_02</span>(
-  <span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>20</span>,
-  <span class='kw'>tolerance</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>max_diff</span> <span class='kw'>=</span> <span class='fl'>0.5</span>
-)</pre>
+    <pre class="usage"><span class='fu'>PurpleAirQC_hourly_AB_02</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>returnAllColumns</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -190,12 +199,10 @@ within a maxium percentage difference.</p>
 will be marked as NA.</p></td>
     </tr>
     <tr>
-      <th>tolerance</th>
-      <td><p>A maximum median absolute deviation threshold.</p></td>
-    </tr>
-    <tr>
-      <th>max_diff</th>
-      <td><p>A maximum percentage difference between pat channels (50% = 0.5).</p></td>
+      <th>returnAllColumns</th>
+      <td><p>Logical specifying whether to return all columns
+of statistical data generated for QC algorithm or just the final <code>pm25</code>
+result.</p></td>
     </tr>
     </table>
 
@@ -210,7 +217,16 @@ setting of <code>min_count = 20</code> is equivalent to a required data recovery
 rate of 67%.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>QCed</span> <span class='kw'>&lt;-</span> <span class='fu'>PurpleAirQC_hourly_AB_02</span>(<span class='no'>example_pat</span>)</div></pre>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>AirSensor</span>)
+
+<span class='no'>df</span> <span class='kw'>&lt;-</span>
+  <span class='no'>example_pat</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='pat_qc.html'>pat_qc</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>PurpleAirQC_hourly_AB_02</span>()
+
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>df</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

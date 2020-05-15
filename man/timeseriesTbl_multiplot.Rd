@@ -38,14 +38,14 @@ A plotting function that uses ggplot2 to display a suite of
 timeseries plots all at once.
 }
 \note{
-Specification of \code{ylim} will override the choice of 
+Specification of \code{ylim} will override the choice of
 \code{autoRange}.
 }
 \examples{
 \dontrun{
 tbl <- pat_aggregateOutlierCounts(example_pat_failure_A)
-timeseriesTbl_multiplot(tbl, 
-                        pattern = "humidity_m|temperature_m", 
+timeseriesTbl_multiplot(tbl,
+                        pattern = "humidity_m|temperature_m",
                         nrow = 2)
 }
 }

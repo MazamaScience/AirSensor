@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Apply QC to Aggregation Statistics — PurpleAirQC_hourly_AB_00 • AirSensor</title>
+<title>Apply hourly aggregation QC using "AB_OO" algorithm — PurpleAirQC_hourly_AB_00 • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,7 +42,7 @@
 
 
 
-<meta property="og:title" content="Apply QC to Aggregation Statistics — PurpleAirQC_hourly_AB_00" />
+<meta property="og:title" content="Apply hourly aggregation QC using "AB_OO" algorithm — PurpleAirQC_hourly_AB_00" />
 <meta property="og:description" content="Creates a pm25 timeseries by averaging aggregated data
 from the A and B channels and applying the following QC logic:
 
@@ -83,7 +83,7 @@ No further QC
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.6</span>
       </span>
     </div>
 
@@ -164,7 +164,7 @@ No further QC
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Apply QC to Aggregation Statistics</h1>
+    <h1>Apply hourly aggregation QC using "AB_OO" algorithm</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/PurpleAirQC_hourly_AB_00.R'><code>R/PurpleAirQC_hourly_AB_00.R</code></a></small>
     <div class="hidden name"><code>PurpleAirQC_hourly_AB_00.Rd</code></div>
     </div>
@@ -180,29 +180,24 @@ from the A and B channels and applying the following QC logic:</p>
 
     </div>
 
-    <pre class="usage"><span class='fu'>PurpleAirQC_hourly_AB_00</span>(
-  <span class='kw'>aggregationStats</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>20</span>,
-  <span class='kw'>returnAllColumns</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>PurpleAirQC_hourly_AB_00</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>returnAllColumns</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>aggregationStats</th>
-      <td><p>Dataframe of statistics as returned by
-<code><a href='pat_aggregate.html'>pat_aggregate()</a></code>.</p></td>
+      <th>pat</th>
+      <td><p>A PurpleAir timeseries object.</p></td>
     </tr>
     <tr>
       <th>min_count</th>
-      <td><p>Aggregation bins with fewer than `min_count` measurements
-will be marked as `NA`.</p></td>
+      <td><p>Aggregation bins with fewer than <code>min_count</code> measurements
+will be marked as <code>NA</code>.</p></td>
     </tr>
     <tr>
       <th>returnAllColumns</th>
       <td><p>Logical specifying whether to return all columns
-of statistical data generated for QC algorithm or just the final `pm25` 
+of statistical data generated for QC algorithm or just the final <code>pm25</code>
 result.</p></td>
     </tr>
     </table>
@@ -219,10 +214,11 @@ rate of 67<!-- %. --></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>AirSensor</span>)
+
 <span class='no'>df</span> <span class='kw'>&lt;-</span>
   <span class='no'>example_pat</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='pat_qc.html'>pat_qc</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='pat_aggregate.html'>pat_aggregate</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'>PurpleAirQC_hourly_AB_00</span>()
 
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>df</span>)

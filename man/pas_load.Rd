@@ -23,7 +23,7 @@ date cannot be retrieved.}
 \item{archival}{Logical specifying whether a version should be loaded that
 includes sensors that have stopped reporting.}
 
-\item{verbose}{Logical to specify warning and error message display.}
+\item{verbose}{Logical controlling the generation of warning and error messages.}
 }
 \value{
 A PurpleAir Synoptic \emph{pas} object.
@@ -57,7 +57,7 @@ pas <- pas_load()
 pas \%>\% 
   pas_filter(stateCode == "CA") \%>\%
   pas_leaflet()
-}
+} 
 }
 \seealso{
 \link{pas_createNew}

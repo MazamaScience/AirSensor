@@ -20,9 +20,9 @@
 #'   PurpleAirSoH_dailyABFit() 
 #'   
 #' timeseriesTbl_multiplot(
-#'   tbl, 
-#'   ylim = c(-1,1), 
-#'   style = "line"
+#'    tbl, 
+#'    ylim = c(-1,1), 
+#'    style = "line"
 #' )
 #' 
 

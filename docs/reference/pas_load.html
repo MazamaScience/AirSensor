@@ -92,7 +92,7 @@ datestamp = &quot;YYYYmmddHH&quot;." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.6</span>
       </span>
     </div>
 
@@ -202,7 +202,8 @@ datestamp = &quot;YYYYmmddHH&quot;." />
   <span class='kw'>datestamp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>retries</span> <span class='kw'>=</span> <span class='fl'>30</span>,
   <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='st'>"America/Los_Angeles"</span>,
-  <span class='kw'>archival</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>archival</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -225,6 +226,10 @@ date cannot be retrieved.</p></td>
       <th>archival</th>
       <td><p>Logical specifying whether a version should be loaded that
 includes sensors that have stopped reporting.</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>Logical controlling the generation of warning and error messages.</p></td>
     </tr>
     </table>
 

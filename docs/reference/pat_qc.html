@@ -88,7 +88,7 @@ of many potentially valid PM2.5 measurements." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.6</span>
       </span>
     </div>
 
@@ -214,6 +214,17 @@ are invalidated. Disabled unless explicitly set.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A cleaned up <em>pat</em> object.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Out of spec thresholds are set so that anything outside of
+these the given range should represent a value that is not physically possible
+in an ambient setting on planet Earth.</p>
+<ul>
+<li><p><code>humidity</code> -- [0:100]</p></li>
+<li><p><code>temperature</code> -- [-40:185]</p></li>
+<li><p><code>pm25</code> -- [0:2000]</p></li>
+</ul>
+
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p><a href='https://www2.purpleair.com/products/purpleair-pa-ii'>PA-II specs</a></p>
@@ -229,6 +240,7 @@ are invalidated. Disabled unless explicitly set.</p></td>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#details">Details</a></li>
       <li><a href="#references">References</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>

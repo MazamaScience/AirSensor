@@ -25,6 +25,16 @@
 #' filtering is disabled by default because it can result in the invalidation
 #' of many potentially valid PM2.5 measurements.
 #' 
+#' @details Out of spec thresholds are set so that anything outside of
+#' these the given range should represent a value that is not physically possible
+#' in an ambient setting on planet Earth. 
+#' 
+#' \itemize{
+#' \item{\code{humidity} -- [0:100]}
+#' \item{\code{temperature} -- [-40:185]}
+#' \item{\code{pm25} -- [0:2000]}
+#' }
+#' 
 #' @return A cleaned up \emph{pat} object.
 #' 
 #' @references \href{https://www2.purpleair.com/products/purpleair-pa-ii}{PA-II specs}
@@ -80,11 +90,13 @@ pat_qc <- function(
       # -40 <= temperature <= 185
       dplyr::mutate(temperature = replace(.data$temperature, which(.data$temperature < -40), NA) ) %>%
       dplyr::mutate(temperature = replace(.data$temperature, which(.data$temperature > 185), NA) ) %>%
-      # 0 <= pm25 <= 1000
+      # 0 <= pm25 <= 2000
+      # NOTE:  The 2000 number is based on Jon's 2020-05-14 conversation with 
+      # NOTE:  Adrian Dybwayd, founder of PurpleAir.
       dplyr::mutate(pm25_A = replace(.data$pm25_A, which(.data$pm25_A < 0), NA) ) %>%
-      dplyr::mutate(pm25_A = replace(.data$pm25_A, which(.data$pm25_A > 1000), NA) ) %>%
+      dplyr::mutate(pm25_A = replace(.data$pm25_A, which(.data$pm25_A > 2000), NA) ) %>%
       dplyr::mutate(pm25_B = replace(.data$pm25_B, which(.data$pm25_B < 0), NA) ) %>%
-      dplyr::mutate(pm25_B = replace(.data$pm25_B, which(.data$pm25_B > 1000), NA) )
+      dplyr::mutate(pm25_B = replace(.data$pm25_B, which(.data$pm25_B > 2000), NA) )
       
     pat$data <- data
     

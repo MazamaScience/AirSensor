@@ -1,17 +1,26 @@
 #' @export
 #' @importFrom rlang .data
 #' 
-#' @title Apply QC to Aggregation Statistics
+#' @title Apply hourly aggregation QC using "AB_O2" algorithm
 #' 
 #' @param pat A PurpleAir timeseries object.
 #' @param min_count Aggregation bins with fewer than \code{min_count} measurements
 #' will be marked as NA.
-#' @param tolerance A maximum median absolute deviation threshold.  
-#' @param max_diff A maximum percentage difference between pat channels (50\% = 0.5). 
+#' @param returnAllColumns Logical specifying whether to return all columns
+#' of statistical data generated for QC algorithm or just the final \code{pm25}
+#' result.
 #'  
 #' @description Creates a \code{pm25} timeseries by averaging aggregated data
-#' from the A and B channels, calculates MAD within the threshold, and values 
-#' within a maxium percentage difference. 
+#' from the A and B channels and applying the following QC logic:
+#' 
+#' \enumerate{
+#' \item{Create pm25 by averaging the A and B channel aggregation means}
+#' \item{Invalidate data where:  (min_count < 20)}
+#' \item{Invalidate data where:  (A/B hourly MAD > 3)}
+#' \item{Invalidate data where:  (A/B hourly pct_diff > 0.5)}
+#' }
+#' 
+#' MAD = "Median Absolute Deviation"
 #'
 #' @note Purple Air II sensors reporting after the June, 2019 firmware
 #' upgrade report data every 2 minutes or 30 measurements per hour. The default
@@ -21,48 +30,103 @@
 #' @return Data frame with columns \code{datetime} and \code{pm25}.
 #' 
 #' @examples 
-#' QCed <- PurpleAirQC_hourly_AB_02(example_pat)
+#' \dontrun{
+#' library(AirSensor)
 #' 
+#' df <- 
+#'   example_pat %>%
+#'   pat_qc() %>%
+#'   PurpleAirQC_hourly_AB_02()
+#'   
+#' plot(df)
+#' }
+
 PurpleAirQC_hourly_AB_02 <- function(
-  pat = NULL, 
-  min_count = 20, 
-  tolerance = 3,
-  max_diff = 0.5
+   pat = NULL, 
+   min_count = 20, 
+   returnAllColumns = FALSE
 ) { 
-  
-   # Create function to calculate the percent difference between chA and chB
-   # NOTE:  Add 0.01 to avoid division by zero
-   percent_diff <- function(x,y) { abs(x-y)/((x+y+0.01)/2) }
    
-   # Aggregate hourly pat mean
-   patMean <- pat_aggregate(pat, FUN = function(x) mean(x, na.rm = TRUE))
+   # ----- Validate parameters -------------------------------------------------
    
-   # Logical - Flag exceeded channel differences  
-   chDiffMask <- percent_diff(patMean$data$pm25_A, patMean$data$pm25_B) > max_diff
+   MazamaCoreUtils::stopIfNull(pat)
+   MazamaCoreUtils::stopIfNull(min_count)
+   MazamaCoreUtils::stopIfNull(returnAllColumns)
    
-   # Calculate the mean of chA and chB
-   chMean <- rowMeans(cbind(patMean$data$pm25_A, patMean$data$pm25_B), na.rm = TRUE, dims = 1L)
+   # ----- Prepare aggregated data ---------------------------------------------
    
-   # Aggregate hourly pat to NA omitted vector length
-   patCount <- pat_aggregate(pat, FUN = function(x) length(na.omit(x)))$data
+   # Hourly counts
+   countData <- 
+      pat %>%
+      pat_aggregate( function(x) { base::length(na.omit(x)) } ) %>%
+      pat_extractData()
    
-   # Logical - Flag under minimum counts
-   minCountMask <- pmin(patCount$pm25_A, patCount$pm25_B, na.rm = TRUE) < min_count
+   # Hourly means
+   meanData <-
+      pat %>%
+      pat_aggregate( function(x) { base::mean(x, na.rm = TRUE) } ) %>%
+      pat_extractData()
    
-   # Aggregate hourly pat median absolute deviation
-   patMAD <- pat_aggregate(pat, FUN = function(x) stats::mad(x, na.rm = TRUE))$data
+   # Hourly MAD
+   madData <-
+      pat %>% 
+      pat_aggregate( function(x) { stats::mad(x, na.rm = TRUE) } ) %>%
+      pat_extractData()
    
-   # Logical - Flag out-of-tolerance MAD
-   chA_MADMask <- patMAD$pm25_A > tolerance
-   chB_MADMask <- patMAD$pm25_B > tolerance
+   # Hourly pctDiff
+   A <- meanData$pm25_A
+   B <- meanData$pm25_B
+   pctDiff <- abs(A/B) / ((A + B + 0.01)/2) # add 0.01 to avoid division by zero
    
-   # Replace any masked values with NA, create new column `pm25` of channel mean
-   patMean$data <- patMean$data %>% 
-     dplyr::mutate(pm25 = chMean) %>% 
-     dplyr::mutate(pm25 = replace(.data$pm25, minCountMask, NA)) %>% 
-     dplyr::mutate(pm25 = replace(.data$pm25, chDiffMask, NA)) %>% 
-     dplyr::mutate(pm25 = replace(.data$pm25, chA_MADMask | chB_MADMask, NA))
+   # ----- Create masks --------------------------------------------------------
    
-   return(patMean)
+   # When only a fraction of the data are reporting, something is wrong.
+   # Invalidate data where:  (min_count < SOME_THRESHOLD)
+   minCountMask <- pmin(countData$pm25_A, countData$pm25_B, na.rm = TRUE) < min_count
+   
+   # When the A/B channels differ by a lot relative to their absolute value,
+   # something is rong.
+   # Invalidate data where (pctDiff > 0.5)
+   pctDiffMask <- pctDiff > 0.5
+   
+   # When the median absolute deviation within an hour is high for either 
+   # channel, something is probably wrong.
+   # Invalidate data whre (MAD > 3) on either channel
+   madMask <- (madData$pm25_A > 3) | (madData$pm25_b > 3)
+   
+   # ----- Create hourly dataframe ---------------------------------------------
+   
+   # NOTE:  Include variables used in QC so that they can be used to create a
+   # NOTE:  plot visualizing the how the QC algorithm rejects values.
+   
+   hourlyData <-
+      dplyr::tibble(datetime = meanData$datetime) %>% 
+      
+      # Create pm25 by averaging the A and B channel aggregation means
+      dplyr::mutate(pm25 = (meanData$pm25_A + meanData$pm25_B) / 2) %>%
+      
+      # Create min_count, pctDiff
+      dplyr::mutate(
+         min_count = pmin(countData$pm25_A, countData$pm25_B, na.rm = TRUE),
+         pct_diff = pctDiff,
+         mad_A = madData$pm25_A,
+         mad_B = madData$pm25_B
+      ) %>%
+      
+      # -----hourly_AB_02 QC algorithm -----
+   
+      dplyr::mutate(pm25 = replace(.data$pm25, minCountMask, NA)) %>%
+      dplyr::mutate(pm25 = replace(.data$pm25, pctDiffMask, NA)) %>%
+      dplyr::mutate(pm25 = replace(.data$pm25, madMask, NA))
+   
+   # ----- Return ---------------------------------------------------------------
+   
+   if ( !returnAllColumns ) {
+      hourlyData <- 
+         hourlyData %>%
+         dplyr::select(.data$datetime, .data$pm25)
+   }
+   
+   return(hourlyData)
    
 }

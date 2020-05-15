@@ -59,8 +59,14 @@
 #' # Create noise
 #' jitter <- rnorm(n = nrow(example_pat$data))
 #' 
-#' # Evaluate custom FUN with parameters 
-#' sensor <- pat_createAirSensor(example_pat, parameter = 'custom_pm', FUN = add_jitter, y = jitter)
+#' ## Evaluate custom FUN with parameters 
+#' #sensor <- pat_createAirSensor(
+#' #   example_pat, 
+#' #  parameter = 'custom_pm', 
+#' # FUN = add_jitter, 
+#' # y = jitter
+#' #)
+#' 
 
 pat_createAirSensor <- function(
   pat = NULL,
@@ -110,16 +116,17 @@ pat_createAirSensor <- function(
   if ( is.null(FUN) ) {
     FUN <- function(x, ...) {
       tmp_pat <- pat_aggregate(x, function(x_, ...) mean(x_, na.rm = TRUE, ...))
-      tmp_pat$data <- 
-        tmp_pat$data %>% 
+      tmp_hourlyData <- 
+        tmp_pat %>% 
+        pat_extractData() %>%
         dplyr::mutate(pm25 = rowMeans(cbind(.data$pm25_A, .data$pm25_B), na.rm = TRUE))
-      return(tmp_pat)
+      return(tmp_hourlyData)
     }
   }
   
   # Evaluate FUN function
   result <- try(
-    expr = { eval_pat <- match.fun(FUN)(pat, ...) }, #? FUN(...) or match.fun(FUN)(...)
+    expr = { hourlyData <- match.fun(FUN)(pat, ...) }, #? FUN(...) or match.fun(FUN)(...)
     silent = TRUE 
   )
   
@@ -134,14 +141,14 @@ pat_createAirSensor <- function(
   # Check hourly axis in eval pat
   # NOTE: Any missing hour is filled in with NA, so no gaps _other_ than 1 hour 
   # NOTE: and -23 should exist with index lag = 1. 
-  if ( !all(diff(lubridate::hour(eval_pat$data$datetime)) == 1 | 
-            diff(lubridate::hour(eval_pat$data$datetime)) == -23) ) {
+  if ( !all(diff(lubridate::hour(hourlyData$datetime)) == 1 | 
+            diff(lubridate::hour(hourlyData$datetime)) == -23) ) {
     stop('Error: `FUN(pat, ...)` does not return regular hourly datetime axis. 
          Please see `?pat_createAirSensor` for details.')
   }
   
-  # Check if parameter is defined in eval pat
-  if ( !parameter %in% names(eval_pat$data) ) {
+  # Check if parameter is defined in hourlyData
+  if ( !parameter %in% names(hourlyData) ) {
     stop('`parameter` is not defined in `FUN(pat, ...)` output. 
     Please see `?pat_createAirSensor` for details.')
   }
@@ -150,7 +157,7 @@ pat_createAirSensor <- function(
   
   # Select data and cleanup any NaN or Inf that might have snuck in
   data <-
-    eval_pat$data %>%
+    hourlyData %>%
     dplyr::select(.data$datetime, .data[[parameter]]) %>% 
     dplyr::mutate_all( function(x) replace(x, which(is.nan(x)), NA) ) %>%
     dplyr::mutate_all( function(x) replace(x, which(is.infinite(x)), NA) ) 
@@ -163,11 +170,12 @@ pat_createAirSensor <- function(
   # ----- Create metadata  -----------------------------------------------------
   
   # Copy metadata from pat object
-  meta <- 
-    eval_pat$meta %>% 
-    as.data.frame()
+  # meta <- 
+  #   eval_pat$meta %>% 
+  #   as.data.frame()
+  meta <- pat$meta
   
-  # Add metadata found in PWFSLSmoke ws_monitor objects
+  # Add standard metadata found in PWFSLSmoke ws_monitor objects
   meta$monitorID <- meta$deviceDeploymentID
   meta$elevation <- as.numeric(NA)
   meta$siteName <- meta$label

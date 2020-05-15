@@ -1,3 +1,10 @@
+# AirSensor 0.7.6
+
+* `pat_createAirSensor()` 
+* `pas_load()` now ignores duplicated warning messages.
+* The upper threshold for `pm25` in `pat_qc()` was increased to 2,000 based on 
+a 2020-05-14 conversation with PurpleAir founder Adrian Dybwad.
+
 # AirSensor 0.7.5
 
 This release completely refactors the way that aggregation and QC are 

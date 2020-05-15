@@ -2,14 +2,9 @@
 % Please edit documentation in R/PurpleAirQC_hourly_AB_02.R
 \name{PurpleAirQC_hourly_AB_02}
 \alias{PurpleAirQC_hourly_AB_02}
-\title{Apply QC to Aggregation Statistics}
+\title{Apply hourly aggregation QC using "AB_O2" algorithm}
 \usage{
-PurpleAirQC_hourly_AB_02(
-  pat = NULL,
-  min_count = 20,
-  tolerance = 3,
-  max_diff = 0.5
-)
+PurpleAirQC_hourly_AB_02(pat = NULL, min_count = 20, returnAllColumns = FALSE)
 }
 \arguments{
 \item{pat}{A PurpleAir timeseries object.}
@@ -17,17 +12,25 @@ PurpleAirQC_hourly_AB_02(
 \item{min_count}{Aggregation bins with fewer than \code{min_count} measurements
 will be marked as NA.}
 
-\item{tolerance}{A maximum median absolute deviation threshold.}
-
-\item{max_diff}{A maximum percentage difference between pat channels (50\% = 0.5).}
+\item{returnAllColumns}{Logical specifying whether to return all columns
+of statistical data generated for QC algorithm or just the final \code{pm25}
+result.}
 }
 \value{
 Data frame with columns \code{datetime} and \code{pm25}.
 }
 \description{
 Creates a \code{pm25} timeseries by averaging aggregated data
-from the A and B channels, calculates MAD within the threshold, and values 
-within a maxium percentage difference.
+from the A and B channels and applying the following QC logic:
+
+\enumerate{
+\item{Create pm25 by averaging the A and B channel aggregation means}
+\item{Invalidate data where:  (min_count < 20)}
+\item{Invalidate data where:  (A/B hourly MAD > 3)}
+\item{Invalidate data where:  (A/B hourly pct_diff > 0.5)}
+}
+
+MAD = "Median Absolute Deviation"
 }
 \note{
 Purple Air II sensors reporting after the June, 2019 firmware
@@ -36,6 +39,14 @@ setting of \code{min_count = 20} is equivalent to a required data recovery
 rate of 67\%.
 }
 \examples{
-QCed <- PurpleAirQC_hourly_AB_02(example_pat)
+\dontrun{
+library(AirSensor)
 
+df <- 
+  example_pat \%>\%
+  pat_qc() \%>\%
+  PurpleAirQC_hourly_AB_02()
+  
+plot(df)
+}
 }

@@ -183,8 +183,8 @@ pat_extractMeta <- function(pat) {
 #'
 #' pat %>%
 #'   pat_extractData() %>% # Note: Extract the timeseries data.frame
-#'   pat_aggregateData(FUN_ttest)
-pat_aggregateData <- function(
+#'   patData_aggregate(FUN_ttest)
+patData_aggregate <- function(
   df,
   FUN = function(df) { mean(df$pm25_A + df$pm25_B, na.rm = TRUE) },
   unit = 'minutes',

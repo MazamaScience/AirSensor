@@ -58,6 +58,7 @@ pat_externalFit <- function(
   channel = "ab",
   replaceOutliers = TRUE,
   qc_algorithm = "hourly_AB_01",
+  # TODO:  allow FUN as an argument
   min_count = 20
 ) {
   
@@ -89,9 +90,7 @@ pat_externalFit <- function(
     pat_createAirSensor( 
       parameter = 'pm25',
       FUN = PurpleAirQC_hourly_AB_02,
-      min_count = 20, 
-      tolerance = 3,
-      max_diff = 0.5
+      min_count = min_count
     ) %>% 
     PWFSLSmoke::monitor_extractData()
   names(paHourly_data) <- c("datetime", "pa_pm25")

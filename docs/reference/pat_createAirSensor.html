@@ -79,7 +79,7 @@ metadata for compatibility with the *PWFSLSmoke* package." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.6</span>
       </span>
     </div>
 
@@ -242,8 +242,13 @@ support for in the <code>FUN</code>.</p>
 <span class='co'># Create noise</span>
 <span class='no'>jitter</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>example_pat</span>$<span class='no'>data</span>))
 
-<span class='co'># Evaluate custom FUN with parameters </span>
-<span class='no'>sensor</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_createAirSensor</span>(<span class='no'>example_pat</span>, <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>'custom_pm'</span>, <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='no'>add_jitter</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>jitter</span>)</div></pre>
+<span class='co'>## Evaluate custom FUN with parameters </span>
+<span class='co'>#sensor &lt;- pat_createAirSensor(</span>
+<span class='co'>#   example_pat, </span>
+<span class='co'>#  parameter = 'custom_pm', </span>
+<span class='co'># FUN = add_jitter, </span>
+<span class='co'># y = jitter</span>
+<span class='co'>#)</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

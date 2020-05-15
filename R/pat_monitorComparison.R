@@ -49,6 +49,7 @@ pat_monitorComparison <- function(
   hourly_stroke = 0.6,
   pa_color = "purple",
   pwfsl_color = "black", 
+  # TODO:  allow FUN as an argument
   timezone = NULL
 ) {
   

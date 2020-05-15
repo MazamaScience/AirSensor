@@ -148,3 +148,127 @@ pat_aggregateOutlierCounts <- function(
   return(agg)
   
 }
+
+# ===== INTERNAL FUNCTION ======================================================
+
+#' @keywords internal
+#'
+.pat_agg <- function(pat, stat, periodSeconds, parameters) {
+
+  options(warn = -1) # Ignore all warnings
+
+  if ( stat == "mean"       ) func <- function(x) mean(x, na.rm = TRUE)
+  if ( stat == "median"     ) func <- function(x) median(x, na.rm = TRUE)
+  if ( stat == "count"      ) func <- function(x) length(na.omit(x))
+  if ( stat == "sd"         ) func <- function(x) sd(x, na.rm = TRUE)
+  if ( stat == "sum"        ) func <- function(x) sum(na.omit(x))
+  if ( stat == "max"        ) func <- function(x) max(na.omit(x))
+  if ( stat == "min"        ) func <- function(x) min(na.omit(x))
+  if ( stat == "tstats"     ) func <- function(x) list(x)
+
+  # Remove duplicated time entries and create datetime axis (if any)
+  datetime <-
+    pat$data$datetime[which(!duplicated.POSIXlt(pat$data$datetime))]
+
+  # Create data frame
+  data <- data.frame(pat$data)[, parameters]
+
+  # zoo with datetime index
+  zz <- zoo::zoo(data, order.by = datetime)
+
+  # NOTE:  Calling aggregate() will dispatch to aggregate.zoo() because the
+  # NOTE:  argument is a "zoo" object. Unfortunately, we cannot call
+  # NOTE:  zoo::aggregate.zoo() explicitly because this function is not
+  # NOTE:  exported by the zoo package.
+
+  # Aggregate
+  zagg <-
+    aggregate(
+      zz,
+      by = time(zz) - as.numeric(time(zz)) %% periodSeconds,
+      FUN = func
+    )
+
+  # ----- !T-test --------------------------------------------------------------
+
+  if ( stat != "tstats" ) {
+
+    # Fortify to data.frame
+    tbl <- zoo::fortify.zoo(zagg, names = "datetime")
+
+    # Rename
+    colnames(tbl)[-1] <- paste0(colnames(tbl)[-1], "_", stat)
+
+    return(tbl)
+
+  }
+
+  # ----- T-test ---------------------------------------------------------------
+
+  if ( stat == "tstats" ) {
+
+    # Internal t.test function that will always respond, even in the face of
+    # problematic data.
+    .ttest <- function(x, y) {
+
+      if ( length(na.omit(x)) <= 2 || length(na.omit(y)) <= 2 ) {
+        # Not enough valid data
+        return(t.test(c(0,0,0), c(0,0,0)))
+      } else if ( sd(na.omit(x)) == 0 || sd(na.omit(y)) == 0 ) {
+        # DC signal in at least one channel
+        return(t.test(c(0,0,0), c(0,0,0)))
+      } else {
+        # Looking good -- calculate t.test
+        return(t.test(x, y, paired = FALSE))
+      }
+
+    }
+
+    # NOTE:  X below ends up with a two-column matrix where each cell contains an
+    # NOTE:  unnamed List of length one containing a numeric vector. Each
+    # NOTE:  row of the matrix thus contains a vector of pm25_A and pm25_B
+    # NOTE:  in columns 1 and 2.
+
+    # Map/Reduce t.test() to nested bins in matrix rows
+    tt <-
+      apply(
+        X = zoo::coredata(zagg),
+        MARGIN = 1,
+        FUN = function(x) Reduce(.ttest, x)
+      )
+
+    # Create and fill stats lists
+    t_score <-  p_value <- df_value <- vector("list", length(names(tt)))
+
+    for ( i in names(tt) ) {
+
+      val <- tt[[i]]
+      ind <- which(names(tt) == i)
+
+      t_score[[ind]] <- val[["statistic"]]
+      p_value[[ind]] <- val[["p.value"]]
+      df_value[[ind]] <- val[["parameter"]]
+
+    }
+
+    # Bind unlisted stats ->
+    # Create zoo with aggregated datetime index ->
+    # Fortify to data.frame
+    tbl <-
+      zoo::fortify.zoo(
+        zoo::zoo(
+          cbind(
+            "pm25_t" = unlist(t_score),
+            "pm25_p" = unlist(p_value),
+            "pm25_df" = unlist(df_value)
+          ),
+          order.by = zoo::index(zagg)
+        ),
+        names = "datetime"
+      )
+
+    return(tbl)
+
+  }
+
+}

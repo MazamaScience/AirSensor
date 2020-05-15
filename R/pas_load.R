@@ -33,7 +33,7 @@
 #' @param timezone Timezone used to interpret \code{datestamp}.
 #' @param archival Logical specifying whether a version should be loaded that
 #' includes sensors that have stopped reporting.
-#' @param verbose Logical to specify warning and error message display.
+#' @param verbose Logical controlling the generation of warning and error messages.
 #' 
 #' @return A PurpleAir Synoptic \emph{pas} object.
 #' 
@@ -46,7 +46,7 @@
 #' pas %>% 
 #'   pas_filter(stateCode == "CA") %>%
 #'   pas_leaflet()
-#' }
+#' } 
 
 pas_load <- function(
   datestamp = NULL,
@@ -137,6 +137,8 @@ pas_load <- function(
       dataDir <- paste0(baseDir, '/pas/', yearstamp)
       dataUrl <- NULL
     }
+
+    # TODO:  Revisit better ways to ignore loadDataFile() messages
     
     # Get data from URL or directory
     result <- try({
@@ -145,11 +147,13 @@ pas_load <- function(
           pas <- MazamaCoreUtils::loadDataFile(filename, dataUrl, dataDir)
         } else {
           # Suppress any messages from `loadDataFile` such as `Error : Data file could not be loaded from: `, etc.
-          invisible(capture.output(pas <- MazamaCoreUtils::loadDataFile(filename, dataUrl, dataDir)))
+          ignoredMessages <- capture.output({
+            pas <- MazamaCoreUtils::loadDataFile(filename, dataUrl, dataDir)
+          })
         }
       })
     }, silent = TRUE)
-
+    
     successful <- !("try-error" %in% class(result))
     localDate <- localDate - lubridate::days(1)
     tries <- tries + 1
@@ -159,12 +163,12 @@ pas_load <- function(
   # NOTE:  We used suppressWarnings() above so that we can have a more
   # NOTE:  uniform error response for the large variety of reasons that
   # NOTE:  loading might fail.
-
+  
   if ( !successful ) {
     stop(paste("Data file could not be loaded after ", retries, " tries"),
-         call.=FALSE)
+         call. = FALSE)
   }
-
+  
   
   # ----- Return ---------------------------------------------------------------
   

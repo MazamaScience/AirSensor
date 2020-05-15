@@ -65,8 +65,14 @@ add_jitter <- function(pat, y) {
 # Create noise
 jitter <- rnorm(n = nrow(example_pat$data))
 
-# Evaluate custom FUN with parameters 
-sensor <- pat_createAirSensor(example_pat, parameter = 'custom_pm', FUN = add_jitter, y = jitter)
+## Evaluate custom FUN with parameters 
+#sensor <- pat_createAirSensor(
+#   example_pat, 
+#  parameter = 'custom_pm', 
+# FUN = add_jitter, 
+# y = jitter
+#)
+
 }
 \seealso{
 \link{PurpleAirQC_hourly_AB_02}

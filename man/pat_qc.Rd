@@ -35,6 +35,17 @@ filtering is dependent upon a properly functioning humidity sensor. Humidity
 filtering is disabled by default because it can result in the invalidation
 of many potentially valid PM2.5 measurements.
 }
+\details{
+Out of spec thresholds are set so that anything outside of
+these the given range should represent a value that is not physically possible
+in an ambient setting on planet Earth. 
+
+\itemize{
+\item{\code{humidity} -- [0:100]}
+\item{\code{temperature} -- [-40:185]}
+\item{\code{pm25} -- [0:2000]}
+}
+}
 \examples{
 \donttest{
 pat <- example_pat_failure_A
