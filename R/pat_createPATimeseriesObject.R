@@ -12,9 +12,9 @@
 #' resolution of seconds to 'wide format' with temporal resolution in minutes.
 #' In the process, the following columns of data are omitted:
 #' \itemize{
-#' \item{\code{pm1_atm}}
-#' \item{\code{pm2.5_atm}}
-#' \item{\code{pm10_atm}}
+#' \item{\code{pm1_0_atm}}
+#' \item{\code{pm2_5_atm}}
+#' \item{\code{pm10_0_atm}}
 #' }
 #' 
 #' @note 
@@ -52,11 +52,11 @@
 #'   startdate = 20180908
 #' )
 #' 
-#' pat <- createPATimeseriesObject(pat_raw)
+#' pat <- pat_createPATimeseriesObject(pat_raw)
 #' pat_multiplot(pat)
 #' }
 
-createPATimeseriesObject <- function(
+pat_createPATimeseriesObject <- function(
   pat_raw = NULL
 ) {
 
@@ -124,8 +124,8 @@ createPATimeseriesObject <- function(
   # NOTE:  a 'meta' dataframe and a 'data' dataframe:
   # NOTE:  
   # NOTE:  > names(pat_raw$data)
-  # NOTE:   [1] "datetime"  "entry_id"  "pm1_atm"   "pm2.5_atm" "pm10_atm"    
-  # NOTE:   [6] "uptime"    "rssi"      "temp"      "humidity"  "pm2.5_cf1"
+  # NOTE:   [1] "datetime"  "entry_id"  "pm1_0_atm"   "pm2_5_atm" "pm10_0_atm"    
+  # NOTE:   [6] "uptime"    "rssi"      "temp"      "humidity"  "pm2_5_cf_1"
   # NOTE:  [11] "channel"   "memory"    "adc0"     
   
   # Extract useful columns from channel A data
@@ -137,15 +137,15 @@ createPATimeseriesObject <- function(
                   .data$rssi, 
                   .data$temperature, 
                   .data$humidity, 
-                  .data$pm1_atm, 
-                  .data$pm2.5_atm, 
-                  .data$pm10_atm, 
-                  .data$pm2.5_cf1) %>%
+                  .data$pm1_0_atm, 
+                  .data$pm2_5_atm, 
+                  .data$pm10_0_atm, 
+                  .data$pm2_5_cf_1) %>%
     dplyr::rename(datetime_A = .data$datetime, 
-                  pm1_atm_A = .data$pm1_atm,
-                  pm25_atm_A = .data$pm2.5_atm,
-                  pm10_atm_A = .data$pm10_atm,
-                  pm25_cf1_A = .data$pm2.5_cf1) %>%
+                  pm1_0_atm_A = .data$pm1_0_atm,
+                  pm25_atm_A = .data$pm2_5_atm,
+                  pm10_0_atm_A = .data$pm10_0_atm,
+                  pm25_cf1_A = .data$pm2_5_cf_1) %>%
     dplyr::mutate(pm25_A = .data$pm25_atm_A)
   
   # NOTE:  Expedient conversion to a minute axis with floor_date() 
@@ -160,15 +160,15 @@ createPATimeseriesObject <- function(
     dplyr::select(.data$datetime, 
                   .data$memory, 
                   .data$adc0, 
-                  .data$pm1_atm, 
-                  .data$pm2.5_atm, 
-                  .data$pm10_atm, 
-                  .data$pm2.5_cf1) %>%
+                  .data$pm1_0_atm, 
+                  .data$pm2_5_atm, 
+                  .data$pm10_0_atm, 
+                  .data$pm2_5_cf_1) %>%
     dplyr::rename(datetime_B = .data$datetime, 
-                  pm1_atm_B = .data$pm1_atm,
-                  pm25_atm_B = .data$pm2.5_atm,
-                  pm10_atm_B = .data$pm10_atm,
-                  pm25_cf1_B = .data$pm2.5_cf1) %>%
+                  pm1_0_atm_B = .data$pm1_0_atm,
+                  pm25_atm_B = .data$pm2_5_atm,
+                  pm10_0_atm_B = .data$pm10_0_atm,
+                  pm25_cf1_B = .data$pm2_5_cf_1) %>%
     dplyr::mutate(pm25_B = .data$pm25_atm_B)
   
   # NOTE:  Expedient conversion to a minute axis with floor_date() 
@@ -182,12 +182,12 @@ createPATimeseriesObject <- function(
     dplyr::select(.data$datetime, 
                   .data$pm25_A, 
                   .data$pm25_B, 
-                  .data$pm1_atm_A, 
-                  .data$pm1_atm_B, 
+                  .data$pm1_0_atm_A, 
+                  .data$pm1_0_atm_B, 
                   .data$pm25_atm_A, 
                   .data$pm25_atm_B, 
-                  .data$pm10_atm_A, 
-                  .data$pm10_atm_B, 
+                  .data$pm10_0_atm_A, 
+                  .data$pm10_0_atm_B, 
                   .data$pm25_cf1_A, 
                   .data$pm25_cf1_B, 
                   .data$temperature, 

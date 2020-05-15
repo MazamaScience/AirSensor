@@ -1,3 +1,10 @@
+# AirSensor 0.7.7
+
+* Improved `pat_downloadParseData()` data access times and also reduced the
+volume of data downloaded by switching from the `.json` to the `.csv` API from
+ThingSpeak.
+* Including dependency on **httpcode** package.
+
 # AirSensor 0.7.6
 
 * `pat_createAirSensor()` 
@@ -14,7 +21,7 @@ much more flexible for those developing QC algorithms.
 * New `pat_aggregate()` and `pat_createAirSensor()` functions.
 * New default QC function `PurpleAirQC_hourly_AB_02()`.
 * `pat_externalFit()` and `pat_monitorComparison()` updated to use new 
-aggegation/QC functions.
+aggregation/QC functions.
 * Previous version of `pat_aggregate()` and `pat_createAirSensor()` are now
 now available as `pat_aggregate_old` and `pat_createAirSensor_old()`.
 * `PurpleAirQC_validationPlot()` renamed to `PurpleAirQC_validationPlot_old()`.
@@ -91,8 +98,8 @@ rather than an empty `meta` dataframe.
 # AirSensor 0.6.9
 
 * Archive directory structure was changed so that monthly pat files are found
-in a monthly directiory underneath `pat/YYYY/`. The `pat_loadMonth()` function
-was modified to search in this locaiton.
+in a monthly directory underneath `pat/YYYY/`. The `pat_loadMonth()` function
+was modified to search in this location.
 * `pat$meta$pm25_A/B` values now come from the raw data _outdoor_ value
 ` PM2.5 (ATM)` rather than the _indoor_ value `PM2.5 (CF=1)`. See
 https://www2.purpleair.com/community/faq#!hc-what-is-the-difference-between-cf-1-and-cf-atm
@@ -500,7 +507,7 @@ from 10/30 to 20/30 (`min_count = 20`).
 * Updated "PurpleAir Timeseries" vignette.
 * Added `returnAllColumns` option to `PurpleAirQC_~1 functions.
 * New `PurpleQC_validationPlot()` function.
-* `createPATimeseriesObject()` now retains additional metadata:
+* `pat_createPATimeseriesObject()` now retains additional metadata:
 `sensorManufacturer`, `targetPollutant`, `technologyType`, `communityRegion`
 * Updated all package datasets so they include additional metadata.
 
@@ -508,7 +515,7 @@ from 10/30 to 20/30 (`min_count = 20`).
 
 * Fixed `airsensor_load()` so that it includes monitors found in _any_ month
 rather that those found in _every_ month.
-* Fixed `createPATimeseriesObject()` and `pat_createAirSensor()` so that they 
+* Fixed `pat_createPATimeseriesObject()` and `pat_createAirSensor()` so that they 
 no longer generate `NaN` or `Inf` values.
 
 # AirSensor 0.3.5

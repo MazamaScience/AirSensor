@@ -201,14 +201,14 @@ are dropped.</p>
     <pre class="examples"><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>AirSensor</span>)
 <span class='no'>unhealthy</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_filter</span>(<span class='no'>example_pat</span>, <span class='no'>pm25_A</span> <span class='kw'>&gt;</span> <span class='fl'>55.5</span>, <span class='no'>pm25_B</span> <span class='kw'>&gt;</span> <span class='fl'>55.5</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>unhealthy</span>$<span class='no'>data</span>)</div><div class='output co'>#&gt;              datetime pm25_A pm25_B pm1_atm_A pm1_atm_B pm25_atm_A pm25_atm_B
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>unhealthy</span>$<span class='no'>data</span>)</div><div class='output co'>#&gt;              datetime pm25_A pm25_B pm1_0_atm_A pm1_0_atm_B pm25_atm_A pm25_atm_B
 #&gt; 1 2018-08-03 01:30:00 110.90 110.22     98.56     97.68     162.74     160.27
 #&gt; 2 2018-08-06 16:46:00  57.35  56.64     65.81     66.72      85.97      84.72
 #&gt; 3 2018-08-14 06:52:00  56.21  59.62     47.97     51.88      85.28      90.52
 #&gt; 4 2018-08-14 07:01:00  56.54  58.05     47.74     52.32      85.74      88.02
 #&gt; 5 2018-08-14 07:04:00  56.55  59.22     48.17     51.61      85.85      89.88
 #&gt; 6 2018-08-14 07:05:00  56.03  59.39     47.17     52.17      84.90      90.24
-#&gt;   pm10_atm_A pm10_atm_B temperature humidity uptime adc0 rssi
+#&gt;   pm10_0_atm_A pm10_0_atm_B temperature humidity uptime adc0 rssi
 #&gt; 1     185.28     180.93          74       47   6957 0.05  -73
 #&gt; 2      88.87      86.97          72       54   1015 0.06  -74
 #&gt; 3      96.38     104.57          70       57   1737 0.06  -74

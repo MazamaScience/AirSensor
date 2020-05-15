@@ -230,7 +230,7 @@ provided to this function. This means that functions like <code>mean</code> and
 <span class='no'>pat</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>pat_aggregate</span>(<span class='no'>FUN_mean</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='pat_extractDataFrame.html'>pat_extractData</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='fl'>1</span>:<span class='fl'>9</span>)</div><div class='output co'>#&gt;               datetime    pm25_A    pm25_B pm1_atm_A pm1_atm_B pm25_atm_A
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='fl'>1</span>:<span class='fl'>9</span>)</div><div class='output co'>#&gt;               datetime    pm25_A    pm25_B pm1_0_atm_A pm1_0_atm_B pm25_atm_A
 #&gt; 1  2018-08-13 07:00:00  4.518222  5.016667  3.227778  3.713778   4.518222
 #&gt; 2  2018-08-13 08:00:00  4.989556  5.487778  3.504222  4.110000   4.989556
 #&gt; 3  2018-08-13 09:00:00  5.557556  5.868222  3.912222  4.442889   5.557556
@@ -255,7 +255,7 @@ provided to this function. This means that functions like <code>mean</code> and
 #&gt; 22 2018-08-14 04:00:00 49.525333 52.265556 39.775111 45.658889  70.538444
 #&gt; 23 2018-08-14 05:00:00 51.682889 54.769333 42.534444 48.586667  75.788222
 #&gt; 24 2018-08-14 06:00:00 53.074222 57.185556 44.307333 50.618000  78.899111
-#&gt;    pm25_atm_B pm10_atm_A pm10_atm_B
+#&gt;    pm25_atm_B pm10_0_atm_A pm10_0_atm_B
 #&gt; 1    5.016667   4.840667   5.565111
 #&gt; 2    5.487778   5.389333   5.962444
 #&gt; 3    5.868222   6.030000   6.422444
@@ -284,7 +284,7 @@ provided to this function. This means that functions like <code>mean</code> and
 <span class='no'>pat</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>pat_aggregate</span>(<span class='no'>FUN_max</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='pat_extractDataFrame.html'>pat_extractData</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='fl'>1</span>:<span class='fl'>9</span>)</div><div class='output co'>#&gt;               datetime pm25_A pm25_B pm1_atm_A pm1_atm_B pm25_atm_A pm25_atm_B
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='fl'>1</span>:<span class='fl'>9</span>)</div><div class='output co'>#&gt;               datetime pm25_A pm25_B pm1_0_atm_A pm1_0_atm_B pm25_atm_A pm25_atm_B
 #&gt; 1  2018-08-13 07:00:00   6.19   6.27      4.29      5.09       6.19       6.27
 #&gt; 2  2018-08-13 08:00:00   5.98   6.81      4.34      4.93       5.98       6.81
 #&gt; 3  2018-08-13 09:00:00   6.69   7.07      4.57      5.45       6.69       7.07
@@ -309,7 +309,7 @@ provided to this function. This means that functions like <code>mean</code> and
 #&gt; 22 2018-08-14 04:00:00  51.95  55.08     43.03     49.07      77.38      83.59
 #&gt; 23 2018-08-14 05:00:00  55.83  58.31     47.00     51.65      84.80      88.64
 #&gt; 24 2018-08-14 06:00:00  56.21  60.43     48.31     54.48      85.28      91.88
-#&gt;    pm10_atm_A pm10_atm_B
+#&gt;    pm10_0_atm_A pm10_0_atm_B
 #&gt; 1        7.14       6.76
 #&gt; 2        7.10       7.31
 #&gt; 3        7.76       7.48
@@ -338,7 +338,7 @@ provided to this function. This means that functions like <code>mean</code> and
 <span class='no'>pat</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>pat_aggregate</span>(<span class='no'>FUN_count</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='pat_extractDataFrame.html'>pat_extractData</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='fl'>1</span>:<span class='fl'>9</span>)</div><div class='output co'>#&gt;               datetime pm25_A pm25_B pm1_atm_A pm1_atm_B pm25_atm_A pm25_atm_B
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='fl'>1</span>:<span class='fl'>9</span>)</div><div class='output co'>#&gt;               datetime pm25_A pm25_B pm1_0_atm_A pm1_0_atm_B pm25_atm_A pm25_atm_B
 #&gt; 1  2018-08-13 07:00:00     45     45        45        45         45         45
 #&gt; 2  2018-08-13 08:00:00     45     45        45        45         45         45
 #&gt; 3  2018-08-13 09:00:00     45     45        45        45         45         45
@@ -363,7 +363,7 @@ provided to this function. This means that functions like <code>mean</code> and
 #&gt; 22 2018-08-14 04:00:00     45     45        45        45         45         45
 #&gt; 23 2018-08-14 05:00:00     45     45        45        45         45         45
 #&gt; 24 2018-08-14 06:00:00     45     45        45        45         45         45
-#&gt;    pm10_atm_A pm10_atm_B
+#&gt;    pm10_0_atm_A pm10_0_atm_B
 #&gt; 1          45         45
 #&gt; 2          45         45
 #&gt; 3          45         45
@@ -393,14 +393,14 @@ provided to this function. This means that functions like <code>mean</code> and
   <span class='fu'>pat_aggregate</span>(<span class='no'>FUN_max</span>, <span class='kw'>unit</span> <span class='kw'>=</span> <span class='st'>"minutes"</span>, <span class='kw'>count</span> <span class='kw'>=</span> <span class='fl'>10</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='pat_extractDataFrame.html'>pat_extractData</a></span>() <span class='kw'>%&gt;%</span>
   <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='fl'>1</span>:<span class='fl'>9</span>) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/slice.html'>slice</a></span>(<span class='fl'>1</span>:<span class='fl'>6</span>)</div><div class='output co'>#&gt;              datetime pm25_A pm25_B pm1_atm_A pm1_atm_B pm25_atm_A pm25_atm_B
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/slice.html'>slice</a></span>(<span class='fl'>1</span>:<span class='fl'>6</span>)</div><div class='output co'>#&gt;              datetime pm25_A pm25_B pm1_0_atm_A pm1_0_atm_B pm25_atm_A pm25_atm_B
 #&gt; 1 2018-08-13 07:00:00   6.19   6.27      4.29      5.09       6.19       6.27
 #&gt; 2 2018-08-13 07:10:00   5.85   5.56      4.24      4.12       5.85       5.56
 #&gt; 3 2018-08-13 07:20:00   5.48   5.50      3.67      4.11       5.48       5.50
 #&gt; 4 2018-08-13 07:30:00   4.81   4.79      3.05      3.40       4.81       4.79
 #&gt; 5 2018-08-13 07:40:00   4.71   5.31      3.29      4.00       4.71       5.31
 #&gt; 6 2018-08-13 07:50:00   4.95   5.70      3.76      3.91       4.95       5.70
-#&gt;   pm10_atm_A pm10_atm_B
+#&gt;   pm10_0_atm_A pm10_0_atm_B
 #&gt; 1       7.14       6.76
 #&gt; 2       5.98       6.57
 #&gt; 3       5.95       6.55

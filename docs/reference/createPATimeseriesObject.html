@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create a PurpleAir Timeseries object — createPATimeseriesObject • AirSensor</title>
+<title>Create a PurpleAir Timeseries object — pat_createPATimeseriesObject • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,13 +42,13 @@
 
 
 
-<meta property="og:title" content="Create a PurpleAir Timeseries object — createPATimeseriesObject" />
+<meta property="og:title" content="Create a PurpleAir Timeseries object — pat_createPATimeseriesObject" />
 <meta property="og:description" content="The 'data' dataframe is converted from 'long format' with temporal
 resolution of seconds to 'wide format' with temporal resolution in minutes.
 In the process, the following columns of data are omitted:
-pm1_atm
-pm2.5_atm
-pm10_atm
+pm1_0_atm
+pm2_5_atm
+pm10_0_atm
 
 " />
 <meta name="twitter:card" content="summary" />
@@ -165,22 +165,22 @@ pm10_atm
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create a PurpleAir Timeseries object</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/createPATimeseriesObject.R'><code>R/createPATimeseriesObject.R</code></a></small>
-    <div class="hidden name"><code>createPATimeseriesObject.Rd</code></div>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_createPATimeseriesObject.R'><code>R/pat_createPATimeseriesObject.R</code></a></small>
+    <div class="hidden name"><code>pat_createPATimeseriesObject.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>The 'data' dataframe is converted from 'long format' with temporal
 resolution of seconds to 'wide format' with temporal resolution in minutes.
 In the process, the following columns of data are omitted:</p><ul>
-<li><p><code>pm1_atm</code></p></li>
-<li><p><code>pm2.5_atm</code></p></li>
-<li><p><code>pm10_atm</code></p></li>
+<li><p><code>pm1_0_atm</code></p></li>
+<li><p><code>pm2_5_atm</code></p></li>
+<li><p><code>pm10_0_atm</code></p></li>
 </ul>
 
     </div>
 
-    <pre class="usage"><span class='fu'>createPATimeseriesObject</span>(<span class='kw'>pat_raw</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>pat_createPATimeseriesObject</span>(<span class='kw'>pat_raw</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -232,7 +232,7 @@ within their airshed.
   <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fl'>20180908</span>
 )
 
-<span class='no'>pat</span> <span class='kw'>&lt;-</span> <span class='fu'>createPATimeseriesObject</span>(<span class='no'>pat_raw</span>)
+<span class='no'>pat</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_createPATimeseriesObject</span>(<span class='no'>pat_raw</span>)
 <span class='fu'><a href='pat_multiplot.html'>pat_multiplot</a></span>(<span class='no'>pat</span>)
 }</div></pre>
   </div>

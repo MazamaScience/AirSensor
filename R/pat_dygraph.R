@@ -3,7 +3,7 @@
 #' 
 #' @title Interactive time series plot
 #' 
-#' @param pat PurpleAir Timeseries \emph{pat} object from \code{createPATimeseriesObject()}
+#' @param pat PurpleAir Timeseries \emph{pat} object from \code{pat_createPATimeseriesObject()}
 #' @param parameter Data to display: "pm25", "humidity", "temperature"
 #' @param sampleSize Either an integer or fraction to determine sample size
 #' @param title title text

@@ -11,17 +11,31 @@
 #' @param startdate Desired start time (ISO 8601).
 #' @param enddate Desired end time (ISO 8601).
 #' @param timezone Timezone used to interpret start and end dates.
-#' @param baseURL Base URL for Thingspeak API.
+#' @param baseUrl Base URL for Thingspeak API.
 #' 
-#' @return List of type \code{pa_timeseries} containing \code{meta} and 
-#' \code{data} elements with timeseries metadata and data, respectively.
+#' @return List containing multiple timeseries dataframes.
 #' 
 #' @description Downloads timeseries data for a specific PurpleAir sensor 
-#' from the ThingSpeak API and parses the content into a dataframe. This 
-#' function will always return dataframe with the appropriate columns even if no 
+#' from the ThingSpeak API and parses the content into individual dataframes. This 
+#' function will always return dataframes with the appropriate columns even if no 
 #' data are returned from ThingSpeak.
 #'
-#' @references https://www2.purpleair.com/community/faq
+#' The returned list contains the following dataframes:
+#' 
+#' \itemize{
+#' \item{\code{meta} -- \code{pas} records for the specified sensor}
+#' \item{\code{A_PRIMARY} -- channel A primary dataset}
+#' \item{\code{A_SECONDARY} -- channel A secondary dataset}
+#' \item{\code{B_PRIMARY} -- channel B primary dataset}
+#' \item{\code{B_SECONDARY} -- channel B secondary dataset}
+#' }
+#' 
+#' These dataframes contain \strong{ALL} data available from ThingSpeak for the
+#' specified sensor and time period.
+#' 
+#' See the references.
+#' 
+#' @references https://www2.purpleair.com/community/faq#!hc-sd-card-csv-file-header
 
 pat_downloadParseData <- function(
   id = NULL,
@@ -30,17 +44,17 @@ pat_downloadParseData <- function(
   startdate = NULL,
   enddate = NULL,
   timezone = NULL,
-  baseURL = "https://api.thingspeak.com/channels/"
+  baseUrl = "https://api.thingspeak.com/channels/"
 ) {
   
-  # NOTE:  This function should never stop(). Instead, if now data are returned
+  # NOTE:  This function should never stop(). Instead, if no data are returned
   # NOTE:  from ThingSpeak, it will create log messages and return an empty
   # NOTE:  dataframe with the proper columns so that pat_createNew() can use
   # NOTE:  bind_rows().
   
   # ----- Validate parameters --------------------------------------------------
   
-  MazamaCoreUtils::stopIfNull(baseURL)
+  MazamaCoreUtils::stopIfNull(baseUrl)
   
   # Get the deviceDeploymentID
   if ( is.null(id) && is.null(label) ) {
@@ -122,374 +136,342 @@ pat_downloadParseData <- function(
   
   # Combine channel A and B monitor metadata
   meta <- dplyr::bind_rows(A_meta, B_meta)
-  
-  # ----- Create empty data JSON -----------------------------------------------
-  
-  # Handle "no data" response by generating an empty but complete "pat" object
-  err_JSON <- ('{
-       "channel": {
-        "id": 0,
-        "name": "NA",
-        "latitude": "0.0",
-        "longitude": "0.0",
-        "field1": "PM1.0 (ATM)",
-        "field2": "PM2.5 (ATM)",
-        "field3": "PM10.0 (ATM)",
-        "field4": "Uptime",
-        "field5": "RSSI",
-        "field6": "Temperature",
-        "field7": "Humidity",
-        "field8": "PM2.5 (CF=1)",
-        "created_at": "2000-01-01T12:00:00Z",
-        "updated_at": "2000-01-01T12:00:00Z",
-        "last_entry_id": 0
-      },
-      "feeds": [
-        {
-          "created_at": "2000-01-01T12:00:00Z",
-          "entry_id": 0,
-          "field1": "NA",
-          "field2": "NA",
-          "field3": "NA",
-          "field4": "NA",
-          "field5": "NA",
-          "field6": "NA",
-          "field7": "NA",
-          "field8": "NA"
-        }
-        ]
-      }')
-  
-  err_list <- jsonlite::fromJSON(
-    txt = err_JSON,
-    simplifyVector = TRUE,
-    simplifyDataFrame = TRUE,
-    simplifyMatrix = TRUE,
-    flatten = FALSE
-  ) 
-  
-  err_data <- err_list$feeds
-  
-  # ----- Request A channel data -----------------------------------------------
-  
-  # Generate Thingspeak request URLs
-  A_url <- 
-    paste0(
-      baseURL,
-      A_meta$THINGSPEAK_PRIMARY_ID,
-      "/feeds.json?api_key=",
-      A_meta$THINGSPEAK_PRIMARY_ID_READ_KEY,
-      "&start=", startString,
-      "&end=",
-      endString
-    )
-  
-  webserviceUrl <- A_url
-  
-  # NOTE:  using Hadley Wickham style:
-  # NOTE:  https://github.com/hadley/httr/blob/master/vignettes/quickstart.Rmd
-  r <- httr::GET(webserviceUrl)
-  
-  # Handle the response
-  status_code <- httr::status_code(r)
-  A_content <- httr::content(r, as = "text") # don't interpret the JSON
-  
-  if ( httr::http_error(r) ) { # web service failed to respond
-    
-    # https://digitalocean.com/community/tutorials/how-to-troubleshoot-common-http-error-codes
-    if ( httr::status_code(r) == 429 ) {
-      err_msg <- paste0(
-        "web service error 429: Too Many Requests from ",
-        webserviceUrl
-      )
-    } else if ( httr::status_code(r) == 500 ) {
-      err_msg <- paste0(
-        "web service error 500: Internal Server Error from ",
-        webserviceUrl
-      )
-    } else if ( httr::status_code(r) == 502 ) {
-      err_msg <- paste0(
-        "web service error 502: Bad Gateway from ",
-        webserviceUrl
-      )
-    } else if ( httr::status_code(r) == 503 ) {
-      err_msg <- paste0(
-        "web service error 503: Service Unavailable from ",
-        webserviceUrl
-      )
-    } else if ( httr::status_code(r) == 504 ) {
-      err_msg <- paste0(
-        "web service error 504: Gateway Timeout from ",
-        webserviceUrl
-      )
-    } else {
-      err_msg <- paste0(
-        "web service error ", httr::status_code(r), " from ",
-        webserviceUrl
-      )
-    }
-    
-    if ( logger.isInitialized() )
-      logger.warn("Channel A: %s", err_msg)
-    
-    message(paste0("Channel A: ", err_msg, " === Returning empty A channel ==="))
-    
-    A_list <- err_list
-    A_data <- err_data
-    
-  } else { # Response successful
-    
-    A_list <- 
-      jsonlite::fromJSON(
-        A_content,
-        simplifyVector = TRUE,
-        simplifyDataFrame = TRUE,
-        simplifyMatrix = TRUE,
-        flatten = FALSE
-      )
-    
-    # Handle a variety of "successful" but invalid responses
-    
-    if ( !"feeds" %in% names(A_list) ) {
-      
-      A_data <- err_data
-      
-      err_msg <- 
-        sprintf("No A_data returned between %s and %s", startdate, enddate)
-      
-      if ( logger.isInitialized() )
-        logger.trace(err_msg)
-      
-    } else {
-      
-      A_data <- A_list$feeds
 
-      if ( class(A_data) == "data.frame" && ncol(A_data) == 10 ) {
-        
-        # A_data is OK
-        
-      } else {
-        
-        A_data <- err_data
-        
-        err_msg <- 
-          sprintf("No A_data returned between %s and %s", startdate, enddate)
-        
-        if ( logger.isInitialized() )
-          logger.trace(err_msg)
-        
-      }
-      
-    }
-    
-  } # END of Response successful
+  # ----- Request data from ThingSpeak -----------------------------------------
   
-  # Rename columns
-  names(A_data) <- c(
-    "datetime", "entry_id", "pm1_atm", "pm2.5_atm", "pm10_atm",
-    "uptime", "rssi", "temperature", "humidity", "pm2.5_cf1"
-  )
+  A_PRIMARY <- 
+    .getThingSpeakDataframe(
+      meta,
+      channel = "A",
+      dataset = "PRIMARY",
+      startString = startString,
+      endString = endString,
+      baseUrl = baseUrl
+    ) %>%
+    dplyr::remove_duplicates()
   
-  # ----- Request B channel data -----------------------------------------------
+  A_SECONDARY <- 
+    .getThingSpeakDataframe(
+      meta,
+      channel = "A",
+      dataset = "SECONDARY",
+      startString = startString,
+      endString = endString,
+      baseUrl = baseUrl
+    ) %>%
+    dplyr::remove_duplicates()
   
-  B_url <-
-    paste0(
-      baseURL,
-      B_meta$THINGSPEAK_PRIMARY_ID,
-      "/feeds.json?api_key=",
-      B_meta$THINGSPEAK_PRIMARY_ID_READ_KEY,
-      "&start=", startString,
-      "&end=",
-      endString
-    )
+  B_PRIMARY <- 
+    .getThingSpeakDataframe(
+      meta,
+      channel = "B",
+      dataset = "PRIMARY",
+      startString = startString,
+      endString = endString,
+      baseUrl = baseUrl
+    ) %>%
+    dplyr::remove_duplicates()
   
-  webserviceUrl <- B_url
-  
-  # NOTE:  using Hadley Wickham style:
-  # NOTE:  https://github.com/hadley/httr/blob/master/vignettes/quickstart.Rmd
-  r <- httr::GET(webserviceUrl)
-  
-  # Handle the response
-  status_code <- httr::status_code(r)
-  B_content <- httr::content(r, as = "text") # don't interpret the JSON
-  
-  if ( httr::http_error(r) ) { # web service failed to respond
-    
-    # https://digitalocean.com/community/tutorials/how-to-troubleshoot-common-http-error-codes
-    if ( httr::status_code(r) == 429 ) {
-      err_msg <- paste0(
-        "web service error 429: Too Many Requests from ",
-        webserviceUrl
-      )
-    } else if ( httr::status_code(r) == 500 ) {
-      err_msg <- paste0(
-        "web service error 500: Internal Server Error from ",
-        webserviceUrl
-      )
-    } else if ( httr::status_code(r) == 502 ) {
-      err_msg <- paste0(
-        "web service error 502: Bad Gateway from ",
-        webserviceUrl
-      )
-    } else if ( httr::status_code(r) == 503 ) {
-      err_msg <- paste0(
-        "web service error 503: Service Unavailable from ",
-        webserviceUrl
-      )
-    } else if ( httr::status_code(r) == 504 ) {
-      err_msg <- paste0(
-        "web service error 504: Gateway Timeout from ",
-        webserviceUrl
-      )
-    } else {
-      err_msg <- paste0(
-        "web service error ", httr::status_code(r), " from ",
-        webserviceUrl
-      )
-    }
-    
-    if ( logger.isInitialized() )
-      logger.warn("Channel B: %s", err_msg)
-    
-    message(paste0("Channel B: ", err_msg, " === Returning empty B channel ==="))
-    
-    B_list <- err_list
-    B_data <- err_data
-    
-  } else { # Response successful
-    
-    B_list <- 
-      jsonlite::fromJSON(
-        B_content,
-        simplifyVector = TRUE,
-        simplifyDataFrame = TRUE,
-        simplifyMatrix = TRUE,
-        flatten = FALSE
-      )
-    
-    # Handle a variety of "successful" but invalid responses
-    
-    if ( !"feeds" %in% names(B_list) ) {
-      
-      B_data <- err_data
-      
-      err_msg <- 
-        sprintf("No B_data returned between %s and %s", startdate, enddate)
-      
-      if ( logger.isInitialized() )
-        logger.trace(err_msg)
-      
-    } else {
-      
-      B_data <- B_list$feeds
-      
-      if ( class(B_data) == "data.frame" && ncol(B_data) == 10 ) {
-        
-        # B_data is OK
-        
-      } else {
-        
-        B_data <- err_data
-        
-        err_msg <- 
-          sprintf("No B_data returned between %s and %s", startdate, enddate)
-        
-        if ( logger.isInitialized() )
-          logger.trace(err_msg)
-        
-      }
-      
-    }
-    
-  } # END of Response successful
-  
-  names(B_data) <- c(
-    "datetime", "entry_id", "pm1_atm", "pm2.5_atm", "pm10_atm",
-    "memory", "adc0", "unused1", "unused2", "pm2.5_cf1"
-  )
-  
-  # ----- Combine A and B channels ---------------------------------------------
-  
-  # Add channel identifier
-  A_data$channel <- "A"
-  B_data$channel <- "B"
-  
-  # Drop unused columns
-  B_data <- dplyr::select(B_data, -.data$unused1, -.data$unused2)
-  
-  # Combine data from both channels
-  data <-
-    dplyr::bind_rows(A_data, B_data) %>%
-    dplyr::arrange(.data$datetime)
-  
-  # NOTE:  > names(data)
-  # NOTE:  [1] "datetime"    "entry_id"    "pm1_atm"     "pm2.5_atm"   "pm10_atm"    "uptime"      "rssi"
-  # NOTE:  [8] "temperature" "humidity"    "pm2.5_cf1"   "channel"     "memory"      "adc0"
-  
-  numeric_columns <- c(
-    "pm1_atm", "pm2.5_atm", "pm10_atm", "uptime", "rssi",
-    "temperature", "humidity", "pm2.5_cf1", "memory", "adc0"
-  )
-  
-  # Convert to proper types
-  data$datetime <- lubridate::ymd_hms(data$datetime, tz = "UTC")
-  data$entry_id <- as.character(data$entry_id)
-  for (columnName in numeric_columns) {
-    data[[columnName]] <- as.numeric(data[[columnName]])
-  }
-  
-  # Round values to reflect resolution as specified in
-  # https://www.purpleair.com/sensors
-  
-  # NOTE:  Rounding breaks outlier detection
-  # data$pm1_atm <- round(data$pm1_atm)
-  # data$pm1_atm <- round(data$pm1_atm)
-  # data$pm2.5_atm <- round(data$pm2.5_atm)
-  # data$pm10_atm <- round(data$pm10_atm)
-  # data$temperature <- round(data$temperature)
-  # data$humidity <- round(data$humidity)
-  # data$pm2.5_cf1 <- round(data$pm2.5_cf1)
-  
-  # Combine meta and data dataframes into a list
-  pat_raw <- list(meta = meta, data = data)
-  
-  # Remove any duplicate data records
-  pat_raw$data <- dplyr::distinct(pat_raw$data)
+  B_SECONDARY <- 
+    .getThingSpeakDataframe(
+      meta,
+      channel = "B",
+      dataset = "SECONDARY",
+      startString = startString,
+      endString = endString,
+      baseUrl = baseUrl
+    ) %>%
+    dplyr::remove_duplicates()
   
   # ----- Return ---------------------------------------------------------------
   
-  return(pat_raw)
+  returnList <- list(
+    meta = meta,
+    A_PRIMARY = A_PRIMARY,
+    A_SECONDARY = A_SECONDARY,
+    B_PRIMARY = B_PRIMARY,
+    B_SECONDARY = B_SECONDARY
+  )
   
+  return(returnList)
+    
+
 }
 
-# TODO:  Probably have an internal function to create an empty "pat" object.
-# TODO:  This can then be returned immediately whenever a "no data" response
-# TODO:  is detected when requesting data.
 
+# ===== INTERNAL FUNCTIONS =====================================================
+
+
+#' @keywords internal
+#'
+.getThingSpeakDataframe <- function(
+  meta,
+  channel = NULL,
+  dataset = NULL,
+  startString = NULL,
+  endString = NULL,
+  baseUrl = "https://api.thingspeak.com/channels/"
+) {
+  
+  # ----- Validate parameters --------------------------------------------------
+  
+  MazamaCoreUtils::stopIfNull(meta)
+  MazamaCoreUtils::stopIfNull(channel)
+  MazamaCoreUtils::stopIfNull(dataset)
+  MazamaCoreUtils::stopIfNull(startString)
+  MazamaCoreUtils::stopIfNull(endString)
+  MazamaCoreUtils::stopIfNull(baseUrl)
+  
+  channel <- toupper(channel)
+  dataset <- toupper(dataset)
+  
+  if ( !channel %in% c("A", "B") )
+    stop(sprintf("Channel '%s' is not recognized.", channel))
+  
+  if ( !dataset %in% c("PRIMARY", "SECONDARY") )
+    stop(sprintf("Dataset '%s' is not recognized.", dataset))
+  
+  # ----- create URL -----------------------------------------------------------
+
+  if ( channel == "A" ) {
+    channelMeta <- meta[is.na(meta$parentID),]
+  }  else {
+    channelMeta <- meta[!is.na(meta$parentID),]
+  }
+  
+  if ( dataset == "PRIMARY" ) {
+    ID <- channelMeta$THINGSPEAK_PRIMARY_ID
+    READ_KEY <- channelMeta$THINGSPEAK_PRIMARY_ID_READ_KEY
+  } else {
+    ID <- channelMeta$THINGSPEAK_SECONDARY_ID
+    READ_KEY <- channelMeta$THINGSPEAK_SECONDARY_ID_READ_KEY
+  }
+
+  webserviceUrl <-
+    paste0(
+      baseUrl,
+      ID,
+      "/feeds.csv?api_key=", READ_KEY,
+      "&start=", startString,
+      "&end=", endString
+    )
+  
+  # ----- Prepare parsing ------------------------------------------------------
+  
+  # NOTE:  See documents/Using_PA_Data_2020-05-15.pdf
+  
+  if ( channel == "A" && dataset == "PRIMARY" ) {
+    
+    # > readr::read_csv(webserviceUrl) %>% head()
+    # # A tibble: 6 x 10
+    #   created_at              entry_id field1 field2 field3 field4 field5 field6 field7 field8
+    #   <chr>                      <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
+    # 1 2020-05-08 07:01:18 UTC   129534   4.18   5.95   6.53   3767    -90     63     41   5.95
+    # 2 2020-05-08 07:03:24 UTC   129535   3.74   5.76   5.97   3769    -90     62     41   5.76
+    
+    col_types <- "cidddidddd"
+    
+    col_names <- c(
+      "created_at", "entry_id", 
+      "pm1.0_cf1", "pm2.5_cf1", "pm10.0_cf1", "uptime",
+      "rssi", "temperature", "humidity", "pm2.5_atm"
+    )
+    
+    # In case of trouble, build up a tibble with a single record full of NAs
+    emptyTbl <- dplyr::tibble(
+      "created_at" = as.character(NA),
+      "entry_id" = as.character(NA),
+      "pm1.0_cf1" = as.numeric(NA),
+      "pm2.5_cf1" = as.numeric(NA),
+      "pm10.0_cf1" = as.numeric(NA),
+      "uptime" = as.integer(NA),
+      "rssi" = as.numeric(NA),
+      "temperature" = as.numeric(NA),
+      "humidity" = as.numeric(NA),
+      "pm2.5_atm" = as.numeric(NA),
+    )
+    
+  } else if ( channel == "A" && dataset == "SECONDARY" ) {
+    
+    # > readr::read_csv(webserviceUrl) %>% head()
+    # # A tibble: 6 x 10
+    #   created_at              entry_id field1 field2 field3 field4 field5 field6 field7 field8
+    #   <chr>                      <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
+    # 1 2020-05-08 07:01:20 UTC   129558   979.   268.   33.0   2.05   0.54   0.26   4.18   6.53
+    # 2 2020-05-08 07:03:26 UTC   129559   907.   249.   30.9   2.69   0.33   0      3.74   5.97
+    
+    col_types <- "cidddddddd"
+
+    col_names <- c(
+      "created_at", "entry_id", 
+      "counts_0.3", "counts_0.5", "counts_1.0", "counts_2.5",
+      "counts_5.0", "counts_10.0", "pm1.0_atm", "pm10.0_atm"
+    )
+    
+    # In case of trouble, build up a tibble with a single record full of NAs
+    emptyTbl <- dplyr::tibble(
+      "created_at" = as.character(NA),
+      "entry_id" = as.character(NA),
+      "counts_0.3" = as.numeric(NA),
+      "counts_0.5" = as.numeric(NA),
+      "counts_1.0" = as.numeric(NA),
+      "counts_2.5" = as.numeric(NA),
+      "counts_5.0" = as.numeric(NA),
+      "counts_10.0" = as.numeric(NA),
+      "pm1.0_atm" = as.numeric(NA),
+      "pm10.0_atm" = as.numeric(NA),
+    )
+    
+  } else if ( channel == "B" && dataset == "PRIMARY" ) {
+    
+    # > readr::read_csv(webserviceUrl) %>% head()
+    # # A tibble: 6 x 10
+    #   created_at              entry_id field1 field2 field3 field4 field5 field6 field7 field8
+    #   <chr>                      <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl> <lgl>   <dbl>
+    # 1 2020-05-08 07:01:22 UTC   129570   21.4   26.1   26.5  19512      0  1022. NA       25.6
+    # 2 2020-05-08 07:03:28 UTC   129571   19.7   24.5   25.0  19848      0  1022. NA       24.1
+    
+    col_types <- "cidddidddd"
+
+    col_names <- c(
+      "created_at", "entry_id", 
+      "pm1.0_cf1", "pm2.5_cf1", "pm10.0_cf1", "heap",
+      "adc0", "pressure", "bsec_iaq", "pm2.5_atm"
+    )
+    
+    # In case of trouble, build up a tibble with a single record full of NAs
+    emptyTbl <- dplyr::tibble(
+      "created_at" = as.character(NA),
+      "entry_id" = as.character(NA),
+      "pm1.0_cf1" = as.numeric(NA),
+      "pm2.5_cf1" = as.numeric(NA),
+      "pm10.0_cf1" = as.numeric(NA),
+      "heap" = as.integer(NA),
+      "adc0" = as.numeric(NA),
+      "pressure" = as.numeric(NA),
+      "bsec_iaq" = as.numeric(NA),
+      "pm2.5_atm" = as.numeric(NA),
+    )
+    
+    
+  } else if ( channel == "B" && dataset == "SECONDARY" ) {
+    
+    # > readr::read_csv(webserviceUrl) %>% head()
+    # # A tibble: 6 x 10
+    #   created_at              entry_id field1 field2 field3 field4 field5 field6 field7 field8
+    #   <chr>                      <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
+    # 1 2020-05-08 07:01:23 UTC   129569  4786.  1260.   43.5   14.4   0.71   0.36   19.8   26.5
+    # 2 2020-05-08 07:03:30 UTC   129570  4429.  1171.   43.4   13.6   0.42   0      18.7   25.0
+    
+    col_types <- "cidddddddd"
+
+    col_names <- c(
+      "created_at", "entry_id", 
+      "counts_0.3", "counts_0.5", "counts_1.0", "counts_2.5",
+      "counts_5.0", "counts_10.0", "pm1.0_atm", "pm10.0_atm"
+    )
+    
+    # In case of trouble, build up a tibble with a single record full of NAs
+    emptyTbl <- dplyr::tibble(
+      "created_at" = as.character(NA),
+      "entry_id" = as.character(NA),
+      "counts_0.3" = as.numeric(NA),
+      "counts_0.5" = as.numeric(NA),
+      "counts_1.0" = as.numeric(NA),
+      "counts_2.5" = as.numeric(NA),
+      "counts_5.0" = as.numeric(NA),
+      "counts_10.0" = as.numeric(NA),
+      "pm1.0_atm" = as.numeric(NA),
+      "pm10.0_atm" = as.numeric(NA),
+    )
+    
+  }
+  
+  # ----- Download/parse -------------------------------------------------------
+  
+  # NOTE:  using Hadley Wickham style:
+  # NOTE:  https://github.com/hadley/httr/blob/master/vignettes/quickstart.Rmd
+  r <- httr::GET(webserviceUrl)
+  
+  # Handle the response
+  status_code <- httr::status_code(r)
+  content <- httr::content(r, as = "text") # don't interpret
+  
+  if ( httr::http_error(r) ) { 
+    
+    # Web service error response
+    
+    err_msg <- sprintf(
+      "Channel %s web service error %s from:\n  %s\n\n%s",
+      channel,
+      status_code, 
+      webserviceUrl,
+      httpcode::http_code(status_code)$explanation
+    )
+    
+    if ( logger.isInitialized() )
+      logger.warn("Channel %s: %s", channel, err_msg)
+    
+    message(err_msg)
+    
+    # TODO:  Return empty tibble
+    # Now search for an entry_id we won't find to end up with an empty tibble
+    # with the correct column names.
+    dataTbl <-
+      emptyTbl %>%
+      dplyr::filter(.data$entry_id == "Rumplestiltskin")
+    
+  } else { 
+    
+    # Web service success response
+    
+    dataTbl <-
+      readr::read_csv(
+        content,
+        skip = 1,
+        col_types = col_types,
+        col_names = col_names
+      ) %>%
+      dplyr::mutate(
+        created_at = MazamaCoreUtils::parseDatetime(.data$created_at, timezone = "UTC")
+      )
+    
+  }
+    
+  return(dataTbl)
+  
+}
+  
 # ===== DEBUGGING ==============================================================
 
 if ( FALSE ) {
   
-  id <- "122c6aed66d0c29c_21067"
-  id <- "e8582a00f22db27f_12947"
-  id <- "cb5adde8c100d4fa_13081"
-  id <- "eaf020885e1bf678_21049"
-  id <- '78df3c292c8448f7_21257'
-  label <- NULL
-  pas <- example_pas
-  startdate <- 20190930
-  enddate <- 20191102
-  timezone <- NULL
-  baseURL <- "https://api.thingspeak.com/channels/"
+  library(AirSensor)
   
-  pat_raw <- pat_downloadParseData(
+  setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1") # SCAQMD sensors
+  
+  pas <- pas_load()
+  
+  # id <- "122c6aed66d0c29c_21067"
+  # id <- "e8582a00f22db27f_12947"
+  # id <- "cb5adde8c100d4fa_13081"
+  # id <- "eaf020885e1bf678_21049"
+  id <- '78df3c292c8448f7_21257'
+  
+  label <- NULL
+  startdate <- NULL
+  enddate <- NULL
+  timezone <- NULL
+  baseUrl <- "https://api.thingspeak.com/channels/"
+  
+  pat_rawList <- pat_downloadParseData(
     id,
     label,
     pas,
     startdate,
     enddate,
     timezone,
-    baseURL
+    baseUrl
   )
   
 }

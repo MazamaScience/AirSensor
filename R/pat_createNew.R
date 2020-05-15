@@ -10,7 +10,7 @@
 #' @param startdate Desired UTC start time (ISO 8601).
 #' @param enddate Desired UTC end time (ISO 8601).
 #' @param timezone Timezone used to interpret start and end dates.
-#' @param baseURL Base URL for Thingspeak API.
+#' @param baseUrl Base URL for Thingspeak API.
 #' 
 #' @return A PurpleAir Timeseries \emph{pat} object.
 #' 
@@ -61,12 +61,12 @@ pat_createNew <- function(
   startdate = NULL,
   enddate = NULL,
   timezone = NULL,
-  baseURL = "https://api.thingspeak.com/channels/"
+  baseUrl = "https://api.thingspeak.com/channels/"
 ) {
   
   # ----- Validate parameters --------------------------------------------------
   
-  MazamaCoreUtils::stopIfNull(baseURL)
+  MazamaCoreUtils::stopIfNull(baseUrl)
   MazamaCoreUtils::stopIfNull(pas)
   
   # Get the deviceDeploymentID
@@ -154,7 +154,7 @@ pat_createNew <- function(
     startdate = dateSeq[1],
     enddate = dateSeq[2],
     timezone = timezone,
-    baseURL = baseURL
+    baseUrl = baseUrl
   )
   
   if ( length(dateSeq) > 2 ) {
@@ -167,7 +167,7 @@ pat_createNew <- function(
         startdate = dateSeq[i],
         enddate = dateSeq[i + 1],
         timezone = timezone,
-        baseURL = baseURL
+        baseUrl = baseUrl
       )
       pat_raw$data <- dplyr::bind_rows(pat_raw$data, new_pat_raw$data)
     }
@@ -193,7 +193,7 @@ pat_createNew <- function(
   
   # ----- Return ---------------------------------------------------------------
   
-  pat <- createPATimeseriesObject(pat_raw)
+  pat <- pat_createPATimeseriesObject(pat_raw)
   
   # Remove any duplicate data records
   pat <- pat_distinct(pat)
@@ -214,6 +214,6 @@ if ( FALSE ) {
   startdate <- NULL
   enddate <- NULL
   timezone <- NULL
-  baseURL <- "https://api.thingspeak.com/channels/"
+  baseUrl <- "https://api.thingspeak.com/channels/"
   
 }

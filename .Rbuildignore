@@ -21,5 +21,8 @@
 # Ignore all directories beginning with "local"
 ^local*
 
+# Ignore the "documents" directory
+^documents/
+
 # NOTE:  TEMPORARY -- for development only
 ^AirShiny/
