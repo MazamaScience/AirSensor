@@ -1,9 +1,11 @@
 # AirSensor 0.7.7
 
-* Improved `pat_downloadParseData()` data access times and also reduced the
+* Refactored `pat_downloadParseData()` data access times and also reduced the
 volume of data downloaded by switching from the `.json` to the `.csv` API from
-ThingSpeak.
-* Including dependency on **httpcode** package.
+ThingSpeak. This function now returns a list of five dataframes.
+* Renamed and refactored `pat_createPATimeseriesObject()` to work with the new
+list of dataframes from `pat_downloadParseData()`.
+* Including dependency on **httpcode** and **readr** packages.
 
 # AirSensor 0.7.6
 

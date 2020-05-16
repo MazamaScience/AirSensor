@@ -36,6 +36,30 @@
 #' See the references.
 #' 
 #' @references https://www2.purpleair.com/community/faq#!hc-sd-card-csv-file-header
+#' 
+#' @examples
+#' \dontrun{
+#' library(AirSensor)
+#' 
+#' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+#' 
+#' pas <- pas_load()
+#' 
+#' id <- '78df3c292c8448f7_21257'
+#' 
+#' label <- NULL
+#' startdate <- NULL
+#' enddate <- NULL
+#' timezone <- NULL
+#' baseUrl <- "https://api.thingspeak.com/channels/"
+#' 
+#' pat_rawList <- pat_downloadParseData(
+#'   id = "78df3c292c8448f7_21257",
+#'   pas = pas
+#' )
+#' 
+#' lapply(pat_rawList, head)
+#' }
 
 pat_downloadParseData <- function(
   id = NULL,
@@ -148,7 +172,7 @@ pat_downloadParseData <- function(
       endString = endString,
       baseUrl = baseUrl
     ) %>%
-    dplyr::remove_duplicates()
+    dplyr::distinct()
   
   A_SECONDARY <- 
     .getThingSpeakDataframe(
@@ -159,7 +183,7 @@ pat_downloadParseData <- function(
       endString = endString,
       baseUrl = baseUrl
     ) %>%
-    dplyr::remove_duplicates()
+    dplyr::distinct()
   
   B_PRIMARY <- 
     .getThingSpeakDataframe(
@@ -170,7 +194,7 @@ pat_downloadParseData <- function(
       endString = endString,
       baseUrl = baseUrl
     ) %>%
-    dplyr::remove_duplicates()
+    dplyr::distinct()
   
   B_SECONDARY <- 
     .getThingSpeakDataframe(
@@ -181,7 +205,7 @@ pat_downloadParseData <- function(
       endString = endString,
       baseUrl = baseUrl
     ) %>%
-    dplyr::remove_duplicates()
+    dplyr::distinct()
   
   # ----- Return ---------------------------------------------------------------
   

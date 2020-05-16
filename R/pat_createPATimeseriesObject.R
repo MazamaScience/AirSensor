@@ -4,12 +4,12 @@
 #' 
 #' @title Create a PurpleAir Timeseries object
 #' 
-#' @param pat_raw Raw PurpleAir timeseries data from \code{pat_downloadParseData()}
+#' @param pat_rawList Raw PurpleAir timeseries data from \code{pat_downloadParseData()}
 #' 
-#' @return List with original \code{meta} and restructured \code{data} elements
+#' @return List with \code{meta} and \code{data} elements.
 #' 
-#' @description The 'data' dataframe is converted from 'long format' with temporal
-#' resolution of seconds to 'wide format' with temporal resolution in minutes.
+#' @description The timeseries dataframes present in \code{pat_rawList} are
+#' merged to create a uniform dataframe with temporal resolution in minutes.
 #' In the process, the following columns of data are omitted:
 #' \itemize{
 #' \item{\code{pm1_0_atm}}
@@ -46,27 +46,27 @@
 #' library(AirSensor)
 #' initializeMazamaSpatialUtils()
 #' 
-#' pat_raw <- pat_downloadParseData(
+#' pat_rawList <- pat_downloadParseData(
 #'   label = 'North Bend Weather',
 #'   pas = example_pas,
 #'   startdate = 20180908
 #' )
 #' 
-#' pat <- pat_createPATimeseriesObject(pat_raw)
+#' pat <- pat_createPATimeseriesObject(pat_rawListList)
 #' pat_multiplot(pat)
 #' }
 
 pat_createPATimeseriesObject <- function(
-  pat_raw = NULL
+  pat_rawListList = NULL
 ) {
 
   # ---- Validate parameters ---------------------------------------------------
   
-  MazamaCoreUtils::stopIfNull(pat_raw)
+  MazamaCoreUtils::stopIfNull(pat_rawListList)
   
   # ----- Simplify meta --------------------------------------------------------
 
-  # > names(pat_raw$meta)
+  # > names(pat_rawListList$meta)
   # [1] "ID"                               "label"                           
   # [3] "DEVICE_LOCATIONTYPE"              "THINGSPEAK_PRIMARY_ID"           
   # [5] "THINGSPEAK_PRIMARY_ID_READ_KEY"   "THINGSPEAK_SECONDARY_ID"         
@@ -92,7 +92,7 @@ pat_createPATimeseriesObject <- function(
   # [45] "communityRegion"                 
   
   meta <- 
-    pat_raw$meta %>%
+    pat_rawListList$meta %>%
     dplyr::filter(is.na(.data$parentID)) %>%
     dplyr::select(.data$ID, 
                   .data$label, 
@@ -118,19 +118,19 @@ pat_createPATimeseriesObject <- function(
   # ----- Simplify data --------------------------------------------------------
   
   # Remove any duplicate data records
-  pat_raw$data <- dplyr::distinct(pat_raw$data)
+  pat_rawList$data <- dplyr::distinct(pat_rawList$data)
   
-  # NOTE:  The incoming pat_raw has the following structure with 
+  # NOTE:  The incoming pat_rawList has the following structure with 
   # NOTE:  a 'meta' dataframe and a 'data' dataframe:
   # NOTE:  
-  # NOTE:  > names(pat_raw$data)
+  # NOTE:  > names(pat_rawList$data)
   # NOTE:   [1] "datetime"  "entry_id"  "pm1_0_atm"   "pm2_5_atm" "pm10_0_atm"    
   # NOTE:   [6] "uptime"    "rssi"      "temp"      "humidity"  "pm2_5_cf_1"
   # NOTE:  [11] "channel"   "memory"    "adc0"     
   
   # Extract useful columns from channel A data
   A <- 
-    pat_raw$data %>%
+    pat_rawList$data %>%
     dplyr::filter(.data$channel == 'A') %>%
     dplyr::select(.data$datetime, 
                   .data$uptime, 
@@ -155,7 +155,7 @@ pat_createPATimeseriesObject <- function(
   
   # Extract useful columns from channel B data
   B <- 
-    pat_raw$data %>%
+    pat_rawList$data %>%
     dplyr::filter(.data$channel == 'B') %>%
     dplyr::select(.data$datetime, 
                   .data$memory, 
