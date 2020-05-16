@@ -49,7 +49,7 @@ examples. This dataset contains data for sensors in Washington and Oregon
 and was generated on 2020-01-03 by running:
 
   example_pas_raw &amp;lt;- 
-    pas_downloadParseData() 
+    pas_downloadParseRawData() 
     dplyr::filter(Lon &amp;gt; -125.0 &amp;amp; Lon &amp;lt; -117.0 &amp;amp; Lat &amp;gt; 42.0 &amp;amp; Lat &amp;lt; 49.0)
   save(example_pas_raw, file = &quot;data/example_pas_raw.rda&quot;)
 
@@ -184,7 +184,7 @@ examples. This dataset contains data for sensors in Washington and Oregon
 and was generated on 2020-01-03 by running:</p>
 <pre>
   example_pas_raw &lt;- 
-    pas_downloadParseData() <!-- %&gt;% -->
+    pas_downloadParseRawData() <!-- %&gt;% -->
     dplyr::filter(Lon &gt; -125.0 &amp; Lon &lt; -117.0 &amp; Lat &gt; 42.0 &amp; Lat &lt; 49.0)
   save(example_pas_raw, file = "data/example_pas_raw.rda")
 </pre>

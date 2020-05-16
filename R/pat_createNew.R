@@ -41,7 +41,7 @@
 #' 
 #' 2) Pass in both \code{label} and \code{pas} so that the 
 #' \code{deviceDeploymentID} can be looked up.
-#' @seealso \link{pat_downloadParseData}
+#' @seealso \link{pat_downloadParseRawData}
 #' 
 #' @examples
 #' \donttest{
@@ -147,7 +147,7 @@ pat_createNew <- function(
   # ----- Load data from URL ---------------------------------------------------
   
   # Use more specific ID rather than the label
-  pat_raw <- pat_downloadParseData(
+  pat_rawList <- pat_downloadParseRawData(
     id = pas_single$deviceDeploymentID,
     label = NULL,
     pas = pas,
@@ -160,7 +160,8 @@ pat_createNew <- function(
   if ( length(dateSeq) > 2 ) {
     
     for ( i in 2:(length(dateSeq) - 1) ) {
-      new_pat_raw <- pat_downloadParseData(
+      
+      new_pat_rawList <- pat_downloadParseRawData(
         id = pas_single$deviceDeploymentID,
         label = NULL,
         pas = pas,
@@ -169,31 +170,46 @@ pat_createNew <- function(
         timezone = timezone,
         baseUrl = baseUrl
       )
-      pat_raw$data <- dplyr::bind_rows(pat_raw$data, new_pat_raw$data)
+      
+      pat_rawList$A_PRIMARY <- 
+        dplyr::bind_rows(pat_rawList$A_PRIMARY, new_pat_rawList$A_PRIMARY) %>%
+        dplyr::distinct()
+      pat_rawList$A_SECONDARY <- 
+        dplyr::bind_rows(pat_rawList$A_SECONDARY, new_pat_rawList$A_SECONDARY) %>%
+        dplyr::distinct()
+      pat_rawList$B_PRIMARY <- 
+        dplyr::bind_rows(pat_rawList$B_PRIMARY, new_pat_rawList$B_PRIMARY) %>%
+        dplyr::distinct()
+      pat_rawList$B_SECONDARY <- 
+        dplyr::bind_rows(pat_rawList$B_SECONDARY, new_pat_rawList$B_SECONDARY) %>%
+        dplyr::distinct()
+      
     }
     
   }
   
-  # ----- Remove bad records ---------------------------------------------------
-  
-  # Sometimes we get records with all bad values:
-  
-  # datetime pm25_A pm25_B temperature humidity uptime adc0 rssi          datetime_A          datetime_B
-  # 1  2000-01-01 12:00:00     NA     NA          NA       NA     NA   NA   NA 2000-01-01 12:00:00 2000-01-01 12:00:00
-  # 2  2000-01-01 12:00:00     NA     NA          NA       NA     NA   NA   NA 2000-01-01 12:00:00 2000-01-01 12:00:00
-  
-  # We remove them by limiting the data to the requested local time range
-  
-  data <- 
-    pat_raw$data %>%
-    dplyr::filter(.data$datetime >= dateRange[1]) %>%
-    dplyr::filter(.data$datetime <= dateRange[2])
-  
-  pat_raw$data <- data
+  # # ----- Remove bad records ---------------------------------------------------
+  # 
+  # # Sometimes we get records with all bad values:
+  # 
+  # # datetime pm25_A pm25_B temperature humidity uptime adc0 rssi          datetime_A          datetime_B
+  # # 1  2000-01-01 12:00:00     NA     NA          NA       NA     NA   NA   NA 2000-01-01 12:00:00 2000-01-01 12:00:00
+  # # 2  2000-01-01 12:00:00     NA     NA          NA       NA     NA   NA   NA 2000-01-01 12:00:00 2000-01-01 12:00:00
+  # 
+  # # We remove them by limiting the data to the requested local time range
+  # 
+  # A_PRIMARY <- 
+  #   pat_rawLst$A_PRIMARY %>%
+  #   dplyr::filter(.data$created_at >= dateRange[1]) %>%
+  #   dplyr::filter(.data$created_at <= dateRange[2])
+  # 
+  # pat_raw$data <- data
   
   # ----- Return ---------------------------------------------------------------
   
-  pat <- pat_createPATimeseriesObject(pat_raw)
+  # pat <- pat_createPATimeseriesObject(pat_raw)
+  
+  pat <- pat_createPATimeseriesObject(pat_rawList)
   
   # Remove any duplicate data records
   pat <- pat_distinct(pat)
@@ -206,14 +222,27 @@ pat_createNew <- function(
 
 if ( FALSE ) {
   
-  #id <- "27f2d8382be52aff_41449"
-  id <- NULL
-  label <- "Chisholm ACT Australia"
-  #label <- NULL
-  pas <- pas_au
+  library(AirSensor)
+  
+  setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1") # SCAQMD sensors
+  
+  pas <- pas_load()
+  
+  id <- '78df3c292c8448f7_21257'
+  label <- NULL
   startdate <- NULL
   enddate <- NULL
   timezone <- NULL
   baseUrl <- "https://api.thingspeak.com/channels/"
+  
+  pat <- pat_createNew(
+    id,
+    labe,
+    pas,
+    startdate,
+    enddate,
+    timezone,
+    baseUrl
+  )
   
 }

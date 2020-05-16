@@ -35,7 +35,7 @@
 #' 
 #' See the references.
 #' 
-#' @references https://www2.purpleair.com/community/faq#!hc-sd-card-csv-file-header
+#' @references \url{https://www2.purpleair.com/community/faq#!hc-sd-card-csv-file-header}
 #' 
 #' @examples
 #' \dontrun{
@@ -45,15 +45,7 @@
 #' 
 #' pas <- pas_load()
 #' 
-#' id <- '78df3c292c8448f7_21257'
-#' 
-#' label <- NULL
-#' startdate <- NULL
-#' enddate <- NULL
-#' timezone <- NULL
-#' baseUrl <- "https://api.thingspeak.com/channels/"
-#' 
-#' pat_rawList <- pat_downloadParseData(
+#' pat_rawList <- pat_downloadParseRawData(
 #'   id = "78df3c292c8448f7_21257",
 #'   pas = pas
 #' )
@@ -61,7 +53,7 @@
 #' lapply(pat_rawList, head)
 #' }
 
-pat_downloadParseData <- function(
+pat_downloadParseRawData <- function(
   id = NULL,
   label = NULL,
   pas = NULL,
@@ -359,7 +351,7 @@ pat_downloadParseData <- function(
 
     col_names <- c(
       "created_at", "entry_id", 
-      "pm1.0_cf1", "pm2.5_cf1", "pm10.0_cf1", "heap",
+      "pm1.0_cf1", "pm2.5_cf1", "pm10.0_cf1", "memory",
       "adc0", "pressure", "bsec_iaq", "pm2.5_atm"
     )
     
@@ -370,7 +362,7 @@ pat_downloadParseData <- function(
       "pm1.0_cf1" = as.numeric(NA),
       "pm2.5_cf1" = as.numeric(NA),
       "pm10.0_cf1" = as.numeric(NA),
-      "heap" = as.integer(NA),
+      "memory" = as.integer(NA),
       "adc0" = as.numeric(NA),
       "pressure" = as.numeric(NA),
       "bsec_iaq" = as.numeric(NA),
@@ -462,6 +454,26 @@ pat_downloadParseData <- function(
     
   }
     
+  # ----- Remove bad records ---------------------------------------------------
+  
+  # With version 0.5, we sometimes got records with all bad values:
+  
+  # datetime pm25_A pm25_B temperature humidity uptime adc0 rssi          datetime_A          datetime_B
+  # 1  2000-01-01 12:00:00     NA     NA          NA       NA     NA   NA   NA 2000-01-01 12:00:00 2000-01-01 12:00:00
+  # 2  2000-01-01 12:00:00     NA     NA          NA       NA     NA   NA   NA 2000-01-01 12:00:00 2000-01-01 12:00:00
+  
+  # Remove records like these by limiting the data to the requested time range
+  
+  startdate <- MazamaCoreUtils::parseDatetime(startString, timezone = "UTC")
+  enddate <- MazamaCoreUtils::parseDatetime(endString, timezone = "UTC")
+  
+  dataTbl <- 
+    dataTbl %>%
+    dplyr::filter(.data$created_at >= startdate) %>%
+    dplyr::filter(.data$created_at <= enddate)
+  
+  # ----- Return ---------------------------------------------------------------
+  
   return(dataTbl)
   
 }
@@ -488,7 +500,7 @@ if ( FALSE ) {
   timezone <- NULL
   baseUrl <- "https://api.thingspeak.com/channels/"
   
-  pat_rawList <- pat_downloadParseData(
+  pat_rawList <- pat_downloadParseRawData(
     id,
     label,
     pas,

@@ -1,10 +1,11 @@
 # AirSensor 0.7.7
 
-* Refactored `pat_downloadParseData()` data access times and also reduced the
+* Refactored `pat_downloadParseRawData()` data access times and also reduced the
 volume of data downloaded by switching from the `.json` to the `.csv` API from
 ThingSpeak. This function now returns a list of five dataframes.
 * Renamed and refactored `pat_createPATimeseriesObject()` to work with the new
-list of dataframes from `pat_downloadParseData()`.
+list of dataframes from `pat_downloadParseRawData()`. New fields `pressure` and
+`bsec_iaq` are included in created `pat` object.
 * Including dependency on **httpcode** and **readr** packages.
 
 # AirSensor 0.7.6
@@ -33,7 +34,7 @@ interval.
 
 # AirSensor 0.7.4
 
-* Renamed `downloadParseTimeseriesData()` to `pat_downloadParseData()`.
+* Renamed `downloadParseTimeseriesData()` to `pat_downloadParseRawData()`.
 
 # AirSensor 0.7.3
 
@@ -55,7 +56,7 @@ to `http://data.mazamascience.com/PurpleAir/v1`.
 
 # AirSensor 0.6.17
 
-* Renamed `downloadParseSynopticData()` to `pas_downloadParseData()`.
+* Renamed `downloadParseSynopticData()` to `pas_downloadParseRawData()`.
 * Renamed `enhanceSynopticData()` to `pas_enhanceData()`.
 * New functions used in creating `pas` objects: `pas_addAirDistrict()`,
 `pas_addSpatialMetadata()`, `pas_addUniqueIDs()`, `pas_addUniqueIDs()`,

@@ -38,7 +38,7 @@
 #' @return A PurpleAir Synoptic \emph{pas} object.
 #' 
 #' @seealso \link{pas_load}
-#' @seealso \link{pas_downloadParseData}
+#' @seealso \link{pas_downloadParseRawData}
 #' 
 #' @examples
 #' \dontrun{
@@ -88,9 +88,9 @@ pas_createNew <- function(
   
   # Download, parse and enhance synoptic data
   if ( logger.isInitialized() ) {
-    logger.debug("----- pas_downloadParseData() -----")
+    logger.debug("----- pas_downloadParseRawData() -----")
   }
-  pas_raw <- pas_downloadParseData(baseUrl)
+  pas_raw <- pas_downloadParseRawData(baseUrl)
   
   if ( logger.isInitialized() ) {
     logger.debug("----- pas_enhanceData() -----")

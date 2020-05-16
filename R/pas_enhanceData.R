@@ -43,14 +43,14 @@
 #' This is useful if you want a quick, synoptic view of the network, e.g. for a 
 #' map.
 #' 
-#' @param pas_raw Dataframe returned by \code{pas_downloadParseData()}.
+#' @param pas_raw Dataframe returned by \code{pas_downloadParseRawData()}.
 #' @param countryCodes ISO country codes used to subset the data.
 #' @param includePWFSL Logical specifying whether to calculate distances from 
 #' PWFSL monitors.
 #' 
 #' @return Enhanced Dataframe of synoptic PurpleAir data.
 #' 
-#' @seealso \link{pas_downloadParseData}
+#' @seealso \link{pas_downloadParseRawData}
 #' 
 #' @examples
 #' \dontrun{

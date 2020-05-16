@@ -1,27 +1,26 @@
 #' @export
 #' @importFrom rlang .data
-#' @import dplyr
+#' @importFrom MazamaCoreUtils logger.debug
+#' @importFrom tidyselect all_of
 #' 
-#' @title Create a PurpleAir Timeseries object
+#' @title Combine PurpleAir raw dataframes
 #' 
-#' @param pat_rawList Raw PurpleAir timeseries data from \code{pat_downloadParseData()}
+#' @param pat_rawList List of dataframes as returned by \code{pat_downloadParseRawData()}.
+#' @param plantowerAlgorithm Identifier for which fields to use for PM data.
 #' 
-#' @return List with \code{meta} and \code{data} elements.
+#' @return A PurpleAir Timeseries \emph{pat} object.
 #' 
-#' @description The timeseries dataframes present in \code{pat_rawList} are
-#' merged to create a uniform dataframe with temporal resolution in minutes.
-#' In the process, the following columns of data are omitted:
-#' \itemize{
-#' \item{\code{pm1_0_atm}}
-#' \item{\code{pm2_5_atm}}
-#' \item{\code{pm10_0_atm}}
-#' }
+#' @description The \code{pat_downloadParseRawData()} function returns four
+#' dataframes of data from ThingSpeak. These must be combined into the single
+#' \code{data} dataframe found in a 'pat' object. This process involves selecting
+#' data columns to use and bringing all data onto a unified time axis.
 #' 
-#' @note 
-#' On January 13, 2020 the PurpleAir FAQ "Whsat's the difference between CF_1
-#' and CF_ATM?" contained the following text:
+#' Two sets of data values exist in the raw data, one for each of two algorithms
+#' that convert particle counts into aerosol density.
 #' 
-#' \preformatted{
+#' PurpleAir has the following description:
+#' 
+#' \emph{
 #' The CF_ATM and CF_1 values are calculated from the particle count data with a 
 #' proprietary algorithm developed by the PMS5003 laser counter manufacturer, 
 #' PlanTower. The specifics of the calculation are not available to the public 
@@ -29,44 +28,62 @@
 #' to a mass concentration (ug/m3) they must use an average particle density. 
 #' They do provide 2 different mass concentration conversion options; CF_1 uses 
 #' the "average particle density" for indoor particulate matter and CF_ATM uses 
-#' the "average particle density" for outdoor particulate matter. Depending on 
-#' the density of the particles you are measuring the sensor could appear to 
-#' read "high" or "low". Some groups have developed conversion factors to 
-#' convert the data from the sensor to match the unique average particle density 
-#' within their airshed. 
+#' the "average particle density" for outdoor particulate matter.
 #' }
 #' 
-#' @return "pa_timeseries" list of time series PurpleAir data
+#' By default, the \pkg{AirSensor} package and all associated archive data
+#' use \code{plantowerAlgorithm = CF_ATM}. The ability to set
+#' \code{plantowerAlgorithm = CF_1} is intended only for those who wish to do 
+#' a detailed analaysis of the difference between these two algorithms.
 #' 
-#' @seealso \link{pat_downloadParseData}
-#' @references https://www2.purpleair.com/community/faq
+#' @references \url{https://www2.purpleair.com/community/faq#!hc-what-is-the-difference-between-cf-1-and-cf-atm}
 #' 
-#' @examples 
-#' \dontrun{
+#' @examples
+#' \donttest{
 #' library(AirSensor)
-#' initializeMazamaSpatialUtils()
 #' 
-#' pat_rawList <- pat_downloadParseData(
-#'   label = 'North Bend Weather',
-#'   pas = example_pas,
-#'   startdate = 20180908
+#' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+#' 
+#' pas <- pas_load()
+#' 
+#' pat_rawList <- pat_downloadParseRawData(
+#'   id = "78df3c292c8448f7_21257",
+#'   pas = pas
 #' )
 #' 
-#' pat <- pat_createPATimeseriesObject(pat_rawListList)
-#' pat_multiplot(pat)
+#' pat <- pat_createPATimeseriesObject(pat_rawList)
 #' }
 
 pat_createPATimeseriesObject <- function(
-  pat_rawListList = NULL
+  pat_rawList = NULL,
+  plantowerAlgorithm = "CF_ATM"
 ) {
-
-  # ---- Validate parameters ---------------------------------------------------
   
-  MazamaCoreUtils::stopIfNull(pat_rawListList)
+  # ----- Validate parameters --------------------------------------------------
+  
+  MazamaCoreUtils::stopIfNull(pat_rawList)
+  MazamaCoreUtils::stopIfNull(plantowerAlgorithm)
+  
+  if ( !plantowerAlgorithm %in% c("CF_ATM", "CF_1") ) {
+    stop(sprintf("plantowerAlgorithm = '%s' is not recognized",
+                 plantowerAlgorithm))
+  }
+
+  meta <- pat_rawList$meta
+  A_PRIMARY <- pat_rawList$A_PRIMARY
+  A_SECONDARY <- pat_rawList$A_SECONDARY
+  B_PRIMARY <- pat_rawList$B_PRIMARY
+  B_SECONDARY <- pat_rawList$B_SECONDARY
+  
+  MazamaCoreUtils::stopIfNull(meta)
+  MazamaCoreUtils::stopIfNull(A_PRIMARY)
+  MazamaCoreUtils::stopIfNull(A_SECONDARY)
+  MazamaCoreUtils::stopIfNull(B_PRIMARY)
+  MazamaCoreUtils::stopIfNull(B_SECONDARY)
   
   # ----- Simplify meta --------------------------------------------------------
-
-  # > names(pat_rawListList$meta)
+  
+  # > names(pat_rawList$meta)
   # [1] "ID"                               "label"                           
   # [3] "DEVICE_LOCATIONTYPE"              "THINGSPEAK_PRIMARY_ID"           
   # [5] "THINGSPEAK_PRIMARY_ID_READ_KEY"   "THINGSPEAK_SECONDARY_ID"         
@@ -92,7 +109,7 @@ pat_createPATimeseriesObject <- function(
   # [45] "communityRegion"                 
   
   meta <- 
-    pat_rawListList$meta %>%
+    pat_rawList$meta %>%
     dplyr::filter(is.na(.data$parentID)) %>%
     dplyr::select(.data$ID, 
                   .data$label, 
@@ -100,6 +117,8 @@ pat_createPATimeseriesObject <- function(
                   .data$DEVICE_LOCATIONTYPE, 
                   .data$THINGSPEAK_PRIMARY_ID, 
                   .data$THINGSPEAK_PRIMARY_ID_READ_KEY, 
+                  .data$THINGSPEAK_SECONDARY_ID, 
+                  .data$THINGSPEAK_SECONDARY_ID_READ_KEY, 
                   .data$longitude, 
                   .data$latitude, 
                   .data$countryCode, 
@@ -115,95 +134,120 @@ pat_createPATimeseriesObject <- function(
                   .data$technologyType,
                   .data$communityRegion)
   
-  # ----- Simplify data --------------------------------------------------------
+  # ----- Create A and B channels ----------------------------------------------
+
+  # NOTE:  Here is the structure of the raw data:
   
-  # Remove any duplicate data records
-  pat_rawList$data <- dplyr::distinct(pat_rawList$data)
+  # > names(A_PRIMARY)
+  # [1] "created_at"  "entry_id"    "pm1.0_cf1"   "pm2.5_cf1"   "pm10.0_cf1" 
+  # [6] "uptime"      "rssi"        "temperature" "humidity"    "pm2.5_atm"  
+  # > names(A_SECONDARY)
+  # [1] "created_at"  "entry_id"    "counts_0.3"  "counts_0.5"  "counts_1.0" 
+  # [6] "counts_2.5"  "counts_5.0"  "counts_10.0" "pm1.0_atm"   "pm10.0_atm" 
+  # > names(B_PRIMARY)
+  # [1] "created_at" "entry_id"   "pm1.0_cf1"  "pm2.5_cf1"  "pm10.0_cf1"     
+  # [6] "memory"     "adc0"       "pressure"   "bsec_iaq"   "pm2.5_atm" 
+  # > names(B_SECONDARY)
+  # [1] "created_at"  "entry_id"    "counts_0.3"  "counts_0.5"  "counts_1.0" 
+  # [6] "counts_2.5"  "counts_5.0"  "counts_10.0" "pm1.0_atm"   "pm10.0_atm" 
   
-  # NOTE:  The incoming pat_rawList has the following structure with 
-  # NOTE:  a 'meta' dataframe and a 'data' dataframe:
-  # NOTE:  
-  # NOTE:  > names(pat_rawList$data)
-  # NOTE:   [1] "datetime"  "entry_id"  "pm1_0_atm"   "pm2_5_atm" "pm10_0_atm"    
-  # NOTE:   [6] "uptime"    "rssi"      "temp"      "humidity"  "pm2_5_cf_1"
-  # NOTE:  [11] "channel"   "memory"    "adc0"     
+  # NOTE:  Here is the structure of the data we wish to have in the end:
   
-  # Extract useful columns from channel A data
-  A <- 
-    pat_rawList$data %>%
-    dplyr::filter(.data$channel == 'A') %>%
-    dplyr::select(.data$datetime, 
-                  .data$uptime, 
-                  .data$rssi, 
-                  .data$temperature, 
-                  .data$humidity, 
-                  .data$pm1_0_atm, 
-                  .data$pm2_5_atm, 
-                  .data$pm10_0_atm, 
-                  .data$pm2_5_cf_1) %>%
-    dplyr::rename(datetime_A = .data$datetime, 
-                  pm1_0_atm_A = .data$pm1_0_atm,
-                  pm25_atm_A = .data$pm2_5_atm,
-                  pm10_0_atm_A = .data$pm10_0_atm,
-                  pm25_cf1_A = .data$pm2_5_cf_1) %>%
-    dplyr::mutate(pm25_A = .data$pm25_atm_A)
+  # > names(example_pat$data)
+  # [1] "datetime"    "pm25_A"      "pm25_B"      "pm1_atm_A"   "pm1_atm_B"  
+  # [6] "pm25_atm_A"  "pm25_atm_B"  "pm10_atm_A"  "pm10_atm_B"  "temperature"
+  # [11] "humidity"    "uptime"      "adc0"        "rssi"        "datetime_A" 
+  # [16] "datetime_B" 
   
-  # NOTE:  Expedient conversion to a minute axis with floor_date() 
-  A$datetime <- lubridate::floor_date(A$datetime_A, unit="min")
+  # NOTE:  Version 0.5 of the AirSensor package assumed that A and B channels
+  # NOTE:  were reporting independently and we created 'datetime_A' and
+  # NOTE:  'datetime_B' to keep track of the raw data timestamps before 
+  # NOTE:  merging data onto a uniform, minute resolution 'datetime' axis.
   
-  # NOTE:  Check that we don't have duplicates with: any(diff(A$datetime) == 0)
+  # * A channel -----
   
-  # Extract useful columns from channel B data
-  B <- 
-    pat_rawList$data %>%
-    dplyr::filter(.data$channel == 'B') %>%
-    dplyr::select(.data$datetime, 
-                  .data$memory, 
-                  .data$adc0, 
-                  .data$pm1_0_atm, 
-                  .data$pm2_5_atm, 
-                  .data$pm10_0_atm, 
-                  .data$pm2_5_cf_1) %>%
-    dplyr::rename(datetime_B = .data$datetime, 
-                  pm1_0_atm_B = .data$pm1_0_atm,
-                  pm25_atm_B = .data$pm2_5_atm,
-                  pm10_0_atm_B = .data$pm10_0_atm,
-                  pm25_cf1_B = .data$pm2_5_cf_1) %>%
-    dplyr::mutate(pm25_B = .data$pm25_atm_B)
+  if ( nrow(A_PRIMARY) != nrow(A_SECONDARY) ) {
+    
+    stop(sprintf("A_PRIMARY has %d rows but A_SECONDARY has %d rows",
+                 nrow(A_PRIMARY), nrow(A_SECONDARY)))
+    
+  } else {
+    
+    retainedColumns <- c(
+      "datetime", "datetime_A",
+      "pm25_A", "pm1_atm_A", "pm25_atm_A", "pm10_atm_A",
+      "uptime", "rssi", "temperature", "humidity"
+    )
+    
+    A_data <- 
+      dplyr::bind_cols(A_PRIMARY, A_SECONDARY[,c("pm1.0_atm", "pm10.0_atm")]) %>%
+      dplyr::mutate(
+        datetime = lubridate::floor_date(.data$created_at, unit = "min"),
+        datetime_A = .data$created_at,
+        pm1_atm_A = .data$pm1.0_atm, 
+        pm25_atm_A = .data$pm2.5_atm, 
+        pm10_atm_A = .data$pm10.0_atm, 
+        pm25_A = .data$pm2.5_atm, 
+      ) %>%
+      dplyr::select(all_of(retainedColumns))
+    
+  }
   
-  # NOTE:  Expedient conversion to a minute axis with floor_date() 
-  B$datetime <- lubridate::floor_date(B$datetime_B, unit="min")
+  # * B channel -----
   
-  # NOTE:  Check that we don't have duplicates with: any(diff(B$datetime) == 0)
+  if ( nrow(B_PRIMARY) != nrow(B_SECONDARY) ) {
+    
+    stop(sprintf("B_PRIMARY has %d rows but B_SECONDARY has %d rows",
+                 nrow(B_PRIMARY), nrow(B_SECONDARY)))
+    
+  } else {
+    
+    retainedColumns <- c(
+      "datetime", "datetime_B",
+      "pm25_B", "pm1_atm_B", "pm25_atm_B", "pm10_atm_B",
+      "memory", "adc0", "pressure", "bsec_iaq"
+    )
+    
+    B_data <- 
+      dplyr::bind_cols(B_PRIMARY, B_SECONDARY[,c("pm1.0_atm", "pm10.0_atm")]) %>%
+      dplyr::mutate(
+        datetime = lubridate::floor_date(.data$created_at, unit = "min"),
+        datetime_B = .data$created_at,
+        pm1_atm_B = .data$pm1.0_atm, 
+        pm25_atm_B = .data$pm2.5_atm, 
+        pm10_atm_B = .data$pm10.0_atm, 
+        pm25_B = .data$pm2.5_atm
+      ) %>%
+      dplyr::select(all_of(retainedColumns))
+    
+  }
   
-  # Combine dataframes 
-  data <- 
-    dplyr::full_join(A, B, by = 'datetime') %>%
-    dplyr::select(.data$datetime, 
-                  .data$pm25_A, 
-                  .data$pm25_B, 
-                  .data$pm1_0_atm_A, 
-                  .data$pm1_0_atm_B, 
-                  .data$pm25_atm_A, 
-                  .data$pm25_atm_B, 
-                  .data$pm10_0_atm_A, 
-                  .data$pm10_0_atm_B, 
-                  .data$pm25_cf1_A, 
-                  .data$pm25_cf1_B, 
-                  .data$temperature, 
-                  .data$humidity,
-                  .data$uptime, 
-                  .data$adc0, 
-                  .data$rssi, 
-                  .data$datetime_A, 
-                  .data$datetime_B) %>%
-    dplyr::arrange(.data$datetime)
+  # ----- Combine A and B channels ---------------------------------------------
   
-  # Fill in adc0 and rssi using last observation carry forward so both 
-  # channels have these (they don't change much)
-  data <- tidyr::fill(data, .data$adc0, .data$rssi)
+  # > names(A)
+  # [1] "datetime"    "datetime_A"  "pm25_A"      "pm1_atm_A"   "pm25_atm_A" 
+  # [6] "pm10_atm_A"  "uptime"      "rssi"        "temperature" "humidity"   
+  # > names(B)
+  # [1] "datetime"    "datetime_B"  "pm25_B"      "pm1_atm_B"   "pm25_atm_B"
+  # [6] "pm10_atm_B"  "memory"      "adc0"        "pressure"    "bsec_iaq"    
   
-  # ----- Create the PurpleAir Timeseries (pat) object ------------------------
+  # NOTE:  Here are the columns we wish to have in the end in preferred order:
+  # NOTE:  If we just take columns 1-6 we have a very useful dataframe.
+  retainedColumns <- c(
+    "datetime", 
+    "pm25_A", "pm25_B", 
+    "temperature", "humidity", "pressure",
+    "pm1_atm_A", "pm25_atm_A", "pm10_atm_A",
+    "pm1_atm_B", "pm25_atm_B", "pm10_atm_B",
+    "uptime", "rssi", "memory", "adc0", "bsec_iaq",
+    "datetime_A", "datetime_B"
+  )
+  
+  data <-
+    dplyr::full_join(A_data, B_data, by = "datetime") %>%
+    dplyr::select(all_of(retainedColumns))
+
+  # ----- Return ---------------------------------------------------------------
   
   # Combine meta and data dataframes into a list
   pat <- list(meta = meta, data = data)
@@ -212,9 +256,42 @@ pat_createPATimeseriesObject <- function(
   # Remove any duplicate data records
   pat <- pat_distinct(pat)
   
-  # ----- Return ---------------------------------------------------------------
-  
   return(pat)
   
 }
 
+# ===== DEBUGGING ==============================================================
+
+if ( FALSE ) {
+  
+  library(AirSensor)
+  
+  setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1") # SCAQMD sensors
+  
+  pas <- pas_load()
+  
+  id <- '78df3c292c8448f7_21257'
+  label <- NULL
+  startdate <- NULL
+  enddate <- NULL
+  timezone <- NULL
+  baseUrl <- "https://api.thingspeak.com/channels/"
+  
+  pat_rawList <- pat_downloadParseRawData(
+    id,
+    label,
+    pas,
+    startdate,
+    enddate,
+    timezone,
+    baseUrl
+  )
+ 
+  plantowerAlgorithm <- "CF_ATM" 
+
+  pat <- pat_createPATimeseriesObject(
+    pat_rawList,
+    plantowerAlgorithm
+  )
+  
+}

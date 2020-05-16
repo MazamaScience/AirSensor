@@ -55,7 +55,7 @@ initializeMazamaSpatialUtils <- function(
   return(invisible(NULL))
 }
 
-#' @keywords internal
+#' @export
 #' @title Check if MazamaSpatialUtils has been initialized 
 #' 
 #' @description Logical convenience function to check if 
