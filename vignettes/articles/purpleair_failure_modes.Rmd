@@ -30,7 +30,7 @@ pat_internalFit(pat_a_noisy_1)
 ```
 
 Channel A here often measures above B at the same moment in time, as shown by
-the scatterplot with the vertical clump near the origin instead of along the 
+the scatterPlot with the vertical clump near the origin instead of along the 
 angled regression line.
 
 ## Channel A Extreme Noise
@@ -46,7 +46,7 @@ pat_a_noisy_2 <- pat_createNew(id = noisy_2_id,
                                startdate = 20190701, 
                                enddate = 20190708,
                                timezone = "America/Los_Angeles")
-pat_multiplot(pat_a_noisy_2, plottype = "pm25_over")
+pat_multiPlot(pat_a_noisy_2, plottype = "pm25_over")
 ```
 
 While a small amount of noise is natural when measuring particulate matter, 
@@ -60,7 +60,7 @@ Channel A shows a sudden, but short-lived jump in PM2.5 readings.
 
 ```{r channel_a_jump, echo=FALSE}
 pat_a_jump <- example_pat_failure_B
-pat_multiplot(pat_a_jump, plottype = "pm25_over")
+pat_multiPlot(pat_a_jump, plottype = "pm25_over")
 ```
 
 This plot shows a jump that seems to retain a consistent wave pattern
@@ -81,7 +81,7 @@ pat_a_humidity <- pat_createNew(id = humidity_id,
                                 startdate = "2019-04-16", 
                                 enddate = "2019-04-24",
                                 timezone = "America/Los_Angeles")
-pat_multiplot(pat_a_humidity)
+pat_multiPlot(pat_a_humidity)
 ```
 
 You can see in the multiplot the clear disconnect between the two PM2.5 
@@ -90,10 +90,10 @@ jumps into the thousands and starts tracing the trend of the humidity data
 (plotted directly below).
 
 ```{r, channel_a_humidity_scatter, echo=FALSE, warning=FALSE}
-pat_scatterMatrixPlot(pat_a_humidity)
+pat_scatterPlotMatrix(pat_a_humidity)
 ```
 
-A glance at these scatterplots gives a us another look at just how uncorrelated 
+A glance at these scatterPlots gives a us another look at just how uncorrelated 
 the A and B channels are, while the relationships for channel A 
 with temperature and humidity are abnormally well-defined. It's actually not
 very clear which of the auxillary sensors the A channel is reflecting since
@@ -115,7 +115,7 @@ pat <- pat_createNew(id = id,
                      startdate = 20190701, 
                      enddate = 20190710,
                      timezone = "America/Los_Angeles")
-pat_multiplot(pat)
+pat_multiPlot(pat)
 ```
 
 The multiplot shows the A and B channels have very different readings, similar 
@@ -149,7 +149,7 @@ pat_b_zero <- pat_createNew(id = zero_id,
                             startdate = "2019-07-01", 
                             enddate = "2019-07-08",
                             timezone = "America/Los_Angeles")
-pat_multiplot(pat_b_zero, sampleSize = NULL)
+pat_multiPlot(pat_b_zero, sampleSize = NULL)
 
 simple <- dplyr::select(pat_b_zero$data, datetime, pm25_A, pm25_B)
 head(simple)

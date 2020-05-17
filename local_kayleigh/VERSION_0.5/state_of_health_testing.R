@@ -146,8 +146,8 @@ points(pct_DC_tbl$day, pct_DC_tbl$pctDC_humidity, col = "green")
 
 pat <- example_pat
 timezone<- "America/Los_Angeles"
-#pat_multiplot(pat)
-#pat_scatterplot(pat)
+#pat_multiPlot(pat)
+#pat_scatterPlot(pat)
 
 pat_tbl<-
   pat %>%

@@ -100,8 +100,8 @@ plotting functions. Examples include:
 ```
 pat_dygraph()
 pat_leaflet()
-pat_multiplot()
-pat_scatterMatrixPlot()
+pat_multiPlot()
+pat_scatterPlotMatrix()
 ```
 
 ## Naming Files

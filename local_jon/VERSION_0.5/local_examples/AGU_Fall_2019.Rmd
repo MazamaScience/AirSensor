@@ -46,7 +46,7 @@ pa_synoptic %>% pas_leaflet()
 The AirSensor R package provides many intuitively named functions and arguments and harnesses R’s pipeline syntax so that analysts can write R code that is easy to understand. Several functions provide high level analysis and visualization in a single line of code. The code below demonstrates how straightforward it is to work with data from a PurpleAir sensor in downtown San Francisco. The plot clearly shows the decline in air quality from smoke that drifted in from Butte County’s catastrophic Camp Fire in 2018. 
 
 ```{r}
-pa_timeseries %>% pat_multiplot()
+pa_timeseries %>% pat_multiPlot()
 ```
 
 There are also interactive options for plotting. 
@@ -94,7 +94,7 @@ bad_pat <- pat_createNew( pas = pa_synoptic,
                           startdate = 20181001, 
                           enddate = 20181201 )
 # Plot the bad data
-bad_pat %>% pat_multiplot()
+bad_pat %>% pat_multiPlot()
 ```
 
 Visually, this sensor looks 'bad'. We can futher confirm this with an overlayed timeseries plot of both channels and performing a Pearson correlation using AirSensors built in tools. 

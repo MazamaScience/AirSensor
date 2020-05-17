@@ -60,7 +60,7 @@ Users may request a \emph{pat} object in one of two ways:
 ### setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
 #### pas <- example_pas
 ### may <- pat_loadMonth(label = "SCNP_20", pas = pas, 201905)
-### pat_multiplot(may)
+### pat_multiPlot(may)
 }
 }
 \seealso{

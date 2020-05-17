@@ -49,7 +49,7 @@
 #' #### pas <- example_pas
 
 #' ### may <- pat_loadMonth(label = "SCNP_20", pas = pas, 201905)
-#' ### pat_multiplot(may)
+#' ### pat_multiPlot(may)
 #' }
 
 pat_loadMonth <- function(

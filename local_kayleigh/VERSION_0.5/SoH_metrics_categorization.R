@@ -50,8 +50,8 @@ pas <- pas_load(archival = TRUE)
 pat <- pat_createNew(pas,"Rippon", startdate = 20191001, enddate = 20191118,
                      baseURL = "https://api.thingspeak.com/channels/")
 
-pat_multiplot(pat)
-pat_multiplot(pat, plottype = "pm25_over")
+pat_multiPlot(pat)
+pat_multiPlot(pat, plottype = "pm25_over")
 #pat_dailySoHPlot(pat)
 soh <- pat_dailySoH(fairview_pat)
 pat_dailySoHPlot_change_Vars(pat)

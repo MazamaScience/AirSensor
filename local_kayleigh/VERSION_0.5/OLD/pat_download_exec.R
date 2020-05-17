@@ -148,7 +148,7 @@ result <- try({
   logger.info("pat download completed")
   # logger.info("creating plot")
   # png("testplot.png", width = 900, height = 900)
-  # pat_multiplot(pat)
+  # pat_multiPlot(pat)
   # dev.off 
   
   

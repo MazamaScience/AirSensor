@@ -29,7 +29,7 @@ readings by loading a PurpleAir Timeseries *pat* object using the same label:
 ```{r load_pat_and_multiplot, warning=FALSE}
 pat_bikesgv <- pat_createNew(pas, "BikeSGV - West Pasadena", 
                             startdate="2019-06-18", enddate="2019-06-25")
-pat_multiplot(pat_bikesgv)
+pat_multiPlot(pat_bikesgv)
 ```
 
 This sensor's A and B PM sensors appear to be telling us two very different 
@@ -37,7 +37,7 @@ stories! Let's ignore temperature and humidity for now and zoom in on just the
 PM readings by setting *plottype*:
 
 ```{r plot_only_pm25, warning=FALSE}
-pat_multiplot(pat_bikesgv, plottype = "pm25_over")
+pat_multiPlot(pat_bikesgv, plottype = "pm25_over")
 ```
 
 While the A channel PM 2.5 measurements oscillate over time in a fairly natural 
@@ -66,10 +66,10 @@ pat_internalFit(pat_bikesgv)
 It looks like the A and B channels aren't linearly correlated at all. This is 
 odd since the two sensors are measuring the same air and should at least give
 somewhat similar readings. Maybe comparing more sensors could give us some 
-insight. We can check them all against each other by using a scatterplot:
+insight. We can check them all against each other by using a scatterPlot:
 
-```{r all_sensors_scatterplot, warning=FALSE, message=FALSE}
-pat_scatterplot(pat_bikesgv)
+```{r all_sensors_scatterPlot, warning=FALSE, message=FALSE}
+pat_scatterPlot(pat_bikesgv)
 ```
 
 Now we're getting somewhere! While the correlation plot between the two channels
@@ -77,13 +77,13 @@ is a shapeless cloud, channel A seems to have a very well defined relationship
 with temperature and humidity while channel B has no similarities with them at 
 all.
 
-Just for reference, this is the scatterplot for a different sensor, only a few
+Just for reference, this is the scatterPlot for a different sensor, only a few
 hundred feet away, that is not experiencing this issue:
 
-```{r normal_scatterplot, warning=FALSE, message=FALSE}
+```{r normal_scatterPlot, warning=FALSE, message=FALSE}
 pat_normal <- pat_createNew(pas, "AQMD_NASA_33", 
                             startdate="2019-06-18", enddate="2019-06-25")
-pat_scatterplot(pat_normal)
+pat_scatterPlot(pat_normal)
 ```
 
 Notice that at this site, both PM 2.5 sensors share a proper linear relationship
@@ -191,7 +191,7 @@ Channel B seemed unaffected by anything the whole time though. Let's see if
 the auxilary sensors experienced anything unusual:
 
 ```{r transition_multiplot, warning=FALSE}
-pat_multiplot(pat_april)
+pat_multiPlot(pat_april)
 ```
 
 It seems that only the channel A sensor was affected at this time. The reason

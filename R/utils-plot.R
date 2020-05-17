@@ -3,7 +3,7 @@
 #' 
 #' @title Matrix scatter plot variables in a data frame
 #' 
-#' @description Creates a multi-panel scatterplot comparing all variables in the
+#' @description Creates a multi-panel scatterPlot comparing all variables in the
 #' data frame object. If any variables have not valid data, they are omitted 
 #' from the plot.
 #' 
@@ -17,7 +17,7 @@
 #' @param alpha opacity of points
 #'
 
-scatterplot <- function(
+scatterPlot <- function(
   data,  
   parameters = NULL, 
   sampleSize = 5000,

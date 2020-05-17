@@ -31,7 +31,7 @@ pas %>% pas_filter(stateCode == "WA") %>% pas_leaflet()
 
 pat <- pat_load("MV Clean Air Ambassador @ Willowbrook Farm", startdate = 20190101, enddate = 20191023) #summer gap
 pat <- pat_load("Spokane South Hill #1", startdate = 20190101, enddate = 20191023) #super clean station
-pat %>% pat_multiplot()
+pat %>% pat_multiPlot()
 
 SoH <- pat_dailyStateOfHealth(pat)
 

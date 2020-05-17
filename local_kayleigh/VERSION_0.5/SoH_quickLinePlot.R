@@ -44,7 +44,7 @@ pat_sub <- pat_sample(pat, keepOutliers = TRUE) #for viewing a subset of the pat
 station_name <- pat$meta$label 
 
 # quick look at the pat
-pat_multiplot(pat_sub)
+pat_multiPlot(pat_sub)
 
 SoH_sub <- dplyr::select(SoH, "datetime", 
                          contains("_pctReporting"),

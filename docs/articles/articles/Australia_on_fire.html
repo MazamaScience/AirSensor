@@ -218,9 +218,9 @@
 <h3 class="hasAnchor">
 <a href="#view-a-pat-timeseries" class="anchor"></a>View a <em>pat</em> timeseries</h3>
 <p>A <em>pat</em> object is a list of two dataframes, one called <code>meta</code> containing spatial metadata associated with the sensor and another called <code>data</code> containing that sensor’s time series data. Each <em>pat</em> object contains time series data for a temperature channel, a humidity channel, A and B PM 2.5 channel’s, and several other fields.</p>
-<p>The following chunk demonstrates use of the <code><a href="../../reference/pat_multiplot.html">pat_multiplot()</a></code> function to have a quick look at the data contained in a <em>pat</em> object. The plot shows both A and B channels as well as temperature and humidity. The plotting function is flexible and has options for choosing which channels to display, on the same or individual axes. (<em>Type <code><a href="../../reference/pat_multiplot.html">?pat_multiplot</a></code> to learn more.</em>)</p>
+<p>The following chunk demonstrates use of the <code><a href="../../reference/pat_multiPlot.html">pat_multiPlot()</a></code> function to have a quick look at the data contained in a <em>pat</em> object. The plot shows both A and B channels as well as temperature and humidity. The plotting function is flexible and has options for choosing which channels to display, on the same or individual axes. (<em>Type <code><a href="../../reference/pat_multiPlot.html">?pat_multiPlot</a></code> to learn more.</em>)</p>
 <p>In this case we see that the data look good. Channels A and B are both showing lots of PM 2.5 data for “Jannali” over the period of interest</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../../reference/pat_multiplot.html">pat_multiplot</a></span>(pat_jannali)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../../reference/pat_multiPlot.html">pat_multiPlot</a></span>(pat_jannali)</a></code></pre></div>
 <p><img src="Australia_on_fire_files/figure-html/view_pats-1.png" width="672"></p>
 </div>
 </div>

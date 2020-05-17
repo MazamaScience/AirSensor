@@ -10,6 +10,7 @@
 #' initializeMazamaSpatialUtils()
 #' 
 #' example_pas <- pas_createNew()
+#' 
 #' save(example_pas, file = "data/example_pas.rda")
 #' }
 #'
@@ -33,6 +34,7 @@
 #' example_pas_raw <- 
 #'   pas_downloadParseRawData() %>%
 #'   dplyr::filter(Lon > -125.0 & Lon < -117.0 & Lat > 42.0 & Lat < 49.0)
+#'   
 #' save(example_pas_raw, file = "data/example_pas_raw.rda")
 #' }
 #' 
@@ -59,12 +61,13 @@
 #' initializeMazamaSpatialUtils()
 #' 
 #' example_pat <- pat_createNew(
-#'   #label = "Seattle",
 #'   id = "ebcb53584e44bb6f_3218",
 #'   pas = example_pas,
 #'   startdate = "2018-08-01",
-#'   enddate = "2018-08-28"
+#'   enddate = "2018-08-28",
+#'   verbose = TRUE
 #' )
+#' 
 #' save(example_pat, file = "data/example_pat.rda")
 #' }
 #' @seealso example_pat_failure_A
@@ -87,8 +90,10 @@
 #'   label = "SCNP_20",
 #'   pas = example_pas,
 #'   startdate = "2019-04-01",
-#'   enddate = "2019-04-18"
+#'   enddate = "2019-04-18",
+#'   verbose = "TRUE"
 #' )
+#' 
 #' save(example_pat_failure_A, file = "data/example_pat_failure_A.rda")
 #' }
 #' @seealso example_pat
@@ -111,8 +116,10 @@
 #'   label = "SCTV_16",
 #'   pas = example_pas,
 #'   startdate = "2019-06-01",
-#'   enddate = "2019-06-18"
+#'   enddate = "2019-06-18",
+#'   verbose = TRUE
 #' )
+#' 
 #' save(example_pat_failure_B, file = "data/example_pat_failure_B.rda")
 #' }
 #' @seealso example_pat
@@ -138,6 +145,7 @@
 #'   enddate = "2018-09-07"
 #' ) %>%
 #' pat_createAirSensor(parameter = 'pm25', FUN = AirSensor::PurpleAirQC_hourly_AB_02)
+#' 
 #' save(example_sensor, file = "data/example_sensor.rda")
 #' }
 "example_sensor"

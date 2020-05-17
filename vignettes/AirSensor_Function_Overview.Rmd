@@ -64,8 +64,8 @@ following functions are the most common end-user functions:
 | `pat_sample()` | `pat, sampleSize` |
 | **Plotting a `pat`** | |
 | `pat_dygraph()` | `pat, parameter, sampleSize, ...` |
-| `pat_multiplot()` | `pat, plottype, sampleSize, ...` |
-| `pat_scatterMatrixPlot()` | `pat, parameters, sampleSize, ...` |
+| `pat_multiPlot()` | `pat, plottype, sampleSize, ...` |
+| `pat_scatterPlotMatrix()` | `pat, parameters, sampleSize, ...` |
 | **State-of-Health functions** | |
 | `pat_dailySoH()` | `pat, Soh_functions` |
 | `pat_dailySoHIndex_Plot_00()` | `pat, minPctReporting, breaks` |

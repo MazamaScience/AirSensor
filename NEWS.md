@@ -30,7 +30,7 @@ now available as `pat_aggregate_old` and `pat_createAirSensor_old()`.
 * `PurpleAirQC_validationPlot()` renamed to `PurpleAirQC_validationPlot_old()`.
 * `pat_outliers()` defaults updated to reflect current default 120 second sample
 interval.
-* `pat_multiplot()` now returns a `ggplot2` object which can be manipulated.
+* `pat_multiPlot()` now returns a `ggplot2` object which can be manipulated.
 
 # AirSensor 0.7.4
 
@@ -52,7 +52,7 @@ to `http://data.mazamascience.com/PurpleAir/v1`.
 
 # AirSensor 0.7.0
 
-* Renamed `pat_scatterplot()` to `pat_scatterMatrixPlot()`.
+* Renamed `pat_scatterPlot()` to `pat_scatterPlotMatrix()`.
 
 # AirSensor 0.6.17
 
@@ -82,7 +82,7 @@ encountered when running `pas_createNew()` with `countryCodes = NULL`.
 
 # AirSensor 0.6.13
 
-* Proper timezone handling in `pat_multiplot()` and `pat_monitorComparison()`
+* Proper timezone handling in `pat_multiPlot()` and `pat_monitorComparison()`
 
 # AirSensor 0.6.12
 
@@ -418,7 +418,7 @@ session specification of the location of pre-generated data files.
 begin a session with `setArchiveBaseUrl()`.
 * Modified behavior of `sensor_load()` to trim data to the requested time
 range.
-* Fixed bug in `pat_scatterplot()` that generated an error when the number of
+* Fixed bug in `pat_scatterPlot()` that generated an error when the number of
 records in the `pat` object was fewer than the `sampleSize` parameter.
 
 # AirSensor 0.3.15
@@ -477,7 +477,7 @@ sensors.
 network of sensors. These can be used to create videos showing the evolution
 of PM2.5 levels over several days.
 * Added `local_executables/createVideo_exec.R` script to generate mp4 videos.
-* Added `ylim` argument to `pat_multiplot()`.
+* Added `ylim` argument to `pat_multiPlot()`.
 
 # AirSensor 0.3.9
 
@@ -506,7 +506,7 @@ period.
 * Default required data retentaion rate during hourly aggregation was increased
 from 10/30 to 20/30 (`min_count = 20`).
 * Improved examples in the documentation.
-* Suppressing warnings from `pat_scatterplot()`.
+* Suppressing warnings from `pat_scatterPlot()`.
 * Updated "PurpleAir Timeseries" vignette.
 * Added `returnAllColumns` option to `PurpleAirQC_~1 functions.
 * New `PurpleQC_validationPlot()` function.
@@ -537,7 +537,7 @@ naming system.
 * Added `pat_monitorComparison()`.
 * Added `local_examples/bikesgv_story.Rmd`.
 * Improved error handling in `pas_filter()`.
-* Added `"pm25_a"` and `"pm25_b"` plot types to `pat_multiplot()`.
+* Added `"pm25_a"` and `"pm25_b"` plot types to `pat_multiPlot()`.
 
 # AirSensor 0.3.3
 
@@ -600,7 +600,7 @@ simplified the function signature to accept just `pat` and `period` arguments.
 
 # AirSensor 0.2.15
 
-* Fixed default parameters bug in `pat_scatterplot()`
+* Fixed default parameters bug in `pat_scatterPlot()`
 * New shiny utilities for AirShiny
 
 # AirSensor 0.2.14 
@@ -629,7 +629,7 @@ simplified the function signature to accept just `pat` and `period` arguments.
 pre-generated `pat` files from the archive
 * new `pat_loadMonth()` loads pre-generated "pat" objects from a data archive
 * simplified `pat_aggregate()` -- it now always returns all statistics
-* removed unused `plotList` parameter from `pat_multiplot()`
+* removed unused `plotList` parameter from `pat_multiPlot()`
 * `pat_join()` can now accept either individual `pat` objects or a list of 
 `pat` objects
 * new `local_executables/createMonthlyPAT_exec.R` script for populating an
@@ -702,9 +702,9 @@ requiring tokens on April 25, 2019
 
 # AirSensor 0.2.2
 
-* `pat_multiplot()` time axis now in sensor local time
-* `pat_multiplot()` has a new `pm25_over` plottype
-* much improved `pat_scatterplot()`
+* `pat_multiPlot()` time axis now in sensor local time
+* `pat_multiPlot()` has a new `pm25_over` plottype
+* much improved `pat_scatterPlot()`
 
 # AirSensor 0.2.1
 
@@ -717,7 +717,7 @@ requiring tokens on April 25, 2019
 # AirSensor 0.2.0
 
 * renamed package to *AirSensor*
-* renamed `pat_internalData()` to `pat_scatterplot()` with improved functionality
+* renamed `pat_internalData()` to `pat_scatterPlot()` with improved functionality
 * renamed `pat_outliers()` to `pat_outliers()` with improved functionality
 * new utility functions `pat_isPat()`, `pat_isEmpty()`, `pat_extractMeta()`,
 `pat_extractData()`

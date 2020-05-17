@@ -49,9 +49,9 @@ in an ambient setting on planet Earth.
 \examples{
 \donttest{
 pat <- example_pat_failure_A
-pat \%>\% pat_multiplot(sampleSize = NULL)
-pat \%>\% pat_qc() \%>\% pat_multiplot(sampleSize = NULL)
-pat \%>\% pat_qc(max_humidity = 80) \%>\% pat_multiplot(sampleSize = NULL)
+pat \%>\% pat_multiPlot(sampleSize = NULL)
+pat \%>\% pat_qc() \%>\% pat_multiPlot(sampleSize = NULL)
+pat \%>\% pat_qc(max_humidity = 80) \%>\% pat_multiPlot(sampleSize = NULL)
 }
 }
 \references{

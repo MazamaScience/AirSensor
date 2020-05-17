@@ -191,7 +191,7 @@
 <h1 class="page-header">
 <a href="#airsensor-0-7-0" class="anchor"></a>AirSensor 0.7.0</h1>
 <ul>
-<li>Renamed <code>pat_scatterplot()</code> to <code><a href="../reference/pat_scatterMatrixPlot.html">pat_scatterMatrixPlot()</a></code>.</li>
+<li>Renamed <code>pat_scatterPlot()</code> to <code><a href="../reference/pat_scatterPlotMatrix.html">pat_scatterPlotMatrix()</a></code>.</li>
 </ul>
 </div>
     <div id="airsensor-0-6-17" class="section level1">
@@ -232,7 +232,7 @@
 <h1 class="page-header">
 <a href="#airsensor-0-6-13" class="anchor"></a>AirSensor 0.6.13</h1>
 <ul>
-<li>Proper timezone handling in <code><a href="../reference/pat_multiplot.html">pat_multiplot()</a></code> and <code><a href="../reference/pat_monitorComparison.html">pat_monitorComparison()</a></code>
+<li>Proper timezone handling in <code><a href="../reference/pat_multiPlot.html">pat_multiPlot()</a></code> and <code><a href="../reference/pat_monitorComparison.html">pat_monitorComparison()</a></code>
 </li>
 </ul>
 </div>
@@ -647,7 +647,7 @@
 <li>New <code><a href="../reference/setArchiveBaseUrl.html">setArchiveBaseUrl()</a></code> and <code><a href="../reference/getArchiveBaseUrl.html">getArchiveBaseUrl()</a></code> functions allow per session specification of the location of pre-generated data files.</li>
 <li>Removed <code>baseUrl</code> parameter from all data loading functions. Now users must begin a session with <code><a href="../reference/setArchiveBaseUrl.html">setArchiveBaseUrl()</a></code>.</li>
 <li>Modified behavior of <code><a href="../reference/sensor_load.html">sensor_load()</a></code> to trim data to the requested time range.</li>
-<li>Fixed bug in <code>pat_scatterplot()</code> that generated an error when the number of records in the <code>pat</code> object was fewer than the <code>sampleSize</code> parameter.</li>
+<li>Fixed bug in <code>pat_scatterPlot()</code> that generated an error when the number of records in the <code>pat</code> object was fewer than the <code>sampleSize</code> parameter.</li>
 </ul>
 </div>
     <div id="airsensor-0-3-15" class="section level1">
@@ -713,7 +713,7 @@
 <ul>
 <li>Added <code><a href="../reference/sensor_videoFrame.html">sensor_videoFrame()</a></code> function to create a single frame map for a network of sensors. These can be used to create videos showing the evolution of PM2.5 levels over several days.</li>
 <li>Added <code>local_executables/createVideo_exec.R</code> script to generate mp4 videos.</li>
-<li>Added <code>ylim</code> argument to <code><a href="../reference/pat_multiplot.html">pat_multiplot()</a></code>.</li>
+<li>Added <code>ylim</code> argument to <code><a href="../reference/pat_multiPlot.html">pat_multiPlot()</a></code>.</li>
 </ul>
 </div>
     <div id="airsensor-0-3-9" class="section level1">
@@ -748,7 +748,7 @@
 </li>
 <li>Default required data retentaion rate during hourly aggregation was increased from 10/30 to 20/30 (<code>min_count = 20</code>).</li>
 <li>Improved examples in the documentation.</li>
-<li>Suppressing warnings from <code>pat_scatterplot()</code>.</li>
+<li>Suppressing warnings from <code>pat_scatterPlot()</code>.</li>
 <li>Updated “PurpleAir Timeseries” vignette.</li>
 <li>Added <code>returnAllColumns</code> option to `PurpleAirQC_~1 functions.</li>
 <li>New <code>PurpleQC_validationPlot()</code> function.</li>
@@ -788,7 +788,7 @@
 <li>Added <code><a href="../reference/pat_monitorComparison.html">pat_monitorComparison()</a></code>.</li>
 <li>Added <code>local_examples/bikesgv_story.Rmd</code>.</li>
 <li>Improved error handling in <code><a href="../reference/pas_filter.html">pas_filter()</a></code>.</li>
-<li>Added <code>"pm25_a"</code> and <code>"pm25_b"</code> plot types to <code><a href="../reference/pat_multiplot.html">pat_multiplot()</a></code>.</li>
+<li>Added <code>"pm25_a"</code> and <code>"pm25_b"</code> plot types to <code><a href="../reference/pat_multiPlot.html">pat_multiPlot()</a></code>.</li>
 </ul>
 </div>
     <div id="airsensor-0-3-3" class="section level1">
@@ -869,7 +869,7 @@
 <h1 class="page-header">
 <a href="#airsensor-0-2-15" class="anchor"></a>AirSensor 0.2.15</h1>
 <ul>
-<li>Fixed default parameters bug in <code>pat_scatterplot()</code>
+<li>Fixed default parameters bug in <code>pat_scatterPlot()</code>
 </li>
 <li>New shiny utilities for AirShiny</li>
 </ul>
@@ -915,7 +915,7 @@
 <code>local_examples/07_pat_archive.R</code> demonstrates how to efficiently work with pre-generated <code>pat</code> files from the archive</li>
 <li>new <code><a href="../reference/pat_loadMonth.html">pat_loadMonth()</a></code> loads pre-generated “pat” objects from a data archive</li>
 <li>simplified <code><a href="../reference/pat_aggregate.html">pat_aggregate()</a></code> – it now always returns all statistics</li>
-<li>removed unused <code>plotList</code> parameter from <code><a href="../reference/pat_multiplot.html">pat_multiplot()</a></code>
+<li>removed unused <code>plotList</code> parameter from <code><a href="../reference/pat_multiPlot.html">pat_multiPlot()</a></code>
 </li>
 <li>
 <code><a href="../reference/pat_join.html">pat_join()</a></code> can now accept either individual <code>pat</code> objects or a list of <code>pat</code> objects</li>
@@ -1025,10 +1025,10 @@
 <a href="#airsensor-0-2-2" class="anchor"></a>AirSensor 0.2.2</h1>
 <ul>
 <li>
-<code><a href="../reference/pat_multiplot.html">pat_multiplot()</a></code> time axis now in sensor local time</li>
+<code><a href="../reference/pat_multiPlot.html">pat_multiPlot()</a></code> time axis now in sensor local time</li>
 <li>
-<code><a href="../reference/pat_multiplot.html">pat_multiplot()</a></code> has a new <code>pm25_over</code> plottype</li>
-<li>much improved <code>pat_scatterplot()</code>
+<code><a href="../reference/pat_multiPlot.html">pat_multiPlot()</a></code> has a new <code>pm25_over</code> plottype</li>
+<li>much improved <code>pat_scatterPlot()</code>
 </li>
 </ul>
 </div>
@@ -1053,7 +1053,7 @@
 <ul>
 <li>renamed package to <em>AirSensor</em>
 </li>
-<li>renamed <code>pat_internalData()</code> to <code>pat_scatterplot()</code> with improved functionality</li>
+<li>renamed <code>pat_internalData()</code> to <code>pat_scatterPlot()</code> with improved functionality</li>
 <li>renamed <code><a href="../reference/pat_outliers.html">pat_outliers()</a></code> to <code><a href="../reference/pat_outliers.html">pat_outliers()</a></code> with improved functionality</li>
 <li>new utility functions <code><a href="../reference/pat_isPat.html">pat_isPat()</a></code>, <code><a href="../reference/pat_isEmpty.html">pat_isEmpty()</a></code>, <code><a href="../reference/pat_extractDataFrame.html">pat_extractMeta()</a></code>, <code><a href="../reference/pat_extractDataFrame.html">pat_extractData()</a></code>
 </li>

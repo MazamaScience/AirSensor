@@ -1,5 +1,6 @@
 #' @export
 #' @importFrom rlang .data
+#' @importFrom tidyselect all_of
 #' @import graphics
 #' 
 #' @title Sample PurpleAir time series data
@@ -72,15 +73,50 @@ pat_sample <- function(
   if ( sampleSize > nrow(pat$data) ) 
     return(pat)
   
+  # ----- Define columns -------------------------------------------------------
+
+  # > names(pat$data)
+  #  [1] "datetime"    "pm25_A"      "pm25_B"      "temperature" "humidity"   
+  #  [6] "pressure"    "pm1_atm_A"   "pm25_atm_A"  "pm10_atm_A"  "pm1_atm_B"  
+  # [11] "pm25_atm_B"  "pm10_atm_B"  "uptime"      "rssi"        "memory"     
+  # [16] "adc0"        "bsec_iaq"    "datetime_A"  "datetime_B" 
+  
+  # NOTE:  This set of columns must match those defined in
+  # NOTE:    pat_createPATimeseriesObject.R
+  
+  retainedColumns <- c(
+    "datetime", 
+    "pm25_A", "pm25_B", 
+    "temperature", "humidity", "pressure",
+    "pm1_atm_A", "pm25_atm_A", "pm10_atm_A",
+    "pm1_atm_B", "pm25_atm_B", "pm10_atm_B",
+    "uptime", "rssi", "memory", "adc0", "bsec_iaq",
+    "datetime_A", "datetime_B"
+  )
+  
+  A_columns <- c(
+    "datetime", "pm25_A",
+    "temperature", "humidity", "pressure",
+    "pm1_atm_A", "pm25_atm_A", "pm10_atm_A",
+    "datetime_A"
+  )
+  
+  B_columns <- c(
+    "datetime", "pm25_B", 
+    "pm1_atm_B", "pm25_atm_B", "pm10_atm_B",
+    "uptime", "rssi", "memory", "adc0", "bsec_iaq",
+    "datetime_B"
+  )
+  
   # ----- Detect Outliers ------------------------------------------------------
   
   A_data <- 
     dplyr::filter(pat$data, !is.na(.data$pm25_A)) %>% 
-    dplyr::select( -.data$pm25_B, -.data$datetime_B)
+    dplyr::select(all_of(A_columns))
   
   B_data <- 
     dplyr::filter(pat$data, !is.na(.data$pm25_B)) %>% 
-    dplyr::select(.data$datetime, .data$pm25_B, .data$datetime_B)
+    dplyr::select(all_of(B_columns))
   
   allBad_A <- nrow(A_data) == 0
   allBad_B <- nrow(B_data) == 0
@@ -100,7 +136,7 @@ pat_sample <- function(
             parameter = "pm25_A",
             windowSize = 23,
             thresholdMin = 8
-          )[,ncol(A_data) + 1]
+          )$flag_outliers_pm25_A
         )
     } else {
       outlierIndex_A <- c(1)
@@ -114,7 +150,7 @@ pat_sample <- function(
             parameter = "pm25_B",
             windowSize = 23,
             thresholdMin = 8
-          )[,ncol(B_data) + 1]
+          )$flag_outliers_pm25_B
         )
     } else {
       outlierIndex_B <- c(1)
@@ -187,18 +223,18 @@ pat_sample <- function(
       B_data, 
       by = 'datetime'
     ) %>%
-    dplyr::select(
-      .data$datetime, 
-      .data$pm25_A, 
-      .data$pm25_B, 
-      .data$temperature, 
-      .data$humidity, 
-      .data$uptime, 
-      .data$adc0, 
-      .data$rssi, 
-      .data$datetime_A, 
-      .data$datetime_B
-    ) %>%
+    # dplyr::select(
+    #   .data$datetime, 
+    #   .data$pm25_A, 
+    #   .data$pm25_B, 
+    #   .data$temperature, 
+    #   .data$humidity, 
+    #   .data$uptime, 
+    #   .data$adc0, 
+    #   .data$rssi, 
+    #   .data$datetime_A, 
+    #   .data$datetime_B
+    # ) %>%
     dplyr::distinct() %>% 
     dplyr::arrange(.data$datetime)
   

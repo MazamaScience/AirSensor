@@ -19,10 +19,10 @@
 #'                            startdate = 20180808, 
 #'                            enddate = 20180815,
 #'                            timezone = "UTC")
-#' pat_multiplot(UTC_week)
+#' pat_multiPlot(UTC_week)
 #'                               
 #' local_week <- pat_trimDate(UTC_week)
-#' pat_multiplot(local_week)
+#' pat_multiPlot(local_week)
 #'
 
 pat_trimDate <- function(

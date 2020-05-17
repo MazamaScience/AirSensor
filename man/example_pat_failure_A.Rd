@@ -16,14 +16,19 @@ version of a \emph{pa_timeseries} object for practicing and code examples.
 This dataset was was generated on 2020-01-03 by running:
 
 \preformatted{
-  example_pat_failure_A <-
-    pat_createNew(
-      label = "SCNP_20",
-      pas = example_pas,
-      startdate = "2019-04-01",
-      enddate = "2019-04-18"
-    )
-  save(example_pat_failure_A, file = "data/example_pat_failure_A.rda")
+library(AirSensor)
+
+initializeMazamaSpatialUtils()
+
+example_pat_failure_A <- pat_createNew(
+  label = "SCNP_20",
+  pas = example_pas,
+  startdate = "2019-04-01",
+  enddate = "2019-04-18",
+  verbose = "TRUE"
+)
+
+save(example_pat_failure_A, file = "data/example_pat_failure_A.rda")
 }
 }
 \seealso{

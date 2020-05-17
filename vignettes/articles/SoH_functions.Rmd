@@ -48,7 +48,7 @@ good_pat <- pat_createNew(id = good_id,
                           enddate = "2019-06-22", 
                           timezone = "America/Los_Angeles")
 
-pat_multiplot(good_pat, sampleSize = 1e6)
+pat_multiPlot(good_pat, sampleSize = 1e6)
 
 bad_id <- pas_getDeviceDeploymentIDs(pas, pattern = "SCTV_16")
 bad_pat <- pat_createNew(id = bad_id, 
@@ -58,7 +58,7 @@ bad_pat <- pat_createNew(id = bad_id,
                          enddate = "2019-06-22", 
                          timezone = "America/Los_Angeles")
 
-pat_multiplot(bad_pat,  sampleSize = 1e6)
+pat_multiPlot(bad_pat,  sampleSize = 1e6)
 ```
 
 ## Percent reporting

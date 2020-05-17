@@ -11,7 +11,8 @@ pat_createNew(
   startdate = NULL,
   enddate = NULL,
   timezone = NULL,
-  baseUrl = "https://api.thingspeak.com/channels/"
+  baseUrl = "https://api.thingspeak.com/channels/",
+  verbose = FALSE
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ pat_createNew(
 \item{timezone}{Timezone used to interpret start and end dates.}
 
 \item{baseUrl}{Base URL for Thingspeak API.}
+
+\item{verbose}{Logical controlling the generation of warning and error messages.}
 }
 \value{
 A PurpleAir Timeseries \emph{pat} object.
@@ -70,7 +73,7 @@ pat <- pat_createNew(
   startdate = 20180701, 
   enddate = 20180901
 )
-pat_multiplot(pat)
+pat_multiPlot(pat)
 }
 }
 \seealso{

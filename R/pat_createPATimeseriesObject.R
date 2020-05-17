@@ -166,7 +166,7 @@ pat_createPATimeseriesObject <- function(
   # NOTE:  then use dplyr::full_join() to create a combined dataframe that has
   # NOTE:  some missing values.
   
-  # * A channel -----
+  # ----- A channel ------------------------------------------------------------
   
   A_PRIMARY_columns <- c(
     "datetime", "datetime_A",
@@ -175,7 +175,7 @@ pat_createPATimeseriesObject <- function(
   )
   
   A_PRIMARY <-
-    A_PRIMARY %>%
+    pat_rawList$A_PRIMARY %>%
     dplyr::mutate(
       datetime = lubridate::floor_date(.data$created_at, unit = "min"),
       datetime_A = .data$created_at,
@@ -190,7 +190,7 @@ pat_createPATimeseriesObject <- function(
   )
   
   A_SECONDARY <-
-    A_SECONDARY %>%
+    pat_rawList$A_SECONDARY %>%
     dplyr::mutate(
       datetime = lubridate::floor_date(.data$created_at, unit = "min"),
       pm1_atm_A = .data$pm1.0_atm, 
@@ -198,22 +198,13 @@ pat_createPATimeseriesObject <- function(
     ) %>%
     dplyr::select(all_of(A_SECONDARY_columns))
   
-  # retainedColumns <- c(
-  #   "datetime", "datetime_A",
-  #   "pm25_A", "pm1_atm_A", "pm25_atm_A", "pm10_atm_A",
-  #   "uptime", "rssi", "temperature", "humidity"
-  # )
-  
   A_data <- 
     dplyr::full_join(A_PRIMARY, A_SECONDARY, by = "datetime") %>%
     dplyr::distinct() %>%
     dplyr::arrange(.data$datetime)
   
-  # TODO:  Deal with occasional separation PRIMARY and SECONDARY channels.
-  
   # NOTE:  The result is imperfect and the SECONDARY channel occasionally gets
-  # NOTE:  assigned to the next 'datetime' minute as seen below. Fixing things
-  # NOTE:  at this level is beyond the scope of what we are currently trying todo.
+  # NOTE:  assigned to the next 'datetime' minute as seen here:
   
   #   datetime            datetime_A          pm25_A pm25_atm_A uptime  rssi temperature humidity pm1_atm_A pm10_atm_A
   #   <dttm>              <dttm>               <dbl>      <dbl>  <int> <dbl>       <dbl>    <dbl>     <dbl>      <dbl>
@@ -222,48 +213,119 @@ pat_createPATimeseriesObject <- function(
   # 3 2018-08-02 14:41:00 NA                   NA         NA        NA    NA          NA       NA      2.48       3.21
   # 4 2018-08-02 14:42:00 2018-08-02 14:42:09   2.12       2.12   6309   -74          65       63      1.3        2.12
   
+  # NOTE:  We can take of this by separating our single dataframe into 
+  # NOTE:  pieces, subtracting a minute from rows with SECONDARY data only and
+  # NOTE:  then recombining.
   
-  # A_data <- 
-  #   dplyr::bind_cols(A_PRIMARY, A_SECONDARY[,c("pm1.0_atm", "pm10.0_atm")]) %>%
-  #   dplyr::mutate(
-  #     datetime = lubridate::floor_date(.data$created_at, unit = "min"),
-  #     datetime_A = .data$created_at,
-  #     pm1_atm_A = .data$pm1.0_atm, 
-  #     pm25_atm_A = .data$pm2.5_atm, 
-  #     pm10_atm_A = .data$pm10.0_atm, 
-  #     pm25_A = .data$pm2.5_atm, 
-  #   ) %>%
-  #   dplyr::select(all_of(retainedColumns))
+  # Separate into records with full data, PRIMARY only or SECONDARY only
   
-  # * B channel -----
+  PRIMARY_only_mask <- !is.na(A_data$datetime_A) & is.na(A_data$pm1_atm_A)
+  SECONDARY_only_mask <- is.na(A_data$datetime_A) & !is.na(A_data$pm1_atm_A)
+  full_mask <- !is.na(A_data$datetime_A) & !is.na(A_data$pm1_atm_A)
   
-  if ( nrow(B_PRIMARY) != nrow(B_SECONDARY) ) {
-    
-    stop(sprintf("B_PRIMARY has %d rows but B_SECONDARY has %d rows",
-                 nrow(B_PRIMARY), nrow(B_SECONDARY)))
-    
-  } else {
-    
-    retainedColumns <- c(
-      "datetime", "datetime_B",
-      "pm25_B", "pm1_atm_B", "pm25_atm_B", "pm10_atm_B",
-      "memory", "adc0", "pressure", "bsec_iaq"
-    )
-    
-    B_data <- 
-      dplyr::bind_cols(B_PRIMARY, B_SECONDARY[,c("pm1.0_atm", "pm10.0_atm")]) %>%
-      dplyr::mutate(
-        datetime = lubridate::floor_date(.data$created_at, unit = "min"),
-        datetime_B = .data$created_at,
-        pm1_atm_B = .data$pm1.0_atm, 
-        pm25_atm_B = .data$pm2.5_atm, 
-        pm10_atm_B = .data$pm10.0_atm, 
-        pm25_B = .data$pm2.5_atm
-      ) %>%
-      dplyr::select(all_of(retainedColumns))
-    
-  }
+  fullRecords <- A_data[full_mask, ]
   
+  primaryOnlyRecords <- A_data[PRIMARY_only_mask, A_PRIMARY_columns]
+
+  secondaryOnlyRecords <- 
+    A_data[SECONDARY_only_mask, A_SECONDARY_columns] %>%
+    # Subtract one minute from secondary only so that 'datetime' will match up  
+    dplyr::mutate(datetime = .data$datetime - lubridate::dminutes(1))
+
+  # Create the repaired records by joining 
+  
+  repairedRecords <- 
+    dplyr::full_join(primaryOnlyRecords, secondaryOnlyRecords, by = "datetime")  
+
+  # Combine fullRecords and repairedRecords and arrange
+  
+  A_data <-
+    dplyr::bind_rows(fullRecords, repairedRecords) %>%
+    dplyr::distinct() %>%
+    dplyr::arrange(.data$datetime)
+  
+
+  # ----- B channel ------------------------------------------------------------
+  
+  B_PRIMARY_columns <- c(
+    "datetime", "datetime_B",
+    "pm25_B", "pm25_atm_B",
+    "memory", "adc0", "pressure", "bsec_iaq"
+  )
+  
+  B_PRIMARY <-
+    pat_rawList$B_PRIMARY %>%
+    dplyr::mutate(
+      datetime = lubridate::floor_date(.data$created_at, unit = "min"),
+      datetime_B = .data$created_at,
+      pm25_atm_B = .data$pm2.5_atm, 
+      pm25_B = .data$pm2.5_atm
+    ) %>%
+    dplyr::select(all_of(B_PRIMARY_columns))
+  
+  B_SECONDARY_columns <- c(
+    "datetime",
+    "pm1_atm_B", "pm10_atm_B"
+  )
+  
+  B_SECONDARY <-
+    pat_rawList$B_SECONDARY %>%
+    dplyr::mutate(
+      datetime = lubridate::floor_date(.data$created_at, unit = "min"),
+      pm1_atm_B = .data$pm1.0_atm, 
+      pm10_atm_B = .data$pm10.0_atm
+    ) %>%
+    dplyr::select(all_of(B_SECONDARY_columns))
+  
+  B_data <- 
+    dplyr::full_join(B_PRIMARY, B_SECONDARY, by = "datetime") %>%
+    dplyr::distinct() %>%
+    dplyr::arrange(.data$datetime)
+  
+  # NOTE:  The result is imperfect and the SECONDARY channel occasionally gets
+  # NOTE:  assigned to the next 'datetime' minute as seen here:
+  
+  # # A tibble: 6 x 10
+  #   datetime            datetime_B          pm25_B pm25_atm_B memory  adc0 pressure bsec_iaq pm1_atm_B pm10_atm_B
+  #   <dttm>              <dttm>               <dbl>      <dbl>  <int> <dbl>    <dbl>    <dbl>     <dbl>      <dbl>
+  # 1 2018-08-01 07:00:00 NA                   NA         NA        NA NA          NA       NA      3.77       5.93
+  # 2 2018-08-01 07:01:00 2018-08-01 07:01:18   5.76       5.76  28568  0.06       NA       NA      4.41       6.12
+  # 3 2018-08-01 07:02:00 2018-08-01 07:02:38   5.36       5.36  28568  0.06       NA       NA      3.43       5.62
+  # 4 2018-08-01 07:03:00 2018-08-01 07:03:58   5.23       5.23  28568  0.06       NA       NA     NA         NA   
+  # 5 2018-08-01 07:04:00 NA                   NA         NA        NA NA          NA       NA      3.48       5.77
+  # 6 2018-08-01 07:05:00 2018-08-01 07:05:18   5.36       5.36  28568  0.06       NA       NA      4.27       5.57
+ 
+  # NOTE:  We can take of this by separating our single dataframe into 
+  # NOTE:  pieces, subtracting a minute from rows with SECONDARY data only and
+  # NOTE:  then recombining.
+  
+  # Separate into records with full data, PRIMARY only or SECONDARY only
+  
+  PRIMARY_only_mask <- !is.na(B_data$datetime_B) & is.na(B_data$pm1_atm_B)
+  SECONDARY_only_mask <- is.na(B_data$datetime_B) & !is.na(B_data$pm1_atm_B)
+  full_mask <- !is.na(B_data$datetime_B) & !is.na(B_data$pm1_atm_B)
+  
+  fullRecords <- B_data[full_mask, ]
+  
+  primaryOnlyRecords <- B_data[PRIMARY_only_mask, B_PRIMARY_columns]
+  
+  secondaryOnlyRecords <- 
+    B_data[SECONDARY_only_mask, B_SECONDARY_columns] %>%
+    # Subtract one minute from secondary only so that 'datetime' will match up  
+    dplyr::mutate(datetime = .data$datetime - lubridate::dminutes(1))
+  
+  # Create the repaired records by joining 
+  
+  repairedRecords <- 
+    dplyr::full_join(primaryOnlyRecords, secondaryOnlyRecords, by = "datetime")  
+  
+  # Combine fullRecords and repairedRecords and arrange
+  
+  B_data <-
+    dplyr::bind_rows(fullRecords, repairedRecords) %>%
+    dplyr::distinct() %>%
+    dplyr::arrange(.data$datetime)
+
   # ----- Combine A and B channels ---------------------------------------------
   
   # > names(A)

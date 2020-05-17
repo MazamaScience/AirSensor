@@ -139,7 +139,7 @@
 <p>Lets begin by looking at one week’s worth of trouble free sensor data:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">pat &lt;-<span class="st"> </span>example_pat <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/pat_filterDate.html">pat_filterDate</a></span>(<span class="dv">20180701</span>, <span class="dv">20180708</span>)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co"># use sampleSize = NULL to force display of every data point</span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(pat, <span class="dt">sampleSize =</span> <span class="ot">NULL</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="../reference/pat_multiPlot.html">pat_multiPlot</a></span>(pat, <span class="dt">sampleSize =</span> <span class="ot">NULL</span>)</a></code></pre></div>
 <p><img src="purpleair_qc_files/figure-html/example_pat_basic-1.png" width="672"></p>
 <p>In this case, no obvious errors are seen in the data.</p>
 </div>
@@ -150,7 +150,7 @@
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"example_pat_failure_A"</span>)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">pat &lt;-<span class="st"> </span>example_pat_failure_A</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co"># use sampleSize = NULL to force display of every data point</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(pat, <span class="dt">sampleSize =</span> <span class="ot">NULL</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="kw"><a href="../reference/pat_multiPlot.html">pat_multiPlot</a></span>(pat, <span class="dt">sampleSize =</span> <span class="ot">NULL</span>)</a></code></pre></div>
 <p><img src="purpleair_qc_files/figure-html/example_pat_failure_A_basic-1.png" width="672"></p>
 </div>
 <div id="out-of-spec-pm2-5-values" class="section level3">
@@ -160,7 +160,7 @@
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"example_pat_failure_B"</span>)</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">pat &lt;-<span class="st"> </span>example_pat_failure_B</a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co"># use sampleSize = NULL to force display of every data point</span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(pat, <span class="dt">sampleSize =</span> <span class="ot">NULL</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="kw"><a href="../reference/pat_multiPlot.html">pat_multiPlot</a></span>(pat, <span class="dt">sampleSize =</span> <span class="ot">NULL</span>)</a></code></pre></div>
 <p><img src="purpleair_qc_files/figure-html/example_pat_failure_B_basic-1.png" width="672"></p>
 </div>
 </div>
@@ -176,13 +176,13 @@
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">pat &lt;-</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span>example_pat_failure_A <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/pat_qc.html">pat_qc</a></span>()</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(pat, <span class="dt">sampleSize =</span> <span class="ot">NULL</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="kw"><a href="../reference/pat_multiPlot.html">pat_multiPlot</a></span>(pat, <span class="dt">sampleSize =</span> <span class="ot">NULL</span>)</a></code></pre></div>
 <p><img src="purpleair_qc_files/figure-html/example_pat_failure_A_qc1-1.png" width="672"></p>
 <p>The case of <code>example_pat_failure_B</code> is also improved by removing out-of-spec values but some questionable data still exist in channel A:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">pat &lt;-</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span>example_pat_failure_B <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb6-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/pat_qc.html">pat_qc</a></span>()</a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="kw"><a href="../reference/pat_multiplot.html">pat_multiplot</a></span>(pat, <span class="dt">sampleSize =</span> <span class="ot">NULL</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="kw"><a href="../reference/pat_multiPlot.html">pat_multiPlot</a></span>(pat, <span class="dt">sampleSize =</span> <span class="ot">NULL</span>)</a></code></pre></div>
 <p><img src="purpleair_qc_files/figure-html/example_pat_failure_B_qc1-1.png" width="672"></p>
 </div>
 <div id="aggregation" class="section level2">

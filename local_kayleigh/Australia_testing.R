@@ -64,7 +64,7 @@ if ( file.exists(filePath_jannali) ) {
 # pat_windang <- pat_createNew(pas = pas, id = testdeviceID, 
 #                           startdate = 20191210, enddate = 20200110)
 
-pat_multiplot(pat_jannali)
+pat_multiPlot(pat_jannali)
 
 
 lon <- pat_jannali$meta$longitude
@@ -270,7 +270,7 @@ sensor_pollutionRose(airsensor_chisholm, windData = NULL,
 ### in the "pm25_atm_*" channels. The sensor converts the particle counts into what it considers
 ##
 ### if 
-pat_scatterplot(pat_chisholm, parameters = c("datetime", "pm25_A", "pm25_atm_A"))
+pat_scatterPlot(pat_chisholm, parameters = c("datetime", "pm25_A", "pm25_atm_A"))
 ###
 
 
@@ -287,7 +287,7 @@ pat_ormond <- patList[[1]]
 pat_werribee <- patList[[2]]
 
 
-pat_multiplot(pat_donvale)
+pat_multiPlot(pat_donvale)
 
 
 pat_externalFit(pat_gadd)

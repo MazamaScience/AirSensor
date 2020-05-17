@@ -53,7 +53,7 @@
 #' #' )
 #' #' 
 #' #' pat <- pat_createPATimeseriesObject(pat_rawList)
-#' #' pat_multiplot(pat)
+#' #' pat_multiPlot(pat)
 #' #' }
 #' 
 #' pat_createPATimeseriesObject <- function(

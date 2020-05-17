@@ -131,7 +131,7 @@ day_NA <- pat_filterDate(SCAP_19_late, startdate = 20190801, enddate = 20190802,
 day <- pat_filterDate(SCAP_19_late, startdate = 20190910, enddate = 20190911, timezone = "America/Los_Angeles")
 # another day with alternating NA's
 day_NA2 <- pat_filterDate(SCAP_19_late, startdate = 20190925, enddate = 20190926, timezone = "America/Los_Angeles")
-pat_multiplot(day)
+pat_multiPlot(day)
 data <- day_NA$data
 data_2 <- day_NA2$data
 
@@ -186,15 +186,15 @@ pas <- pas_load()
 
 # A-channel "magic number"
 pat_SCEM_05 <- pat_load("SCEM_05", startdate = 20190101, enddate = 20191023)
-pat_multiplot(pat_SCEM_05)
-pat_SCEM_05 %>% pat_filterDate(20190909, 20190912) %>% pat_multiplot()
+pat_multiPlot(pat_SCEM_05)
+pat_SCEM_05 %>% pat_filterDate(20190909, 20190912) %>% pat_multiPlot()
 
 SoH_SCEM_05 <- pat_dailySoH(pat_SCEM_05)
 
 # Another case
 pat_SCAP_46 <- pat_load("SCAP_46", startdate = 20190101, enddate = 20191023)
-pat_multiplot(pat_SCAP_46)
-pat_SCAP_46 %>% pat_filterDate(20190909, 20190912) %>% pat_multiplot()
+pat_multiPlot(pat_SCAP_46)
+pat_SCAP_46 %>% pat_filterDate(20190909, 20190912) %>% pat_multiPlot()
 
 SoH_SCAP_46 <- pat_dailySoH(pat_SCAP_46)
 
@@ -202,8 +202,8 @@ pat_empty_SCAP_46 <- pat_filterDate(pat_SCAP_46, 20190118, 20190130, timezone = 
 
 # And another one
 pat_SCAP_14 <- pat_load("SCAP_14", startdate = 20190101, enddate = 20191023)
-pat_multiplot(pat_SCAP_14)
-pat_SCAP_14 %>% pat_filterDate(20190909, 20190912) %>% pat_multiplot()
+pat_multiPlot(pat_SCAP_14)
+pat_SCAP_14 %>% pat_filterDate(20190909, 20190912) %>% pat_multiPlot()
 
 SoH_SCAP_14 <- pat_dailySoH(pat_SCAP_14)
 
@@ -326,13 +326,13 @@ p_bad <- plot_ly(bad_tidy) %>%
 
 s3 <- subplot(p_good, p_bad, nrows = 1)
 
-#----- testing pat_multiplot -----------------------------------------
+#----- testing pat_multiPlot -----------------------------------------
 
-gg <- autolayer(ggplot(pat_multiplot(bad_pat)))+
+gg <- autolayer(ggplot(pat_multiPlot(bad_pat)))+
   theme(legend.position = "left") 
 
 
-g <- pat_multiplot(bad_pat, plottype = "pm25_over", sampleSize = 1e6 )+
+g <- pat_multiPlot(bad_pat, plottype = "pm25_over", sampleSize = 1e6 )+
   theme(legend.position = "left")
 
 

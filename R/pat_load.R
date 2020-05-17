@@ -48,7 +48,7 @@
 #' \donttest{
 #' setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
 #' pat <- pat_load("SCNP_20", 20190411, 20190521)
-#' pat_multiplot(pat)
+#' pat_multiPlot(pat)
 #' }
 
 pat_load <- function(

@@ -33,7 +33,7 @@ nrow(pat$data)
 Here is a multi-plot of how the non-aggregated data looks.
 
 ```{r}
-p1 <- pat_multiplot(pat, sampleSize = NULL)
+p1 <- pat_multiPlot(pat, sampleSize = NULL)
 p1
 ```
 
@@ -50,7 +50,7 @@ As we'd expect, an hourly aggregated `pat` contains 24 entries, an entry every h
 
 
 ```{r}
-p2 <- pat_multiplot(hourly_pat)
+p2 <- pat_multiPlot(hourly_pat)
 p2
 ```
 

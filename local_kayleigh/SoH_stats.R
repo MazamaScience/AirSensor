@@ -621,7 +621,7 @@ ggplot(allmonths_aggstats, aes(x = datetime, y = pm25_A_mean )) +
   geom_point() +
   geom_point(data = allmonths_aggstats_filt, aes(x = datetime, y = pm25_A_mean ), color = "pink")
 
-# All unfiltered data, scatterplot, one channel
+# All unfiltered data, scatterPlot, one channel
 ggplot(allmonths_aggstats, aes(x = datetime, y = A_B_mean_diff )) +
   geom_point(alpha = 0.2, shape = 15) +
   geom_smooth()+
@@ -639,19 +639,19 @@ ggplot(allmonths_aggstats, aes(x = datetime, y = pm25_B_mean )) +
   geom_smooth() +
   ylim(-15, 250)
 
-# Filtered data, scatterplot, one channel
+# Filtered data, scatterPlot, one channel
 ggplot(allmonths_aggstats_filt, aes(x = datetime, y = pm25_B_mean )) +
   geom_point(alpha = 0.2, shape = 15) +
   geom_rug(sides = 'l') +
   geom_hline(data = AQI, yintercept = AQI$breaks_24[2:6], color = AQI$colors[2:6])
 
-# Channels A and B, filtered, with AQI lines, scatterplot:
+# Channels A and B, filtered, with AQI lines, scatterPlot:
 ggplot(allmonths_aggstats_filt) +
   geom_point(aes(x = datetime, y = pm25_B_mean), color = "blue", alpha = 0.25, shape = 15) +
   geom_point(aes(x = datetime, y = pm25_A_mean), color = "red", alpha = 0.25, shape = 15) +
   geom_hline(data = AQI, yintercept = AQI$breaks_24[2:6], color = AQI$colors[2:6])
 
-# Channels A and B, unfiltered, scatterplot:
+# Channels A and B, unfiltered, scatterPlot:
 ggplot(allmonths_aggstats) +
   geom_point(aes(x = datetime, y = pm25_B_mean), color = "blue", alpha = 0.25, shape = 15) +
   geom_point(aes(x = datetime, y = pm25_A_mean), color = "red", alpha = 0.25, shape = 15) +
@@ -678,7 +678,7 @@ dropout_days <-
   dplyr::count(.data$datetime) %>%
   dplyr::mutate(datetime = parseDatetime(.data$datetime, timezone = "America/Los_Angeles"))
 
-# Channels A and B, unfiltered, PLUS dropout days, scatterplot:
+# Channels A and B, unfiltered, PLUS dropout days, scatterPlot:
 ggplot(allmonths_aggstats_filt) +
   geom_point(aes(x = datetime, y = pm25_B_mean), color = "blue", alpha = 0.25, shape = 15) +
   geom_point(aes(x = datetime, y = pm25_A_mean), color = "red", alpha = 0.25, shape = 15) +

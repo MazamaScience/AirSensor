@@ -163,9 +163,9 @@
 <pre><code>## [1] "meta" "data"</code></pre>
 <p><code>pat</code> contains <em>two</em> dataframes, <code>meta</code> and <code>data</code>.</p>
 <p>The <code>meta</code> dataframe contains metadata of the selected PurpleAir sensor – this includes non-time series data such as location information, labels, etc. The <code>data</code> dataframe contains datestamped sensor readings of PM2.5, temperature, humidity, and other pertinent sensor data.</p>
-<p>We’ll start by plotting PurpleAir’s raw sensor data. We can quickly display the time series data by using <code><a href="../../reference/pat_multiplot.html">pat_multiplot()</a></code> and passing in our raw <code>pat</code> and desired plot type (“<code>all</code>” sensor data).</p>
+<p>We’ll start by plotting PurpleAir’s raw sensor data. We can quickly display the time series data by using <code><a href="../../reference/pat_multiPlot.html">pat_multiPlot()</a></code> and passing in our raw <code>pat</code> and desired plot type (“<code>all</code>” sensor data).</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">pat <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../../reference/pat_multiplot.html">pat_multiplot</a></span>(<span class="dt">plottype =</span> <span class="st">"all"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../../reference/pat_multiPlot.html">pat_multiPlot</a></span>(<span class="dt">plottype =</span> <span class="st">"all"</span>)</a></code></pre></div>
 <p><img src="pat_introduction_files/figure-html/allPlot-1.png" width="672"></p>
 </div>
 <div id="exploring-time-series-data" class="section level2">
@@ -177,12 +177,12 @@
 <a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../../reference/pat_filterDate.html">pat_filterDate</a></span>(<span class="dt">startdate =</span> <span class="dv">20180801</span>, <span class="dt">enddate =</span> <span class="dv">20180901</span>)</a>
 <a class="sourceLine" id="cb7-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb7-5" data-line-number="5">pat_august <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="../../reference/pat_multiplot.html">pat_multiplot</a></span>(<span class="dt">plottype =</span> <span class="st">"pm25_over"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="../../reference/pat_multiPlot.html">pat_multiPlot</a></span>(<span class="dt">plottype =</span> <span class="st">"pm25_over"</span>)</a></code></pre></div>
 <p><img src="pat_introduction_files/figure-html/augustPlot-1.png" width="672"></p>
-<p>We can look for correlations in the raw data with <code><a href="../../reference/pat_scatterMatrixPlot.html">pat_scatterMatrixPlot()</a></code>. When a sensor is properly functioning, the only correlations will be a strong positive one between between the A and B channels (<code>pm25_A:pm25_B</code>) and a strong negative one between temperature and humidity.</p>
+<p>We can look for correlations in the raw data with <code><a href="../../reference/pat_scatterPlotMatrix.html">pat_scatterPlotMatrix()</a></code>. When a sensor is properly functioning, the only correlations will be a strong positive one between between the A and B channels (<code>pm25_A:pm25_B</code>) and a strong negative one between temperature and humidity.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">  pat_august <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="../../reference/pat_scatterMatrixPlot.html">pat_scatterMatrixPlot</a></span>()</a></code></pre></div>
-<p><img src="pat_introduction_files/figure-html/scatterplot-1.png" width="672"></p>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="../../reference/pat_scatterPlotMatrix.html">pat_scatterPlotMatrix</a></span>()</a></code></pre></div>
+<p><img src="pat_introduction_files/figure-html/scatterPlot-1.png" width="672"></p>
 </div>
 <div id="outlier-detection" class="section level2">
 <h2 class="hasAnchor">

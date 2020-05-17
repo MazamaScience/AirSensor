@@ -144,17 +144,17 @@ A _pat_ object is a list of two dataframes, one called
 time series data for a temperature channel, a humidity channel, 
 A and B PM 2.5 channel's, and several other fields. 
 
-The following chunk demonstrates use of the `pat_multiplot()` function to have a 
+The following chunk demonstrates use of the `pat_multiPlot()` function to have a 
 quick look at the data contained in a _pat_ object. The plot shows both A and B 
 channels as well as temperature and humidity. The plotting function is flexible 
 and has options for choosing which channels to display, on the same or 
-individual axes. (_Type `?pat_multiplot` to learn more._)
+individual axes. (_Type `?pat_multiPlot` to learn more._)
 
 In this case we see that the data look good. Channels A and B are both showing
 lots of PM 2.5 data for "Jannali" over the period of interest 
 
 ```{r view_pats}
-pat_multiplot(pat_jannali)
+pat_multiPlot(pat_jannali)
 ```
 
 ## Explore the _pas_ object

@@ -26,7 +26,7 @@
 #'   
 #' x <- pat_join(aug01_08, aug15_22)
 #' 
-#' pat_multiplot(x, plottype = "pm25")
+#' pat_multiPlot(x, plottype = "pm25")
 #' 
 #' 
 

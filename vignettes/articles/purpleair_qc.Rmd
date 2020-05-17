@@ -35,7 +35,7 @@ Lets begin by looking at one week's worth of trouble free sensor data:
 ```{r example_pat_basic}
 pat <- example_pat %>% pat_filterDate(20180801, 20180808)
 # use sampleSize = NULL to force display of every data point
-pat_multiplot(pat, sampleSize = NULL)
+pat_multiPlot(pat, sampleSize = NULL)
 ```
 
 In this case, no obvious errors are seen in the data.
@@ -49,7 +49,7 @@ below also shows one of the particle detectors generating noisy data.
 data("example_pat_failure_A")
 pat <- example_pat_failure_A
 # use sampleSize = NULL to force display of every data point
-pat_multiplot(pat, sampleSize = NULL)
+pat_multiPlot(pat, sampleSize = NULL)
 ```
 
 ### Out-of-spec PM2.5 Values
@@ -60,7 +60,7 @@ One of the PM2.5 channels can also report completely bogus data:
 data("example_pat_failure_B")
 pat <- example_pat_failure_B
 # use sampleSize = NULL to force display of every data point
-pat_multiplot(pat, sampleSize = NULL)
+pat_multiPlot(pat, sampleSize = NULL)
 ```
 
 ## Raw Data QC
@@ -89,7 +89,7 @@ humidity values get replaced in `example_pat_failure_A`:
 pat <-
   example_pat_failure_A %>%
   pat_qc()
-pat_multiplot(pat, sampleSize = NULL)
+pat_multiPlot(pat, sampleSize = NULL)
 ```
 
 The case of `example_pat_failure_B` is also improved by removing out-of-spec
@@ -99,7 +99,7 @@ values but some questionable data still exist in channel A:
 pat <-
   example_pat_failure_B %>%
   pat_qc()
-pat_multiplot(pat, sampleSize = NULL)
+pat_multiPlot(pat, sampleSize = NULL)
 
 ```
 

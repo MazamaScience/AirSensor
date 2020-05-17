@@ -37,7 +37,7 @@ pat <-
   AirSensor::example_pat %>%
   pat_filterDate("2018-08-01","2018-08-07")
 
-pat_multiplot(pat, plottype = "pm25", sampleSize = 1e6)
+pat_multiPlot(pat, plottype = "pm25", sampleSize = 1e6)
 ```
 
 We definitely see a few individual data points that look like outliers while 
@@ -189,7 +189,7 @@ pat2Day <-
   pat_filterDate(pat, "2018-08-02", days = 2)
 
 # No outlier replacement
-pat2Day %>% pat_multiplot("pm25", sampleSize = 1e6)
+pat2Day %>% pat_multiPlot("pm25", sampleSize = 1e6)
 ```
 
 ### Default outlier replacement
@@ -197,7 +197,7 @@ pat2Day %>% pat_multiplot("pm25", sampleSize = 1e6)
 # Default outlier replacement
 pat2Day %>%
   pat_outliers(windowSize = 23, thresholdMin = 8, replace = TRUE) %>%
-  pat_multiplot("pm25", sampleSize = 1e6)
+  pat_multiPlot("pm25", sampleSize = 1e6)
 ```
 
 ### Aggressive outlier replacement
@@ -205,5 +205,5 @@ pat2Day %>%
 # Aggressive outlier replacement 
 pat2Day %>%
   pat_outliers(windowSize = 23, thresholdMin = 4, replace = TRUE) %>%
-  pat_multiplot("pm25", sampleSize = 1e6)
+  pat_multiPlot("pm25", sampleSize = 1e6)
 ```

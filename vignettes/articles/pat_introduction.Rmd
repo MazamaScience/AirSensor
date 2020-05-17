@@ -95,12 +95,12 @@ The `data` dataframe contains datestamped sensor readings of
 PM2.5, temperature, humidity, and other pertinent sensor data. 
 
 We'll start by plotting PurpleAir's raw sensor data. We can quickly display the 
-time series data by using `pat_multiplot()` and passing in our raw `pat` and
+time series data by using `pat_multiPlot()` and passing in our raw `pat` and
 desired plot type ("`all`" sensor data). 
 
 ```{r allPlot}
 pat %>%
-  pat_multiplot(plottype = "all")
+  pat_multiPlot(plottype = "all")
 ```
 
 ## Exploring Time Series Data
@@ -116,17 +116,17 @@ pat_august <-
   pat_filterDate(startdate = 20180801, enddate = 20180901)
 
 pat_august %>%
-  pat_multiplot(plottype = "pm25_over")
+  pat_multiPlot(plottype = "pm25_over")
 ```
 
-We can look for correlations in the raw data with `pat_scatterMatrixPlot()`. When a
+We can look for correlations in the raw data with `pat_scatterPlotMatrix()`. When a
 sensor is properly functioning, the only correlations will be a strong positive
 one between between the A and B channels (`pm25_A:pm25_B`) and a strong
 negative one between temperature and humidity.
 
-```{r scatterplot, message = FALSE, warning = FALSE}
+```{r scatterPlot, message = FALSE, warning = FALSE}
   pat_august %>%
-    pat_scatterMatrixPlot()
+    pat_scatterPlotMatrix()
 ```
 
 ## Outlier Detection

@@ -11,6 +11,7 @@
 #' @param enddate Desired UTC end time (ISO 8601).
 #' @param timezone Timezone used to interpret start and end dates.
 #' @param baseUrl Base URL for Thingspeak API.
+#' @param verbose Logical controlling the generation of warning and error messages.
 #' 
 #' @return A PurpleAir Timeseries \emph{pat} object.
 #' 
@@ -51,7 +52,7 @@
 #'   startdate = 20180701, 
 #'   enddate = 20180901
 #' )
-#' pat_multiplot(pat)
+#' pat_multiPlot(pat)
 #' }
 
 pat_createNew <- function(
@@ -61,7 +62,8 @@ pat_createNew <- function(
   startdate = NULL,
   enddate = NULL,
   timezone = NULL,
-  baseUrl = "https://api.thingspeak.com/channels/"
+  baseUrl = "https://api.thingspeak.com/channels/",
+  verbose = FALSE
 ) {
   
   # ----- Validate parameters --------------------------------------------------
@@ -149,6 +151,11 @@ pat_createNew <- function(
   
   # ----- Load data from URL ---------------------------------------------------
   
+  if ( verbose ) {
+    message(sprintf("Requesting data for %s from %s to %s", 
+                    id, dateSeq[1], dateSeq[2]))
+  }
+  
   # Use more specific ID rather than the label
   pat_rawList <- pat_downloadParseRawData(
     id = pas_single$deviceDeploymentID,
@@ -163,6 +170,11 @@ pat_createNew <- function(
   if ( length(dateSeq) > 2 ) {
     
     for ( i in 2:(length(dateSeq) - 1) ) {
+      
+      if ( verbose ) {
+        message(sprintf("Requesting data for %s from %s to %s", 
+                        id, dateSeq[i], dateSeq[i+1]))
+      }
       
       new_pat_rawList <- pat_downloadParseRawData(
         id = pas_single$deviceDeploymentID,
@@ -193,10 +205,20 @@ pat_createNew <- function(
 
   # ----- Merge and harmonize --------------------------------------------------
   
+  if ( verbose ) {
+    message(sprintf("Download completed, merging/harmonizing data ..."))
+  }
   pat <- pat_createPATimeseriesObject(pat_rawList)
   
-  # Remove any duplicate data records
-  pat <- pat_distinct(pat)
+  # Guarantee we have no duplicates and only the requested time range
+  pat <- 
+    pat %>% 
+    pat_distinct() %>%
+    pat_filterDate(
+      startdate = startdate,
+      enddate = enddate,
+      timezone = timezone
+    )
   
   # ----- Return ---------------------------------------------------------------
   
