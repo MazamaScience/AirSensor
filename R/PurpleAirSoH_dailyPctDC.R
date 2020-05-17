@@ -21,7 +21,7 @@
 #'   example_pat_failure_A %>%
 #'   PurpleAirSoH_dailyPctDC() 
 #' 
-#' timeseriesTbl_multiPlot(tbl, ylim = c(0,100), style = "point")
+#' timeseriesTbl_multiPlot(tbl, ylim = c(0,100))
 
 PurpleAirSoH_dailyPctDC <- function(
   pat = NULL

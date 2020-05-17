@@ -20,7 +20,7 @@ properly functioning sensor.
 library(AirSensor)
 
 tbl <- 
-  example_pat_failure_A \%>\%
+  example_pat_failure_B \%>\%
   PurpleAirSoH_dailyABtTest() 
   
 timeseriesTbl_multiPlot(tbl)

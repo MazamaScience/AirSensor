@@ -23,10 +23,12 @@ tbl <-
   example_pat_failure_A \%>\%
   PurpleAirSoH_dailyABFit() 
   
+names(tbl)
+  
 timeseriesTbl_multiPlot(
-   tbl, 
-   ylim = c(-1,1), 
-   style = "line"
+  tbl, 
+  parameters = c("pm25_A_pm25_B_rsquared", "pm25_A_pm25_B_slope"),
+  ylim = c(-1,1)
 )
 
 }

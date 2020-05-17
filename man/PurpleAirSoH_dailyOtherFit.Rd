@@ -27,14 +27,12 @@ tbl <-
 timeseriesTbl_multiPlot(
   tbl, 
   ncol = 2,
-  ylim = c(0,1), 
-  style = "line"
+  ylim = c(0,1)
 )
 
 timeseriesTbl_multiPlot(
   tbl, 
-  autoRange = TRUE, 
-  style = "line"
+  autoRange = TRUE
 )
 
 }
