@@ -14,11 +14,11 @@ pat_South_Hill %>% pat_filterDate(20190909, 20190912) %>% pat_multiPlot()
 # Daily State-of-Health metrics
 SoH_South_Hill <- pat_dailySoH(pat_South_Hill)
 
-SoH_South_Hill %>% timeseriesTbl_multiplot(pattern = "pctReporting", style = "point", ylim=c(0,150))
-SoH_South_Hill %>% timeseriesTbl_multiplot(pattern = "pctValid", style = "point", ylim=c(0,101))
-SoH_South_Hill %>% timeseriesTbl_multiplot(pattern = "pctDC", style = "point", ylim=c(0,101))
-SoH_South_Hill %>% timeseriesTbl_multiplot(pattern = "_rsquared", style = "point", ylim=c(0,1))
-SoH_South_Hill %>% timeseriesTbl_multiplot(pattern = "pm25_A_pm25_B", style = "point", autoRange = TRUE)
+SoH_South_Hill %>% timeseriesTbl_multiPlot(pattern = "pctReporting", style = "point", ylim=c(0,150))
+SoH_South_Hill %>% timeseriesTbl_multiPlot(pattern = "pctValid", style = "point", ylim=c(0,101))
+SoH_South_Hill %>% timeseriesTbl_multiPlot(pattern = "pctDC", style = "point", ylim=c(0,101))
+SoH_South_Hill %>% timeseriesTbl_multiPlot(pattern = "_rsquared", style = "point", ylim=c(0,1))
+SoH_South_Hill %>% timeseriesTbl_multiPlot(pattern = "pm25_A_pm25_B", style = "point", autoRange = TRUE)
 
 
 # ----- Summer gap and out-of-spec values --------------------------------------
@@ -30,11 +30,11 @@ pat_Willowbrook %>% pat_filterDate(20190909, 20190912) %>% pat_multiPlot()
 # Daily State-of-Health metrics
 SoH_Willowbrook <- pat_dailySoH(pat_Willowbrook)
 
-SoH_Willowbrook %>% timeseriesTbl_multiplot(pattern = "pctReporting", style = "point", ylim=c(0,150))
-SoH_Willowbrook %>% timeseriesTbl_multiplot(pattern = "pctValid", style = "point", ylim=c(0,101))
-SoH_Willowbrook %>% timeseriesTbl_multiplot(pattern = "pctDC", style = "point", autoRange = FALSE)
-SoH_Willowbrook %>% timeseriesTbl_multiplot(pattern = "_rsquared", style = "point", autoRange = FALSE)
-SoH_Willowbrook %>% timeseriesTbl_multiplot(pattern = "pm25_A_pm25_B", style = "point", autoRange = TRUE)
+SoH_Willowbrook %>% timeseriesTbl_multiPlot(pattern = "pctReporting", style = "point", ylim=c(0,150))
+SoH_Willowbrook %>% timeseriesTbl_multiPlot(pattern = "pctValid", style = "point", ylim=c(0,101))
+SoH_Willowbrook %>% timeseriesTbl_multiPlot(pattern = "pctDC", style = "point", autoRange = FALSE)
+SoH_Willowbrook %>% timeseriesTbl_multiPlot(pattern = "_rsquared", style = "point", autoRange = FALSE)
+SoH_Willowbrook %>% timeseriesTbl_multiPlot(pattern = "pm25_A_pm25_B", style = "point", autoRange = TRUE)
 
 
 # ===== Mazama Science 2019 for SCAQMD =========================================
@@ -50,11 +50,11 @@ pat_SCEM_05 %>% pat_filterDate(20190909, 20190912) %>% pat_multiPlot()
 # Daily State-of-Health metrics
 SoH_SCEM_05 <- pat_dailySoH(pat_SCEM_05)
 
-SoH_SCEM_05 %>% timeseriesTbl_multiplot(pattern = "pctReporting", style = "point", autoRange = FALSE)
-SoH_SCEM_05 %>% timeseriesTbl_multiplot(pattern = "pctValid", style = "point", autoRange = FALSE)
-SoH_SCEM_05 %>% timeseriesTbl_multiplot(pattern = "pctDC", style = "point", autoRange = FALSE)
-SoH_SCEM_05 %>% timeseriesTbl_multiplot(pattern = "_rsquared", style = "point", autoRange = FALSE)
-SoH_SCEM_05 %>% timeseriesTbl_multiplot(pattern = "pm25_A_pm25_B", style = "point", autoRange = TRUE)
+SoH_SCEM_05 %>% timeseriesTbl_multiPlot(pattern = "pctReporting", style = "point", autoRange = FALSE)
+SoH_SCEM_05 %>% timeseriesTbl_multiPlot(pattern = "pctValid", style = "point", autoRange = FALSE)
+SoH_SCEM_05 %>% timeseriesTbl_multiPlot(pattern = "pctDC", style = "point", autoRange = FALSE)
+SoH_SCEM_05 %>% timeseriesTbl_multiPlot(pattern = "_rsquared", style = "point", autoRange = FALSE)
+SoH_SCEM_05 %>% timeseriesTbl_multiPlot(pattern = "pm25_A_pm25_B", style = "point", autoRange = TRUE)
 
 # ----- B-channel DC -----------------------------------------------------------
 
@@ -65,11 +65,11 @@ pat_SCAP_46 %>% pat_filterDate(20190909, 20190912) %>% pat_multiPlot()
 # Daily State-of-Health metrics
 SoH_SCAP_46 <- pat_dailySoH(pat_SCAP_46)
 
-SoH_SCAP_46 %>% timeseriesTbl_multiplot(pattern = "pctReporting", style = "point", autoRange = FALSE)
-SoH_SCAP_46 %>% timeseriesTbl_multiplot(pattern = "pctValid", style = "point", autoRange = FALSE)
-SoH_SCAP_46 %>% timeseriesTbl_multiplot(pattern = "pctDC", style = "point", autoRange = FALSE)
-SoH_SCAP_46 %>% timeseriesTbl_multiplot(pattern = "_rsquared", style = "point", autoRange = FALSE)
-SoH_SCAP_46 %>% timeseriesTbl_multiplot(pattern = "pm25_A_pm25_B", style = "point", autoRange = TRUE)
+SoH_SCAP_46 %>% timeseriesTbl_multiPlot(pattern = "pctReporting", style = "point", autoRange = FALSE)
+SoH_SCAP_46 %>% timeseriesTbl_multiPlot(pattern = "pctValid", style = "point", autoRange = FALSE)
+SoH_SCAP_46 %>% timeseriesTbl_multiPlot(pattern = "pctDC", style = "point", autoRange = FALSE)
+SoH_SCAP_46 %>% timeseriesTbl_multiPlot(pattern = "_rsquared", style = "point", autoRange = FALSE)
+SoH_SCAP_46 %>% timeseriesTbl_multiPlot(pattern = "pm25_A_pm25_B", style = "point", autoRange = TRUE)
 
 # ----- A-channel moderate errors ----------------------------------------------
 
@@ -80,11 +80,11 @@ pat_SCNP_20 %>% pat_filterDate(20190909, 20190912) %>% pat_multiPlot()
 # Daily State-of-Health metrics
 SoH_SCNP_20 <- pat_dailySoH(pat_SCNP_20)
 
-SoH_SCNP_20 %>% timeseriesTbl_multiplot(pattern = "pctReporting", style = "point", autoRange = FALSE)
-SoH_SCNP_20 %>% timeseriesTbl_multiplot(pattern = "pctValid", style = "point", autoRange = FALSE)
-SoH_SCNP_20 %>% timeseriesTbl_multiplot(pattern = "pctDC", style = "point", autoRange = FALSE)
-SoH_SCNP_20 %>% timeseriesTbl_multiplot(pattern = "_rsquared", style = "point", autoRange = FALSE)
-SoH_SCNP_20 %>% timeseriesTbl_multiplot(pattern = "pm25_A_pm25_B", style = "point", autoRange = TRUE)
+SoH_SCNP_20 %>% timeseriesTbl_multiPlot(pattern = "pctReporting", style = "point", autoRange = FALSE)
+SoH_SCNP_20 %>% timeseriesTbl_multiPlot(pattern = "pctValid", style = "point", autoRange = FALSE)
+SoH_SCNP_20 %>% timeseriesTbl_multiPlot(pattern = "pctDC", style = "point", autoRange = FALSE)
+SoH_SCNP_20 %>% timeseriesTbl_multiPlot(pattern = "_rsquared", style = "point", autoRange = FALSE)
+SoH_SCNP_20 %>% timeseriesTbl_multiPlot(pattern = "pm25_A_pm25_B", style = "point", autoRange = TRUE)
 
 # ----- A-channel extreme noise ------------------------------------------------
 
@@ -95,10 +95,10 @@ pat_SCAP_14 %>% pat_filterDate(20190909, 20190912) %>% pat_multiPlot()
 # Daily State-of-Health metrics
 SoH_SCAP_14 <- pat_dailySoH(pat_SCAP_14)
 
-SoH_SCAP_14 %>% timeseriesTbl_multiplot(pattern = "pctReporting", style = "point", autoRange = FALSE)
-SoH_SCAP_14 %>% timeseriesTbl_multiplot(pattern = "pctValid", style = "point", autoRange = FALSE)
-SoH_SCAP_14 %>% timeseriesTbl_multiplot(pattern = "pctDC", style = "point", autoRange = FALSE)
-SoH_SCAP_14 %>% timeseriesTbl_multiplot(pattern = "_rsquared", style = "point", autoRange = FALSE)
-SoH_SCAP_14 %>% timeseriesTbl_multiplot(pattern = "pm25_A_pm25_B", style = "point", autoRange = TRUE)
+SoH_SCAP_14 %>% timeseriesTbl_multiPlot(pattern = "pctReporting", style = "point", autoRange = FALSE)
+SoH_SCAP_14 %>% timeseriesTbl_multiPlot(pattern = "pctValid", style = "point", autoRange = FALSE)
+SoH_SCAP_14 %>% timeseriesTbl_multiPlot(pattern = "pctDC", style = "point", autoRange = FALSE)
+SoH_SCAP_14 %>% timeseriesTbl_multiPlot(pattern = "_rsquared", style = "point", autoRange = FALSE)
+SoH_SCAP_14 %>% timeseriesTbl_multiPlot(pattern = "pm25_A_pm25_B", style = "point", autoRange = TRUE)
 
 

@@ -19,7 +19,7 @@
 #'   example_pat_failure_A %>%
 #'   PurpleAirSoH_dailyABFit() 
 #'   
-#' timeseriesTbl_multiplot(
+#' timeseriesTbl_multiPlot(
 #'    tbl, 
 #'    ylim = c(-1,1), 
 #'    style = "line"

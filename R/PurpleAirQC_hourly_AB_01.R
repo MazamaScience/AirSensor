@@ -31,12 +31,32 @@
 #' \dontrun{
 #' library(AirSensor)
 #' 
-#' df <- 
-#'   example_pat %>%
+#' df_00 <- 
+#'   example_pat_failure_A %>%
+#'   pat_qc() %>%
+#'   PurpleAirQC_hourly_AB_00()
+#'   
+#' df_01 <- 
+#'   example_pat_failure_A %>%
 #'   pat_qc() %>%
 #'   PurpleAirQC_hourly_AB_01()
 #'   
-#' plot(df)
+#' df_02 <- 
+#'   example_pat_failure_A %>%
+#'   pat_qc() %>%
+#'   PurpleAirQC_hourly_AB_02()
+#' 
+#' layout(matrix(seq(2)))
+#' 
+#' plot(df_00, pch = 16, cex = 0.8, col = "red")
+#' points(df_01, pch = 16, cex = 0.8, col = "black")
+#' title("example_pat_failure_A -- PurpleAirQC_hourly_AB_01")
+#' 
+#' plot(df_00, pch = 16, cex = 0.8, col = "red")
+#' points(df_02, pch = 16, cex = 0.8, col = "black")
+#' title("example_pat_failure_A -- PurpleAirQC_hourly_AB_02")
+#' 
+#' layout(1)
 #' }
 
 PurpleAirQC_hourly_AB_01 <- function(

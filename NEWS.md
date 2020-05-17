@@ -242,7 +242,7 @@ Refactored `PurpleAirSoH_daily~()` functions to use *dplyr* resulting in code
 that runs faster and is easier to understand.
 
 * Changed `~SoH_dailyCorrelation()` to `~SoH_dailyOtherFit()`.
-* Changed `timeseriesTbl_multiplot()` argument `parameterPatter` to `pattern`.
+* Changed `timeseriesTbl_multiPlot()` argument `parameterPatter` to `pattern`.
 
 # AirSensor 0.5.11
 
@@ -288,7 +288,7 @@ the slower process of loading and joining monthly files.
 
 # AirSensor 0.5.7
 
-* `timeseriesTbl_multiplot()` now supports a `style` paramter which can be set
+* `timeseriesTbl_multiPlot()` now supports a `style` paramter which can be set
 to `"point"`, `"line"` or `"area"`.
 * Improved handling of missing files in data loading functions.
 * Added state-of-health functions: `SoH_pctValid()`, `SoH_pctDC()`.

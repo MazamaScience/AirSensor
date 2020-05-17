@@ -30,11 +30,12 @@ Aggregate data with count of outliers in each bin
 }
 \examples{
 \donttest{
+library(AirSensor)
+library(ggplot2)
 
 df <- 
   pat_aggregateOutlierCounts(example_pat_failure_A)
 
-library(ggplot2)
 # Plot the counts 
 multi_ggplot(
   # A Channel

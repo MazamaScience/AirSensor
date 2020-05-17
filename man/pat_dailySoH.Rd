@@ -29,7 +29,7 @@ SoH <-
   example_pat_failure_B \%>\%
   pat_dailySoH() 
   
-timeseriesTbl_multiplot(SoH, ncol = 4)
+timeseriesTbl_multiPlot(SoH, ncol = 4)
 }
 \seealso{
 \link{pat_dailySoHPlot}

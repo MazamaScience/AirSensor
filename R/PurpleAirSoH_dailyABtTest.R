@@ -19,7 +19,7 @@
 #'   example_pat_failure_A %>%
 #'   PurpleAirSoH_dailyABtTest() 
 #'   
-#' timeseriesTbl_multiplot(tbl)
+#' timeseriesTbl_multiPlot(tbl)
 #' 
 
 PurpleAirSoH_dailyABtTest <- function(

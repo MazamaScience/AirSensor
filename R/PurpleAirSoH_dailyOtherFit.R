@@ -21,14 +21,14 @@
 #'   example_pat_failure_A %>%
 #'   PurpleAirSoH_dailyOtherFit() 
 #'   
-#' timeseriesTbl_multiplot(
+#' timeseriesTbl_multiPlot(
 #'   tbl, 
 #'   ncol = 2,
 #'   ylim = c(0,1), 
 #'   style = "line"
 #' )
 #' 
-#' timeseriesTbl_multiplot(
+#' timeseriesTbl_multiPlot(
 #'   tbl, 
 #'   autoRange = TRUE, 
 #'   style = "line"

@@ -1,3 +1,4 @@
+#' @export
 #' @title Aggregate data with count of outliers in each bin 
 #'
 #' @param pat a PurpleAir Timeseries \emph{pat} object.
@@ -8,15 +9,17 @@
 #' @param thresholdMin the minimum threshold value to detect outliers
 #'
 #' @return \code{data.frame} A data.frame with additional flag count vectors
-#' @export
+#' 
 #' @seealso pat_aggregate
+#' 
 #' @examples
 #' \donttest{
+#' library(AirSensor)
+#' library(ggplot2)
 #' 
 #' df <- 
 #'   pat_aggregateOutlierCounts(example_pat_failure_A)
 #' 
-#' library(ggplot2)
 #' # Plot the counts 
 #' multi_ggplot(
 #'   # A Channel

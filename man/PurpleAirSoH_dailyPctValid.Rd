@@ -17,10 +17,11 @@ total number of measurements the sensor actually recorded during that day
 recorded measurements that are considered plausible.
 }
 \examples{
- 
+library(AirSensor)
+  
 tbl <- 
   example_pat_failure_B \%>\%
   PurpleAirSoH_dailyPctValid() 
 
-timeseriesTbl_multiplot(tbl, ylim = c(0,100), style = "line")
+timeseriesTbl_multiPlot(tbl, ylim = c(0,100))
 }

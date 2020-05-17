@@ -32,7 +32,7 @@ pat1 <- pat_createNew(pas_state, label = "Nickelsville Georgetown")
 # for (i in seq_along(pat_list)) {
 #   aggregationStatsList[[i]] <- pat_aggregateOutlierCounts(pat_list[[i]])
 # }
-# timeseriesTbl_multiplot(aggregationStats[[1]], autoRange = TRUE)
+# timeseriesTbl_multiPlot(aggregationStats[[1]], autoRange = TRUE)
 
 # agg_stats for one station for testing:
 agg_stat_test <- pat_aggregateOutlierCounts(pat1)

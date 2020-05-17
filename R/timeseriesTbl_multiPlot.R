@@ -23,13 +23,18 @@
 #'
 #' @examples
 #' \dontrun{
+#' library(AirSensor)
+#' 
 #' tbl <- pat_aggregateOutlierCounts(example_pat_failure_A)
-#' timeseriesTbl_multiplot(tbl,
-#'                         pattern = "humidity_m|temperature_m",
-#'                         nrow = 2)
+#' 
+#' timeseriesTbl_multiPlot(
+#'   tbl,
+#'   pattern = c("humidity|temperature"),
+#'   nrow = 2
+#' )
 #' }
 
-timeseriesTbl_multiplot <- function(
+timeseriesTbl_multiPlot <- function(
   tbl = NULL,
   pattern = NULL,
   parameters = NULL,

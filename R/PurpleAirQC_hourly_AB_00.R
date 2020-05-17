@@ -30,12 +30,14 @@
 #' \dontrun{
 #' library(AirSensor)
 #' 
-#' df <- 
+#' df_00 <- 
 #'   example_pat %>%
 #'   pat_qc() %>%
 #'   PurpleAirQC_hourly_AB_00()
 #'   
-#' plot(df)
+#' names(df)
+#'   
+#' plot(df_00, pch = 16, cex = 0.8, col = "red")
 #' }
 
 PurpleAirQC_hourly_AB_00 <- function(

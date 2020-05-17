@@ -24,7 +24,7 @@
 #'   example_pat %>%
 #'   PurpleAirSoH_dailyPctReporting(80) 
 #' 
-#' timeseriesTbl_multiplot(tbl)
+#' timeseriesTbl_multiPlot(tbl)
 
 PurpleAirSoH_dailyPctReporting <- function(
   pat = NULL,

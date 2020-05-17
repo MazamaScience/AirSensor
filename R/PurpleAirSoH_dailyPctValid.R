@@ -12,12 +12,14 @@
 #' (including NA and out-of-spec values) to return a percentage of the total
 #' recorded measurements that are considered plausible.
 #' 
-#' @examples  
+#' @examples
+#' library(AirSensor)
+#'   
 #' tbl <- 
 #'   example_pat_failure_B %>%
 #'   PurpleAirSoH_dailyPctValid() 
 #' 
-#' timeseriesTbl_multiplot(tbl, ylim = c(0,100), style = "line")
+#' timeseriesTbl_multiPlot(tbl, ylim = c(0,100))
 
 PurpleAirSoH_dailyPctValid <- function(
   pat = NULL

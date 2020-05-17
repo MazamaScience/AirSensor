@@ -25,5 +25,5 @@ tbl <-
   example_pat_failure_A \%>\%
   PurpleAirSoH_dailyPctDC() 
 
-timeseriesTbl_multiplot(tbl, ylim = c(0,100), style = "line")
+timeseriesTbl_multiPlot(tbl, ylim = c(0,100), style = "point")
 }

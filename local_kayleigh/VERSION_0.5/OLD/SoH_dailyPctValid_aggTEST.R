@@ -18,7 +18,7 @@
 #'   example_pat_failure_B %>%
 #'   PurpleAirSoH_dailyPctValid() 
 #' 
-#' timeseriesTbl_multiplot(tbl, ylim = c(0,100))
+#' timeseriesTbl_multiPlot(tbl, ylim = c(0,100))
 
 PurpleAirSoH_dailyPctValid <- function(
   pat = NULL

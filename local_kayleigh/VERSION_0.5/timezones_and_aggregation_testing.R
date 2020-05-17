@@ -137,7 +137,7 @@ data_2 <- day_NA2$data
 
 pat<- SCAP_19_late
 
-# timeseriesTbl_multiplot(data)
+# timeseriesTbl_multiPlot(data)
 # 
 # #time <- data$datetime
 # 
@@ -151,7 +151,7 @@ pat<- SCAP_19_late
 #   filter(
 #     !is.na(.data$pm25_A) & is.na(.data$pm25_B)
 #   )
-# timeseriesTbl_multiplot(A_missing, pattern = "pm25", style = "point")
+# timeseriesTbl_multiPlot(A_missing, pattern = "pm25", style = "point")
 # correlation <- cor(x=data$pm25_A, y=data$pm25_B, use = "pairwise.complete.obs")
 # model <- lm(data$pm25_A ~ data$pm25_B)
 # summary <- summary(model)
