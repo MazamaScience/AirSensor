@@ -153,45 +153,87 @@ pat_createPATimeseriesObject <- function(
   
   # NOTE:  Here is the structure of the data we wish to have in the end:
   
+  # TODO:  Update this documentation to reflect new columns
   # > names(example_pat$data)
   # [1] "datetime"    "pm25_A"      "pm25_B"      "pm1_atm_A"   "pm1_atm_B"  
   # [6] "pm25_atm_A"  "pm25_atm_B"  "pm10_atm_A"  "pm10_atm_B"  "temperature"
   # [11] "humidity"    "uptime"      "adc0"        "rssi"        "datetime_A" 
   # [16] "datetime_B" 
   
-  # NOTE:  Version 0.5 of the AirSensor package assumed that A and B channels
-  # NOTE:  were reporting independently and we created 'datetime_A' and
-  # NOTE:  'datetime_B' to keep track of the raw data timestamps before 
-  # NOTE:  merging data onto a uniform, minute resolution 'datetime' axis.
+  # NOTE:  When dropouts occur, you will not always have the same number of
+  # NOTE:  rows in each dataframe so we cannot use dplyr::bind_rows(). Instead,
+  # NOTE:  we first create a new "datetime" column on a 1-minute time axis and
+  # NOTE:  then use dplyr::full_join() to create a combined dataframe that has
+  # NOTE:  some missing values.
   
   # * A channel -----
   
-  if ( nrow(A_PRIMARY) != nrow(A_SECONDARY) ) {
-    
-    stop(sprintf("A_PRIMARY has %d rows but A_SECONDARY has %d rows",
-                 nrow(A_PRIMARY), nrow(A_SECONDARY)))
-    
-  } else {
-    
-    retainedColumns <- c(
-      "datetime", "datetime_A",
-      "pm25_A", "pm1_atm_A", "pm25_atm_A", "pm10_atm_A",
-      "uptime", "rssi", "temperature", "humidity"
-    )
-    
-    A_data <- 
-      dplyr::bind_cols(A_PRIMARY, A_SECONDARY[,c("pm1.0_atm", "pm10.0_atm")]) %>%
-      dplyr::mutate(
-        datetime = lubridate::floor_date(.data$created_at, unit = "min"),
-        datetime_A = .data$created_at,
-        pm1_atm_A = .data$pm1.0_atm, 
-        pm25_atm_A = .data$pm2.5_atm, 
-        pm10_atm_A = .data$pm10.0_atm, 
-        pm25_A = .data$pm2.5_atm, 
-      ) %>%
-      dplyr::select(all_of(retainedColumns))
-    
-  }
+  A_PRIMARY_columns <- c(
+    "datetime", "datetime_A",
+    "pm25_A", "pm25_atm_A",
+    "uptime", "rssi", "temperature", "humidity"
+  )
+  
+  A_PRIMARY <-
+    A_PRIMARY %>%
+    dplyr::mutate(
+      datetime = lubridate::floor_date(.data$created_at, unit = "min"),
+      datetime_A = .data$created_at,
+      pm25_atm_A = .data$pm2.5_atm, 
+      pm25_A = .data$pm2.5_atm
+    ) %>%
+    dplyr::select(all_of(A_PRIMARY_columns))
+  
+  A_SECONDARY_columns <- c(
+    "datetime",
+    "pm1_atm_A", "pm10_atm_A"
+  )
+  
+  A_SECONDARY <-
+    A_SECONDARY %>%
+    dplyr::mutate(
+      datetime = lubridate::floor_date(.data$created_at, unit = "min"),
+      pm1_atm_A = .data$pm1.0_atm, 
+      pm10_atm_A = .data$pm10.0_atm
+    ) %>%
+    dplyr::select(all_of(A_SECONDARY_columns))
+  
+  # retainedColumns <- c(
+  #   "datetime", "datetime_A",
+  #   "pm25_A", "pm1_atm_A", "pm25_atm_A", "pm10_atm_A",
+  #   "uptime", "rssi", "temperature", "humidity"
+  # )
+  
+  A_data <- 
+    dplyr::full_join(A_PRIMARY, A_SECONDARY, by = "datetime") %>%
+    dplyr::distinct() %>%
+    dplyr::arrange(.data$datetime)
+  
+  # TODO:  Deal with occasional separation PRIMARY and SECONDARY channels.
+  
+  # NOTE:  The result is imperfect and the SECONDARY channel occasionally gets
+  # NOTE:  assigned to the next 'datetime' minute as seen below. Fixing things
+  # NOTE:  at this level is beyond the scope of what we are currently trying todo.
+  
+  #   datetime            datetime_A          pm25_A pm25_atm_A uptime  rssi temperature humidity pm1_atm_A pm10_atm_A
+  #   <dttm>              <dttm>               <dbl>      <dbl>  <int> <dbl>       <dbl>    <dbl>     <dbl>      <dbl>
+  # 1 2018-08-02 14:39:00 2018-08-02 14:39:29   3.14       3.14   6306   -74          65       63      2.05       3.26
+  # 2 2018-08-02 14:40:00 2018-08-02 14:40:49   3.21       3.21   6308   -74          65       63     NA         NA   
+  # 3 2018-08-02 14:41:00 NA                   NA         NA        NA    NA          NA       NA      2.48       3.21
+  # 4 2018-08-02 14:42:00 2018-08-02 14:42:09   2.12       2.12   6309   -74          65       63      1.3        2.12
+  
+  
+  # A_data <- 
+  #   dplyr::bind_cols(A_PRIMARY, A_SECONDARY[,c("pm1.0_atm", "pm10.0_atm")]) %>%
+  #   dplyr::mutate(
+  #     datetime = lubridate::floor_date(.data$created_at, unit = "min"),
+  #     datetime_A = .data$created_at,
+  #     pm1_atm_A = .data$pm1.0_atm, 
+  #     pm25_atm_A = .data$pm2.5_atm, 
+  #     pm10_atm_A = .data$pm10.0_atm, 
+  #     pm25_A = .data$pm2.5_atm, 
+  #   ) %>%
+  #   dplyr::select(all_of(retainedColumns))
   
   # * B channel -----
   

@@ -104,6 +104,9 @@ pat_createNew <- function(
   
   # ----- Determine date sequence ----------------------------------------------
   
+  # NOTE:  In 2019, ThingSpeak had a download maximum of 8000 records so we limit
+  # NOTE:  time ranges to one week which keeps us under this limit.
+  
   # Find a single, parent record
   pas_single <-
     pas %>%
@@ -187,32 +190,15 @@ pat_createNew <- function(
     }
     
   }
-  
-  # # ----- Remove bad records ---------------------------------------------------
-  # 
-  # # Sometimes we get records with all bad values:
-  # 
-  # # datetime pm25_A pm25_B temperature humidity uptime adc0 rssi          datetime_A          datetime_B
-  # # 1  2000-01-01 12:00:00     NA     NA          NA       NA     NA   NA   NA 2000-01-01 12:00:00 2000-01-01 12:00:00
-  # # 2  2000-01-01 12:00:00     NA     NA          NA       NA     NA   NA   NA 2000-01-01 12:00:00 2000-01-01 12:00:00
-  # 
-  # # We remove them by limiting the data to the requested local time range
-  # 
-  # A_PRIMARY <- 
-  #   pat_rawLst$A_PRIMARY %>%
-  #   dplyr::filter(.data$created_at >= dateRange[1]) %>%
-  #   dplyr::filter(.data$created_at <= dateRange[2])
-  # 
-  # pat_raw$data <- data
-  
-  # ----- Return ---------------------------------------------------------------
-  
-  # pat <- pat_createPATimeseriesObject(pat_raw)
+
+  # ----- Merge and harmonize --------------------------------------------------
   
   pat <- pat_createPATimeseriesObject(pat_rawList)
   
   # Remove any duplicate data records
   pat <- pat_distinct(pat)
+  
+  # ----- Return ---------------------------------------------------------------
   
   return(pat)
   
@@ -227,13 +213,18 @@ if ( FALSE ) {
   setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1") # SCAQMD sensors
   
   pas <- pas_load()
-  
+
   id <- '78df3c292c8448f7_21257'
   label <- NULL
   startdate <- NULL
   enddate <- NULL
   timezone <- NULL
   baseUrl <- "https://api.thingspeak.com/channels/"
+  
+  id <- "ebcb53584e44bb6f_3218"
+  pas <- example_pas
+  startdate <- "2018-08-01"
+  enddate <- "2018-08-28"
   
   pat <- pat_createNew(
     id,

@@ -5,9 +5,12 @@
 #' This dataset was generatedon 2020-01-03 by running:
 #'
 #' \preformatted{
-#'   initializeMazamaSpatialUtils()
-#'   example_pas <- pas_createNew()
-#'   save(example_pas, file = "data/example_pas.rda")
+#' library(AirSensor)
+#' 
+#' initializeMazamaSpatialUtils()
+#' 
+#' example_pas <- pas_createNew()
+#' save(example_pas, file = "data/example_pas.rda")
 #' }
 #'
 #' @seealso example_pas_raw
@@ -23,16 +26,20 @@
 #' and was generated on 2020-01-03 by running:
 #' 
 #' \preformatted{
-#'   example_pas_raw <- 
-#'     pas_downloadParseRawData() %>%
-#'     dplyr::filter(Lon > -125.0 & Lon < -117.0 & Lat > 42.0 & Lat < 49.0)
-#'   save(example_pas_raw, file = "data/example_pas_raw.rda")
+#' library(AirSensor)
+#' 
+#' initializeMazamaSpatialUtils()
+#' 
+#' example_pas_raw <- 
+#'   pas_downloadParseRawData() %>%
+#'   dplyr::filter(Lon > -125.0 & Lon < -117.0 & Lat > 42.0 & Lat < 49.0)
+#' save(example_pas_raw, file = "data/example_pas_raw.rda")
 #' }
 #' 
 #' This dataset can be converted into a standard \emph{pas} dataset with:
 #' 
 #' \preformatted{
-#'   pas <- pas_enhanceData(example_pas_raw)
+#' pas <- pas_enhanceData(example_pas_raw)
 #' }
 #' 
 #' @seealso example_pas
@@ -47,14 +54,18 @@
 #' This dataset was was generated on 2020-01-03 by running:
 #'
 #' \preformatted{
-#'   example_pat <-
-#'     pat_createNew(
-#'       label = "Seattle",
-#'       pas = example_pas,
-#'       startdate = "2018-08-01",
-#'       enddate = "2018-08-28"
-#'     )
-#'   save(example_pat, file = "data/example_pat.rda")
+#' library(AirSensor)
+#' 
+#' initializeMazamaSpatialUtils()
+#' 
+#' example_pat <- pat_createNew(
+#'   #label = "Seattle",
+#'   id = "ebcb53584e44bb6f_3218",
+#'   pas = example_pas,
+#'   startdate = "2018-08-01",
+#'   enddate = "2018-08-28"
+#' )
+#' save(example_pat, file = "data/example_pat.rda")
 #' }
 #' @seealso example_pat_failure_A
 #' @seealso example_pat_failure_B
@@ -68,14 +79,17 @@
 #' This dataset was was generated on 2020-01-03 by running:
 #'
 #' \preformatted{
-#'   example_pat_failure_A <-
-#'     pat_createNew(
-#'       label = "SCNP_20",
-#'       pas = example_pas,
-#'       startdate = "2019-04-01",
-#'       enddate = "2019-04-18"
-#'     )
-#'   save(example_pat_failure_A, file = "data/example_pat_failure_A.rda")
+#' library(AirSensor)
+#' 
+#' initializeMazamaSpatialUtils()
+#' 
+#' example_pat_failure_A <- pat_createNew(
+#'   label = "SCNP_20",
+#'   pas = example_pas,
+#'   startdate = "2019-04-01",
+#'   enddate = "2019-04-18"
+#' )
+#' save(example_pat_failure_A, file = "data/example_pat_failure_A.rda")
 #' }
 #' @seealso example_pat
 #' @seealso example_pat_failure_B
@@ -89,14 +103,17 @@
 #' This dataset was was generated on 2020-01-03 by running:
 #'
 #' \preformatted{
-#'   example_pat_failure_B <-
-#'     pat_createNew(
-#'       label = "SCTV_16",
-#'       pas = example_pas,
-#'       startdate = "2019-06-01",
-#'       enddate = "2019-06-18"
-#'     )
-#'   save(example_pat_failure_B, file = "data/example_pat_failure_B.rda")
+#' library(AirSensor)
+#' 
+#' initializeMazamaSpatialUtils()
+#' 
+#' example_pat_failure_B <- pat_createNew(
+#'   label = "SCTV_16",
+#'   pas = example_pas,
+#'   startdate = "2019-06-01",
+#'   enddate = "2019-06-18"
+#' )
+#' save(example_pat_failure_B, file = "data/example_pat_failure_B.rda")
 #' }
 #' @seealso example_pat
 #' @seealso example_pat_failure_A
@@ -110,15 +127,18 @@
 #' This dataset was was generated on 2020-01-03 by running:
 #'
 #' \preformatted{
-#'   example_sensor <-
-#'     pat_createNew(
-#'       label = "SCAN_14",
-#'       pas = example_pas,
-#'       startdate = "2018-08-14",
-#'       enddate = "2018-09-07"
-#'     ) %>%
-#'     pat_createAirSensor(parameter = 'pm25', FUN = AirSensor::PurpleAirQC_hourly_AB_02)
-#'   save(example_sensor, file = "data/example_sensor.rda")
+#' library(AirSensor)
+#' 
+#' initializeMazamaSpatialUtils()
+#' 
+#' example_sensor <- pat_createNew(
+#'   label = "SCAN_14",
+#'   pas = example_pas,
+#'   startdate = "2018-08-14",
+#'   enddate = "2018-09-07"
+#' ) %>%
+#' pat_createAirSensor(parameter = 'pm25', FUN = AirSensor::PurpleAirQC_hourly_AB_02)
+#' save(example_sensor, file = "data/example_sensor.rda")
 #' }
 "example_sensor"
 
@@ -130,7 +150,7 @@
 #' #' code examples. This dataset was was generated on 2019-07-10 by running:
 #' #' 
 #' #' \preformatted{
-#' #'   example_sensor_scaqmd <- 
-#' #'     sensor_load("scaqmd", startdate = 20190701, enddate = 20190708)
+#' #' example_sensor_scaqmd <- 
+#' #'   sensor_load("scaqmd", startdate = 20190701, enddate = 20190708)
 #' #' }
 #' "example_sensor_scaqmd"
