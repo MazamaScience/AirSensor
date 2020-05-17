@@ -1,12 +1,18 @@
 # AirSensor 0.7.7
 
+This release completely refactors the way that 'pat' data are downloaded from
+ThingSpeak. Additional data columns are added to the standard `pat$data`
+dataframe.
+
 * Refactored `pat_downloadParseRawData()` data access times and also reduced the
 volume of data downloaded by switching from the `.json` to the `.csv` API from
 ThingSpeak. This function now returns a list of five dataframes.
 * Renamed and refactored `pat_createPATimeseriesObject()` to work with the new
 list of dataframes from `pat_downloadParseRawData()`. New fields `pressure` and
-`bsec_iaq` are included in created `pat` object.
+`bsec_iaq` are included in the created `pat` object.
 * Including dependency on **httpcode** and **readr** packages.
+* Renamed `pat_multiplot()` to `pat_multiPlot()` (capital 'P').
+* Renamed `pat_scatterMatrixPlot` to `pat_scatterPlotMatrx()`.
 
 # AirSensor 0.7.6
 

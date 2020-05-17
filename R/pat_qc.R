@@ -41,9 +41,18 @@
 #' 
 #' @examples
 #' \donttest{
+#' library(AirSensor)
+#' 
+#' # Use a sensor with problems
 #' pat <- example_pat_failure_A
+#' 
+#' # Basic plot shows out-of-spec values for humidity
 #' pat %>% pat_multiPlot(sampleSize = NULL)
+#' 
+#' # Applying QC removes these records
 #' pat %>% pat_qc() %>% pat_multiPlot(sampleSize = NULL)
+#' 
+#' # We can also remove PM2.5 data at high humidities
 #' pat %>% pat_qc(max_humidity = 80) %>% pat_multiPlot(sampleSize = NULL)
 #' }
 

@@ -12,12 +12,9 @@
 #' \itemize{
 #' \item{\code{datetime} -- measurement time}
 #' \item{\code{pm25_A} -- A channel PM2.5 (ug/m3)}
-#' \item{\code{pm25_A} -- A channel PM2.5 (ug/m3)}
+#' \item{\code{pm25_B} -- B channel PM2.5 (ug/m3)}
 #' \item{\code{temperature} -- temperature (F)}
 #' \item{\code{humidity} -- humidity (\%)}
-#' \item{\code{uptime} -- seconds since last reset}
-#' \item{\code{adc0} -- analog input voltage}
-#' \item{\code{rssi} -- wifi signal strength (dBm)}
 #' }
 #' 
 #' @param pat PurpleAir Timeseries \emph{pat} object.
@@ -33,11 +30,13 @@
 #' 
 #' @examples
 #' \donttest{
+#' library(AirSensor)
+#' 
 #' pat <- 
 #'   example_pat %>% 
 #'   pat_filterDate(20180811,20180818)
-#' # Warnings are generated when the pat contains NA values
-#' 
+#'   
+#' # NOTE:  Warnings are generated when the pat contains NA values
 #' pat_scatterPlotMatrix(pat, sampleSize = 1000)
 #' }
 

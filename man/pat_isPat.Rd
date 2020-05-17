@@ -14,18 +14,34 @@ pat_isPat(pat = NULL)
 }
 \description{
 The \code{pat} is checked for the 'pat' class name
-and presence of core metadata columns:
+and presence of core \code{meta} and \code{data} columns.
+
+Core \code{meta} columns include:
+
 \itemize{
-  \item{ID -- Purple Air ID}
-  \item{label -- location label}
-  \item{sensorType -- PurpleAir sensor type}
-  \item{longitude -- decimal degrees E}
-  \item{latitude -- decimal degrees N}
-  \item{timezone -- Olson timezone}
-  \item{countryCode -- ISO 3166-1 alpha-2}
-  \item{stateCode -- ISO 3166-2 alpha-2}
-  \item{pwfsl_closestDistance -- distance in meters from an official monitor}
-  \item{pwfsl_closestMonitorID -- identifer for the nearest official monitor}
+  \item{\code{ID} -- Purple Air ID}
+  \item{\code{label} -- location label}
+  \item{\code{sensorType} -- PurpleAir sensor type}
+  \item{\code{longitude} -- decimal degrees E}
+  \item{\code{latitude} -- decimal degrees N}
+  \item{\code{timezone} -- Olson timezone}
+  \item{\code{countryCode} -- ISO 3166-1 alpha-2}
+  \item{\code{stateCode} -- ISO 3166-2 alpha-2}
+  \item{\code{pwfsl_closestDistance} -- distance in meters from an official monitor}
+  \item{\code{pwfsl_closestMonitorID} -- identifer for the nearest official monitor}
+}
+
+The "pwfsl", official, monitors are obtained from the USFS AirFire site 
+using the \pkg{PWFSLSmoke} R package.
+
+Core \code{data} columns include:
+
+\itemize{
+\item{\code{datetime} -- measurement time (UTC)}
+\item{\code{pm25_A} -- A channel PM 2.5 concentration (ug/m3)}
+\item{\code{pm25_B} -- B channel PM 2.5 concentration (ug/m3)}
+\item{\code{temperature} -- temperature (F)}
+\item{\code{humidity} -- relative humidity (\%)}
 }
 
 The "pwfsl", official, monitors are obtained from the USFS AirFire site 

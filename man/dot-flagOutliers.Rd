@@ -24,7 +24,7 @@ outliers in \code{parameter} column of the incoming dataframe. The
 \code{windowSize} and \code{thresholdMin} parameters as passed on to the
 \code{seismicRoll::findOutliers} function.
 
-An additional boolean column named \code{flag_outliers_<parameter>} is added
+An additional boolean column named \code{<parameter>_outlierFlag} is added
 to the dataframe. This column will have \code{TRUE} whenever an outlier is
 detected for the chosen \code{parameter}.
 

@@ -19,13 +19,13 @@
 #' and reduces them by randomly selecting distinct rows of the users chosen 
 #' size. 
 #' 
-#' If both `sampleSize` and `sampleFraction` are unspecified,
-#'  `sampleSize = 5000` will be used.
+#' If both \code{sampleSize} and \code{sampleFraction} are unspecified,
+#'  \code{sampleSize = 5000} will be used.
 #' 
-#' @details When `keepOutliers = FALSE`, random sampling is used to provide a
-#' statistically relevant subsample of the data.
+#' @details When \code{keepOutliers = FALSE}, random sampling is used to provide
+#' a statistically relevant subsample of the data.
 #' 
-#' When `keepOutliers = TRUE`, a customized sampling algorithm is used that
+#' When \code{keepOutliers = TRUE}, a customized sampling algorithm is used that
 #' attempts to create subsets for use in plotting that create plots that are
 #' visually identical to plots using all data. This is accomplished by
 #' preserving outliers and only sampling data in regions where overplotting
@@ -33,18 +33,24 @@
 #' 
 #' The process is as follows:
 #' \enumerate{
-#' \item{find outliers using `seismicRoll::findOutliers()`}
+#' \item{find outliers using \code{seismicRoll::findOutliers()}}
 #' \item{create a subset consisting of only outliers}
 #' \item{sample the remaining data}
 #' \item{merge the outliers and sampled data}
 #' }
 #' 
 #' @examples 
+#' library(AirSensor)
 #' 
-#' pat <- example_pat
-#' subset <- pat_sample(pat, sampleSize=1000, setSeed=1)
+#' example_pat %>%
+#'   pat_extractData() %>%
+#'   dim()
 #' 
-#' 
+#' example_pat %>%
+#'   pat_sample(sampleSize = 1000, setSeed = 1) %>%
+#'   pat_extractData() %>%
+#'   dim()
+#'
 
 pat_sample <- function(
   pat = NULL,
@@ -83,8 +89,7 @@ pat_sample <- function(
   
   # NOTE:  This set of columns must match those defined in
   # NOTE:    pat_createPATimeseriesObject.R
-  
-  retainedColumns <- c(
+  patData_columnNames <- c(
     "datetime", 
     "pm25_A", "pm25_B", 
     "temperature", "humidity", "pressure",
@@ -136,7 +141,7 @@ pat_sample <- function(
             parameter = "pm25_A",
             windowSize = 23,
             thresholdMin = 8
-          )$flag_outliers_pm25_A
+          )$pm25_A_outlierFlag
         )
     } else {
       outlierIndex_A <- c(1)
@@ -150,7 +155,7 @@ pat_sample <- function(
             parameter = "pm25_B",
             windowSize = 23,
             thresholdMin = 8
-          )$flag_outliers_pm25_B
+          )$pm25_B_outlierFlag
         )
     } else {
       outlierIndex_B <- c(1)
@@ -223,18 +228,6 @@ pat_sample <- function(
       B_data, 
       by = 'datetime'
     ) %>%
-    # dplyr::select(
-    #   .data$datetime, 
-    #   .data$pm25_A, 
-    #   .data$pm25_B, 
-    #   .data$temperature, 
-    #   .data$humidity, 
-    #   .data$uptime, 
-    #   .data$adc0, 
-    #   .data$rssi, 
-    #   .data$datetime_A, 
-    #   .data$datetime_B
-    # ) %>%
     dplyr::distinct() %>% 
     dplyr::arrange(.data$datetime)
   

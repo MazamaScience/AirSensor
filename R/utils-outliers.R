@@ -6,7 +6,7 @@
 #' \code{windowSize} and \code{thresholdMin} parameters as passed on to the
 #' \code{seismicRoll::findOutliers} function.
 #' 
-#' An additional boolean column named \code{flag_outliers_<parameter>} is added
+#' An additional boolean column named \code{<parameter>_outlierFlag} is added
 #' to the dataframe. This column will have \code{TRUE} whenever an outlier is
 #' detected for the chosen \code{parameter}.
 #' 
@@ -32,8 +32,10 @@
   MazamaCoreUtils::stopIfNull(df)
   MazamaCoreUtils::stopIfNull(parameter)
   
+  # ----- Flag outliers --------------------------------------------------------
+  
   data <- df[[parameter]]
-  outlierFlagName <- paste0("flag_outliers_", parameter)
+  outlierFlagName <- paste0(parameter, "_outlierFlag")
   
   # Identify outliers
   result <- try({
@@ -88,7 +90,7 @@
     ...
   )
   
-  outlierFlagName <- paste0("flag_outliers_", parameter)
+  outlierFlagName <- paste0(parameter, "_outlierFlag")
   
   roll_med <- function(x, n) seismicRoll::roll_median(x, n)
   
@@ -149,7 +151,7 @@
   
   MazamaCoreUtils::stopIfNull(df)
 
-  col_flag <- names(df)[which(stringr::str_detect(names(df), "flag_outliers_"))]
+  col_flag <- names(df)[which(stringr::str_detect(names(df), "_outlierFlag"))]
   col_param <- names(df)[which(stringr::str_detect(names(df), parameter))][1]
   
   df_ind <- which(df[[col_flag]])

@@ -125,7 +125,7 @@ pat_aggregateOutlierCounts <- function(
       periodSeconds = periodSeconds, 
       parameters = 
         names(pat[["data"]])
-      [which(stringr::str_detect(names(pat[["data"]]), "flag_outliers_"))]
+      [which(stringr::str_detect(names(pat[["data"]]), "_outlierFlag"))]
     )
   
   # Rename 

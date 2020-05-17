@@ -95,6 +95,8 @@ cookbook-r.com.
 \examples{
 \donttest{
 library(AirSensor)
-pat_multiPlot(pat = example_pat, plottype = "pm25", alpha = 0.5)
+
+example_pat \%>\%
+  pat_multiPlot(plottype = "pm25", alpha = 0.5)
 }
 }

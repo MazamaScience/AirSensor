@@ -50,7 +50,10 @@ FUN_ttest <- function(data) {
   t.test(data$pm25_A, data$pm25_B)
 }
 
-pat \%>\%
+t.testStats <-
+  pat \%>\%
   pat_extractData() \%>\% # Note: Extract the timeseries data.frame
   patData_aggregate(FUN_ttest)
+  
+head(t.testStats)
 }

@@ -8,18 +8,34 @@
 #' @return \code{TRUE} if \code{pat} has the correct structure, \code{FALSE} otherwise.
 #' 
 #' @description The \code{pat} is checked for the 'pat' class name
-#' and presence of core metadata columns:
+#' and presence of core \code{meta} and \code{data} columns.
+#' 
+#' Core \code{meta} columns include:
+#' 
 #' \itemize{
-#'   \item{ID -- Purple Air ID}
-#'   \item{label -- location label}
-#'   \item{sensorType -- PurpleAir sensor type}
-#'   \item{longitude -- decimal degrees E}
-#'   \item{latitude -- decimal degrees N}
-#'   \item{timezone -- Olson timezone}
-#'   \item{countryCode -- ISO 3166-1 alpha-2}
-#'   \item{stateCode -- ISO 3166-2 alpha-2}
-#'   \item{pwfsl_closestDistance -- distance in meters from an official monitor}
-#'   \item{pwfsl_closestMonitorID -- identifer for the nearest official monitor}
+#'   \item{\code{ID} -- Purple Air ID}
+#'   \item{\code{label} -- location label}
+#'   \item{\code{sensorType} -- PurpleAir sensor type}
+#'   \item{\code{longitude} -- decimal degrees E}
+#'   \item{\code{latitude} -- decimal degrees N}
+#'   \item{\code{timezone} -- Olson timezone}
+#'   \item{\code{countryCode} -- ISO 3166-1 alpha-2}
+#'   \item{\code{stateCode} -- ISO 3166-2 alpha-2}
+#'   \item{\code{pwfsl_closestDistance} -- distance in meters from an official monitor}
+#'   \item{\code{pwfsl_closestMonitorID} -- identifer for the nearest official monitor}
+#' }
+#' 
+#' The "pwfsl", official, monitors are obtained from the USFS AirFire site 
+#' using the \pkg{PWFSLSmoke} R package.
+#' 
+#' Core \code{data} columns include:
+#' 
+#' \itemize{
+#' \item{\code{datetime} -- measurement time (UTC)}
+#' \item{\code{pm25_A} -- A channel PM 2.5 concentration (ug/m3)}
+#' \item{\code{pm25_B} -- B channel PM 2.5 concentration (ug/m3)}
+#' \item{\code{temperature} -- temperature (F)}
+#' \item{\code{humidity} -- relative humidity (\%)}
 #' }
 #' 
 #' The "pwfsl", official, monitors are obtained from the USFS AirFire site 
@@ -51,14 +67,19 @@ pat_isPat <- function(
   
   if ( !all(metaParameters %in% names(pat$meta)) ) return(FALSE)
   
-  dataParameters <- c(
-    "datetime", "pm25_A", "pm25_B",
-    "temperature", "humidity",
-    "uptime", "adc0", "rssi",
-    "datetime_A", "datetime_B" 
+  # NOTE:  This set of columns must match those defined in
+  # NOTE:    pat_createPATimeseriesObject.R
+  patData_columnNames <- c(
+    "datetime", 
+    "pm25_A", "pm25_B", 
+    "temperature", "humidity", "pressure",
+    "pm1_atm_A", "pm25_atm_A", "pm10_atm_A",
+    "pm1_atm_B", "pm25_atm_B", "pm10_atm_B",
+    "uptime", "rssi", "memory", "adc0", "bsec_iaq",
+    "datetime_A", "datetime_B"
   )
   
-  if ( !all(dataParameters %in% names(pat$data)) ) return(FALSE)
+  if ( !all(patData_columnNames %in% names(pat$data)) ) return(FALSE)
   
   # Nothing failed so return TRUE
   return(TRUE)
@@ -181,9 +202,12 @@ pat_extractMeta <- function(pat) {
 #'   t.test(data$pm25_A, data$pm25_B)
 #' }
 #'
-#' pat %>%
+#' t.testStats <-
+#'   pat %>%
 #'   pat_extractData() %>% # Note: Extract the timeseries data.frame
 #'   patData_aggregate(FUN_ttest)
+#'   
+#' head(t.testStats)
 patData_aggregate <- function(
   df,
   FUN = function(df) { mean(df$pm25_A + df$pm25_B, na.rm = TRUE) },
@@ -191,6 +215,8 @@ patData_aggregate <- function(
   count = 60
 ) {
 
+  # ----- Validate parameters --------------------------------------------------
+  
   MazamaCoreUtils::stopIfNull(df)
   MazamaCoreUtils::stopIfNull(FUN)
   MazamaCoreUtils::stopIfNull(unit)
@@ -230,6 +256,15 @@ patData_aggregate <- function(
   class(datetime) <- c("POSIXct", "POSIXt")
   attr(datetime, 'tzone') <- 'UTC'
 
+  # TODO:  Resolve the following warnings in patData_aggregate()
+  # TODO:
+  # TODO:  There were 50 or more warnings (use warnings() to see the first 50)
+  # TODO:  > warnings()
+  # TODO:  Warning messages:
+  # TODO:  1: In tstat + c(-cint, cint) :
+  # TODO:    Recycling array of length 1 in array-vector arithmetic is deprecated.
+  # TODO:    Use c() or as.vector() instead.
+  
   # Map the function FUN to each bin data.frame.
   mapped <- base::Map(
     df_bins,

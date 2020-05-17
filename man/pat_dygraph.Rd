@@ -57,12 +57,19 @@ The list of available parameters include:
 \examples{
 
 \dontrun{
-nb <- pat_createNew(example_pas, 
-                    "North Bend Weather", 
-                    startdate = 20180801, 
-                    enddate = 20180901)
-subset_nb <- pat_sample(pat=nb, sampleSize = 1000, setSeed = 1)
-pat_dygraph(pat = subset_nb, xlab = "2018", rollPeriod = 6)
+library(AirSensor)
+
+North_Bend_Weather <- pat_createNew(
+  label = "North Bend Weather", 
+  pas = example_pas,
+  startdate = 20180801, 
+  enddate = 20180901,
+  verbose = TRUE
+)
+
+North_Bend_Weather \%>\%
+  pat_sample(sampleSize = 1000, setSeed = 1) \%>\%
+  pat_dygraph(xlab = "2018", rollPeriod = 6)
 }
 }
 \keyword{pa_timeseries}

@@ -337,7 +337,10 @@ pat_createPATimeseriesObject <- function(
   
   # NOTE:  Here are the columns we wish to have in the end in preferred order:
   # NOTE:  If we just take columns 1-6 we have a very useful dataframe.
-  retainedColumns <- c(
+  
+  # NOTE:  This set of columns must match those defined in
+  # NOTE:    pat_createPATimeseriesObject.R
+  patData_columnNames <- c(
     "datetime", 
     "pm25_A", "pm25_B", 
     "temperature", "humidity", "pressure",
@@ -349,16 +352,14 @@ pat_createPATimeseriesObject <- function(
   
   data <-
     dplyr::full_join(A_data, B_data, by = "datetime") %>%
-    dplyr::select(all_of(retainedColumns))
+    dplyr::select(all_of(patData_columnNames)) %>%
+    dplyr::distinct()
 
   # ----- Return ---------------------------------------------------------------
   
   # Combine meta and data dataframes into a list
   pat <- list(meta = meta, data = data)
   class(pat) <- c("pa_timeseries", class(pat))
-  
-  # Remove any duplicate data records
-  pat <- pat_distinct(pat)
   
   return(pat)
   

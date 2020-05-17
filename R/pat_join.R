@@ -14,20 +14,18 @@
 #' non-identical metadata.
 #' 
 #' @examples 
-#' pat <- example_pat
+#' library(AirSensor)
 #' 
 #' aug01_08 <- 
-#'   pat %>%
+#'   example_pat %>%
 #'   pat_filterDate(20180801, 20180808)
 #' 
 #' aug15_22 <- 
-#'   pat %>% 
+#'   example_pat %>% 
 #'   pat_filterDate(20180815, 20180822)
 #'   
-#' x <- pat_join(aug01_08, aug15_22)
-#' 
-#' pat_multiPlot(x, plottype = "pm25")
-#' 
+#' pat_join(aug01_08, aug15_22) %>%
+#'   pat_multiPlot(plottype = "pm25")
 #' 
 
 pat_join <- function(

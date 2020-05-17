@@ -50,9 +50,8 @@ single day is returned.
 \examples{
 library(AirSensor)
 
-august08_15 <- pat_filterDate(example_pat, 
-                              startdate = 20180808, 
-                              enddate = 20180815)
-pat_multiPlot(pat = august08_15)
+example_pat \%>\%
+  pat_filterDate(startdate = 20180808, enddate = 20180815) \%>\%
+  pat_multiPlot()
 
 }
