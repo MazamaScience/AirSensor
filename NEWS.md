@@ -1,4 +1,4 @@
-# AirSensor 0.7.7
+# AirSensor 0.8.0
 
 This release completely refactors the way that 'pat' data are downloaded from
 ThingSpeak. Additional data columns are added to the standard `pat$data`

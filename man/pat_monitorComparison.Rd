@@ -68,6 +68,8 @@ federal monitor from the PWFSL database.
 }
 \examples{
 \donttest{
+library(AirSensor)
+
 pat_monitorComparison(example_pat)
 }
 }

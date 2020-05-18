@@ -37,6 +37,8 @@
 #' @examples
 #' 
 #' \donttest{
+#' library(AirSensor)
+#' 
 #' pat <- example_pat
 #' pat_externalFit(pat)
 #' }

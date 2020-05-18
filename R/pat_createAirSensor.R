@@ -19,7 +19,7 @@
 #' \code{FUN} allows users to provide custom aggregation and 
 #' quality-control functions that are used to create an \emph{airsensor} object. 
 #' The \code{FUN} must accept a \emph{pat} object as the first argument and 
-#' return a \emph{pat} object with a regular hourly datetime axis. \code{FUN} 
+#' return a dataframe with a regular hourly datetime axis. \code{FUN} 
 #' can access and utilize any component of a standard \emph{pat} object 
 #' (e.g pm25_A, temperature, etc.) as well as define new variables in the 
 #' \emph{pat} data. See examples. 
@@ -29,49 +29,66 @@
 #' Furthermore the \code{parameter} can be a new variable created via \code{FUN} 
 #' evaluation. See examples.
 #' 
-#' \code{...} Additional optional parameters or data that a user may implement 
-#' support for in the \code{FUN}.  
+#' Additional named parameters can be be passed to \code{FUN} through \code{...}.  
 #'
 #' @return An "airsensor" object of aggregated PurpleAir Timeseries data.
 #' 
 #' @seealso \link{PurpleAirQC_hourly_AB_02}
 #' @seealso \link{pat_aggregate}
 #' 
-#' @examples 
-#' # Default FUN
+#' @examples
+#' \donttest{
+#' library(AirSensor)
+#' 
+#' # Default FUN = PurpleAirQC_hourly_AB_00
 #' sensor <- pat_createAirSensor(example_pat)
 #' 
-#' # Package included aggregation/QC FUN
+#' PWFSLSmoke::monitor_timeseriesPlot(sensor, shadedNight = TRUE)
+#' 
+#' # Try out other package QC functions
+#' example_pat %>%
+#'   pat_createAirSensor(FUN = PurpleAirQC_hourly_AB_01) %>%
+#'   PWFSLSmoke::monitor_timeseriesPlot(shadedNight = TRUE)
+#'   
+#' example_pat %>%
+#'   pat_createAirSensor(FUN = PurpleAirQC_hourly_AB_02) %>%
+#'   PWFSLSmoke::monitor_timeseriesPlot(shadedNight = TRUE)
+#'   
+#' # Custom FUN
+#' humidity_correction <- function(pat, z = 0) {
+#' 
+#'   # Default hourly aggregation
+#'   hourlyData <- 
+#'     pat %>%
+#'     pat_aggregate() %>%
+#'     pat_extractData()
+#'     
+#'   # Create custom_pm variable 
+#'   pm25 <- (hourlyData$pm25_A + hourlyData$pm25_B) / 2
+#'   hum <- hourlyData$humidity
+#'   temp <- hourlyData$temperature
+#'   hourlyData$custom_pm <- pm25 - (pm25 * hum * z)
+#'     
+#'   return(hourlyData)
+#'   
+#' } 
+#' 
+#' # Evaluate custom FUN 
 #' sensor <- pat_createAirSensor(
 #'   example_pat, 
-#'   parameter = 'pm25', 
-#'   FUN = AirSensor::PurpleAirQC_hourly_AB_02
-#' )
-#' 
-#' # Custom FUN
-#' add_jitter <- function(pat, y) {
-#'   # Create custom_pm variable 
-#'   pat$data$custom_pm <- pat$data$pm25_A + y
-#'   # Default hourly aggregation
-#'   pat <- pat_aggregate(pat)
-#'   return(pat)
-#' } 
-#' # Create noise
-#' jitter <- rnorm(n = nrow(example_pat$data))
-#' 
-#' ## Evaluate custom FUN with parameters 
-#' #sensor <- pat_createAirSensor(
-#' #   example_pat, 
-#' #  parameter = 'custom_pm', 
-#' # FUN = add_jitter, 
-#' # y = jitter
-#' #)
+#'   parameter = "custom_pm", 
+#'   FUN = humidity_correction,
+#'   z = .005
+#')
+#'
+#' PWFSLSmoke::monitor_timeseriesPlot(sensor, shadedNight = TRUE)
+#' }
 #' 
 
 pat_createAirSensor <- function(
   pat = NULL,
-  parameter = 'pm25', 
-  FUN = NULL, 
+  parameter = "pm25", 
+  FUN = PurpleAirQC_hourly_AB_02,
   ...
 ) {
   
@@ -88,92 +105,90 @@ pat_createAirSensor <- function(
     stop("Required parameter 'pat' has no data.") 
   }
   
-  if ( !is.null(FUN) ) {
+  if ( is.null(FUN) ) {
+    FUN <- PurpleAirQC_hourly_AB_00
+  } else {
     if ( !rlang::is_closure(FUN) ) {
       stop(paste0("Provided 'FUN' is not a function.",
                   "(Pass in the function with no quotes and no parentheses.)"))
     }
   }
+
+  # ----- Prepare 'pat' --------------------------------------------------------
   
   # Check if deviceDeploymentID is in the meta data. If not, add uniqueIDs.
   # NOTE: This is necessary as of 2020-04-20 to avoid errors with deprecated pas
   # NOTE: format. 
-  # NOTE: Perhaps use pas_upgrade instead?
+
   if ( !'deviceDeploymentID' %in% names(pat$meta) ) {
     pat$meta <- pas_addUniqueIDs(pat$meta)
   }
   
-  # Remove any duplicate data records
-  pat <- pat_distinct(pat)
-  
-  # Remove out of spec
-  pat <- pat_qc(pat, removeOutOfSpec = TRUE, max_humidity = NULL)
+  # Remove duplicate data records and out-of-spec values
+  pat <- 
+    pat %>%
+    pat_distinct() %>%
+    pat_qc(removeOutOfSpec = TRUE)
   
   # ----- Apply FUN ------------------------------------------------------------
   
-  # NOTE: If FUN is null: 
-  # NOTE: use a mean aggregation with no qc and average both channels 
-  if ( is.null(FUN) ) {
-    FUN <- function(x, ...) {
-      tmp_pat <- pat_aggregate(x, function(x_, ...) mean(x_, na.rm = TRUE, ...))
-      tmp_hourlyData <- 
-        tmp_pat %>% 
-        pat_extractData() %>%
-        dplyr::mutate(pm25 = rowMeans(cbind(.data$pm25_A, .data$pm25_B), na.rm = TRUE))
-      return(tmp_hourlyData)
-    }
-  }
-  
-  # Evaluate FUN function
-  result <- try(
-    expr = { hourlyData <- match.fun(FUN)(pat, ...) }, #? FUN(...) or match.fun(FUN)(...)
-    silent = TRUE 
-  )
-  
-  # Handle FUN errors 
+  result <- try({
+    
+    hourlyData <- FUN(pat, ...) %>%
+      dplyr::mutate_all( function(x) replace(x, which(is.nan(x)), NA) ) %>%
+      dplyr::mutate_all( function(x) replace(x, which(is.infinite(x)), NA) ) 
+    
+  }, silent = TRUE)
+
+  # Handle FUN errors
   if ( 'try-error' %in% class(result) ) {
-    stop('`FUN(pat, ...)` failed to evaluate. 
-         Please check `FUN` and see `?pat_createAirSensor` for details.')
+    stop(paste0("FUN(pat) failed to evaluate. ",
+                "Please check 'FUN' and see ?pat_createAirSensor for details."))
   }
   
-  # ----- Validate evaluated PAT -----------------------------------------------
+  # ----- Validate hourlyData --------------------------------------------------
   
-  # Check hourly axis in eval pat
+  # Check hourly axis
+  
   # NOTE: Any missing hour is filled in with NA, so no gaps _other_ than 1 hour 
   # NOTE: and -23 should exist with index lag = 1. 
+  
   if ( !all(diff(lubridate::hour(hourlyData$datetime)) == 1 | 
             diff(lubridate::hour(hourlyData$datetime)) == -23) ) {
-    stop('Error: `FUN(pat, ...)` does not return regular hourly datetime axis. 
-         Please see `?pat_createAirSensor` for details.')
+    stop(paste0("Error: 'FUN(pat)' does not return regular hourly datetime axis. ", 
+                "Please check 'FUN' and see ?pat_createAirSensor for details."))
   }
   
   # Check if parameter is defined in hourlyData
   if ( !parameter %in% names(hourlyData) ) {
-    stop('`parameter` is not defined in `FUN(pat, ...)` output. 
-    Please see `?pat_createAirSensor` for details.')
+    stop(paste0("'parameter' is not defined in 'FUN(pat)' output. ",
+               "Please check 'FUN' and see ?pat_createAirSensor for details."))
   }
   
   # ----- Create data ----------------------------------------------------------
   
-  # Select data and cleanup any NaN or Inf that might have snuck in
-  data <-
-    hourlyData %>%
-    dplyr::select(.data$datetime, .data[[parameter]]) %>% 
-    dplyr::mutate_all( function(x) replace(x, which(is.nan(x)), NA) ) %>%
-    dplyr::mutate_all( function(x) replace(x, which(is.infinite(x)), NA) ) 
+  # NOTE:  As of PWFSLSmoke version 1.2, both 'meta' must be a dataframe with
+  # NOTE:  rownames.  Here we downgrade from tbl to dataframe.
   
+  data <- hourlyData[, c("datetime", parameter)]
+
   names(data) <- c("datetime", pat$meta$deviceDeploymentID) 
   
-  # Round the datetime axis to the nearest hour 
-  data$datetime <- lubridate::round_date(data$datetime, 'hour')
+  # Round the datetime axis to the nearest hour and convert to dataframe
+  data$datetime <- 
+    lubridate::round_date(data$datetime, 'hour')
+  
+  data <- as.data.frame(data)
   
   # ----- Create metadata  -----------------------------------------------------
   
+  # NOTE:  As of PWFSLSmoke version 1.2, both 'meta' must be a dataframe with
+  # NOTE:  rownames.  Here we downgrade from tbl to dataframe.
+  
   # Copy metadata from pat object
-  # meta <- 
-  #   eval_pat$meta %>% 
-  #   as.data.frame()
-  meta <- pat$meta
+  meta <-
+    pat$meta %>%
+    as.data.frame()
   
   # Add standard metadata found in PWFSLSmoke ws_monitor objects
   meta$monitorID <- meta$deviceDeploymentID
@@ -190,6 +205,10 @@ pat_createAirSensor <- function(
   meta$telemetryAggregator <- as.character(NA)
   meta$telemetryUnitID <- as.character(NA)
   
+  # To match PWFSLSmoke version 1.2.x, 'meta' must have rownames
+  
+  rownames(meta) <- meta$monitorID
+  
   # ----- Return ws_monitor object ---------------------------------------------
   
   as_object <- list(
@@ -200,5 +219,20 @@ pat_createAirSensor <- function(
   class(as_object) <- c("airsensor", "ws_monitor")
   
   return(as_object)
+  
+}
+
+# ===== DEBUGGING ==============================================================
+
+if ( FALSE ) {
+  
+  library(AirSensor)
+
+  pat <- example_pat
+  parameter <- 'pm25'
+  FUN = PurpleAirQC_hourly_AB_00
+  FUN = PurpleAirQC_hourly_AB_01
+  FUN = PurpleAirQC_hourly_AB_02
+  
   
 }

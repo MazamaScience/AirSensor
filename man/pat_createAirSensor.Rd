@@ -4,7 +4,12 @@
 \alias{pat_createAirSensor}
 \title{Create an Air Sensor object}
 \usage{
-pat_createAirSensor(pat = NULL, parameter = "pm25", FUN = NULL, ...)
+pat_createAirSensor(
+  pat = NULL,
+  parameter = "pm25",
+  FUN = PurpleAirQC_hourly_AB_02,
+  ...
+)
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}
@@ -30,7 +35,7 @@ metadata for compatibility with the *PWFSLSmoke* package.
 \code{FUN} allows users to provide custom aggregation and 
 quality-control functions that are used to create an \emph{airsensor} object. 
 The \code{FUN} must accept a \emph{pat} object as the first argument and 
-return a \emph{pat} object with a regular hourly datetime axis. \code{FUN} 
+return a dataframe with a regular hourly datetime axis. \code{FUN} 
 can access and utilize any component of a standard \emph{pat} object 
 (e.g pm25_A, temperature, etc.) as well as define new variables in the 
 \emph{pat} data. See examples. 
@@ -40,38 +45,55 @@ univariate \emph{airsensor} object (e.g 'pm25_A', 'humidity', etc.).
 Furthermore the \code{parameter} can be a new variable created via \code{FUN} 
 evaluation. See examples.
 
-\code{...} Additional optional parameters or data that a user may implement 
-support for in the \code{FUN}.
+Additional named parameters can be be passed to \code{FUN} through \code{...}.
 }
 \examples{
-# Default FUN
+\donttest{
+library(AirSensor)
+
+# Default FUN = PurpleAirQC_hourly_AB_00
 sensor <- pat_createAirSensor(example_pat)
 
-# Package included aggregation/QC FUN
+PWFSLSmoke::monitor_timeseriesPlot(sensor, shadedNight = TRUE)
+
+# Try out other package QC functions
+example_pat \%>\%
+  pat_createAirSensor(FUN = PurpleAirQC_hourly_AB_01) \%>\%
+  PWFSLSmoke::monitor_timeseriesPlot(shadedNight = TRUE)
+  
+example_pat \%>\%
+  pat_createAirSensor(FUN = PurpleAirQC_hourly_AB_02) \%>\%
+  PWFSLSmoke::monitor_timeseriesPlot(shadedNight = TRUE)
+  
+# Custom FUN
+humidity_correction <- function(pat, z = 0) {
+
+  # Default hourly aggregation
+  hourlyData <- 
+    pat \%>\%
+    pat_aggregate() \%>\%
+    pat_extractData()
+    
+  # Create custom_pm variable 
+  pm25 <- (hourlyData$pm25_A + hourlyData$pm25_B) / 2
+  hum <- hourlyData$humidity
+  temp <- hourlyData$temperature
+  hourlyData$custom_pm <- pm25 - (pm25 * hum * z)
+    
+  return(hourlyData)
+  
+} 
+
+# Evaluate custom FUN 
 sensor <- pat_createAirSensor(
   example_pat, 
-  parameter = 'pm25', 
-  FUN = AirSensor::PurpleAirQC_hourly_AB_02
+  parameter = "custom_pm", 
+  FUN = humidity_correction,
+  z = .005
 )
 
-# Custom FUN
-add_jitter <- function(pat, y) {
-  # Create custom_pm variable 
-  pat$data$custom_pm <- pat$data$pm25_A + y
-  # Default hourly aggregation
-  pat <- pat_aggregate(pat)
-  return(pat)
-} 
-# Create noise
-jitter <- rnorm(n = nrow(example_pat$data))
-
-## Evaluate custom FUN with parameters 
-#sensor <- pat_createAirSensor(
-#   example_pat, 
-#  parameter = 'custom_pm', 
-# FUN = add_jitter, 
-# y = jitter
-#)
+PWFSLSmoke::monitor_timeseriesPlot(sensor, shadedNight = TRUE)
+}
 
 }
 \seealso{

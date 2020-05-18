@@ -70,12 +70,12 @@ pat_aggregate <- function(
 ) {
   
   # ----- Validate parameters --------------------------------------------------
-
+  
   MazamaCoreUtils::stopIfNull(pat)
   MazamaCoreUtils::stopIfNull(FUN)
   MazamaCoreUtils::stopIfNull(unit)
   MazamaCoreUtils::stopIfNull(count)
-
+  
   if ( !pat_isPat(pat) )
     stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")
   
@@ -86,7 +86,7 @@ pat_aggregate <- function(
   pat <- pat_distinct(pat)
   
   # ----- Aggregate Data -------------------------------------------------------
-
+  
   # Only use numeric columns for aggregation matrix
   numeric_cols <- which(unlist(lapply(pat$data, is.numeric)))
   
@@ -98,7 +98,7 @@ pat_aggregate <- function(
     unique = TRUE, 
     tzone = 'UTC'
   )
-
+  
   # Split the xts into a list of binned xts matrices  
   patData_bins <- xts::split.xts(
     patData, 
@@ -115,34 +115,40 @@ pat_aggregate <- function(
       FUN = function(x) zoo::index(x)[1] ## First # [nrow(x)] ## Last
     )
   )
-  # Convert saved datetime vector back to posix* from int
+  # Convert saved datetime vector back to POSIX* from int
   class(datetime) <- c("POSIXct", "POSIXt")
   attr(datetime, 'tzone') <- 'UTC'
   
-  # Determine level FUN execution context.
-  # NOTE: level = 1 is to operate on the patData dataframe, with access 
-  # NOTE: to it's object self. 
-  # NOTE: level = 2 is operate vectorised data (each col of patData) individually.
-  # NOTE:  See ?Map and also ?mapply to understand the mapping below.
+  # Map each binned hourly data.frame to the user defined lambda-like 
+  # function f applied via apply to each vector in the mapped data.frame
+  mapped <- base::Map(
+    patData_bins, 
+    f = function(patData, f = FUN) { apply(patData, 2, f) } 
+  )
 
-
+  # ----- Assemble 'data' ------------------------------------------------------
+  
+  hourlyDataMatrix <-
+    do.call(rbind, mapped) %>%
+    round(1)
     
-    # Map each binned hourly data.frame to the user defined lambda-like 
-    # function f applied via apply to each vector in the mapped data.frame
-    mapped <- base::Map(
-      patData_bins, 
-      f = function(patData, f = FUN) { apply(patData, 2, f) } 
-    )
-    
-    # Add mapped data to pa_timeseries object with aggrgeate datetime axis
-    pat$data <- data.frame(
+  # Add mapped data to pa_timeseries object with aggrgeate datetime axis
+  data <- 
+    data.frame(
       'datetime' = datetime, 
-      do.call(rbind, mapped), 
+      hourlyDataMatrix, 
       'datetime_A' = datetime, 
       'datetime_B' = datetime
-    )
-    
-    return(pat)
-
+    ) %>%
+    # Cleanup any NaN or Inf that might have snuck in
+    dplyr::mutate_all( function(x) replace(x, which(is.nan(x)), NA) ) %>%
+    dplyr::mutate_all( function(x) replace(x, which(is.infinite(x)), NA) )
+  
+  # ----- Return ---------------------------------------------------------------
+  
+  pat$data <- data
+  
+  return(pat)
+  
 }
 
