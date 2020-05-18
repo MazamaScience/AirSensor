@@ -80,7 +80,7 @@ data.frame." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
       </span>
     </div>
 
@@ -226,7 +226,8 @@ within the data.frame <em>df</em>.</p>
   <span class='fu'><a href='https://rdrr.io/r/stats/t.test.html'>t.test</a></span>(<span class='no'>data</span>$<span class='no'>pm25_A</span>, <span class='no'>data</span>$<span class='no'>pm25_B</span>)
 }
 
-<span class='no'>pat</span> <span class='kw'>%&gt;%</span>
+<span class='no'>t.testStats</span> <span class='kw'>&lt;-</span>
+  <span class='no'>pat</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='pat_extractDataFrame.html'>pat_extractData</a></span>() <span class='kw'>%&gt;%</span> <span class='co'># Note: Extract the timeseries data.frame</span>
   <span class='fu'>patData_aggregate</span>(<span class='no'>FUN_ttest</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Recycling array of length 1 in array-vector arithmetic is deprecated.</span>
 #&gt; <span class='warning'>  Use c() or as.vector() instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Recycling array of length 1 in vector-array arithmetic is deprecated.</span>
@@ -276,81 +277,28 @@ within the data.frame <em>df</em>.</p>
 #&gt; <span class='warning'>  Use c() or as.vector() instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Recycling array of length 1 in vector-array arithmetic is deprecated.</span>
 #&gt; <span class='warning'>  Use c() or as.vector() instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Recycling array of length 1 in array-vector arithmetic is deprecated.</span>
 #&gt; <span class='warning'>  Use c() or as.vector() instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Recycling array of length 1 in vector-array arithmetic is deprecated.</span>
-#&gt; <span class='warning'>  Use c() or as.vector() instead.</span></div><div class='output co'>#&gt;               datetime  statistic parameter      p.value
-#&gt; 1  2018-08-13 07:00:00  -3.870466  84.03118 0.0002139236
-#&gt; 2  2018-08-13 08:00:00  -4.785184  87.18799 6.910644e-06
-#&gt; 3  2018-08-13 09:00:00  -2.870907  87.55262  0.005131829
-#&gt; 4  2018-08-13 10:00:00  -3.427505   87.1562 0.0009318418
-#&gt; 5  2018-08-13 11:00:00  -4.980301  84.05045 3.343857e-06
-#&gt; 6  2018-08-13 12:00:00  -4.532544  87.43282  1.83922e-05
-#&gt; 7  2018-08-13 13:00:00  -6.722981  83.60038 2.050899e-09
-#&gt; 8  2018-08-13 14:00:00  -5.876071  84.15469 8.168083e-08
-#&gt; 9  2018-08-13 15:00:00  -8.159141  76.25451 5.342176e-12
-#&gt; 10 2018-08-13 16:00:00  -3.765382  87.76392 0.0003001836
-#&gt; 11 2018-08-13 17:00:00  -5.000373  82.24296 3.184046e-06
-#&gt; 12 2018-08-13 18:00:00  -7.458768  82.94233 7.722264e-11
-#&gt; 13 2018-08-13 19:00:00  -8.529301  81.40554 6.542205e-13
-#&gt; 14 2018-08-13 20:00:00  -3.089277  86.02612  0.002702126
-#&gt; 15 2018-08-13 21:00:00 -0.5304431  75.00634    0.5973717
-#&gt; 16 2018-08-13 22:00:00  -7.891569  86.00839 8.755295e-12
-#&gt; 17 2018-08-13 23:00:00  -7.235209  85.59503 1.850159e-10
-#&gt; 18 2018-08-14 00:00:00  -7.178793  81.25792 2.997714e-10
-#&gt; 19 2018-08-14 01:00:00  -7.581755  80.52441  5.13305e-11
-#&gt; 20 2018-08-14 02:00:00  -11.03369  71.49359 4.305195e-17
-#&gt; 21 2018-08-14 03:00:00  -6.940946  77.46315 1.049204e-09
-#&gt; 22 2018-08-14 04:00:00  -9.861513  87.94971 6.958733e-16
-#&gt; 23 2018-08-14 05:00:00    -9.5544  87.81818 3.019037e-15
-#&gt; 24 2018-08-14 06:00:00  -10.95202   87.9759 4.105298e-18
-#&gt;                    conf.int           estimate null.value alternative
-#&gt; 1    -0.7545392, -0.2423497 4.518222, 5.016667          0   two.sided
-#&gt; 2    -0.7051611, -0.2912834 4.989556, 5.487778          0   two.sided
-#&gt; 3  -0.52573065, -0.09560268 5.557556, 5.868222          0   two.sided
-#&gt; 4    -0.7734414, -0.2056697 6.377333, 6.866889          0   two.sided
-#&gt; 5    -0.6856529, -0.2943471 6.755111, 7.245111          0   two.sided
-#&gt; 6    -0.7930868, -0.3095799 6.762444, 7.313778          0   two.sided
-#&gt; 7    -1.0903878, -0.5925516 6.184667, 7.026136          0   two.sided
-#&gt; 8    -1.6111554, -0.7964002 7.115333, 8.319111          0   two.sided
-#&gt; 9      -1.689198, -1.026358 8.163556, 9.521333          0   two.sided
-#&gt; 10     -4.669293, -1.443152 13.71156, 16.76778          0   two.sided
-#&gt; 11     -4.519606, -1.947060 18.83844, 22.07178          0   two.sided
-#&gt; 12     -6.535702, -3.783854 19.21356, 24.37333          0   two.sided
-#&gt; 13     -6.442271, -4.005285 22.97333, 28.19711          0   two.sided
-#&gt; 14   -3.8278594, -0.8303426 27.46045, 29.78956          0   two.sided
-#&gt; 15    -1.6189966, 0.9381077 30.75578, 31.09622          0   two.sided
-#&gt; 16     -5.837377, -3.488209 30.97432, 35.63711          0   two.sided
-#&gt; 17     -6.427709, -3.656736 34.78978, 39.83200          0   two.sided
-#&gt; 18     -5.956904, -3.371541 38.62822, 43.29244          0   two.sided
-#&gt; 19     -6.392508, -3.734603 38.85489, 43.91844          0   two.sided
-#&gt; 20     -5.387631, -3.738591 39.98978, 44.55289          0   two.sided
-#&gt; 21     -4.535173, -2.513272 43.80822, 47.33244          0   two.sided
-#&gt; 22     -3.292436, -2.188009 49.52533, 52.26556          0   two.sided
-#&gt; 23     -3.728435, -2.444454 51.68289, 54.76933          0   two.sided
-#&gt; 24     -4.857355, -3.365312 53.07422, 57.18556          0   two.sided
-#&gt;                     method                   data.name
-#&gt; 1  Welch Two Sample t-test data$pm25_A and data$pm25_B
-#&gt; 2  Welch Two Sample t-test data$pm25_A and data$pm25_B
-#&gt; 3  Welch Two Sample t-test data$pm25_A and data$pm25_B
-#&gt; 4  Welch Two Sample t-test data$pm25_A and data$pm25_B
-#&gt; 5  Welch Two Sample t-test data$pm25_A and data$pm25_B
-#&gt; 6  Welch Two Sample t-test data$pm25_A and data$pm25_B
-#&gt; 7  Welch Two Sample t-test data$pm25_A and data$pm25_B
-#&gt; 8  Welch Two Sample t-test data$pm25_A and data$pm25_B
-#&gt; 9  Welch Two Sample t-test data$pm25_A and data$pm25_B
-#&gt; 10 Welch Two Sample t-test data$pm25_A and data$pm25_B
-#&gt; 11 Welch Two Sample t-test data$pm25_A and data$pm25_B
-#&gt; 12 Welch Two Sample t-test data$pm25_A and data$pm25_B
-#&gt; 13 Welch Two Sample t-test data$pm25_A and data$pm25_B
-#&gt; 14 Welch Two Sample t-test data$pm25_A and data$pm25_B
-#&gt; 15 Welch Two Sample t-test data$pm25_A and data$pm25_B
-#&gt; 16 Welch Two Sample t-test data$pm25_A and data$pm25_B
-#&gt; 17 Welch Two Sample t-test data$pm25_A and data$pm25_B
-#&gt; 18 Welch Two Sample t-test data$pm25_A and data$pm25_B
-#&gt; 19 Welch Two Sample t-test data$pm25_A and data$pm25_B
-#&gt; 20 Welch Two Sample t-test data$pm25_A and data$pm25_B
-#&gt; 21 Welch Two Sample t-test data$pm25_A and data$pm25_B
-#&gt; 22 Welch Two Sample t-test data$pm25_A and data$pm25_B
-#&gt; 23 Welch Two Sample t-test data$pm25_A and data$pm25_B
-#&gt; 24 Welch Two Sample t-test data$pm25_A and data$pm25_B</div></pre>
+#&gt; <span class='warning'>  Use c() or as.vector() instead.</span></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>t.testStats</span>)</div><div class='output co'>#&gt;              datetime statistic parameter      p.value                 conf.int
+#&gt; 1 2018-08-13 07:00:00 -3.870466  84.03118 0.0002139236   -0.7545392, -0.2423497
+#&gt; 2 2018-08-13 08:00:00 -4.785184  87.18799 6.910644e-06   -0.7051611, -0.2912834
+#&gt; 3 2018-08-13 09:00:00 -2.870907  87.55262  0.005131829 -0.52573065, -0.09560268
+#&gt; 4 2018-08-13 10:00:00 -3.427505   87.1562 0.0009318418   -0.7734414, -0.2056697
+#&gt; 5 2018-08-13 11:00:00 -4.980301  84.05045 3.343857e-06   -0.6856529, -0.2943471
+#&gt; 6 2018-08-13 12:00:00 -4.532544  87.43282  1.83922e-05   -0.7930868, -0.3095799
+#&gt;             estimate null.value alternative                  method
+#&gt; 1 4.518222, 5.016667          0   two.sided Welch Two Sample t-test
+#&gt; 2 4.989556, 5.487778          0   two.sided Welch Two Sample t-test
+#&gt; 3 5.557556, 5.868222          0   two.sided Welch Two Sample t-test
+#&gt; 4 6.377333, 6.866889          0   two.sided Welch Two Sample t-test
+#&gt; 5 6.755111, 7.245111          0   two.sided Welch Two Sample t-test
+#&gt; 6 6.762444, 7.313778          0   two.sided Welch Two Sample t-test
+#&gt;                     data.name
+#&gt; 1 data$pm25_A and data$pm25_B
+#&gt; 2 data$pm25_A and data$pm25_B
+#&gt; 3 data$pm25_A and data$pm25_B
+#&gt; 4 data$pm25_A and data$pm25_B
+#&gt; 5 data$pm25_A and data$pm25_B
+#&gt; 6 data$pm25_A and data$pm25_B</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

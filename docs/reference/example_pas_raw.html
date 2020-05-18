@@ -48,15 +48,20 @@ version of raw Purple Air synoptic data JSON for practicing and code
 examples. This dataset contains data for sensors in Washington and Oregon
 and was generated on 2020-01-03 by running:
 
-  example_pas_raw &amp;lt;- 
-    pas_downloadParseRawData() 
-    dplyr::filter(Lon &amp;gt; -125.0 &amp;amp; Lon &amp;lt; -117.0 &amp;amp; Lat &amp;gt; 42.0 &amp;amp; Lat &amp;lt; 49.0)
-  save(example_pas_raw, file = &quot;data/example_pas_raw.rda&quot;)
+library(AirSensor)
+
+initializeMazamaSpatialUtils()
+
+example_pas_raw &amp;lt;- 
+  pas_downloadParseRawData() 
+  dplyr::filter(Lon &amp;gt; -125.0 &amp;amp; Lon &amp;lt; -117.0 &amp;amp; Lat &amp;gt; 42.0 &amp;amp; Lat &amp;lt; 49.0)
+  
+save(example_pas_raw, file = &quot;data/example_pas_raw.rda&quot;)
 
 
 This dataset can be converted into a standard pas dataset with:
 
-  pas &amp;lt;- pas_enhanceData(example_pas_raw)
+pas &amp;lt;- pas_enhanceData(example_pas_raw)
 
 " />
 <meta name="twitter:card" content="summary" />
@@ -91,7 +96,7 @@ This dataset can be converted into a standard pas dataset with:
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
       </span>
     </div>
 
@@ -183,15 +188,20 @@ version of raw Purple Air synoptic data JSON for practicing and code
 examples. This dataset contains data for sensors in Washington and Oregon
 and was generated on 2020-01-03 by running:</p>
 <pre>
-  example_pas_raw &lt;- 
-    pas_downloadParseRawData() <!-- %&gt;% -->
-    dplyr::filter(Lon &gt; -125.0 &amp; Lon &lt; -117.0 &amp; Lat &gt; 42.0 &amp; Lat &lt; 49.0)
-  save(example_pas_raw, file = "data/example_pas_raw.rda")
+library(AirSensor)
+
+initializeMazamaSpatialUtils()
+
+example_pas_raw &lt;- 
+  pas_downloadParseRawData() <!-- %&gt;% -->
+  dplyr::filter(Lon &gt; -125.0 &amp; Lon &lt; -117.0 &amp; Lat &gt; 42.0 &amp; Lat &lt; 49.0)
+  
+save(example_pas_raw, file = "data/example_pas_raw.rda")
 </pre>
 
 <p>This dataset can be converted into a standard <em>pas</em> dataset with:</p>
 <pre>
-  pas &lt;- pas_enhanceData(example_pas_raw)
+pas &lt;- pas_enhanceData(example_pas_raw)
 </pre>
 
     </div>

@@ -80,7 +80,7 @@ are dropped." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
       </span>
     </div>
 
@@ -201,28 +201,20 @@ are dropped.</p>
     <pre class="examples"><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>AirSensor</span>)
 <span class='no'>unhealthy</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_filter</span>(<span class='no'>example_pat</span>, <span class='no'>pm25_A</span> <span class='kw'>&gt;</span> <span class='fl'>55.5</span>, <span class='no'>pm25_B</span> <span class='kw'>&gt;</span> <span class='fl'>55.5</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>unhealthy</span>$<span class='no'>data</span>)</div><div class='output co'>#&gt;              datetime pm25_A pm25_B pm1_0_atm_A pm1_0_atm_B pm25_atm_A pm25_atm_B
-#&gt; 1 2018-08-03 01:30:00 110.90 110.22     98.56     97.68     162.74     160.27
-#&gt; 2 2018-08-06 16:46:00  57.35  56.64     65.81     66.72      85.97      84.72
-#&gt; 3 2018-08-14 06:52:00  56.21  59.62     47.97     51.88      85.28      90.52
-#&gt; 4 2018-08-14 07:01:00  56.54  58.05     47.74     52.32      85.74      88.02
-#&gt; 5 2018-08-14 07:04:00  56.55  59.22     48.17     51.61      85.85      89.88
-#&gt; 6 2018-08-14 07:05:00  56.03  59.39     47.17     52.17      84.90      90.24
-#&gt;   pm10_0_atm_A pm10_0_atm_B temperature humidity uptime adc0 rssi
-#&gt; 1     185.28     180.93          74       47   6957 0.05  -73
-#&gt; 2      88.87      86.97          72       54   1015 0.06  -74
-#&gt; 3      96.38     104.57          70       57   1737 0.06  -74
-#&gt; 4      96.72     100.12          70       57   1747 0.06  -74
-#&gt; 5      97.93     104.66          70       57   1749 0.06  -74
-#&gt; 6      94.40     102.80          70       58   1751 0.06  -74
-#&gt;            datetime_A          datetime_B
-#&gt; 1 2018-08-03 01:30:09 2018-08-03 01:30:39
-#&gt; 2 2018-08-06 16:46:18 2018-08-06 16:46:48
-#&gt; 3 2018-08-14 06:52:03 2018-08-14 06:52:33
-#&gt; 4 2018-08-14 07:01:23 2018-08-14 07:01:53
-#&gt; 5 2018-08-14 07:04:03 2018-08-14 07:04:33
-#&gt; 6 2018-08-14 07:05:23 2018-08-14 07:05:53</div><div class='input'>
-</div></pre>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>unhealthy</span>$<span class='no'>data</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 6 x 19</span><span>
+#&gt;   datetime            pm25_A pm25_B temperature humidity pressure pm1_atm_A
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>               </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> 2018-08-03 </span><span style='color: #555555;'>01:30:00</span><span>  111.   110.           74       47       </span><span style='color: #BB0000;'>NA</span><span>      66.9
+#&gt; </span><span style='color: #555555;'>2</span><span> 2018-08-06 </span><span style='color: #555555;'>16:46:00</span><span>   57.4   56.6          72       54       </span><span style='color: #BB0000;'>NA</span><span>      43.0
+#&gt; </span><span style='color: #555555;'>3</span><span> 2018-08-14 </span><span style='color: #555555;'>06:52:00</span><span>   56.2   59.6          70       57       </span><span style='color: #BB0000;'>NA</span><span>      33.3
+#&gt; </span><span style='color: #555555;'>4</span><span> 2018-08-14 </span><span style='color: #555555;'>07:01:00</span><span>   56.5   58.0          70       57       </span><span style='color: #BB0000;'>NA</span><span>      33.0
+#&gt; </span><span style='color: #555555;'>5</span><span> 2018-08-14 </span><span style='color: #555555;'>07:04:00</span><span>   56.6   59.2          70       57       </span><span style='color: #BB0000;'>NA</span><span>      33.3
+#&gt; </span><span style='color: #555555;'>6</span><span> 2018-08-14 </span><span style='color: #555555;'>07:05:00</span><span>   56.0   59.4          70       58       </span><span style='color: #BB0000;'>NA</span><span>      33.0
+#&gt; </span><span style='color: #555555;'># … with 12 more variables: pm25_atm_A </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, pm10_atm_A </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
+#&gt; #   pm1_atm_B </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, pm25_atm_B </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, pm10_atm_B </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, uptime </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,
+#&gt; #   rssi </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, memory </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, adc0 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, bsec_iaq </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, datetime_A </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>,
+#&gt; #   datetime_B </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span></div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -44,7 +44,9 @@
 
 <meta property="og:title" content="Test for correct structure in a <em>pat</em> object — pat_isPat" />
 <meta property="og:description" content="The pat is checked for the 'pat' class name
-and presence of core metadata columns:
+and presence of core meta and data columns.
+Core meta columns include:
+
 ID -- Purple Air ID
 label -- location label
 sensorType -- PurpleAir sensor type
@@ -55,6 +57,17 @@ countryCode -- ISO 3166-1 alpha-2
 stateCode -- ISO 3166-2 alpha-2
 pwfsl_closestDistance -- distance in meters from an official monitor
 pwfsl_closestMonitorID -- identifer for the nearest official monitor
+
+
+The &quot;pwfsl&quot;, official, monitors are obtained from the USFS AirFire site 
+using the PWFSLSmoke R package.
+Core data columns include:
+
+datetime -- measurement time (UTC)
+pm25_A -- A channel PM 2.5 concentration (ug/m3)
+pm25_B -- B channel PM 2.5 concentration (ug/m3)
+temperature -- temperature (F)
+humidity -- relative humidity (%)
 
 
 The &quot;pwfsl&quot;, official, monitors are obtained from the USFS AirFire site 
@@ -91,7 +104,7 @@ using the PWFSLSmoke R package." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
       </span>
     </div>
 
@@ -179,17 +192,30 @@ using the PWFSLSmoke R package." />
 
     <div class="ref-description">
     <p>The <code>pat</code> is checked for the 'pat' class name
-and presence of core metadata columns:</p><ul>
-<li><p>ID -- Purple Air ID</p></li>
-<li><p>label -- location label</p></li>
-<li><p>sensorType -- PurpleAir sensor type</p></li>
-<li><p>longitude -- decimal degrees E</p></li>
-<li><p>latitude -- decimal degrees N</p></li>
-<li><p>timezone -- Olson timezone</p></li>
-<li><p>countryCode -- ISO 3166-1 alpha-2</p></li>
-<li><p>stateCode -- ISO 3166-2 alpha-2</p></li>
-<li><p>pwfsl_closestDistance -- distance in meters from an official monitor</p></li>
-<li><p>pwfsl_closestMonitorID -- identifer for the nearest official monitor</p></li>
+and presence of core <code>meta</code> and <code>data</code> columns.</p>
+<p>Core <code>meta</code> columns include:</p>
+<ul>
+<li><p><code>ID</code> -- Purple Air ID</p></li>
+<li><p><code>label</code> -- location label</p></li>
+<li><p><code>sensorType</code> -- PurpleAir sensor type</p></li>
+<li><p><code>longitude</code> -- decimal degrees E</p></li>
+<li><p><code>latitude</code> -- decimal degrees N</p></li>
+<li><p><code>timezone</code> -- Olson timezone</p></li>
+<li><p><code>countryCode</code> -- ISO 3166-1 alpha-2</p></li>
+<li><p><code>stateCode</code> -- ISO 3166-2 alpha-2</p></li>
+<li><p><code>pwfsl_closestDistance</code> -- distance in meters from an official monitor</p></li>
+<li><p><code>pwfsl_closestMonitorID</code> -- identifer for the nearest official monitor</p></li>
+</ul>
+
+<p>The "pwfsl", official, monitors are obtained from the USFS AirFire site 
+using the <span class="pkg">PWFSLSmoke</span> R package.</p>
+<p>Core <code>data</code> columns include:</p>
+<ul>
+<li><p><code>datetime</code> -- measurement time (UTC)</p></li>
+<li><p><code>pm25_A</code> -- A channel PM 2.5 concentration (ug/m3)</p></li>
+<li><p><code>pm25_B</code> -- B channel PM 2.5 concentration (ug/m3)</p></li>
+<li><p><code>temperature</code> -- temperature (F)</p></li>
+<li><p><code>humidity</code> -- relative humidity (%)</p></li>
 </ul>
 
 <p>The "pwfsl", official, monitors are obtained from the USFS AirFire site 

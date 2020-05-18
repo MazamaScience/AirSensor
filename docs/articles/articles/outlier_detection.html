@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
       </span>
     </div>
 
@@ -64,9 +64,6 @@
     </li>
     <li>
       <a href="../../articles/Developer_Style_Guide.html">Developer Style Guide</a>
-    </li>
-    <li>
-      <a href="../../articles/articles/Australia_on_fire.html">Australia on Fire</a>
     </li>
     <li>
       <a href="../../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
@@ -186,7 +183,7 @@
 <p>We definitely have what looks to the eye like outliers so let’s use the <code><a href="https://rdrr.io/pkg/seismicRoll/man/findOutliers.html">seismicRoll::findOutliers()</a></code> function to figure out exactly where they are:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># Find the outliers</span></a>
 <a class="sourceLine" id="cb4-2" data-line-number="2">seismicRoll<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/seismicRoll/man/findOutliers.html">findOutliers</a></span>(oneDayData<span class="op">$</span>pm25_A)</a></code></pre></div>
-<pre><code>## [1] 872 874</code></pre>
+<pre><code>## [1] 654 655</code></pre>
 <p>The following example explains the outlier detection process with a single window centered on the outlier at index <code>872</code>:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># Set example point, neighbors, median, and window</span></a>
 <a class="sourceLine" id="cb6-2" data-line-number="2">windowWidth &lt;-<span class="st"> </span><span class="dv">23</span></a>

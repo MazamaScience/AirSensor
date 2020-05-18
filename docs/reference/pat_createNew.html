@@ -85,7 +85,7 @@ recommended formats:
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
       </span>
     </div>
 
@@ -191,7 +191,8 @@ recommended formats:</p>
   <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>baseURL</span> <span class='kw'>=</span> <span class='st'>"https://api.thingspeak.com/channels/"</span>
+  <span class='kw'>baseUrl</span> <span class='kw'>=</span> <span class='st'>"https://api.thingspeak.com/channels/"</span>,
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -222,8 +223,12 @@ recommended formats:</p>
       <td><p>Timezone used to interpret start and end dates.</p></td>
     </tr>
     <tr>
-      <th>baseURL</th>
+      <th>baseUrl</th>
       <td><p>Base URL for Thingspeak API.</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>Logical controlling the generation of warning and error messages.</p></td>
     </tr>
     </table>
 

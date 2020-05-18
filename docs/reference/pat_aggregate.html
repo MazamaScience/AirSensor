@@ -80,7 +80,7 @@ pat object containing the same metadata as the incoming pat." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
       </span>
     </div>
 
@@ -230,140 +230,140 @@ provided to this function. This means that functions like <code>mean</code> and
 <span class='no'>pat</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>pat_aggregate</span>(<span class='no'>FUN_mean</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='pat_extractDataFrame.html'>pat_extractData</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='fl'>1</span>:<span class='fl'>9</span>)</div><div class='output co'>#&gt;               datetime    pm25_A    pm25_B pm1_0_atm_A pm1_0_atm_B pm25_atm_A
-#&gt; 1  2018-08-13 07:00:00  4.518222  5.016667  3.227778  3.713778   4.518222
-#&gt; 2  2018-08-13 08:00:00  4.989556  5.487778  3.504222  4.110000   4.989556
-#&gt; 3  2018-08-13 09:00:00  5.557556  5.868222  3.912222  4.442889   5.557556
-#&gt; 4  2018-08-13 10:00:00  6.377333  6.866889  4.490667  5.072667   6.377333
-#&gt; 5  2018-08-13 11:00:00  6.755111  7.245111  4.813556  5.426889   6.755111
-#&gt; 6  2018-08-13 12:00:00  6.762444  7.313778  4.712444  5.374667   6.762444
-#&gt; 7  2018-08-13 13:00:00  6.184667  7.026136  4.353111  5.127500   6.184667
-#&gt; 8  2018-08-13 14:00:00  7.115333  8.319111  5.042222  6.010667   7.115333
-#&gt; 9  2018-08-13 15:00:00  8.163556  9.521333  5.528000  6.829778   8.163556
-#&gt; 10 2018-08-13 16:00:00 13.711556 16.767778  8.020667 10.836000  13.711556
-#&gt; 11 2018-08-13 17:00:00 18.838444 22.071778 11.322000 14.155111  18.838889
-#&gt; 12 2018-08-13 18:00:00 19.213556 24.373333 11.580667 15.463556  19.226667
-#&gt; 13 2018-08-13 19:00:00 22.973333 28.197111 13.978667 18.001111  23.133111
-#&gt; 14 2018-08-13 20:00:00 27.460455 29.789556 16.430000 19.048000  27.987955
-#&gt; 15 2018-08-13 21:00:00 30.755778 31.096222 19.008444 20.271111  31.920000
-#&gt; 16 2018-08-13 22:00:00 30.974318 35.637111 19.080682 24.329111  32.546818
-#&gt; 17 2018-08-13 23:00:00 34.789778 39.832000 22.658444 29.032000  38.928889
-#&gt; 18 2018-08-14 00:00:00 38.628222 43.292444 26.390444 33.250000  45.974444
-#&gt; 19 2018-08-14 01:00:00 38.854889 43.918444 26.655111 33.722667  46.331111
-#&gt; 20 2018-08-14 02:00:00 39.989778 44.552889 27.655778 34.460667  48.225333
-#&gt; 21 2018-08-14 03:00:00 43.808222 47.332444 32.136444 38.483333  56.391556
-#&gt; 22 2018-08-14 04:00:00 49.525333 52.265556 39.775111 45.658889  70.538444
-#&gt; 23 2018-08-14 05:00:00 51.682889 54.769333 42.534444 48.586667  75.788222
-#&gt; 24 2018-08-14 06:00:00 53.074222 57.185556 44.307333 50.618000  78.899111
-#&gt;    pm25_atm_B pm10_0_atm_A pm10_0_atm_B
-#&gt; 1    5.016667   4.840667   5.565111
-#&gt; 2    5.487778   5.389333   5.962444
-#&gt; 3    5.868222   6.030000   6.422444
-#&gt; 4    6.866889   6.831111   7.559778
-#&gt; 5    7.245111   7.314222   7.889778
-#&gt; 6    7.313778   7.247333   8.255111
-#&gt; 7    7.026136   6.691333   7.767273
-#&gt; 8    8.319111   7.752667   9.082667
-#&gt; 9    9.521333   8.879556  10.556000
-#&gt; 10  16.767778  15.310667  19.040000
-#&gt; 11  22.093333  21.075556  24.896667
-#&gt; 12  24.424000  21.572667  27.618444
-#&gt; 13  28.734000  26.051556  32.933556
-#&gt; 14  31.290889  31.167500  35.882000
-#&gt; 15  33.115333  35.548222  37.968222
-#&gt; 16  40.224889  36.351591  46.316000
-#&gt; 17  47.996667  43.858667  55.044444
-#&gt; 18  55.170000  51.671111  63.042889
-#&gt; 19  56.634889  52.357778  65.100667
-#&gt; 20  57.924667  54.559111  66.460000
-#&gt; 21  64.838889  64.140000  74.554889
-#&gt; 22  77.528889  80.355111  89.233333
-#&gt; 23  82.791778  86.238000  95.168889
-#&gt; 24  86.806000  90.306000 100.264222</div><div class='input'>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='fl'>1</span>:<span class='fl'>9</span>)</div><div class='output co'>#&gt;               datetime pm25_A pm25_B temperature humidity pressure pm1_atm_A
+#&gt; 1  2018-08-13 07:00:00    4.5    5.0        64.7     61.4       NA       3.2
+#&gt; 2  2018-08-13 08:00:00    5.0    5.5        64.6     62.0       NA       3.5
+#&gt; 3  2018-08-13 09:00:00    5.6    5.9        64.3     62.7       NA       3.9
+#&gt; 4  2018-08-13 10:00:00    6.4    6.9        63.7     64.2       NA       4.5
+#&gt; 5  2018-08-13 11:00:00    6.8    7.2        64.0     62.9       NA       4.8
+#&gt; 6  2018-08-13 12:00:00    6.8    7.3        63.2     64.4       NA       4.7
+#&gt; 7  2018-08-13 13:00:00    6.2    7.0        62.3     66.3       NA       4.3
+#&gt; 8  2018-08-13 14:00:00    7.1    8.3        62.6     68.4       NA       5.0
+#&gt; 9  2018-08-13 15:00:00    8.2    9.5        64.2     68.1       NA       5.5
+#&gt; 10 2018-08-13 16:00:00   13.7   16.8        65.4     68.8       NA       8.0
+#&gt; 11 2018-08-13 17:00:00   18.8   22.1        67.5     65.2       NA      11.3
+#&gt; 12 2018-08-13 18:00:00   19.2   24.4        69.1     62.2       NA      11.6
+#&gt; 13 2018-08-13 19:00:00   23.0   28.2        70.6     59.6       NA      13.9
+#&gt; 14 2018-08-13 20:00:00   27.5   29.8        70.6     59.5       NA      16.3
+#&gt; 15 2018-08-13 21:00:00   30.8   31.1        70.4     60.8       NA      18.6
+#&gt; 16 2018-08-13 22:00:00   31.0   35.6        72.4     57.9       NA      18.7
+#&gt; 17 2018-08-13 23:00:00   34.8   39.8        74.2     54.9       NA      21.0
+#&gt; 18 2018-08-14 00:00:00   38.6   43.3        75.8     52.0       NA      23.2
+#&gt; 19 2018-08-14 01:00:00   38.9   43.9        74.8     53.4       NA      23.4
+#&gt; 20 2018-08-14 02:00:00   40.0   44.6        73.1     56.4       NA      24.1
+#&gt; 21 2018-08-14 03:00:00   43.8   47.3        71.9     59.7       NA      26.4
+#&gt; 22 2018-08-14 04:00:00   49.5   52.3        71.7     59.1       NA      29.9
+#&gt; 23 2018-08-14 05:00:00   51.7   54.8        71.0     58.7       NA      31.1
+#&gt; 24 2018-08-14 06:00:00   53.1   57.2        70.1     57.7       NA      31.9
+#&gt;    pm25_atm_A pm10_atm_A
+#&gt; 1         4.5        4.8
+#&gt; 2         5.0        5.4
+#&gt; 3         5.6        6.0
+#&gt; 4         6.4        6.8
+#&gt; 5         6.8        7.3
+#&gt; 6         6.8        7.2
+#&gt; 7         6.2        6.7
+#&gt; 8         7.1        7.8
+#&gt; 9         8.2        8.9
+#&gt; 10       13.7       15.3
+#&gt; 11       18.8       21.1
+#&gt; 12       19.2       21.6
+#&gt; 13       23.0       26.1
+#&gt; 14       27.5       31.3
+#&gt; 15       30.8       35.4
+#&gt; 16       31.0       36.2
+#&gt; 17       34.8       42.4
+#&gt; 18       38.6       48.1
+#&gt; 19       38.9       48.6
+#&gt; 20       40.0       50.3
+#&gt; 21       43.8       56.0
+#&gt; 22       49.5       64.2
+#&gt; 23       51.7       66.9
+#&gt; 24       53.1       68.7</div><div class='input'>
 <span class='co'># Hourly maxes</span>
 <span class='no'>pat</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>pat_aggregate</span>(<span class='no'>FUN_max</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='pat_extractDataFrame.html'>pat_extractData</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='fl'>1</span>:<span class='fl'>9</span>)</div><div class='output co'>#&gt;               datetime pm25_A pm25_B pm1_0_atm_A pm1_0_atm_B pm25_atm_A pm25_atm_B
-#&gt; 1  2018-08-13 07:00:00   6.19   6.27      4.29      5.09       6.19       6.27
-#&gt; 2  2018-08-13 08:00:00   5.98   6.81      4.34      4.93       5.98       6.81
-#&gt; 3  2018-08-13 09:00:00   6.69   7.07      4.57      5.45       6.69       7.07
-#&gt; 4  2018-08-13 10:00:00   7.78   8.29      5.71      5.81       7.78       8.29
-#&gt; 5  2018-08-13 11:00:00   7.37   8.19      5.38      6.07       7.37       8.19
-#&gt; 6  2018-08-13 12:00:00   7.88   8.33      5.71      6.27       7.88       8.33
-#&gt; 7  2018-08-13 13:00:00   7.37   8.52      5.24      6.07       7.37       8.52
-#&gt; 8  2018-08-13 14:00:00   9.31  10.21      6.57      7.39       9.31      10.21
-#&gt; 9  2018-08-13 15:00:00  10.17  10.77      6.90      7.72      10.17      10.77
-#&gt; 10 2018-08-13 16:00:00  21.54  23.48     12.39     14.64      21.54      23.48
-#&gt; 11 2018-08-13 17:00:00  28.27  29.67     18.12     19.24      28.29      30.52
-#&gt; 12 2018-08-13 18:00:00  25.00  29.27     14.98     18.53      25.00      29.57
-#&gt; 13 2018-08-13 19:00:00  31.45  34.41     20.37     23.83      32.70      37.51
-#&gt; 14 2018-08-13 20:00:00  37.38  35.07     25.35     23.71      41.05      39.12
-#&gt; 15 2018-08-13 21:00:00  37.73  38.36     25.68     27.00      41.49      44.45
-#&gt; 16 2018-08-13 22:00:00  38.63  42.05     25.65     31.60      45.22      51.83
-#&gt; 17 2018-08-13 23:00:00  44.88  47.45     34.15     39.83      58.58      64.93
-#&gt; 18 2018-08-14 00:00:00  45.78  48.05     33.90     40.40      60.73      66.70
-#&gt; 19 2018-08-14 01:00:00  45.20  48.90     34.59     42.32      60.05      68.98
-#&gt; 20 2018-08-14 02:00:00  43.65  47.26     32.20     37.51      56.03      64.38
-#&gt; 21 2018-08-14 03:00:00  49.32  51.90     39.68     45.66      70.51      77.59
-#&gt; 22 2018-08-14 04:00:00  51.95  55.08     43.03     49.07      77.38      83.59
-#&gt; 23 2018-08-14 05:00:00  55.83  58.31     47.00     51.65      84.80      88.64
-#&gt; 24 2018-08-14 06:00:00  56.21  60.43     48.31     54.48      85.28      91.88
-#&gt;    pm10_0_atm_A pm10_0_atm_B
-#&gt; 1        7.14       6.76
-#&gt; 2        7.10       7.31
-#&gt; 3        7.76       7.48
-#&gt; 4        8.49       9.45
-#&gt; 5        8.13       9.17
-#&gt; 6        8.81       9.64
-#&gt; 7        7.73       9.59
-#&gt; 8       10.21      11.47
-#&gt; 9       11.10      12.62
-#&gt; 10      24.40      28.14
-#&gt; 11      32.66      34.05
-#&gt; 12      27.40      33.18
-#&gt; 13      35.72      42.02
-#&gt; 14      43.60      44.29
-#&gt; 15      45.29      51.05
-#&gt; 16      52.20      58.33
-#&gt; 17      65.10      73.76
-#&gt; 18      65.66      74.93
-#&gt; 19      67.78      80.02
-#&gt; 20      63.42      75.07
-#&gt; 21      80.02      87.85
-#&gt; 22      87.72      95.93
-#&gt; 23      94.13     103.05
-#&gt; 24      98.00     105.80</div><div class='input'>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='fl'>1</span>:<span class='fl'>9</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt;               datetime pm25_A pm25_B temperature humidity pressure pm1_atm_A
+#&gt; 1  2018-08-13 07:00:00    6.2    6.3          66       62       NA       4.3
+#&gt; 2  2018-08-13 08:00:00    6.0    6.8          65       62       NA       4.3
+#&gt; 3  2018-08-13 09:00:00    6.7    7.1          65       64       NA       4.6
+#&gt; 4  2018-08-13 10:00:00    7.8    8.3          64       65       NA       5.7
+#&gt; 5  2018-08-13 11:00:00    7.4    8.2          64       64       NA       5.4
+#&gt; 6  2018-08-13 12:00:00    7.9    8.3          64       66       NA       5.7
+#&gt; 7  2018-08-13 13:00:00    7.4    8.5          63       68       NA       5.2
+#&gt; 8  2018-08-13 14:00:00    9.3   10.2          64       69       NA       6.6
+#&gt; 9  2018-08-13 15:00:00   10.2   10.8          65       70       NA       6.9
+#&gt; 10 2018-08-13 16:00:00   21.5   23.5          67       70       NA      12.4
+#&gt; 11 2018-08-13 17:00:00   28.3   29.7          68       67       NA      18.1
+#&gt; 12 2018-08-13 18:00:00   25.0   29.3          70       64       NA      15.0
+#&gt; 13 2018-08-13 19:00:00   31.4   34.4          71       61       NA      20.0
+#&gt; 14 2018-08-13 20:00:00   37.4   35.1          71       62       NA      23.4
+#&gt; 15 2018-08-13 21:00:00   37.7   38.4          72       62       NA      23.7
+#&gt; 16 2018-08-13 22:00:00   38.6   42.0          73       59       NA      23.0
+#&gt; 17 2018-08-13 23:00:00   44.9   47.5          75       56       NA      27.4
+#&gt; 18 2018-08-14 00:00:00   45.8   48.0          76       53       NA      27.3
+#&gt; 19 2018-08-14 01:00:00   45.2   48.9          75       55       NA      27.3
+#&gt; 20 2018-08-14 02:00:00   43.6   47.3          74       58       NA      26.6
+#&gt; 21 2018-08-14 03:00:00   49.3   51.9          72       60       NA      29.4
+#&gt; 22 2018-08-14 04:00:00   52.0   55.1          72       60       NA      31.3
+#&gt; 23 2018-08-14 05:00:00   55.8   58.3          71       59       NA      33.0
+#&gt; 24 2018-08-14 06:00:00   56.2   60.4          71       58       NA      33.5
+#&gt;    pm25_atm_A pm10_atm_A
+#&gt; 1         6.2        7.1
+#&gt; 2         6.0        7.1
+#&gt; 3         6.7        7.8
+#&gt; 4         7.8        8.5
+#&gt; 5         7.4        8.1
+#&gt; 6         7.9        8.8
+#&gt; 7         7.4        7.7
+#&gt; 8         9.3       10.2
+#&gt; 9        10.2       11.1
+#&gt; 10       21.5       24.4
+#&gt; 11       28.3       32.7
+#&gt; 12       25.0       27.4
+#&gt; 13       31.4       35.7
+#&gt; 14       37.4       43.5
+#&gt; 15       37.7       45.2
+#&gt; 16       38.6       49.1
+#&gt; 17       44.9       56.4
+#&gt; 18       45.8       57.0
+#&gt; 19       45.2       57.7
+#&gt; 20       43.6       55.6
+#&gt; 21       49.3       63.8
+#&gt; 22       52.0       67.3
+#&gt; 23       55.8       70.4
+#&gt; 24       56.2       72.0</div><div class='input'>
 <span class='co'># Hourly counts</span>
 <span class='no'>pat</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>pat_aggregate</span>(<span class='no'>FUN_count</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='pat_extractDataFrame.html'>pat_extractData</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='fl'>1</span>:<span class='fl'>9</span>)</div><div class='output co'>#&gt;               datetime pm25_A pm25_B pm1_0_atm_A pm1_0_atm_B pm25_atm_A pm25_atm_B
-#&gt; 1  2018-08-13 07:00:00     45     45        45        45         45         45
-#&gt; 2  2018-08-13 08:00:00     45     45        45        45         45         45
-#&gt; 3  2018-08-13 09:00:00     45     45        45        45         45         45
-#&gt; 4  2018-08-13 10:00:00     45     45        45        45         45         45
-#&gt; 5  2018-08-13 11:00:00     45     45        45        45         45         45
-#&gt; 6  2018-08-13 12:00:00     45     45        45        45         45         45
-#&gt; 7  2018-08-13 13:00:00     45     44        45        44         45         44
-#&gt; 8  2018-08-13 14:00:00     45     45        45        45         45         45
-#&gt; 9  2018-08-13 15:00:00     45     45        45        45         45         45
-#&gt; 10 2018-08-13 16:00:00     45     45        45        45         45         45
-#&gt; 11 2018-08-13 17:00:00     45     45        45        45         45         45
-#&gt; 12 2018-08-13 18:00:00     45     45        45        45         45         45
-#&gt; 13 2018-08-13 19:00:00     45     45        45        45         45         45
-#&gt; 14 2018-08-13 20:00:00     44     45        44        45         44         45
-#&gt; 15 2018-08-13 21:00:00     45     45        45        45         45         45
-#&gt; 16 2018-08-13 22:00:00     44     45        44        45         44         45
-#&gt; 17 2018-08-13 23:00:00     45     45        45        45         45         45
-#&gt; 18 2018-08-14 00:00:00     45     45        45        45         45         45
-#&gt; 19 2018-08-14 01:00:00     45     45        45        45         45         45
-#&gt; 20 2018-08-14 02:00:00     45     45        45        45         45         45
-#&gt; 21 2018-08-14 03:00:00     45     45        45        45         45         45
-#&gt; 22 2018-08-14 04:00:00     45     45        45        45         45         45
-#&gt; 23 2018-08-14 05:00:00     45     45        45        45         45         45
-#&gt; 24 2018-08-14 06:00:00     45     45        45        45         45         45
-#&gt;    pm10_0_atm_A pm10_0_atm_B
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='fl'>1</span>:<span class='fl'>9</span>)</div><div class='output co'>#&gt;               datetime pm25_A pm25_B temperature humidity pressure pm1_atm_A
+#&gt; 1  2018-08-13 07:00:00     45     45          45       45        0        45
+#&gt; 2  2018-08-13 08:00:00     45     45          45       45        0        45
+#&gt; 3  2018-08-13 09:00:00     45     45          45       45        0        45
+#&gt; 4  2018-08-13 10:00:00     45     45          45       45        0        45
+#&gt; 5  2018-08-13 11:00:00     45     45          45       45        0        45
+#&gt; 6  2018-08-13 12:00:00     45     45          45       45        0        45
+#&gt; 7  2018-08-13 13:00:00     45     44          45       45        0        44
+#&gt; 8  2018-08-13 14:00:00     45     45          45       45        0        45
+#&gt; 9  2018-08-13 15:00:00     45     45          45       45        0        45
+#&gt; 10 2018-08-13 16:00:00     45     45          45       45        0        45
+#&gt; 11 2018-08-13 17:00:00     45     45          45       45        0        45
+#&gt; 12 2018-08-13 18:00:00     45     45          45       45        0        45
+#&gt; 13 2018-08-13 19:00:00     45     45          45       45        0        45
+#&gt; 14 2018-08-13 20:00:00     44     45          44       44        0        45
+#&gt; 15 2018-08-13 21:00:00     45     45          45       45        0        44
+#&gt; 16 2018-08-13 22:00:00     44     45          44       44        0        45
+#&gt; 17 2018-08-13 23:00:00     45     45          45       45        0        45
+#&gt; 18 2018-08-14 00:00:00     45     45          45       45        0        44
+#&gt; 19 2018-08-14 01:00:00     45     45          45       45        0        45
+#&gt; 20 2018-08-14 02:00:00     45     45          45       45        0        45
+#&gt; 21 2018-08-14 03:00:00     45     45          45       45        0        45
+#&gt; 22 2018-08-14 04:00:00     45     45          45       45        0        45
+#&gt; 23 2018-08-14 05:00:00     45     45          45       45        0        45
+#&gt; 24 2018-08-14 06:00:00     45     45          45       45        0        45
+#&gt;    pm25_atm_A pm10_atm_A
 #&gt; 1          45         45
 #&gt; 2          45         45
 #&gt; 3          45         45
@@ -378,10 +378,10 @@ provided to this function. This means that functions like <code>mean</code> and
 #&gt; 12         45         45
 #&gt; 13         45         45
 #&gt; 14         44         45
-#&gt; 15         45         45
+#&gt; 15         45         44
 #&gt; 16         44         45
 #&gt; 17         45         45
-#&gt; 18         45         45
+#&gt; 18         45         44
 #&gt; 19         45         45
 #&gt; 20         45         45
 #&gt; 21         45         45
@@ -393,20 +393,20 @@ provided to this function. This means that functions like <code>mean</code> and
   <span class='fu'>pat_aggregate</span>(<span class='no'>FUN_max</span>, <span class='kw'>unit</span> <span class='kw'>=</span> <span class='st'>"minutes"</span>, <span class='kw'>count</span> <span class='kw'>=</span> <span class='fl'>10</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='pat_extractDataFrame.html'>pat_extractData</a></span>() <span class='kw'>%&gt;%</span>
   <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='fl'>1</span>:<span class='fl'>9</span>) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/slice.html'>slice</a></span>(<span class='fl'>1</span>:<span class='fl'>6</span>)</div><div class='output co'>#&gt;              datetime pm25_A pm25_B pm1_0_atm_A pm1_0_atm_B pm25_atm_A pm25_atm_B
-#&gt; 1 2018-08-13 07:00:00   6.19   6.27      4.29      5.09       6.19       6.27
-#&gt; 2 2018-08-13 07:10:00   5.85   5.56      4.24      4.12       5.85       5.56
-#&gt; 3 2018-08-13 07:20:00   5.48   5.50      3.67      4.11       5.48       5.50
-#&gt; 4 2018-08-13 07:30:00   4.81   4.79      3.05      3.40       4.81       4.79
-#&gt; 5 2018-08-13 07:40:00   4.71   5.31      3.29      4.00       4.71       5.31
-#&gt; 6 2018-08-13 07:50:00   4.95   5.70      3.76      3.91       4.95       5.70
-#&gt;   pm10_0_atm_A pm10_0_atm_B
-#&gt; 1       7.14       6.76
-#&gt; 2       5.98       6.57
-#&gt; 3       5.95       6.55
-#&gt; 4       5.35       5.57
-#&gt; 5       4.88       6.02
-#&gt; 6       4.95       6.31</div></pre>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/slice.html'>slice</a></span>(<span class='fl'>1</span>:<span class='fl'>6</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt;              datetime pm25_A pm25_B temperature humidity pressure pm1_atm_A
+#&gt; 1 2018-08-13 07:00:00    6.2    6.3          66       61       NA       4.3
+#&gt; 2 2018-08-13 07:10:00    5.8    5.6          65       61       NA       4.2
+#&gt; 3 2018-08-13 07:20:00    5.5    5.5          65       61       NA       3.7
+#&gt; 4 2018-08-13 07:30:00    4.8    4.8          65       62       NA       3.0
+#&gt; 5 2018-08-13 07:40:00    4.7    5.3          64       62       NA       3.3
+#&gt; 6 2018-08-13 07:50:00    5.0    5.7          64       62       NA       3.8
+#&gt;   pm25_atm_A pm10_atm_A
+#&gt; 1        6.2        7.1
+#&gt; 2        5.8        6.0
+#&gt; 3        5.5        6.0
+#&gt; 4        4.8        5.3
+#&gt; 5        4.7        4.9
+#&gt; 6        5.0        5.0</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

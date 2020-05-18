@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
       </span>
     </div>
 
@@ -64,9 +64,6 @@
     </li>
     <li>
       <a href="../../articles/Developer_Style_Guide.html">Developer Style Guide</a>
-    </li>
-    <li>
-      <a href="../../articles/articles/Australia_on_fire.html">Australia on Fire</a>
     </li>
     <li>
       <a href="../../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
@@ -182,7 +179,7 @@
 <p>We can look for correlations in the raw data with <code><a href="../../reference/pat_scatterPlotMatrix.html">pat_scatterPlotMatrix()</a></code>. When a sensor is properly functioning, the only correlations will be a strong positive one between between the A and B channels (<code>pm25_A:pm25_B</code>) and a strong negative one between temperature and humidity.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">  pat_august <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="../../reference/pat_scatterPlotMatrix.html">pat_scatterPlotMatrix</a></span>()</a></code></pre></div>
-<p><img src="pat_introduction_files/figure-html/scatterPlot-1.png" width="672"></p>
+<p><img src="pat_introduction_files/figure-html/scatterplot-1.png" width="672"></p>
 </div>
 <div id="outlier-detection" class="section level2">
 <h2 class="hasAnchor">
