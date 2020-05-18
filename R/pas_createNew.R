@@ -69,7 +69,11 @@ pas_createNew <- function(
   # Check if MazamaSpatialUtils package has been initialized 
   # via initializeMazamaSpatialUtils()
   if ( !spatialIsInitialized() ) {
-    stop('`pas_createNew` requires MazamaSpatialUtils to be initialized. 
+    stop('`pas_createNew` requires MazamaSpatialUtils to be initialized: 
+                                        
+            library(MazamaSpatialUtils)
+            initializeMazamaSpatialUtils()
+                                          
          Please see `?initializeMazamaSpatialUtils() for more details.') 
   }
   # Validate countryCodes
