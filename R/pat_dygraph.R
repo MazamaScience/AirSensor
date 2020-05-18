@@ -112,6 +112,7 @@ pat_dygraph <- function(
   pm25_B <- pat$data$pm25_B
   temperature <- pat$data$temperature
   humidity <- pat$data$humidity
+  pressure <- pat$data$pressure
   label <- pat$meta$label
   
   # Create an xts from all data columns except the first which is 'datetime'
@@ -141,6 +142,14 @@ pat_dygraph <- function(
     names(timeseriesMatrix) <- c(paste0(label, "-Temperature"))
     
     if ( is.null(ylab) )( ylab <- "\u00b0F" )
+    
+  } else if ( tolower(parameter) == "pressure" || tolower(parameter) == "hpa" ) {
+    
+    pressureData <- xts::xts(x = pressure, order.by = datetime, tzone = tzone)
+    timeseriesMatrix <- cbind(pressureData)
+    names(timeseriesMatrix) <- c(paste0(label, "-Pressure"))
+    
+    if ( is.null(ylab) )( ylab <- "hPa" )
     
   } else {
     
