@@ -10,12 +10,12 @@
 #' \code{pa_timeseries} format and presence of and/or addition of core 
 #' data columns:
 #' \itemize{ 
-#' \item{datetime -- A datetime column }
+#' \item{datetime -- A datetime column}
 #' \item{pm25_A -- Channel A PM2.5} 
 #' \item{pm25_B -- Channel B PM2.5} 
 #' \item{temperature -- Tmperature in Faarehniet} 
 #' \item{humidity -- Relative Humidity}
-#' \item{pressure -- Pressure in #[unit]# } 
+#' \item{pressure -- Pressure in hectopascals (hPa)} 
 #' \item{pm1_atm_A -- Channel A PM1.0} 
 #' \item{pm25_atm_A -- Channel A PM2.5} 
 #' \item{pm10_atm_A -- Channel A PM10.0} 
