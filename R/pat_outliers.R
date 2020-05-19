@@ -150,16 +150,22 @@ pat_outliers <- function(
   
   if ( replace ) {
     
+    # IAN: Added inheritign window size and threshold
+    
     A_fixed <- 
       .replaceOutliers(
         A_data, 
-        parameter = "pm25_A"
+        parameter = "pm25_A", 
+        thresholdMin = thresholdMin, 
+        medWin = windowSize
       )[["pm25_A"]]
     
     B_fixed <- 
       .replaceOutliers(
         B_data, 
-        parameter = "pm25_B"
+        parameter = "pm25_B", 
+        thresholdMin = thresholdMin, 
+        medWin = windowSize
       )[["pm25_B"]]
     
   } else { 
