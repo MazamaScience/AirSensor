@@ -3,7 +3,7 @@
 #'
 #' @param pat PurpleAir Timeseries \emph{pat} object.
 #' @param unit Character string specifying temporal units for binning.
-#' #' @param count Number of units per bin.
+#' @param count Number of units per bin.
 #' @param windowSize the size of the rolling window. Must satisfy windowSize <= count.
 #' @param thresholdMin the minimum threshold value to detect outliers via hampel filter
 #'
