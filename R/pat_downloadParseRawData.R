@@ -447,10 +447,15 @@ pat_downloadParseRawData <- function(
         skip = 1,
         col_types = col_types,
         col_names = col_names
-      ) %>%
-      dplyr::mutate(
-        created_at = MazamaCoreUtils::parseDatetime(.data$created_at, timezone = "UTC")
       )
+    
+    # Return immediately if empty
+    if ( nrow(dataTbl) == 0 ) {
+      dataTbl$created_at <- as.POSIXct(dataTbl$created_at)
+      return(dataTbl)
+    } else {
+      dataTbl$created_at = MazamaCoreUtils::parseDatetime(dataTbl$created_at, timezone = "UTC")
+    }
     
   }
     
