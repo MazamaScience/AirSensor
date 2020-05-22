@@ -76,7 +76,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.1</span>
       </span>
     </div>
 
@@ -168,7 +168,8 @@
 
     <pre class="usage"><span class='fu'>pat_aggregateOutlierCounts</span>(
   <span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>period</span> <span class='kw'>=</span> <span class='st'>"1 hour"</span>,
+  <span class='kw'>unit</span> <span class='kw'>=</span> <span class='st'>"minutes"</span>,
+  <span class='kw'>count</span> <span class='kw'>=</span> <span class='fl'>60</span>,
   <span class='kw'>windowSize</span> <span class='kw'>=</span> <span class='fl'>23</span>,
   <span class='kw'>thresholdMin</span> <span class='kw'>=</span> <span class='fl'>8</span>
 )</pre>
@@ -178,30 +179,32 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pat</th>
-      <td><p>a PurpleAir Timeseries <em>pat</em> object.</p></td>
+      <td><p>PurpleAir Timeseries <em>pat</em> object.</p></td>
     </tr>
     <tr>
-      <th>period</th>
-      <td><p>time period to average over. Can be "sec", "min", "hour", 
-"day", "DSTday", "week", "month", "quarter" or "year". A number can also
- precede these options followed by a space (i.e. "2 day" or "37 min").</p></td>
+      <th>unit</th>
+      <td><p>Character string specifying temporal units for binning.</p></td>
+    </tr>
+    <tr>
+      <th>count</th>
+      <td><p>Number of units per bin.</p></td>
     </tr>
     <tr>
       <th>windowSize</th>
-      <td><p>the size of the rolling window</p></td>
+      <td><p>the size of the rolling window. Must satisfy windowSize &lt;= count.</p></td>
     </tr>
     <tr>
       <th>thresholdMin</th>
-      <td><p>the minimum threshold value to detect outliers</p></td>
+      <td><p>the minimum threshold value to detect outliers via hampel filter</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>data.frame</code> A data.frame with additional flag count vectors</p>
+    <p><code>data.frame</code> A data.frame with flag counts per bin.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>pat_aggregate</p></div>
+    <div class='dont-index'><p>pat_aggregateData</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>

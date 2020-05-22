@@ -85,7 +85,7 @@ By default, the current month is loaded." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.1</span>
       </span>
     </div>
 
@@ -239,10 +239,11 @@ time series.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'># \donttest{
+###library(AirSensor)
 
 ### setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
 #### pas <- example_pas
-### may <- pat_loadMonth(label = "SCNP_20", pas = pas, 201905)
+### may <- pat_loadMonth(label = "SCNP_20", pas = pas, datestamp = 201905)
 ### pat_multiPlot(may)
 # }
 </div></pre>

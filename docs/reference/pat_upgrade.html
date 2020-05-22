@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Add Spatial Metadata to PurpleAIr Synoptic Data — pas_addSpatialMetadata • AirSensor</title>
+<title>Upgrade PurpleAir Timeseries — pat_upgrade • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,10 +42,31 @@
 
 
 
-<meta property="og:title" content="Add Spatial Metadata to PurpleAIr Synoptic Data — pas_addSpatialMetadata" />
-<meta property="og:description" content="Adds spatial metadata to a pa_synoptic object via the 
-MazamaSpatialUtils Package using PurpleAir location coordinates to 
-determine country, state, and timezone." />
+<meta property="og:title" content="Upgrade PurpleAir Timeseries — pat_upgrade" />
+<meta property="og:description" content="The pat parameter is checked for the latest 
+pa_timeseries format and presence of and/or addition of core 
+data columns:
+datetime -- A datetime column
+pm25_A -- Channel A PM2.5
+pm25_B -- Channel B PM2.5
+temperature -- Tmperature in Faarehniet
+humidity -- Relative Humidity
+pressure -- Pressure in hectopascals (hPa)
+pm1_atm_A -- Channel A PM1.0
+pm25_atm_A -- Channel A PM2.5
+pm10_atm_A -- Channel A PM10.0
+pm1_atm_B -- Channel B PM1.0
+pm25_atm_B -- Channel B PM2.5
+pm10_atm_B -- Channel B PM10.0
+uptime -- Sensor uptime in seconds
+rssi --  Sensor WiFi signal strength in dBm
+memory -- Memory Usage
+adc0 -- Voltage
+bsec_iaq -- ?
+datetime_A -- Record datetime of Channel B
+datetime_B -- Record datetime of Channel A
+
+" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -159,52 +180,63 @@ determine country, state, and timezone." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Add Spatial Metadata to PurpleAIr Synoptic Data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pas_addSpatialMetadata.R'><code>R/pas_addSpatialMetadata.R</code></a></small>
-    <div class="hidden name"><code>pas_addSpatialMetadata.Rd</code></div>
+    <h1>Upgrade PurpleAir Timeseries</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_upgrade.R'><code>R/pat_upgrade.R</code></a></small>
+    <div class="hidden name"><code>pat_upgrade.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Adds spatial metadata to a pa_synoptic object via the 
-<code>MazamaSpatialUtils</code> Package using PurpleAir location coordinates to 
-determine country, state, and timezone.</p>
+    <p>The <code>pat</code> parameter is checked for the latest 
+<code>pa_timeseries</code> format and presence of and/or addition of core 
+data columns:</p><ul>
+<li><p>datetime -- A datetime column</p></li>
+<li><p>pm25_A -- Channel A PM2.5</p></li>
+<li><p>pm25_B -- Channel B PM2.5</p></li>
+<li><p>temperature -- Tmperature in Faarehniet</p></li>
+<li><p>humidity -- Relative Humidity</p></li>
+<li><p>pressure -- Pressure in hectopascals (hPa)</p></li>
+<li><p>pm1_atm_A -- Channel A PM1.0</p></li>
+<li><p>pm25_atm_A -- Channel A PM2.5</p></li>
+<li><p>pm10_atm_A -- Channel A PM10.0</p></li>
+<li><p>pm1_atm_B -- Channel B PM1.0</p></li>
+<li><p>pm25_atm_B -- Channel B PM2.5</p></li>
+<li><p>pm10_atm_B -- Channel B PM10.0</p></li>
+<li><p>uptime -- Sensor uptime in seconds</p></li>
+<li><p>rssi --  Sensor WiFi signal strength in dBm</p></li>
+<li><p>memory -- Memory Usage</p></li>
+<li><p>adc0 -- Voltage</p></li>
+<li><p>bsec_iaq -- ?</p></li>
+<li><p>datetime_A -- Record datetime of Channel B</p></li>
+<li><p>datetime_B -- Record datetime of Channel A</p></li>
+</ul>
+
     </div>
 
-    <pre class="usage"><span class='fu'>pas_addSpatialMetadata</span>(<span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>countryCodes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>pat_upgrade</span>(<span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pas</th>
-      <td><p>PurpleAir Synoptic <em>pas</em> object.</p></td>
+      <th>pat</th>
+      <td><p>PurpleAir Timeseries <em>pat</em> object.</p></td>
     </tr>
     <tr>
-      <th>countryCodes</th>
-      <td><p>(optional) ISO country codes used to subset the data.</p></td>
+      <th>verbose</th>
+      <td><p>(logical) Display messages.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A pa_synoptic dataframe</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <p>An upgraded <code>pa_timeseries</code> object.</p>
 
-    <div class='dont-index'><p><a href='pas_enhanceData.html'>pas_enhanceData</a></p></div>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='initializeMazamaSpatialUtils.html'>initializeMazamaSpatialUtils</a></span>()
-<span class='fu'>pas_addSpatialMetadata</span>(<span class='no'>example_pas_raw</span>)
-}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
