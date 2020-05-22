@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.1</span>
       </span>
     </div>
 
@@ -123,12 +123,6 @@
     <li>
       <a href="../articles/articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
     </li>
-    <li>
-      <a href="../articles/articles/purpleair_qc.html">Purple Air Quality Control</a>
-    </li>
-    <li>
-      <a href="../articles/articles/purpleair_sensors.html">Purple Air Sensors</a>
-    </li>
   </ul>
 </li>
 <li>
@@ -159,6 +153,56 @@
       <small>Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="airsensor-0-8-1" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-8-1" class="anchor"></a>AirSensor 0.8.1</h1>
+<ul>
+<li>New <code><a href="../reference/pat_upgrade.html">pat_upgrade()</a></code> function to bring version 0.6 ‘pat’ objects up to the version 0.8 data model.</li>
+<li>Improved error messages in <code><a href="../reference/pas_createNew.html">pas_createNew()</a></code>.</li>
+<li>Updated <code><a href="../reference/pat_dygraph.html">pat_dygraph()</a></code> to include support for <code>parameter = "pressure"</code>.</li>
+<li>Refactored <code><a href="../reference/pat_aggregateOutlierCounts.html">pat_aggregateOutlierCounts()</a></code>.</li>
+</ul>
+</div>
+    <div id="airsensor-0-8-0" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-8-0" class="anchor"></a>AirSensor 0.8.0</h1>
+<p>This release completely refactors the way that ‘pat’ data are downloaded from ThingSpeak. Additional data columns are added to the standard <code>pat$data</code> dataframe.</p>
+<ul>
+<li>Refactored <code><a href="../reference/pat_downloadParseRawData.html">pat_downloadParseRawData()</a></code> data access times and also reduced the volume of data downloaded by switching from the <code>.json</code> to the <code>.csv</code> API from ThingSpeak. This function now returns a list of five dataframes.</li>
+<li>Renamed and refactored <code><a href="../reference/pat_createPATimeseriesObject.html">pat_createPATimeseriesObject()</a></code> to work with the new list of dataframes from <code><a href="../reference/pat_downloadParseRawData.html">pat_downloadParseRawData()</a></code>. New fields <code>pressure</code> and <code>bsec_iaq</code> are included in the created <code>pat</code> object.</li>
+<li>Including dependency on <strong>httpcode</strong> and <strong>readr</strong> packages.</li>
+<li>Renamed <code>pat_multiplot()</code> to <code><a href="../reference/pat_multiPlot.html">pat_multiPlot()</a></code> (capital ‘P’).</li>
+<li>Renamed <code>pat_scatterMatrixPlot</code> to <code>pat_scatterPlotMatrx()</code>.</li>
+</ul>
+</div>
+    <div id="airsensor-0-7-6" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-7-6" class="anchor"></a>AirSensor 0.7.6</h1>
+<ul>
+<li><code><a href="../reference/pat_createAirSensor.html">pat_createAirSensor()</a></code></li>
+<li>
+<code><a href="../reference/pas_load.html">pas_load()</a></code> now ignores duplicated warning messages.</li>
+<li>The upper threshold for <code>pm25</code> in <code><a href="../reference/pat_qc.html">pat_qc()</a></code> was increased to 2,000 based on a 2020-05-14 conversation with PurpleAir founder Adrian Dybwad.</li>
+</ul>
+</div>
+    <div id="airsensor-0-7-5" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-7-5" class="anchor"></a>AirSensor 0.7.5</h1>
+<p>This release completely refactors the way that aggregation and QC are performed. The changes should make the code easier to maintain, faster and much more flexible for those developing QC algorithms.</p>
+<ul>
+<li>New <code><a href="../reference/pat_aggregate.html">pat_aggregate()</a></code> and <code><a href="../reference/pat_createAirSensor.html">pat_createAirSensor()</a></code> functions.</li>
+<li>New default QC function <code><a href="../reference/PurpleAirQC_hourly_AB_02.html">PurpleAirQC_hourly_AB_02()</a></code>.</li>
+<li>
+<code><a href="../reference/pat_externalFit.html">pat_externalFit()</a></code> and <code><a href="../reference/pat_monitorComparison.html">pat_monitorComparison()</a></code> updated to use new aggregation/QC functions.</li>
+<li>Previous version of <code><a href="../reference/pat_aggregate.html">pat_aggregate()</a></code> and <code><a href="../reference/pat_createAirSensor.html">pat_createAirSensor()</a></code> are now now available as <code>pat_aggregate_old</code> and <code>pat_createAirSensor_old()</code>.</li>
+<li>
+<code>PurpleAirQC_validationPlot()</code> renamed to <code>PurpleAirQC_validationPlot_old()</code>.</li>
+<li>
+<code><a href="../reference/pat_outliers.html">pat_outliers()</a></code> defaults updated to reflect current default 120 second sample interval.</li>
+<li>
+<code><a href="../reference/pat_multiPlot.html">pat_multiPlot()</a></code> now returns a <code>ggplot2</code> object which can be manipulated.</li>
+</ul>
+</div>
     <div id="airsensor-0-7-4" class="section level1">
 <h1 class="page-header">
 <a href="#airsensor-0-7-4" class="anchor"></a>AirSensor 0.7.4</h1>
@@ -264,7 +308,7 @@
 <h1 class="page-header">
 <a href="#airsensor-0-6-9" class="anchor"></a>AirSensor 0.6.9</h1>
 <ul>
-<li>Archive directory structure was changed so that monthly pat files are found in a monthly directiory underneath <code>pat/YYYY/</code>. The <code><a href="../reference/pat_loadMonth.html">pat_loadMonth()</a></code> function was modified to search in this locaiton.</li>
+<li>Archive directory structure was changed so that monthly pat files are found in a monthly directory underneath <code>pat/YYYY/</code>. The <code><a href="../reference/pat_loadMonth.html">pat_loadMonth()</a></code> function was modified to search in this location.</li>
 <li>
 <code>pat$meta$pm25_A/B</code> values now come from the raw data <em>outdoor</em> value <code>PM2.5 (ATM)</code> rather than the <em>indoor</em> value <code>PM2.5 (CF=1)</code>. See <a href="https://www2.purpleair.com/community/faq#!hc-what-is-the-difference-between-cf-1-and-cf-atm" class="uri">https://www2.purpleair.com/community/faq#!hc-what-is-the-difference-between-cf-1-and-cf-atm</a>
 </li>
@@ -1167,6 +1211,10 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#airsensor-0-8-1">0.8.1</a></li>
+        <li><a href="#airsensor-0-8-0">0.8.0</a></li>
+        <li><a href="#airsensor-0-7-6">0.7.6</a></li>
+        <li><a href="#airsensor-0-7-5">0.7.5</a></li>
         <li><a href="#airsensor-0-7-4">0.7.4</a></li>
         <li><a href="#airsensor-0-7-3">0.7.3</a></li>
         <li><a href="#airsensor-0-7-2">0.7.2</a></li>

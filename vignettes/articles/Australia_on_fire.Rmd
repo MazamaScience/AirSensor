@@ -163,6 +163,7 @@ For the purposes of this exploratory example, we are focusing on Australia but
 maybe we want to filter even more and just look at the sensors within a certain 
 radius of the one we chose in Sydney. 
 
+
 ```{r explore_pas}
 lon <- pat_jannali$meta$longitude
 lat <- pat_jannali$meta$latitude
@@ -196,10 +197,12 @@ using here. This document was created using a _pas_ with data from January
 
 ```{r unhealthy_pas}
 pas_high_pm25 <- 
-  pas_au%>%
+  pas_au %>%
   pas_filter(pm25_1hr > 150)
 
-pas_leaflet(pas_high_pm25)
+if ( nrow(pas_high_pm25) > 1 ) {
+  pas_leaflet(pas_high_pm25)  
+}
 ```
 
 ## Explore the _pat_ data
@@ -229,7 +232,7 @@ if ( file.exists(filePath_chisholm) ) {
   pat_chisholm <- get(load(filePath_chisholm))
 } else {
   pat_chisholm <- pat_createNew(
-    label = "Chisholm ACT Australia",
+    label = "Chisholm",
     pas = pas_au,
     startdate = startdate,
     enddate = enddate
@@ -414,15 +417,6 @@ equivalent to a _ws_monitor_ object used in the **PWFSLSmoke** package.
 
 ````{r airsensor_data}
 airsensor_chisholm <- pat_createAirSensor(pat_chisholm)
-#airsensor_chisholm <- pat_createAirSensor(
-#  pat = pat_chisholm,
-#  period = "1 hour",
-#  parameter = "pm25",
-#  channel = "a",
-#  qc_algorithm = "hourly_AB_01",
-#  min_count = 20,
-#  aggregation_FUN = pat_aggregate
-#)
 ```
 
 ### Advanced plotting

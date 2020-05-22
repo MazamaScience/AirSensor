@@ -13,6 +13,12 @@ RUN apt-get update \
   && rm -rf /tmp/downloaded_packages/ /tmp/*.rds \
   ## Install extra/updated R packages from CRAN
   && install2.r --error -r "https://cran.rstudio.com" \
+    # foreach and iterators must come before doParallel
+    foreach \
+    iterators \
+    doParallel \
+    # now on to regular alphabetic listing
+    cowplot \
     dplyr \
     geodist \
     GGally \
@@ -43,7 +49,7 @@ RUN installGithub.r \
 
 WORKDIR /
 
-COPY AirSensor_0.7.2.tar.gz /
+COPY AirSensor_0.8.1.tar.gz /
 
-RUN R CMD INSTALL AirSensor_0.7.2.tar.gz
+RUN R CMD INSTALL AirSensor_0.8.1.tar.gz
 
