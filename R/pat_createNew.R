@@ -98,16 +98,6 @@ pat_createNew <- function(
     
   }
   
-  # Check if spatial utils has been initialized
-  if ( !spatialIsInitialized() ) {
-    stop('`pas_createNew` requires MazamaSpatialUtils to be initialized: 
-                                        
-            library(MazamaSpatialUtils)
-            initializeMazamaSpatialUtils()
-                                          
-         Please see `?initializeMazamaSpatialUtils() for more details.') 
-  }
-  
   # ----- Determine date sequence ----------------------------------------------
   
   # NOTE:  In 2019, ThingSpeak had a download maximum of 8000 records so we limit

@@ -1,3 +1,7 @@
+# AirSensor 0.8.2
+
+* Removed unnecessary `pat_createNew()` check for spatial data.
+
 # AirSensor 0.8.1
 
 * New `pat_upgrade()` function to bring version 0.6 'pat' objects up to the
