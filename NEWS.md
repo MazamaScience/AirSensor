@@ -1,3 +1,11 @@
+# AirSensor 0.8.1
+
+* New `pat_upgrade()` function to bring version 0.6 'pat' objects up to the
+version 0.8 data model.
+* Improved error messages in `pas_createNew()`.
+* Updated `pat_dygraph()` to include support for `parameter = "pressure"`.
+* Refactored `pat_aggregateOutlierCounts()`.
+
 # AirSensor 0.8.0
 
 This release completely refactors the way that 'pat' data are downloaded from

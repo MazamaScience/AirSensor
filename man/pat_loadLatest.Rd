@@ -40,12 +40,12 @@ Users may request a \emph{pat} object in one of two ways:
 }
 \examples{
 \donttest{
-library(AirSensor)
+###library(AirSensor)
 
-setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
+###setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
 
-pat <- pat_loadLatest("SCNP_20")
-pat_multiPlot(pat)
+###pat <- pat_loadLatest("SCNP_20")
+###pat_multiPlot(pat)
 }
 }
 \seealso{

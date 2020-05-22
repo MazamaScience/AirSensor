@@ -52,6 +52,7 @@ The list of available parameters include:
 \item{\code{pm25} -- A and B channel PM2.5 (ug/m3)}
 \item{\code{temperature} -- temperature (F)}
 \item{\code{humidity} -- humidity (\%)}
+\item{\code{pressure} -- pressure (hPa)}
 }
 }
 \examples{

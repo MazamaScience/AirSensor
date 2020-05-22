@@ -22,8 +22,9 @@
 #' 
 #' \itemize{
 #' \item{\code{pm25} -- A and B channel PM2.5 (ug/m3)}
-##' \item{\code{temperature} -- temperature (F)}
+#' \item{\code{temperature} -- temperature (F)}
 #' \item{\code{humidity} -- humidity (\%)}
+#' \item{\code{pressure} -- pressure (hPa)}
 #' }
 #' 
 #' @return Initiates the interactive dygraph plot in RStudio's 'Viewer' tab.

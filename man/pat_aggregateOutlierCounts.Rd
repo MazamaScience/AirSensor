@@ -6,24 +6,25 @@
 \usage{
 pat_aggregateOutlierCounts(
   pat = NULL,
-  period = "1 hour",
+  unit = "minutes",
+  count = 60,
   windowSize = 23,
   thresholdMin = 8
 )
 }
 \arguments{
-\item{pat}{a PurpleAir Timeseries \emph{pat} object.}
+\item{pat}{PurpleAir Timeseries \emph{pat} object.}
 
-\item{period}{time period to average over. Can be "sec", "min", "hour", 
-"day", "DSTday", "week", "month", "quarter" or "year". A number can also
- precede these options followed by a space (i.e. "2 day" or "37 min").}
+\item{unit}{Character string specifying temporal units for binning.}
 
-\item{windowSize}{the size of the rolling window}
+\item{count}{Number of units per bin.}
 
-\item{thresholdMin}{the minimum threshold value to detect outliers}
+\item{windowSize}{the size of the rolling window. Must satisfy windowSize <= count.}
+
+\item{thresholdMin}{the minimum threshold value to detect outliers via hampel filter}
 }
 \value{
-\code{data.frame} A data.frame with additional flag count vectors
+\code{data.frame} A data.frame with flag counts per bin.
 }
 \description{
 Aggregate data with count of outliers in each bin
@@ -52,5 +53,5 @@ multi_ggplot(
 
 }
 \seealso{
-pat_aggregate
+pat_aggregateData
 }

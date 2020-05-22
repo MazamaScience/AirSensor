@@ -19,23 +19,23 @@ The \code{pat} parameter is checked for the latest
 \code{pa_timeseries} format and presence of and/or addition of core 
 data columns:
 \itemize{ 
-\item{datetime -- A datetime column }
-\item{pm25_A -- } 
-\item{pm25_B -- } 
+\item{datetime -- A datetime column}
+\item{pm25_A -- Channel A PM2.5} 
+\item{pm25_B -- Channel B PM2.5} 
 \item{temperature -- Tmperature in Faarehniet} 
 \item{humidity -- Relative Humidity}
-\item{pressure -- Pressure in [unit] } 
-\item{pm1_atm_A -- } 
-\item{pm25_atm_A -- } 
-\item{pm10_atm_A -- } 
-\item{pm1_atm_B -- }
-\item{pm25_atm_B -- }  
-\item{pm10_atm_B -- } 
+\item{pressure -- Pressure in hectopascals (hPa)} 
+\item{pm1_atm_A -- Channel A PM1.0} 
+\item{pm25_atm_A -- Channel A PM2.5} 
+\item{pm10_atm_A -- Channel A PM10.0} 
+\item{pm1_atm_B -- Channel B PM1.0}
+\item{pm25_atm_B -- Channel B PM2.5}  
+\item{pm10_atm_B -- Channel B PM10.0} 
 \item{uptime -- Sensor uptime in seconds}
-\item{rssi --  Sensor's WiFi signal strength in dBm} 
+\item{rssi --  Sensor WiFi signal strength in dBm} 
 \item{memory -- Memory Usage}
 \item{adc0 -- Voltage} 
-\item{bsec_iaq -- } 
+\item{bsec_iaq -- ?} 
 \item{datetime_A -- Record datetime of Channel B}
 \item{datetime_B -- Record datetime of Channel A} 
 }

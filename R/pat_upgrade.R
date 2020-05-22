@@ -33,7 +33,7 @@
 #'
 #' @return An upgraded \code{pa_timeseries} object.
 #'
-#' @examples
+
 pat_upgrade <- function(
   pat = NULL, 
   verbose = TRUE

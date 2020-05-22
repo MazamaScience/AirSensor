@@ -100,8 +100,12 @@ pat_createNew <- function(
   
   # Check if spatial utils has been initialized
   if ( !spatialIsInitialized() ) {
-    stop('Required MazamaSpatialUtils has not been initialized. 
-    Please see `?initializeMazamaSpatialUtils` for details.')
+    stop('`pas_createNew` requires MazamaSpatialUtils to be initialized: 
+                                        
+            library(MazamaSpatialUtils)
+            initializeMazamaSpatialUtils()
+                                          
+         Please see `?initializeMazamaSpatialUtils() for more details.') 
   }
   
   # ----- Determine date sequence ----------------------------------------------
