@@ -142,10 +142,6 @@ pat_monitorComparison <- function(
   
   # ----- Construct plot -------------------------------------------------------
   
-  ### # Set time axis to sensor local time
-  ### lubridate::tz(pat$data$datetime) <- timezone
-  ### lubridate::tz(tidy_data$datetime) <- timezone
-  
   pm25_plot <-
     pat$data %>%
     ggplot2::ggplot() +

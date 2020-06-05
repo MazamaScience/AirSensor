@@ -48,6 +48,8 @@
 #' \url{http://maps.stamen.com/}
 #'
 #' @examples
+#' library(AirSensor)
+#' 
 #' LA_basin <- 
 #'   example_pas %>% 
 #'   pas_filterArea(-118.5, -117.5, 33.5, 34.5)
