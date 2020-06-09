@@ -1,3 +1,7 @@
+# AirSensor 0.8.3
+
+* Restored unit tests for `pat_filterDate()`.
+
 # AirSensor 0.8.2
 
 * Removed unnecessary `pat_createNew()` check for spatial data.
