@@ -1,3 +1,12 @@
+# AirSensor 0.8.4
+
+* Added another QC function -- `PurpleAirQC_hourly_AB_03()`.
+* Modified `pat_monitorComparison()`
+  - simplified function signature by removing unused color and shape parameters
+  - added `FUN` to specify which QC algorithm to apply
+  - added `distanceCutoff` specifying the radius within which to search for a
+    nearby monitor.
+
 # AirSensor 0.8.3
 
 * Restored unit tests for `pat_filterDate()`.

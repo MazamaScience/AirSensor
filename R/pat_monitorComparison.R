@@ -36,22 +36,20 @@ pat_monitorComparison <- function(
   timezone = NULL
 ) {
   
-  # ----- Config vars ----------------------------------------------------------
+  # ----- Configurable plot options --------------------------------------------
   
-  if ( FALSE ) {
-    a_size = 1
-    a_shape = 15
-    a_color = "gray80"
-    b_size = 1
-    b_shape = 15
-    b_color = "gray80"
-    ab_alpha = 0.5
-    hourly_size = 2
-    hourly_shape = 1
-    hourly_stroke = 0.6
-    pa_color = "purple3"
-    pwfsl_color = "grey10"
-  }
+  a_size = 1
+  a_shape = 15
+  a_color = "gray80"
+  b_size = 1
+  b_shape = 15
+  b_color = "gray80"
+  ab_alpha = 0.5
+  hourly_size = 2
+  hourly_shape = 1
+  hourly_stroke = 0.6
+  pa_color = "purple3"
+  pwfsl_color = "grey10"
   
   # ----- Validate parameters --------------------------------------------------
   
@@ -105,8 +103,8 @@ pat_monitorComparison <- function(
       distanceCutoff, 
       " km"
     )
-  
-  # If monitor within the cutoff distance
+    
+    # If monitor within the cutoff distance
   } else {
     
     # Get the PWFSL monitor data
@@ -166,27 +164,27 @@ pat_monitorComparison <- function(
     ggplot2::ggplot() +
     ggplot2::geom_point(
       ggplot2::aes(x = .data$datetime, y = .data$pm25_A),
-      size = 1,
-      shape = 15,
-      color = 'grey80',
-      alpha = 0.5
+      size = a_size,
+      shape = a_shape,
+      color = a_color,
+      alpha = ab_alpha
     ) +
     ggplot2::geom_point(
       ggplot2::aes(x = .data$datetime, y = .data$pm25_B),
-      size = 1,
-      shape = 15,
-      color = 'grey80',
-      alpha = 0.5
+      size = b_size,
+      shape = b_shape,
+      color = b_color,
+      alpha = ab_alpha
     ) +
     ggplot2::geom_point(
       data = tidy_data,
       ggplot2::aes(x = .data$datetime, y = .data$pm25, color = source),
-      size = 2,
-      shape = 1,
-      stroke = 0.6,
+      size = hourly_size,
+      shape = hourly_shape,
+      stroke = hourly_stroke,
       alpha = 1
     ) +
-    ggplot2::scale_color_manual(values = c('purple3', 'grey10')) +
+    ggplot2::scale_color_manual(values = c(pa_color, pwfsl_color)) +
     ggplot2::ylim(ylim) +
     ggplot2::scale_x_datetime(breaks = '1 day', date_labels = '%b %d') +
     ggplot2::xlab(yearLabel) + 

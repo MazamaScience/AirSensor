@@ -59,12 +59,12 @@
 #' 
 #' plot(df_00, pch = 16, cex = 0.8, col = "red")
 #' points(df_04, pch = 16, cex = 0.8, col = "black")
-#' title("example_pat_failure_A -- PurpleAirQC_hourly_AB_04")
+#' title("example_pat_failure_A -- PurpleAirQC_hourly_AB_03")
 #' 
 #' layout(1)
 #' }
 
-PurpleAirQC_hourly_AB_04 <- function(
+PurpleAirQC_hourly_AB_03 <- function(
    pat = NULL, 
    min_count = 20, 
    returnAllColumns = FALSE
