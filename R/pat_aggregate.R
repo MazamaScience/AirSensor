@@ -76,6 +76,8 @@ pat_aggregate <- function(
   MazamaCoreUtils::stopIfNull(unit)
   MazamaCoreUtils::stopIfNull(count)
   
+  options(warn = -1)
+  
   if ( !pat_isPat(pat) )
     stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")
   
@@ -124,8 +126,9 @@ pat_aggregate <- function(
   dateRange <- range(datetime)
   starttime <- MazamaCoreUtils::parseDatetime(dateRange[1], timezone = "UTC")
   endtime <- MazamaCoreUtils::parseDatetime(dateRange[2], timezone = "UTC")
+  # TODO: Currently hard-coded to only support hours. Update to parse count and unit. 
   # Create dataframe with continuous axis
-  datetimeAxis <- seq(starttime, endtime, by = "1 hour")
+  datetimeAxis <- seq(starttime, endtime, by = "1 hour") 
 
   # ----- Assemble 'data' ------------------------------------------------------
   
@@ -155,6 +158,8 @@ pat_aggregate <- function(
   # ----- Return ---------------------------------------------------------------
   
   pat$data <- data
+  
+  options(warn = 0)
   
   return(pat)
   
