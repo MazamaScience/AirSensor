@@ -10,22 +10,20 @@
 #' of statistical data generated for QC algorithm or just the final \code{pm25}
 #' result.
 #'  
-#' @description Creates a \code{pm25} timeseries by averaging aggregated data
+#' @description Creates a \emph{pm25} timeseries by averaging aggregated data
 #' from the A and B channels and applying the following QC logic:
 #' 
 #' \enumerate{
 #' \item{Create pm25 by averaging the A and B channel aggregation means}
 #' \item{Invalidate data where:  (min_count < 20)}
-#' \item{Invalidate data where:  (A/B hourly difference > 5 AND A/B hourly percent difference > 70%)}
-#' \item{Invalidate data where:  (A/B hourly data recovery < 90%)}
+#' \item{Invalidate data where:  (A/B hourly difference > 5 AND A/B hourly percent difference > 70\%)}
+#' \item{Invalidate data where:  (A/B hourly data recovery < 90\%)}
 #' }
-#' 
-#' MAD = "Median Absolute Deviation"
 #'
 #' @note Purple Air II sensors reporting after the June, 2019 firmware
 #' upgrade report data every 2 minutes or 30 measurements per hour. The default
 #' setting of \code{min_count = 20} is equivalent to a required data recovery
-#' rate of 67\%.
+#' rate of 67\%. 
 #' 
 #' @return Data frame with columns \code{datetime} and \code{pm25}.
 #' 

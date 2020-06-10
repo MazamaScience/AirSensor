@@ -6,54 +6,25 @@
 \usage{
 pat_monitorComparison(
   pat = NULL,
+  FUN = AirSensor::PurpleAirQC_hourly_AB_02,
+  distanceCutoff = 20,
   ylim = NULL,
   replaceOutliers = TRUE,
-  a_size = 1,
-  a_shape = 15,
-  a_color = "gray80",
-  b_size = 1,
-  b_shape = 15,
-  b_color = "gray80",
-  ab_alpha = 0.5,
-  hourly_size = 2,
-  hourly_shape = 1,
-  hourly_stroke = 0.6,
-  pa_color = "purple",
-  pwfsl_color = "black",
   timezone = NULL
 )
 }
 \arguments{
 \item{pat}{PurpleAir Timeseries \emph{pat} object.}
 
+\item{FUN}{Algorithm applied to \emph{pat} object for hourly aggregation and 
+quality control. See \code{pat_createAirSensor()} for more details.}
+
+\item{distanceCutoff}{Numeric distance (km) cutoff for nearest PWFSL monitor.}
+
 \item{ylim}{Vector of (lo,hi) y-axis limits.}
 
 \item{replaceOutliers}{Logical specifying whether replace outliers in the
 \emph{pat} object.}
-
-\item{a_size}{Size of pm25_A points.}
-
-\item{a_shape}{Symbol to use for pm25_A points.}
-
-\item{a_color}{Color of pm25_A points.}
-
-\item{b_size}{Size of pm25_B points.}
-
-\item{b_shape}{Symbol to use for pm25_B points.}
-
-\item{b_color}{Color of pm25_B points.}
-
-\item{ab_alpha}{Opacity of pm25_A, pm25_B points.}
-
-\item{hourly_size}{Size of hourly points.}
-
-\item{hourly_shape}{Symbol to use for hourly points}
-
-\item{hourly_stroke}{Line width of hourly points}
-
-\item{pa_color}{Color of hourly points}
-
-\item{pwfsl_color}{Color of hourly points}
 
 \item{timezone}{Olson timezone used for the time axis. (Defaults to 
 \code{pat} local time.)}
@@ -62,7 +33,7 @@ pat_monitorComparison(
 A ggplot object.
 }
 \description{
-Creates and regurns a ggplot object that plots raw \emph{pat}
+Creates and returns a ggplot object that plots raw \emph{pat}
 data, hourly aggregated \emph{pat} data and hourly data from the nearest
 federal monitor from the PWFSL database.
 }
@@ -72,4 +43,5 @@ library(AirSensor)
 
 pat_monitorComparison(example_pat)
 }
+
 }
