@@ -16,19 +16,6 @@ an \emph{airsensor} object for practicing and code examples.
 This dataset was was generated on 2020-01-03 by running:
 
 \preformatted{
-library(AirSensor)
-
-initializeMazamaSpatialUtils()
-
-example_sensor <- pat_createNew(
-  label = "SCAN_14",
-  pas = example_pas,
-  startdate = "2018-08-14",
-  enddate = "2018-09-07"
-) %>%
-pat_createAirSensor(parameter = 'pm25', FUN = AirSensor::PurpleAirQC_hourly_AB_02)
-
-save(example_sensor, file = "data/example_sensor.rda")
 }
 }
 \keyword{datasets}

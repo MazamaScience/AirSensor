@@ -87,6 +87,17 @@ pat_aggregate <- function(
   # Remove any duplicate data records
   pat <- pat_distinct(pat)
   
+  # Create break units from count and unit params
+  if ( stringr::str_detect(unit, 'minutes') ) {
+    lubridateBreakUnit <- paste(count, unit, sep = ' ')
+    seqBreakUnit <- paste(count, 'mins', sep = ' ')
+  } else if (stringr::str_detect(unit, 'hour') ) {
+    lubridateBreakUnit <- paste(count, unit, sep = ' ')
+    seqBreakUnit <- paste(count, unit, sep = ' ')
+  } else {
+    stop('Only hours and minutes are currently supported units.')
+  }
+  
   # ----- Aggregate Data -------------------------------------------------------
   
   # Only use numeric columns for aggregation matrix
@@ -116,7 +127,7 @@ pat_aggregate <- function(
     lapply(
       X = patData_bins, 
       # Select first datetime index in bin to use as aggregated datetime axis
-      FUN = function(x) zoo::index(x)[1] ## First # [nrow(x)] ## Last
+      FUN = function(x) lubridate::floor_date(zoo::index(x)[1], unit = lubridateBreakUnit) ## First # [nrow(x)] ## Last
     )
   )
   # Convert saved datetime vector back to POSIX* from int
@@ -128,7 +139,7 @@ pat_aggregate <- function(
   endtime <- MazamaCoreUtils::parseDatetime(dateRange[2], timezone = "UTC")
   # TODO: Currently hard-coded to only support hours. Update to parse count and unit. 
   # Create dataframe with continuous axis
-  datetimeAxis <- seq(starttime, endtime, by = "1 hour") 
+  datetimeAxis <- dplyr::tibble('datetime' = seq(starttime, endtime, by = seqBreakUnit))
 
   # ----- Assemble 'data' ------------------------------------------------------
   
@@ -141,19 +152,21 @@ pat_aggregate <- function(
   
   hourlyDataMatrix <-
     do.call(rbind, mapped) %>%
-    round(1)
+    round(1) 
     
   # Add mapped data to pa_timeseries object with aggregate datetime axis
   data <- 
     data.frame(
-      'datetime' = datetimeAxis, 
+      'datetime' = datetime, 
       hourlyDataMatrix, 
-      'datetime_A' = datetimeAxis, 
-      'datetime_B' = datetimeAxis
+      'datetime_A' = datetime, 
+      'datetime_B' = datetime
     ) %>%
     # Cleanup any NaN or Inf that might have snuck in
     dplyr::mutate_all( function(x) replace(x, which(is.nan(x)), NA) ) %>%
     dplyr::mutate_all( function(x) replace(x, which(is.infinite(x)), NA) )
+  
+  data <- dplyr::left_join(datetimeAxis, data, by = 'datetime', copy = TRUE)
   
   # ----- Return ---------------------------------------------------------------
   
