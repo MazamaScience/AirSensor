@@ -107,6 +107,8 @@ pat_aggregate <- function(
     k = count
   )
   
+  # ----- Datetime Axis --------------------------------------------------------
+  
   # Get the first index of aligned time for future use.
   datetime <- as.numeric(
     lapply(
@@ -119,26 +121,32 @@ pat_aggregate <- function(
   class(datetime) <- c("POSIXct", "POSIXt")
   attr(datetime, 'tzone') <- 'UTC'
   
+  dateRange <- range(datetime)
+  starttime <- MazamaCoreUtils::parseDatetime(dateRange[1], timezone = "UTC")
+  endtime <- MazamaCoreUtils::parseDatetime(dateRange[2], timezone = "UTC")
+  # Create dataframe with continuous axis
+  datetimeAxis <- seq(starttime, endtime, by = "1 hour")
+
+  # ----- Assemble 'data' ------------------------------------------------------
+  
   # Map each binned hourly data.frame to the user defined lambda-like 
   # function f applied via apply to each vector in the mapped data.frame
   mapped <- base::Map(
     patData_bins, 
     f = function(patData, f = FUN) { apply(patData, 2, f) } 
   )
-
-  # ----- Assemble 'data' ------------------------------------------------------
   
   hourlyDataMatrix <-
     do.call(rbind, mapped) %>%
     round(1)
     
-  # Add mapped data to pa_timeseries object with aggrgeate datetime axis
+  # Add mapped data to pa_timeseries object with aggregate datetime axis
   data <- 
     data.frame(
-      'datetime' = datetime, 
+      'datetime' = datetimeAxis, 
       hourlyDataMatrix, 
-      'datetime_A' = datetime, 
-      'datetime_B' = datetime
+      'datetime_A' = datetimeAxis, 
+      'datetime_B' = datetimeAxis
     ) %>%
     # Cleanup any NaN or Inf that might have snuck in
     dplyr::mutate_all( function(x) replace(x, which(is.nan(x)), NA) ) %>%
