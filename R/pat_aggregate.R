@@ -76,6 +76,8 @@ pat_aggregate <- function(
   MazamaCoreUtils::stopIfNull(unit)
   MazamaCoreUtils::stopIfNull(count)
   
+  options(warn = -1)
+  
   if ( !pat_isPat(pat) )
     stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")
   
@@ -84,6 +86,17 @@ pat_aggregate <- function(
   
   # Remove any duplicate data records
   pat <- pat_distinct(pat)
+  
+  # Create break units from count and unit params
+  if ( stringr::str_detect(unit, 'minutes') ) {
+    lubridateBreakUnit <- paste(count, unit, sep = ' ')
+    seqBreakUnit <- paste(count, 'mins', sep = ' ')
+  } else if (stringr::str_detect(unit, 'hour') ) {
+    lubridateBreakUnit <- paste(count, unit, sep = ' ')
+    seqBreakUnit <- paste(count, unit, sep = ' ')
+  } else {
+    stop('Only hours and minutes are currently supported units.')
+  }
   
   # ----- Aggregate Data -------------------------------------------------------
   
@@ -107,17 +120,28 @@ pat_aggregate <- function(
     k = count
   )
   
+  # ----- Datetime Axis --------------------------------------------------------
+  
   # Get the first index of aligned time for future use.
   datetime <- as.numeric(
     lapply(
       X = patData_bins, 
       # Select first datetime index in bin to use as aggregated datetime axis
-      FUN = function(x) zoo::index(x)[1] ## First # [nrow(x)] ## Last
+      FUN = function(x) lubridate::floor_date(zoo::index(x)[1], unit = lubridateBreakUnit) ## First # [nrow(x)] ## Last
     )
   )
   # Convert saved datetime vector back to POSIX* from int
   class(datetime) <- c("POSIXct", "POSIXt")
   attr(datetime, 'tzone') <- 'UTC'
+  
+  dateRange <- range(datetime)
+  starttime <- MazamaCoreUtils::parseDatetime(dateRange[1], timezone = "UTC")
+  endtime <- MazamaCoreUtils::parseDatetime(dateRange[2], timezone = "UTC")
+  # TODO: Currently hard-coded to only support hours. Update to parse count and unit. 
+  # Create dataframe with continuous axis
+  datetimeAxis <- dplyr::tibble('datetime' = seq(starttime, endtime, by = seqBreakUnit))
+
+  # ----- Assemble 'data' ------------------------------------------------------
   
   # Map each binned hourly data.frame to the user defined lambda-like 
   # function f applied via apply to each vector in the mapped data.frame
@@ -125,14 +149,12 @@ pat_aggregate <- function(
     patData_bins, 
     f = function(patData, f = FUN) { apply(patData, 2, f) } 
   )
-
-  # ----- Assemble 'data' ------------------------------------------------------
   
   hourlyDataMatrix <-
     do.call(rbind, mapped) %>%
-    round(1)
+    round(1) 
     
-  # Add mapped data to pa_timeseries object with aggrgeate datetime axis
+  # Add mapped data to pa_timeseries object with aggregate datetime axis
   data <- 
     data.frame(
       'datetime' = datetime, 
@@ -144,9 +166,13 @@ pat_aggregate <- function(
     dplyr::mutate_all( function(x) replace(x, which(is.nan(x)), NA) ) %>%
     dplyr::mutate_all( function(x) replace(x, which(is.infinite(x)), NA) )
   
+  data <- dplyr::left_join(datetimeAxis, data, by = 'datetime', copy = TRUE)
+  
   # ----- Return ---------------------------------------------------------------
   
   pat$data <- data
+  
+  options(warn = 0)
   
   return(pat)
   

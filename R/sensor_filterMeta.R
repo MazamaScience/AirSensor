@@ -22,8 +22,9 @@
 #' @seealso \link{sensor_filterDate}
 #' 
 #' @examples \dontrun{
-#' sensor_load("scaqmd", 20190411, 20190521) %>%
-#'   sensor_filterMeta(communityRegion == "Seal Beach") %>%
+#' library(AirSensor)
+#' example_sensor %>%
+#'   sensor_filterMeta(stateCode == "CA") %>%
 #'   PWFSLSmoke::monitor_stamenmap(zoom = 11)
 #' }
 
@@ -33,6 +34,8 @@ sensor_filterMeta <- function(
 ) {
   
   # ----- Validate parameters --------------------------------------------------
+  
+  MazamaCoreUtils::stopIfNull(sensor)
   
   if ( !PWFSLSmoke::monitor_isMonitor(sensor) )
     stop("Parameter 'sensor' is not a valid 'airsensor' object.") 

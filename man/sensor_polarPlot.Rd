@@ -83,16 +83,10 @@ showing concentration by wind speed and direction.
 }
 \examples{
 \donttest{
-sensor <- sensor_load(startdate = 20190601, enddate = 20190630)
-sensor <- sensor_filterMeta(sensor, monitorID == "SCSB_02")
-
-# Load wind data from NOAA
-windData <- worldmet::importNOAA(code = "722975-53141", year = 2019, 
-                                 parallel = FALSE)
-windData <- dplyr::select(windData, c("date", "wd", "ws"))
+library(AirSensor)
 
 # Plot polar plot using
-sensor_polarPlot(sensor, windData, resolution = "normal")
+sensor_polarPlot(example_sensor, resolution = "normal")
 }
 }
 \seealso{

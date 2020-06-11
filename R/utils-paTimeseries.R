@@ -221,6 +221,8 @@ patData_aggregate <- function(
   MazamaCoreUtils::stopIfNull(FUN)
   MazamaCoreUtils::stopIfNull(unit)
   MazamaCoreUtils::stopIfNull(count)
+  
+  options(warn = -1)
 
   # ----- Aggregate Data -------------------------------------------------------
 
@@ -244,26 +246,27 @@ patData_aggregate <- function(
     k = count
   )
 
+  # ----- Datetime Axis --------------------------------------------------------
+  
   # Get the first index of aligned time for future use.
   datetime <- as.numeric(
     lapply(
-      X = df_bins,
+      X = df_bins, 
       # Select first datetime index in bin to use as aggregated datetime axis
       FUN = function(x) zoo::index(x)[1] ## First # [nrow(x)] ## Last
     )
   )
-  # Convert saved datetime vector back to posix* from int
+  # Convert saved datetime vector back to POSIX* from int
   class(datetime) <- c("POSIXct", "POSIXt")
   attr(datetime, 'tzone') <- 'UTC'
-
-  # TODO:  Resolve the following warnings in patData_aggregate()
-  # TODO:
-  # TODO:  There were 50 or more warnings (use warnings() to see the first 50)
-  # TODO:  > warnings()
-  # TODO:  Warning messages:
-  # TODO:  1: In tstat + c(-cint, cint) :
-  # TODO:    Recycling array of length 1 in array-vector arithmetic is deprecated.
-  # TODO:    Use c() or as.vector() instead.
+  
+  dateRange <- range(datetime)
+  starttime <- MazamaCoreUtils::parseDatetime(dateRange[1], timezone = "UTC")
+  endtime <- MazamaCoreUtils::parseDatetime(dateRange[2], timezone = "UTC")
+  # Create dataframe with continuous axis
+  datetimeAxis <- seq(starttime, endtime, by = "1 hour")
+  
+  # ----- Assemble 'data' ------------------------------------------------------
   
   # Map the function FUN to each bin data.frame.
   mapped <- base::Map(
@@ -273,12 +276,14 @@ patData_aggregate <- function(
 
   # Return a data.frame of aggregate data
   aggData <- data.frame(
-    'datetime' = datetime,
+    'datetime' = datetimeAxis,
     do.call(rbind, mapped),
     fix.empty.names = FALSE,
     check.rows = FALSE,
     check.names = FALSE
   )
+  
+  options(warn = 0)
 
   return(aggData)
 }

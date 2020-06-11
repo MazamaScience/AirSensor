@@ -22,6 +22,7 @@
 #' @seealso \link{sensor_filterMeta}
 #' 
 #' @examples
+#' library(AirSensor)
 #' 
 #' twenties <- sensor_filter(example_sensor, 
 #'                           example_sensor$data$`392a12065eb9940d_5192` <  30, 

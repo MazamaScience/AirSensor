@@ -43,7 +43,7 @@
 
 
 <meta property="og:title" content="Comparison of Purple Air and federal monitoring data — pat_monitorComparison" />
-<meta property="og:description" content="Creates and regurns a ggplot object that plots raw pat
+<meta property="og:description" content="Creates and returns a ggplot object that plots raw pat
 data, hourly aggregated pat data and hourly data from the nearest
 federal monitor from the PWFSL database." />
 <meta name="twitter:card" content="summary" />
@@ -78,7 +78,7 @@ federal monitor from the PWFSL database." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.5</span>
       </span>
     </div>
 
@@ -159,27 +159,17 @@ federal monitor from the PWFSL database." />
     </div>
 
     <div class="ref-description">
-    <p>Creates and regurns a ggplot object that plots raw <em>pat</em>
+    <p>Creates and returns a ggplot object that plots raw <em>pat</em>
 data, hourly aggregated <em>pat</em> data and hourly data from the nearest
 federal monitor from the PWFSL database.</p>
     </div>
 
     <pre class="usage"><span class='fu'>pat_monitorComparison</span>(
   <span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='kw pkg'>AirSensor</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/AirSensor/man/PurpleAirQC_hourly_AB_02.html'>PurpleAirQC_hourly_AB_02</a></span>,
+  <span class='kw'>distanceCutoff</span> <span class='kw'>=</span> <span class='fl'>20</span>,
   <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>replaceOutliers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>a_size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>a_shape</span> <span class='kw'>=</span> <span class='fl'>15</span>,
-  <span class='kw'>a_color</span> <span class='kw'>=</span> <span class='st'>"gray80"</span>,
-  <span class='kw'>b_size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>b_shape</span> <span class='kw'>=</span> <span class='fl'>15</span>,
-  <span class='kw'>b_color</span> <span class='kw'>=</span> <span class='st'>"gray80"</span>,
-  <span class='kw'>ab_alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
-  <span class='kw'>hourly_size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>hourly_shape</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>hourly_stroke</span> <span class='kw'>=</span> <span class='fl'>0.6</span>,
-  <span class='kw'>pa_color</span> <span class='kw'>=</span> <span class='st'>"purple"</span>,
-  <span class='kw'>pwfsl_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
   <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
 )</pre>
 
@@ -191,6 +181,15 @@ federal monitor from the PWFSL database.</p>
       <td><p>PurpleAir Timeseries <em>pat</em> object.</p></td>
     </tr>
     <tr>
+      <th>FUN</th>
+      <td><p>Algorithm applied to <em>pat</em> object for hourly aggregation and 
+quality control. See <code><a href='pat_createAirSensor.html'>pat_createAirSensor()</a></code> for more details.</p></td>
+    </tr>
+    <tr>
+      <th>distanceCutoff</th>
+      <td><p>Numeric distance (km) cutoff for nearest PWFSL monitor.</p></td>
+    </tr>
+    <tr>
       <th>ylim</th>
       <td><p>Vector of (lo,hi) y-axis limits.</p></td>
     </tr>
@@ -198,54 +197,6 @@ federal monitor from the PWFSL database.</p>
       <th>replaceOutliers</th>
       <td><p>Logical specifying whether replace outliers in the
 <em>pat</em> object.</p></td>
-    </tr>
-    <tr>
-      <th>a_size</th>
-      <td><p>Size of pm25_A points.</p></td>
-    </tr>
-    <tr>
-      <th>a_shape</th>
-      <td><p>Symbol to use for pm25_A points.</p></td>
-    </tr>
-    <tr>
-      <th>a_color</th>
-      <td><p>Color of pm25_A points.</p></td>
-    </tr>
-    <tr>
-      <th>b_size</th>
-      <td><p>Size of pm25_B points.</p></td>
-    </tr>
-    <tr>
-      <th>b_shape</th>
-      <td><p>Symbol to use for pm25_B points.</p></td>
-    </tr>
-    <tr>
-      <th>b_color</th>
-      <td><p>Color of pm25_B points.</p></td>
-    </tr>
-    <tr>
-      <th>ab_alpha</th>
-      <td><p>Opacity of pm25_A, pm25_B points.</p></td>
-    </tr>
-    <tr>
-      <th>hourly_size</th>
-      <td><p>Size of hourly points.</p></td>
-    </tr>
-    <tr>
-      <th>hourly_shape</th>
-      <td><p>Symbol to use for hourly points</p></td>
-    </tr>
-    <tr>
-      <th>hourly_stroke</th>
-      <td><p>Line width of hourly points</p></td>
-    </tr>
-    <tr>
-      <th>pa_color</th>
-      <td><p>Color of hourly points</p></td>
-    </tr>
-    <tr>
-      <th>pwfsl_color</th>
-      <td><p>Color of hourly points</p></td>
     </tr>
     <tr>
       <th>timezone</th>
@@ -262,7 +213,8 @@ federal monitor from the PWFSL database.</p>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>AirSensor</span>)
 
-<span class='fu'>pat_monitorComparison</span>(<span class='no'>example_pat</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 10248 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 10072 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 2 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'μg / m³' in 'mbcsToSbcs': dot substituted for &lt;ce&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'μg / m³' in 'mbcsToSbcs': dot substituted for &lt;bc&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'μg / m³' in 'mbcsToSbcs': dot substituted for &lt;ce&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'μg / m³' in 'mbcsToSbcs': dot substituted for &lt;bc&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'μg / m³' in 'mbcsToSbcs': dot substituted for &lt;ce&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'μg / m³' in 'mbcsToSbcs': dot substituted for &lt;bc&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'μg / m³' in 'mbcsToSbcs': dot substituted for &lt;ce&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'μg / m³' in 'mbcsToSbcs': dot substituted for &lt;bc&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'μg / m³' in 'mbcsToSbcs': dot substituted for &lt;ce&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'μg / m³' in 'mbcsToSbcs': dot substituted for &lt;bc&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'μg / m³' in 'mbcsToSbcs': dot substituted for &lt;ce&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'μg / m³' in 'mbcsToSbcs': dot substituted for &lt;bc&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'μg / m³' in 'mbcsToSbcs': dot substituted for &lt;ce&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'μg / m³' in 'mbcsToSbcs': dot substituted for &lt;bc&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'μg / m³' in 'mbcsToSbcs': dot substituted for &lt;ce&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'μg / m³' in 'mbcsToSbcs': dot substituted for &lt;bc&gt;</span></div><div class='img'><img src='pat_monitorComparison-1.png' alt='' width='700' height='433' /></div><div class='input'># }
+<span class='fu'>pat_monitorComparison</span>(<span class='no'>example_pat</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Unknown or uninitialised column: 'pm25_b'.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 10248 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 10072 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 2 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'PM2.5 (μg / m³)' in 'mbcsToSbcs': dot substituted for &lt;ce&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'PM2.5 (μg / m³)' in 'mbcsToSbcs': dot substituted for &lt;bc&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'PM2.5 (μg / m³)' in 'mbcsToSbcs': dot substituted for &lt;ce&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'PM2.5 (μg / m³)' in 'mbcsToSbcs': dot substituted for &lt;bc&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'PM2.5 (μg / m³)' in 'mbcsToSbcs': dot substituted for &lt;ce&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'PM2.5 (μg / m³)' in 'mbcsToSbcs': dot substituted for &lt;bc&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'PM2.5 (μg / m³)' in 'mbcsToSbcs': dot substituted for &lt;ce&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'PM2.5 (μg / m³)' in 'mbcsToSbcs': dot substituted for &lt;bc&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'PM2.5 (μg / m³)' in 'mbcsToSbcs': dot substituted for &lt;ce&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'PM2.5 (μg / m³)' in 'mbcsToSbcs': dot substituted for &lt;bc&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'PM2.5 (μg / m³)' in 'mbcsToSbcs': dot substituted for &lt;ce&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'PM2.5 (μg / m³)' in 'mbcsToSbcs': dot substituted for &lt;bc&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'PM2.5 (μg / m³)' in 'mbcsToSbcs': dot substituted for &lt;ce&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'PM2.5 (μg / m³)' in 'mbcsToSbcs': dot substituted for &lt;bc&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'PM2.5 (μg / m³)' in 'mbcsToSbcs': dot substituted for &lt;ce&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on 'PM2.5 (μg / m³)' in 'mbcsToSbcs': dot substituted for &lt;bc&gt;</span></div><div class='img'><img src='pat_monitorComparison-1.png' alt='' width='700' height='433' /></div><div class='input'># }
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
