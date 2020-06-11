@@ -1,3 +1,10 @@
+# AirSensor 0.8.5
+
+* Fixed `pat_aggregate()` to always return a "regular" time axis with no 
+missing timesteps.
+* Restored `example_sensor` dataset.
+* Additional unit tests.
+
 # AirSensor 0.8.4
 
 * Added another QC function -- `PurpleAirQC_hourly_AB_03()`.
