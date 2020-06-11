@@ -251,7 +251,7 @@ patData_aggregate <- function(
   # Get the first index of aligned time for future use.
   datetime <- as.numeric(
     lapply(
-      X = patData_bins, 
+      X = df_bins, 
       # Select first datetime index in bin to use as aggregated datetime axis
       FUN = function(x) zoo::index(x)[1] ## First # [nrow(x)] ## Last
     )
