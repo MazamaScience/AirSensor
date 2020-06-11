@@ -35,7 +35,7 @@
 #'   pat_qc() %>%
 #'   PurpleAirQC_hourly_AB_00()
 #'   
-#' names(df)
+#' names(df_00)
 #'   
 #' plot(df_00, pch = 16, cex = 0.8, col = "red")
 #' }
