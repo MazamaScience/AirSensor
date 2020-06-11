@@ -28,8 +28,9 @@ the \emph{sensor} object.
 }
 \examples{
 \dontrun{
-sensor_load("scaqmd", 20190411, 20190521) \%>\%
-  sensor_filterMeta(communityRegion == "Seal Beach") \%>\%
+library(AirSensor)
+example_sensor \%>\%
+  sensor_filterMeta(stateCode == "CA") \%>\%
   PWFSLSmoke::monitor_stamenmap(zoom = 11)
 }
 }

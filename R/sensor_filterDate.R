@@ -26,9 +26,10 @@
 #' @seealso \link{sensor_filterMeta}
 #' 
 #' @examples
-#'
-#' august <- sensor_filterDate(example_sensor, startdate = 20180801, enddate = 20180831)
-#' 
+#' library(AirSensor)
+#' august <- example_sensor %>% 
+#'   sensor_filterDate(startdate = 20180801, enddate = 20180831)
+#' head(august$data)
 
 sensor_filterDate <- function(
   sensor = NULL, 
@@ -42,6 +43,7 @@ sensor_filterDate <- function(
   # ----- Validate parameters --------------------------------------------------
   
   MazamaCoreUtils::stopIfNull(sensor)
+  MazamaCoreUtils::stopIfNull(timezone)
   
   if ( !PWFSLSmoke::monitor_isMonitor(sensor) )
     stop("Parameter 'sensor' is not a valid 'airsensor' object.") 

@@ -27,6 +27,7 @@ Filtering predicates are applied to the \code{data} dataframe within
 the \emph{sensor} object.
 }
 \examples{
+library(AirSensor)
 
 twenties <- sensor_filter(example_sensor, 
                           example_sensor$data$`392a12065eb9940d_5192` <  30, 
