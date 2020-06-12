@@ -75,13 +75,14 @@ pat_dailySoH <- function(
   }
   
   # ----- Return ---------------------------------------------------------------
-  
+  # Make unique datetime axis
+  datetime <-  unique(do.call(rbind, lapply(SoH_list, dplyr::select, .data$datetime)))
+  # Remove datetime to avoid errors
+  SoH_data <- lapply(SoH_list, dplyr::select, -.data$datetime)
   # Bind the all columns from the list into a tibble with one datetime column
-  SoH_tbl <- dplyr::bind_cols(SoH_list) %>%
-    dplyr::select(unique("datetime"), 
-                  contains("pm25"), 
-                  contains("temperature"), 
-                  contains("humidity"))
+  SoH_tbl <- 
+    dplyr::bind_cols(SoH_data) %>% 
+    dplyr::mutate(datetime, .before = 1)
   
   return(SoH_tbl)
   
