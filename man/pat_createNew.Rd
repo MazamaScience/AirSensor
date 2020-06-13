@@ -67,6 +67,8 @@ Users may request a \emph{pat} object in one of two ways:
 }
 \examples{
 \donttest{
+library(AirSensor)
+
 pat <- pat_createNew(
   label = "Seattle", 
   pas = example_pas, 

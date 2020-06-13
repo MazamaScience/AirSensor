@@ -31,6 +31,10 @@ If you pass in arguments, \emph{e.g.} \code{starttime} and \code{endtime},
 }
 \examples{
 \dontrun{
+library(AirSensor)
+
 pwfsl <- pwfsl_load()
+dim(pwfsl$meta)
+dim(pwfsl$data)
 }
 }

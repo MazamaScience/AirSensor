@@ -20,8 +20,13 @@ pa_synotpic object via pre-defined labeling shcema.
 As of 2020-04-14, only California air basins is supported.
 }
 \examples{
-\dontrun{
-example_pas_raw \%>\% 
+\donttest{
+library(AirSensor)
+
+initializeMazamaSpatialUtils()
+
+pas_enhanced <-
+  example_pas_raw \%>\% 
   pas_addSpatialMetadata() \%>\% 
   pas_addCommunityRegion()
 }

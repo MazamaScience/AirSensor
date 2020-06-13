@@ -25,7 +25,11 @@
 #' 
 #' @examples
 #' \dontrun{
+#' library(AirSensor)
+#' 
 #' pwfsl <- pwfsl_load()
+#' dim(pwfsl$meta)
+#' dim(pwfsl$data)
 #' }
 
 pwfsl_load <- function(...) {

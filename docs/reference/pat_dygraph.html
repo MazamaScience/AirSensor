@@ -85,7 +85,7 @@ pressure -- pressure (hPa)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.6</span>
       </span>
     </div>
 
@@ -246,13 +246,14 @@ representing YYYYMMDD[HH])</p></td>
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>AirSensor</span>)
 
-<span class='no'>North_Bend_Weather</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pat_createNew.html'>pat_createNew</a></span>(
-  <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"North Bend Weather"</span>,
-  <span class='kw'>pas</span> <span class='kw'>=</span> <span class='no'>example_pas</span>,
-  <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fl'>20180801</span>,
-  <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='fl'>20180901</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)
+<span class='no'>North_Bend_Weather</span> <span class='kw'>&lt;-</span>
+  <span class='fu'><a href='pat_createNew.html'>pat_createNew</a></span>(
+    <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"North Bend Weather"</span>,
+    <span class='kw'>pas</span> <span class='kw'>=</span> <span class='no'>example_pas</span>,
+    <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fl'>20180801</span>,
+    <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='fl'>20180901</span>,
+    <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  )
 
 <span class='no'>North_Bend_Weather</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='pat_sample.html'>pat_sample</a></span>(<span class='kw'>sampleSize</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>setSeed</span> <span class='kw'>=</span> <span class='fl'>1</span>) <span class='kw'>%&gt;%</span>

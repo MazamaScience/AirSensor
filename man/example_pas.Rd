@@ -16,7 +16,7 @@ example_pas
 \description{
 The \code{example_pas} dataset provides a quickly loadable
 version of a \emph{pa_synoptic} object for practicing and code examples.
-This dataset was generatedon 2020-01-03 by running:
+This dataset was generated on 2020-01-03 by running:
 
 \preformatted{
 library(AirSensor)

@@ -35,10 +35,12 @@ This function is useful for returning values associated with specific
 \emph{devices}, which are represented by records with \code{isParent = TRUE}.
 }
 \examples{
-pas <- example_pas
-latitude <- pas_getColumn(pas = pas, name = "latitude")
+library(AirSensor)
 
-
+example_pas \%>\%
+  pas_getColumn(name = "latitude") \%>\%
+  head(10)
+  
 }
 \seealso{
 \code{\link{pas_getIDs}},  \code{\link{pas_getLabels}}

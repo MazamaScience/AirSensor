@@ -28,7 +28,7 @@
 #' @return Data frame with columns \code{datetime} and \code{pm25}.
 #' 
 #' @examples 
-#' \dontrun{
+#' \donttest{
 #' library(AirSensor)
 #' 
 #' df_00 <- 

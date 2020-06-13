@@ -39,7 +39,7 @@ setting of \code{min_count = 20} is equivalent to a required data recovery
 rate of 67\%.
 }
 \examples{
-\dontrun{
+\donttest{
 library(AirSensor)
 
 df_00 <- 

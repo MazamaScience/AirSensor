@@ -79,7 +79,7 @@
 #'   parameter = "custom_pm", 
 #'   FUN = humidity_correction,
 #'   z = .005
-#')
+#' )
 #'
 #' PWFSLSmoke::monitor_timeseriesPlot(sensor, shadedNight = TRUE)
 #' }

@@ -27,12 +27,13 @@ This function is useful for returning values associated with specific
 \emph{devices}, which are represented by records with \code{isParent = TRUE}.
 }
 \examples{
+library(AirSensor)
 
 pas <- example_pas
 
-labels <- pas_getLabels(pas = pas)
+pas_getLabels(pas = pas) \%>\% head(10)
 
-labels_back <- pas_getLabels(pas = pas, pattern = "back")
+pas_getLabels(pas = pas, pattern = "back") \%>\% head(10)
 
 
 }

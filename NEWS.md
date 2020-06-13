@@ -1,3 +1,8 @@
+# AirSensor 0.8.6
+
+* Fixed `pat_dailySoH()` bug that showed up with *dplyr* 1.0.0.
+* Improved examples in function documentation.
+
 # AirSensor 0.8.5
 
 * Fixed `pat_aggregate()` to always return a "regular" time axis with no 

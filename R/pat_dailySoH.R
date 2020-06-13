@@ -75,20 +75,42 @@ pat_dailySoH <- function(
   }
   
   # ----- Return ---------------------------------------------------------------
-  # Make unique datetime axis
-  datetime <-  unique(do.call(rbind, lapply(SoH_list, dplyr::select, .data$datetime)))
-  # Remove datetime to avoid errors
-  SoH_data <- lapply(SoH_list, dplyr::select, -.data$datetime)
+  
+  # All SoH dataframes have the same 'datetime' axis.
+  # Choose one so that it can be add back later.
+  datetime <-  SoH_list[[1]]$datetime
+  
+  # Remove 'datetime' to retain only data columns from each dataframe
+  SoHData_list <- lapply(SoH_list, dplyr::select, -.data$datetime)
+  
   # Bind the all columns from the list into a tibble with one datetime column
   SoH_tbl <- 
-    dplyr::bind_cols(SoH_data) %>% 
-    dplyr::mutate(datetime, .before = 1)
+    dplyr::bind_cols(SoHData_list) %>% 
+    dplyr::mutate(
+      datetime = !!datetime, .before = 1
+    )
   
   return(SoH_tbl)
   
 }
 
+# ===== DEBUGGING ==============================================================
 
+if ( FALSE ) {
+  
+  library(AirSensor)
+
+  pat <- example_pat_failure_B
+    
+  SoH_functions = c("PurpleAirSoH_dailyPctDC", 
+                    "PurpleAirSoH_dailyPctReporting", 
+                    "PurpleAirSoH_dailyPctValid", 
+                    "PurpleAirSoH_dailyOtherFit", 
+                    "PurpleAirSoH_dailyABFit",
+                    "PurpleAirSoH_dailyABtTest")
+  
+  
+}
 
 
 

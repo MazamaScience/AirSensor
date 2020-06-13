@@ -23,6 +23,7 @@
 #' 
 #' @examples \dontrun{
 #' library(AirSensor)
+#' 
 #' example_sensor %>%
 #'   sensor_filterMeta(stateCode == "CA") %>%
 #'   PWFSLSmoke::monitor_stamenmap(zoom = 11)

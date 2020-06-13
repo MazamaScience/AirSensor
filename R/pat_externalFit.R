@@ -35,12 +35,10 @@
 #' PWFSL monitor readings.
 #' 
 #' @examples
-#' 
 #' \donttest{
 #' library(AirSensor)
 #' 
-#' pat <- example_pat
-#' pat_externalFit(pat)
+#' pat_externalFit(example_pat)
 #' }
 
 pat_externalFit <- function(

@@ -20,12 +20,13 @@
 #' @seealso \code{\link{pas_getColumn}},  \code{\link{pas_getIDs}},  \code{\link{pas_getDeviceDeploymentIDs}}
 #' 
 #' @examples 
+#' library(AirSensor)
 #' 
 #' pas <- example_pas
 #' 
-#' labels <- pas_getLabels(pas = pas)
+#' pas_getLabels(pas = pas) %>% head(10)
 #' 
-#' labels_back <- pas_getLabels(pas = pas, pattern = "back")
+#' pas_getLabels(pas = pas, pattern = "back") %>% head(10)
 #' 
 #' 
 pas_getLabels <- function(

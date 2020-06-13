@@ -52,6 +52,8 @@
 #' )
 #' 
 #' pat <- pat_createPATimeseriesObject(pat_rawList)
+#' 
+#' pat_multiPlot(pat)
 #' }
 
 pat_createPATimeseriesObject <- function(

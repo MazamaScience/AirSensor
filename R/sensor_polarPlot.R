@@ -55,7 +55,7 @@
 #' \donttest{
 #' library(AirSensor)
 #' 
-#' # Plot polar plot using
+#' # Polar plot
 #' sensor_polarPlot(example_sensor, resolution = "normal")
 #' }
 

@@ -72,11 +72,9 @@ from the closest PWFSL monitor.
 A diagnostic plot is produced if `showPlot = TRUE`.
 }
 \examples{
-
 \donttest{
 library(AirSensor)
 
-pat <- example_pat
-pat_externalFit(pat)
+pat_externalFit(example_pat)
 }
 }

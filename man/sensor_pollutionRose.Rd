@@ -80,6 +80,8 @@ Plots a traditional wind rose plot for wind direction and PM2.5.
 }
 \examples{
 \donttest{
+library(AirSensor)
+
 # Set default location of pre-generated data files
 setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 

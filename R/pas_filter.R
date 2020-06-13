@@ -17,6 +17,8 @@
 #' @seealso \link{pas_filterArea}, \link{pas_filterNear}
 #' 
 #' @examples
+#' library(AirSensor)
+#' 
 #' nrow(example_pas)
 #' 
 #' # California
@@ -32,7 +34,7 @@
 #'  \dontrun{
 #' pas_leaflet(ca)
 #' 
-#' # pas_leaflet(scsb, maptype = "satellite")
+#' pas_leaflet(scsb, maptype = "satellite")
 #' }
 
 pas_filter <- function(

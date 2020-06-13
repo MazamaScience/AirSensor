@@ -41,7 +41,10 @@
 #' 
 #' @examples
 #' \dontrun{
+#' library(AirFire)
+#' 
 #' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+#' 
 #' pas <- pas_load()
 #' pas %>% 
 #'   pas_filter(stateCode == "CA") %>%

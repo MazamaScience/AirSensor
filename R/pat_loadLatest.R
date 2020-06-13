@@ -34,12 +34,13 @@
 #' 
 #' @examples
 #' \donttest{
-#' ###library(AirSensor)
+#' library(AirSensor)
 #' 
-#' ###setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
+#' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 #' 
-#' ###pat <- pat_loadLatest("SCNP_20")
-#' ###pat_multiPlot(pat)
+#' pas <- pas_load(archival = TRUE)
+#' pat <- pat_loadLatest(label = "SCNP_20", pas = pas)
+#' pat_multiPlot(pat)
 #' }
 
 pat_loadLatest <- function(

@@ -34,13 +34,14 @@
 #' \dontrun{
 #' library(AirSensor)
 #' 
-#' North_Bend_Weather <- pat_createNew(
-#'   label = "North Bend Weather", 
-#'   pas = example_pas,
-#'   startdate = 20180801, 
-#'   enddate = 20180901,
-#'   verbose = TRUE
-#' )
+#' North_Bend_Weather <- 
+#'   pat_createNew(
+#'     label = "North Bend Weather", 
+#'     pas = example_pas,
+#'     startdate = 20180801, 
+#'     enddate = 20180901,
+#'     verbose = TRUE
+#'   )
 #' 
 #' North_Bend_Weather %>%
 #'   pat_sample(sampleSize = 1000, setSeed = 1) %>%

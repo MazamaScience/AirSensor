@@ -21,10 +21,13 @@
 #' @seealso \code{\link{pas_getIDs}},  \code{\link{pas_getLabels}}
 #' 
 #' @examples
-#' pas <- example_pas
-#' latitude <- pas_getColumn(pas = pas, name = "latitude")
+#' library(AirSensor)
 #' 
-#' 
+#' example_pas %>%
+#'   pas_getColumn(name = "latitude") %>%
+#'   head(10)
+#'   
+ 
 pas_getColumn <- function(
   pas = NULL,
   name = NULL,

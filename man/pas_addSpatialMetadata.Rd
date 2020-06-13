@@ -20,9 +20,14 @@ Adds spatial metadata to a pa_synoptic object via the
 determine country, state, and timezone.
 }
 \examples{
-\dontrun{
+\donttest{
+library(AirSensor)
+
 initializeMazamaSpatialUtils()
-pas_addSpatialMetadata(example_pas_raw)
+
+pas_enhanced <-
+  example_pas_raw \%>\% 
+  pas_addSpatialMetadata()
 }
 }
 \seealso{

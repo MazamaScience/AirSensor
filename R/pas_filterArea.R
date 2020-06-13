@@ -16,15 +16,19 @@
 #' @seealso \link{pas_filter}, \link{pas_filterNear}
 #' 
 #' @examples
+#' library(AirSensor)
+#' 
 #' pas <- example_pas
 #' range(pas$longitude)
 #' range(pas$latitude)
 #' scsb <- 
 #'   pas %>%
-#'   pas_filterArea(w = -118.10,
-#'                  e = -118.07,
-#'                  s = 33.75,
-#'                  n = 33.78)
+#'   pas_filterArea(
+#'     w = -118.10,
+#'     e = -118.07,
+#'     s = 33.75,
+#'     n = 33.78
+#'   )
 #' range(scsb$longitude)
 #' range(scsb$latitude)
 #' 

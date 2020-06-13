@@ -28,6 +28,10 @@ additional data loading functions.
 }
 \examples{
 \dontrun{
+library(AirSensor)
+
 pwfsl <- pwfsl_loadLatest()
+dim(pwfsl$meta)
+dim(pwfsl$data)
 }
 }

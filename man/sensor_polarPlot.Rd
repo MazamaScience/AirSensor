@@ -85,7 +85,7 @@ showing concentration by wind speed and direction.
 \donttest{
 library(AirSensor)
 
-# Plot polar plot using
+# Polar plot
 sensor_polarPlot(example_sensor, resolution = "normal")
 }
 }

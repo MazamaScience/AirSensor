@@ -52,8 +52,12 @@ argument.
 }
 \examples{
 \dontrun{
+library(AirSensor)
+
 initializeMazamaSpatialUtils()
-pas <- pas_createNew()
+
+pas <- pas_createNew("US")
+
 pas \%>\% 
   pas_filter(stateCode == "CA") \%>\%
   pas_leaflet()

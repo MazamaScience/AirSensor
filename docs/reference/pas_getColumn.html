@@ -80,7 +80,7 @@ devices, which are represented by records with isParent = TRUE." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.6</span>
       </span>
     </div>
 
@@ -209,8 +209,13 @@ The values associated with the <code>name</code> column are then returned.</p>
     <div class='dont-index'><p><code><a href='pas_getIDs.html'>pas_getIDs</a></code>,  <code><a href='pas_getLabels.html'>pas_getLabels</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='no'>example_pas</span>
-<span class='no'>latitude</span> <span class='kw'>&lt;-</span> <span class='fu'>pas_getColumn</span>(<span class='kw'>pas</span> <span class='kw'>=</span> <span class='no'>pas</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"latitude"</span>)</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>AirSensor</span>)
+
+<span class='no'>example_pas</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>pas_getColumn</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"latitude"</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fl'>10</span>)</div><div class='output co'>#&gt;  [1] 37.27556 36.80738 36.73767 37.83898 35.02427 37.88373 38.00632 38.09035
+#&gt;  [9] 38.09790 37.77074</div><div class='input'>  
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

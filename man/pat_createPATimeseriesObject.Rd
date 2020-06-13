@@ -55,6 +55,8 @@ pat_rawList <- pat_downloadParseRawData(
 )
 
 pat <- pat_createPATimeseriesObject(pat_rawList)
+
+pat_multiPlot(pat)
 }
 }
 \references{

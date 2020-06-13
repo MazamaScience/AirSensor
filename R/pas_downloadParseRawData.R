@@ -15,8 +15,12 @@
 #' @seealso \link{pas_enhanceData}
 #' @examples
 #' \dontrun{
+#' library(AirSensor)
+#' 
 #' initializeMazamaSpatialUtils()
+#' 
 #' pas_raw <- pas_downloadParseRawData()
+#' 
 #' View(pas_raw[1:100,])
 #' }
 

@@ -22,6 +22,8 @@ A generalized data filter for \emph{pas} objects to
   evaluates to NA are dropped.
 }
 \examples{
+library(AirSensor)
+
 nrow(example_pas)
 
 # California
@@ -37,7 +39,7 @@ nrow(scsb)
  \dontrun{
 pas_leaflet(ca)
 
-# pas_leaflet(scsb, maptype = "satellite")
+pas_leaflet(scsb, maptype = "satellite")
 }
 }
 \seealso{

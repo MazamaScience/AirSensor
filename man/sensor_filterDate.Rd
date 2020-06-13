@@ -42,6 +42,7 @@ including either of the following recommended formats:
 }
 \examples{
 library(AirSensor)
+
 august <- example_sensor \%>\% 
   sensor_filterDate(startdate = 20180801, enddate = 20180831)
 head(august$data)

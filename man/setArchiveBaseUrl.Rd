@@ -18,8 +18,7 @@ pre-generated data files.
 
 Known base URLs include:
 \itemize{
-\item{http://data.mazamascience.com/PurpleAir/v1}
-\item{https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1}
+\item{http://data.mazamascience.com/PurpleAir/v1} 
 }
 }
 \seealso{

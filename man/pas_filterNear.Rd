@@ -27,13 +27,17 @@ specified target coordinates.
 separated by a space, such as \code{"250 m"}.
 }
 \examples{
+library(AirSensor)
+
 # Near Diamond Bar, CA
 pas <- example_pas
 diamond_bar <-
   pas \%>\%
-  pas_filterNear(longitude = -117.820833,
-                 latitude = 34.001667, 
-                 radius = "20 km")
+  pas_filterNear(
+    longitude = -117.820833,
+    latitude = 34.001667, 
+    radius = "20 km"
+  )
                  
 \donttest{
 pas_leaflet(diamond_bar)

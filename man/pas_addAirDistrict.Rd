@@ -21,8 +21,13 @@ determine the air basin the sensor is in.
 As of 2020-04-14, only California air basins is supported.
 }
 \examples{
-\dontrun{
-example_pas_raw \%>\% 
+\donttest{
+library(AirSensor)
+
+initializeMazamaSpatialUtils()
+
+pas_enhanced <-
+  example_pas_raw \%>\% 
   pas_addSpatialMetadata() \%>\%  
   pas_addAirDistrict() 
 }

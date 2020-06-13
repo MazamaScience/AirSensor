@@ -17,9 +17,14 @@
 #' @seealso \link{pas_enhanceData}
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
+#' library(AirSensor)
+#' 
 #' initializeMazamaSpatialUtils()
-#' pas_addSpatialMetadata(example_pas_raw)
+#' 
+#' pas_enhanced <-
+#'   example_pas_raw %>% 
+#'   pas_addSpatialMetadata()
 #' }
 
 pas_addSpatialMetadata <- function(

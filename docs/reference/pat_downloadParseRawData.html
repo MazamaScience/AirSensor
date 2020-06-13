@@ -91,7 +91,7 @@ See the references." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.6</span>
       </span>
     </div>
 
@@ -248,10 +248,11 @@ specified sensor and time period.</p>
 
 <span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pas_load.html'>pas_load</a></span>()
 
-<span class='no'>pat_rawList</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_downloadParseRawData</span>(
-  <span class='kw'>id</span> <span class='kw'>=</span> <span class='st'>"78df3c292c8448f7_21257"</span>,
-  <span class='kw'>pas</span> <span class='kw'>=</span> <span class='no'>pas</span>
-)
+<span class='no'>pat_rawList</span> <span class='kw'>&lt;-</span>
+  <span class='fu'>pat_downloadParseRawData</span>(
+    <span class='kw'>id</span> <span class='kw'>=</span> <span class='st'>"78df3c292c8448f7_21257"</span>,
+    <span class='kw'>pas</span> <span class='kw'>=</span> <span class='no'>pas</span>
+  )
 
 <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span>(<span class='no'>pat_rawList</span>, <span class='no'>head</span>)
 }</div></pre>

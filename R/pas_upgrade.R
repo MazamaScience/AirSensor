@@ -61,10 +61,14 @@
 #' 
 #' @examples
 #' \donttest{
-#' # Use outdated pa_synoptic database
-#' setArchiveBaseUrl('http://smoke.mazamascience.com/data/PurpleAir')
+#' library(AirSensor)
+#' 
 #' # Initialize the required spatial utilities
 #' initializeMazamaSpatialUtils()
+#' 
+#' # Use outdated pa_synoptic database
+#' setArchiveBaseUrl('http://smoke.mazamascience.com/data/PurpleAir')
+#' 
 #' pas <- 
 #'   pas_load() %>%
 #'   pas_upgrade()

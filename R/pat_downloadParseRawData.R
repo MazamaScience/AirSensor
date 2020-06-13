@@ -45,10 +45,11 @@
 #' 
 #' pas <- pas_load()
 #' 
-#' pat_rawList <- pat_downloadParseRawData(
-#'   id = "78df3c292c8448f7_21257",
-#'   pas = pas
-#' )
+#' pat_rawList <- 
+#'   pat_downloadParseRawData(
+#'     id = "78df3c292c8448f7_21257",
+#'     pas = pas
+#'   )
 #' 
 #' lapply(pat_rawList, head)
 #' }

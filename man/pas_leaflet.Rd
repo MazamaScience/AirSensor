@@ -85,6 +85,8 @@ paeltte, \emph{e.g.} \code{"BuPu"} or \code{"Greens"}.
 }
 \examples{
 \dontrun{
+library(AirSensor)
+
 # California
 ca <-
   pas_load() \%>\%

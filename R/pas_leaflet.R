@@ -62,6 +62,8 @@
 #' 
 #' @examples
 #' \dontrun{
+#' library(AirSensor)
+#' 
 #' # California
 #' ca <-
 #'   pas_load() %>%

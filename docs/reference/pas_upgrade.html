@@ -125,7 +125,7 @@ communityRegion -- defined regional community.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.6</span>
       </span>
     </div>
 
@@ -279,10 +279,14 @@ and presence of core metadata columns:</p><ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
-<span class='co'># Use outdated pa_synoptic database</span>
-<span class='fu'><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl</a></span>(<span class='st'>'http://smoke.mazamascience.com/data/PurpleAir'</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>AirSensor</span>)
+
 <span class='co'># Initialize the required spatial utilities</span>
 <span class='fu'><a href='initializeMazamaSpatialUtils.html'>initializeMazamaSpatialUtils</a></span>()
+
+<span class='co'># Use outdated pa_synoptic database</span>
+<span class='fu'><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl</a></span>(<span class='st'>'http://smoke.mazamascience.com/data/PurpleAir'</span>)
+
 <span class='no'>pas</span> <span class='kw'>&lt;-</span>
   <span class='fu'><a href='pas_load.html'>pas_load</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'>pas_upgrade</span>()</div><div class='output co'>#&gt; <span class='message'>Adding unique IDs...</span></div><div class='output co'>#&gt; <span class='message'>pa_synoptic object format upgraded.</span></div><div class='input'># } 

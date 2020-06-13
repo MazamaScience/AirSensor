@@ -19,6 +19,7 @@
 #' @examples
 #'
 #' library(AirSensor)
+#' 
 #' unhealthy <- pat_filter(example_pat, pm25_A > 55.5, pm25_B > 55.5)
 #' head(unhealthy$data)
 #' 

@@ -56,12 +56,13 @@ Users may request a \emph{pat} object in one of two ways:
 }
 \examples{
 \donttest{
-###library(AirSensor)
+library(AirSensor)
 
-### setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
-#### pas <- example_pas
-### may <- pat_loadMonth(label = "SCNP_20", pas = pas, datestamp = 201905)
-### pat_multiPlot(may)
+setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+
+pas <- pas_load(archival = TRUE)
+may <- pat_loadMonth(label = "SCNP_20", pas = pas, datestamp = 201905)
+pat_multiPlot(may)
 }
 }
 \seealso{

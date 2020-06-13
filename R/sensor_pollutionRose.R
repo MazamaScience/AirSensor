@@ -48,6 +48,8 @@
 #'
 #' @examples
 #' \donttest{
+#' library(AirSensor)
+#' 
 #' # Set default location of pre-generated data files
 #' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 #' 
