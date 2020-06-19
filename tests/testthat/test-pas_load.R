@@ -27,3 +27,11 @@ test_that("bad datestamps are rejected", {
   expect_error(pas_load(datestamp = "20190101"))
   expect_error(pas_load(datestamp = futureStamp))
 })
+
+test_that("advice is returned when archiveBaseDir is in use", {
+  setArchiveBaseDir(tempdir())
+  expect_error({pas <- pas_load()},
+               ".*removeArchiveBaseDir().*")
+  # Cleanup
+  removeArchiveBaseDir()
+})

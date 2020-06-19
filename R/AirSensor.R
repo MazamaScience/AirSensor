@@ -85,7 +85,13 @@ getArchiveBaseDir <- function() {
 #' @seealso getArchiveBaseDir
 setArchiveBaseDir <- function(archiveBaseDir) {
   old <- airsensorEnv$archiveBaseDir
-  airsensorEnv$archiveBaseDir <- stringr::str_remove(archiveBaseDir, "/$")
+  if ( is.null(archiveBaseDir) ) {
+    airsensorEnv$archiveBaseDir <- archiveBaseDir
+  } else if ( is.character(archiveBaseDir) ) {
+    airsensorEnv$archiveBaseDir <- stringr::str_remove(archiveBaseDir, "/$")
+  } else {
+    stop("Parameter 'archiveBaseDir' must be either NULL or a directory path.")
+  }
   return(invisible(old))
 }
 
@@ -182,7 +188,13 @@ getArchiveBaseUrl <- function() {
 #' @seealso getArchiveBaseUrl
 setArchiveBaseUrl <- function(archiveBaseUrl) {
   old <- airsensorEnv$archiveBaseUrl
-  airsensorEnv$archiveBaseUrl <- stringr::str_remove(archiveBaseUrl, "/$")
+  if ( is.null(archiveBaseUrl) ) {
+    airsensorEnv$archiveBaseUrl <- archiveBaseUrl
+  } else if ( is.character(archiveBaseUrl) ) {
+    airsensorEnv$archiveBaseUrl <- stringr::str_remove(archiveBaseUrl, "/$")
+  } else {
+    stop("Parameter 'archiveBaseUrl' must be either NULL or a directory path.")
+  }
   return(invisible(old))
 }
 

@@ -1,3 +1,13 @@
+# AirSensor 0.9.0
+
+Pre-release candidate.
+
+* Removed old, unused files from the code base.
+* `setArchiveBaseDir(NULL)` now works identically to `removeArchiveBasesDir()`.
+Ditto for `setArchiveBaseUrl(NULL)`.
+* `pas_load()` returns helpful message when the archive `BASE_DIR` is set and
+no requested `pas` data is found:  `removeArchiveBaseDir()`.
+
 # AirSensor 0.8.6
 
 * Fixed `pat_dailySoH()` bug that showed up with *dplyr* 1.0.0.
