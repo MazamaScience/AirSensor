@@ -307,6 +307,12 @@ pat_multiPlot <- function(
   
 }
 
+# ===== ALIASES ===============================================================
+
+#' @rdname pat_multiPlot
+#' @export
+pat_multiplot <- pat_multiPlot
+
 # ===== DEBUGGING ==============================================================
 
 if ( FALSE ) {

@@ -39,6 +39,7 @@
 #' one. This is useful for showing how the concentrations (or other parameters) 
 #' contribute to each wind sector when the proprtion of time the wind is from 
 #' that direction is low. A line showing the probability that the wind.
+#' @param verbose Logical controlling the generation of progress and error messages.
 #' 
 #' @description Plots a traditional wind rose plot for wind direction and PM2.5.
 #'
@@ -78,7 +79,8 @@ sensor_pollutionRose <- function(
   breaks = 6, 
   paddle = FALSE, 
   seg = 0.9, 
-  normalize = FALSE
+  normalize = FALSE,
+  verbose = TRUE
 ) {
   
   # ----- Validate parameters --------------------------------------------------
@@ -111,8 +113,10 @@ sensor_pollutionRose <- function(
                                      plot = FALSE)[1,]
     siteCode <- paste0(closestSite$USAF, "-", closestSite$WBAN)
     
-    siteData <- worldmet::importNOAA(code = siteCode, year = year, 
-                                     parallel = FALSE)
+    siteData <- worldmet::importNOAA(code = siteCode, 
+                                     year = year, 
+                                     parallel = FALSE,
+                                     quiet = !verbose )
     windData <- dplyr::select(siteData, c("date", "wd", "ws"))
   }
   

@@ -7,7 +7,9 @@ Pre-release candidate.
 Ditto for `setArchiveBaseUrl(NULL)`.
 * `pas_load()` returns helpful message when the archive `BASE_DIR` is set and
 no requested `pas` data is found:  `removeArchiveBaseDir()`.
-* Added "Temporal Aggregation" vignette.
+* Added "Temporal Aggregation" article.
+* Added "Custom QC Algorithms" article.
+* Added `verbose` parameter to `sensor_polarPlot()` and `sensor_pollutionRose()`.
 
 # AirSensor 0.8.6
 

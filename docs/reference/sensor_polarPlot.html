@@ -77,7 +77,7 @@ showing concentration by wind speed and direction." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
       </span>
     </div>
 
@@ -109,10 +109,16 @@ showing concentration by wind speed and direction." />
       <a href="../articles/articles/Australia_on_fire.html">Australia on Fire</a>
     </li>
     <li>
+      <a href="../articles/articles/Custom_QC_Algorithms.html">Custom QC Algorithms</a>
+    </li>
+    <li>
       <a href="../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
     </li>
     <li>
       <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
+    </li>
+    <li>
+      <a href="../articles/articles/Temporal_Aggregation.html">Temporally Aggregated Time Series</a>
     </li>
     <li>
       <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
@@ -174,7 +180,8 @@ showing concentration by wind speed and direction.</p>
   <span class='kw'>key</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>keyPosition</span> <span class='kw'>=</span> <span class='st'>"right"</span>,
   <span class='kw'>ws_spread</span> <span class='kw'>=</span> <span class='fl'>15</span>,
-  <span class='kw'>wd_spread</span> <span class='kw'>=</span> <span class='fl'>4</span>
+  <span class='kw'>wd_spread</span> <span class='kw'>=</span> <span class='fl'>4</span>,
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -258,6 +265,10 @@ speed when correlation or regression techniques are used. Default is 15.</p></td
       <td><p>An integer used for the weighting kernel spread for wind 
 direction when correlation or regression techniques are used. Default is 4.</p></td>
     </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>Logical controlling the generation of progress and error messages.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -271,8 +282,14 @@ direction when correlation or regression techniques are used. Default is 4.</p><
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>AirSensor</span>)
 
+<span class='fu'><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl</a></span>(<span class='st'>"http://data.mazamascience.com/PurpleAir/v1"</span>)
+
+<span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pas_load.html'>pas_load</a></span>(<span class='kw'>archival</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>pat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pat_loadMonth.html'>pat_loadMonth</a></span>(<span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"SCBB_02"</span>, <span class='kw'>pas</span> <span class='kw'>=</span> <span class='no'>pas</span>, <span class='kw'>datestamp</span> <span class='kw'>=</span> <span class='fl'>202005</span>)
+<span class='no'>sensor</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pat_createAirSensor.html'>pat_createAirSensor</a></span>(<span class='no'>pat</span>)
+
 <span class='co'># Polar plot</span>
-<span class='fu'>sensor_polarPlot</span>(<span class='no'>example_sensor</span>, <span class='kw'>resolution</span> <span class='kw'>=</span> <span class='st'>"normal"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Grouping rowwise data frame strips rowwise nature</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to min; returning Inf</span></div><div class='output co'>#&gt; <span class='error'>Error in matrix(if (is.null(value)) logical() else value, nrow = nr, dimnames = list(rn,     cn)): length of 'dimnames' [2] not equal to array extent</span></div><div class='input'># }
+<span class='fu'>sensor_polarPlot</span>(<span class='no'>sensor</span>, <span class='kw'>resolution</span> <span class='kw'>=</span> <span class='st'>"normal"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Grouping rowwise data frame strips rowwise nature</span></div><div class='img'><img src='sensor_polarPlot-1.png' alt='' width='700' height='433' /></div><div class='input'># }
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

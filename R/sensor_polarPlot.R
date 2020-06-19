@@ -42,6 +42,7 @@
 #' speed when correlation or regression techniques are used. Default is 15.
 #' @param wd_spread An integer used for the weighting kernel spread for wind 
 #' direction when correlation or regression techniques are used. Default is 4.
+#' @param verbose Logical controlling the generation of progress and error messages.
 #' 
 #' @description Function for plotting PM2.5 concentration in polar coordinates 
 #' showing concentration by wind speed and direction. 
@@ -55,8 +56,14 @@
 #' \donttest{
 #' library(AirSensor)
 #' 
+#' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+#'
+#' pas <- pas_load(archival = TRUE)
+#' pat <- pat_loadMonth(label = "SCBB_02", pas = pas, datestamp = 202005)
+#' sensor <- pat_createAirSensor(pat)
+#' 
 #' # Polar plot
-#' sensor_polarPlot(example_sensor, resolution = "normal")
+#' sensor_polarPlot(sensor, resolution = "normal")
 #' }
 
 sensor_polarPlot <- function(
@@ -71,7 +78,8 @@ sensor_polarPlot <- function(
   key = TRUE, 
   keyPosition = "right", 
   ws_spread = 15, 
-  wd_spread = 4
+  wd_spread = 4,
+  verbose = TRUE
 ) {
   
   # ----- Validate parameters --------------------------------------------------
@@ -94,6 +102,7 @@ sensor_polarPlot <- function(
   
   # Find wind data readings from the closest NOAA site if none are provided
   if ( is.null(windData) ) {
+    
     # Using only the first entry's datetime for the year will be problematic 
     # if the timeframe spans more than one year...
     year <- lubridate::year(sensor$data$datetime[1])
@@ -105,18 +114,26 @@ sensor_polarPlot <- function(
     
     siteCodes <- paste0(closeSites$USAF, "-", closeSites$WBAN)
     
-    siteData <- worldmet::importNOAA( code = siteCodes[1], 
-                                      year = year, 
-                                      parallel = FALSE )
+    # Suppress: "Grouping rowwise data frame strips rowwise nature"
+    suppressWarnings({
+      siteData <- worldmet::importNOAA( code = siteCodes[1], 
+                                        year = year, 
+                                        parallel = FALSE,
+                                        quiet = !verbose )
+    })
+    
     # Check if the first is NA to avoid errors
     if ( all(is.na(siteData$ws) | is.na(siteData$wd)) ) {
       
       siteData <- worldmet::importNOAA( code = siteCodes[2], 
                                         year = year, 
-                                        parallel = FALSE )
+                                        parallel = FALSE,
+                                        quiet = !verbose)
       
     }
+    
     windData <- dplyr::select(siteData, c("date", "wd", "ws"))
+    
   }
   
   # ----- Assemble data --------------------------------------------------------
@@ -162,22 +179,31 @@ sensor_polarPlot <- function(
     
   })
   
-  # === Debug ===
-  if (FALSE) {
-    sensor = pas_load() %>% 
-      pat_createNew(label='POLK GULCH', startdate = 20181001, enddate = 20181201) %>%
-      pat_createAirSensor() 
-    windData = NULL 
-    statistic = "mean" 
-    resolution = "fine"
-    colors = "default" 
-    alpha = 1 
-    angleScale = 315
-    normalize = FALSE
-    key = TRUE 
-    keyPosition = "right" 
-    ws_spread = 15 
-    wd_spread = 4
-  }
+}
+
+# ===== DEBUGGING ==============================================================
+
+if ( FALSE ) {
+
+  library(AirSensor)
+  setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+  
+  pas <- pas_load(archival = TRUE)
+  pat <- pat_loadMonth(label = "SCBB_02", pas = pas, datestamp = 202005)
+  sensor <- pat_createAirSensor(pat)
+  
+  windData = NULL 
+  statistic = "mean" 
+  resolution = "fine"
+  colors = "default" 
+  alpha = 1 
+  angleScale = 315
+  normalize = FALSE
+  key = TRUE 
+  keyPosition = "right" 
+  ws_spread = 15 
+  wd_spread = 4
+  verbose = TRUE
   
 }
+

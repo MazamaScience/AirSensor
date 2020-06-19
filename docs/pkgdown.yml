@@ -5,8 +5,10 @@ articles:
   AirSensor_Function_Overview: AirSensor_Function_Overview.html
   Developer_Style_Guide: Developer_Style_Guide.html
   Australia_on_fire: articles/Australia_on_fire.html
+  Custom_QC_Algorithms: articles/Custom_QC_Algorithms.html
   DataFlowChart: articles/DataFlowChart.html
   SoH_functions: articles/SoH_functions.html
+  Temporal_Aggregation: articles/Temporal_Aggregation.html
   outlier_detection: articles/outlier_detection.html
   pas_introduction: articles/pas_introduction.html
   pat_introduction: articles/pat_introduction.html

@@ -85,7 +85,7 @@ MAD = &quot;Median Absolute Deviation&quot;" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
       </span>
     </div>
 
@@ -117,10 +117,16 @@ MAD = &quot;Median Absolute Deviation&quot;" />
       <a href="../articles/articles/Australia_on_fire.html">Australia on Fire</a>
     </li>
     <li>
+      <a href="../articles/articles/Custom_QC_Algorithms.html">Custom QC Algorithms</a>
+    </li>
+    <li>
       <a href="../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
     </li>
     <li>
       <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
+    </li>
+    <li>
+      <a href="../articles/articles/Temporal_Aggregation.html">Temporally Aggregated Time Series</a>
     </li>
     <li>
       <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
@@ -227,7 +233,8 @@ rate of 67%.</p>
 <span class='no'>df_02</span> <span class='kw'>&lt;-</span>
   <span class='no'>example_pat_failure_A</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='pat_qc.html'>pat_qc</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>PurpleAirQC_hourly_AB_02</span>()</div><div class='output co'>#&gt; <span class='warning'>Warning: Unknown or uninitialised column: 'pm25_b'.</span></div><div class='input'>
+  <span class='fu'>PurpleAirQC_hourly_AB_02</span>()
+
 <span class='fu'><a href='https://rdrr.io/r/graphics/layout.html'>layout</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>2</span>)))
 
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>df_00</span>, <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>16</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>)

@@ -79,7 +79,7 @@ metadata for compatibility with the *PWFSLSmoke* package." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
       </span>
     </div>
 
@@ -111,10 +111,16 @@ metadata for compatibility with the *PWFSLSmoke* package." />
       <a href="../articles/articles/Australia_on_fire.html">Australia on Fire</a>
     </li>
     <li>
+      <a href="../articles/articles/Custom_QC_Algorithms.html">Custom QC Algorithms</a>
+    </li>
+    <li>
       <a href="../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
     </li>
     <li>
       <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
+    </li>
+    <li>
+      <a href="../articles/articles/Temporal_Aggregation.html">Temporally Aggregated Time Series</a>
     </li>
     <li>
       <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
@@ -223,7 +229,8 @@ evaluation. See examples.</p>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>AirSensor</span>)
 
 <span class='co'># Default FUN = PurpleAirQC_hourly_AB_00</span>
-<span class='no'>sensor</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_createAirSensor</span>(<span class='no'>example_pat</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Unknown or uninitialised column: 'pm25_b'.</span></div><div class='input'>
+<span class='no'>sensor</span> <span class='kw'>&lt;-</span> <span class='fu'>pat_createAirSensor</span>(<span class='no'>example_pat</span>)
+
 <span class='kw pkg'>PWFSLSmoke</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/PWFSLSmoke/man/monitor_timeseriesPlot.html'>monitor_timeseriesPlot</a></span>(<span class='no'>sensor</span>, <span class='kw'>shadedNight</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='pat_createAirSensor-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Try out other package QC functions</span>
 <span class='no'>example_pat</span> <span class='kw'>%&gt;%</span>
@@ -231,7 +238,7 @@ evaluation. See examples.</p>
   <span class='kw pkg'>PWFSLSmoke</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/PWFSLSmoke/man/monitor_timeseriesPlot.html'>monitor_timeseriesPlot</a></span>(<span class='kw'>shadedNight</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='pat_createAirSensor-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='no'>example_pat</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>pat_createAirSensor</span>(<span class='kw'>FUN</span> <span class='kw'>=</span> <span class='no'>PurpleAirQC_hourly_AB_02</span>) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>PWFSLSmoke</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/PWFSLSmoke/man/monitor_timeseriesPlot.html'>monitor_timeseriesPlot</a></span>(<span class='kw'>shadedNight</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Unknown or uninitialised column: 'pm25_b'.</span></div><div class='img'><img src='pat_createAirSensor-3.png' alt='' width='700' height='433' /></div><div class='input'>
+  <span class='kw pkg'>PWFSLSmoke</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/PWFSLSmoke/man/monitor_timeseriesPlot.html'>monitor_timeseriesPlot</a></span>(<span class='kw'>shadedNight</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='pat_createAirSensor-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Custom FUN</span>
 <span class='no'>humidity_correction</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>pat</span>, <span class='no'>z</span> <span class='kw'>=</span> <span class='fl'>0</span>) {
 

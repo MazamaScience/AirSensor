@@ -17,7 +17,8 @@ sensor_pollutionRose(
   breaks = 6,
   paddle = FALSE,
   seg = 0.9,
-  normalize = FALSE
+  normalize = FALSE,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -71,6 +72,8 @@ produce segments 0.5 * angle.}
 one. This is useful for showing how the concentrations (or other parameters) 
 contribute to each wind sector when the proprtion of time the wind is from 
 that direction is low. A line showing the probability that the wind.}
+
+\item{verbose}{Logical controlling the generation of progress and error messages.}
 }
 \value{
 a plot or a dataframe

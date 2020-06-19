@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
       </span>
     </div>
 
@@ -106,10 +106,16 @@
       <a href="../articles/articles/Australia_on_fire.html">Australia on Fire</a>
     </li>
     <li>
+      <a href="../articles/articles/Custom_QC_Algorithms.html">Custom QC Algorithms</a>
+    </li>
+    <li>
       <a href="../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
     </li>
     <li>
       <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
+    </li>
+    <li>
+      <a href="../articles/articles/Temporal_Aggregation.html">Temporally Aggregated Time Series</a>
     </li>
     <li>
       <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
@@ -153,6 +159,21 @@
       <small>Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="airsensor-0-9-0" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-9-0" class="anchor"></a>AirSensor 0.9.0</h1>
+<p>Pre-release candidate.</p>
+<ul>
+<li>Removed old, unused files from the code base.</li>
+<li>
+<code><a href="../reference/setArchiveBaseDir.html">setArchiveBaseDir(NULL)</a></code> now works identically to <code>removeArchiveBasesDir()</code>. Ditto for <code><a href="../reference/setArchiveBaseUrl.html">setArchiveBaseUrl(NULL)</a></code>.</li>
+<li>
+<code><a href="../reference/pas_load.html">pas_load()</a></code> returns helpful message when the archive <code>BASE_DIR</code> is set and no requested <code>pas</code> data is found: <code><a href="../reference/removeArchiveBaseDir.html">removeArchiveBaseDir()</a></code>.</li>
+<li>Added “Temporal Aggregation” article.</li>
+<li>Added “Custom QC Algorithms” article.</li>
+<li>Added <code>verbose</code> parameter to <code><a href="../reference/sensor_polarPlot.html">sensor_polarPlot()</a></code> and <code><a href="../reference/sensor_pollutionRose.html">sensor_pollutionRose()</a></code>.</li>
+</ul>
+</div>
     <div id="airsensor-0-8-6" class="section level1">
 <h1 class="page-header">
 <a href="#airsensor-0-8-6" class="anchor"></a>AirSensor 0.8.6</h1>
@@ -216,7 +237,7 @@
 <li>Refactored <code><a href="../reference/pat_downloadParseRawData.html">pat_downloadParseRawData()</a></code> data access times and also reduced the volume of data downloaded by switching from the <code>.json</code> to the <code>.csv</code> API from ThingSpeak. This function now returns a list of five dataframes.</li>
 <li>Renamed and refactored <code><a href="../reference/pat_createPATimeseriesObject.html">pat_createPATimeseriesObject()</a></code> to work with the new list of dataframes from <code><a href="../reference/pat_downloadParseRawData.html">pat_downloadParseRawData()</a></code>. New fields <code>pressure</code> and <code>bsec_iaq</code> are included in the created <code>pat</code> object.</li>
 <li>Including dependency on <strong>httpcode</strong> and <strong>readr</strong> packages.</li>
-<li>Renamed <code>pat_multiplot()</code> to <code><a href="../reference/pat_multiPlot.html">pat_multiPlot()</a></code> (capital ‘P’).</li>
+<li>Renamed <code><a href="../reference/pat_multiPlot.html">pat_multiplot()</a></code> to <code><a href="../reference/pat_multiPlot.html">pat_multiPlot()</a></code> (capital ‘P’).</li>
 <li>Renamed <code>pat_scatterMatrixPlot</code> to <code>pat_scatterPlotMatrx()</code>.</li>
 </ul>
 </div>
@@ -811,7 +832,7 @@
 <ul>
 <li>Added <code><a href="../reference/sensor_filter.html">sensor_filter()</a></code>, <code><a href="../reference/sensor_filterDate.html">sensor_filterDate()</a></code> and <code><a href="../reference/sensor_filterMeta.html">sensor_filterMeta()</a></code>.</li>
 <li>Added <code>local_examples/downloadSpeeds.Rmd</code> to benchmark data download times from ThinkSpeak.</li>
-<li>New <code>Purple Air Failure Modes</code> vignette.</li>
+<li>New “Purple Air Failure Modes” vignette.</li>
 </ul>
 </div>
     <div id="airsensor-0-3-8" class="section level1">
@@ -1256,6 +1277,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#airsensor-0-9-0">0.9.0</a></li>
         <li><a href="#airsensor-0-8-6">0.8.6</a></li>
         <li><a href="#airsensor-0-8-5">0.8.5</a></li>
         <li><a href="#airsensor-0-8-4">0.8.4</a></li>
