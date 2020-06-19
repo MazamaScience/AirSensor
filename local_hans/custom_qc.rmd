@@ -1,20 +1,33 @@
 ---
 title: "Writing Custom Quality Control Algorithms"
 author: "Mazama Science"
-date: "5/1/2020"
+date: "2020-05-01"
 output: html_document
 ---
 
-Data quality-control is the process of flagging or removing, either manually or algorithmically, invalid or noise data points from a data set. There are many statistical techniques and methods to preform quality-control, and in this article we will provide a general overview of how to construct such algorithms intended for use within the **AirSensor** package. Our goal is to write custom quality-control functions that either replaces, flags, and or removes invalid data. Data that is out of the instruments specification, random noise, and other known failures can be considered invalid.
+Data quality-control is the process of flagging or removing, either manually or 
+algorithmically, invalid or noise data points from a data set. There are many 
+statistical techniques and methods to preform quality-control, and in this 
+article we will provide a general overview of how to construct such algorithms 
+intended for use within the **AirSensor** package. Our goal is to write custom 
+quality-control functions that replace, flag, and or remove invalid data points.
+Data that are out of an instrument's specifications, that appear to be 
+associated with random noise or are associated with other known issues can be 
+considered invalid.
 
-NOTE: If you haven't yet read the _Writing Custom Aggregation Functions_ article, it is suggested in order to understand advanced `pat_aggregate()` usage.
+NOTE: If you haven't yet read the _Writing Custom Aggregation Functions_ article, 
+it is suggested in order to understand advanced `pat_aggregate()` usage.
 
 #### Non-aggregate Multi-plot
 
 ### Example 1
 #### Minimum Count Quality-control
 
-Let's start by creating a simple quality-control algorithm that aggregates the data to an hourly count of the number of data entries within an hour. If the count of entries is too low, we will replace the aggregate data with `NA` because we cannot trust aggregate data of too few points, otherwise we will return the hourly average value.
+Let's start by creating a simple quality-control algorithm that aggregates the 
+data to an hourly count of the number of data entries within an hour. If the 
+count of entries is too low, we will replace the aggregate data with `NA` because 
+we cannot trust aggregate data of too few points, otherwise we will return the 
+hourly average value.
 
 ```{r}
 library(AirSensor)
@@ -52,7 +65,7 @@ counter_qc <- function(pat, minCount = 11) {
   ##################
   pat <- mean_pat
   pat$data$pm25_A[pm25_A_mask] <- NA
-  pat$data$pm25_A[pm25_B_mask] <- NA
+  pat$data$pm25_B[pm25_B_mask] <- NA
   pat$data$hr_count_pm25_A <- count_pat$data$pm25_A
   pat$data$hr_count_pm25_B <- count_pat$data$pm25_B
 
@@ -60,15 +73,30 @@ counter_qc <- function(pat, minCount = 11) {
 }
 
 qced_pat1 <- counter_qc(pat)
+# qced_pat1 <- counter_qc(pat, minCount = 42)
+# timeseriesTbl_multiPlot(qced_pat1$data, pattern = "pm25_[AB]")
+
 ```
 
-In the code above, we calculate the aggregate hourly average `pat` PM2.5 values, `mean_pat`, and the count aggregate `pat` data, `count_pat`. We use the count mask to and flag values that are below our minimum count of values `minCount = 21`. We can use those flags to replace our hourly average with `NA` that are below our `minCount`. We also create two columns in the `pat` data, `hr_count_pm25_A` and `hr_count_pm25_B` that capture the hour-binned count.
+In the code above, we calculate the aggregate hourly average `pat` PM2.5 values, 
+`mean_pat`, and the count aggregate `pat` data, `count_pat`. We use the count 
+mask to and flag values that are below our minimum count of values `minCount = 21`. 
+We can use those flags to replace our hourly average with `NA` that are below 
+our `minCount`. We also create two columns in the `pat` data, `hr_count_pm25_A` 
+and `hr_count_pm25_B` that capture the hour-binned count.
 
 ### Example 2
 #### Z-score Filter Quality-control
 
-We can also construct more complex quality control that utilizes features of `pat_aggregate()` and other advanced techniques.
-Below is an example of using an anonymous function `pat_aggregate()` is provided to calculate the 20-minute period Z-score of `pat` data. If the Z-score is below our `0.05` threshold, we replace it with `NA`. The data is then re-aggregated to an 1-hour average and returned. Effectively, this quality-control function is a basic two-tailed Z-score filter that only aggregates data if the it is within the p-value (0.05).
+We can also construct more complex quality control that utilizes features of 
+`pat_aggregate()` and other advanced techniques.
+
+Below is an example of using an anonymous function `pat_aggregate()` is provided 
+to calculate the 20-minute period Z-score of `pat` data. If the Z-score is below 
+our `0.05` threshold, we replace it with `NA`. The data is then re-aggregated to 
+an 1-hour average and returned. Effectively, this quality-control function is a 
+basic two-tailed Z-score filter that only aggregates data if the it is within 
+the p-value (0.05).
 
 ```{r}
 
@@ -104,5 +132,10 @@ qced_pat2 <- z_score_qc(pat)
 
 ```
 
-There are many ways to construct effective quality-control and the examples above illustrate just a couple of methods for writing quality-control algorithms. The flexibility of creating quality-control algorithms and the use of the`pat_aggregate()` function allows the user to control numerous statistical methods and techniques to construct their own custom functions best suited for their use-case.
+There are many ways to construct effective quality-control and the examples 
+above illustrate just a couple of methods for writing quality-control algorithms. 
+The flexibility of creating quality-control algorithms and the use of the
+`pat_aggregate()` function allows the user to control numerous statistical 
+methods and techniques to construct their own custom functions best suited for 
+their use-case.
 

@@ -7,6 +7,7 @@ Pre-release candidate.
 Ditto for `setArchiveBaseUrl(NULL)`.
 * `pas_load()` returns helpful message when the archive `BASE_DIR` is set and
 no requested `pas` data is found:  `removeArchiveBaseDir()`.
+* Added "Temporal Aggregation" vignette.
 
 # AirSensor 0.8.6
 
@@ -537,7 +538,7 @@ of PM2.5 levels over several days.
 * Added `sensor_filter()`, `sensor_filterDate()` and `sensor_filterMeta()`.
 * Added `local_examples/downloadSpeeds.Rmd` to benchmark data download times
 from ThinkSpeak.
-* New `Purple Air Failure Modes` vignette.
+* New "Purple Air Failure Modes" vignette.
 
 # AirSensor 0.3.8 
 
