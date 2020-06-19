@@ -112,7 +112,7 @@ PurpleAirQC_hourly_AB_02 <- function(
    # When the median absolute deviation within an hour is high for either 
    # channel, something is probably wrong.
    # Invalidate data whre (MAD > 3) on either channel
-   madMask <- (madData$pm25_A > 3) | (madData$pm25_b > 3)
+   madMask <- (madData$pm25_A > 3) | (madData$pm25_B > 3)
    
    # ----- Create hourly dataframe ---------------------------------------------
    
