@@ -415,8 +415,15 @@ _airsensor_ object. The following chunk aggregates data from a pat object into a
 _airsensor_ object with an hourly time axis. This new _airsensor_ object is
 equivalent to a _ws_monitor_ object used in the **PWFSLSmoke** package.
 
+Because we are dealing with values far outside the norm, we will use the
+`PurpleAirQC_hourly_AB_00` function which performs minimal QC.
+
 ````{r airsensor_data}
-airsensor_chisholm <- pat_createAirSensor(pat_chisholm)
+airsensor_chisholm <- pat_createAirSensor(
+  pat = pat_chisholm,
+  parameter = "pm25",
+  FUN = PurpleAirQC_hourly_AB_00
+)
 ```
 
 ### Advanced plotting
@@ -474,7 +481,7 @@ closestSite <- worldmet::getMeta(lon = lon,
 
 # Canberra sensors
 pas_canberra <- 
-  pas_au%>%
+  pas_au %>%
   pas_filterNear(
     latitude = pat_chisholm$meta$latitude, 
     longitude = pat_chisholm$meta$longitude, 

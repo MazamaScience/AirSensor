@@ -7,7 +7,7 @@
 pat_createAirSensor(
   pat = NULL,
   parameter = "pm25",
-  FUN = PurpleAirQC_hourly_AB_02,
+  FUN = PurpleAirQC_hourly_AB_01,
   ...
 )
 }
@@ -62,7 +62,7 @@ example_pat \%>\%
   PWFSLSmoke::monitor_timeseriesPlot(shadedNight = TRUE)
   
 example_pat \%>\%
-  pat_createAirSensor(FUN = PurpleAirQC_hourly_AB_02) \%>\%
+  pat_createAirSensor(FUN = PurpleAirQC_hourly_AB_01) \%>\%
   PWFSLSmoke::monitor_timeseriesPlot(shadedNight = TRUE)
   
 # Custom FUN
@@ -97,7 +97,7 @@ PWFSLSmoke::monitor_timeseriesPlot(sensor, shadedNight = TRUE)
 
 }
 \seealso{
-\link{PurpleAirQC_hourly_AB_02}
+\link{PurpleAirQC_hourly_AB_01}
 
 \link{pat_aggregate}
 }

@@ -29,7 +29,7 @@
 
 pat_monitorComparison <- function(
   pat = NULL,
-  FUN = AirSensor::PurpleAirQC_hourly_AB_02,
+  FUN = AirSensor::PurpleAirQC_hourly_AB_01,
   distanceCutoff = 20, 
   ylim = NULL, 
   replaceOutliers = TRUE,
@@ -77,7 +77,6 @@ pat_monitorComparison <- function(
   # Get the hourly aggregated data
   paHourly_data <-
     pat %>% 
-    # Use PurpleAirQC_hourly_AB_02 to aggregate and QC
     pat_createAirSensor(
       parameter = 'pm25', 
       FUN = FUN, 

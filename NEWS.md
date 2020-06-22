@@ -3,6 +3,9 @@
 * Removed `sensor_videoFrame()`. This function is not general and has beem moved
 to the *AQ-SPEC-sensor-data-ingest-v1* private repository.
 * New R Markdown document for comparing QC algorithms: `local_Rmd/PurpleAirQC_Comparison.Rmd`.
+* Now using `PurpleAirQC_hourly_AB_01()` as the default QC algorithm throughout
+the code. (The `_02` version removed too much data.)
+* Updated examples in `sensor_pollutionRose()` and `sensor_polarPlot()`.
 
 # AirSensor 0.9.0
 

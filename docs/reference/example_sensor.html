@@ -57,7 +57,7 @@ example_sensor &amp;lt;- pat_createNew(
   startdate = &quot;2018-08-14&quot;,
   enddate = &quot;2018-09-07&quot;
 ) 
-pat_createAirSensor(parameter = 'pm25', FUN = AirSensor::PurpleAirQC_hourly_AB_02)
+pat_createAirSensor(parameter = 'pm25', FUN = AirSensor::PurpleAirQC_hourly_AB_01)
 
 save(example_sensor, file = &quot;data/example_sensor.rda&quot;)
 
@@ -94,7 +94,7 @@ save(example_sensor, file = &quot;data/example_sensor.rda&quot;)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.1</span>
       </span>
     </div>
 
@@ -195,7 +195,7 @@ example_sensor &lt;- pat_createNew(
   startdate = "2018-08-14",
   enddate = "2018-09-07"
 ) <!-- %&gt;% -->
-pat_createAirSensor(parameter = 'pm25', FUN = AirSensor::PurpleAirQC_hourly_AB_02)
+pat_createAirSensor(parameter = 'pm25', FUN = AirSensor::PurpleAirQC_hourly_AB_01)
 
 save(example_sensor, file = "data/example_sensor.rda")
 </pre>

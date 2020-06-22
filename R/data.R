@@ -144,7 +144,7 @@
 #'   startdate = "2018-08-14",
 #'   enddate = "2018-09-07"
 #' ) %>%
-#' pat_createAirSensor(parameter = 'pm25', FUN = AirSensor::PurpleAirQC_hourly_AB_02)
+#' pat_createAirSensor(parameter = 'pm25', FUN = AirSensor::PurpleAirQC_hourly_AB_01)
 #' 
 #' save(example_sensor, file = "data/example_sensor.rda")
 #' }

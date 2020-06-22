@@ -88,12 +88,16 @@ library(AirSensor)
 # Set default location of pre-generated data files
 setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 
-sensor <- sensor_load(startdate = 20190601, enddate = 20190630)
-sensor <- sensor_filterMeta(sensor, monitorID == "SCSB_02")
+pas <- pas_load(archival = TRUE)
+pat <- pat_loadMonth(label = "SCBB_02", pas = pas, datestamp = 202005)
+sensor <- pat_createAirSensor(pat)
 
 # Load wind data from NOAA
-windData <- worldmet::importNOAA(code = "722975-53141", year = 2019, 
-                                 parallel = FALSE)
+windData <- worldmet::importNOAA(
+  code = "722975-53141", 
+  year = 2020, 
+  parallel = FALSE
+)
 windData <- dplyr::select(windData, c("date", "wd", "ws"))
 
 # Plot rose using mean binning

@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.1</span>
       </span>
     </div>
 
@@ -159,6 +159,16 @@
       <small>Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="airsensor-0-9-1" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-9-1" class="anchor"></a>AirSensor 0.9.1</h1>
+<ul>
+<li>Removed <code>sensor_videoFrame()</code>. This function is not general and has beem moved to the <em>AQ-SPEC-sensor-data-ingest-v1</em> private repository.</li>
+<li>New R Markdown document for comparing QC algorithms: <code>local_Rmd/PurpleAirQC_Comparison.Rmd</code>.</li>
+<li>Now using <code><a href="../reference/PurpleAirQC_hourly_AB_01.html">PurpleAirQC_hourly_AB_01()</a></code> as the default QC algorithm throughout the code. (The <code>_02</code> version removed too much data.)</li>
+<li>Updated examples in <code><a href="../reference/sensor_pollutionRose.html">sensor_pollutionRose()</a></code> and <code><a href="../reference/sensor_polarPlot.html">sensor_polarPlot()</a></code>.</li>
+</ul>
+</div>
     <div id="airsensor-0-9-0" class="section level1">
 <h1 class="page-header">
 <a href="#airsensor-0-9-0" class="anchor"></a>AirSensor 0.9.0</h1>
@@ -172,6 +182,7 @@
 <li>Added “Temporal Aggregation” article.</li>
 <li>Added “Custom QC Algorithms” article.</li>
 <li>Added <code>verbose</code> parameter to <code><a href="../reference/sensor_polarPlot.html">sensor_polarPlot()</a></code> and <code><a href="../reference/sensor_pollutionRose.html">sensor_pollutionRose()</a></code>.</li>
+<li>Added <code><a href="../reference/pat_multiPlot.html">pat_multiplot()</a></code> as an alias for <code><a href="../reference/pat_multiPlot.html">pat_multiPlot()</a></code>.</li>
 </ul>
 </div>
     <div id="airsensor-0-8-6" class="section level1">
@@ -668,7 +679,7 @@
 <h1 class="page-header">
 <a href="#airsensor-0-4-9" class="anchor"></a>AirSensor 0.4.9</h1>
 <ul>
-<li>Updated <code><a href="../reference/sensor_videoFrame.html">sensor_videoFrame()</a></code> with new arguments and new defaults for <code>colorPalette</code> and <code>colorBins</code>.</li>
+<li>Updated <code>sensor_videoFrame()</code> with new arguments and new defaults for <code>colorPalette</code> and <code>colorBins</code>.</li>
 <li>Updated <code><a href="../reference/pat_sample.html">pat_sample()</a></code> to handle cases where the A or B channel contains only missing values.</li>
 </ul>
 </div>
@@ -821,7 +832,7 @@
 <h1 class="page-header">
 <a href="#airsensor-0-3-10" class="anchor"></a>AirSensor 0.3.10</h1>
 <ul>
-<li>Added <code><a href="../reference/sensor_videoFrame.html">sensor_videoFrame()</a></code> function to create a single frame map for a network of sensors. These can be used to create videos showing the evolution of PM2.5 levels over several days.</li>
+<li>Added <code>sensor_videoFrame()</code> function to create a single frame map for a network of sensors. These can be used to create videos showing the evolution of PM2.5 levels over several days.</li>
 <li>Added <code>local_executables/createVideo_exec.R</code> script to generate mp4 videos.</li>
 <li>Added <code>ylim</code> argument to <code><a href="../reference/pat_multiPlot.html">pat_multiPlot()</a></code>.</li>
 </ul>
@@ -1277,6 +1288,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#airsensor-0-9-1">0.9.1</a></li>
         <li><a href="#airsensor-0-9-0">0.9.0</a></li>
         <li><a href="#airsensor-0-8-6">0.8.6</a></li>
         <li><a href="#airsensor-0-8-5">0.8.5</a></li>

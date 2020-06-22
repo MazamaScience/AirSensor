@@ -89,7 +89,7 @@ pat_externalFit <- function(
     pat %>% 
     pat_createAirSensor( 
       parameter = 'pm25',
-      FUN = PurpleAirQC_hourly_AB_02,
+      FUN = PurpleAirQC_hourly_AB_01,
       min_count = min_count
     ) %>% 
     PWFSLSmoke::monitor_extractData()
