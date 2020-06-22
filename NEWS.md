@@ -1,3 +1,9 @@
+# AirSensor 0.9.1
+
+* Removed `sensor_videoFrame()`. This function is not general and has beem moved
+to the *AQ-SPEC-sensor-data-ingest-v1* private repository.
+* New R Markdown document for comparing QC algorithms: `local_Rmd/PurpleAirQC_Comparison.Rmd`.
+
 # AirSensor 0.9.0
 
 Pre-release candidate.
@@ -10,6 +16,7 @@ no requested `pas` data is found:  `removeArchiveBaseDir()`.
 * Added "Temporal Aggregation" article.
 * Added "Custom QC Algorithms" article.
 * Added `verbose` parameter to `sensor_polarPlot()` and `sensor_pollutionRose()`.
+* Added `pat_multiplot()` as an alias for `pat_multiPlot()`.
 
 # AirSensor 0.8.6
 
