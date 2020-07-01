@@ -1,3 +1,22 @@
+# AirSensor 0.9.5
+
+Changes requested by CRAN maintainers:
+
+* Improved function examples.
+* Removed function internal use of `option(warn = -1)`.
+
+# AirSensor 0.9.4
+
+* Updates to pass CRAN checks.
+
+# AirSensor 0.9.3
+
+* More updates to pass win-builder checks.
+
+# AirSensor 0.9.2
+
+* Updates to pass win-builder checks.
+
 # AirSensor 0.9.1
 
 * Removed `sensor_videoFrame()`. This function is not general and has beem moved

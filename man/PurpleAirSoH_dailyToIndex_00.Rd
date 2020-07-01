@@ -40,6 +40,7 @@ poor-fair-good values.
 }
 \examples{
  
+\donttest{
 library(AirSensor)
 
 tbl <- 
@@ -48,4 +49,5 @@ tbl <-
   PurpleAirSoH_dailyToIndex_00() 
   
 head(tbl)
+}
 }

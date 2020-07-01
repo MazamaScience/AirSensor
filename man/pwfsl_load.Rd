@@ -30,7 +30,7 @@ If you pass in arguments, \emph{e.g.} \code{starttime} and \code{endtime},
 \code{PWFSLSmoke::monitor_loadLatest()} will be invoked.
 }
 \examples{
-\dontrun{
+\donttest{
 library(AirSensor)
 
 pwfsl <- pwfsl_load()

@@ -31,9 +31,10 @@
 #'     radius = "20 km"
 #'   )
 #'                  
-#'\donttest{
-#' pas_leaflet(diamond_bar)
-#'}
+#' if ( interactive() ) {
+#'   pas_leaflet(diamond_bar)
+#' }
+#'
 
 pas_filterNear <- function(
   pas = NULL,

@@ -38,7 +38,7 @@
 #' @references \url{https://www2.purpleair.com/community/faq#!hc-sd-card-csv-file-header}
 #' 
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(AirSensor)
 #' 
 #' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")

@@ -21,7 +21,7 @@
 #' @seealso \link{sensor_filter}
 #' @seealso \link{sensor_filterDate}
 #' 
-#' @examples \dontrun{
+#' @examples \donttest{
 #' library(AirSensor)
 #' 
 #' example_sensor %>%

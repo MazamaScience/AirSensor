@@ -39,6 +39,7 @@ The \code{breaks} are used to convert \code{index} into the \code{index_bin}
 poor-fair-good values.
 }
 \examples{
+\donttest{
 library(AirSensor)
 
 tbl <-
@@ -46,5 +47,5 @@ tbl <-
   pat_dailySoHIndex_00()
 
 head(tbl)
-
+}
 }

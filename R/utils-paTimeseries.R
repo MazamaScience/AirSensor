@@ -222,8 +222,6 @@ patData_aggregate <- function(
   MazamaCoreUtils::stopIfNull(unit)
   MazamaCoreUtils::stopIfNull(count)
   
-  options(warn = -1)
-
   # ----- Aggregate Data -------------------------------------------------------
 
   # Only use numeric columns for aggregation matrix
@@ -283,7 +281,6 @@ patData_aggregate <- function(
     check.names = FALSE
   )
   
-  options(warn = 0)
-
   return(aggData)
+  
 }

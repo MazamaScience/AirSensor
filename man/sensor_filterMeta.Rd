@@ -27,7 +27,7 @@ Filtering predicates are applied to the \code{meta} dataframe within
 the \emph{sensor} object.
 }
 \examples{
-\dontrun{
+\donttest{
 library(AirSensor)
 
 example_sensor \%>\%

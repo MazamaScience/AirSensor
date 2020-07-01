@@ -51,9 +51,6 @@ pat_scatterPlotMatrix <- function(
   alpha = 0.25
 ) {
   
-  # Suppress warnings until the end of this function
-  options(warn = -1)
-  
   # ----- Validate parameters --------------------------------------------------
   
   MazamaCoreUtils::stopIfNull(pat)
@@ -104,8 +101,6 @@ pat_scatterPlotMatrix <- function(
   
   # ----- Return ---------------------------------------------------------------
   
-  options(warn=0)
-
   return(gg)
   
 }

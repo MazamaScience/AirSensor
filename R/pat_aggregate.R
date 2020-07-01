@@ -76,8 +76,6 @@ pat_aggregate <- function(
   MazamaCoreUtils::stopIfNull(unit)
   MazamaCoreUtils::stopIfNull(count)
   
-  options(warn = -1)
-  
   if ( !pat_isPat(pat) )
     stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")
   
@@ -171,8 +169,6 @@ pat_aggregate <- function(
   # ----- Return ---------------------------------------------------------------
   
   pat$data <- data
-  
-  options(warn = 0)
   
   return(pat)
   

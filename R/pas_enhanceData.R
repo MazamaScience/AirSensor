@@ -53,7 +53,7 @@
 #' @seealso \link{pas_downloadParseRawData}
 #' 
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(AirSensor)
 #' 
 #' initializeMazamaSpatialUtils()
@@ -63,7 +63,9 @@
 #' setdiff(names(pas), names(example_pas_raw))
 #' setdiff(names(example_pas_raw), names(pas))
 #' 
-#' View(pas[1:100,])
+#' if ( interactive() ) {
+#'   View(pas[1:100,])
+#' }
 #' }
 
 pas_enhanceData <- function(

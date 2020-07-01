@@ -91,8 +91,6 @@ pas_staticMap <- function(
   
   if ( tolower(paletteName) == "aqi" ) { # AQI COLORS
     
-    options(warn = -1)
-    
     colorInfo <- pas_palette(pas, paletteName)
     
     colors <- colorInfo$colors
@@ -142,7 +140,6 @@ pas_staticMap <- function(
         guide = "legend"
       )
     
-    options(warn = 0)
   } else if ( tolower(paletteName) == "distance" ) { # PWFLS distance
     
     colorInfo <- pas_palette(pas, "distance")
@@ -159,8 +156,6 @@ pas_staticMap <- function(
         breaks = breaks,
         guide = "legend"
       )
-    
-    options(warn = 0)
     
   } else { # OTHER PALETTE HANDLING
     

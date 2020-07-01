@@ -59,7 +59,7 @@ This is useful if you want a quick, synoptic view of the network, e.g. for a
 map.
 }
 \examples{
-\dontrun{
+\donttest{
 library(AirSensor)
 
 initializeMazamaSpatialUtils()
@@ -69,7 +69,9 @@ pas <- pas_enhanceData(example_pas_raw, 'US')
 setdiff(names(pas), names(example_pas_raw))
 setdiff(names(example_pas_raw), names(pas))
 
-View(pas[1:100,])
+if ( interactive() ) {
+  View(pas[1:100,])
+}
 }
 }
 \seealso{

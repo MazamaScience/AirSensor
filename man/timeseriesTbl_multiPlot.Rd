@@ -42,7 +42,7 @@ Specification of \code{ylim} will override the choice of
 \code{autoRange}.
 }
 \examples{
-\dontrun{
+\donttest{
 library(AirSensor)
 
 tbl <- pat_aggregateOutlierCounts(example_pat_failure_A)

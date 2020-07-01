@@ -92,7 +92,7 @@ datestamp = &quot;YYYYmmddHH&quot;." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.5</span>
       </span>
     </div>
 
@@ -241,16 +241,19 @@ includes sensors that have stopped reporting.</p></td>
     <div class='dont-index'><p><a href='pas_createNew.html'>pas_createNew</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>AirFire</span>)
+    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>AirSensor</span>)
 
 <span class='fu'><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl</a></span>(<span class='st'>"http://data.mazamascience.com/PurpleAir/v1"</span>)
 
 <span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='fu'>pas_load</span>()
-<span class='no'>pas</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='pas_filter.html'>pas_filter</a></span>(<span class='no'>stateCode</span> <span class='kw'>==</span> <span class='st'>"CA"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='pas_leaflet.html'>pas_leaflet</a></span>()
-}</div></pre>
+
+<span class='kw'>if</span> ( <span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>() ) {
+  <span class='no'>pas</span> <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='pas_filter.html'>pas_filter</a></span>(<span class='no'>stateCode</span> <span class='kw'>==</span> <span class='st'>"CA"</span>) <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='pas_leaflet.html'>pas_leaflet</a></span>()
+}
+<span class='co'># } </span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

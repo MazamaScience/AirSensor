@@ -9,7 +9,7 @@
   parameter = "pm25",
   ylim = NULL,
   xlab = "Date",
-  ylab = "μg / m³",
+  ylab = "ug / m3",
   title = "default",
   subtitle = NULL,
   data_shape = 18,

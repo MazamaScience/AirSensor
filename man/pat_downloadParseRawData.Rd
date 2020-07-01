@@ -54,7 +54,7 @@ specified sensor and time period.
 See the references.
 }
 \examples{
-\dontrun{
+\donttest{
 library(AirSensor)
 
 setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")

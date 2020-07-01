@@ -15,6 +15,7 @@
 #' @seealso \link{pat_dailySoHPlot}
 #' 
 #' @examples
+#' \donttest{
 #' library(AirSensor)
 #' 
 #' SoH <- 
@@ -22,6 +23,7 @@
 #'   pat_dailySoH() 
 #'   
 #' timeseriesTbl_multiPlot(SoH, ncol = 4)
+#' }
 
 pat_dailySoH <- function(
   pat = NULL,

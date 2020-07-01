@@ -40,15 +40,18 @@
 #' @seealso \link{pas_createNew}
 #' 
 #' @examples
-#' \dontrun{
-#' library(AirFire)
+#' \donttest{
+#' library(AirSensor)
 #' 
 #' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 #' 
 #' pas <- pas_load()
-#' pas %>% 
-#'   pas_filter(stateCode == "CA") %>%
-#'   pas_leaflet()
+#' 
+#' if ( interactive() ) {
+#'   pas %>% 
+#'     pas_filter(stateCode == "CA") %>%
+#'     pas_leaflet()
+#' }
 #' } 
 
 pas_load <- function(

@@ -148,8 +148,6 @@ pas_palette <- function(
   ...
 ) {
   
-  options(warn = -1)
-  
   # ----- Validate parameters --------------------------------------------------
 
   MazamaCoreUtils::stopIfNull(pas)
@@ -317,8 +315,6 @@ pas_palette <- function(
     key = cbind(labels, colorBreaks),  
     colors = sensorColor
   )
-  
-  options(warn = 0)
   
   return(colorInfo)
   

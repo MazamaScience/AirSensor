@@ -51,16 +51,18 @@ Filtering by country may be performed by specifying the \code{countryCodes}
 argument.
 }
 \examples{
-\dontrun{
+\donttest{
 library(AirSensor)
 
 initializeMazamaSpatialUtils()
 
 pas <- pas_createNew("US")
 
-pas \%>\% 
-  pas_filter(stateCode == "CA") \%>\%
-  pas_leaflet()
+if ( interactive() ) {
+  pas \%>\% 
+    pas_filter(stateCode == "CA") \%>\%
+    pas_leaflet()
+}
 }
 }
 \seealso{
