@@ -1,4 +1,8 @@
-# AirSensor 0.9.5
+# AirSensor 0.9.6
+
+ * Restored/fixed examples in `sensor_load~()` functions.
+
+# AirSensor 0.9.6
 
 Changes requested by CRAN maintainers:
 

@@ -30,10 +30,12 @@
 #' 
 #' @examples
 #' \donttest{
-#' # TODO:  Restore example when data become available
-#' #setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
-#' #sensor_load("scaqmd", 20190411, 20190521) %>%
-#' #  PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
+#' library(AirSensor)
+#' 
+#' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+#' 
+#' sensor_load("scaqmd", 20190411, 20190521) %>%
+#'   PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
 #' }
 
 sensor_load <- function(
@@ -59,13 +61,22 @@ sensor_load <- function(
                                           days = days)
   
   # NOTE:  datestamps here are created with the local timezone. It is the job of
-  # NOTE:  pat_loadMonth() to convert these into UTC for use in constructing
+  # NOTE:  sensor_loadMonth() to convert these into UTC for use in constructing
   # NOTE:  data file URLs.
   
-  # ----- Assemble annual archive files ----------------------------------------
+  # ----- Assemble archive files -----------------------------------------------
+  
+  # TODO:  sensor_load.R needs a lot of work to properly join including:
+  # TODO:   - trim to months so there aren't overlaps
+  # TODO:   - separate month1_only IDS, shared_IDS, month2_only IDS
+  # TODO:   - create ws_monitor objects for 1_only 1_shared, 2_shared, 2_only
+  # TODO:   - monitor_join(1_shared, 2_shared)
+  # TODO:   - monitor_combine(1_only, 2_joined, 2_only)
   
   # Set up empty list
   airsensorList <- list()
+  
+  # * annual archive files -----
   
   datestamps <-
     seq(dateRange[1], dateRange[2], by = "days") %>%
@@ -96,7 +107,9 @@ sensor_load <- function(
       }
     }
     
-  } 
+  } # END of search for annual files
+  
+  # * monthly archive files -----
   
   # If no annual files are found, try to asssemble monthly archive files
   if ( length(airsensorList) == 0 ) {
@@ -148,13 +161,20 @@ sensor_load <- function(
     
     if ( i == 1 ) {
       
-      airsensor <- airsensorList[[i]]
+      a <- airsensorList[[i]]
       
     } else {
       
+      # Prepare b
+      b <- airsensorList[[i]]
+      b_mint <- max(a$data$datetime) + lubridate::dhours(1)
+      b_maxt <- max(b$data$datetime)
+      b <- PWFSLSmoke::monitor_subset(b, tlim = c(b_mint, b_maxt))
+      
+      
       # Be sure to retain all monitorIDs
       monitorIDs <- 
-        union(airsensor$meta$monitord, airsensorList[[i]]$meta$monitorID)
+        union(airsensor$meta$monitorID, airsensorList[[i]]$meta$monitorID)
       
       airsensor <- 
         PWFSLSmoke::monitor_join(airsensor, airsensorList[[i]],
@@ -181,3 +201,14 @@ sensor_load <- function(
   
 }
 
+# ===== DEBUGGING ==============================================================
+
+if ( FALSE ) {
+  
+  collection = "scaqmd"
+  startdate = 20190411
+  enddate = 20190521
+  days = 7
+  timezone = "America/Los_Angeles"
+
+}

@@ -37,10 +37,12 @@ PurpleAir sensors.
 }
 \examples{
 \donttest{
-# TODO:  This needs to be updated to use USFS data
-#setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
-#sensor_loadMonth("scaqmd", 201905) \%>\%
-#  PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
+library(AirSensor)
+
+setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+
+sensor_loadMonth("scaqmd", 201905) \%>\%
+  PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
 }
 }
 \seealso{

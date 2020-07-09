@@ -36,10 +36,13 @@ Each \code{airsensor} object contains data from a named collection of
 PurpleAir sensors.
 }
 \examples{
-\donttest{
-#setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
-#sensor_loadYear("scaqmd", 2018) \%>\%
-#   PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
+\dontrun{
+library(AirSensor)
+
+setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+
+sensor_loadYear("scaqmd", 2019) \%>\%
+   PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
 }
 }
 \seealso{

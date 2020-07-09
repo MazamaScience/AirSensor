@@ -186,7 +186,7 @@ if ( FALSE ) {
   normalize <- FALSE
  
   sensor <- 
-    sensor_load(startdate = 20180901, enddate = 20180930) %>%
+    sensor_loadMonth(datestamp = 201809) %>%
     sensor_filterMeta(monitorID == "SCUV_09")
   
   windsite <- 

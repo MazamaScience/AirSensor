@@ -44,10 +44,12 @@ By default, the current week is loaded.
 }
 \examples{
 \donttest{
-# TODO:  Restore example when data become available
-#setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
-#sensor_load("scaqmd", 20190411, 20190521) \%>\%
-#  PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
+library(AirSensor)
+
+setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+
+sensor_load("scaqmd", 20190411, 20190521) \%>\%
+  PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
 }
 }
 \seealso{
