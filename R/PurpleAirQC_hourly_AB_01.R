@@ -87,10 +87,20 @@ PurpleAirQC_hourly_AB_01 <- function(
 
   # Hourly ttest
   # NOTE:  this uses the patData_aggregate function which uses a dataframe
+  FUN <- function(x) {
+    htest <- stats::t.test(x$pm25_A, x$pm25_B, paired = FALSE)
+    tbl <- dplyr::tibble(
+      t_score = as.numeric(htest$statistic),
+      p_value = as.numeric(htest$p.value),
+      df_value = as.numeric(htest$parameter)
+    )
+    return(tbl)
+  }
+  
   ttestData <- 
     pat %>%
     pat_extractData() %>%
-    patData_aggregate(function(x) { stats::t.test(x$pm25_A, x$pm25_B, paired = FALSE) } )
+    patData_aggregate(FUN)
   
   # ----- Create hourly dataframe ----------------------------------------------
   

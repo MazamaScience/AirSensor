@@ -364,7 +364,10 @@ pat_createPATimeseriesObject <- function(
     dplyr::full_join(A_data, B_data, by = "datetime") %>%
     dplyr::select(all_of(patData_columnNames)) %>%
     dplyr::distinct() %>%
-    .replaceRecordsWithDuplicateTimestamps()
+    .replaceRecordsWithDuplicateTimestamps() %>%
+    # Only keep records with some pm25 data
+    dplyr::filter(!is.na(.data$pm25_A) | !is.na(.data$pm25_B)) %>%
+    arrange(.data$datetime)
 
   # ----- Return ---------------------------------------------------------------
   
@@ -379,7 +382,7 @@ pat_createPATimeseriesObject <- function(
 # ===== INTERNAL FUNCTIONS =====================================================
 
 .replaceRecordsWithDuplicateTimestamps <- function(df) {
- 
+  
   # NOTE:  Sometimes we get multiple records within a minute and then end up
   # NOTE:  with the same 'datetime' value after flooring. We replace multiple
   # NOTE:  records with the mean here.

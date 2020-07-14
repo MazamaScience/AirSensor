@@ -1,8 +1,16 @@
+# AirSensor 0.9.7
+
+ * Removed inappropriate application of `round(1)` from internal `pat_aggregate()`
+ calculations.
+ * Refactored `patData_aggregate()` to work properly. The passed in `FUN` must
+ now return a matrix.
+
 # AirSensor 0.9.6
 
  * Restored/fixed examples in `sensor_load~()` functions.
+ * Properly handling duplicate datetimes in `pat_createPATimeseriesObject.R`.
 
-# AirSensor 0.9.6
+# AirSensor 0.9.5
 
 Changes requested by CRAN maintainers:
 

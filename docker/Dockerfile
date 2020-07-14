@@ -1,4 +1,4 @@
-FROM mazamascience/pwfslsmoke:1.2.106
+FROM mazamascience/pwfslsmoke:1.2.112
 MAINTAINER "Jonathan Callahan" jonathan@mazamascience.com
 
 #######################################################################
@@ -40,7 +40,6 @@ RUN wget -nv http://mazamascience.com/RData/Spatial/CA_AirBasins_01.RData \
 
 # Install latest development versions of packages
 RUN installGithub.r \
-    MazamaScience/MazamaCoreUtils \
     MazamaScience/MazamaLocationUtils
 
 
@@ -49,7 +48,7 @@ RUN installGithub.r \
 
 WORKDIR /
 
-COPY AirSensor_0.9.1.tar.gz /
+COPY AirSensor_0.9.6.tar.gz /
 
-RUN R CMD INSTALL AirSensor_0.9.1.tar.gz
+RUN R CMD INSTALL AirSensor_0.9.6.tar.gz
 
