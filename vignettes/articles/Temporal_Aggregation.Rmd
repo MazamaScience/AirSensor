@@ -110,7 +110,7 @@ bins. For each column of numeric data within `pat$data`, `pat_aggregate()`
 applies `FUN` to the binned data to produce an hourly (by default) vector
 of values.
 
-`FUN` may be assigned to _any_ valid R function! _(Caveat: With great power) 
+`FUN` may be assigned to _any_ valid R function! _(Caveat: With great power 
 comes great responsibility.)_ The only requirements for 
 the function are that `FUN` _must_ operate on univariate numeric data and return a 
 scalar value (think `sum`, or `mean`). The last step in `pat_aggregate()` is to 
