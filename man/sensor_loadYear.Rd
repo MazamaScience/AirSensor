@@ -35,16 +35,6 @@ By default, the current month is loaded.
 Each \code{airsensor} object contains data from a named collection of 
 PurpleAir sensors.
 }
-\examples{
-\dontrun{
-library(AirSensor)
-
-setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
-
-sensor_loadYear("scaqmd", 2019) \%>\%
-   PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
-}
-}
 \seealso{
 \link{pat_createNew}
 }

@@ -4,16 +4,24 @@
 \alias{pas_getIDs}
 \title{Return IDs from filtered PurpleAir Synoptic objects}
 \usage{
-pas_getIDs(pas = NULL, pattern = ".*", isOutside = TRUE, isParent = TRUE)
+pas_getIDs(
+  pas = NULL,
+  pattern = ".*",
+  idPattern = ".*",
+  isOutside = TRUE,
+  isParent = TRUE
+)
 }
 \arguments{
 \item{pas}{PurpleAir Synoptic \emph{pas} object.}
 
 \item{pattern}{Text pattern used to filter station labels.}
 
+\item{idPattern}{Text pattern used to filter \code{deviceDeploymentID}.}
+
 \item{isOutside}{Logical, is the sensor located outside?}
 
-\item{isParent}{Logical, is the sensor a parent station?}
+\item{isParent}{Logical, is the record associated with a the A channel?}
 }
 \value{
 Vector of values.

@@ -5,11 +5,12 @@
 #' 
 #' @param pas PurpleAir Synoptic \emph{pas} object.
 #' @param pattern Text pattern used to filter station labels.
+#' @param idPattern Text pattern used to filter \code{deviceDeploymentID}.
 #' @param isOutside Logical, is the sensor located outside?
-#' @param isParent Logical, is the sensor a parent station?
+#' @param isParent Logical, is the record associated with a the A channel?
 #' 
 #' @description The incoming \code{pas} object is first filtered based on the 
-#' values of \code{stateCodes}, \code{patter}, \code{isOutside} and \code{isParent}.
+#' values of \code{stateCodes}, \code{pattern}, \code{isOutside} and \code{isParent}.
 #' The values associated with the \code{"label"} column are then returned.
 #' 
 #' This function is useful for returning values associated with specific
@@ -32,6 +33,7 @@
 pas_getLabels <- function(
   pas = NULL,
   pattern = ".*",
+  idPattern = ".*",
   isOutside = TRUE,
   isParent = TRUE
 ) {
@@ -46,6 +48,7 @@ pas_getLabels <- function(
     pas, 
     name = "label", 
     pattern = pattern, 
+    idPattern = idPattern,
     isOutside = isOutside, 
     isParent = isParent
   )

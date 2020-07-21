@@ -161,9 +161,11 @@ sensor_load <- function(
     
     if ( i == 1 ) {
       
-      a <- airsensorList[[i]]
+      airsensor <- airsensorList[[i]]
       
     } else {
+      
+      a <- airsensor
       
       # Prepare b
       b <- airsensorList[[i]]
@@ -171,14 +173,25 @@ sensor_load <- function(
       b_maxt <- max(b$data$datetime)
       b <- PWFSLSmoke::monitor_subset(b, tlim = c(b_mint, b_maxt))
       
+      # Split up into A only, B only and AB shared
+      a_only_IDs <- setdiff(a$meta$monitorID, b$meta$monitorID)
+      ab_shared_IDs <- intersect(a$meta$monitorID, b$meta$monitorID)
+      b_only_IDs <- setdiff(b$meta$monitorID, a$meta$monitorID)
       
-      # Be sure to retain all monitorIDs
-      monitorIDs <- 
-        union(airsensor$meta$monitorID, airsensorList[[i]]$meta$monitorID)
+      a_only <- PWFSLSmoke::monitor_subset(a, monitorIDs = a_only_IDs, dropMonitors = FALSE)
+      b_only <- PWFSLSmoke::monitor_subset(b, monitorIDs = b_only_IDs, dropMonitors = FALSE)
+      
+      a_shared <- PWFSLSmoke::monitor_subset(a, monitorIDs = ab_shared_IDs, dropMonitors = FALSE)
+      b_shared <- PWFSLSmoke::monitor_subset(b, monitorIDs = ab_shared_IDs, dropMonitors = FALSE)
+      
+      # TODO:  Figure out what is not working with PWFSLSmoke::monitor_join()
+      #ab_shared <- PWFSLSmoke::monitor_join(a, b)
+      
+      ab_shared <- a_shared
+      ab_shared$data <- dplyr::bind_rows(a_shared$data, b_shared$data)
       
       airsensor <- 
-        PWFSLSmoke::monitor_join(airsensor, airsensorList[[i]],
-                                 monitorIDs = monitorIDs)
+        PWFSLSmoke::monitor_combine(list(a_only, b_only, ab_shared))
       
     }
     

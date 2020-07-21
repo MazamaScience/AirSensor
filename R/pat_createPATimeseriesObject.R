@@ -367,7 +367,7 @@ pat_createPATimeseriesObject <- function(
     .replaceRecordsWithDuplicateTimestamps() %>%
     # Only keep records with some pm25 data
     dplyr::filter(!is.na(.data$pm25_A) | !is.na(.data$pm25_B)) %>%
-    arrange(.data$datetime)
+    dplyr::arrange(.data$datetime)
 
   # ----- Return ---------------------------------------------------------------
   

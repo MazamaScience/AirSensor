@@ -232,10 +232,10 @@ if ( FALSE ) {
   
   pas <- pas_load()
 
-  id <- "776e00b070251a36_23237" # SCAP_53
+  id <- "0bf2ba90b55e7ce6_2025" # 
   label <- NULL
-  startdate <- NULL
-  enddate <- NULL
+  startdate <- 20170930
+  enddate <- 20171102
   timezone <- NULL
   baseUrl <- "https://api.thingspeak.com/channels/"
   verbose <- TRUE
@@ -243,7 +243,7 @@ if ( FALSE ) {
   
   pat <- pat_createNew(
     id,
-    labe,
+    label,
     pas,
     startdate,
     enddate,

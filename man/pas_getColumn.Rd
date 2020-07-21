@@ -8,6 +8,7 @@ pas_getColumn(
   pas = NULL,
   name = NULL,
   pattern = ".*",
+  idPattern = ".*",
   isOutside = TRUE,
   isParent = TRUE
 )
@@ -17,11 +18,13 @@ pas_getColumn(
 
 \item{name}{Name of the column to return.}
 
-\item{pattern}{Text pattern used to filter station labels.}
+\item{pattern}{Text pattern used to filter sensor labels.}
+
+\item{idPattern}{Text pattern used to filter \code{deviceDeploymentID}.}
 
 \item{isOutside}{Logical, is the sensor located outside?}
 
-\item{isParent}{Logical, is the sensor a parent station?}
+\item{isParent}{Logical, is the record associated with a the A channel?}
 }
 \value{
 Vector of values.

@@ -7,6 +7,7 @@
 pas_getDeviceDeploymentIDs(
   pas = NULL,
   pattern = ".*",
+  idPattern = ".*",
   isOutside = TRUE,
   isParent = TRUE
 )
@@ -16,9 +17,11 @@ pas_getDeviceDeploymentIDs(
 
 \item{pattern}{Text pattern used to filter station labels.}
 
+\item{idPattern}{Text pattern used to filter \code{deviceDeploymentID}.}
+
 \item{isOutside}{Logical, is the sensor located outside?}
 
-\item{isParent}{Logical, is the sensor a parent station?}
+\item{isParent}{Logical, is the record associated with a the A channel?}
 }
 \value{
 Vector of values.

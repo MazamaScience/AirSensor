@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.78</span>
       </span>
     </div>
 
@@ -144,11 +144,11 @@
 <a class="sourceLine" id="cb1-7" data-line-number="7">                          <span class="dt">timezone =</span> <span class="st">"America/Los_Angeles"</span>)</a>
 <a class="sourceLine" id="cb1-8" data-line-number="8"></a>
 <a class="sourceLine" id="cb1-9" data-line-number="9"><span class="kw"><a href="../../reference/pat_multiPlot.html">pat_multiPlot</a></span>(good_pat, <span class="dt">sampleSize =</span> <span class="fl">1e6</span>)</a></code></pre></div>
-<pre><code>## Warning: Removed 76 rows containing missing values (geom_point).</code></pre>
-<pre><code>## Warning: Removed 83 rows containing missing values (geom_point).</code></pre>
-<pre><code>## Warning: Removed 76 rows containing missing values (geom_point).
+<pre><code>## Warning: Removed 74 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 78 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 74 rows containing missing values (geom_point).
 
-## Warning: Removed 76 rows containing missing values (geom_point).</code></pre>
+## Warning: Removed 74 rows containing missing values (geom_point).</code></pre>
 <p><img src="SoH_functions_files/figure-html/pat_muliplots%20fig-margin-1.png" width="672"></p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">bad_id &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/pas_getDeviceDeploymentIDs.html">pas_getDeviceDeploymentIDs</a></span>(pas, <span class="dt">pattern =</span> <span class="st">"SCTV_16"</span>)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2">bad_pat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/pat_createNew.html">pat_createNew</a></span>(<span class="dt">id =</span> bad_id, </a>
@@ -159,11 +159,11 @@
 <a class="sourceLine" id="cb5-7" data-line-number="7">                         <span class="dt">timezone =</span> <span class="st">"America/Los_Angeles"</span>)</a>
 <a class="sourceLine" id="cb5-8" data-line-number="8"></a>
 <a class="sourceLine" id="cb5-9" data-line-number="9"><span class="kw"><a href="../../reference/pat_multiPlot.html">pat_multiPlot</a></span>(bad_pat,  <span class="dt">sampleSize =</span> <span class="fl">1e6</span>)</a></code></pre></div>
-<pre><code>## Warning: Removed 1433 rows containing missing values (geom_point).</code></pre>
-<pre><code>## Warning: Removed 1380 rows containing missing values (geom_point).</code></pre>
-<pre><code>## Warning: Removed 1433 rows containing missing values (geom_point).
+<pre><code>## Warning: Removed 1118 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 1068 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 1118 rows containing missing values (geom_point).
 
-## Warning: Removed 1433 rows containing missing values (geom_point).</code></pre>
+## Warning: Removed 1118 rows containing missing values (geom_point).</code></pre>
 <p><img src="SoH_functions_files/figure-html/pat_muliplots%20fig-margin-2.png" width="672"></p>
 </div>
 <div id="percent-reporting" class="section level2">

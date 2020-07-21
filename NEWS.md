@@ -1,14 +1,19 @@
+# AirSensor 0.9.8
+
+* Added `idPattern` argument to all `pas_get~()` functions.
+* Fixed bug in `sensor_load()`.
+
 # AirSensor 0.9.7
 
- * Removed inappropriate application of `round(1)` from internal `pat_aggregate()`
- calculations.
- * Refactored `patData_aggregate()` to work properly. The passed in `FUN` must
- now return a matrix.
+* Removed inappropriate application of `round(1)` from internal `pat_aggregate()`
+calculations.
+* Refactored `patData_aggregate()` to work properly. The passed in `FUN` must
+now return a matrix.
 
 # AirSensor 0.9.6
 
- * Restored/fixed examples in `sensor_load~()` functions.
- * Properly handling duplicate datetimes in `pat_createPATimeseriesObject.R`.
+* Restored/fixed examples in `sensor_load~()` functions.
+* Properly handling duplicate datetimes in `pat_createPATimeseriesObject.R`.
 
 # AirSensor 0.9.5
 

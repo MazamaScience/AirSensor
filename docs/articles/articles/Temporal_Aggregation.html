@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.78</span>
       </span>
     </div>
 
@@ -186,12 +186,12 @@
 <pre><code>## # A tibble: 6 x 19
 ##   datetime            pm25_A pm25_B temperature humidity pressure pm1_atm_A
 ##   &lt;dttm&gt;               &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
-## 1 2020-05-01 07:00:00    2.3    2.1         0        0.5      0         1.1
-## 2 2020-05-01 07:15:00    0.7    0.8         0        0        0         0.5
-## 3 2020-05-01 07:30:00    0.7    0.3         0.5      0        0         0.7
-## 4 2020-05-01 07:45:00    0.8    0.7         0.5      0.4      0         0.7
-## 5 2020-05-01 08:00:00    1.2    0.7         0        0        0.1       0.6
-## 6 2020-05-01 08:15:00    0.7    0.5         0.4      0        0         0.5
+## 1 2020-05-01 07:00:00  2.33   2.13        0        0.488   0.0478     1.11 
+## 2 2020-05-01 07:15:00  0.727  0.818       0        0       0.0214     0.489
+## 3 2020-05-01 07:30:00  0.721  0.270       0.488    0       0.0473     0.679
+## 4 2020-05-01 07:45:00  0.816  0.702       0.518    0.354   0.0231     0.655
+## 5 2020-05-01 08:00:00  1.17   0.668       0        0       0.0603     0.594
+## 6 2020-05-01 08:15:00  0.745  0.521       0.354    0       0.0262     0.476
 ## # … with 12 more variables: pm25_atm_A &lt;dbl&gt;, pm10_atm_A &lt;dbl&gt;,
 ## #   pm1_atm_B &lt;dbl&gt;, pm25_atm_B &lt;dbl&gt;, pm10_atm_B &lt;dbl&gt;, uptime &lt;dbl&gt;,
 ## #   rssi &lt;dbl&gt;, memory &lt;dbl&gt;, adc0 &lt;dbl&gt;, bsec_iaq &lt;dbl&gt;, datetime_A &lt;dttm&gt;,
@@ -202,7 +202,7 @@
 <a href="#custom-aggregation-functions" class="anchor"></a>Custom Aggregation Functions</h3>
 <p>In order to write custom aggregation functions for use with <code><a href="../../reference/pat_aggregate.html">pat_aggregate()</a></code>, we must first familiarize ourselves with <code><a href="../../reference/pat_aggregate.html">pat_aggregate()</a></code>’s underlying algorithm.</p>
 <p>When executed, <code><a href="../../reference/pat_aggregate.html">pat_aggregate(pat, FUN)</a></code> utilizes the <code>datetime</code> axis of a PurpleAir Timeseries object (<code>pat</code>) to split the data into time-granular bins. For each column of numeric data within <code>pat$data</code>, <code><a href="../../reference/pat_aggregate.html">pat_aggregate()</a></code> applies <code>FUN</code> to the binned data to produce an hourly (by default) vector of values.</p>
-<p><code>FUN</code> may be assigned to <em>any</em> valid R function! <em>(Caveat: With great power) comes great responsibility.)</em> The only requirements for the function are that <code>FUN</code> <em>must</em> operate on univariate numeric data and return a scalar value (think <code>sum</code>, or <code>mean</code>). The last step in <code><a href="../../reference/pat_aggregate.html">pat_aggregate()</a></code> is to combine the transformed bins along a similarly binned <code>datetime</code> axis and return a data object of the same <code>pat</code> class (<code>pa_timeseries</code>).</p>
+<p><code>FUN</code> may be assigned to <em>any</em> valid R function! <em>(Caveat: With great power comes great responsibility.)</em> The only requirements for the function are that <code>FUN</code> <em>must</em> operate on univariate numeric data and return a scalar value (think <code>sum</code>, or <code>mean</code>). The last step in <code><a href="../../reference/pat_aggregate.html">pat_aggregate()</a></code> is to combine the transformed bins along a similarly binned <code>datetime</code> axis and return a data object of the same <code>pat</code> class (<code>pa_timeseries</code>).</p>
 <p>The ability to create custom functions for use in aggregation opens the door wide for exploratory data analysis and QC design.</p>
 </div>
 </div>

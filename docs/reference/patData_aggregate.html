@@ -43,11 +43,11 @@
 
 
 <meta property="og:title" content="Aggregate PurpleAir Timeseries Data — patData_aggregate" />
-<meta property="og:description" content="Aggregate a data.frame along its datetime axis.
-Temporal aggregation involves splitting a data.frame object into
-separate bins along its datetime axis. FUN is mapped to the df
-numeric variables in each bin, which are then recombined into an aggregated
-data.frame." />
+<meta property="og:description" content="Aggregate a dataframe into temporal bins and apply a function.
+Temporal aggregation involves splitting a dataframe into separate bins along
+its datetime axis. FUN is mapped to the df
+dataframe records in each bin which are then recombined into an aggregated
+dataframe." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -80,7 +80,7 @@ data.frame." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.78</span>
       </span>
     </div>
 
@@ -162,16 +162,16 @@ data.frame." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Aggregate PurpleAir Timeseries Data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/utils-paTimeseries.R'><code>R/utils-paTimeseries.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/patData_aggregate.R'><code>R/patData_aggregate.R</code></a></small>
     <div class="hidden name"><code>patData_aggregate.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Aggregate a data.frame along its <em>datetime</em> axis.
-Temporal aggregation involves splitting a <em>data.frame</em> object into
-separate bins along its datetime axis. <code>FUN</code> is mapped to the <em>df</em>
-numeric variables in each bin, which are then recombined into an aggregated
-data.frame.</p>
+    <p>Aggregate a dataframe into temporal bins and apply a function.
+Temporal aggregation involves splitting a dataframe into separate bins along
+its <code>datetime</code> axis. <code>FUN</code> is mapped to the <code>df</code>
+dataframe records in each bin which are then recombined into an aggregated
+dataframe.</p>
     </div>
 
     <pre class="usage"><span class='fu'>patData_aggregate</span>(
@@ -208,10 +208,11 @@ data.frame.</p>
     <p>Returns an aggregated <em>data.frame</em> object.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function intended for advanced users who wish to have more
+    <p>This function is intended for advanced users who wish to have more
 flexibility than the standard <em>pat_aggregate()</em> while aggregating
 timeseries data. <code>FUN</code> can operate and access all numeric vectors
-within the data.frame <em>df</em>.</p>
+within the data frame <code>df</code> and must return a matrix or tibble of numeric 
+values.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>AirSensor</span>)
@@ -222,8 +223,14 @@ within the data.frame <em>df</em>.</p>
   <span class='fu'><a href='pat_filterDate.html'>pat_filterDate</a></span>(<span class='fl'>20180813</span>, <span class='fl'>20180814</span>)
 
 <span class='co'># Two Sample Student T-Test (advanced users only - see details.)</span>
-<span class='no'>FUN_ttest</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>data</span>) {
-  <span class='fu'><a href='https://rdrr.io/r/stats/t.test.html'>t.test</a></span>(<span class='no'>data</span>$<span class='no'>pm25_A</span>, <span class='no'>data</span>$<span class='no'>pm25_B</span>)
+<span class='no'>FUN_ttest</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>) {
+  <span class='no'>htest</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>stats</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/t.test.html'>t.test</a></span>(<span class='no'>x</span>$<span class='no'>pm25_A</span>, <span class='no'>x</span>$<span class='no'>pm25_B</span>, <span class='kw'>paired</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='no'>tbl</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/reexports.html'>tibble</a></span>(
+    <span class='kw'>t_score</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='no'>htest</span>$<span class='no'>statistic</span>),
+    <span class='kw'>p_value</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='no'>htest</span>$<span class='no'>p.value</span>),
+    <span class='kw'>df_value</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='no'>htest</span>$<span class='no'>parameter</span>)
+  )
+  <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='no'>tbl</span>)
 }
 
 <span class='no'>t.testStats</span> <span class='kw'>&lt;-</span>
@@ -278,27 +285,16 @@ within the data.frame <em>df</em>.</p>
 #&gt; <span class='warning'>  Use c() or as.vector() instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Recycling array of length 1 in array-vector arithmetic is deprecated.</span>
 #&gt; <span class='warning'>  Use c() or as.vector() instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Recycling array of length 1 in vector-array arithmetic is deprecated.</span>
 #&gt; <span class='warning'>  Use c() or as.vector() instead.</span></div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>t.testStats</span>)</div><div class='output co'>#&gt;              datetime statistic parameter      p.value                 conf.int
-#&gt; 1 2018-08-13 07:00:00 -3.870466  84.03118 0.0002139236   -0.7545392, -0.2423497
-#&gt; 2 2018-08-13 08:00:00 -4.785184  87.18799 6.910644e-06   -0.7051611, -0.2912834
-#&gt; 3 2018-08-13 09:00:00 -2.870907  87.55262  0.005131829 -0.52573065, -0.09560268
-#&gt; 4 2018-08-13 10:00:00 -3.427505   87.1562 0.0009318418   -0.7734414, -0.2056697
-#&gt; 5 2018-08-13 11:00:00 -4.980301  84.05045 3.343857e-06   -0.6856529, -0.2943471
-#&gt; 6 2018-08-13 12:00:00 -4.532544  87.43282  1.83922e-05   -0.7930868, -0.3095799
-#&gt;             estimate null.value alternative                  method
-#&gt; 1 4.518222, 5.016667          0   two.sided Welch Two Sample t-test
-#&gt; 2 4.989556, 5.487778          0   two.sided Welch Two Sample t-test
-#&gt; 3 5.557556, 5.868222          0   two.sided Welch Two Sample t-test
-#&gt; 4 6.377333, 6.866889          0   two.sided Welch Two Sample t-test
-#&gt; 5 6.755111, 7.245111          0   two.sided Welch Two Sample t-test
-#&gt; 6 6.762444, 7.313778          0   two.sided Welch Two Sample t-test
-#&gt;                     data.name
-#&gt; 1 data$pm25_A and data$pm25_B
-#&gt; 2 data$pm25_A and data$pm25_B
-#&gt; 3 data$pm25_A and data$pm25_B
-#&gt; 4 data$pm25_A and data$pm25_B
-#&gt; 5 data$pm25_A and data$pm25_B
-#&gt; 6 data$pm25_A and data$pm25_B</div></pre>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>t.testStats</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 6 x 6</span><span>
+#&gt;   datetime            t_score p_value df_value datetime_A         
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>                </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>             
+#&gt; </span><span style='color: #555555;'>1</span><span> 2018-08-13 </span><span style='color: #555555;'>07:00:00</span><span>   -</span><span style='color: #BB0000;'>3.87</span><span> 2.14</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-4</span><span>     84.0 2018-08-13 </span><span style='color: #555555;'>07:00:00</span><span>
+#&gt; </span><span style='color: #555555;'>2</span><span> 2018-08-13 </span><span style='color: #555555;'>08:00:00</span><span>   -</span><span style='color: #BB0000;'>4.79</span><span> 6.91</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-6</span><span>     87.2 2018-08-13 </span><span style='color: #555555;'>08:00:00</span><span>
+#&gt; </span><span style='color: #555555;'>3</span><span> 2018-08-13 </span><span style='color: #555555;'>09:00:00</span><span>   -</span><span style='color: #BB0000;'>2.87</span><span> 5.13</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-3</span><span>     87.6 2018-08-13 </span><span style='color: #555555;'>09:00:00</span><span>
+#&gt; </span><span style='color: #555555;'>4</span><span> 2018-08-13 </span><span style='color: #555555;'>10:00:00</span><span>   -</span><span style='color: #BB0000;'>3.43</span><span> 9.32</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-4</span><span>     87.2 2018-08-13 </span><span style='color: #555555;'>10:00:00</span><span>
+#&gt; </span><span style='color: #555555;'>5</span><span> 2018-08-13 </span><span style='color: #555555;'>11:00:00</span><span>   -</span><span style='color: #BB0000;'>4.98</span><span> 3.34</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-6</span><span>     84.1 2018-08-13 </span><span style='color: #555555;'>11:00:00</span><span>
+#&gt; </span><span style='color: #555555;'>6</span><span> 2018-08-13 </span><span style='color: #555555;'>12:00:00</span><span>   -</span><span style='color: #BB0000;'>4.53</span><span> 1.84</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-5</span><span>     87.4 2018-08-13 </span><span style='color: #555555;'>12:00:00</span><span>
+#&gt; </span><span style='color: #555555;'># … with 1 more variable: datetime_B </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
