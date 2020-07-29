@@ -1,3 +1,62 @@
+# AirSensor 0.9.8
+
+* Added `idPattern` argument to all `pas_get~()` functions.
+* Fixed bug in `sensor_load()`.
+
+# AirSensor 0.9.7
+
+* Removed inappropriate application of `round(1)` from internal `pat_aggregate()`
+calculations.
+* Refactored `patData_aggregate()` to work properly. The passed in `FUN` must
+now return a matrix.
+
+# AirSensor 0.9.6
+
+* Restored/fixed examples in `sensor_load~()` functions.
+* Properly handling duplicate datetimes in `pat_createPATimeseriesObject.R`.
+
+# AirSensor 0.9.5
+
+Changes requested by CRAN maintainers:
+
+* Improved function examples.
+* Removed function internal use of `option(warn = -1)`.
+
+# AirSensor 0.9.4
+
+* Updates to pass CRAN checks.
+
+# AirSensor 0.9.3
+
+* More updates to pass win-builder checks.
+
+# AirSensor 0.9.2
+
+* Updates to pass win-builder checks.
+
+# AirSensor 0.9.1
+
+* Removed `sensor_videoFrame()`. This function is not general and has beem moved
+to the *AQ-SPEC-sensor-data-ingest-v1* private repository.
+* New R Markdown document for comparing QC algorithms: `local_Rmd/PurpleAirQC_Comparison.Rmd`.
+* Now using `PurpleAirQC_hourly_AB_01()` as the default QC algorithm throughout
+the code. (The `_02` version removed too much data.)
+* Updated examples in `sensor_pollutionRose()` and `sensor_polarPlot()`.
+
+# AirSensor 0.9.0
+
+Pre-release candidate.
+
+* Removed old, unused files from the code base.
+* `setArchiveBaseDir(NULL)` now works identically to `removeArchiveBasesDir()`.
+Ditto for `setArchiveBaseUrl(NULL)`.
+* `pas_load()` returns helpful message when the archive `BASE_DIR` is set and
+no requested `pas` data is found:  `removeArchiveBaseDir()`.
+* Added "Temporal Aggregation" article.
+* Added "Custom QC Algorithms" article.
+* Added `verbose` parameter to `sensor_polarPlot()` and `sensor_pollutionRose()`.
+* Added `pat_multiplot()` as an alias for `pat_multiPlot()`.
+
 # AirSensor 0.8.6
 
 * Fixed `pat_dailySoH()` bug that showed up with *dplyr* 1.0.0.
@@ -527,7 +586,7 @@ of PM2.5 levels over several days.
 * Added `sensor_filter()`, `sensor_filterDate()` and `sensor_filterMeta()`.
 * Added `local_examples/downloadSpeeds.Rmd` to benchmark data download times
 from ThinkSpeak.
-* New `Purple Air Failure Modes` vignette.
+* New "Purple Air Failure Modes" vignette.
 
 # AirSensor 0.3.8 
 

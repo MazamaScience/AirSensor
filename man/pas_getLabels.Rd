@@ -4,23 +4,31 @@
 \alias{pas_getLabels}
 \title{Return labels from filtered PurpleAir Synoptic objects}
 \usage{
-pas_getLabels(pas = NULL, pattern = ".*", isOutside = TRUE, isParent = TRUE)
+pas_getLabels(
+  pas = NULL,
+  pattern = ".*",
+  idPattern = ".*",
+  isOutside = TRUE,
+  isParent = TRUE
+)
 }
 \arguments{
 \item{pas}{PurpleAir Synoptic \emph{pas} object.}
 
 \item{pattern}{Text pattern used to filter station labels.}
 
+\item{idPattern}{Text pattern used to filter \code{deviceDeploymentID}.}
+
 \item{isOutside}{Logical, is the sensor located outside?}
 
-\item{isParent}{Logical, is the sensor a parent station?}
+\item{isParent}{Logical, is the record associated with a the A channel?}
 }
 \value{
 Vector of values.
 }
 \description{
 The incoming \code{pas} object is first filtered based on the 
-values of \code{stateCodes}, \code{patter}, \code{isOutside} and \code{isParent}.
+values of \code{stateCodes}, \code{pattern}, \code{isOutside} and \code{isParent}.
 The values associated with the \code{"label"} column are then returned.
 
 This function is useful for returning values associated with specific

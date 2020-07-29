@@ -67,9 +67,16 @@ library(AirSensor)
 
 setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 
-pas <- pas_load(archival = TRUE)
-pat <- pat_load(label = "SCNP_20", pas = pas,
-                startdate = 20190411, enddate = 20190521)
+# Reference an older 'pas' before this sensor was dropped
+pas <- pas_load(20190901, archival = TRUE)
+
+pat <- pat_load(
+  label = "SCNP_20", 
+  pas = pas,
+  startdate = 20190411, 
+  enddate = 20190521
+)
+
 pat_multiPlot(pat)
 }
 }

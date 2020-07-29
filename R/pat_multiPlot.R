@@ -78,9 +78,6 @@ pat_multiPlot <- function(
   timezone = NULL
 ) {
   
-  # Suppress warnings until the end of this function
-  options(warn = -1)
-  
   # ----- Validate parameters --------------------------------------------------
   
   MazamaCoreUtils::stopIfNull(pat)
@@ -301,11 +298,15 @@ pat_multiPlot <- function(
   
   # ----- Return ---------------------------------------------------------------
   
-  options(warn = 0)
-  
   return(gg)
   
 }
+
+# ===== ALIASES ===============================================================
+
+#' @rdname pat_multiPlot
+#' @export
+pat_multiplot <- pat_multiPlot
 
 # ===== DEBUGGING ==============================================================
 

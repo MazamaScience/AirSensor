@@ -6,7 +6,7 @@
 \usage{
 pat_monitorComparison(
   pat = NULL,
-  FUN = AirSensor::PurpleAirQC_hourly_AB_02,
+  FUN = AirSensor::PurpleAirQC_hourly_AB_01,
   distanceCutoff = 20,
   ylim = NULL,
   replaceOutliers = TRUE,

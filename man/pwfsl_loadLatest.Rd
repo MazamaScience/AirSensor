@@ -27,7 +27,7 @@ Data for the most recent 45 days can be downloaded using
 additional data loading functions.
 }
 \examples{
-\dontrun{
+\donttest{
 library(AirSensor)
 
 pwfsl <- pwfsl_loadLatest()

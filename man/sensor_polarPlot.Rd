@@ -16,7 +16,8 @@ sensor_polarPlot(
   key = TRUE,
   keyPosition = "right",
   ws_spread = 15,
-  wd_spread = 4
+  wd_spread = 4,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -73,6 +74,8 @@ speed when correlation or regression techniques are used. Default is 15.}
 
 \item{wd_spread}{An integer used for the weighting kernel spread for wind 
 direction when correlation or regression techniques are used. Default is 4.}
+
+\item{verbose}{Logical controlling the generation of progress and error messages.}
 }
 \value{
 a plot and dataframe
@@ -85,8 +88,14 @@ showing concentration by wind speed and direction.
 \donttest{
 library(AirSensor)
 
+setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+
+pas <- pas_load(archival = TRUE)
+pat <- pat_loadMonth(label = "SCBB_02", pas = pas, datestamp = 202005)
+sensor <- pat_createAirSensor(pat)
+
 # Polar plot
-sensor_polarPlot(example_sensor, resolution = "normal")
+sensor_polarPlot(sensor, resolution = "normal")
 }
 }
 \seealso{

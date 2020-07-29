@@ -41,16 +41,18 @@
 #' @seealso \link{pas_downloadParseRawData}
 #' 
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(AirSensor)
 #' 
 #' initializeMazamaSpatialUtils()
 #' 
 #' pas <- pas_createNew("US")
 #' 
-#' pas %>% 
-#'   pas_filter(stateCode == "CA") %>%
-#'   pas_leaflet()
+#' if ( interactive() ) {
+#'   pas %>% 
+#'     pas_filter(stateCode == "CA") %>%
+#'     pas_leaflet()
+#' }
 #' }
 
 pas_createNew <- function(

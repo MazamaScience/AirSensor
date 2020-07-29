@@ -80,7 +80,7 @@ devices, which are represented by records with isParent = TRUE." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.78</span>
       </span>
     </div>
 
@@ -112,10 +112,16 @@ devices, which are represented by records with isParent = TRUE." />
       <a href="../articles/articles/Australia_on_fire.html">Australia on Fire</a>
     </li>
     <li>
+      <a href="../articles/articles/Custom_QC_Algorithms.html">Custom QC Algorithms</a>
+    </li>
+    <li>
       <a href="../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
     </li>
     <li>
       <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
+    </li>
+    <li>
+      <a href="../articles/articles/Temporal_Aggregation.html">Temporally Aggregated Time Series</a>
     </li>
     <li>
       <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
@@ -168,7 +174,13 @@ The values associated with the <code>"ID"</code> column are then returned.</p>
 <em>devices</em>, which are represented by records with <code>isParent = TRUE</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>pas_getIDs</span>(<span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>".*"</span>, <span class='kw'>isOutside</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>isParent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>pas_getIDs</span>(
+  <span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>".*"</span>,
+  <span class='kw'>idPattern</span> <span class='kw'>=</span> <span class='st'>".*"</span>,
+  <span class='kw'>isOutside</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>isParent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -182,12 +194,16 @@ The values associated with the <code>"ID"</code> column are then returned.</p>
       <td><p>Text pattern used to filter station labels.</p></td>
     </tr>
     <tr>
+      <th>idPattern</th>
+      <td><p>Text pattern used to filter <code>deviceDeploymentID</code>.</p></td>
+    </tr>
+    <tr>
       <th>isOutside</th>
       <td><p>Logical, is the sensor located outside?</p></td>
     </tr>
     <tr>
       <th>isParent</th>
-      <td><p>Logical, is the sensor a parent station?</p></td>
+      <td><p>Logical, is the record associated with a the A channel?</p></td>
     </tr>
     </table>
 

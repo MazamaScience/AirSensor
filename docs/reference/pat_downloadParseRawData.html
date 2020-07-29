@@ -91,7 +91,7 @@ See the references." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.78</span>
       </span>
     </div>
 
@@ -123,10 +123,16 @@ See the references." />
       <a href="../articles/articles/Australia_on_fire.html">Australia on Fire</a>
     </li>
     <li>
+      <a href="../articles/articles/Custom_QC_Algorithms.html">Custom QC Algorithms</a>
+    </li>
+    <li>
       <a href="../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
     </li>
     <li>
       <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
+    </li>
+    <li>
+      <a href="../articles/articles/Temporal_Aggregation.html">Temporally Aggregated Time Series</a>
     </li>
     <li>
       <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
@@ -241,7 +247,7 @@ specified sensor and time period.</p>
     <p><a href='https://www2.purpleair.com/community/faq#!hc-sd-card-csv-file-header'>https://www2.purpleair.com/community/faq#!hc-sd-card-csv-file-header</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>AirSensor</span>)
 
 <span class='fu'><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl</a></span>(<span class='st'>"http://data.mazamascience.com/PurpleAir/v1"</span>)
@@ -254,8 +260,78 @@ specified sensor and time period.</p>
     <span class='kw'>pas</span> <span class='kw'>=</span> <span class='no'>pas</span>
   )
 
-<span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span>(<span class='no'>pat_rawList</span>, <span class='no'>head</span>)
-}</div></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span>(<span class='no'>pat_rawList</span>, <span class='no'>head</span>)</div><div class='output co'>#&gt; $meta
+#&gt; <span style='color: #555555;'># A tibble: 2 x 45</span><span>
+#&gt;   ID    label DEVICE_LOCATION… THINGSPEAK_PRIM… THINGSPEAK_PRIM…
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>           
+#&gt; </span><span style='color: #555555;'>1</span><span> 21257 Linc… outside          648716           6D84VW7006XE07J9
+#&gt; </span><span style='color: #555555;'>2</span><span> 21258 Linc… </span><span style='color: #BB0000;'>NA</span><span>               648718           NQWFIW5HLDO0FBFG
+#&gt; </span><span style='color: #555555;'># … with 40 more variables: THINGSPEAK_SECONDARY_ID </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
+#&gt; #   THINGSPEAK_SECONDARY_ID_READ_KEY </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, latitude </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, longitude </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
+#&gt; #   pm25 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, lastSeenDate </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, sensorType </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, flag_hidden </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>,
+#&gt; #   isOwner </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, humidity </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, temperature </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, pressure </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
+#&gt; #   age </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, parentID </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, flag_highValue </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>,
+#&gt; #   flag_attenuation_hardware </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>, Voc </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, Ozone1 </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
+#&gt; #   pm25_current </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, pm25_10min </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, pm25_30min </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, pm25_1hr </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
+#&gt; #   pm25_6hr </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, pm25_1day </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, pm25_1week </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
+#&gt; #   statsLastModifiedDate </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span style='color: #555555;'>, statsLastModifiedInterval </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
+#&gt; #   countryCode </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, stateCode </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, timezone </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, deviceID </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,
+#&gt; #   locationID </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, deviceDeploymentID </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, airDistrict </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
+#&gt; #   pwfsl_closestDistance </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, pwfsl_closestMonitorID </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
+#&gt; #   sensorManufacturer </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, targetPollutant </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, technologyType </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,
+#&gt; #   communityRegion </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
+#&gt; 
+#&gt; $A_PRIMARY
+#&gt; </span><span style='color: #555555;'># A tibble: 6 x 10</span><span>
+#&gt;   created_at          entry_id pm1.0_cf1 pm2.5_cf1 pm10.0_cf1 uptime  rssi
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>                 </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> 2020-07-13 </span><span style='color: #555555;'>07:00:40</span><span>   </span><span style='text-decoration: underline;'>171</span><span>943      1.6       2.81       3.4    </span><span style='text-decoration: underline;'>2</span><span>041   -</span><span style='color: #BB0000;'>90</span><span>
+#&gt; </span><span style='color: #555555;'>2</span><span> 2020-07-13 </span><span style='color: #555555;'>07:02:27</span><span>   </span><span style='text-decoration: underline;'>171</span><span>944      2.07      2.87       3.82   </span><span style='text-decoration: underline;'>2</span><span>043   -</span><span style='color: #BB0000;'>90</span><span>
+#&gt; </span><span style='color: #555555;'>3</span><span> 2020-07-13 </span><span style='color: #555555;'>07:04:28</span><span>   </span><span style='text-decoration: underline;'>171</span><span>945      1.74      2.46       3.39   </span><span style='text-decoration: underline;'>2</span><span>045   -</span><span style='color: #BB0000;'>91</span><span>
+#&gt; </span><span style='color: #555555;'>4</span><span> 2020-07-13 </span><span style='color: #555555;'>07:06:29</span><span>   </span><span style='text-decoration: underline;'>171</span><span>946      1.69      2.76       3.03   </span><span style='text-decoration: underline;'>2</span><span>047   -</span><span style='color: #BB0000;'>91</span><span>
+#&gt; </span><span style='color: #555555;'>5</span><span> 2020-07-13 </span><span style='color: #555555;'>07:08:31</span><span>   </span><span style='text-decoration: underline;'>171</span><span>947      1.83      3.17       3.36   </span><span style='text-decoration: underline;'>2</span><span>049   -</span><span style='color: #BB0000;'>92</span><span>
+#&gt; </span><span style='color: #555555;'>6</span><span> 2020-07-13 </span><span style='color: #555555;'>07:10:34</span><span>   </span><span style='text-decoration: underline;'>171</span><span>948      1.84      3.19       3.23   </span><span style='text-decoration: underline;'>2</span><span>051   -</span><span style='color: #BB0000;'>93</span><span>
+#&gt; </span><span style='color: #555555;'># … with 3 more variables: temperature </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, humidity </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, pm2.5_atm </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; 
+#&gt; $A_SECONDARY
+#&gt; </span><span style='color: #555555;'># A tibble: 6 x 10</span><span>
+#&gt;   created_at          entry_id counts_0.3 counts_0.5 counts_1.0 counts_2.5
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>                 </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> 2020-07-13 </span><span style='color: #555555;'>07:00:42</span><span>   </span><span style='text-decoration: underline;'>171</span><span>956       456.       133.       17.1       2.33
+#&gt; </span><span style='color: #555555;'>2</span><span> 2020-07-13 </span><span style='color: #555555;'>07:02:29</span><span>   </span><span style='text-decoration: underline;'>171</span><span>957       505.       143.       25.1       2.38
+#&gt; </span><span style='color: #555555;'>3</span><span> 2020-07-13 </span><span style='color: #555555;'>07:04:29</span><span>   </span><span style='text-decoration: underline;'>171</span><span>958       452.       129.       19.0       2.86
+#&gt; </span><span style='color: #555555;'>4</span><span> 2020-07-13 </span><span style='color: #555555;'>07:06:30</span><span>   </span><span style='text-decoration: underline;'>171</span><span>959       452.       131.       24.7       1.34
+#&gt; </span><span style='color: #555555;'>5</span><span> 2020-07-13 </span><span style='color: #555555;'>07:08:32</span><span>   </span><span style='text-decoration: underline;'>171</span><span>960       493.       134.       24.0       2.14
+#&gt; </span><span style='color: #555555;'>6</span><span> 2020-07-13 </span><span style='color: #555555;'>07:10:36</span><span>   </span><span style='text-decoration: underline;'>171</span><span>961       472.       134.       24.5       1.3 
+#&gt; </span><span style='color: #555555;'># … with 4 more variables: counts_5.0 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, counts_10.0 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
+#&gt; #   pm1.0_atm </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, pm10.0_atm </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; 
+#&gt; $B_PRIMARY
+#&gt; </span><span style='color: #555555;'># A tibble: 6 x 10</span><span>
+#&gt;   created_at          entry_id pm1.0_cf1 pm2.5_cf1 pm10.0_cf1 memory  adc0
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>                 </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> 2020-07-13 </span><span style='color: #555555;'>07:00:43</span><span>   </span><span style='text-decoration: underline;'>171</span><span>979      5.39      6.43       6.89  </span><span style='text-decoration: underline;'>18</span><span>424     0
+#&gt; </span><span style='color: #555555;'>2</span><span> 2020-07-13 </span><span style='color: #555555;'>07:02:30</span><span>   </span><span style='text-decoration: underline;'>171</span><span>980      4.98      6.34       7.12  </span><span style='text-decoration: underline;'>17</span><span>920     0
+#&gt; </span><span style='color: #555555;'>3</span><span> 2020-07-13 </span><span style='color: #555555;'>07:04:31</span><span>   </span><span style='text-decoration: underline;'>171</span><span>981      5.81      6.64       7.68  </span><span style='text-decoration: underline;'>18</span><span>256     0
+#&gt; </span><span style='color: #555555;'>4</span><span> 2020-07-13 </span><span style='color: #555555;'>07:06:32</span><span>   </span><span style='text-decoration: underline;'>171</span><span>982      5.36      6.46       6.5   </span><span style='text-decoration: underline;'>18</span><span>256     0
+#&gt; </span><span style='color: #555555;'>5</span><span> 2020-07-13 </span><span style='color: #555555;'>07:08:34</span><span>   </span><span style='text-decoration: underline;'>171</span><span>983      4.91      5.86       6.36  </span><span style='text-decoration: underline;'>18</span><span>424     0
+#&gt; </span><span style='color: #555555;'>6</span><span> 2020-07-13 </span><span style='color: #555555;'>07:10:44</span><span>   </span><span style='text-decoration: underline;'>171</span><span>984      4.53      5.88       5.89  </span><span style='text-decoration: underline;'>18</span><span>592     0
+#&gt; </span><span style='color: #555555;'># … with 3 more variables: pressure </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, bsec_iaq </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, pm2.5_atm </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; 
+#&gt; $B_SECONDARY
+#&gt; </span><span style='color: #555555;'># A tibble: 6 x 10</span><span>
+#&gt;   created_at          entry_id counts_0.3 counts_0.5 counts_1.0 counts_2.5
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>                 </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> 2020-07-13 </span><span style='color: #555555;'>07:00:45</span><span>   </span><span style='text-decoration: underline;'>171</span><span>968      </span><span style='text-decoration: underline;'>1</span><span>188.       340.       19.4       1.88
+#&gt; </span><span style='color: #555555;'>2</span><span> 2020-07-13 </span><span style='color: #555555;'>07:02:32</span><span>   </span><span style='text-decoration: underline;'>171</span><span>969      </span><span style='text-decoration: underline;'>1</span><span>177.       332.       25.1       3.14
+#&gt; </span><span style='color: #555555;'>3</span><span> 2020-07-13 </span><span style='color: #555555;'>07:04:32</span><span>   </span><span style='text-decoration: underline;'>171</span><span>970      </span><span style='text-decoration: underline;'>1</span><span>276.       361.       24.4       1.64
+#&gt; </span><span style='color: #555555;'>4</span><span> 2020-07-13 </span><span style='color: #555555;'>07:06:33</span><span>   </span><span style='text-decoration: underline;'>171</span><span>971      </span><span style='text-decoration: underline;'>1</span><span>244.       350.       20.1       1.62
+#&gt; </span><span style='color: #555555;'>5</span><span> 2020-07-13 </span><span style='color: #555555;'>07:08:35</span><span>   </span><span style='text-decoration: underline;'>171</span><span>972      </span><span style='text-decoration: underline;'>1</span><span>147.       316.       17.3       1.5 
+#&gt; </span><span style='color: #555555;'>6</span><span> 2020-07-13 </span><span style='color: #555555;'>07:10:46</span><span>   </span><span style='text-decoration: underline;'>171</span><span>973      </span><span style='text-decoration: underline;'>1</span><span>048.       292.       24.4       1.51
+#&gt; </span><span style='color: #555555;'># … with 4 more variables: counts_5.0 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, counts_10.0 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
+#&gt; #   pm1.0_atm </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, pm10.0_atm </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </div><div class='input'># }
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

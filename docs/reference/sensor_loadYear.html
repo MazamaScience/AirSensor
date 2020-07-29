@@ -85,7 +85,7 @@ PurpleAir sensors." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.78</span>
       </span>
     </div>
 
@@ -117,10 +117,16 @@ PurpleAir sensors." />
       <a href="../articles/articles/Australia_on_fire.html">Australia on Fire</a>
     </li>
     <li>
+      <a href="../articles/articles/Custom_QC_Algorithms.html">Custom QC Algorithms</a>
+    </li>
+    <li>
       <a href="../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
     </li>
     <li>
       <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
+    </li>
+    <li>
+      <a href="../articles/articles/Temporal_Aggregation.html">Temporally Aggregated Time Series</a>
     </li>
     <li>
       <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
@@ -208,13 +214,6 @@ PurpleAir sensors.</p>
 
     <div class='dont-index'><p><a href='pat_createNew.html'>pat_createNew</a></p></div>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'># \donttest{
-#setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
-#sensor_loadYear("scaqmd", 2018) %>%
-#   PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
-# }
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -222,7 +221,6 @@ PurpleAir sensors.</p>
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

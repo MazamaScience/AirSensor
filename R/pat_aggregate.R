@@ -10,7 +10,7 @@
 #' @param unit Character string specifying temporal units for binning.
 #' @param count Number of units per bin.
 #'
-#' @description Aggregate PurpleAir timeseries (\emph{pat}) objects along its
+#' @description Aggregate PurpleAir timeseries (\emph{pat}) object along its
 #' datetime axis. Temporal aggregation involves splitting a \emph{pat} object into
 #' separate bins along its datetime axis. \code{FUN} is mapped to the \emph{pat}
 #' numeric variables in each bin, which are then recombined into an aggregated
@@ -76,8 +76,6 @@ pat_aggregate <- function(
   MazamaCoreUtils::stopIfNull(unit)
   MazamaCoreUtils::stopIfNull(count)
   
-  options(warn = -1)
-  
   if ( !pat_isPat(pat) )
     stop("Parameter 'pat' is not a valid 'pa_timeseries' object.")
   
@@ -137,7 +135,7 @@ pat_aggregate <- function(
   dateRange <- range(datetime)
   starttime <- MazamaCoreUtils::parseDatetime(dateRange[1], timezone = "UTC")
   endtime <- MazamaCoreUtils::parseDatetime(dateRange[2], timezone = "UTC")
-  # TODO: Currently hard-coded to only support hours. Update to parse count and unit. 
+
   # Create dataframe with continuous axis
   datetimeAxis <- dplyr::tibble('datetime' = seq(starttime, endtime, by = seqBreakUnit))
 
@@ -151,8 +149,7 @@ pat_aggregate <- function(
   )
   
   hourlyDataMatrix <-
-    do.call(rbind, mapped) %>%
-    round(1) 
+    do.call(rbind, mapped)
     
   # Add mapped data to pa_timeseries object with aggregate datetime axis
   data <- 
@@ -171,8 +168,6 @@ pat_aggregate <- function(
   # ----- Return ---------------------------------------------------------------
   
   pat$data <- data
-  
-  options(warn = 0)
   
   return(pat)
   

@@ -26,12 +26,6 @@
 #' 
 #' @seealso \link{pat_createNew}
 #' 
-#' @examples
-#' \donttest{
-#' #setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
-#' #sensor_loadYear("scaqmd", 2018) %>%
-#' #   PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
-#' }
 
 sensor_loadYear <- function(
   collection = "scaqmd",

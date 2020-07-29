@@ -57,7 +57,7 @@ The list of available parameters include:
 }
 \examples{
 
-\dontrun{
+\donttest{
 library(AirSensor)
 
 North_Bend_Weather <- 
@@ -69,9 +69,11 @@ North_Bend_Weather <-
     verbose = TRUE
   )
 
-North_Bend_Weather \%>\%
-  pat_sample(sampleSize = 1000, setSeed = 1) \%>\%
-  pat_dygraph(xlab = "2018", rollPeriod = 6)
+if ( interactive() ) {
+  North_Bend_Weather \%>\%
+    pat_sample(sampleSize = 1000, setSeed = 1) \%>\%
+    pat_dygraph(xlab = "2018", rollPeriod = 6)
+}
 }
 }
 \keyword{pa_timeseries}

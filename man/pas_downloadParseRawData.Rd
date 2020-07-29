@@ -20,14 +20,16 @@ The synoptic data provides a view of the entire Purple Air network and
 includes both metadata and recent PM2.5 averages for each deployed sensor.
 }
 \examples{
-\dontrun{
+\donttest{
 library(AirSensor)
 
 initializeMazamaSpatialUtils()
 
 pas_raw <- pas_downloadParseRawData()
 
-View(pas_raw[1:100,])
+if ( interactive() ) {
+  View(pas_raw[1:100,])
+}
 }
 }
 \references{

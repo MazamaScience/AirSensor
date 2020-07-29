@@ -40,15 +40,18 @@
 #' @seealso \link{pas_createNew}
 #' 
 #' @examples
-#' \dontrun{
-#' library(AirFire)
+#' \donttest{
+#' library(AirSensor)
 #' 
 #' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 #' 
 #' pas <- pas_load()
-#' pas %>% 
-#'   pas_filter(stateCode == "CA") %>%
-#'   pas_leaflet()
+#' 
+#' if ( interactive() ) {
+#'   pas %>% 
+#'     pas_filter(stateCode == "CA") %>%
+#'     pas_leaflet()
+#' }
 #' } 
 
 pas_load <- function(
@@ -168,8 +171,17 @@ pas_load <- function(
   # NOTE:  loading might fail.
   
   if ( !successful ) {
-    stop(paste("Data file could not be loaded after ", retries, " tries"),
-         call. = FALSE)
+    if ( !is.null(getArchiveBaseDir()) ) {
+      stop(
+        sprintf("The requested 'pas' object is not found in %s", getArchiveBaseDir()),
+        "\n\nYou can unset the data archive BASE_DIR with:\n\n",
+        "  removeArchiveBaseDir()",
+        call. = FALSE
+      )
+    } else {
+      stop(sprintf("Data file could not be loaded after %d tries", retries),
+           call. = FALSE)
+    }
   }
   
   

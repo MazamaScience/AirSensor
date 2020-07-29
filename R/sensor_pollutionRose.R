@@ -39,6 +39,7 @@
 #' one. This is useful for showing how the concentrations (or other parameters) 
 #' contribute to each wind sector when the proprtion of time the wind is from 
 #' that direction is low. A line showing the probability that the wind.
+#' @param verbose Logical controlling the generation of progress and error messages.
 #' 
 #' @description Plots a traditional wind rose plot for wind direction and PM2.5.
 #'
@@ -53,12 +54,16 @@
 #' # Set default location of pre-generated data files
 #' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 #' 
-#' sensor <- sensor_load(startdate = 20190601, enddate = 20190630)
-#' sensor <- sensor_filterMeta(sensor, monitorID == "SCSB_02")
+#' pas <- pas_load(archival = TRUE)
+#' pat <- pat_loadMonth(label = "SCBB_02", pas = pas, datestamp = 202005)
+#' sensor <- pat_createAirSensor(pat)
 #' 
 #' # Load wind data from NOAA
-#' windData <- worldmet::importNOAA(code = "722975-53141", year = 2019, 
-#'                                  parallel = FALSE)
+#' windData <- worldmet::importNOAA(
+#'   code = "722975-53141", 
+#'   year = 2020, 
+#'   parallel = FALSE
+#' )
 #' windData <- dplyr::select(windData, c("date", "wd", "ws"))
 #' 
 #' # Plot rose using mean binning
@@ -78,7 +83,8 @@ sensor_pollutionRose <- function(
   breaks = 6, 
   paddle = FALSE, 
   seg = 0.9, 
-  normalize = FALSE
+  normalize = FALSE,
+  verbose = TRUE
 ) {
   
   # ----- Validate parameters --------------------------------------------------
@@ -92,10 +98,10 @@ sensor_pollutionRose <- function(
     stop("Required parameter 'sensor' has no data.")
   
   if ( nrow(sensor$meta) == 0 )
-    stop("Parameter 'sensor' contains no SC sensors")
+    stop("Parameter 'sensor' contains no sensors")
   
   if ( nrow(sensor$meta) > 1 )
-    stop("Parameter 'sensor' contains more than one SC sensor")
+    stop("Parameter 'sensor' contains more than one sensor")
   
   # ----- Get wind data --------------------------------------------------------
   
@@ -111,8 +117,10 @@ sensor_pollutionRose <- function(
                                      plot = FALSE)[1,]
     siteCode <- paste0(closestSite$USAF, "-", closestSite$WBAN)
     
-    siteData <- worldmet::importNOAA(code = siteCode, year = year, 
-                                     parallel = FALSE)
+    siteData <- worldmet::importNOAA(code = siteCode, 
+                                     year = year, 
+                                     parallel = FALSE,
+                                     quiet = !verbose )
     windData <- dplyr::select(siteData, c("date", "wd", "ws"))
   }
   
@@ -178,7 +186,7 @@ if ( FALSE ) {
   normalize <- FALSE
  
   sensor <- 
-    sensor_load(startdate = 20180901, enddate = 20180930) %>%
+    sensor_loadMonth(datestamp = 201809) %>%
     sensor_filterMeta(monitorID == "SCUV_09")
   
   windsite <- 

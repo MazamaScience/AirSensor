@@ -1,0 +1,175 @@
+---
+title: "PurpleAir QC Comparison"
+author: "Mazama Science"
+date: "6/22/2020"
+output: html_document
+params: 
+  label: 'SCAP_36'
+  startdate: 20190701
+  enddate: 20190708
+---
+
+Ashley's list of sensors to explore:
+
+```
+Below is a list of sensors and timeframes I was using to explore the results of 
+applying different QC algorithms. I was primarily focused on examples where we 
+see moderate to severe sensor noise from one or both channels (as opposed to more 
+extreme/obvious sensor malfunctions, such as one channel reading zero).
+ 
+Sensor: “SCNP_17”, startdate = 20200501, enddate = 20200520
+Sensor: “CARB_SMOKE_SLO_CDF”, startdate = 20200501, enddate = 20200520
+Sensor: “1105 Trail View Place, Nipomo, CA”, startdate = 20200501, enddate = 20200520
+Sensor: "CARB_Smoke_SBCAPCD_Santa Maria", startdate = 20200501, enddate = 20200520
+Sensor: "CARB_SMOKE_SLO_CDF", startdate = 20200501, enddate = 20200520
+Sensor: "SCAP_19", startdate = 20200501, enddate = 20200520
+Sensor: "SCTV_31", startdate = 20200501, enddate = 20200520
+Sensor: "RUSD_1 (Arlington HS)", startdate = 20200516, enddate = 20200521
+ 
+GitHub IO examples:
+Sensor: “SCNP_20”, startdate = 20190411, enddate = 20190521
+Sensor: "SCAP_46", startdate = 20190701, enddate = 20190710
+ 
+GitHub IO example (Australian wildfire):
+Sensor: “Downer”, startdate = 20191225, enddate = 20200110
+```
+
+-----
+
+```{r setup, include = TRUE}
+library(AirSensor)
+AirSensor::initializeMazamaSpatialUtils()
+setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1") # SCAQMD sensors 
+
+knitr::opts_chunk$set(fig.width = 10, fig.height = 5)
+
+```
+
+```{r load, include = TRUE, warning = FALSE}
+pas <- pas_load(archival = TRUE)
+pat <- pat_createNew(
+  label = params$label,
+  pas = pas,
+  startdate = params$startdate, 
+  enddate = params$enddate
+)
+```
+
+## Review PAT data
+
+### Sensor Multi-plot
+
+```{r multiplot, warning = FALSE}
+pat_multiPlot(pat) 
+```
+
+### Sensor State of Health (Daily)
+
+PurpleAir daily state-of-health (`pat_dailySoH()`) applies six algorithms:
+- `PurpleAirSoH_dailyPctDC` 
+- `PurpleAirSoH_dailyPctReporting`
+- `PurpleAirSoH_dailyPctValid`
+- `PurpleAirSoH_dailyOtherFit`
+- `PurpleAirSoH_dailyABFit`
+- `PurpleAirSoH_dailyABtTest`
+
+```{r soh, warning = FALSE, fig.height = 10}
+pat_dailySoHPlot(pat)
+```
+
+-----
+
+## Review QC Algorithms
+
+See `?pat_dailySoH`, `?PurpleAirSoH_dailyPctDC`, `?PurpleAirSoH_dailyPctReporting`, `?PurpleAirSoH_dailyPctValid`, `?PurpleAirSoH_dailyPctValid`, `?PurpleAirSoH_dailyOtherFit`, `?PurpleAirSoH_dailyABFit`, and `?PurpleAirSoH_dailyABtTest` for more details. 
+
+### PurpleAir Quality-Control 00
+
+Creates a `pm25` timeseries by averaging aggregated data from the A and B channels and applying the following QC logic:
+
+- Create pm25 by averaging the A and B channel aggregation means
+- Invalidate data where:  (min_count < 20)
+
+```{r qc_00, warning = FALSE}
+pat_monitorComparison(pat, FUN = AirSensor::PurpleAirQC_hourly_AB_00)
+```
+
+See `?AirSensor::PurpleAirQC_hourly_AB_00` for more details regarding the quality-control algorithm.
+
+### PurpleAir Quality-Control 01
+
+Creates a `pm25` timeseries by averaging aggregated data from the A and B channels and applying the following QC logic:
+
+- Create pm25 by averaging the A and B channel aggregation means
+- Invalidate data where:  (min_count < 20)
+- Invalidate data where:  (p-value < 1e-4) & (mean_diff > 10)
+- Invalidate data where:  (pm25 < 100) & (mean_diff > 20)
+
+```{r qc_01, warning = FALSE}
+pat_monitorComparison(pat, FUN = AirSensor::PurpleAirQC_hourly_AB_01)
+```
+
+See `?AirSensor::PurpleAirQC_hourly_AB_01` for more details regarding the quality-control algorithm.
+
+### PurpleAir Quality-Control 02
+
+Creates a `pm25` timeseries by averaging aggregated data from the A and B channels and applying the following QC logic:
+
+- Create pm25 by averaging the A and B channel aggregation means
+- Invalidate data where:  (min_count < 20)
+- Invalidate data where:  (A/B hourly median-absolute-deviation (MAD) > 3)
+- Invalidate data where:  (A/B hourly percent difference (pct_diff) > 0.5)
+
+```{r qc_02, warning = FALSE}
+pat_monitorComparison(pat, FUN = AirSensor::PurpleAirQC_hourly_AB_02)
+```
+
+See `?AirSensor::PurpleAirQC_hourly_AB_02` for more details regarding the quality-control algorithm.
+
+### PurpleAir Quality-Control 03
+
+Creates a `pm25` timeseries by averaging aggregated data from the A and B channels and applying the following QC logic:
+
+- Create pm25 by averaging the A and B channel aggregation means
+- Invalidate data where:  (min_count < 20)
+- Invalidate data where:  (A/B hourly difference > 5 AND A/B hourly percent difference > 70%)
+- Invalidate data where:  (A/B hourly data recovery < 90%)
+
+
+```{r qc_03, warning = FALSE, fig.width = 10}
+pat_monitorComparison(pat, FUN = AirSensor::PurpleAirQC_hourly_AB_03)
+```
+
+See `?AirSensor::PurpleAirQC_hourly_AB_03` for more details regarding the quality-control algorithm.
+
+-----
+
+## Compare QC Algorithms
+
+```{r qc_comparison, fig.height = 10}
+qc_00 <- pat_createAirSensor(pat, FUN = PurpleAirQC_hourly_AB_00)
+qc_01 <- pat_createAirSensor(pat, FUN = PurpleAirQC_hourly_AB_01)
+qc_02 <- pat_createAirSensor(pat, FUN = PurpleAirQC_hourly_AB_02)
+qc_03 <- pat_createAirSensor(pat, FUN = PurpleAirQC_hourly_AB_03)
+
+# Using baseplot for a custom graphic
+layout(matrix(seq(3)))
+
+PWFSLSmoke::monitor_timeseriesPlot(qc_00, pch = 16, col = 'red')
+PWFSLSmoke::monitor_timeseriesPlot(qc_01, pch = 16, col = 'black', add = TRUE)
+title("QC_hourly_AB_01")
+
+PWFSLSmoke::monitor_timeseriesPlot(qc_00, pch = 16, col = 'red')
+PWFSLSmoke::monitor_timeseriesPlot(qc_02, pch = 16, col = 'black', add = TRUE)
+title("QC_hourly_AB_02")
+
+PWFSLSmoke::monitor_timeseriesPlot(qc_00, pch = 16, col = 'red')
+PWFSLSmoke::monitor_timeseriesPlot(qc_03, pch = 16, col = 'black', add = TRUE)
+title("QC_hourly_AB_03")
+
+layout(1)
+```
+
+-----
+
+_Mazama Science_

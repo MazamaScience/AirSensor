@@ -84,20 +84,23 @@ The \code{paletteName} parameter can take the name of an RColorBrewer
 paeltte, \emph{e.g.} \code{"BuPu"} or \code{"Greens"}.
 }
 \examples{
-\dontrun{
+\donttest{
 library(AirSensor)
+setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 
 # California
 ca <-
   pas_load() \%>\%
   pas_filter(stateCode == 'CA')
 
-pas_leaflet(ca, parameter = "pm25_1hr")
+if ( interactive() ) {
+  pas_leaflet(ca, parameter = "pm25_1hr")
 
-pas_leaflet(ca, parameter = "temperature")
+  pas_leaflet(ca, parameter = "temperature")
 
-pas_leaflet(ca, parameter = "humidity")
+  pas_leaflet(ca, parameter = "humidity")
 
-pas_leaflet(ca, parameter = "pwfsl_closestDistance", maptype = "satellite")
+  pas_leaflet(ca, parameter = "pwfsl_closestDistance", maptype = "satellite")
+}
 }
 }

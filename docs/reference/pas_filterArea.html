@@ -76,7 +76,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.78</span>
       </span>
     </div>
 
@@ -108,10 +108,16 @@
       <a href="../articles/articles/Australia_on_fire.html">Australia on Fire</a>
     </li>
     <li>
+      <a href="../articles/articles/Custom_QC_Algorithms.html">Custom QC Algorithms</a>
+    </li>
+    <li>
       <a href="../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
     </li>
     <li>
       <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
+    </li>
+    <li>
+      <a href="../articles/articles/Temporal_Aggregation.html">Temporally Aggregated Time Series</a>
     </li>
     <li>
       <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
@@ -207,9 +213,9 @@
     <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>33.78</span>
   )
 <span class='fu'><a href='https://rdrr.io/r/base/range.html'>range</a></span>(<span class='no'>scsb</span>$<span class='no'>longitude</span>)</div><div class='output co'>#&gt; [1] -118.0945 -118.0782</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/range.html'>range</a></span>(<span class='no'>scsb</span>$<span class='no'>latitude</span>)</div><div class='output co'>#&gt; [1] 33.75989 33.77767</div><div class='input'>
-<span class='co'># \donttest{</span>
-<span class='fu'><a href='pas_leaflet.html'>pas_leaflet</a></span>(<span class='no'>scsb</span>)
-<span class='co'># }</span></div></pre>
+<span class='kw'>if</span> ( <span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>() ) {
+  <span class='fu'><a href='pas_leaflet.html'>pas_leaflet</a></span>(<span class='no'>scsb</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

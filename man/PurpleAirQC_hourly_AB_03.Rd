@@ -50,16 +50,11 @@ df_01 <-
   pat_qc() \%>\%
   PurpleAirQC_hourly_AB_01()
   
-df_02 <- 
+df_03 <- 
   example_pat_failure_A \%>\%
   pat_qc() \%>\%
-  PurpleAirQC_hourly_AB_02()
+  PurpleAirQC_hourly_AB_03()
   
-df_04 <- 
-  example_pat_failure_A \%>\%
-  pat_qc() \%>\%
-  PurpleAirQC_hourly_AB_02()
-
 layout(matrix(seq(2)))
 
 plot(df_00, pch = 16, cex = 0.8, col = "red")
@@ -67,7 +62,7 @@ points(df_01, pch = 16, cex = 0.8, col = "black")
 title("example_pat_failure_A -- PurpleAirQC_hourly_AB_01")
 
 plot(df_00, pch = 16, cex = 0.8, col = "red")
-points(df_04, pch = 16, cex = 0.8, col = "black")
+points(df_03, pch = 16, cex = 0.8, col = "black")
 title("example_pat_failure_A -- PurpleAirQC_hourly_AB_03")
 
 layout(1)

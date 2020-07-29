@@ -17,7 +17,8 @@ sensor_pollutionRose(
   breaks = 6,
   paddle = FALSE,
   seg = 0.9,
-  normalize = FALSE
+  normalize = FALSE,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -71,6 +72,8 @@ produce segments 0.5 * angle.}
 one. This is useful for showing how the concentrations (or other parameters) 
 contribute to each wind sector when the proprtion of time the wind is from 
 that direction is low. A line showing the probability that the wind.}
+
+\item{verbose}{Logical controlling the generation of progress and error messages.}
 }
 \value{
 a plot or a dataframe
@@ -85,12 +88,16 @@ library(AirSensor)
 # Set default location of pre-generated data files
 setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 
-sensor <- sensor_load(startdate = 20190601, enddate = 20190630)
-sensor <- sensor_filterMeta(sensor, monitorID == "SCSB_02")
+pas <- pas_load(archival = TRUE)
+pat <- pat_loadMonth(label = "SCBB_02", pas = pas, datestamp = 202005)
+sensor <- pat_createAirSensor(pat)
 
 # Load wind data from NOAA
-windData <- worldmet::importNOAA(code = "722975-53141", year = 2019, 
-                                 parallel = FALSE)
+windData <- worldmet::importNOAA(
+  code = "722975-53141", 
+  year = 2020, 
+  parallel = FALSE
+)
 windData <- dplyr::select(windData, c("date", "wd", "ws"))
 
 # Plot rose using mean binning

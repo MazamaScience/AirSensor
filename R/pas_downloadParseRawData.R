@@ -14,14 +14,16 @@
 #' @references \href{https://www.purpleair.com/json}{json formatted PurpleAir data}
 #' @seealso \link{pas_enhanceData}
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(AirSensor)
 #' 
 #' initializeMazamaSpatialUtils()
 #' 
 #' pas_raw <- pas_downloadParseRawData()
 #' 
-#' View(pas_raw[1:100,])
+#' if ( interactive() ) {
+#'   View(pas_raw[1:100,])
+#' }
 #' }
 
 pas_downloadParseRawData <- function(

@@ -1,7 +1,7 @@
 Type: Package
 Package: AirSensor
-Version: 0.8.6
-Title: Process and Display data from Air Quality Sensors
+Version: 0.9.8
+Title: Process and Display Data from Air Quality Sensors
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
     person("Hans", "Martin", email="hans@mazamascience.com", role=c("aut")),
@@ -69,7 +69,8 @@ Suggests:
     rmarkdown,
     roxygen2
 Description: Process and display data from air quality sensors.
-    Initial focus is on PM2.5 measurements from sensors produced by PurpleAir.
+    Initial focus is on PM2.5 measurements from sensors produced by 'PurpleAir'
+    <https://www2.purpleair.com>.
 License: GPL-3
 URL: https://github.com/MazamaScience/AirSensor 
 BugReports: https://github.com/MazamaScience/AirSensor/issues

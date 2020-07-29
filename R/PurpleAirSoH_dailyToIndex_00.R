@@ -29,6 +29,7 @@
 #' poor-fair-good values.
 #' 
 #' @examples  
+#' \donttest{
 #' library(AirSensor)
 #' 
 #' tbl <- 
@@ -37,6 +38,7 @@
 #'   PurpleAirSoH_dailyToIndex_00() 
 #'   
 #' head(tbl)
+#' }
 
 PurpleAirSoH_dailyToIndex_00 <- function(
   SoH = NULL,

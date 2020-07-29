@@ -29,6 +29,7 @@
 #' poor-fair-good values.
 #'
 #' @examples
+#' \donttest{
 #' library(AirSensor)
 #'
 #' tbl <-
@@ -36,7 +37,7 @@
 #'   pat_dailySoHIndex_00()
 #'
 #' head(tbl)
-#'
+#' }
 
 pat_dailySoHIndex_00 <- function(
   pat = NULL,

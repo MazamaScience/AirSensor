@@ -85,7 +85,7 @@ pressure -- pressure (hPa)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.78</span>
       </span>
     </div>
 
@@ -117,10 +117,16 @@ pressure -- pressure (hPa)
       <a href="../articles/articles/Australia_on_fire.html">Australia on Fire</a>
     </li>
     <li>
+      <a href="../articles/articles/Custom_QC_Algorithms.html">Custom QC Algorithms</a>
+    </li>
+    <li>
       <a href="../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
     </li>
     <li>
       <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
+    </li>
+    <li>
+      <a href="../articles/articles/Temporal_Aggregation.html">Temporally Aggregated Time Series</a>
     </li>
     <li>
       <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
@@ -243,7 +249,7 @@ representing YYYYMMDD[HH])</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='co'># \donttest{</span>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>AirSensor</span>)
 
 <span class='no'>North_Bend_Weather</span> <span class='kw'>&lt;-</span>
@@ -253,12 +259,13 @@ representing YYYYMMDD[HH])</p></td>
     <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='fl'>20180801</span>,
     <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='fl'>20180901</span>,
     <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-  )
-
-<span class='no'>North_Bend_Weather</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='pat_sample.html'>pat_sample</a></span>(<span class='kw'>sampleSize</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>setSeed</span> <span class='kw'>=</span> <span class='fl'>1</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>pat_dygraph</span>(<span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"2018"</span>, <span class='kw'>rollPeriod</span> <span class='kw'>=</span> <span class='fl'>6</span>)
-}</div></pre>
+  )</div><div class='output co'>#&gt; </div><div class='output co'>#&gt; </div><div class='output co'>#&gt; </div><div class='output co'>#&gt; </div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'>Download completed, merging/harmonizing data ...</span></div><div class='input'>
+<span class='kw'>if</span> ( <span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>() ) {
+  <span class='no'>North_Bend_Weather</span> <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='pat_sample.html'>pat_sample</a></span>(<span class='kw'>sampleSize</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>setSeed</span> <span class='kw'>=</span> <span class='fl'>1</span>) <span class='kw'>%&gt;%</span>
+    <span class='fu'>pat_dygraph</span>(<span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"2018"</span>, <span class='kw'>rollPeriod</span> <span class='kw'>=</span> <span class='fl'>6</span>)
+}
+<span class='co'># }</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

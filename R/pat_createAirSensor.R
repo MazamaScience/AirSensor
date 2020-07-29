@@ -33,7 +33,7 @@
 #'
 #' @return An "airsensor" object of aggregated PurpleAir Timeseries data.
 #' 
-#' @seealso \link{PurpleAirQC_hourly_AB_02}
+#' @seealso \link{PurpleAirQC_hourly_AB_01}
 #' @seealso \link{pat_aggregate}
 #' 
 #' @examples
@@ -51,7 +51,7 @@
 #'   PWFSLSmoke::monitor_timeseriesPlot(shadedNight = TRUE)
 #'   
 #' example_pat %>%
-#'   pat_createAirSensor(FUN = PurpleAirQC_hourly_AB_02) %>%
+#'   pat_createAirSensor(FUN = PurpleAirQC_hourly_AB_01) %>%
 #'   PWFSLSmoke::monitor_timeseriesPlot(shadedNight = TRUE)
 #'   
 #' # Custom FUN
@@ -88,7 +88,7 @@
 pat_createAirSensor <- function(
   pat = NULL,
   parameter = "pm25", 
-  FUN = PurpleAirQC_hourly_AB_02,
+  FUN = PurpleAirQC_hourly_AB_01,
   ...
 ) {
   

@@ -32,9 +32,10 @@
 #' range(scsb$longitude)
 #' range(scsb$latitude)
 #' 
-#' \donttest{
-#' pas_leaflet(scsb)
+#' if ( interactive() ) {
+#'   pas_leaflet(scsb)
 #' }
+#'
 
 pas_filterArea <- function(
   pas = NULL,

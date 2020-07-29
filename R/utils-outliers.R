@@ -134,7 +134,7 @@
   parameter = "pm25",
   ylim = NULL,
   xlab = "Date", 
-  ylab = "\u03bcg / m\u00b3", 
+  ylab = "ug / m3", 
   title = "default", 
   subtitle = NULL,
   data_shape = 18, 
@@ -151,6 +151,8 @@
   
   MazamaCoreUtils::stopIfNull(df)
 
+  # ----- Create df_outliers ---------------------------------------------------
+  
   col_flag <- names(df)[which(stringr::str_detect(names(df), "_outlierFlag"))]
   col_param <- names(df)[which(stringr::str_detect(names(df), parameter))][1]
   
@@ -166,6 +168,8 @@
       color = outlier_color,
       alpha = outlier_alpha
     )
+
+  # ----- Create plot ----------------------------------------------------------
   
   # Now create the entire plot, adding outliers at the end
   df_plot <- 

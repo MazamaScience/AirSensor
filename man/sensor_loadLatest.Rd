@@ -23,11 +23,13 @@ PurpleAir sensors.
 }
 \examples{
 \donttest{
-## TODO:  Update sensor_loadLatest() example when USFS airsensor data becomes available.
-#setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
-#sensor_loadLatest("scaqmd") \%>\%
-#  PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
-#}
+library(AirSensor)
+
+setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+
+sensor_loadLatest("scaqmd") \%>\%
+  PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
+}
 }
 \seealso{
 \link{sensor_load}

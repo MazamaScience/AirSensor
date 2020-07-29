@@ -78,7 +78,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.78</span>
       </span>
     </div>
 
@@ -110,10 +110,16 @@
       <a href="../articles/articles/Australia_on_fire.html">Australia on Fire</a>
     </li>
     <li>
+      <a href="../articles/articles/Custom_QC_Algorithms.html">Custom QC Algorithms</a>
+    </li>
+    <li>
       <a href="../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
     </li>
     <li>
       <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
+    </li>
+    <li>
+      <a href="../articles/articles/Temporal_Aggregation.html">Temporally Aggregated Time Series</a>
     </li>
     <li>
       <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
@@ -200,10 +206,10 @@ Only rows where the condition evaluates to TRUE are kept.</p></td>
   <span class='no'>ca</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>pas_filter</span>(<span class='kw pkg'>stringr</span><span class='kw ns'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_detect.html'>str_detect</a></span>(<span class='no'>label</span>, <span class='st'>"^SCSB_"</span>))
 <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>scsb</span>)</div><div class='output co'>#&gt; [1] 58</div><div class='input'>
- <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='pas_leaflet.html'>pas_leaflet</a></span>(<span class='no'>ca</span>)
+<span class='kw'>if</span> ( <span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>() ) {
+  <span class='fu'><a href='pas_leaflet.html'>pas_leaflet</a></span>(<span class='no'>ca</span>)
 
-<span class='fu'><a href='pas_leaflet.html'>pas_leaflet</a></span>(<span class='no'>scsb</span>, <span class='kw'>maptype</span> <span class='kw'>=</span> <span class='st'>"satellite"</span>)
+  <span class='fu'><a href='pas_leaflet.html'>pas_leaflet</a></span>(<span class='no'>scsb</span>, <span class='kw'>maptype</span> <span class='kw'>=</span> <span class='st'>"satellite"</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

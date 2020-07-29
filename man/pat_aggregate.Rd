@@ -24,7 +24,7 @@ pat_aggregate(
 Returns an aggregated \emph{pat} object.
 }
 \description{
-Aggregate PurpleAir timeseries (\emph{pat}) objects along its
+Aggregate PurpleAir timeseries (\emph{pat}) object along its
 datetime axis. Temporal aggregation involves splitting a \emph{pat} object into
 separate bins along its datetime axis. \code{FUN} is mapped to the \emph{pat}
 numeric variables in each bin, which are then recombined into an aggregated

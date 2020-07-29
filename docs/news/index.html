@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.78</span>
       </span>
     </div>
 
@@ -106,10 +106,16 @@
       <a href="../articles/articles/Australia_on_fire.html">Australia on Fire</a>
     </li>
     <li>
+      <a href="../articles/articles/Custom_QC_Algorithms.html">Custom QC Algorithms</a>
+    </li>
+    <li>
       <a href="../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
     </li>
     <li>
       <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
+    </li>
+    <li>
+      <a href="../articles/articles/Temporal_Aggregation.html">Temporally Aggregated Time Series</a>
     </li>
     <li>
       <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
@@ -153,6 +159,86 @@
       <small>Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="airsensor-0-9-8" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-9-8" class="anchor"></a>AirSensor 0.9.8</h1>
+<ul>
+<li>Added <code>idPattern</code> argument to all <code>pas_get~()</code> functions.</li>
+<li>Fixed bug in <code><a href="../reference/sensor_load.html">sensor_load()</a></code>.</li>
+</ul>
+</div>
+    <div id="airsensor-0-9-7" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-9-7" class="anchor"></a>AirSensor 0.9.7</h1>
+<ul>
+<li>Removed inappropriate application of <code><a href="https://rdrr.io/r/base/Round.html">round(1)</a></code> from internal <code><a href="../reference/pat_aggregate.html">pat_aggregate()</a></code> calculations.</li>
+<li>Refactored <code><a href="../reference/patData_aggregate.html">patData_aggregate()</a></code> to work properly. The passed in <code>FUN</code> must now return a matrix.</li>
+</ul>
+</div>
+    <div id="airsensor-0-9-6" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-9-6" class="anchor"></a>AirSensor 0.9.6</h1>
+<ul>
+<li>Restored/fixed examples in <code>sensor_load~()</code> functions.</li>
+<li>Properly handling duplicate datetimes in <code>pat_createPATimeseriesObject.R</code>.</li>
+</ul>
+</div>
+    <div id="airsensor-0-9-5" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-9-5" class="anchor"></a>AirSensor 0.9.5</h1>
+<p>Changes requested by CRAN maintainers:</p>
+<ul>
+<li>Improved function examples.</li>
+<li>Removed function internal use of <code><a href="https://rdrr.io/r/base/options.html">option(warn = -1)</a></code>.</li>
+</ul>
+</div>
+    <div id="airsensor-0-9-4" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-9-4" class="anchor"></a>AirSensor 0.9.4</h1>
+<ul>
+<li>Updates to pass CRAN checks.</li>
+</ul>
+</div>
+    <div id="airsensor-0-9-3" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-9-3" class="anchor"></a>AirSensor 0.9.3</h1>
+<ul>
+<li>More updates to pass win-builder checks.</li>
+</ul>
+</div>
+    <div id="airsensor-0-9-2" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-9-2" class="anchor"></a>AirSensor 0.9.2</h1>
+<ul>
+<li>Updates to pass win-builder checks.</li>
+</ul>
+</div>
+    <div id="airsensor-0-9-1" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-9-1" class="anchor"></a>AirSensor 0.9.1</h1>
+<ul>
+<li>Removed <code>sensor_videoFrame()</code>. This function is not general and has beem moved to the <em>AQ-SPEC-sensor-data-ingest-v1</em> private repository.</li>
+<li>New R Markdown document for comparing QC algorithms: <code>local_Rmd/PurpleAirQC_Comparison.Rmd</code>.</li>
+<li>Now using <code><a href="../reference/PurpleAirQC_hourly_AB_01.html">PurpleAirQC_hourly_AB_01()</a></code> as the default QC algorithm throughout the code. (The <code>_02</code> version removed too much data.)</li>
+<li>Updated examples in <code><a href="../reference/sensor_pollutionRose.html">sensor_pollutionRose()</a></code> and <code><a href="../reference/sensor_polarPlot.html">sensor_polarPlot()</a></code>.</li>
+</ul>
+</div>
+    <div id="airsensor-0-9-0" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-9-0" class="anchor"></a>AirSensor 0.9.0</h1>
+<p>Pre-release candidate.</p>
+<ul>
+<li>Removed old, unused files from the code base.</li>
+<li>
+<code><a href="../reference/setArchiveBaseDir.html">setArchiveBaseDir(NULL)</a></code> now works identically to <code>removeArchiveBasesDir()</code>. Ditto for <code><a href="../reference/setArchiveBaseUrl.html">setArchiveBaseUrl(NULL)</a></code>.</li>
+<li>
+<code><a href="../reference/pas_load.html">pas_load()</a></code> returns helpful message when the archive <code>BASE_DIR</code> is set and no requested <code>pas</code> data is found: <code><a href="../reference/removeArchiveBaseDir.html">removeArchiveBaseDir()</a></code>.</li>
+<li>Added “Temporal Aggregation” article.</li>
+<li>Added “Custom QC Algorithms” article.</li>
+<li>Added <code>verbose</code> parameter to <code><a href="../reference/sensor_polarPlot.html">sensor_polarPlot()</a></code> and <code><a href="../reference/sensor_pollutionRose.html">sensor_pollutionRose()</a></code>.</li>
+<li>Added <code><a href="../reference/pat_multiPlot.html">pat_multiplot()</a></code> as an alias for <code><a href="../reference/pat_multiPlot.html">pat_multiPlot()</a></code>.</li>
+</ul>
+</div>
     <div id="airsensor-0-8-6" class="section level1">
 <h1 class="page-header">
 <a href="#airsensor-0-8-6" class="anchor"></a>AirSensor 0.8.6</h1>
@@ -216,7 +302,7 @@
 <li>Refactored <code><a href="../reference/pat_downloadParseRawData.html">pat_downloadParseRawData()</a></code> data access times and also reduced the volume of data downloaded by switching from the <code>.json</code> to the <code>.csv</code> API from ThingSpeak. This function now returns a list of five dataframes.</li>
 <li>Renamed and refactored <code><a href="../reference/pat_createPATimeseriesObject.html">pat_createPATimeseriesObject()</a></code> to work with the new list of dataframes from <code><a href="../reference/pat_downloadParseRawData.html">pat_downloadParseRawData()</a></code>. New fields <code>pressure</code> and <code>bsec_iaq</code> are included in the created <code>pat</code> object.</li>
 <li>Including dependency on <strong>httpcode</strong> and <strong>readr</strong> packages.</li>
-<li>Renamed <code>pat_multiplot()</code> to <code><a href="../reference/pat_multiPlot.html">pat_multiPlot()</a></code> (capital ‘P’).</li>
+<li>Renamed <code><a href="../reference/pat_multiPlot.html">pat_multiplot()</a></code> to <code><a href="../reference/pat_multiPlot.html">pat_multiPlot()</a></code> (capital ‘P’).</li>
 <li>Renamed <code>pat_scatterMatrixPlot</code> to <code>pat_scatterPlotMatrx()</code>.</li>
 </ul>
 </div>
@@ -647,7 +733,7 @@
 <h1 class="page-header">
 <a href="#airsensor-0-4-9" class="anchor"></a>AirSensor 0.4.9</h1>
 <ul>
-<li>Updated <code><a href="../reference/sensor_videoFrame.html">sensor_videoFrame()</a></code> with new arguments and new defaults for <code>colorPalette</code> and <code>colorBins</code>.</li>
+<li>Updated <code>sensor_videoFrame()</code> with new arguments and new defaults for <code>colorPalette</code> and <code>colorBins</code>.</li>
 <li>Updated <code><a href="../reference/pat_sample.html">pat_sample()</a></code> to handle cases where the A or B channel contains only missing values.</li>
 </ul>
 </div>
@@ -800,7 +886,7 @@
 <h1 class="page-header">
 <a href="#airsensor-0-3-10" class="anchor"></a>AirSensor 0.3.10</h1>
 <ul>
-<li>Added <code><a href="../reference/sensor_videoFrame.html">sensor_videoFrame()</a></code> function to create a single frame map for a network of sensors. These can be used to create videos showing the evolution of PM2.5 levels over several days.</li>
+<li>Added <code>sensor_videoFrame()</code> function to create a single frame map for a network of sensors. These can be used to create videos showing the evolution of PM2.5 levels over several days.</li>
 <li>Added <code>local_executables/createVideo_exec.R</code> script to generate mp4 videos.</li>
 <li>Added <code>ylim</code> argument to <code><a href="../reference/pat_multiPlot.html">pat_multiPlot()</a></code>.</li>
 </ul>
@@ -811,7 +897,7 @@
 <ul>
 <li>Added <code><a href="../reference/sensor_filter.html">sensor_filter()</a></code>, <code><a href="../reference/sensor_filterDate.html">sensor_filterDate()</a></code> and <code><a href="../reference/sensor_filterMeta.html">sensor_filterMeta()</a></code>.</li>
 <li>Added <code>local_examples/downloadSpeeds.Rmd</code> to benchmark data download times from ThinkSpeak.</li>
-<li>New <code>Purple Air Failure Modes</code> vignette.</li>
+<li>New “Purple Air Failure Modes” vignette.</li>
 </ul>
 </div>
     <div id="airsensor-0-3-8" class="section level1">
@@ -1256,6 +1342,15 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#airsensor-0-9-8">0.9.8</a></li>
+        <li><a href="#airsensor-0-9-7">0.9.7</a></li>
+        <li><a href="#airsensor-0-9-6">0.9.6</a></li>
+        <li><a href="#airsensor-0-9-5">0.9.5</a></li>
+        <li><a href="#airsensor-0-9-4">0.9.4</a></li>
+        <li><a href="#airsensor-0-9-3">0.9.3</a></li>
+        <li><a href="#airsensor-0-9-2">0.9.2</a></li>
+        <li><a href="#airsensor-0-9-1">0.9.1</a></li>
+        <li><a href="#airsensor-0-9-0">0.9.0</a></li>
         <li><a href="#airsensor-0-8-6">0.8.6</a></li>
         <li><a href="#airsensor-0-8-5">0.8.5</a></li>
         <li><a href="#airsensor-0-8-4">0.8.4</a></li>

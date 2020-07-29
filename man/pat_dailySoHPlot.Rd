@@ -18,9 +18,11 @@ runs \code{pat_dailySoH} internally and uses the output to create
 the plot.
 }
 \examples{
+\donttest{
 library(AirSensor)
 
 pat_dailySoHPlot(example_pat_failure_B)
+}
 }
 \seealso{
 \link{pat_dailySoH}

@@ -24,7 +24,7 @@
 #' object.
 #' 
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(AirSensor)
 #' 
 #' pwfsl <- pwfsl_load()
