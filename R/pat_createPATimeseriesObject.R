@@ -184,6 +184,7 @@ pat_createPATimeseriesObject <- function(
       pm25_atm_A = .data$pm2.5_atm, 
       pm25_A = .data$pm2.5_atm
     ) %>%
+    dplyr::arrange(.data$datetime) %>%
     dplyr::select(all_of(A_PRIMARY_columns)) %>%
     .replaceRecordsWithDuplicateTimestamps()
   
@@ -199,6 +200,7 @@ pat_createPATimeseriesObject <- function(
       pm1_atm_A = .data$pm1.0_atm, 
       pm10_atm_A = .data$pm10.0_atm
     ) %>%
+    dplyr::arrange(.data$datetime) %>%
     dplyr::select(all_of(A_SECONDARY_columns)) %>%
     .replaceRecordsWithDuplicateTimestamps()
   
@@ -267,6 +269,7 @@ pat_createPATimeseriesObject <- function(
       pm25_atm_B = .data$pm2.5_atm, 
       pm25_B = .data$pm2.5_atm
     ) %>%
+    dplyr::arrange(.data$datetime) %>%
     dplyr::select(all_of(B_PRIMARY_columns)) %>%
     .replaceRecordsWithDuplicateTimestamps()
   
@@ -282,6 +285,7 @@ pat_createPATimeseriesObject <- function(
       pm1_atm_B = .data$pm1.0_atm, 
       pm10_atm_B = .data$pm10.0_atm
     ) %>%
+    dplyr::arrange(.data$datetime) %>%
     dplyr::select(all_of(B_SECONDARY_columns)) %>%
     .replaceRecordsWithDuplicateTimestamps()
   
@@ -363,12 +367,12 @@ pat_createPATimeseriesObject <- function(
   data <-
     dplyr::full_join(A_data, B_data, by = "datetime") %>%
     dplyr::select(all_of(patData_columnNames)) %>%
-    dplyr::distinct() %>%
-    .replaceRecordsWithDuplicateTimestamps() %>%
     # Only keep records with some pm25 data
     dplyr::filter(!is.na(.data$pm25_A) | !is.na(.data$pm25_B)) %>%
-    dplyr::arrange(.data$datetime)
-
+    dplyr::distinct() %>%
+    dplyr::arrange(.data$datetime) %>%
+    .replaceRecordsWithDuplicateTimestamps()
+  
   # ----- Return ---------------------------------------------------------------
   
   # Combine meta and data dataframes into a list
@@ -376,38 +380,6 @@ pat_createPATimeseriesObject <- function(
   class(pat) <- c("pa_timeseries", class(pat))
   
   return(pat)
-  
-}
-
-# ===== INTERNAL FUNCTIONS =====================================================
-
-.replaceRecordsWithDuplicateTimestamps <- function(df) {
-  
-  # NOTE:  Sometimes we get multiple records within a minute and then end up
-  # NOTE:  with the same 'datetime' value after flooring. We replace multiple
-  # NOTE:  records with the mean here.
-  if ( any(duplicated(df$datetime)) ) {
-    
-    # Find duplicate records
-    duplicateIndices <- which(duplicated(df$datetime))
-    for ( index in duplicateIndices ) {
-      
-      # Record immediately prior will be the other record with this timestamp
-      replacementRecord <- 
-        dplyr::slice(df, (index-1):index) %>%
-        dplyr::summarise_all(mean, na.rm = TRUE)
-      
-      # Replace the original record with the mean record
-      df[(index-1),] <- replacementRecord
-      
-    }
-    
-    # Kep all the non-duplicate timestamp records
-    df <- df[!duplicated(df$datetime),]
-    
-  }
-  
-  return(df)
   
 }
 

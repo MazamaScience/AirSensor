@@ -55,6 +55,9 @@ sensor_isSensor <- function(sensor = NULL) {
   
   if ( !all(metaParameters %in% names(sensor$meta)) ) return(FALSE)
   
+  if ( any(duplicated(sensor$data$datetime)) )
+    warning("Duplicate timesteps found in 'sensor' object.")
+  
   # Nothing failed so return TRUE
   return(TRUE)
   

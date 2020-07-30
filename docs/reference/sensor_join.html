@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Rectangle area filtering for PurpleAir Synoptic objects — pas_filterArea • AirSensor</title>
+<title>Join airsensor objects from different time periods — sensor_join • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,11 @@
 
 
 
-<meta property="og:title" content="Rectangle area filtering for PurpleAir Synoptic objects — pas_filterArea" />
-<meta property="og:description" content="Filters pas object sensors based on a bounding box." />
+<meta property="og:title" content="Join airsensor objects from different time periods — sensor_join" />
+<meta property="og:description" content="AirSensor objects are &quot;joined end-to-end&quot; so that time ranges
+are extended for all sensors that appear in either sensor1 and 
+sensor2.
+Only two airsensor objects at a time may be joined." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -157,72 +160,59 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Rectangle area filtering for PurpleAir Synoptic objects</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pas_filterArea.R'><code>R/pas_filterArea.R</code></a></small>
-    <div class="hidden name"><code>pas_filterArea.Rd</code></div>
+    <h1>Join airsensor objects from different time periods</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/sensor_join.R'><code>R/sensor_join.R</code></a></small>
+    <div class="hidden name"><code>sensor_join.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Filters <em>pas</em> object sensors based on a bounding box.</p>
+    <p>AirSensor objects are "joined end-to-end" so that time ranges
+are extended for all sensors that appear in either <code>sensor1</code> and 
+<code>sensor2</code>.</p>
+<p>Only two <code>airsensor</code> objects at a time may be joined.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>pas_filterArea</span>(<span class='kw'>pas</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>w</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>e</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>s</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>sensor_join</span>(<span class='kw'>sensor1</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sensor2</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pas</th>
-      <td><p>PurpleAir Synoptic <em>pas</em> object.</p></td>
+      <th>sensor1</th>
+      <td><p>An AirSensor object.</p></td>
     </tr>
     <tr>
-      <th>w</th>
-      <td><p>West edge of area bounding box (deg E).</p></td>
-    </tr>
-    <tr>
-      <th>e</th>
-      <td><p>East edge of area bounding box (deg E).</p></td>
-    </tr>
-    <tr>
-      <th>s</th>
-      <td><p>South edge of area bounding box (deg N).</p></td>
-    </tr>
-    <tr>
-      <th>n</th>
-      <td><p>North edge of area bounding box (deg N).</p></td>
+      <th>sensor2</th>
+      <td><p>An AirSensor object.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A subset of the given <em>pas</em> object.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><a href='pas_filter.html'>pas_filter</a>, <a href='pas_filterNear.html'>pas_filterNear</a></p></div>
+    <p>An <em>airsensor</em> object containing all data from both incoming objects.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>AirSensor</span>)
+    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>AirSensor</span>)
+<span class='fu'><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl</a></span>(<span class='st'>"http://data.mazamascience.com/PurpleAir/v1"</span>)
 
-<span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='no'>example_pas</span>
-<span class='fu'><a href='https://rdrr.io/r/base/range.html'>range</a></span>(<span class='no'>pas</span>$<span class='no'>longitude</span>)</div><div class='output co'>#&gt; [1] -162.58680  -70.19411</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/range.html'>range</a></span>(<span class='no'>pas</span>$<span class='no'>latitude</span>)</div><div class='output co'>#&gt; [1] 19.01930 71.30136</div><div class='input'><span class='no'>scsb</span> <span class='kw'>&lt;-</span>
-  <span class='no'>pas</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>pas_filterArea</span>(
-    <span class='kw'>w</span> <span class='kw'>=</span> -<span class='fl'>118.10</span>,
-    <span class='kw'>e</span> <span class='kw'>=</span> -<span class='fl'>118.07</span>,
-    <span class='kw'>s</span> <span class='kw'>=</span> <span class='fl'>33.75</span>,
-    <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>33.78</span>
-  )
-<span class='fu'><a href='https://rdrr.io/r/base/range.html'>range</a></span>(<span class='no'>scsb</span>$<span class='no'>longitude</span>)</div><div class='output co'>#&gt; [1] -118.0945 -118.0782</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/range.html'>range</a></span>(<span class='no'>scsb</span>$<span class='no'>latitude</span>)</div><div class='output co'>#&gt; [1] 33.75989 33.77767</div><div class='input'>
-<span class='kw'>if</span> ( <span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>() ) {
-  <span class='fu'><a href='pas_leaflet.html'>pas_leaflet</a></span>(<span class='no'>scsb</span>)
-}</div></pre>
+<span class='no'>jan</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sensor_loadMonth.html'>sensor_loadMonth</a></span>(<span class='st'>"scaqmd"</span>, <span class='fl'>202001</span>)
+<span class='no'>feb</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sensor_loadMonth.html'>sensor_loadMonth</a></span>(<span class='st'>"scaqmd"</span>, <span class='fl'>202002</span>)
+<span class='no'>mar</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sensor_loadMonth.html'>sensor_loadMonth</a></span>(<span class='st'>"scaqmd"</span>, <span class='fl'>202003</span>)
+<span class='no'>apr</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sensor_loadMonth.html'>sensor_loadMonth</a></span>(<span class='st'>"scaqmd"</span>, <span class='fl'>202004</span>)
+
+<span class='no'>feb_mar</span> <span class='kw'>&lt;-</span> <span class='fu'>sensor_join</span>(<span class='no'>feb</span>, <span class='no'>mar</span>)
+<span class='kw pkg'>PWFSLSmoke</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/PWFSLSmoke/man/monitor_timeseriesPlot.html'>monitor_timeseriesPlot</a></span>(<span class='no'>feb_mar</span>, <span class='kw'>style</span> <span class='kw'>=</span> <span class='st'>'gnats'</span>)</div><div class='img'><img src='sensor_join-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># Gaps in the time axis are filled with NA</span>
+<span class='no'>feb_apr</span> <span class='kw'>&lt;-</span> <span class='fu'>sensor_join</span>(<span class='no'>feb</span>, <span class='no'>apr</span>)
+<span class='kw pkg'>PWFSLSmoke</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/PWFSLSmoke/man/monitor_timeseriesPlot.html'>monitor_timeseriesPlot</a></span>(<span class='no'>feb_apr</span>, <span class='kw'>style</span> <span class='kw'>=</span> <span class='st'>'gnats'</span>)</div><div class='img'><img src='sensor_join-2.png' alt='' width='700' height='433' /></div><div class='input'># }
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
-      <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

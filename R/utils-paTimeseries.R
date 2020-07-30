@@ -69,6 +69,7 @@ pat_isPat <- function(
   
   # NOTE:  This set of columns must match those defined in
   # NOTE:    pat_createPATimeseriesObject.R
+  
   patData_columnNames <- c(
     "datetime", 
     "pm25_A", "pm25_B", 
@@ -80,6 +81,9 @@ pat_isPat <- function(
   )
   
   if ( !all(patData_columnNames %in% names(pat$data)) ) return(FALSE)
+  
+  if ( any(duplicated(pat$data$datetime)) )
+    warning("Duplicate timesteps found in 'pat' object.")
   
   # Nothing failed so return TRUE
   return(TRUE)
@@ -104,6 +108,7 @@ pat_isEmpty <- function(pat) {
 }
 
 
+#' @importFrom rlang .data
 #' @export
 #' 
 #' @title Retain only distinct data records in pat$data
@@ -112,12 +117,23 @@ pat_isEmpty <- function(pat) {
 #' 
 #' @return A \emph{pat} object with no duplicated data records.
 #' 
-#' @description Convenience wrapper for 
-#' \code{pat$data <- dplyr::distinct(pat$data)}.
+#' @description Performs two passes to guarantee that the \code{datetime} axis
+#' contains no repeated values:
+#' 
+#' \enumerate{
+#' \item{remove any duplicate records}
+#' \item{guarantee that rows are in \code{datetime} order}
+#' \item{average together fields for any remaining records that share the same
+#' \code{datetime}}
+#' }
 #' 
 pat_distinct <- function(pat) {
   if (!pat_isPat(pat)) stop("Not a valid 'pat' object.")
-  pat$data <- dplyr::distinct(pat$data)
+  pat$data <- 
+    pat$data %>%
+    dplyr::distinct() %>%
+    dplyr::arrange(.data$datetime) %>%
+    .replaceRecordsWithDuplicateTimestamps() # in 
   return( pat )
 }
 
@@ -163,3 +179,37 @@ pat_extractMeta <- function(pat) {
   if (!pat_isPat(pat)) stop("Not a valid 'pat' object.")
   return(pat[["meta"]])
 }
+
+
+# ===== INTERNAL FUNCTIONS =====================================================
+
+.replaceRecordsWithDuplicateTimestamps <- function(df) {
+  
+  # NOTE:  Sometimes we get multiple PAT records within a minute and then end up
+  # NOTE:  with the same 'datetime' value after flooring. We replace multiple
+  # NOTE:  records with the mean here.
+  if ( any(duplicated(df$datetime)) ) {
+    
+    # Find duplicate records
+    duplicateIndices <- which(duplicated(df$datetime))
+    for ( index in duplicateIndices ) {
+      
+      # Record immediately prior will be the other record with this timestamp
+      replacementRecord <- 
+        dplyr::slice(df, (index-1):index) %>%
+        dplyr::summarise_all(mean, na.rm = TRUE)
+      
+      # Replace the original record with the mean record
+      df[(index-1),] <- replacementRecord
+      
+    }
+    
+    # Kep all the non-duplicate timestamp records
+    df <- df[!duplicated(df$datetime),]
+    
+  }
+  
+  return(df)
+  
+}
+

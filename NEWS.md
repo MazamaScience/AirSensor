@@ -1,3 +1,11 @@
+# AirSensor 0.9.9
+
+* Added `sensor_join()` function to "join" _airsensor_objects from different
+months.
+* Updated `pat_distinct()` to remove duplicated timestamps and guarantee proper 
+ordering by `datetime`.
+* Added warning for duplicated timesteps to `pat_isPat()` and `sensor_isSensor()`.
+
 # AirSensor 0.9.8
 
 * Added `idPattern` argument to all `pas_get~()` functions.

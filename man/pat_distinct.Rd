@@ -13,6 +13,13 @@ pat_distinct(pat)
 A \emph{pat} object with no duplicated data records.
 }
 \description{
-Convenience wrapper for 
-\code{pat$data <- dplyr::distinct(pat$data)}.
+Performs two passes to guarantee that the \code{datetime} axis
+contains no repeated values:
+
+\enumerate{
+\item{remove any duplicate records}
+\item{guarantee that rows are in \code{datetime} order}
+\item{average together fields for any remaining records that share the same
+\code{datetime}}
+}
 }

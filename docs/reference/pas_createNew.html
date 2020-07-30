@@ -90,7 +90,7 @@ argument." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.78</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.9</span>
       </span>
     </div>
 
@@ -239,13 +239,16 @@ filtered to only include sensors with data more recent than
 
 <span class='fu'><a href='initializeMazamaSpatialUtils.html'>initializeMazamaSpatialUtils</a></span>()
 
-<span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='fu'>pas_createNew</span>(<span class='st'>"US"</span>)</div><div class='output co'>#&gt; WARN [2020-07-20 17:41:08] Unable to load spatial data 'CA_AirBasins'.</div><div class='input'>
+<span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='fu'>pas_createNew</span>(<span class='st'>"US"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: `as.tbl()` is deprecated as of dplyr 1.0.0.</span>
+#&gt; <span class='warning'>Please use `tibble::as_tibble()` instead.</span>
+#&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once every 8 hours.</span><span></span>
+#&gt; <span class='warning'></span><span style='color: #555555;'>Call `lifecycle::last_warnings()` to see where this warning was generated.</span><span></span></div><div class='output co'>#&gt; WARN [2020-07-30 16:29:47] Unable to load spatial data 'CA_AirBasins'.</div><div class='input'>
 <span class='kw'>if</span> ( <span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>() ) {
   <span class='no'>pas</span> <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='pas_filter.html'>pas_filter</a></span>(<span class='no'>stateCode</span> <span class='kw'>==</span> <span class='st'>"CA"</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='pas_leaflet.html'>pas_leaflet</a></span>()
 }
-<span class='co'># }</span></div></pre>
+<span class='co'># }</span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

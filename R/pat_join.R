@@ -90,7 +90,7 @@ pat_join <- function(
     stop("`pat` objects must be of the same monitor")
   
   meta <- patList[[1]]$meta
-  data <- do.call(rbind, dataList) # duplicates removed below
+  data <- do.call(rbind, dataList) # duplicates removed below in pat_distinct()
   
   # ----- Create the PurpleAir Timeseries (pat) object ------------------------
   

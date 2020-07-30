@@ -43,8 +43,15 @@
 
 
 <meta property="og:title" content="Retain only distinct data records in pat$data — pat_distinct" />
-<meta property="og:description" content="Convenience wrapper for 
-pat$data &amp;lt;- dplyr::distinct(pat$data)." />
+<meta property="og:description" content="Performs two passes to guarantee that the datetime axis
+contains no repeated values:
+
+remove any duplicate records
+guarantee that rows are in datetime order
+average together fields for any remaining records that share the same
+datetime
+
+" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -77,7 +84,7 @@ pat$data &amp;lt;- dplyr::distinct(pat$data)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.78</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.9</span>
       </span>
     </div>
 
@@ -164,8 +171,15 @@ pat$data &amp;lt;- dplyr::distinct(pat$data)." />
     </div>
 
     <div class="ref-description">
-    <p>Convenience wrapper for 
-<code>pat$data &lt;- dplyr::distinct(pat$data)</code>.</p>
+    <p>Performs two passes to guarantee that the <code>datetime</code> axis
+contains no repeated values:</p>
+<ol>
+<li><p>remove any duplicate records</p></li>
+<li><p>guarantee that rows are in <code>datetime</code> order</p></li>
+<li><p>average together fields for any remaining records that share the same
+<code>datetime</code></p></li>
+</ol>
+
     </div>
 
     <pre class="usage"><span class='fu'>pat_distinct</span>(<span class='no'>pat</span>)</pre>

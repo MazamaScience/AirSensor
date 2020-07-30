@@ -1,6 +1,6 @@
 Type: Package
 Package: AirSensor
-Version: 0.9.8
+Version: 0.9.9
 Title: Process and Display Data from Air Quality Sensors
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
@@ -39,26 +39,22 @@ Imports:
     jsonlite,
     leaflet,
     lubridate,
+    magrittr,
     MazamaCoreUtils (>= 0.4.2),
     MazamaLocationUtils (>= 0.1.6),
     MazamaSpatialUtils (>= 0.6.3),
     openair,
-    plyr, 
-    purrr,
     PWFSLSmoke (>= 1.2.100),
-    raster,
     readr,
     RColorBrewer,
     rlang,
     scales,
     seismicRoll,
     sp,
-    stats,
     stringr,
     tibble,
     tidyr,
     tidyselect,
-    magrittr,
     worldmet,
     xts,
     zoo

@@ -32,7 +32,7 @@ RUN wget -nv http://mazamascience.com/RData/Spatial/CA_AirBasins_01.RData \
 
 WORKDIR /
 
-COPY AirSensor_0.9.8.tar.gz /
+COPY AirSensor_0.9.9.tar.gz /
 
-RUN R CMD INSTALL AirSensor_0.9.8.tar.gz
+RUN R CMD INSTALL AirSensor_0.9.9.tar.gz
 

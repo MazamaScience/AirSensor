@@ -286,7 +286,7 @@ pat_downloadParseRawData <- function(
     # 1 2020-05-08 07:01:18 UTC   129534   4.18   5.95   6.53   3767    -90     63     41   5.95
     # 2 2020-05-08 07:03:24 UTC   129535   3.74   5.76   5.97   3769    -90     62     41   5.76
     
-    col_types <- "cidddidddd"
+    col_types <- "ccdddddddd"
     
     col_names <- c(
       "created_at", "entry_id", 
@@ -301,7 +301,7 @@ pat_downloadParseRawData <- function(
       "pm1.0_cf1" = as.numeric(NA),
       "pm2.5_cf1" = as.numeric(NA),
       "pm10.0_cf1" = as.numeric(NA),
-      "uptime" = as.integer(NA),
+      "uptime" = as.numeric(NA),
       "rssi" = as.numeric(NA),
       "temperature" = as.numeric(NA),
       "humidity" = as.numeric(NA),
@@ -317,7 +317,7 @@ pat_downloadParseRawData <- function(
     # 1 2020-05-08 07:01:20 UTC   129558   979.   268.   33.0   2.05   0.54   0.26   4.18   6.53
     # 2 2020-05-08 07:03:26 UTC   129559   907.   249.   30.9   2.69   0.33   0      3.74   5.97
     
-    col_types <- "cidddddddd"
+    col_types <- "ccdddddddd"
 
     col_names <- c(
       "created_at", "entry_id", 
@@ -348,7 +348,7 @@ pat_downloadParseRawData <- function(
     # 1 2020-05-08 07:01:22 UTC   129570   21.4   26.1   26.5  19512      0  1022. NA       25.6
     # 2 2020-05-08 07:03:28 UTC   129571   19.7   24.5   25.0  19848      0  1022. NA       24.1
     
-    col_types <- "cidddidddd"
+    col_types <- "ccdddddddd"
 
     col_names <- c(
       "created_at", "entry_id", 
@@ -363,7 +363,7 @@ pat_downloadParseRawData <- function(
       "pm1.0_cf1" = as.numeric(NA),
       "pm2.5_cf1" = as.numeric(NA),
       "pm10.0_cf1" = as.numeric(NA),
-      "memory" = as.integer(NA),
+      "memory" = as.numeric(NA),
       "adc0" = as.numeric(NA),
       "pressure" = as.numeric(NA),
       "bsec_iaq" = as.numeric(NA),
@@ -380,7 +380,7 @@ pat_downloadParseRawData <- function(
     # 1 2020-05-08 07:01:23 UTC   129569  4786.  1260.   43.5   14.4   0.71   0.36   19.8   26.5
     # 2 2020-05-08 07:03:30 UTC   129570  4429.  1171.   43.4   13.6   0.42   0      18.7   25.0
     
-    col_types <- "cidddddddd"
+    col_types <- "ccdddddddd"
 
     col_names <- c(
       "created_at", "entry_id", 
