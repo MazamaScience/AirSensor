@@ -32,4 +32,6 @@ head(unhealthy$data)
 }
 \seealso{
 \link{pat_filterDate}
+
+\link{pat_filterDatetime}
 }

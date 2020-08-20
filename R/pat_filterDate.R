@@ -10,7 +10,9 @@
 #' @param weeks Number of weeks to include in the filterDate interval.
 #' @param timezone Olson timezone used to interpret dates.
 #' 
-#' @description Subsets a PurpleAir Timeseries object by date. 
+#' @description Subsets a PurpleAir Timeseries object by date. This function
+#' always filters to day-boundaries. For sub-day filtering, use 
+#' \code{pat_filterDatetime()}.
 #' 
 #' Dates can be anything that is understood by \code{lubridate::ymd()}
 #' including either of the following recommended formats:
@@ -28,6 +30,8 @@
 #' 
 #' @return A subset of the given \emph{pat} object.
 #' 
+#' @seealso \link{pat_filter}
+#' @seealso \link{pat_filterDatetime}
 #' @examples
 #' library(AirSensor)
 #' 

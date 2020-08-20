@@ -10,7 +10,6 @@ pat_load(
   pas = NULL,
   startdate = NULL,
   enddate = NULL,
-  days = 7,
   timezone = "America/Los_Angeles"
 )
 }
@@ -21,11 +20,9 @@ pat_load(
 
 \item{pas}{PurpleAir Synoptic \emph{pas} object.}
 
-\item{startdate}{Desired start time (ISO 8601).}
+\item{startdate}{Desired start time (ISO 8601) or \code{POSIXct}.}
 
-\item{enddate}{Desired end time (ISO 8601).}
-
-\item{days}{Number of days of data to include (7 or 45).}
+\item{enddate}{Desired end time (ISO 8601) or \code{POSIXct}.}
 
 \item{timezone}{Timezone used to interpret start and end dates.}
 }
@@ -39,12 +36,13 @@ loaded from the archive set with either \code{setArchiveBaseUrl()} or
 \code{setArchiveBaseDir()} for locally archived files.
 
 Dates can be anything that is understood by 
-\code{lubridate::parse_date_time()} including either of the following 
+\code{MazamaCoreUtils::parseDatetime()} including any of the following 
 recommended formats:
 
 \itemize{
 \item{\code{"YYYYmmdd"}}
 \item{\code{"YYYY-mm-dd"}}
+\item{\code{"YYYY-mm-dd HH:MM:SS"}}
 }
 }
 \note{

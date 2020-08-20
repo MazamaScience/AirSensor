@@ -30,7 +30,9 @@ pat_filterDate(
 A subset of the given \emph{pat} object.
 }
 \description{
-Subsets a PurpleAir Timeseries object by date. 
+Subsets a PurpleAir Timeseries object by date. This function
+always filters to day-boundaries. For sub-day filtering, use 
+\code{pat_filterDatetime()}.
 
 Dates can be anything that is understood by \code{lubridate::ymd()}
 including either of the following recommended formats:
@@ -54,4 +56,9 @@ example_pat \%>\%
   pat_filterDate(startdate = 20180808, enddate = 20180815) \%>\%
   pat_multiPlot()
 
+}
+\seealso{
+\link{pat_filter}
+
+\link{pat_filterDatetime}
 }

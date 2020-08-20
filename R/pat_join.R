@@ -61,6 +61,7 @@ pat_join <- function(
       stop("arguments contain an empty 'pat' object")
     
     metaList[[i]] <- patList[[i]]$meta
+    # TODO:  trim patList[[i-1]] end to patList[[i]] start
     dataList[[i]] <- patList[[i]]$data
   
   }

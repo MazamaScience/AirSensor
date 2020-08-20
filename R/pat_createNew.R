@@ -7,8 +7,8 @@
 #' @param id PurpleAir sensor 'deviceDeploymentID'.
 #' @param label PurpleAir sensor 'label'.
 #' @param pas PurpleAir Synoptic \emph{pas} object.
-#' @param startdate Desired UTC start time (ISO 8601).
-#' @param enddate Desired UTC end time (ISO 8601).
+#' @param startdate Desired UTC start time (ISO 8601) or \code{POSIXct}.
+#' @param enddate Desired UTC end time (ISO 8601) or \code{POSIXct}.
 #' @param timezone Timezone used to interpret start and end dates.
 #' @param baseUrl Base URL for Thingspeak API.
 #' @param verbose Logical controlling the generation of warning and error messages.
@@ -19,12 +19,13 @@
 #' specific PurpleAir sensors.
 #' 
 #' Dates can be anything that is understood by 
-#' \code{lubridate::parse_date_time()} including either of the following 
+#' \code{MazamaCoreUtils::parseDatetime()} including any of the following 
 #' recommended formats:
 #' 
 #' \itemize{
 #' \item{\code{"YYYYmmdd"}}
 #' \item{\code{"YYYY-mm-dd"}}
+#' \item{\code{"YYYY-mm-dd HH:MM:SS"}}
 #' }
 #' 
 #' @note When \code{timezone = NULL}, the default, dates are interpreted to be 
@@ -210,9 +211,9 @@ pat_createNew <- function(
   pat <- 
     pat %>% 
     pat_distinct() %>%
-    pat_filterDate(
-      startdate = startdate,
-      enddate = enddate,
+    pat_filterDatetime(
+      startdate = dateRange[1],
+      enddate = dateRange[2],
       timezone = timezone
     )
   

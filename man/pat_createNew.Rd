@@ -22,9 +22,9 @@ pat_createNew(
 
 \item{pas}{PurpleAir Synoptic \emph{pas} object.}
 
-\item{startdate}{Desired UTC start time (ISO 8601).}
+\item{startdate}{Desired UTC start time (ISO 8601) or \code{POSIXct}.}
 
-\item{enddate}{Desired UTC end time (ISO 8601).}
+\item{enddate}{Desired UTC end time (ISO 8601) or \code{POSIXct}.}
 
 \item{timezone}{Timezone used to interpret start and end dates.}
 
@@ -40,12 +40,13 @@ Retrieve and parse timeseries data from the Thingspeak API for
 specific PurpleAir sensors.
 
 Dates can be anything that is understood by 
-\code{lubridate::parse_date_time()} including either of the following 
+\code{MazamaCoreUtils::parseDatetime()} including any of the following 
 recommended formats:
 
 \itemize{
 \item{\code{"YYYYmmdd"}}
 \item{\code{"YYYY-mm-dd"}}
+\item{\code{"YYYY-mm-dd HH:MM:SS"}}
 }
 }
 \note{

@@ -9,12 +9,13 @@
 #' \code{setArchiveBaseDir()} for locally archived files.
 #' 
 #' Dates can be anything that is understood by 
-#' \code{lubridate::parse_date_time()} including either of the following 
+#' \code{MazamaCoreUtils::parseDatetime()} including any of the following 
 #' recommended formats:
 #' 
 #' \itemize{
 #' \item{\code{"YYYYmmdd"}}
 #' \item{\code{"YYYY-mm-dd"}}
+#' \item{\code{"YYYY-mm-dd HH:MM:SS"}}
 #' }
 #' 
 #' @note Starting with \pkg{AirSensor} version 0.6, archive file names are 
@@ -33,9 +34,8 @@
 #' @param id PurpleAir sensor 'deviceDeploymentID'.
 #' @param label PurpleAir sensor 'label'.
 #' @param pas PurpleAir Synoptic \emph{pas} object.
-#' @param startdate Desired start time (ISO 8601).
-#' @param enddate Desired end time (ISO 8601).
-#' @param days Number of days of data to include (7 or 45).
+#' @param startdate Desired start time (ISO 8601) or \code{POSIXct}.
+#' @param enddate Desired end time (ISO 8601) or \code{POSIXct}.
 #' @param timezone Timezone used to interpret start and end dates.
 #' 
 #' @return A PurpleAir Timeseries \emph{pat} object.
@@ -69,9 +69,11 @@ pat_load <- function(
   pas = NULL,
   startdate = NULL, 
   enddate = NULL, 
-  days = 7, 
   timezone = "America/Los_Angeles"
 ) {
+  
+  # TODO:  This always trims to day-boundaries. At some point, we should allow
+  # TODO:  specification of sub-day times.
   
   # ----- Validate parameters --------------------------------------------------
   
@@ -107,10 +109,9 @@ pat_load <- function(
     return( pat_loadLatest(deviceDeploymentID) )
   
   # Get the date range
-  dateRange <- MazamaCoreUtils::dateRange(startdate, 
+  dateRange <- MazamaCoreUtils::timeRange(startdate, 
                                           enddate, 
-                                          timezone, 
-                                          days = days)
+                                          timezone = timezone)
   
   # ----- Assemble monthly archive files ---------------------------------------
   
@@ -167,10 +168,11 @@ pat_load <- function(
   # Remove any duplicate data records
   pat <- pat_distinct(pat)
   
-  # Trim to requested dateRange
+  # Guarantee we have no duplicates and only the requested time range
   patObj <- 
-    pat_filterDate(
-      pat,
+    pat %>% 
+    pat_distinct() %>%
+    pat_filterDatetime(
       startdate = dateRange[1], 
       enddate = dateRange[2],
       timezone = timezone

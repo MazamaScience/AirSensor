@@ -1,3 +1,11 @@
+# AirSensor 0.9.10
+
+* Added `pat_filterDatetime()` function for times that are not aligned to date
+boundaries.
+* Modified `pat_createNew()` to not trim data at date boundaries.
+* Modified `pat_load()` to not trim data at date boundaries and removed the
+`days` parameter.
+
 # AirSensor 0.9.9
 
 * Added `sensor_join()` function to "join" _airsensor_objects from different

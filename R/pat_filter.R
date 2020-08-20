@@ -16,6 +16,7 @@
 #' @return A subset of the incoming \code{pat}.
 #' 
 #' @seealso \link{pat_filterDate}
+#' @seealso \link{pat_filterDatetime}
 #' @examples
 #'
 #' library(AirSensor)
