@@ -85,7 +85,7 @@ MAD = &quot;Median Absolute Deviation&quot;" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.11</span>
       </span>
     </div>
 
@@ -1044,7 +1044,9 @@ rate of 67%.</p>
 #&gt; <span class='warning'>  Use c() or as.vector() instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Recycling array of length 1 in vector-array arithmetic is deprecated.</span>
 #&gt; <span class='warning'>  Use c() or as.vector() instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Recycling array of length 1 in array-vector arithmetic is deprecated.</span>
 #&gt; <span class='warning'>  Use c() or as.vector() instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Recycling array of length 1 in vector-array arithmetic is deprecated.</span>
-#&gt; <span class='warning'>  Use c() or as.vector() instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Unknown or uninitialised column: `p.value`.</span></div><div class='input'>
+#&gt; <span class='warning'>  Use c() or as.vector() instead.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Problem with `mutate()` input `pm25`.</span>
+#&gt; <span class='warning'><span style='color: #0000BB;'>ℹ</span><span> Unknown or uninitialised column: `p.value`.</span>
+#&gt; <span class='warning'></span><span style='color: #0000BB;'>ℹ</span><span> Input `pm25` is `replace(...)`.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Unknown or uninitialised column: `p.value`.</span></div><div class='input'>
 <span class='no'>df_02</span> <span class='kw'>&lt;-</span>
   <span class='no'>example_pat_failure_A</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='pat_qc.html'>pat_qc</a></span>() <span class='kw'>%&gt;%</span>
@@ -1058,7 +1060,7 @@ rate of 67%.</p>
 
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>df_00</span>, <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>16</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>)</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/points.html'>points</a></span>(<span class='no'>df_02</span>, <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>16</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"black"</span>)</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/title.html'>title</a></span>(<span class='st'>"example_pat_failure_A -- PurpleAirQC_hourly_AB_02"</span>)</div><div class='img'><img src='PurpleAirQC_hourly_AB_02-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/graphics/layout.html'>layout</a></span>(<span class='fl'>1</span>)
-<span class='co'># }</span></div></pre>
+<span class='co'># }</span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

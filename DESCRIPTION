@@ -1,6 +1,6 @@
 Type: Package
 Package: AirSensor
-Version: 0.9.10
+Version: 0.9.11
 Title: Process and Display Data from Air Quality Sensors
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
@@ -26,7 +26,7 @@ Depends:
 Imports:
     countrycode,
     cowplot,
-    dplyr (>= 0.8.3),
+    dplyr (>= 1.0.0),
     dygraphs,
     geodist,
     geosphere,

@@ -161,12 +161,14 @@ pat_load <- function(
     
   } 
   
-  # ----- Combine and pat objects ----------------------------------------------
+  # ----- Combine and clean pat objects ----------------------------------------
   
   pat <- pat_join(patList)
   
-  # Remove any duplicate data records
-  pat <- pat_distinct(pat)
+  # Guarantee that times are arranged properly
+  pat$data <- 
+    pat$data %>%
+    dplyr::arrange(.data$datetime)
   
   # Guarantee we have no duplicates and only the requested time range
   patObj <- 

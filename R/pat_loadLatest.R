@@ -123,6 +123,16 @@ pat_loadLatest <- function(
   }
 
   # ----- Return ---------------------------------------------------------------
+
+  # Guarantee that 'uptime' and 'memory' are <dbl> as opposed to <int> as they 
+  # were in an earlier version
+  pat$data$uptime <- as.double(pat$data$uptime)
+  pat$data$memory <- as.double(pat$data$memory)
+  
+  # Guarantee that times are arranged properly
+  pat$data <- 
+    pat$data %>%
+    dplyr::arrange(.data$datetime)
   
   # Remove any duplicate data records
   pat <- pat_distinct(pat)

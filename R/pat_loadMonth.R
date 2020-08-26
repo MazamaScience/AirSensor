@@ -128,7 +128,9 @@ pat_loadMonth <- function(
   
   # Get data from URL or directory
   result <- try({
-    suppressWarnings( pat <- MazamaCoreUtils::loadDataFile(filename, dataUrl, dataDir) )
+    suppressWarnings({
+      pat <- MazamaCoreUtils::loadDataFile(filename, dataUrl, dataDir) 
+    })
   }, silent = TRUE)
   
   # NOTE:  We used suppressWarnings() above so that we can have a more
@@ -145,9 +147,45 @@ pat_loadMonth <- function(
   
   # ----- Return ---------------------------------------------------------------
   
-  # Remove any duplicate data records
+  # Guarantee that 'uptime' and 'memory' are <dbl> as opposed to <int> as they 
+  # were in an earlier version
+  pat$data$uptime <- as.double(pat$data$uptime)
+  pat$data$memory <- as.double(pat$data$memory)
+  
+  # Guarantee that times are arranged properly
+  pat$data <- 
+    pat$data %>%
+    dplyr::arrange(.data$datetime)
+  
+  # Guarantee that duplicate data records are removed
   pat <- pat_distinct(pat)
   
   return(pat)
+  
+}
+
+# ===== DEBUGGING ==============================================================
+
+if ( FALSE ) {
+  
+  library(AirSensor)
+
+  setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+
+  id <- NULL
+  label <- "SCNP_20"
+  # Reference an older 'pas' before this sensor was dropped
+  pas <- pas_load(20190901, archival = TRUE)
+  datestamp <- 201904
+  timezone <- "America/Los_Angeles"
+  
+  
+  pat <- pat_load(
+    label = "SCNP_20",
+    pas = pas,
+    startdate = 201904
+  )
+  
+  
   
 }

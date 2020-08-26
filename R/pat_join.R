@@ -1,4 +1,5 @@
 #' @export
+#' @importFrom rlang .data
 #' 
 #' @title Join PurpleAir time series data for a single sensor
 #' 
@@ -32,13 +33,12 @@ pat_join <- function(
   ...
 ) {
 
-  # ----- Validate parameters --------------------------------------------------
-  
-  
-  # ----- Join (concatenate) timeseries ----------------------------------------
-  
   # Accept any number of pat objects
   patList <- list(...)  
+  
+  # ----- Validate parameters --------------------------------------------------
+  
+  # ----- Join (concatenate) timeseries ----------------------------------------
   
   # NOTE:  If the fist element is NOT a "pa_timeseries", assume we are being 
   # NOTE:  handed a list of pat objects rather than separate pat objects.
@@ -52,7 +52,14 @@ pat_join <- function(
   dataList <- list()
   metaList <- list()
   
+  patCount <- length(patList)
+  
   for( i in seq_along(patList) ) {
+    
+    # Guarantee proper 'datetime' ordering
+    patList[[i]]$data <- 
+      patList[[i]]$data %>%
+      dplyr::arrange(.data$datetime)
     
     # Check parameters
     if( !pat_isPat(patList[[i]]) )
@@ -61,8 +68,27 @@ pat_join <- function(
       stop("arguments contain an empty 'pat' object")
     
     metaList[[i]] <- patList[[i]]$meta
-    # TODO:  trim patList[[i-1]] end to patList[[i]] start
-    dataList[[i]] <- patList[[i]]$data
+    
+    # NOTE:  Monthly pat objects have an extra UTC day at the beginning and end
+    # NOTE:  to guarantee that we always have a complete month in the local
+    # NOTE:  timezone. We trim things here so that we don't have overlapping
+    # NOTE:  timesteps:
+    
+    if ( i == patCount ) {
+      # use patList[[i]] end
+      endtime <- range(patList[[i]]$data$datetime, na.rm = TRUE)[2]
+    } else {
+      # use patList[[i+1]] start and find the previous timestep
+      endtime <- patList[[i+1]]$data$datetime[1]
+      index <- which(patList[[i]]$data$datetime == endtime)
+      if ( length(index) > 0 && index > 2) {
+        endtime <- patList[[i]]$data$datetime[index - 1]
+      }
+    }
+    
+    dataList[[i]] <- 
+      patList[[i]]$data %>%
+      dplyr::filter(.data$datetime <= endtime)
   
   }
   

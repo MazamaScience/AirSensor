@@ -128,12 +128,11 @@ pat_isEmpty <- function(pat) {
 #' }
 #' 
 pat_distinct <- function(pat) {
-  if (!pat_isPat(pat)) stop("Not a valid 'pat' object.")
   pat$data <- 
     pat$data %>%
     dplyr::distinct() %>%
     dplyr::arrange(.data$datetime) %>%
-    .replaceRecordsWithDuplicateTimestamps() # in 
+    .replaceRecordsWithDuplicateTimestamps() 
   return( pat )
 }
 

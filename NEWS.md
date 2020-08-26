@@ -1,3 +1,8 @@
+# AirSensor 0.9.11
+
+* Refactored `pat_join()` to remove overlapping data in incoming PAT objects
+before joining. 
+
 # AirSensor 0.9.10
 
 * Added `pat_filterDatetime()` function for times that are not aligned to date
