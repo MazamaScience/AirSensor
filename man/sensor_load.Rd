@@ -54,4 +54,6 @@ sensor_load("scaqmd", 20200411, 20200521) \%>\%
 }
 \seealso{
 \link{sensor_loadMonth}
+
+\link{sensor_loadYear}
 }

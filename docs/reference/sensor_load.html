@@ -87,7 +87,7 @@ By default, the current week is loaded." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.12</span>
       </span>
     </div>
 
@@ -226,7 +226,8 @@ recommended formats:</p>
     <p>An object of class "airsensor".</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='sensor_loadMonth.html'>sensor_loadMonth</a></p></div>
+    <div class='dont-index'><p><a href='sensor_loadMonth.html'>sensor_loadMonth</a></p>
+<p><a href='sensor_loadYear.html'>sensor_loadYear</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
@@ -234,7 +235,7 @@ recommended formats:</p>
 
 <span class='fu'><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl</a></span>(<span class='st'>"http://data.mazamascience.com/PurpleAir/v1"</span>)
 
-<span class='fu'>sensor_load</span>(<span class='st'>"scaqmd"</span>, <span class='fl'>20190411</span>, <span class='fl'>20190521</span>) <span class='kw'>%&gt;%</span>
+<span class='fu'>sensor_load</span>(<span class='st'>"scaqmd"</span>, <span class='fl'>20200411</span>, <span class='fl'>20200521</span>) <span class='kw'>%&gt;%</span>
   <span class='kw pkg'>PWFSLSmoke</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/PWFSLSmoke/man/monitor_timeseriesPlot.html'>monitor_timeseriesPlot</a></span>(<span class='kw'>style</span> <span class='kw'>=</span> <span class='st'>'gnats'</span>)</div><div class='img'><img src='sensor_load-1.png' alt='' width='700' height='433' /></div><div class='input'># }
 </div></pre>
   </div>

@@ -40,7 +40,7 @@ sensor_filter <- function(
   # A little involved to catch the case where the user forgets to pass in 'sensor'
   
   result <- try({
-    if ( !PWFSLSmoke::monitor_isMonitor(sensor) )
+    if ( !sensor_isSensor(sensor) )
       stop("First argument is not of class 'airsensor' or 'ws_monitor'.")
   }, silent = TRUE)
   
@@ -51,7 +51,7 @@ sensor_filter <- function(
     }
   }
   
-  if ( PWFSLSmoke::monitor_isEmpty(sensor) ) 
+  if ( sensor_isEmpty(sensor) ) 
     stop("Parameter 'sensor' has no data.")
   
   # ----- Filter meta ----------------------------------------------------------

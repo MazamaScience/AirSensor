@@ -38,10 +38,10 @@ sensor_filterMeta <- function(
   
   MazamaCoreUtils::stopIfNull(sensor)
   
-  if ( !PWFSLSmoke::monitor_isMonitor(sensor) )
+  if ( !sensor_isSensor(sensor) )
     stop("Parameter 'sensor' is not a valid 'airsensor' object.") 
   
-  if ( PWFSLSmoke::monitor_isEmpty(sensor) ) 
+  if ( sensor_isEmpty(sensor) ) 
     stop("Parameter 'sensor' has no data.")
   
   # ----- Filter based on metadata ---------------------------------------------

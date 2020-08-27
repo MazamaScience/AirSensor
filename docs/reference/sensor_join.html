@@ -79,7 +79,7 @@ Only two airsensor objects at a time may be joined." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.12</span>
       </span>
     </div>
 
@@ -201,7 +201,8 @@ are extended for all sensors that appear in either <code>sensor1</code> and
 <span class='no'>mar</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sensor_loadMonth.html'>sensor_loadMonth</a></span>(<span class='st'>"scaqmd"</span>, <span class='fl'>202003</span>)
 <span class='no'>apr</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sensor_loadMonth.html'>sensor_loadMonth</a></span>(<span class='st'>"scaqmd"</span>, <span class='fl'>202004</span>)
 
-<span class='no'>feb_mar</span> <span class='kw'>&lt;-</span> <span class='fu'>sensor_join</span>(<span class='no'>feb</span>, <span class='no'>mar</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: No matching monitors found.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: No matching monitors found</span></div><div class='output co'>#&gt; <span class='warning'>Warning: No matching monitors found.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: No matching monitors found</span></div><div class='input'><span class='kw pkg'>PWFSLSmoke</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/PWFSLSmoke/man/monitor_timeseriesPlot.html'>monitor_timeseriesPlot</a></span>(<span class='no'>feb_mar</span>, <span class='kw'>style</span> <span class='kw'>=</span> <span class='st'>'gnats'</span>)</div><div class='img'><img src='sensor_join-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>feb_mar</span> <span class='kw'>&lt;-</span> <span class='fu'>sensor_join</span>(<span class='no'>feb</span>, <span class='no'>mar</span>)
+<span class='kw pkg'>PWFSLSmoke</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/PWFSLSmoke/man/monitor_timeseriesPlot.html'>monitor_timeseriesPlot</a></span>(<span class='no'>feb_mar</span>, <span class='kw'>style</span> <span class='kw'>=</span> <span class='st'>'gnats'</span>)</div><div class='img'><img src='sensor_join-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Gaps in the time axis are filled with NA</span>
 <span class='no'>feb_apr</span> <span class='kw'>&lt;-</span> <span class='fu'>sensor_join</span>(<span class='no'>feb</span>, <span class='no'>apr</span>)
 <span class='kw pkg'>PWFSLSmoke</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/PWFSLSmoke/man/monitor_timeseriesPlot.html'>monitor_timeseriesPlot</a></span>(<span class='no'>feb_apr</span>, <span class='kw'>style</span> <span class='kw'>=</span> <span class='st'>'gnats'</span>)</div><div class='img'><img src='sensor_join-2.png' alt='' width='700' height='433' /></div><div class='input'># }

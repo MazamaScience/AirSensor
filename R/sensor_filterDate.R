@@ -46,10 +46,10 @@ sensor_filterDate <- function(
   MazamaCoreUtils::stopIfNull(sensor)
   MazamaCoreUtils::stopIfNull(timezone)
   
-  if ( !PWFSLSmoke::monitor_isMonitor(sensor) )
+  if ( !sensor_isSensor(sensor) )
     stop("Parameter 'sensor' is not a valid 'airsensor' object.") 
   
-  if ( PWFSLSmoke::monitor_isEmpty(sensor) ) 
+  if ( sensor_isEmpty(sensor) ) 
     stop("Parameter 'sensor' has no data.")
   
   if ( is.null(startdate) && !is.null(enddate) )

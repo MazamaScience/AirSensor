@@ -2,6 +2,10 @@
 
 * Added `sensor_filterDatetime()` function for times that are not aligned to
 date boundaries.
+* Refactored `sensor_load()` to use `sensor_join()` and other internal functions 
+for package consistency.
+* Replaced internal use of validation function `PWFSLSmoke::monitor_isMonitor()`
+with package internal `sensor_isSensor()`.
 
 # AirSensor 0.9.11
 

@@ -86,10 +86,10 @@ sensor_polarPlot <- function(
   
   MazamaCoreUtils::stopIfNull(sensor)
   
-  if ( !PWFSLSmoke::monitor_isMonitor(sensor) )
+  if ( !sensor_isSensor(sensor) )
     stop("Parameter 'sensor' is not a valid 'airsensor' object.") 
   
-  if ( PWFSLSmoke::monitor_isEmpty(sensor) ) 
+  if ( sensor_isEmpty(sensor) ) 
     stop("Required parameter 'sensor' has no data.")
   
   if ( nrow(sensor$meta) == 0 )

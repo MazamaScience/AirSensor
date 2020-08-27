@@ -27,6 +27,7 @@
 #' @return An object of class "airsensor".
 #' 
 #' @seealso \link{sensor_loadMonth}
+#' @seealso \link{sensor_loadYear}
 #' 
 #' @examples
 #' \donttest{
@@ -66,13 +67,6 @@ sensor_load <- function(
   
   # ----- Assemble archive files -----------------------------------------------
   
-  # TODO:  sensor_load.R needs a lot of work to properly join including:
-  # TODO:   - trim to months so there aren't overlaps
-  # TODO:   - separate month1_only IDS, shared_IDS, month2_only IDS
-  # TODO:   - create ws_monitor objects for 1_only 1_shared, 2_shared, 2_only
-  # TODO:   - monitor_join(1_shared, 2_shared)
-  # TODO:   - monitor_combine(1_only, 2_joined, 2_only)
-  
   # Set up empty list
   airsensorList <- list()
   
@@ -89,6 +83,8 @@ sensor_load <- function(
     # Ignore "no data file" errors (likely for future months)
     result <- try({
       
+      # NOTE:  sensor_loadYear() interperets datestamp in the local timezone
+      # NOTE:  and converts it to UTC.
       airsensorList[[datestamp]] <- 
         sensor_loadYear(
           collection = collection, 
@@ -107,7 +103,21 @@ sensor_load <- function(
       }
     }
     
+    # TODO:  Remove this when annual sensor objects get fixed to never have gaps.
+    stepSizeCount <- 
+      airsensorList[[datestamp]]$data$datetime %>%
+      as.numeric() %>%
+      diff() %>%
+      unique() %>%
+      length()
+
+    if ( stepSizeCount > 1 ) {
+      airsensorList <- list()
+    }
+    
+    
   } # END of search for annual files
+  
   
   # * monthly archive files -----
   
@@ -166,49 +176,21 @@ sensor_load <- function(
     } else {
       
       a <- airsensor
-      
-      # Prepare b
       b <- airsensorList[[i]]
-      b_mint <- max(a$data$datetime) + lubridate::dhours(1)
-      b_maxt <- max(b$data$datetime)
-      b <- PWFSLSmoke::monitor_subset(b, tlim = c(b_mint, b_maxt))
       
-      # Split up into A only, B only and AB shared
-      a_only_IDs <- setdiff(a$meta$monitorID, b$meta$monitorID)
-      ab_shared_IDs <- intersect(a$meta$monitorID, b$meta$monitorID)
-      b_only_IDs <- setdiff(b$meta$monitorID, a$meta$monitorID)
-      
-      a_only <- PWFSLSmoke::monitor_subset(a, monitorIDs = a_only_IDs, dropMonitors = FALSE)
-      b_only <- PWFSLSmoke::monitor_subset(b, monitorIDs = b_only_IDs, dropMonitors = FALSE)
-      
-      a_shared <- PWFSLSmoke::monitor_subset(a, monitorIDs = ab_shared_IDs, dropMonitors = FALSE)
-      b_shared <- PWFSLSmoke::monitor_subset(b, monitorIDs = ab_shared_IDs, dropMonitors = FALSE)
-      
-      # TODO:  Figure out what is not working with PWFSLSmoke::monitor_join()
-      #ab_shared <- PWFSLSmoke::monitor_join(a, b)
-      
-      ab_shared <- a_shared
-      ab_shared$data <- dplyr::bind_rows(a_shared$data, b_shared$data)
-      
-      airsensor <- 
-        PWFSLSmoke::monitor_combine(list(a_only, b_only, ab_shared))
+      airsensor <-
+        sensor_join(a, b) %>%
+        sensor_filterDatetime(
+          startdate = startdate,
+          enddate = enddate,
+          timezone = timezone
+        )
       
     }
     
   }
   
-  # Cleanup any NaN or Inf that might have snuck in
-  data <-
-    airsensor$data %>%
-    dplyr::mutate_all( function(x) replace(x, which(is.nan(x)), NA) ) %>%
-    dplyr::mutate_all( function(x) replace(x, which(is.infinite(x)), NA) )
-  
-  airsensor$data <- data
-  
   # ----- Return ---------------------------------------------------------------
-  
-  # Trim to the requested time range
-  airsensor <- PWFSLSmoke::monitor_subset(airsensor, tlim = dateRange)
   
   return(airsensor)
   

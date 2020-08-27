@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Draw a matrix of PurpleAir Timeseries data scatter plots — pat_scatterPlotMatrix • AirSensor</title>
+<title>Datetime filtering for AirSensor objects — sensor_filterDatetime • AirSensor</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,17 +42,21 @@
 
 
 
-<meta property="og:title" content="Draw a matrix of PurpleAir Timeseries data scatter plots — pat_scatterPlotMatrix" />
-<meta property="og:description" content="Creates a multi-panel scatterPlot comparing all variables in the
-pat object. If any variables have no valid data, they are omitted from
-the plot.
-The list of available parameters include:
+<meta property="og:title" content="Datetime filtering for AirSensor objects — sensor_filterDatetime" />
+<meta property="og:description" content="Subsets an AirSensor object by datetime. This function
+allows for sub-day filtering as opposed to sensor_filterDate() which
+always filters to day-boundaries. Filtering will be performed with
+&amp;gt;= startdate and &amp;lt; enddate so that the startdate
+timestep will be included in the output but the enddate will not.
+Datetimes can be anything that is understood by 
+MazamaCoreUtils::parseDatetime(). For non-POSIXct values,
+the recommended format is &quot;YYYY-mm-dd HH:MM:SS&quot;.
+Timezone determination precedence assumes that if you are passing in
+POSIXct times then you know what you are doing.
 
-datetime -- measurement time
-pm25_A -- A channel PM2.5 (ug/m3)
-pm25_B -- B channel PM2.5 (ug/m3)
-temperature -- temperature (F)
-humidity -- humidity (%)
+get timezone from startdate if it is POSIXct
+use passed in timezone
+get timezone from sensor
 
 " />
 <meta name="twitter:card" content="summary" />
@@ -168,95 +172,89 @@ humidity -- humidity (%)
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Draw a matrix of PurpleAir Timeseries data scatter plots</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/pat_scatterPlotMatrix.R'><code>R/pat_scatterPlotMatrix.R</code></a></small>
-    <div class="hidden name"><code>pat_scatterPlotMatrix.Rd</code></div>
+    <h1>Datetime filtering for AirSensor objects</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/R/sensor_filterDatetime.R'><code>R/sensor_filterDatetime.R</code></a></small>
+    <div class="hidden name"><code>sensor_filterDatetime.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Creates a multi-panel scatterPlot comparing all variables in the
-<em>pat</em> object. If any variables have no valid data, they are omitted from
-the plot.</p>
-<p>The list of available parameters include:</p>
-<ul>
-<li><p><code>datetime</code> -- measurement time</p></li>
-<li><p><code>pm25_A</code> -- A channel PM2.5 (ug/m3)</p></li>
-<li><p><code>pm25_B</code> -- B channel PM2.5 (ug/m3)</p></li>
-<li><p><code>temperature</code> -- temperature (F)</p></li>
-<li><p><code>humidity</code> -- humidity (%)</p></li>
-</ul>
+    <p>Subsets an AirSensor object by datetime. This function
+allows for sub-day filtering as opposed to <code><a href='sensor_filterDate.html'>sensor_filterDate()</a></code> which
+always filters to day-boundaries. Filtering will be performed with
+<code>&gt;= startdate</code> and <code>&lt; enddate</code> so that the <code>startdate</code>
+timestep will be included in the output but the <code>enddate</code> will not.</p>
+<p>Datetimes can be anything that is understood by 
+<code><a href='https://rdrr.io/pkg/MazamaCoreUtils/man/parseDatetime.html'>MazamaCoreUtils::parseDatetime()</a></code>. For non-<code>POSIXct</code> values,
+the recommended format is <code>"YYYY-mm-dd HH:MM:SS"</code>.</p>
+<p>Timezone determination precedence assumes that if you are passing in
+POSIXct times then you know what you are doing.</p>
+<ol>
+<li><p>get timezone from <code>startdate</code> if it is <code>POSIXct</code></p></li>
+<li><p>use passed in <code>timezone</code></p></li>
+<li><p>get timezone from <code>sensor</code></p></li>
+</ol>
 
     </div>
 
-    <pre class="usage"><span class='fu'>pat_scatterPlotMatrix</span>(
-  <span class='kw'>pat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>parameters</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"datetime"</span>, <span class='st'>"pm25_A"</span>, <span class='st'>"pm25_B"</span>, <span class='st'>"temperature"</span>, <span class='st'>"humidity"</span>),
-  <span class='kw'>sampleSize</span> <span class='kw'>=</span> <span class='fl'>5000</span>,
-  <span class='kw'>sampleFraction</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
-  <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>15</span>,
-  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.25</span>
+    <pre class="usage"><span class='fu'>sensor_filterDatetime</span>(
+  <span class='kw'>sensor</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pat</th>
-      <td><p>PurpleAir Timeseries <em>pat</em> object.</p></td>
+      <th>sensor</th>
+      <td><p>An AirSensor object.</p></td>
     </tr>
     <tr>
-      <th>parameters</th>
-      <td><p>Vector of parameters to include.</p></td>
+      <th>startdate</th>
+      <td><p>Desired start datetime (ISO 8601).</p></td>
     </tr>
     <tr>
-      <th>sampleSize</th>
-      <td><p>Integer to determine sample size.</p></td>
+      <th>enddate</th>
+      <td><p>Desired end datetime (ISO 8601).</p></td>
     </tr>
     <tr>
-      <th>sampleFraction</th>
-      <td><p>Fractional sample size.</p></td>
-    </tr>
-    <tr>
-      <th>size</th>
-      <td><p>Size of points.</p></td>
-    </tr>
-    <tr>
-      <th>shape</th>
-      <td><p>Symbol to use for points.</p></td>
-    </tr>
-    <tr>
-      <th>color</th>
-      <td><p>Color of points.</p></td>
-    </tr>
-    <tr>
-      <th>alpha</th>
-      <td><p>Opacity of points.</p></td>
+      <th>timezone</th>
+      <td><p>Olson timezone used to interpret dates.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Multi-panel ggplot comparing all parameters.</p>
+    <p>A subset of the given <em>sensor</em> object.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='sensor_filter.html'>sensor_filter</a></p>
+<p><a href='sensor_filterDate.html'>sensor_filterDate</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>AirSensor</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>AirSensor</span>)
 
-<span class='no'>pat</span> <span class='kw'>&lt;-</span>
-  <span class='no'>example_pat</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='pat_filterDate.html'>pat_filterDate</a></span>(<span class='fl'>20180811</span>,<span class='fl'>20180818</span>)
-
-<span class='co'># NOTE:  Warnings are generated when the pat contains NA values</span>
-<span class='fu'>pat_scatterPlotMatrix</span>(<span class='no'>pat</span>, <span class='kw'>sampleSize</span> <span class='kw'>=</span> <span class='fl'>1000</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 256 rows containing missing values</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 250 rows containing missing values</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 256 rows containing missing values</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 256 rows containing missing values</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 256 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 256 rows containing non-finite values (stat_density).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 506 rows containing missing values</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 256 rows containing missing values</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 256 rows containing missing values</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 250 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 506 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 250 rows containing non-finite values (stat_density).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 506 rows containing missing values</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 506 rows containing missing values</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 256 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 256 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 506 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 256 rows containing non-finite values (stat_density).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 256 rows containing missing values</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 256 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 256 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 506 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 256 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 256 rows containing non-finite values (stat_density).</span></div><div class='img'><img src='pat_scatterPlotMatrix-1.png' alt='' width='700' height='433' /></div><div class='input'># }
-</div></pre>
+<span class='no'>august</span> <span class='kw'>&lt;-</span> <span class='no'>example_sensor</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>sensor_filterDatetime</span>(
+    <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='st'>"2018-08-21 06:00:00"</span>,
+    <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='st'>"2018-08-28 18:00:00"</span>,
+    <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='st'>"America/Los_Angeles"</span>
+  )
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>august</span>$<span class='no'>data</span>)</div><div class='output co'>#&gt;              datetime 392a12065eb9940d_5192
+#&gt; 1 2018-08-21 13:00:00              28.87000
+#&gt; 2 2018-08-21 14:00:00              27.17570
+#&gt; 3 2018-08-21 15:00:00              20.88789
+#&gt; 4 2018-08-21 16:00:00              15.40604
+#&gt; 5 2018-08-21 17:00:00              16.17606
+#&gt; 6 2018-08-21 18:00:00              17.33392</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 
