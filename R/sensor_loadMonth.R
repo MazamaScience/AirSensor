@@ -32,7 +32,7 @@
 #' 
 #' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 #' 
-#' sensor_loadMonth("scaqmd", 201905) %>%
+#' sensor_loadMonth("scaqmd", 202005) %>%
 #'   PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
 #' }
 

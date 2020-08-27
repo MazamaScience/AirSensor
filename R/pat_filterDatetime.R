@@ -29,6 +29,7 @@
 #' 
 #' @seealso \link{pat_filter}
 #' @seealso \link{pat_filterDate}
+#' 
 #' @examples
 #' library(AirSensor)
 #' 
@@ -90,7 +91,6 @@ pat_filterDatetime <- function(
   if (timeRange[1] > pat$data$datetime[length(pat$data$datetime)] |
       timeRange[2] < pat$data$datetime[1])
     stop("pat does not contain requested date range")
-  
   
   # ----- Subset the "pat" object ----------------------------------------------
   

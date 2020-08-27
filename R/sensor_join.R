@@ -42,16 +42,16 @@ sensor_join <- function(
   MazamaCoreUtils::stopIfNull(sensor1)
   MazamaCoreUtils::stopIfNull(sensor2)
   
-  if ( !PWFSLSmoke::monitor_isMonitor(sensor1) )
+  if ( !sensor_isSensor(sensor1) )
     stop("Parameter 'sensor' is not a valid 'airsensor' object.") 
   
-  if ( PWFSLSmoke::monitor_isEmpty(sensor1) ) 
+  if ( sensor_isEmpty(sensor1) ) 
     stop("Parameter 'sensor' has no data.")
   
-  if ( !PWFSLSmoke::monitor_isMonitor(sensor2) )
+  if ( !sensor_isSensor(sensor2) )
     stop("Parameter 'sensor' is not a valid 'airsensor' object.") 
   
-  if ( PWFSLSmoke::monitor_isEmpty(sensor2) ) 
+  if ( sensor_isEmpty(sensor2) ) 
     stop("Parameter 'sensor' has no data.")
   
   # ----- Partition sensor objects ---------------------------------------------
@@ -81,7 +81,26 @@ sensor_join <- function(
   if ( !all(names(a_shared$data) == names(b_shared$data)) ) {
     stop("a_shared and b_shared have disordered columns")
   }
+
+  # ----- Create start- and endtimes -------------------------------------------
   
+  # Create an overall time axis
+  starttime <- min(a$data$datetime)
+  endtime <- max(b$data$datetime)
+  datetime <- seq(starttime, endtime, by = "hours")
+  hourlyDF <- data.frame(datetime = datetime)
+  
+  # NOTE:  In case of overlaps, keep more of the b data and make a stop one
+  # NOTE:  timepoint before b starts.
+  
+  a_starttime <- min(a$data$datetime)
+  a_endtime <- max(a$data$datetime)
+  b_starttime <- min(b$data$datetime)
+  b_endtime <- max(b$data$datetime)
+  ab_overlapCount <- 
+    difftime(a_endtime, b_starttime, units = "hour") %>% 
+    as.numeric() + 1
+
   # ----- Join shared IDs ------------------------------------------------------
   
   # Start with an airsensor object which will have 'meta' and 'data' replaced
@@ -99,13 +118,22 @@ sensor_join <- function(
     ab_shared$meta <- ab_shared$meta[keepMask,]
   }
   
-  # Trim a$data to end at start of b$data
-  a_starttime <- a_shared$data$datetime[1]
-  a_endtime <- b_shared$data$datetime[1] - lubridate::hours(1)
-  a_shared <- PWFSLSmoke::monitor_subset(a_shared, tlim = c(a_starttime, a_endtime))
+  # NOTE:  Use of sensor_filterDatetime() returns a dataframe that includes
+  # NOTE:  starttime but omits endttime, [starttime, endtime), so there will be
+  # NOTE:  no overlapping timesteps.
+  
+  # If overlapping, trim a_shared to end just before b_starttime
+  if ( ab_overlapCount > 0 ) {
+    a_shared <- sensor_filterDatetime(a_shared, a_starttime, b_starttime)
+  }
   
   # Replace ab_shared$data with combined a_shared$data and b_shared$data
   ab_shared$data <- dplyr::bind_rows(a_shared$data, b_shared$data)
+  
+  # Fill in missing 
+  if ( ab_overlapCount < 0 ) {
+    ab_shared$data <- dplyr::full_join(hourlyDF, ab_shared$data, by = "datetime")
+  }
   
   # ----- Combine a_only, b_only and ab_shared ---------------------------------
   
