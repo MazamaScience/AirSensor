@@ -160,7 +160,8 @@ pat_externalFit <- function(
                           shape = lr_shape,
                           color = lr_color,
                           alpha = alpha) + 
-      ggplot2::geom_smooth(method = "lm", size = 0, alpha = 0.45) +
+      ggplot2::geom_smooth(formula = y ~ x, method = "lm", 
+                           size = 0, alpha = 0.45) +
       ggplot2::stat_smooth(geom = "line", color = lr_lcolor, alpha = lr_lalpha, 
                            method = "lm", size = lr_lwd) + 
       ggplot2::labs(title = "Correlation", 

@@ -88,19 +88,33 @@ PurpleAirQC_hourly_AB_01 <- function(
   # Hourly ttest
   # NOTE:  this uses the patData_aggregate function which uses a dataframe
   FUN <- function(x) {
-    htest <- stats::t.test(x$pm25_A, x$pm25_B, paired = FALSE)
-    tbl <- dplyr::tibble(
-      t_score = as.numeric(htest$statistic),
-      p_value = as.numeric(htest$p.value),
-      df_value = as.numeric(htest$parameter)
-    )
+    result <- try({
+      hourly_ttest <- stats::t.test(x$pm25_A, x$pm25_B, paired = FALSE)
+      tbl <- dplyr::tibble(
+        t_score = as.numeric(hourly_ttest$statistic),
+        p_value = as.numeric(hourly_ttest$p.value),
+        df_value = as.numeric(hourly_ttest$parameter)
+      )
+    }, silent = TRUE)
+    if ( "try-error" %in% class(result) ) {
+      tbl <- dplyr::tibble(
+        t_score = as.numeric(NA),
+        p_value = as.numeric(NA),
+        df_value = as.numeric(NA)
+      )
+    }
     return(tbl)
   }
   
-  ttestData <- 
-    pat %>%
-    pat_extractData() %>%
-    patData_aggregate(FUN)
+  # TODO:  In R 3.5.3, the stats::t.test() function generates warnings inside of
+  # TODO:  pat_aggregate(). Suppress these here.
+  
+  suppressWarnings({
+    ttestData <- 
+      pat %>%
+      pat_extractData() %>%
+      patData_aggregate(FUN)
+  })
   
   # ----- Create hourly dataframe ----------------------------------------------
   
@@ -131,7 +145,7 @@ PurpleAirQC_hourly_AB_01 <- function(
     # Invalidate data where:  (p-value < 1e-4) & (mean_diff > 10)
     dplyr::mutate(pm25 = replace(
       .data$pm25,
-      which( (ttestData$p.value < 1e-4) & (.data$mean_diff > 10) ),
+      which( (ttestData$p_value < 1e-4) & (.data$mean_diff > 10) ),
       NA)
     ) %>% 
     
@@ -145,10 +159,25 @@ PurpleAirQC_hourly_AB_01 <- function(
   
   # ----- Return ---------------------------------------------------------------
   
-  if ( !returnAllColumns ) {
+  if ( returnAllColumns ) {
+    
+    # Add other columns of data used in this QC
+    hourlyData <-
+      hourlyData %>%
+      dplyr::mutate(
+        pm25_A_count = countData$pm25_A,
+        pm25_B_count = countData$pm25_B,
+        pm25_A_mean = meanData$pm25_A,
+        pm25_B_mean = meanData$pm25_B,
+        p_value = ttestData$p_value
+      )
+    
+  } else {
+    
     hourlyData <- 
       hourlyData %>%
       dplyr::select(.data$datetime, .data$pm25)
+    
   }
   
   return(hourlyData)

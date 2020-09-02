@@ -36,7 +36,8 @@ This function is intended for advanced users who wish to have more
 flexibility than the standard \emph{pat_aggregate()} while aggregating
 timeseries data. \code{FUN} can operate and access all numeric vectors
 within the data frame \code{df} and must return a matrix or tibble of numeric 
-values.
+values. Any errors generated during application of \code{FUN} on subsets
+of \code{df} must be handled as in the example.
 }
 \examples{
 library(AirSensor)
@@ -48,12 +49,21 @@ pat <-
 
 # Two Sample Student T-Test (advanced users only - see details.)
 FUN_ttest <- function(x) {
-  htest <- stats::t.test(x$pm25_A, x$pm25_B, paired = FALSE)
-  tbl <- dplyr::tibble(
-    t_score = as.numeric(htest$statistic),
-    p_value = as.numeric(htest$p.value),
-    df_value = as.numeric(htest$parameter)
-  )
+  result <- try({
+    hourly_ttest <- stats::t.test(x$pm25_A, x$pm25_B, paired = FALSE)
+    tbl <- dplyr::tibble(
+      t_score = as.numeric(hourly_ttest$statistic),
+      p_value = as.numeric(hourly_ttest$p.value),
+      df_value = as.numeric(hourly_ttest$parameter)
+    )
+  }, silent = TRUE)
+  if ( "try-error" \%in\% class(result) ) {
+    tbl <- dplyr::tibble(
+      t_score = as.numeric(NA),
+      p_value = as.numeric(NA),
+      df_value = as.numeric(NA)
+    )
+  }
   return(tbl)
 }
 

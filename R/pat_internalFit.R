@@ -118,9 +118,9 @@ pat_internalFit <- function(
       pat$data %>% 
       ggplot2::ggplot(ggplot2::aes(x = .data$pm25_B, y = .data$pm25_A)) + 
       ggplot2::geom_point(size = size, 
-                         shape = lr_shape,
-                       color = lr_color,
-                       alpha = alpha) + 
+                          shape = lr_shape,
+                          color = lr_color,
+                          alpha = alpha) + 
       ggplot2::geom_smooth(formula = y ~ x, method = "lm", 
                            size = 0, alpha = 0.45) +
       ggplot2::stat_smooth(formula = y ~ x, method = "lm", geom = "line",

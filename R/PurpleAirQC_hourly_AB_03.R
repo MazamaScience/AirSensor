@@ -105,8 +105,6 @@ PurpleAirQC_hourly_AB_03 <- function(
    
    meanDiff <- abs(meanData$pm25_A - meanData$pm25_B)
    
-   meanSum <- meanData$pm25_A + meanData$pm25_B
-   
    # ----- Create masks --------------------------------------------------------
    
    # When only a fraction of the data are reporting, something is wrong.
@@ -129,14 +127,13 @@ PurpleAirQC_hourly_AB_03 <- function(
    # ----- Create hourly dataframe ---------------------------------------------
    
    # NOTE:  Include variables used in QC so that they can be used to create a
-   # NOTE:  plot visualizing the how the QC algorithm rejects values.
+   # NOTE:  plot visualizing how the QC algorithm rejects values.
    
    hourlyData <-
       # Fill dataframe
       dplyr::tibble(datetime = meanData$datetime) %>%
       dplyr::mutate(pm25 = (meanData$pm25_A + meanData$pm25_B) / 2) %>%
       dplyr::mutate(mean_diff = meanDiff) %>% 
-      dplyr::mutate(mean_sum = meanSum) %>%
       dplyr::mutate(pct_diff = pctDiff) %>% 
       # Replace pm25 with NA if count < minCount
       dplyr::mutate(
@@ -165,10 +162,27 @@ PurpleAirQC_hourly_AB_03 <- function(
    
    # ----- Return ---------------------------------------------------------------
    
-   if ( !returnAllColumns ) {
+   if ( returnAllColumns ) {
+      
+      # Add other columns of data used in this QC
+      hourlyData <-
+         hourlyData %>%
+         dplyr::mutate(
+            min_count = pmin(countData$pm25_A, countData$pm25_B, na.rm = TRUE),
+            pm25_A_count = countData$pm25_A,
+            pm25_B_count = countData$pm25_B,
+            pm25_A_mean = meanData$pm25_A,
+            pm25_B_mean = meanData$pm25_B,
+            pm25_A_recovered = recoveredData$A_recovered,
+            pm25_B_recovered = recoveredData$B_recovered,
+         )
+      
+   } else {
+      
       hourlyData <- 
          hourlyData %>%
          dplyr::select(.data$datetime, .data$pm25)
+      
    }
    
    return(hourlyData)

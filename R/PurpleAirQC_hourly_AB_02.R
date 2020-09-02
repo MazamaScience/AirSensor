@@ -141,10 +141,24 @@ PurpleAirQC_hourly_AB_02 <- function(
    
    # ----- Return ---------------------------------------------------------------
    
-   if ( !returnAllColumns ) {
+   if ( returnAllColumns ) {
+      
+      # Add other columns of data used in this QC
+      hourlyData <-
+         hourlyData %>%
+         dplyr::mutate(
+            pm25_A_count = countData$pm25_A,
+            pm25_B_count = countData$pm25_B,
+            pm25_A_mean = meanData$pm25_A,
+            pm25_B_mean = meanData$pm25_B
+         )
+      
+   } else {
+      
       hourlyData <- 
          hourlyData %>%
          dplyr::select(.data$datetime, .data$pm25)
+      
    }
    
    return(hourlyData)
