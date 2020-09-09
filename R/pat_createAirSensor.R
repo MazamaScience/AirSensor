@@ -191,14 +191,14 @@ pat_createAirSensor <- function(
     as.data.frame()
   
   # Add standard metadata found in PWFSLSmoke ws_monitor objects
-  meta$monitorID <- meta$deviceDeploymentID
+  meta$monitorID <- as.character(meta$deviceDeploymentID)
   meta$elevation <- as.numeric(NA)
-  meta$siteName <- meta$label
+  meta$siteName <- as.character(meta$label)
   meta$countyName <- as.character(NA)
   meta$msaName <- as.character(NA)
-  meta$monitorType <- meta$sensorType
-  meta$siteID <- meta$locationID
-  meta$instrumentID <- meta$deviceID
+  meta$monitorType <- as.character(meta$sensorType)
+  meta$siteID <- as.character(meta$locationID)
+  meta$instrumentID <- as.character(meta$deviceID)
   meta$aqsID <- as.character(NA)
   meta$pwfslID <- as.character(NA)
   meta$pwfslDataIngestSource <- "ThingSpeak"

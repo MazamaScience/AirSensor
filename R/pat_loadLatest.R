@@ -124,6 +124,10 @@ pat_loadLatest <- function(
 
   # ----- Return ---------------------------------------------------------------
 
+  # Guarantee that 'ID' and 'deviceID' fields are <character> as opposed to <int>
+  pat$meta$ID <- as.character(pat$meta$ID)
+  pat$meta$deviceID <- as.character(pat$meta$deviceID)
+  
   # Guarantee that 'uptime' and 'memory' are <dbl> as opposed to <int> as they 
   # were in an earlier version
   pat$data$uptime <- as.double(pat$data$uptime)

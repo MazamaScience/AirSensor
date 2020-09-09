@@ -99,6 +99,11 @@ sensor_loadMonth <- function(
   
   # ----- Return ---------------------------------------------------------------
   
+  # Guarantee that 'ID' and 'deviceID' fields are <character> as opposed to <int>
+  airsensor$meta$ID <- as.character(airsensor$meta$ID)
+  airsensor$meta$deviceID <- as.character(airsensor$meta$deviceID)
+  airsensor$meta$instrumentID <- as.character(airsensor$meta$instrumentID)
+  
   return(invisible(airsensor))
   
 }

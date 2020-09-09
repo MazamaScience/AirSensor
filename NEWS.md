@@ -1,3 +1,10 @@
+# AirSensor 0.9.14
+
+* Added guarantees in multiple places that `meta$ID` and `meta$deviceID` for both
+_pat_ and _airsensor_ objects are of type "character". This fixes errors during
+joining of monthly files that may have been created with an earlier version of 
+the package.
+
 # AirSensor 0.9.13
 
 * For all `PurpleAirQC_hourly_~()` functions, `returnAllColumns` now returns a
@@ -22,7 +29,7 @@ with package internal `sensor_isSensor()`.
 
 # AirSensor 0.9.11
 
-* Refactored `pat_join()` to remove overlapping data in incoming PAT objects
+* Refactored `pat_join()` to remove overlapping data in incoming _PAT_pat_ objects
 before joining. 
 
 # AirSensor 0.9.10
@@ -35,7 +42,7 @@ boundaries.
 
 # AirSensor 0.9.9
 
-* Added `sensor_join()` function to "join" _airsensor_objects from different
+* Added `sensor_join()` function to "join" _airsensor_ objects from different
 months.
 * Updated `pat_distinct()` to remove duplicated timestamps and guarantee proper 
 ordering by `datetime`.

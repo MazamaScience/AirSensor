@@ -70,7 +70,9 @@ sensor_loadYear <- function(
   
   # Get data from URL or directory
   result <- try({
-    suppressWarnings( airsensor <- MazamaCoreUtils::loadDataFile(filename, dataUrl, dataDir) )
+    suppressWarnings({
+      airsensor <- MazamaCoreUtils::loadDataFile(filename, dataUrl, dataDir)
+    })
   }, silent = TRUE)
   
   # NOTE:  We used suppressWarnings() above so that we can have a more
@@ -79,13 +81,18 @@ sensor_loadYear <- function(
   
   if ( "try-error" %in% class(result) ) {
     if ( is.null(baseDir) ) {
-      stop(paste0("Data file could not be loaded from: ", baseUrl), call.=FALSE)
+      stop(paste0("Data file could not be loaded from: ", baseUrl), call. = FALSE)
     } else {
-      stop(paste0("Data file could not be loaded from: ", baseDir), call.=FALSE)
+      stop(paste0("Data file could not be loaded from: ", baseDir), call. = FALSE)
     }
   }
   
   # ----- Return ---------------------------------------------------------------
+  
+  # Guarantee that 'ID' and 'deviceID' fields are <character> as opposed to <int>
+  airsensor$meta$ID <- as.character(airsensor$meta$ID)
+  airsensor$meta$deviceID <- as.character(airsensor$meta$deviceID)
+  airsensor$meta$instrumentID <- as.character(airsensor$meta$instrumentID)
   
   return(invisible(airsensor))
   

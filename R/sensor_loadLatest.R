@@ -62,7 +62,7 @@ sensor_loadLatest <- function(
   # Get data from URL or directory
   result <- try({
     suppressWarnings({
-      sensor <- MazamaCoreUtils::loadDataFile(filename, dataUrl, dataDir) 
+      airsensor <- MazamaCoreUtils::loadDataFile(filename, dataUrl, dataDir) 
     })
   }, silent = TRUE)
   
@@ -80,6 +80,11 @@ sensor_loadLatest <- function(
   
   # ----- Return ---------------------------------------------------------------
   
-  return(sensor)
+  # Guarantee that 'ID' and 'deviceID' fields are <character> as opposed to <int>
+  airsensor$meta$ID <- as.character(airsensor$meta$ID)
+  airsensor$meta$deviceID <- as.character(airsensor$meta$deviceID)
+  airsensor$meta$instrumentID <- as.character(airsensor$meta$instrumentID)
+  
+  return(invisible(airsensor))
   
 }

@@ -135,6 +135,10 @@ pat_createPATimeseriesObject <- function(
                   .data$targetPollutant,
                   .data$technologyType,
                   .data$communityRegion)
+
+  # Guarantee that 'ID' and 'deviceID' fields are <character> as opposed to <int>
+  meta$ID <- as.character(meta$ID)
+  meta$deviceID <- as.character(meta$deviceID)
   
   # ----- Create A and B channels ----------------------------------------------
 
