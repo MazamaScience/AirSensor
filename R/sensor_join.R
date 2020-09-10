@@ -73,13 +73,20 @@ sensor_join <- function(
   b_only_IDs <- setdiff(b_IDs, a_IDs)
   ab_shared_IDs <- intersect(a_IDs, b_IDs)
   
-  a_only <- PWFSLSmoke::monitor_subset(a, monitorIDs = a_only_IDs, dropMonitors = FALSE)
-  b_only <- PWFSLSmoke::monitor_subset(b, monitorIDs = b_only_IDs, dropMonitors = FALSE)
-  a_shared <- PWFSLSmoke::monitor_subset(a, monitorIDs = ab_shared_IDs, dropMonitors = FALSE)
-  b_shared <- PWFSLSmoke::monitor_subset(b, monitorIDs = ab_shared_IDs, dropMonitors = FALSE)
-  
-  if ( !all(names(a_shared$data) == names(b_shared$data)) ) {
-    stop("a_shared and b_shared have disordered columns")
+  a_only <- a %>% sensor_filterMeta(.data$monitorID %in% a_only_IDs)
+  b_only <- b %>% sensor_filterMeta(.data$monitorID %in% b_only_IDs)
+  a_shared <- a %>% sensor_filterMeta(.data$monitorID %in% ab_shared_IDs)
+  b_shared <- b %>% sensor_filterMeta(.data$monitorID %in% ab_shared_IDs)
+
+  if ( !sensor_isEmpty(b_shared) ) {
+
+    # Guarantee proper ordering
+    b_shared <- PWFSLSmoke::monitor_reorder(b_shared, a_shared$meta$monitorID)
+    
+    if ( !all(names(a_shared$data) == names(b_shared$data)) ) {
+      stop("a_shared and b_shared contain non-identical sensors")
+    }
+    
   }
 
   # ----- Create start- and endtimes -------------------------------------------

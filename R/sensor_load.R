@@ -56,10 +56,15 @@ sensor_load <- function(
     return( sensor_loadLatest(collection) )
   
   # Get the date range
-  dateRange <- MazamaCoreUtils::dateRange(startdate, 
-                                          enddate, 
-                                          timezone, 
-                                          days = days)
+  dateRange <- MazamaCoreUtils::dateRange(
+    startdate, 
+    enddate, 
+    timezone,
+    unit = "hour",
+    ceilingStart = FALSE,
+    ceilingEnd = FALSE,
+    days = days
+  )
   
   # NOTE:  datestamps here are created with the local timezone. It is the job of
   # NOTE:  sensor_loadMonth() to convert these into UTC for use in constructing
@@ -178,17 +183,20 @@ sensor_load <- function(
       a <- airsensor
       b <- airsensorList[[i]]
       
-      airsensor <-
-        sensor_join(a, b) %>%
-        sensor_filterDatetime(
-          startdate = startdate,
-          enddate = enddate,
-          timezone = timezone
-        )
+      airsensor <- sensor_join(a, b)
       
     }
     
   }
+  
+  # Restrict the time axis
+  airsensor <-
+    airsensor %>%
+    sensor_filterDatetime(
+      startdate = startdate,
+      enddate = enddate,
+      timezone = timezone
+    )
   
   # ----- Return ---------------------------------------------------------------
   

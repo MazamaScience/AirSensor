@@ -1,3 +1,8 @@
+# AirSensor 0.9.15
+
+* Improved error handling in `sensor_join()`.
+* Fixed date range filtering bug in `sensor_load()`.
+
 # AirSensor 0.9.14
 
 * Added guarantees in multiple places that `meta$ID` and `meta$deviceID` for both
