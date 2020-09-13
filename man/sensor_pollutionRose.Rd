@@ -95,8 +95,7 @@ sensor <- pat_createAirSensor(pat)
 # Load wind data from NOAA
 windData <- worldmet::importNOAA(
   code = "722975-53141", 
-  year = 2020, 
-  parallel = FALSE
+  year = 2020
 )
 windData <- dplyr::select(windData, c("date", "wd", "ws"))
 

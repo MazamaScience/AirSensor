@@ -112,23 +112,28 @@ sensor_polarPlot <- function(
     # Get first two nearest met data
     closeSites <- worldmet::getMeta(lon = lon, lat = lat, n = 2, plot = FALSE)
     
-    siteCodes <- paste0(closeSites$USAF, "-", closeSites$WBAN)
+    siteCodes <- paste0(closeSites$usaf, "-", closeSites$wban)
     
-    # Suppress: "Grouping rowwise data frame strips rowwise nature"
-    suppressWarnings({
-      siteData <- worldmet::importNOAA( code = siteCodes[1], 
-                                        year = year, 
-                                        parallel = FALSE,
-                                        quiet = !verbose )
-    })
-    
+    siteData <- worldmet::importNOAA(
+      code = siteCodes[1], 
+      year = year, 
+      hourly = TRUE,
+      n.cores = 1,
+      quiet = !verbose,
+      path = NA 
+    )
+
     # Check if the first is NA to avoid errors
     if ( all(is.na(siteData$ws) | is.na(siteData$wd)) ) {
       
-      siteData <- worldmet::importNOAA( code = siteCodes[2], 
-                                        year = year, 
-                                        parallel = FALSE,
-                                        quiet = !verbose)
+      siteData <- worldmet::importNOAA(
+        code = siteCodes[2], 
+        year = year, 
+        hourly = TRUE,
+        n.cores = 1,
+        quiet = !verbose,
+        pat = NA 
+      )
       
     }
     

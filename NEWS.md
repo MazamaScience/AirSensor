@@ -1,3 +1,8 @@
+# AirSensor 0.9.16
+
+* Restored `sensor_polarPlot()` and `sensor_pollutionRose()` functionality by
+upgradin to **worldmet** 0.9.1.
+
 # AirSensor 0.9.15
 
 * Improved error handling in `sensor_join()`.

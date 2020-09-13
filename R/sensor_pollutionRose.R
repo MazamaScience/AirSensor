@@ -61,8 +61,7 @@
 #' # Load wind data from NOAA
 #' windData <- worldmet::importNOAA(
 #'   code = "722975-53141", 
-#'   year = 2020, 
-#'   parallel = FALSE
+#'   year = 2020
 #' )
 #' windData <- dplyr::select(windData, c("date", "wd", "ws"))
 #' 
@@ -107,21 +106,27 @@ sensor_pollutionRose <- function(
   
   # Find wind data readings from the closest NOAA site if none are provided
   if ( is.null(windData) ) {
+    
     # Using only the first entry's datetime for the year will be problematic 
     # if the timeframe spans more than one year...
     year <- lubridate::year(sensor$data$datetime[1])
     lon <- sensor$meta$longitude[1]
     lat <- sensor$meta$latitude[1]
     
-    closestSite <- worldmet::getMeta(lon = lon, lat = lat, n = 1, 
-                                     plot = FALSE)[1,]
-    siteCode <- paste0(closestSite$USAF, "-", closestSite$WBAN)
+    closestSite <- worldmet::getMeta(lon = lon, lat = lat, n = 1, plot = FALSE)
+    siteCodes <- paste0(closestSite$usaf, "-", closestSite$wban)
     
-    siteData <- worldmet::importNOAA(code = siteCode, 
-                                     year = year, 
-                                     parallel = FALSE,
-                                     quiet = !verbose )
+    siteData <- worldmet::importNOAA(
+      code = siteCodes[1], 
+      year = year, 
+      hourly = TRUE,
+      n.cores = 1,
+      quiet = !verbose,
+      path = NA 
+    )
+
     windData <- dplyr::select(siteData, c("date", "wd", "ws"))
+    
   }
   
   # Data must be the same length
@@ -193,7 +198,7 @@ if ( FALSE ) {
     worldmet::getMeta(lat = sensor$meta$latitude, lon = sensor$meta$longitude, n = 3, plot = FALSE)
   
   windData <- 
-    worldmet::importNOAA(code = windsite$code[1], year = 2018, parallel = FALSE) %>%
+    worldmet::importNOAA(code = windsite$code[1], year = 2018) %>%
     dplyr::select(windData, c("date", "wd", "ws"))
   
   sensor_pollutionRose(sensor, windData, statistic = "prop.mean")

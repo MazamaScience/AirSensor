@@ -1,6 +1,6 @@
 Type: Package
 Package: AirSensor
-Version: 0.9.15
+Version: 0.9.16
 Title: Process and Display Data from Air Quality Sensors
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
@@ -55,7 +55,7 @@ Imports:
     tibble,
     tidyr,
     tidyselect,
-    worldmet,
+    worldmet (>= 0.9.1),
     xts,
     zoo
 Suggests:
