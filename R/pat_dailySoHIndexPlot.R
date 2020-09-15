@@ -82,7 +82,7 @@ pat_dailySoHIndexPlot <- function(
   legendText_y <- legendBar_ymin + 0.5 * indexBar_thickness
   legendText_label <- c("Poor", "Fair", "Good")
   
-  xlab <- strftime(localTime[1], "Local Time (%Z)")
+  xlab <- strftime(localTime[1], "Local Time (%Z)", tz = pat$meta$timezone)
   
   # ----- Create plot ----------------------------------------------------------
   

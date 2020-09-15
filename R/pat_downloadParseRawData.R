@@ -123,16 +123,25 @@ pat_downloadParseRawData <- function(
   # Create a valid dateRange
   if ( !is.null(startdate) && !is.null(enddate) ) {
     # Don't require day boundaries
-    dateRange <- MazamaCoreUtils::timeRange(startdate, 
-                                            enddate, 
-                                            timezone = timezone)
+    dateRange <- MazamaCoreUtils::timeRange(
+      starttime = startdate, 
+      endtime = enddate, 
+      timezone = timezone, 
+      unit = "min",
+      ceilingStart = FALSE,
+      ceilingEnd = FALSE
+    )
   } else {
     # Default to 7 days with day boundaries
-    dateRange <- MazamaCoreUtils::dateRange(startdate, 
-                                            enddate, 
-                                            timezone, 
-                                            days = 7,
-                                            unit = "min")
+    dateRange <- MazamaCoreUtils::dateRange(
+      startdate = startdate, 
+      enddate = enddate, 
+      timezone = timezone, 
+      unit = "min",
+      ceilingStart = FALSE,
+      ceilingEnd = FALSE,
+      days = 7
+    )
   }
   
   startString <- strftime(dateRange[1], "%Y-%m-%dT%H:%M:%S", tz = "UTC")
@@ -452,7 +461,7 @@ pat_downloadParseRawData <- function(
     
     # Return immediately if empty
     if ( nrow(dataTbl) == 0 ) {
-      dataTbl$created_at <- as.POSIXct(dataTbl$created_at)
+      dataTbl$created_at <- as.POSIXct(dataTbl$created_at, tz = "UTC")
       return(dataTbl)
     } else {
       dataTbl$created_at = MazamaCoreUtils::parseDatetime(dataTbl$created_at, timezone = "UTC")

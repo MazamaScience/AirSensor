@@ -11,8 +11,8 @@ test_that(
     )$data$datetime, 
     sensor_filter(
       example_sensor, 
-      .data$datetime >= lubridate::ymd_h(2018081500), 
-      .data$datetime < lubridate::ymd_h(2018081600)
+      .data$datetime >= lubridate::ymd_h(2018081500, tz = 'UTC'), 
+      .data$datetime < lubridate::ymd_h(2018081600, tz = 'UTC')
     )$data$datetime
   )
 )

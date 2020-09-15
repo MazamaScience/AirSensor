@@ -57,7 +57,7 @@ pat_trimDate <- function(
   # NOTE:  at the date boundary
   
   hour <- 
-    MazamaCoreUtils::parseDatetime(timeRange[1], timezone) %>%
+    MazamaCoreUtils::parseDatetime(timeRange[1], timezone = timezone) %>%
     lubridate::hour() # hour resolution is good enough to count as an entire day
   
   if ( hour == 0 ) {

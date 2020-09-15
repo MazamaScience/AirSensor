@@ -85,30 +85,30 @@ pat_createPATimeseriesObject <- function(
   
   # ----- Simplify meta --------------------------------------------------------
   
+  # On 2020-09-15
   # > names(pat_rawList$meta)
-  # [1] "ID"                               "label"                           
-  # [3] "DEVICE_LOCATIONTYPE"              "THINGSPEAK_PRIMARY_ID"           
-  # [5] "THINGSPEAK_PRIMARY_ID_READ_KEY"   "THINGSPEAK_SECONDARY_ID"         
-  # [7] "THINGSPEAK_SECONDARY_ID_READ_KEY" "latitude"                        
-  # [9] "longitude"                        "pm25"                            
+  #  [1] "ID"                               "label"                           
+  #  [3] "DEVICE_LOCATIONTYPE"              "THINGSPEAK_PRIMARY_ID"           
+  #  [5] "THINGSPEAK_PRIMARY_ID_READ_KEY"   "THINGSPEAK_SECONDARY_ID"         
+  #  [7] "THINGSPEAK_SECONDARY_ID_READ_KEY" "latitude"                        
+  #  [9] "longitude"                        "pm25"                            
   # [11] "lastSeenDate"                     "sensorType"                      
   # [13] "flag_hidden"                      "isOwner"                         
   # [15] "humidity"                         "temperature"                     
   # [17] "pressure"                         "age"                             
   # [19] "parentID"                         "flag_highValue"                  
   # [21] "flag_attenuation_hardware"        "Ozone1"                          
-  # [23] "Voc"                              "pm25_current"                    
-  # [25] "pm25_10min"                       "pm25_30min"                      
-  # [27] "pm25_1hr"                         "pm25_6hr"                        
-  # [29] "pm25_1day"                        "pm25_1week"                      
-  # [31] "statsLastModifiedDate"            "statsLastModifiedInterval"       
-  # [33] "deviceID"                         "locationID"                      
-  # [35] "deviceDeploymentID"               "countryCode"                     
-  # [37] "stateCode"                        "timezone"                        
-  # [39] "airDistrict"                      "pwfsl_closestDistance"           
-  # [41] "pwfsl_closestMonitorID"           "sensorManufacturer"              
-  # [43] "targetPollutant"                  "technologyType"                  
-  # [45] "communityRegion"                 
+  # [23] "pm25_current"                     "pm25_10min"                      
+  # [25] "pm25_30min"                       "pm25_1hr"                        
+  # [27] "pm25_6hr"                         "pm25_1day"                       
+  # [29] "pm25_1week"                       "statsLastModifiedDate"           
+  # [31] "statsLastModifiedInterval"        "countryCode"                     
+  # [33] "stateCode"                        "timezone"                        
+  # [35] "deviceID"                         "locationID"                      
+  # [37] "deviceDeploymentID"               "airDistrict"                     
+  # [39] "pwfsl_closestDistance"            "pwfsl_closestMonitorID"          
+  # [41] "sensorManufacturer"               "targetPollutant"                 
+  # [43] "technologyType"                   "communityRegion"              
   
   meta <- 
     pat_rawList$meta %>%

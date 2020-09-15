@@ -41,7 +41,6 @@ and presence of core metadata columns:
   \item{flag_highValue -- out of spec flag}
   \item{flag_attenutation_hardware -- hardware failure flag}
   \item{Ozone1 -- latest ozone data}
-  \item{Voc -- latest voc data}
   \item{pm25_current -- current PM2.5 data}
   \item{pm25_10min -- 10-minute average PM2.5 data}
   \item{pm25_30min -- 30-minute average PM2.5 data}

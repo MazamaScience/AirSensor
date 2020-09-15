@@ -5,7 +5,7 @@
 \alias{example_pas_raw}
 \title{Example raw Purple Air Synoptic dataset}
 \format{
-A tibble with 961 rows and 33 columns of data.
+A tibble with 1233 rows and 32 columns of data.
 }
 \source{
 https://www.purpleair.com/json
@@ -17,7 +17,7 @@ example_pas_raw
 The \code{example_pas_raw} dataset provides a quickly loadable
 version of raw Purple Air synoptic data JSON for practicing and code
 examples. This dataset contains data for sensors in Washington and Oregon
-and was generated on 2020-01-03 by running:
+and was generated on 2020-09-15 by running:
 
 \preformatted{
 library(AirSensor)

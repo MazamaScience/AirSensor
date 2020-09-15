@@ -14,7 +14,8 @@ pat_dygraph(
   tlim = NULL,
   rollPeriod = 1,
   showLegend = TRUE,
-  colors = NULL
+  colors = NULL,
+  timezone = NULL
 )
 }
 \arguments{
@@ -38,6 +39,9 @@ representing YYYYMMDD[HH])}
 \item{showLegend}{logical to toggle display of the legend}
 
 \item{colors}{string vector of colors to be used for plotting}
+
+\item{timezone}{Olson timezone used to interpret \code{tlim}. (Defaults to 
+\code{pat} local time.)}
 }
 \value{
 Initiates the interactive dygraph plot in RStudio's 'Viewer' tab.

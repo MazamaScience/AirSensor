@@ -1,7 +1,19 @@
+# AirSensor 0.9.17
+
+* Updated dependency to **worldmet** 0.9.2.
+* `sensor_pollutionRose()` now searches for the nearest 2 met sites in case the
+first one has no data. This matches the behavior in `sensor_polarPlot()`.
+* Rebuilt all `example_~` data files with **AirSensor** 0.9.17.
+* Updated tests to match new example data.
+* Removed all references to "Voc" in _pas_ related functions as this field is 
+not longer part of the PurpleAir `.json` file.
+* Used **MazamaCoreUtils** "timezone linting" to ensure that timezones are always
+specified.
+
 # AirSensor 0.9.16
 
 * Restored `sensor_polarPlot()` and `sensor_pollutionRose()` functionality by
-upgradin to **worldmet** 0.9.1.
+upgrading to **worldmet** 0.9.1.
 
 # AirSensor 0.9.15
 

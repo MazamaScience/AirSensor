@@ -1,15 +1,15 @@
 #' @title Example Purple Air Synoptic dataset
-#' @format A tibble with 10220 rows and 45 columns of data.
+#' @format A tibble with 16584 rows and 44 columns of data.
 #' @description The \code{example_pas} dataset provides a quickly loadable
 #' version of a \emph{pa_synoptic} object for practicing and code examples.
-#' This dataset was generated on 2020-01-03 by running:
+#' This dataset was generated on 2020-09-15 by running:
 #'
 #' \preformatted{
 #' library(AirSensor)
 #' 
 #' initializeMazamaSpatialUtils()
 #' 
-#' example_pas <- pas_createNew()
+#' example_pas <- pas_createNew(countryCodes = "US")
 #' 
 #' save(example_pas, file = "data/example_pas.rda")
 #' }
@@ -20,11 +20,11 @@
 
 
 #' @title Example raw Purple Air Synoptic dataset
-#' @format A tibble with 961 rows and 33 columns of data.
+#' @format A tibble with 1233 rows and 32 columns of data.
 #' @description The \code{example_pas_raw} dataset provides a quickly loadable
 #' version of raw Purple Air synoptic data JSON for practicing and code
 #' examples. This dataset contains data for sensors in Washington and Oregon
-#' and was generated on 2020-01-03 by running:
+#' and was generated on 2020-09-15 by running:
 #' 
 #' \preformatted{
 #' library(AirSensor)
@@ -53,7 +53,7 @@
 #' @format An S3 object composed of "meta" and "data" data.
 #' @description The \code{example_pat} dataset provides a quickly loadable version of
 #' a \emph{pa_timeseries} object for practicing and code examples.
-#' This dataset was was generated on 2020-01-03 by running:
+#' This dataset was was generated on 2020-09-15 by running:
 #'
 #' \preformatted{
 #' library(AirSensor)
@@ -79,7 +79,7 @@
 #' @format An S3 object composed of "meta" and "data" data.
 #' @description The \code{example_pat_failure_A} dataset provides a quickly loadable
 #' version of a \emph{pa_timeseries} object for practicing and code examples.
-#' This dataset was was generated on 2020-01-03 by running:
+#' This dataset was was generated on 2020-09-15 by running:
 #'
 #' \preformatted{
 #' library(AirSensor)
@@ -105,7 +105,7 @@
 #' @format An S3 object composed of "meta" and "data" data.
 #' @description The \code{example_pat_failure_B} dataset provides a quickly loadable
 #' version of a \emph{pa_timeseries} object for practicing and code examples.
-#' This dataset was was generated on 2020-01-03 by running:
+#' This dataset was was generated on 2020-09-15 by running:
 #'
 #' \preformatted{
 #' library(AirSensor)
@@ -131,7 +131,7 @@
 #' @format An S3 object composed of "meta" and "data" data.
 #' @description The \code{example_sensor} dataset provides a quickly loadable version of
 #' an \emph{airsensor} object for practicing and code examples.
-#' This dataset was was generated on 2020-01-03 by running:
+#' This dataset was was generated on 2020-09-15 by running:
 #'
 #' \preformatted{
 #' library(AirSensor)
@@ -151,14 +151,20 @@
 "example_sensor"
 
 
-#' #' @title Example AirSensor Timeseries dataset
-#' #' @format An S3 object composed of "meta" and "data" data.
-#' #' @description The \code{example_sensor_scaqmd} dataset provides a quickly 
-#' #' loadable version of a multi-sensor \emph{airsensor} object for practicing and 
-#' #' code examples. This dataset was was generated on 2019-07-10 by running:
-#' #' 
-#' #' \preformatted{
-#' #' example_sensor_scaqmd <- 
-#' #'   sensor_load("scaqmd", startdate = 20190701, enddate = 20190708)
-#' #' }
-#' "example_sensor_scaqmd"
+#' @title Example AirSensor Timeseries dataset
+#' @format An S3 object composed of "meta" and "data" data.
+#' @description The \code{example_sensor_scaqmd} dataset provides a quickly
+#' loadable version of a multi-sensor \emph{airsensor} object for practicing and
+#' code examples. This dataset was was generated on 2020-09-15 by running:
+#'
+#' \preformatted{
+#' library(AirSensor)
+#' 
+#' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+#' 
+#' example_sensor_scaqmd <-
+#'   sensor_load("scaqmd", startdate = 20190701, enddate = 20190708)
+#' 
+#' save(example_sensor_scaqmd, file = "data/example_sensor_scaqmd.rda")
+#' }
+"example_sensor_scaqmd"

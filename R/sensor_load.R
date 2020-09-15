@@ -57,9 +57,9 @@ sensor_load <- function(
   
   # Get the date range
   dateRange <- MazamaCoreUtils::dateRange(
-    startdate, 
-    enddate, 
-    timezone,
+    startdate = startdate, 
+    enddate = enddate, 
+    timezone = timezone,
     unit = "hour",
     ceilingStart = FALSE,
     ceilingEnd = FALSE,
@@ -165,8 +165,8 @@ sensor_load <- function(
   if ( length(airsensorList) == 0 ) {
     stop(paste0(
       "No data found in the archive covering the period ",
-      strftime(dateRange[1], "%F"), " to ",
-      strftime(dateRange[2], "%F %Z")
+      strftime(dateRange[1], "%F", tz = timezone), " to ",
+      strftime(dateRange[2], "%F %Z", tz = timezone)
       ))
   }
   

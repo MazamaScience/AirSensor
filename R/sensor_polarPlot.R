@@ -1,3 +1,5 @@
+#' @export
+#' 
 #' @title Plot bivariate polar plots with guassian smoothing
 #'
 #' @param sensor an 'airsensor' object
@@ -50,7 +52,6 @@
 #' \url{http://davidcarslaw.github.io/openair/reference/polarPlot.html} 
 #' 
 #' @return a plot and dataframe
-#' @export
 #'
 #' @examples
 #' \donttest{
@@ -110,12 +111,10 @@ sensor_polarPlot <- function(
     lat <- sensor$meta$latitude[1]
     
     # Get first two nearest met data
-    closeSites <- worldmet::getMeta(lon = lon, lat = lat, n = 2, plot = FALSE)
-    
-    siteCodes <- paste0(closeSites$usaf, "-", closeSites$wban)
+    closestSites <- worldmet::getMeta(lon = lon, lat = lat, n = 2, plot = FALSE)
     
     siteData <- worldmet::importNOAA(
-      code = siteCodes[1], 
+      code = closestSites$code[1], 
       year = year, 
       hourly = TRUE,
       n.cores = 1,
@@ -127,12 +126,12 @@ sensor_polarPlot <- function(
     if ( all(is.na(siteData$ws) | is.na(siteData$wd)) ) {
       
       siteData <- worldmet::importNOAA(
-        code = siteCodes[2], 
+        code = closestSites$code[2], 
         year = year, 
         hourly = TRUE,
         n.cores = 1,
         quiet = !verbose,
-        pat = NA 
+        path = NA 
       )
       
     }

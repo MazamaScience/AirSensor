@@ -10,8 +10,8 @@ test_that("input validation works", {
 
 test_that("filtering works", { 
   # Many DEVICE_LOCATIONTYPE values are NA and don't show up as TRUE or FALSE
-  expect_equal(length(pas_getColumn(example_pas, "ID", isOutside = TRUE)), 4159)
-  expect_equal(length(pas_getColumn(example_pas, "ID", isOutside = FALSE)), 901)
+  expect_equal(length(pas_getColumn(example_pas, "ID", isOutside = TRUE)), 6176)
+  expect_equal(length(pas_getColumn(example_pas, "ID", isOutside = FALSE)), 2070)
 })
 
 test_that("proper column is extracted", { 
@@ -20,7 +20,7 @@ test_that("proper column is extracted", {
     example_pas %>%
       pas_filter(stateCode == "SD") %>%
       pas_getColumn("ID"),
-    c("3097", "26059", "2506" , "8376", "5656")
+    c("3097", "2506" , "8376", "49685", "5656")
   )
   # Label
   expect_equal(
@@ -29,9 +29,9 @@ test_that("proper column is extracted", {
       pas_getColumn("label"),
     c(
       "Cat Ranch",
-      "Garfield School",
       "Golden Valley",
       "MandMnorth40",
+      "Northern Lights",
       "West Rapid City"
     )
   )
@@ -40,7 +40,7 @@ test_that("proper column is extracted", {
     example_pas %>%
       pas_filter(stateCode == "SD") %>%
       pas_getColumn("pm25"),
-    c(0.04, 1.30, 0.00, 8.59, 1.99)
+    c(4.53, 30.97, 7.71, 22.85, 18.21)
   )
 })
 
@@ -50,7 +50,7 @@ test_that("pas_getIDs() and pas_getLabels() work", {
     example_pas %>%
       pas_filter(stateCode == "SD") %>%
       pas_getIDs(),
-    c("3097", "26059", "2506" , "8376", "5656")
+    c("3097", "2506" , "8376", "49685", "5656")
   )
   # pas_getLabels()
   expect_equal(
@@ -59,9 +59,9 @@ test_that("pas_getIDs() and pas_getLabels() work", {
       pas_getLabels(),
     c(
       "Cat Ranch",
-      "Garfield School",
       "Golden Valley",
       "MandMnorth40",
+      "Northern Lights",
       "West Rapid City"
     )
   )

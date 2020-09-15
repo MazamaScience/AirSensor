@@ -1,4 +1,5 @@
 #' @export
+#' 
 #' @title Pollution rose plot
 #' 
 #' @param sensor an 'airsensor' object
@@ -44,6 +45,7 @@
 #' @description Plots a traditional wind rose plot for wind direction and PM2.5.
 #'
 #' @return a plot or a dataframe
+#' 
 #' @seealso 
 #' \url{http://davidcarslaw.github.io/openair/reference/windRose.html}
 #'
@@ -107,24 +109,39 @@ sensor_pollutionRose <- function(
   # Find wind data readings from the closest NOAA site if none are provided
   if ( is.null(windData) ) {
     
-    # Using only the first entry's datetime for the year will be problematic 
-    # if the timeframe spans more than one year...
+    # TODO:  Using only the first entry's datetime for the year will be
+    # TODO:  problematic if the timeframe spans more than one year.
+    
     year <- lubridate::year(sensor$data$datetime[1])
     lon <- sensor$meta$longitude[1]
     lat <- sensor$meta$latitude[1]
     
-    closestSite <- worldmet::getMeta(lon = lon, lat = lat, n = 1, plot = FALSE)
-    siteCodes <- paste0(closestSite$usaf, "-", closestSite$wban)
+    # Get first two nearest met data
+    closestSites <- worldmet::getMeta(lon = lon, lat = lat, n = 2, plot = FALSE)
     
     siteData <- worldmet::importNOAA(
-      code = siteCodes[1], 
+      code = closestSites$code[1], 
       year = year, 
       hourly = TRUE,
       n.cores = 1,
       quiet = !verbose,
       path = NA 
     )
-
+    
+    # Check if the first is NA to avoid errors
+    if ( all(is.na(siteData$ws) | is.na(siteData$wd)) ) {
+      
+      siteData <- worldmet::importNOAA(
+        code = closestSites$code[2], 
+        year = year, 
+        hourly = TRUE,
+        n.cores = 1,
+        quiet = !verbose,
+        path = NA 
+      )
+      
+    }
+    
     windData <- dplyr::select(siteData, c("date", "wd", "ws"))
     
   }
@@ -176,6 +193,9 @@ sensor_pollutionRose <- function(
 
 if ( FALSE ) {
   
+  library(AirSensor)
+  setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+  
   sensor <- NULL 
   windData <- NULL
   statistic <- "prop.mean"
@@ -192,13 +212,13 @@ if ( FALSE ) {
  
   sensor <- 
     sensor_loadMonth(datestamp = 201809) %>%
-    sensor_filterMeta(monitorID == "SCUV_09")
+    sensor_filterMeta(label == "SCUV_09")
   
-  windsite <- 
+  windsites <- 
     worldmet::getMeta(lat = sensor$meta$latitude, lon = sensor$meta$longitude, n = 3, plot = FALSE)
   
   windData <- 
-    worldmet::importNOAA(code = windsite$code[1], year = 2018) %>%
+    worldmet::importNOAA(code = windsites$code[1], year = 2018) %>%
     dplyr::select(windData, c("date", "wd", "ws"))
   
   sensor_pollutionRose(sensor, windData, statistic = "prop.mean")

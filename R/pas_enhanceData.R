@@ -125,6 +125,21 @@ pas_enhanceData <- function(
   # [28] "v2"                               "v3"                               "v4"                              
   # [31] "v5"                               "v6"                               "Voc"                             
   
+  # On 2020-09-15, the data columns look like this: ("Voc" has been dropped)
+  #
+  # > sort(names(pas_raw))
+  # [1] "A_H"                              "AGE"                              "DEVICE_LOCATIONTYPE"             
+  # [4] "Flag"                             "Hidden"                           "humidity"                        
+  # [7] "ID"                               "isOwner"                          "Label"                           
+  # [10] "lastModified"                     "LastSeen"                         "Lat"                             
+  # [13] "Lon"                              "Ozone1"                           "ParentID"                        
+  # [16] "pm"                               "PM2_5Value"                       "pressure"                        
+  # [19] "temp_f"                           "THINGSPEAK_PRIMARY_ID"            "THINGSPEAK_PRIMARY_ID_READ_KEY"  
+  # [22] "THINGSPEAK_SECONDARY_ID"          "THINGSPEAK_SECONDARY_ID_READ_KEY" "timeSinceModified"               
+  # [25] "Type"                             "v"                                "v1"                              
+  # [28] "v2"                               "v3"                               "v4"                              
+  # [31] "v5"                               "v6"    
+  
   
   # NOTE:  This should no longer be necessary as "State" is no longer included
   if ( "State" %in% names(pas_raw) ) {

@@ -127,15 +127,25 @@ pat_createNew <- function(
   # Create a valid dateRange
   if ( !is.null(startdate) && !is.null(enddate) ) {
     # Don't require day boundaries
-    dateRange <- MazamaCoreUtils::timeRange(startdate, 
-                                            enddate, 
-                                            timezone = timezone)
+    dateRange <- MazamaCoreUtils::timeRange(
+      starttime = startdate, 
+      endtime = enddate, 
+      timezone = timezone, 
+      unit = "min",
+      ceilingStart = FALSE,
+      ceilingEnd = FALSE
+    )
   } else {
     # Default to 7 days with day boundaries
-    dateRange <- MazamaCoreUtils::dateRange(startdate, 
-                                            enddate, 
-                                            timezone, 
-                                            days = 7)
+    dateRange <- MazamaCoreUtils::dateRange(
+      startdate = startdate, 
+      enddate = enddate, 
+      timezone = timezone, 
+      unit = "min",
+      ceilingStart = FALSE,
+      ceilingEnd = FALSE,
+      days = 7
+    )
   }
   
   # Create a sequence of weekly POSIXct times
@@ -252,5 +262,24 @@ if ( FALSE ) {
     baseUrl,
     verbose
   )
+
+  
+    
+  # Default settings
+  id = NULL
+  label = NULL
+  pas = example_pas
+  startdate = NULL
+  enddate = NULL
+  timezone = NULL
+  baseUrl = "https://api.thingspeak.com/channels/"
+  verbose = FALSE
+  
+  # Documentation example
+  label = "Seattle"
+  pas = example_pas
+  startdate = 20180701
+  enddate = 20180901
+  
   
 }

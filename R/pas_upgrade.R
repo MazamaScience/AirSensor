@@ -34,7 +34,6 @@
 #'   \item{flag_highValue -- out of spec flag}
 #'   \item{flag_attenutation_hardware -- hardware failure flag}
 #'   \item{Ozone1 -- latest ozone data}
-#'   \item{Voc -- latest voc data}
 #'   \item{pm25_current -- current PM2.5 data}
 #'   \item{pm25_10min -- 10-minute average PM2.5 data}
 #'   \item{pm25_30min -- 30-minute average PM2.5 data}
@@ -93,26 +92,27 @@ pas_upgrade <- function(
   
   # ----- pa_synoptic Upgrade --------------------------------------------------
   
+  # NOTE:  Removed "Voc" on 2020-09-15.
   # NOTE:  Upgraded pa_synoptic data columns generated 2020-04-09
   # NOTE:  via `AirSensor::pas_createNew()`
   
   upgradedCols <- 
     c(
-      "ID",                               "label",                            "DEVICE_LOCATIONTYPE",             
+      "ID",                               "label" ,                           "DEVICE_LOCATIONTYPE",             
       "THINGSPEAK_PRIMARY_ID",            "THINGSPEAK_PRIMARY_ID_READ_KEY",   "THINGSPEAK_SECONDARY_ID",         
       "THINGSPEAK_SECONDARY_ID_READ_KEY", "latitude",                         "longitude",                       
       "pm25",                             "lastSeenDate",                     "sensorType",                      
       "flag_hidden",                      "isOwner",                          "humidity",                        
       "temperature",                      "pressure",                         "age",                             
       "parentID",                         "flag_highValue",                   "flag_attenuation_hardware",       
-      "Ozone1",                           "Voc",                              "pm25_current",                    
-      "pm25_10min",                       "pm25_30min",                       "pm25_1hr",                        
-      "pm25_6hr",                         "pm25_1day",                        "pm25_1week",                      
-      "statsLastModifiedDate",            "statsLastModifiedInterval",        "deviceID",                        
-      "locationID",                       "deviceDeploymentID",               "countryCode",                     
-      "stateCode",                        "timezone",                         "airDistrict",                     
-      "pwfsl_closestDistance",            "pwfsl_closestMonitorID",           "sensorManufacturer",              
-      "targetPollutant",                  "technologyType",                   "communityRegion"
+      "Ozone1",                           "pm25_current",                     "pm25_10min",                      
+      "pm25_30min",                       "pm25_1hr",                         "pm25_6hr",                        
+      "pm25_1day",                        "pm25_1week",                       "statsLastModifiedDate",           
+      "statsLastModifiedInterval",        "countryCode",                      "stateCode",                       
+      "timezone",                         "deviceID" ,                        "locationID",                      
+      "deviceDeploymentID",               "airDistrict",                      "pwfsl_closestDistance",           
+      "pwfsl_closestMonitorID",           "sensorManufacturer",               "targetPollutant",                 
+      "technologyType",                   "communityRegion"                       
     )
   
   

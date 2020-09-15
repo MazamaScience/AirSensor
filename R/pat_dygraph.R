@@ -14,6 +14,8 @@
 #' @param rollPeriod rolling mean to be applied to the data
 #' @param showLegend logical to toggle display of the legend
 #' @param colors string vector of colors to be used for plotting
+#' @param timezone Olson timezone used to interpret \code{tlim}. (Defaults to 
+#' \code{pat} local time.)
 #' 
 #' @description This function creates interactive graphs that will be displayed
 #' in RStudio's 'Viewer' tab.
@@ -60,7 +62,8 @@ pat_dygraph <- function(
   tlim = NULL,
   rollPeriod = 1,
   showLegend = TRUE,
-  colors = NULL
+  colors = NULL,
+  timezone = NULL
 ) {
   
   # ----- Validate parameters --------------------------------------------------
@@ -75,6 +78,10 @@ pat_dygraph <- function(
   
   # Remove any duplicate data records
   pat <- pat_distinct(pat)
+  
+  # Use sensor timezone as default
+  if ( is.null(timezone) )
+    timezone <- pat$meta$timezone
   
   # ----- Reduce large datasets by sampling ------------------------------------
   
@@ -96,12 +103,12 @@ pat_dygraph <- function(
   
   # Convert tlim to POSIXct
   if ( !is.null(tlim) ) {
-    dateWindow <- MazamaCoreUtils::parseDatetime(tlim)
+    dateWindow <- MazamaCoreUtils::parseDatetime(tlim, timezone = timezone)
   } else {
     dateWindow <- NULL
   }
   
-  # Set timezone
+  # Set pat local timezone
   tzCount <- length(unique(pat$meta$timezone))
   if (tzCount > 1) {
     warning(paste0(tzCount, " timezones found. Using UTC time."))

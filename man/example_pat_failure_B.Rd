@@ -13,7 +13,7 @@ example_pat_failure_B
 \description{
 The \code{example_pat_failure_B} dataset provides a quickly loadable
 version of a \emph{pa_timeseries} object for practicing and code examples.
-This dataset was was generated on 2020-01-03 by running:
+This dataset was was generated on 2020-09-15 by running:
 
 \preformatted{
 library(AirSensor)
