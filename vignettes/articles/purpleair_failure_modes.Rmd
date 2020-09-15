@@ -1,7 +1,7 @@
 ---
 title: "PurpleAir Failure Modes"
 author: "Mazama Science"
-date: "7/09/2019"
+date: "2020-09-15"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{PurpleAir Failure Modes}
@@ -38,11 +38,11 @@ angled regression line.
 Channel A readings show extreme levels of noise.
 
 ```{r channel_a_noise_2, echo=FALSE}
-
-noisy_2_id <- pas_getDeviceDeploymentIDs(pas, pattern = "SCAP_14")
+older_pas <- pas_load(20191001)
+noisy_2_id <- pas_getDeviceDeploymentIDs(older_pas, pattern = "SCAP_14")
 pat_a_noisy_2 <- pat_createNew(id = noisy_2_id,
                                label = "SCAP_14", 
-                               pas, 
+                               pas = older_pas, 
                                startdate = 20190701, 
                                enddate = 20190708,
                                timezone = "America/Los_Angeles")

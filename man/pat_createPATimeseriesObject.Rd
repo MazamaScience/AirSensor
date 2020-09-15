@@ -4,12 +4,10 @@
 \alias{pat_createPATimeseriesObject}
 \title{Combine PurpleAir raw dataframes}
 \usage{
-pat_createPATimeseriesObject(pat_rawList = NULL, plantowerAlgorithm = "CF_ATM")
+pat_createPATimeseriesObject(pat_rawList = NULL)
 }
 \arguments{
 \item{pat_rawList}{List of dataframes as returned by \code{pat_downloadParseRawData()}.}
-
-\item{plantowerAlgorithm}{Identifier for which fields to use for PM data.}
 }
 \value{
 A PurpleAir Timeseries \emph{pat} object.
@@ -36,10 +34,8 @@ the "average particle density" for indoor particulate matter and CF_ATM uses
 the "average particle density" for outdoor particulate matter.
 }
 
-By default, the \pkg{AirSensor} package and all associated archive data
-use \code{plantowerAlgorithm = CF_ATM}. The ability to set
-\code{plantowerAlgorithm = CF_1} is intended only for those who wish to do 
-a detailed analaysis of the difference between these two algorithms.
+The \pkg{AirSensor} package and all associated archive data use PlanTower
+algorithm \code{CF_ATM}.
 }
 \examples{
 \donttest{

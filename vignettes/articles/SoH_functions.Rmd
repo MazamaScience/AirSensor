@@ -1,7 +1,7 @@
 ---
 title: "SoH Functions"
 author: "Mazama Science"
-date: "2019-11-13"
+date: "2020-09-15"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{SoH Functions}
@@ -40,9 +40,9 @@ A pm25 readings between June 10 and June 17 in the bad data, we will explore
 this section of data throughout the rest of this example.
 
 ```{r, pat_muliplots fig-margin, fig.margin = FALSE}
-good_id <- pas_getDeviceDeploymentIDs(pas, pattern = "SCAH_29")
+good_id <- pas_getDeviceDeploymentIDs(pas, pattern = "SCAH_28")
 good_pat <- pat_createNew(id = good_id,
-                          label = "SCAH_29",
+                          label = "SCAH_28",
                           pas,
                           startdate = "2019-05-27", 
                           enddate = "2019-06-22", 

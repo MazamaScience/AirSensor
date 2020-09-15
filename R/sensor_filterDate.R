@@ -28,9 +28,21 @@
 #' @examples
 #' library(AirSensor)
 #' 
-#' august <- example_sensor %>% 
-#'   sensor_filterDate(startdate = 20180801, enddate = 20180831)
-#' head(august$data)
+#' example_sensor %>% 
+#'   sensor_extractData() %>%
+#'   dplyr::pull("datetime") %>%
+#'   range()
+#'   
+#' example_sensor %>% 
+#'   sensor_filterDate(
+#'     startdate = "2018-08-21", 
+#'     enddate = "2018-08-28",
+#'     timezone = "UTC"
+#'   ) %>%
+#'   sensor_extractData() %>%
+#'   dplyr::pull("datetime") %>%
+#'   range()
+#'   
 
 sensor_filterDate <- function(
   sensor = NULL, 

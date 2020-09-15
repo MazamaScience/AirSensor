@@ -43,12 +43,18 @@
 
 
 <meta property="og:title" content="Example AirSensor Timeseries dataset — example_sensor_scaqmd" />
-<meta property="og:description" content="The example_sensor_scaqmd dataset provides a quickly 
-loadable version of a multi-sensor airsensor object for practicing and 
-code examples. This dataset was was generated on 2019-07-10 by running:
+<meta property="og:description" content="The example_sensor_scaqmd dataset provides a quickly
+loadable version of a multi-sensor airsensor object for practicing and
+code examples. This dataset was was generated on 2020-09-15 by running:
 
-  example_sensor_scaqmd &amp;lt;- 
-    sensor_load(&quot;scaqmd&quot;, startdate = 20190701, enddate = 20190708)
+library(AirSensor)
+
+setArchiveBaseUrl(&quot;http://data.mazamascience.com/PurpleAir/v1&quot;)
+
+example_sensor_scaqmd &amp;lt;-
+  sensor_load(&quot;scaqmd&quot;, startdate = 20190701, enddate = 20190708)
+
+save(example_sensor_scaqmd, file = &quot;data/example_sensor_scaqmd.rda&quot;)
 
 " />
 <meta name="twitter:card" content="summary" />
@@ -83,7 +89,7 @@ code examples. This dataset was was generated on 2019-07-10 by running:
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.18</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.17</span>
       </span>
     </div>
 
@@ -106,34 +112,37 @@ code examples. This dataset was was generated on 2019-07-10 by running:
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/AirSensorOverview.html">AirSensor Function Overview</a>
+      <a href="../articles/AirSensor_Function_Overview.html">AirSensor Function Overview</a>
     </li>
     <li>
-      <a href="../articles/SoH_functions.html">SoH Functions</a>
+      <a href="../articles/Developer_Style_Guide.html">Developer Style Guide</a>
+    </li>
+    <li>
+      <a href="../articles/articles/Australia_on_fire.html">Australia on Fire</a>
+    </li>
+    <li>
+      <a href="../articles/articles/Custom_QC_Algorithms.html">Custom QC Algorithms</a>
     </li>
     <li>
       <a href="../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
     </li>
     <li>
-      <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
+      <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
     </li>
     <li>
-      <a href="../articles/pas_introduction.html">An Introduction to PurpleAir Synoptic Data</a>
+      <a href="../articles/articles/Temporal_Aggregation.html">Temporally Aggregated Time Series</a>
     </li>
     <li>
-      <a href="../articles/pat_introduction.html">An Introduction to PurpleAir TimeSeries Data</a>
+      <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
     </li>
     <li>
-      <a href="../articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
+      <a href="../articles/articles/pas_introduction.html">PurpleAir Synoptic Data</a>
     </li>
     <li>
-      <a href="../articles/purpleair_qc.html">Purple Air Quality Control</a>
+      <a href="../articles/articles/pat_introduction.html">PurpleAir TimeSeries Data</a>
     </li>
     <li>
-      <a href="../articles/purpleair_sensors.html">Purple Air Sensors</a>
-    </li>
-    <li>
-      <a href="../articles/working_with_wind_data.html">Working With Wind Data</a>
+      <a href="../articles/articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
     </li>
   </ul>
 </li>
@@ -167,12 +176,18 @@ code examples. This dataset was was generated on 2019-07-10 by running:
     </div>
 
     <div class="ref-description">
-    <p>The <code>example_sensor_scaqmd</code> dataset provides a quickly 
-loadable version of a multi-sensor <em>airsensor</em> object for practicing and 
-code examples. This dataset was was generated on 2019-07-10 by running:</p>
+    <p>The <code>example_sensor_scaqmd</code> dataset provides a quickly
+loadable version of a multi-sensor <em>airsensor</em> object for practicing and
+code examples. This dataset was was generated on 2020-09-15 by running:</p>
 <pre>
-  example_sensor_scaqmd &lt;- 
-    sensor_load("scaqmd", startdate = 20190701, enddate = 20190708)
+library(AirSensor)
+
+setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+
+example_sensor_scaqmd &lt;-
+  sensor_load("scaqmd", startdate = 20190701, enddate = 20190708)
+
+save(example_sensor_scaqmd, file = "data/example_sensor_scaqmd.rda")
 </pre>
 
     </div>

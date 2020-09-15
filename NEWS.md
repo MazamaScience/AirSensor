@@ -9,6 +9,10 @@ first one has no data. This matches the behavior in `sensor_polarPlot()`.
 not longer part of the PurpleAir `.json` file.
 * Used **MazamaCoreUtils** "timezone linting" to ensure that timezones are always
 specified.
+* Removed `plantowerAlgorithm` argument from `pat_createPATimeseriesObject()` as
+an attractive nuisance that could generate much confusion.
+* Improved examples in several `sensor_~()` functions.
+* Updated several articles.
 
 # AirSensor 0.9.16
 

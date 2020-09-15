@@ -76,7 +76,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.17</span>
       </span>
     </div>
 
@@ -291,12 +291,18 @@ that direction is low. A line showing the probability that the wind.</p></td>
 <span class='no'>windData</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>worldmet</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/worldmet/man/importNOAA.html'>importNOAA</a></span>(
   <span class='kw'>code</span> <span class='kw'>=</span> <span class='st'>"722975-53141"</span>,
   <span class='kw'>year</span> <span class='kw'>=</span> <span class='fl'>2020</span>
-)</div><div class='output co'>#&gt; <span class='error'>Error: Problem with `summarise()` input `..1`.</span>
-#&gt; <span class='error'><span style='color: #BB0000;'>x</span><span> object 'weatherCodes' not found</span>
-#&gt; <span class='error'></span><span style='color: #0000BB;'>ℹ</span><span> Input `..1` is `getDat(year = .data$year, code = .data$code, hourly = hourly)`.</span>
-#&gt; <span class='error'></span><span style='color: #0000BB;'>ℹ</span><span> The error occurred in row 1.</span></div><div class='input'><span class='no'>windData</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>windData</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"date"</span>, <span class='st'>"wd"</span>, <span class='st'>"ws"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in dplyr::select(windData, c("date", "wd", "ws")): object 'windData' not found</span></div><div class='input'>
+)
+<span class='no'>windData</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>windData</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"date"</span>, <span class='st'>"wd"</span>, <span class='st'>"ws"</span>))
+
 <span class='co'># Plot rose using mean binning</span>
-<span class='fu'>sensor_pollutionRose</span>(<span class='no'>sensor</span>, <span class='no'>windData</span>, <span class='kw'>statistic</span> <span class='kw'>=</span> <span class='st'>"prop.mean"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in sensor_pollutionRose(sensor, windData, statistic = "prop.mean"): object 'windData' not found</span></div><div class='input'># }
+<span class='fu'>sensor_pollutionRose</span>(<span class='no'>sensor</span>, <span class='no'>windData</span>, <span class='kw'>statistic</span> <span class='kw'>=</span> <span class='st'>"prop.mean"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: `as_data_frame()` is deprecated as of tibble 2.0.0.</span>
+#&gt; <span class='warning'>Please use `as_tibble()` instead.</span>
+#&gt; <span class='warning'>The signature and semantics have changed, see `?as_tibble`.</span>
+#&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once every 8 hours.</span><span></span>
+#&gt; <span class='warning'></span><span style='color: #555555;'>Call `lifecycle::last_warnings()` to see where this warning was generated.</span><span></span></div><div class='output co'>#&gt; <span class='warning'>Warning: `data_frame()` is deprecated as of tibble 1.1.0.</span>
+#&gt; <span class='warning'>Please use `tibble()` instead.</span>
+#&gt; <span class='warning'></span><span style='color: #555555;'>This warning is displayed once every 8 hours.</span><span></span>
+#&gt; <span class='warning'></span><span style='color: #555555;'>Call `lifecycle::last_warnings()` to see where this warning was generated.</span><span></span></div><div class='img'><img src='sensor_pollutionRose-1.png' alt='' width='700' height='433' /></div><div class='input'># }
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

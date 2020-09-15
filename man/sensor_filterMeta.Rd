@@ -27,13 +27,21 @@ Filtering predicates are applied to the \code{meta} dataframe within
 the \emph{sensor} object.
 }
 \examples{
-\donttest{
 library(AirSensor)
 
-example_sensor \%>\%
-  sensor_filterMeta(stateCode == "CA") \%>\%
-  PWFSLSmoke::monitor_stamenmap(zoom = 11)
-}
+example_sensor_scaqmd \%>\%
+  sensor_extractMeta() \%>\%
+  dplyr::pull("communityRegion") \%>\%
+  sort () \%>\%
+  unique()
+  
+example_sensor_scaqmd \%>\%
+  sensor_filterMeta(communityRegion == "Imperial Valley") \%>\%
+  sensor_extractMeta() \%>\%
+  dplyr::pull("communityRegion") \%>\%
+  sort () \%>\%
+  unique()
+
 }
 \seealso{
 \link{sensor_filter}

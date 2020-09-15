@@ -45,13 +45,13 @@
 <meta property="og:title" content="Example Purple Air Synoptic dataset — example_pas" />
 <meta property="og:description" content="The example_pas dataset provides a quickly loadable
 version of a pa_synoptic object for practicing and code examples.
-This dataset was generated on 2020-01-03 by running:
+This dataset was generated on 2020-09-15 by running:
 
 library(AirSensor)
 
 initializeMazamaSpatialUtils()
 
-example_pas &amp;lt;- pas_createNew()
+example_pas &amp;lt;- pas_createNew(countryCodes = &quot;US&quot;)
 
 save(example_pas, file = &quot;data/example_pas.rda&quot;)
 
@@ -88,7 +88,7 @@ save(example_pas, file = &quot;data/example_pas.rda&quot;)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.17</span>
       </span>
     </div>
 
@@ -177,13 +177,13 @@ save(example_pas, file = &quot;data/example_pas.rda&quot;)
     <div class="ref-description">
     <p>The <code>example_pas</code> dataset provides a quickly loadable
 version of a <em>pa_synoptic</em> object for practicing and code examples.
-This dataset was generated on 2020-01-03 by running:</p>
+This dataset was generated on 2020-09-15 by running:</p>
 <pre>
 library(AirSensor)
 
 initializeMazamaSpatialUtils()
 
-example_pas &lt;- pas_createNew()
+example_pas &lt;- pas_createNew(countryCodes = "US")
 
 save(example_pas, file = "data/example_pas.rda")
 </pre>
@@ -195,7 +195,7 @@ save(example_pas, file = "data/example_pas.rda")
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>A tibble with 10220 rows and 45 columns of data.</p>
+    <p>A tibble with 16584 rows and 44 columns of data.</p>
     <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
 
     <p>https://www.purpleair.com/json</p>

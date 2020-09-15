@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.15</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.17</span>
       </span>
     </div>
 
@@ -159,6 +159,29 @@
       <small>Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="airsensor-0-9-17" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-9-17" class="anchor"></a>AirSensor 0.9.17</h1>
+<ul>
+<li>Updated dependency to <strong>worldmet</strong> 0.9.2.</li>
+<li>
+<code><a href="../reference/sensor_pollutionRose.html">sensor_pollutionRose()</a></code> now searches for the nearest 2 met sites in case the first one has no data. This matches the behavior in <code><a href="../reference/sensor_polarPlot.html">sensor_polarPlot()</a></code>.</li>
+<li>Rebuilt all <code>example_~</code> data files with <strong>AirSensor</strong> 0.9.17.</li>
+<li>Updated tests to match new example data.</li>
+<li>Removed all references to “Voc” in <em>pas</em> related functions as this field is not longer part of the PurpleAir <code>.json</code> file.</li>
+<li>Used <strong>MazamaCoreUtils</strong> “timezone linting” to ensure that timezones are always specified.</li>
+<li>Removed <code>plantowerAlgorithm</code> argument from <code><a href="../reference/pat_createPATimeseriesObject.html">pat_createPATimeseriesObject()</a></code> as an attractive nuisance that could generate much confusion.</li>
+<li>Improved examples in several <code>sensor_~()</code> functions.</li>
+<li>Updated several articles.</li>
+</ul>
+</div>
+    <div id="airsensor-0-9-16" class="section level1">
+<h1 class="page-header">
+<a href="#airsensor-0-9-16" class="anchor"></a>AirSensor 0.9.16</h1>
+<ul>
+<li>Restored <code><a href="../reference/sensor_polarPlot.html">sensor_polarPlot()</a></code> and <code><a href="../reference/sensor_pollutionRose.html">sensor_pollutionRose()</a></code> functionality by upgrading to <strong>worldmet</strong> 0.9.1.</li>
+</ul>
+</div>
     <div id="airsensor-0-9-15" class="section level1">
 <h1 class="page-header">
 <a href="#airsensor-0-9-15" class="anchor"></a>AirSensor 0.9.15</h1>
@@ -1402,6 +1425,8 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#airsensor-0-9-17">0.9.17</a></li>
+        <li><a href="#airsensor-0-9-16">0.9.16</a></li>
         <li><a href="#airsensor-0-9-15">0.9.15</a></li>
         <li><a href="#airsensor-0-9-14">0.9.14</a></li>
         <li><a href="#airsensor-0-9-13">0.9.13</a></li>

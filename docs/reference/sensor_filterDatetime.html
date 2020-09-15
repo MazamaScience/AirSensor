@@ -91,7 +91,7 @@ get timezone from sensor
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.17</span>
       </span>
     </div>
 
@@ -235,19 +235,20 @@ POSIXct times then you know what you are doing.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>AirSensor</span>)
 
-<span class='no'>august</span> <span class='kw'>&lt;-</span> <span class='no'>example_sensor</span> <span class='kw'>%&gt;%</span>
+<span class='no'>example_sensor</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='sensor_extractDataFrame.html'>sensor_extractData</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span>(<span class='st'>"datetime"</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/range.html'>range</a></span>()</div><div class='output co'>#&gt; [1] "2018-08-14 17:00:00 UTC" "2018-09-07 06:00:00 UTC"</div><div class='input'>
+<span class='no'>example_sensor</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>sensor_filterDatetime</span>(
     <span class='kw'>startdate</span> <span class='kw'>=</span> <span class='st'>"2018-08-21 06:00:00"</span>,
     <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='st'>"2018-08-28 18:00:00"</span>,
-    <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='st'>"America/Los_Angeles"</span>
-  )
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>august</span>$<span class='no'>data</span>)</div><div class='output co'>#&gt;              datetime 392a12065eb9940d_5192
-#&gt; 1 2018-08-21 13:00:00              28.87000
-#&gt; 2 2018-08-21 14:00:00              27.17570
-#&gt; 3 2018-08-21 15:00:00              20.88789
-#&gt; 4 2018-08-21 16:00:00              15.40604
-#&gt; 5 2018-08-21 17:00:00              16.17606
-#&gt; 6 2018-08-21 18:00:00              17.33392</div></pre>
+    <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='st'>"UTC"</span>
+  ) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='sensor_extractDataFrame.html'>sensor_extractData</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span>(<span class='st'>"datetime"</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/range.html'>range</a></span>()</div><div class='output co'>#&gt; [1] "2018-08-21 06:00:00 UTC" "2018-08-28 17:00:00 UTC"</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

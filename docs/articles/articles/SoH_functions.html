@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.15</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.17</span>
       </span>
     </div>
 
@@ -121,7 +121,7 @@
       <h1>SoH Functions</h1>
                         <h4 class="author">Mazama Science</h4>
             
-            <h4 class="date">2019-11-13</h4>
+            <h4 class="date">2020-09-15</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/MazamaScience/AirSensor/blob/master/vignettes/articles/SoH_functions.Rmd"><code>vignettes/articles/SoH_functions.Rmd</code></a></small>
       <div class="hidden name"><code>SoH_functions.Rmd</code></div>
@@ -135,20 +135,20 @@
 <a href="#good-and-bad-data" class="anchor"></a>“Good” and “Bad” data</h2>
 <p>An important part of data analysis is deciding whether or not the data are accurate. As part of the AirSensor package there are several functions that provide metrics to help you assess the “State of Health” (SoH) of the data collected by a PurpleAir sensor. This vignette demonstrates an example workflow for using pat data and the SoH functions.</p>
 <p>Provided below are two examples of pat data. The first is well behaved data from a properly functioning sensor that here forward will be referred to as “good”. The second example shows data that were clearly collected by a malfunctioning sensor. We will call that “bad”. Notice the jump in channel A pm25 readings between June 10 and June 17 in the bad data, we will explore this section of data throughout the rest of this example.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">good_id &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/pas_getDeviceDeploymentIDs.html">pas_getDeviceDeploymentIDs</a></span>(pas, <span class="dt">pattern =</span> <span class="st">"SCAH_29"</span>)</a>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">good_id &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/pas_getDeviceDeploymentIDs.html">pas_getDeviceDeploymentIDs</a></span>(pas, <span class="dt">pattern =</span> <span class="st">"SCAH_28"</span>)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">good_pat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/pat_createNew.html">pat_createNew</a></span>(<span class="dt">id =</span> good_id,</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">                          <span class="dt">label =</span> <span class="st">"SCAH_29"</span>,</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">                          <span class="dt">label =</span> <span class="st">"SCAH_28"</span>,</a>
 <a class="sourceLine" id="cb1-4" data-line-number="4">                          pas,</a>
 <a class="sourceLine" id="cb1-5" data-line-number="5">                          <span class="dt">startdate =</span> <span class="st">"2019-05-27"</span>, </a>
 <a class="sourceLine" id="cb1-6" data-line-number="6">                          <span class="dt">enddate =</span> <span class="st">"2019-06-22"</span>, </a>
 <a class="sourceLine" id="cb1-7" data-line-number="7">                          <span class="dt">timezone =</span> <span class="st">"America/Los_Angeles"</span>)</a>
 <a class="sourceLine" id="cb1-8" data-line-number="8"></a>
 <a class="sourceLine" id="cb1-9" data-line-number="9"><span class="kw"><a href="../../reference/pat_multiPlot.html">pat_multiPlot</a></span>(good_pat, <span class="dt">sampleSize =</span> <span class="fl">1e6</span>)</a></code></pre></div>
-<pre><code>## Warning: Removed 74 rows containing missing values (geom_point).</code></pre>
-<pre><code>## Warning: Removed 78 rows containing missing values (geom_point).</code></pre>
-<pre><code>## Warning: Removed 74 rows containing missing values (geom_point).
+<pre><code>## Warning: Removed 287 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 284 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 287 rows containing missing values (geom_point).
 
-## Warning: Removed 74 rows containing missing values (geom_point).</code></pre>
+## Warning: Removed 287 rows containing missing values (geom_point).</code></pre>
 <p><img src="SoH_functions_files/figure-html/pat_muliplots%20fig-margin-1.png" width="672"></p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">bad_id &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/pas_getDeviceDeploymentIDs.html">pas_getDeviceDeploymentIDs</a></span>(pas, <span class="dt">pattern =</span> <span class="st">"SCTV_16"</span>)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2">bad_pat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/pat_createNew.html">pat_createNew</a></span>(<span class="dt">id =</span> bad_id, </a>

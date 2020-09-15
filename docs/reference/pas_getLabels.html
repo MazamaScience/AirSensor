@@ -80,7 +80,7 @@ devices, which are represented by records with isParent = TRUE." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.17</span>
       </span>
     </div>
 
@@ -219,12 +219,17 @@ The values associated with the <code>"label"</code> column are then returned.</p
 
 <span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='no'>example_pas</span>
 
-<span class='fu'>pas_getLabels</span>(<span class='kw'>pas</span> <span class='kw'>=</span> <span class='no'>pas</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fl'>10</span>)</div><div class='output co'>#&gt;  [1] " Hazelwood canary "                "#ValleyClimate"                   
-#&gt;  [3] "'S' St Between Inyo and Mono"      "1000ft Montclair"                 
-#&gt;  [5] "1105 Trail View Place, Nipomo, CA" "1128 Key Route Blvd, Albany CA"   
-#&gt;  [7] "120 pine ave"                      "1300 Block Lemon"                 
-#&gt;  [9] "1303 Ryder st,Vallejo,ca,94590"    "132 Germania St"                  </div><div class='input'>
-<span class='fu'>pas_getLabels</span>(<span class='kw'>pas</span> <span class='kw'>=</span> <span class='no'>pas</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"back"</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fl'>10</span>)</div><div class='output co'>#&gt; [1] "back"                 "back deck"            "back patio"          
+<span class='fu'>pas_getLabels</span>(<span class='kw'>pas</span> <span class='kw'>=</span> <span class='no'>pas</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fl'>10</span>)</div><div class='output co'>#&gt;  [1] " Hazelwood canary "                     
+#&gt;  [2] " WC Hillside"                           
+#&gt;  [3] "#ValleyClimate"                         
+#&gt;  [4] "'S' St Between Inyo and Mono"           
+#&gt;  [5] "003 FK Parking Lot"                     
+#&gt;  [6] "005- FK Shelby Forest"                  
+#&gt;  [7] "1 5th Avenue Marina Bldg 28 @ Elev 8 Ft"
+#&gt;  [8] "10"                                     
+#&gt;  [9] "1000 Rolling Hill Way"                  
+#&gt; [10] "1000ft Montclair"                       </div><div class='input'>
+<span class='fu'>pas_getLabels</span>(<span class='kw'>pas</span> <span class='kw'>=</span> <span class='no'>pas</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"back"</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fl'>10</span>)</div><div class='output co'>#&gt; [1] "back"                 "back deck"            "Wolfback Ridge"      
 #&gt; [4] "Air monitor Weirback" "RP's back porch"     </div><div class='input'>
 
 </div></pre>

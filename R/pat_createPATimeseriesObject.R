@@ -6,7 +6,6 @@
 #' @title Combine PurpleAir raw dataframes
 #' 
 #' @param pat_rawList List of dataframes as returned by \code{pat_downloadParseRawData()}.
-#' @param plantowerAlgorithm Identifier for which fields to use for PM data.
 #' 
 #' @return A PurpleAir Timeseries \emph{pat} object.
 #' 
@@ -31,10 +30,8 @@
 #' the "average particle density" for outdoor particulate matter.
 #' }
 #' 
-#' By default, the \pkg{AirSensor} package and all associated archive data
-#' use \code{plantowerAlgorithm = CF_ATM}. The ability to set
-#' \code{plantowerAlgorithm = CF_1} is intended only for those who wish to do 
-#' a detailed analaysis of the difference between these two algorithms.
+#' The \pkg{AirSensor} package and all associated archive data use PlanTower
+#' algorithm \code{CF_ATM}. 
 #' 
 #' @references \url{https://www2.purpleair.com/community/faq#!hc-what-is-the-difference-between-cf-1-and-cf-atm}
 #' 
@@ -57,20 +54,13 @@
 #' }
 
 pat_createPATimeseriesObject <- function(
-  pat_rawList = NULL,
-  plantowerAlgorithm = "CF_ATM"
+  pat_rawList = NULL
 ) {
   
   # ----- Validate parameters --------------------------------------------------
   
   MazamaCoreUtils::stopIfNull(pat_rawList)
-  MazamaCoreUtils::stopIfNull(plantowerAlgorithm)
   
-  if ( !plantowerAlgorithm %in% c("CF_ATM", "CF_1") ) {
-    stop(sprintf("plantowerAlgorithm = '%s' is not recognized",
-                 plantowerAlgorithm))
-  }
-
   meta <- pat_rawList$meta
   A_PRIMARY <- pat_rawList$A_PRIMARY
   A_SECONDARY <- pat_rawList$A_SECONDARY
@@ -414,11 +404,8 @@ if ( FALSE ) {
     baseUrl
   )
  
-  plantowerAlgorithm <- "CF_ATM" 
-
   pat <- pat_createPATimeseriesObject(
-    pat_rawList,
-    plantowerAlgorithm
+    pat_rawList
   )
   
 }

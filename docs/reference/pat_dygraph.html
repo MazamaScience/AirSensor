@@ -85,7 +85,7 @@ pressure -- pressure (hPa)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.17</span>
       </span>
     </div>
 
@@ -194,7 +194,8 @@ in RStudio's 'Viewer' tab.</p>
   <span class='kw'>tlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>rollPeriod</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>showLegend</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>colors</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+  <span class='kw'>colors</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>timezone</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -240,6 +241,11 @@ representing YYYYMMDD[HH])</p></td>
     <tr>
       <th>colors</th>
       <td><p>string vector of colors to be used for plotting</p></td>
+    </tr>
+    <tr>
+      <th>timezone</th>
+      <td><p>Olson timezone used to interpret <code>tlim</code>. (Defaults to 
+<code>pat</code> local time.)</p></td>
     </tr>
     </table>
 
