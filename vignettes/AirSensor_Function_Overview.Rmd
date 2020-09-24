@@ -102,7 +102,6 @@ the most common end-user functions:
 | **Plotting an `airsensor`** | |
 | `sensor_polarPlot()` | `sensor, windData, statistic, ...` |
 | `sensor_pollutionRose()` | `sensor, windData, statistic, ...` |
-| `sensor_videoFrame()` | `sensor, communityRegion, ...` |
 
 Note that each `airsensor` object is also a `ws_monitor` object and can be
 manipulated and plotted with functions from the **PWFSLSmoke** package.

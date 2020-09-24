@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.17</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.18</span>
       </span>
     </div>
 
@@ -166,13 +166,13 @@
 <p>We’ll start by plotting PurpleAir’s raw sensor data. We can quickly display the time series data by using <code><a href="../../reference/pat_multiPlot.html">pat_multiPlot()</a></code> and passing in our raw <code>pat</code> and desired plot type (“<code>all</code>” sensor data).</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">pat <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../../reference/pat_multiPlot.html">pat_multiPlot</a></span>(<span class="dt">plottype =</span> <span class="st">"all"</span>)</a></code></pre></div>
-<pre><code>## Warning: Removed 2463 rows containing missing values (geom_point).
+<pre><code>## Warning: Removed 2464 rows containing missing values (geom_point).
 
-## Warning: Removed 2463 rows containing missing values (geom_point).
+## Warning: Removed 2464 rows containing missing values (geom_point).
 
-## Warning: Removed 2463 rows containing missing values (geom_point).
+## Warning: Removed 2464 rows containing missing values (geom_point).
 
-## Warning: Removed 2463 rows containing missing values (geom_point).</code></pre>
+## Warning: Removed 2464 rows containing missing values (geom_point).</code></pre>
 <p><img src="pat_introduction_files/figure-html/allPlot-1.png" width="672"></p>
 </div>
 <div id="exploring-time-series-data" class="section level2">
@@ -185,9 +185,9 @@
 <a class="sourceLine" id="cb8-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb8-5" data-line-number="5">pat_august <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb8-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="../../reference/pat_multiPlot.html">pat_multiPlot</a></span>(<span class="dt">plottype =</span> <span class="st">"pm25_over"</span>)</a></code></pre></div>
-<pre><code>## Warning: Removed 2382 rows containing missing values (geom_point).
+<pre><code>## Warning: Removed 2384 rows containing missing values (geom_point).
 
-## Warning: Removed 2382 rows containing missing values (geom_point).</code></pre>
+## Warning: Removed 2384 rows containing missing values (geom_point).</code></pre>
 <p><img src="pat_introduction_files/figure-html/augustPlot-1.png" width="672"></p>
 <p>We can look for correlations in the raw data with <code><a href="../../reference/pat_scatterPlotMatrix.html">pat_scatterPlotMatrix()</a></code>. When a sensor is properly functioning, the only correlations will be a strong positive one between between the A and B channels (<code>pm25_A:pm25_B</code>) and a strong negative one between temperature and humidity.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">  pat_august <span class="op">%&gt;%</span></a>

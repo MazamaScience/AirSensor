@@ -1,3 +1,7 @@
+# AirSensor 0.9.18
+
+* Fix in `pat_join()` to handle older 'pat' objects with integer `deviceID`.
+
 # AirSensor 0.9.17
 
 * Updated dependency to **worldmet** 0.9.2.

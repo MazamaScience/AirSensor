@@ -186,3 +186,28 @@ pat_load <- function(
   
 }
 
+# ===== DEBUGGING ==============================================================
+
+if ( FALSE ) {
+  
+  
+  library(AirSensor)
+  setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+  
+  pas <- pas_load()
+  id <- NULL
+  label <- "SCNP_20"
+  startdate <- 20200916
+  enddate <- 20200923
+  timezone <- "America/Los_Angeles"
+  
+  
+  
+  pat <- pat_load(
+    pas = pas,
+    label = label,
+    startdate = startdate,
+    enddate = enddate
+  )
+
+}

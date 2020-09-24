@@ -69,6 +69,10 @@ pat_join <- function(
     
     metaList[[i]] <- patList[[i]]$meta
     
+    # Guarantee that 'ID' and 'deviceID' fields are <character> as opposed to <int>
+    metaList[[i]]$ID <- as.character(metaList[[i]]$ID)
+    metaList[[i]]$deviceID <- as.character(metaList[[i]]$deviceID)
+    
     # NOTE:  Monthly pat objects have an extra UTC day at the beginning and end
     # NOTE:  to guarantee that we always have a complete month in the local
     # NOTE:  timezone. We trim things here so that we don't have overlapping
@@ -81,7 +85,7 @@ pat_join <- function(
       # use patList[[i+1]] start and find the previous timestep
       endtime <- patList[[i+1]]$data$datetime[1]
       index <- which(patList[[i]]$data$datetime == endtime)
-      if ( length(index) > 0 && index > 2) {
+      if ( length(index) > 0 && index > 2 ) {
         endtime <- patList[[i]]$data$datetime[index - 1]
       }
     }
@@ -114,7 +118,7 @@ pat_join <- function(
   
   # Check that meta matches
   if( length(unique(metaList)) != 1 )
-    stop("`pat` objects must be of the same monitor")
+    stop("'pat' object metadata are not identical")
   
   meta <- patList[[1]]$meta
   data <- do.call(rbind, dataList) # duplicates removed below in pat_distinct()
