@@ -78,11 +78,12 @@ direction when correlation or regression techniques are used. Default is 4.}
 \item{verbose}{Logical controlling the generation of progress and error messages.}
 }
 \value{
-a plot and dataframe
+A plot and an object of class "openair".
 }
 \description{
 Function for plotting PM2.5 concentration in polar coordinates 
-showing concentration by wind speed and direction.
+showing concentration by wind speed and direction. This function wraps the
+\pkg{openair} \code{polarPlot()} function.
 }
 \examples{
 \donttest{

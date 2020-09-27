@@ -1,3 +1,7 @@
+# AirSensor 0.9.19
+
+* Added `sensor_calendarPlot()`.
+
 # AirSensor 0.9.18
 
 * Fix in `pat_join()` to handle older 'pat' objects with integer `deviceID`.
@@ -74,7 +78,7 @@ boundaries.
 
 * Added `sensor_join()` function to "join" _airsensor_ objects from different
 months.
-* Updated `pat_distinct()` to remove duplicated timestamps and guarantee proper 
+* Updated `pat_distinct()` to remove duplicated time stamps and guarantee proper 
 ordering by `datetime`.
 * Added warning for duplicated timesteps to `pat_isPat()` and `sensor_isSensor()`.
 
@@ -116,7 +120,7 @@ Changes requested by CRAN maintainers:
 
 # AirSensor 0.9.1
 
-* Removed `sensor_videoFrame()`. This function is not general and has beem moved
+* Removed `sensor_videoFrame()`. This function is not general and has been moved
 to the *AQ-SPEC-sensor-data-ingest-v1* private repository.
 * New R Markdown document for comparing QC algorithms: `local_Rmd/PurpleAirQC_Comparison.Rmd`.
 * Now using `PurpleAirQC_hourly_AB_01()` as the default QC algorithm throughout

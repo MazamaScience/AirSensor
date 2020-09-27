@@ -47,11 +47,13 @@
 #' @param verbose Logical controlling the generation of progress and error messages.
 #' 
 #' @description Function for plotting PM2.5 concentration in polar coordinates 
-#' showing concentration by wind speed and direction. 
+#' showing concentration by wind speed and direction. This function wraps the
+#' \pkg{openair} \code{polarPlot()} function.
+#' 
 #' @seealso 
 #' \url{http://davidcarslaw.github.io/openair/reference/polarPlot.html} 
 #' 
-#' @return a plot and dataframe
+#' @return A plot and an object of class "openair".
 #'
 #' @examples
 #' \donttest{
