@@ -1,7 +1,7 @@
 #' @export
 #' @importFrom rlang .data
 #' 
-#' @title Plot time series values in convential calendar format
+#' @title Plot time series values in conventional calendar format
 #'
 #' @param sensor An 'airsensor' object
 #' @param colors Colours to be used for plotting. Options include "aqi", "scaqmd", “default”, 
