@@ -1,3 +1,11 @@
+# AirSensor 1.0.1
+
+* CRAN submission tweaks.
+
+# AirSensor 1.0.0
+
+* First public release.
+
 # AirSensor 0.9.19
 
 * Added `sensor_calendarPlot()`.

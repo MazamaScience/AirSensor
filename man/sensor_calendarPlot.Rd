@@ -121,5 +121,5 @@ sensor_calendarPlot(
 \href{https://aqs.epa.gov/aqsweb/documents/AQS_Data_Dictionary.html}{EPA AQS Data Dictionary}
 }
 \seealso{
-\url{http://davidcarslaw.github.io/openair/reference/calendarPlot.html}
+\url{https://davidcarslaw.github.io/openair/reference/calendarPlot.html}
 }

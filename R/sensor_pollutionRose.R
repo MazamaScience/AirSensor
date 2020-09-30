@@ -47,7 +47,7 @@
 #' @return a plot or a dataframe
 #' 
 #' @seealso 
-#' \url{http://davidcarslaw.github.io/openair/reference/windRose.html}
+#' \url{https://davidcarslaw.github.io/openair/reference/windRose.html}
 #'
 #' @examples
 #' \donttest{

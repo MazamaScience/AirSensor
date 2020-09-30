@@ -100,5 +100,5 @@ sensor_polarPlot(sensor, resolution = "normal")
 }
 }
 \seealso{
-\url{http://davidcarslaw.github.io/openair/reference/polarPlot.html}
+\url{https://davidcarslaw.github.io/openair/reference/polarPlot.html}
 }

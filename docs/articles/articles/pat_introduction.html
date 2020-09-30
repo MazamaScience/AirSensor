@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -166,13 +166,13 @@
 <p>We’ll start by plotting PurpleAir’s raw sensor data. We can quickly display the time series data by using <code><a href="../../reference/pat_multiPlot.html">pat_multiPlot()</a></code> and passing in our raw <code>pat</code> and desired plot type (“<code>all</code>” sensor data).</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">pat <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../../reference/pat_multiPlot.html">pat_multiPlot</a></span>(<span class="dt">plottype =</span> <span class="st">"all"</span>)</a></code></pre></div>
-<pre><code>## Warning: Removed 2482 rows containing missing values (geom_point).
+<pre><code>## Warning: Removed 2466 rows containing missing values (geom_point).
 
-## Warning: Removed 2482 rows containing missing values (geom_point).
+## Warning: Removed 2466 rows containing missing values (geom_point).
 
-## Warning: Removed 2482 rows containing missing values (geom_point).
+## Warning: Removed 2466 rows containing missing values (geom_point).
 
-## Warning: Removed 2482 rows containing missing values (geom_point).</code></pre>
+## Warning: Removed 2466 rows containing missing values (geom_point).</code></pre>
 <p><img src="pat_introduction_files/figure-html/allPlot-1.png" width="672"></p>
 </div>
 <div id="exploring-time-series-data" class="section level2">

@@ -51,7 +51,7 @@
 #' \pkg{openair} \code{polarPlot()} function.
 #' 
 #' @seealso 
-#' \url{http://davidcarslaw.github.io/openair/reference/polarPlot.html} 
+#' \url{https://davidcarslaw.github.io/openair/reference/polarPlot.html} 
 #' 
 #' @return A plot and an object of class "openair".
 #'

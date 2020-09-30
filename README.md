@@ -42,7 +42,7 @@ agencies.
 ## Installation
 
 This package is designed to be used with [R](https://cran.r-project.org) 
-(>= 3.5) and [RStudio](https://www.rstudio.com) so make sure you have those 
+(>= 3.5) and [RStudio](https://www.rstudio.com/) so make sure you have those 
 installed first.
 
 Until the package is available on CRAN or to get the latest development version, 

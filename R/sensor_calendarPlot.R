@@ -52,7 +52,7 @@
 #' averages calculated using local "clock time". 
 #' 
 #' @seealso 
-#' \url{http://davidcarslaw.github.io/openair/reference/calendarPlot.html} 
+#' \url{https://davidcarslaw.github.io/openair/reference/calendarPlot.html} 
 #' 
 #' @return A plot and an object of class "openair".
 #'

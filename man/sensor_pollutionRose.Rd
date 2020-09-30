@@ -104,5 +104,5 @@ sensor_pollutionRose(sensor, windData, statistic = "prop.mean")
 }
 }
 \seealso{
-\url{http://davidcarslaw.github.io/openair/reference/windRose.html}
+\url{https://davidcarslaw.github.io/openair/reference/windRose.html}
 }
