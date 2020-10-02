@@ -6,7 +6,7 @@ output: html_document
 ---
 
 Data quality-control is the process of flagging or removing invalid or noise 
-data points from a data set, either manually or algorithmically. There are
+data points from a data set, either manually or algorithmicly. There are
 many statistical techniques and methods to preform quality-control. In this 
 article we provide a general overview of how to construct such algorithms 
 for use within the **AirSensor** package. Our goal is to write custom 
@@ -88,13 +88,13 @@ to create a mask identifying hours where there is not enough data to meet
 our minimum threshold, `minCount = 42`. The mean values for these hours are
 replaced with `NA`.
 
-Looking at the plot, we can verify that low count values are associatd with
+Looking at the plot, we can verify that low count values are associated with
 missing values of `pm25_A/B`.
 
 ## Example 2 -- Z-score based QC
 
 In this example, we construct a more complex QC algorithm using 
-advanced features of `pat_aggregate()` and a coding style apporopriate for 
+advanced features of `pat_aggregate()` and a coding style appropriate for 
 seasoned R developers.
 
 The `FUN` parameter is defined "anonymously" (aka on-the-fly) and calculates a
@@ -144,7 +144,7 @@ timeseriesTbl_multiPlot(hourly_z_score_pat$data, pattern = "pm25_[AB]")
 -----
 
 There are many ways to construct QC algorithms and the examples above illustrate 
-what is possible within the *AirSensor* framework. We fullly expect people to
+what is possible within the *AirSensor* framework. We fully expect people to
 explore possibilities and create different QC algorithms depending on their
 individual needs:
 

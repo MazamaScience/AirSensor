@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
       </span>
     </div>
 
@@ -87,7 +87,7 @@
       <a href="../../articles/articles/pas_introduction.html">PurpleAir Synoptic Data</a>
     </li>
     <li>
-      <a href="../../articles/articles/pat_introduction.html">PurpleAir TimeSeries Data</a>
+      <a href="../../articles/articles/pat_introduction.html">PurpleAir Time Series Data</a>
     </li>
     <li>
       <a href="../../articles/articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
@@ -173,7 +173,7 @@
 <p>The first of these functions, <code>PurpleAirSoH_dailyPctReporting</code> will provide a daily percentage of each day that the sensor was turned on and reporting data.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">good_PctReport &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/PurpleAirSoH_dailyPctReporting.html">PurpleAirSoH_dailyPctReporting</a></span>(good_pat)</a>
 <a class="sourceLine" id="cb9-2" data-line-number="2">bad_PctReport &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/PurpleAirSoH_dailyPctReporting.html">PurpleAirSoH_dailyPctReporting</a></span>(bad_pat)</a></code></pre></div>
-<p>Ideally, the percent reporting hovers near 100%, the sensor should be reporting all the time. Notice however, that for both sensors the first few points hang out around 150%, this is due to a difference in sampling frequencies before and after a firmware update that became available to the sensors in June 2019. Prior to June, all sensors were samplling at a higher rate, hence percentages greater than %100. Before firmware updates were installed, a perfectly performing sensor should report at %150. (Sampling <em>intervals</em> were 80 sec before the update and 120 sec after the update.)</p>
+<p>Ideally, the percent reporting hovers near 100%, the sensor should be reporting all the time. Notice however, that for both sensors the first few points hang out around 150%, this is due to a difference in sampling frequencies before and after a firmware update that became available to the sensors in June 2019. Prior to June, all sensors were sampling at a higher rate, hence percentages greater than %100. Before firmware updates were installed, a perfectly performing sensor should report at %150. (Sampling <em>intervals</em> were 80 sec before the update and 120 sec after the update.)</p>
 <p>Both sensors start out with near full reporting percentages, and after the firmware update the good data are still nearly perfect, hovering at 100% without any dropouts, but the bad sensor starts to deteriorate between June 10 and June 17.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># gg setup</span></a>
 <a class="sourceLine" id="cb10-2" data-line-number="2">good_tidy &lt;-<span class="st"> </span>good_PctReport <span class="op">%&gt;%</span></a>

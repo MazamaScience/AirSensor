@@ -96,7 +96,7 @@ pat_scatterPlotMatrix(pat_a_humidity)
 A glance at these scatterPlots gives a us another look at just how uncorrelated 
 the A and B channels are, while the relationships for channel A 
 with temperature and humidity are abnormally well-defined. It's actually not
-very clear which of the auxillary sensors the A channel is reflecting since
+very clear which of the auxiliary sensors the A channel is reflecting since
 temperature and relative humidity are naturally correlated themselves.
 
 A more in-depth analysis of this issue is provided in 

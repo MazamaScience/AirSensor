@@ -93,7 +93,7 @@ pas <- get(load(filePath_pas))
 A _pas_ object is a dataframe that contains metadata and 
 PM 2.5 averages for many purple air sensors in a designated region. Each pas 
 object can be filtered and edited to retain whichever collection of sensors 
-the analyist desires based on location, state, name, _etc._
+the analyst desires based on location, state, name, _etc._
 
 It is important to note that the data averages in the _pas_ object -- the numeric
 values for PM2.5 or temperature or humidity -- are current at the time that the 
@@ -181,7 +181,7 @@ pas_leaflet(pas_sydney)
 
 ### Filter the _pas_ based on conditions
 
-On Januar 15, 2020, the air quality in Sydney appeared to be unhealthy. 
+On January 15, 2020, the air quality in Sydney appeared to be unhealthy. 
 [_Using a _pas_ object created don that day_] we can look for the 
 sensors that are reporting the highest `pm25` levels.
 
@@ -210,7 +210,7 @@ if ( nrow(pas_high_pm25) > 1 ) {
 ### Download _pat_ data
 
 Now that the _pas_ has been filtered based on the worst air quality, we can 
-create _pat_ objets for sensors listed in the _pas_. You could 
+create _pat_ objects for sensors listed in the _pas_. You could 
 download all the sensors in the newly filtered _pas_ but, for the
 purposes of reproducibility, we will continue to use the `pas_au` object 
 as the reference _pas_ to ensure that the sensors referenced are present. 
@@ -392,7 +392,7 @@ brief segment of "Poor" during the first partial day in the time series.
 pat_dailySoHIndexPlot(pat_chisholm)
 ```
 
-The sensor seems to be in good health so. It is uncler what to make of such
+The sensor seems to be in good health so. It is unclear what to make of such
 high PM2.5 values and whether they are out-of-spec or not. In any case, the
 smoke in the Sydney area was clearly very bad over the time period of interest.
 
@@ -430,7 +430,7 @@ airsensor_chisholm <- pat_createAirSensor(
 
 Now that we have converted the relative raw _pas_ into an _airsensor_ object, 
 we can any of the "monitor" plotting functions found in the **PWFSLSmoke** or
-*AirMonitorPlots* packages
+**AirMonitorPlots** packages
 
 ```{r monitor_plots}
 AirMonitorPlots::monitor_ggDailyBarplot(airsensor_chisholm)
@@ -448,8 +448,8 @@ Unfortunately, the current QC algorithm in the package invalidates values over
 
 To get a sense of what direction smoke is coming from, we use the  
 `sensor_PolluationRose()` function. As the name implies, this function takes
-an _airsensor_ objecct as an argument. It then obtains hourly 
-wind direction and speed data from the nearest meterological site and plots a 
+an _airsensor_ object as an argument. It then obtains hourly 
+wind direction and speed data from the nearest meteorological site and plots a 
 traditional wind rose plot for wind direction and PM2.5.
 
 In this case, it looks like the smoke is coming mostly from the E/NE which is 
@@ -462,11 +462,11 @@ sensor_pollutionRose(sensor = airsensor_chisholm)
 
 The `sensor_pollutionRose()` function uses the **metdata** package to obtain
 wind data. We can use this package ourselves to get location information for
-the narest meteorological site to Chisholm so that we can map the location
+the nearest meteorological site to Chisholm so that we can map the location
 relative to our PurpleAir sensors.
 
 The chunk below finds the meteorological site closest to Chisholm, and plots it 
-on the map in blue along with oter sensors near Canberra.
+on the map in blue along with other sensors near Canberra.
 
 ```{r leaflet_map}
 # Target location

@@ -1,10 +1,10 @@
 ---
-title: "PurpleAir TimeSeries Data"
+title: "PurpleAir Time Series Data"
 author: "Mazama Science"
 date: "2019-04-19"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{PurpleAir TimeSeries Data}
+  %\VignetteIndexEntry{PurpleAir Time Series Data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

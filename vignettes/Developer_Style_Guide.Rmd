@@ -38,7 +38,7 @@ it is uniquely identified.
 In this system we would never have a variable called: `num_hours`. Instead we go 
 through our process:
 
-* What is it? — _(Hmmm. What noun describes this? Ah yes!)_ — a `count`
+* What is it? — _(Hmm. What noun describes this? Ah yes!)_ — a `count`
 * What kind of count  is it? — _(It's not a "head count" or a "body count".)_ 
 It's an `hourCount`.
 
@@ -108,7 +108,7 @@ pat_scatterPlotMatrix()
 
 Each file should contain a single function of the same name. Thus, the function 
 named `createAPIList()` is defined in `createAPIList.R`. An exception is made
-for small, mostly internal functions used in conjuction with a particular type
+for small, mostly internal functions used in conjunction with a particular type
 of object or activity. These can be stored together in a file named `utils-~`:
 
 ```

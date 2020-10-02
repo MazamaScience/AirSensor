@@ -1,3 +1,8 @@
+# AirSensor 1.0.2
+
+* CRAN submission tweaks.
+* Spell check vignettes.
+
 # AirSensor 1.0.1
 
 * CRAN submission tweaks.

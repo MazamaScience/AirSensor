@@ -79,7 +79,7 @@ Ideally, the percent reporting hovers near 100%, the sensor should be reporting
 all the time. Notice however, that for both sensors the first few points hang
 out around 150%, this is due to a difference in sampling frequencies before and 
 after a firmware update that became available to the sensors in June 2019. Prior 
-to June, all sensors were samplling at a higher rate, hence percentages greater
+to June, all sensors were sampling at a higher rate, hence percentages greater
 than %100. Before firmware updates were installed, a perfectly performing sensor
 should report at %150. (Sampling _intervals_ were 80 sec before the update and 
 120 sec after the update.)

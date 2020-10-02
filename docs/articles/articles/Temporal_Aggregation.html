@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
       </span>
     </div>
 
@@ -87,7 +87,7 @@
       <a href="../../articles/articles/pas_introduction.html">PurpleAir Synoptic Data</a>
     </li>
     <li>
-      <a href="../../articles/articles/pat_introduction.html">PurpleAir TimeSeries Data</a>
+      <a href="../../articles/articles/pat_introduction.html">PurpleAir Time Series Data</a>
     </li>
     <li>
       <a href="../../articles/articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
@@ -173,7 +173,7 @@
 <h3 class="hasAnchor">
 <a href="#sub-hour-aggregation" class="anchor"></a>Sub-hour Aggregation</h3>
 <p>With care, we can extend the use of <code><a href="../../reference/pat_aggregate.html">pat_aggregate()</a></code> to summarize time series <code>pat</code> data for nearly <em>any</em> period. Sub-hour aggregation may be useful in creating custom QC functions.</p>
-<p>You can create different aggregation periods by explicitly providing <code>unit</code>, a string describing the period to split by <code>unit =</code> <code>'hours'</code>, <code>'minutes'</code>, <code>'weeks'</code>, <code>'months'</code>, <em>etc.</em> and <code>count</code>, the number of untis to aggregate in each bin. For example, a 15-minute standard deviation (<code>sd</code>) aggregation would look like this:</p>
+<p>You can create different aggregation periods by explicitly providing <code>unit</code>, a string describing the period to split by <code>unit =</code> <code>'hours'</code>, <code>'minutes'</code>, <code>'weeks'</code>, <code>'months'</code>, <em>etc.</em> and <code>count</code>, the number of units to aggregate in each bin. For example, a 15-minute standard deviation (<code>sd</code>) aggregation would look like this:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># Aggregate the standard deviation of 15-minute periods</span></a>
 <a class="sourceLine" id="cb8-2" data-line-number="2">sd_fifteen_minute_pat &lt;-<span class="st"> </span></a>
 <a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../../reference/pat_aggregate.html">pat_aggregate</a></span>(pat, </a>

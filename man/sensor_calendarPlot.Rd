@@ -2,7 +2,7 @@
 % Please edit documentation in R/sensor_calendarPlot.R
 \name{sensor_calendarPlot}
 \alias{sensor_calendarPlot}
-\title{Plot time series values in convential calendar format}
+\title{Plot time series values in conventional calendar format}
 \usage{
 sensor_calendarPlot(
   sensor = NULL,

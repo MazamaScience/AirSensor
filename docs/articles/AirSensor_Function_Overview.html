@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
       </span>
     </div>
 
@@ -87,7 +87,7 @@
       <a href="../articles/articles/pas_introduction.html">PurpleAir Synoptic Data</a>
     </li>
     <li>
-      <a href="../articles/articles/pat_introduction.html">PurpleAir TimeSeries Data</a>
+      <a href="../articles/articles/pat_introduction.html">PurpleAir Time Series Data</a>
     </li>
     <li>
       <a href="../articles/articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
@@ -137,7 +137,7 @@
 <div id="synoptic-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#synoptic-data" class="anchor"></a>Synoptic Data</h2>
-<p>Purple Air Synoptic (PAS) data provides a view of their sensor network with location metadata and an instantaneous view of measured values. Within the <strong>AirSensor</strong> package, this data is availabe as a <code>pas</code> object. All functions beginning with <code>pas_</code> are designed for creating or working with this data. The following functions are the most common end-user functions:</p>
+<p>Purple Air Synoptic (PAS) data provides a view of their sensor network with location metadata and an instantaneous view of measured values. Within the <strong>AirSensor</strong> package, this data is available as a <code>pas</code> object. All functions beginning with <code>pas_</code> are designed for creating or working with this data. The following functions are the most common end-user functions:</p>
 <table class="table">
 <thead><tr class="header">
 <th align="left">function</th>
@@ -181,7 +181,7 @@
 <td align="left"><code>pas, pattern, isOutside, isParent</code></td>
 </tr>
 <tr class="even">
-<td align="left"><strong>Mainpulating a <code>pas</code></strong></td>
+<td align="left"><strong>Manipulating a <code>pas</code></strong></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
@@ -214,7 +214,7 @@
 <div id="timeseries-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#timeseries-data" class="anchor"></a>Timeseries Data</h2>
-<p>PurpleAir Timeseries (PAT) data is available on a per-sensor basis. Within the <strong>AirSensor</strong> package, this data is availabe as a <code>pat</code> object. All functions beginning with <code>pat_</code> are designed for creating or working with this data. The following functions are the most common end-user functions:</p>
+<p>PurpleAir Timeseries (PAT) data is available on a per-sensor basis. Within the <strong>AirSensor</strong> package, this data is available as a <code>pat</code> object. All functions beginning with <code>pat_</code> are designed for creating or working with this data. The following functions are the most common end-user functions:</p>
 <table class="table">
 <thead><tr class="header">
 <th align="left">function</th>
@@ -246,7 +246,7 @@
 <td align="left"><code>id, label, pas, datestamp, timezone</code></td>
 </tr>
 <tr class="odd">
-<td align="left"><strong>Mainpulating a <code>pat</code></strong></td>
+<td align="left"><strong>Manipulating a <code>pat</code></strong></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
@@ -258,78 +258,82 @@
 <td align="left"><code>pat, startdate, enddate, ...</code></td>
 </tr>
 <tr class="even">
+<td align="left"><code><a href="../reference/pat_filterDatetime.html">pat_filterDatetime()</a></code></td>
+<td align="left"><code>pat, startdate, enddate, ...</code></td>
+</tr>
+<tr class="odd">
 <td align="left"><code><a href="../reference/pat_join.html">pat_join()</a></code></td>
 <td align="left"><code>pat, pat, ...</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code><a href="../reference/pat_outliers.html">pat_outliers()</a></code></td>
 <td align="left"><code>pat, windowSize, thresholdMin, replace, showPlot, ...</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code><a href="../reference/pat_qc.html">pat_qc()</a></code></td>
 <td align="left"><code>pat, ...</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code><a href="../reference/pat_sample.html">pat_sample()</a></code></td>
 <td align="left"><code>pat, sampleSize</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>Plotting a <code>pat</code></strong></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code><a href="../reference/pat_dygraph.html">pat_dygraph()</a></code></td>
 <td align="left"><code>pat, parameter, sampleSize, ...</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code><a href="../reference/pat_multiPlot.html">pat_multiPlot()</a></code></td>
 <td align="left"><code>pat, plottype, sampleSize, ...</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code><a href="../reference/pat_scatterPlotMatrix.html">pat_scatterPlotMatrix()</a></code></td>
 <td align="left"><code>pat, parameters, sampleSize, ...</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>State-of-Health functions</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code><a href="../reference/pat_dailySoH.html">pat_dailySoH()</a></code></td>
 <td align="left"><code>pat, Soh_functions</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>pat_dailySoHIndex_Plot_00()</code></td>
 <td align="left"><code>pat, minPctReporting, breaks</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code><a href="../reference/pat_dailySoHIndexPlot.html">pat_dailySoHIndexPlot()</a></code></td>
 <td align="left"><code>pat, minPctReporting, breaks, SoHIndex_FUN</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code><a href="../reference/pat_dailySoHPlot.html">pat_dailySoHPlot()</a></code></td>
 <td align="left"><code>pat, ncol</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>Other functions</strong></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code><a href="../reference/pat_aggregate.html">pat_aggregate()</a></code></td>
 <td align="left"><code>pat, FUN, ...</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>pat_aggregateOutliserCounts()</code></td>
 <td align="left"><code>pat, period, windowSize, thresholdMin</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code><a href="../reference/pat_externalFit.html">pat_externalFit()</a></code></td>
 <td align="left"><code>pat, ...</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code><a href="../reference/pat_internalFit.html">pat_internalFit()</a></code></td>
 <td align="left"><code>pat, ...</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code><a href="../reference/pat_monitorComparison.html">pat_monitorComparison()</a></code></td>
 <td align="left"><code>pat, ...</code></td>
 </tr>
@@ -339,7 +343,7 @@
 <div id="hourly-aggregated-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#hourly-aggregated-data" class="anchor"></a>Hourly Aggregated Data</h2>
-<p>Hourly Aggregated data can be generated from <code>pat</code> objects with the <code><a href="../reference/pat_createAirSensor.html">pat_createAirSensor()</a></code> function. Within the <strong>AirSensor</strong> package, this data is availabe as an <code>airsensor</code> object. All functions beginning with <code>sensor_</code> are designed for obtaining or working with this data. The following functions are the most common end-user functions:</p>
+<p>Hourly Aggregated data can be generated from <code>pat</code> objects with the <code><a href="../reference/pat_createAirSensor.html">pat_createAirSensor()</a></code> function. Within the <strong>AirSensor</strong> package, this data is available as an <code>airsensor</code> object. All functions beginning with <code>sensor_</code> are designed for obtaining or working with this data. The following functions are the most common end-user functions:</p>
 <table class="table">
 <thead><tr class="header">
 <th align="left">function</th>
@@ -375,7 +379,7 @@
 <td align="left"><code>collection, datestamp, timezone</code></td>
 </tr>
 <tr class="even">
-<td align="left"><strong>Mainpulating an <code>airsensor</code></strong></td>
+<td align="left"><strong>Manipulating an <code>airsensor</code></strong></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
@@ -391,16 +395,24 @@
 <td align="left"><code>sensor, startdate, enddate, days, ...</code></td>
 </tr>
 <tr class="even">
+<td align="left"><code><a href="../reference/sensor_filterDate.html">sensor_filterDate()</a></code></td>
+<td align="left"><code>sensor, startdate, enddate, timezone</code></td>
+</tr>
+<tr class="odd">
 <td align="left"><strong>Plotting an <code>airsensor</code></strong></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code><a href="../reference/sensor_polarPlot.html">sensor_polarPlot()</a></code></td>
 <td align="left"><code>sensor, windData, statistic, ...</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code><a href="../reference/sensor_pollutionRose.html">sensor_pollutionRose()</a></code></td>
 <td align="left"><code>sensor, windData, statistic, ...</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code><a href="../reference/sensor_calendarPlot.html">sensor_calendarPlot()</a></code></td>
+<td align="left"><code>sensor, ...</code></td>
 </tr>
 </tbody>
 </table>

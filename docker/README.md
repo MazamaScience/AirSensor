@@ -16,7 +16,7 @@ You should then be able to see something like the following:
 $ docker images
 REPOSITORY                    TAG         IMAGE ID            CREATED             SIZE
 ...
-mazamascience/airsensor       1.0.0       796ae3ba57e5        2 minutes ago       3.74GB
+mazamascience/airsensor       1.0.2       796ae3ba57e5        2 minutes ago       3.74GB
 mazamascience/airsensor       latest      796ae3ba57e5        2 minutes ago       3.74GB
 ...
 ```
@@ -88,6 +88,6 @@ make production_publish
 A recent image can also be obtained from DockerHub with:
 
 ```
-docker pull mazamascience/airsensor:1.0.0
+docker pull mazamascience/airsensor:1.0.2
 ```
 

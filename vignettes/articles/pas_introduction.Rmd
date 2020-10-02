@@ -41,14 +41,14 @@ a `pas`) by using the `pas_createNew()` function. A `pas` object is just a large
 dataframe with `r ncol(pas)` data columns and a record for each
 PurupleAir sensor channel (2 channels per sensor).
 
-The `pas_createNew()` function perfoms the following tasks under the hood: 
+The `pas_createNew()` function performs the following tasks under the hood: 
 
 1. Download a raw dataset of the entire PurpleAir network that includes both 
 metadata and recent PM2.5 averages for each deployed sensor across the globe. 
 See `downloadParseSynopticData()` for more info.
 
 2. Subset and enhance the raw dataset by replacing variables with more consistent,
-human readable names amd adding spatial metadata for each sensor including the 
+human readable names and adding spatial metadata for each sensor including the 
 nearest official air quality monitor. For a more in depth explanation, see 
 `enhanceSynopticData()`.
 
@@ -69,7 +69,7 @@ initializeMazamaSpatialUtils()
 pas <- pas_createNew(countryCodes = "US")
 ```
 
-### Loading Pre-generatted Synoptic Data (fast)
+### Loading Pre-generated Synoptic Data (fast)
 
 It is also possible to load pre-generated `pas` objects from a data archive.
 These objects are updated regularly throughout each day and are typically used 
@@ -99,7 +99,7 @@ pas <- pas_load()
 ### PAS Data Structure
 
 The `pas` dataset contains 45 columns, and each row corresponds to different 
-PurpleAir sensors. For the data anlysis examples we will focus on the columns
+PurpleAir sensors. For the data analysis examples we will focus on the columns
 labeled `stateCode`, `pm25_*`, `humidity`, `pressure`, `temperature`, and 
 `pwfsl_closestDistance`. 
 
@@ -143,7 +143,7 @@ pas %>%
 
 If we want to narrow our selection, for example to California, we can look at which 
 locations have a moderate to unhealthy 6-hour average air quality rating with
-the following shor script that uses the `%>%` "pipe" operator:
+the following short script that uses the `%>%` "pipe" operator:
 
 ```{r leaflet_pm25_6hr}
 pas %>% 
@@ -156,10 +156,10 @@ This code pipes our `pas` data into `pas_filter()` where we can set our
 selection criteria. The `stateCode` is the ISO 3166-2 state code, 
 which tells `pas_filter()`  to subset for only those station sin California. 
 The `pm25_6hr > 25.0` filter selects those records where the 6-hour average is 
-above 25.0. The final funciton in the pipeline plots the remaining sensors
+above 25.0. The final function in the pipeline plots the remaining sensors
 colored by `pm25_6hr`.
 
-### Mapping `pas` Auxillary Data
+### Mapping `pas` Auxiliary Data
 
 We can also explore and utilize other PurpleAir sensor data. Check the 
 `pas_leaflet()` documentation for all supported parameters.
@@ -182,7 +182,7 @@ and visualize `pas` data in a _tidy_ way.
 
 Below, we demonstrate the flexibility of **AirSensor**'s `pas` data objects and 
 a few examples of exploratory data analysis pipelines, focusing on the state of 
-Califronia and their PurpleAir sensor data. 
+California and their PurpleAir sensor data. 
 
 ```{r init_explore, message=FALSE, warning=FALSE}
 # Load the extra libraries
@@ -209,7 +209,7 @@ ca_pas <-
   ) 
 ```
 
-### County Mointor Counts
+### County Monitor Counts
 
 Using our California county spatial data, we can count the number of PurpleAir 
 sensors that exist in the each region "feature" (aka polygon). This is an important metric to 
@@ -318,8 +318,8 @@ mean_pm25 %>%
 ```
 
 It is important to clarify that this data **_does not_** represent a region's 
-"spatially averaged" air quality. It is only a sipmle summary of data from the 
-avaliable PurpleAir sensors without any regard for how they are spatially
+"spatially averaged" air quality. It is only a simple summary of data from the 
+available PurpleAir sensors without any regard for how they are spatially
 distributed.
 
 ### PM2.5 Weekly Average Map 

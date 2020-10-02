@@ -82,7 +82,7 @@ creating custom QC functions.
 
 You can create different aggregation periods by explicitly providing `unit`, a 
 string describing the period to split by `unit =` `'hours'`, `'minutes'`, 
-`'weeks'`, `'months'`, _etc._ and `count`, the number of untis to aggregate in each 
+`'weeks'`, `'months'`, _etc._ and `count`, the number of units to aggregate in each 
 bin. For example, a 15-minute standard deviation (`sd`) aggregation would look 
 like this:
 

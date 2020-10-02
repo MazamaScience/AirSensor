@@ -17,7 +17,7 @@ This document has been updated to reflect functions in AirSensor version 0.6.x.
 
 Purple Air Synoptic (PAS) data provides a view of their sensor network with 
 location metadata and an instantaneous view of measured values. Within the 
-**AirSensor** package, this data is availabe as a `pas` object. All functions 
+**AirSensor** package, this data is available as a `pas` object. All functions 
 beginning with `pas_` are designed for creating or working with this data. The
 following functions are the most common end-user functions:
 
@@ -32,7 +32,7 @@ following functions are the most common end-user functions:
 | `pas_getDeviceDeploymentIDs()` | `pas, pattern, isOutside, isParent` |
 | `pas_getIDs()` | `pas, pattern, isOutside, isParent` |
 | `pas_getLabels()` | `pas, pattern, isOutside, isParent` |
-| **Mainpulating a `pas`** |  |
+| **Manipulating a `pas`** |  |
 | `pas_filter()` | `pas, ...` |
 | `pas_filterArea()` | `pas, w, e, s, n` |
 | `pas_filterNear()` | `pas, longitude, latitude, radius` |
@@ -43,7 +43,7 @@ following functions are the most common end-user functions:
 ## Timeseries Data
 
 PurpleAir Timeseries (PAT) data is available on a per-sensor basis. Within the 
-**AirSensor** package, this data is availabe as a `pat` object. All functions 
+**AirSensor** package, this data is available as a `pat` object. All functions 
 beginning with `pat_` are designed for creating or working with this data. The
 following functions are the most common end-user functions:
 
@@ -55,9 +55,10 @@ following functions are the most common end-user functions:
 | `pat_load()` | `id, label, pas, startdate, enddate, days, timezone` | 
 | `pat_loadLatest()` | `id, label, pas` | 
 | `pat_loadMonth()` | `id, label, pas, datestamp, timezone` | 
-| **Mainpulating a `pat`** |  |
+| **Manipulating a `pat`** |  |
 | `pat_filter()` | `pat, ...` |
 | `pat_filterDate()` | `pat, startdate, enddate, ...` |
+| `pat_filterDatetime()` | `pat, startdate, enddate, ...` |
 | `pat_join()` | `pat, pat, ...` |
 | `pat_outliers()` | `pat, windowSize, thresholdMin, replace, showPlot, ...` |
 | `pat_qc()` | `pat, ...` |
@@ -82,7 +83,7 @@ following functions are the most common end-user functions:
 
 Hourly Aggregated data can be generated from `pat` objects with the
 `pat_createAirSensor()` function. Within the **AirSensor** package, this data is 
-availabe as an `airsensor` object. All functions  beginning with `sensor_` are 
+available as an `airsensor` object. All functions  beginning with `sensor_` are 
 designed for obtaining or working with this data. The following functions are 
 the most common end-user functions:
 
@@ -95,13 +96,15 @@ the most common end-user functions:
 | `sensor_loadLatest()` | `collection, days` | 
 | `sensor_loadMonth()` | `collection, datestamp, timezone` | 
 | `sensor_loadYear()` | `collection, datestamp, timezone` | 
-| **Mainpulating an `airsensor`** |  |
+| **Manipulating an `airsensor`** |  |
 | `sensor_filter()` | `sensor, ...` |
 | `sensor_filterMeta()` | `sensor, ...` |
 | `sensor_filterDate()` | `sensor, startdate, enddate, days, ...` |
+| `sensor_filterDate()` | `sensor, startdate, enddate, timezone` |
 | **Plotting an `airsensor`** | |
 | `sensor_polarPlot()` | `sensor, windData, statistic, ...` |
 | `sensor_pollutionRose()` | `sensor, windData, statistic, ...` |
+| `sensor_calendarPlot()` | `sensor, ...` |
 
 Note that each `airsensor` object is also a `ws_monitor` object and can be
 manipulated and plotted with functions from the **PWFSLSmoke** package.
