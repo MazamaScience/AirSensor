@@ -38,18 +38,17 @@ pat_monitorComparison <- function(
   
   # ----- Configurable plot options --------------------------------------------
   
-  a_size = 1
-  a_shape = 15
-  a_color = "gray80"
-  b_size = 1
-  b_shape = 15
-  b_color = "gray80"
-  ab_alpha = 0.5
-  hourly_size = 2
-  hourly_shape = 1
-  hourly_stroke = 0.6
-  pa_color = "purple3"
-  pwfsl_color = "grey10"
+  raw_size <- 1
+  raw_shape <- 15
+  raw_stroke <- 1.0
+  raw_alpha <- 0.5
+  raw_color <- "gray80"
+  hourly_size <- 2
+  hourly_shape <- 1
+  hourly_stroke <- 0.6
+  hourly_alpha <- 1
+  pa_color <- "purple2"
+  pwfsl_color <- "grey10"
   
   # ----- Validate parameters --------------------------------------------------
   
@@ -73,6 +72,9 @@ pat_monitorComparison <- function(
   if ( replaceOutliers ) {
     pat <- pat_outliers(pat, showPlot = FALSE, replace = TRUE) 
   }
+  
+  # Add "source" column to pat$data so it can be used by ggplot2
+  pat$data$source <- "PA raw"
   
   # Get the hourly aggregated data
   paHourly_data <-
@@ -156,34 +158,73 @@ pat_monitorComparison <- function(
   # Labels
   yearLabel <- strftime(pat$data$datetime[1], "%Y (%Z)", tz = timezone)
   
+  cols <- c(
+    "PA raw" = raw_color, 
+    "PA hourly" = pa_color, 
+    "PWFSL" = pwfsl_color
+  )
+  
+  shapes = c(
+    "PA raw" = raw_shape, 
+    "PA hourly" = hourly_shape, 
+    "PWFSL" = hourly_shape
+  )
+  
+  sizes = c(
+    "PA raw" = raw_size, 
+    "PA hourly" = hourly_size, 
+    "PWFSL" = hourly_size
+  )
+  
   # ----- ggplot ---------------------------------------------------------------
   
   pm25_plot <-
     pat$data %>%
     ggplot2::ggplot() +
     ggplot2::geom_point(
-      ggplot2::aes(x = .data$datetime, y = .data$pm25_A),
-      size = a_size,
-      shape = a_shape,
-      color = a_color,
-      alpha = ab_alpha
+      ggplot2::aes(
+        x = .data$datetime, 
+        y = .data$pm25_A,
+        color = .data$source, 
+        shape = .data$source,
+        size = .data$source
+      ),
+      alpha = raw_alpha
     ) +
     ggplot2::geom_point(
-      ggplot2::aes(x = .data$datetime, y = .data$pm25_B),
-      size = b_size,
-      shape = b_shape,
-      color = b_color,
-      alpha = ab_alpha
+      ggplot2::aes(
+        x = .data$datetime, 
+        y = .data$pm25_B, 
+        color = .data$source, 
+        shape = .data$source,
+        size = .data$source
+      ),
+      alpha = raw_alpha
     ) +
     ggplot2::geom_point(
       data = tidy_data,
-      ggplot2::aes(x = .data$datetime, y = .data$pm25, color = source),
-      size = hourly_size,
-      shape = hourly_shape,
+      ggplot2::aes(
+        x = .data$datetime, 
+        y = .data$pm25, 
+        color = .data$source, 
+        shape = .data$source,
+        size = .data$source
+      ),
       stroke = hourly_stroke,
-      alpha = 1
+      alpha = hourly_alpha
     ) +
-    ggplot2::scale_color_manual(values = c(pa_color, pwfsl_color)) +
+    ggplot2::scale_color_manual(
+      values = cols, 
+      breaks = c("PA raw", "PA hourly", "PWFSL")
+    ) +
+    ggplot2::scale_shape_manual(
+      values = shapes,
+      breaks = c("PA raw", "PA hourly", "PWFSL")
+    ) +
+    ggplot2::scale_size_manual(
+      values = sizes,
+      breaks = c("PA raw", "PA hourly", "PWFSL")
+    ) +
     ggplot2::ylim(ylim) +
     ggplot2::scale_x_datetime(breaks = '1 day', date_labels = '%b %d') +
     ggplot2::xlab(yearLabel) + 

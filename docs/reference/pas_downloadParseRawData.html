@@ -79,7 +79,7 @@ includes both metadata and recent PM2.5 averages for each deployed sensor." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
       </span>
     </div>
 
@@ -199,8 +199,8 @@ includes both metadata and recent PM2.5 averages for each deployed sensor.</p>
 
 <span class='fu'><a href='initializeMazamaSpatialUtils.html'>initializeMazamaSpatialUtils</a></span>()
 
-<span class='no'>pas_raw</span> <span class='kw'>&lt;-</span> <span class='fu'>pas_downloadParseRawData</span>()
-
+<span class='no'>pas_raw</span> <span class='kw'>&lt;-</span> <span class='fu'>pas_downloadParseRawData</span>()</div><div class='output co'>#&gt; ERROR [2020-10-13 10:19:12] Web service failed to respond: https://www.purpleair.com/json
+#&gt; ERROR [2020-10-13 10:19:12] web service error 429 from https://www.purpleair.com/json: Too Many Requests</div><div class='output co'>#&gt; <span class='error'>Error in pas_downloadParseRawData(): web service error 429 from https://www.purpleair.com/json: Too Many Requests</span></div><div class='input'>
 <span class='kw'>if</span> ( <span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>() ) {
   <span class='fu'><a href='https://rdrr.io/r/utils/View.html'>View</a></span>(<span class='no'>pas_raw</span>[<span class='fl'>1</span>:<span class='fl'>100</span>,])
 }

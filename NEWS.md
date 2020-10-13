@@ -1,3 +1,7 @@
+# AirSensor 1.0.3
+
+* Improved legend in `pat_monitorComparision()`.
+
 # AirSensor 1.0.2
 
 * CRAN submission tweaks.

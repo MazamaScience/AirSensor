@@ -90,7 +90,7 @@ argument." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
       </span>
     </div>
 
@@ -239,8 +239,9 @@ filtered to only include sensors with data more recent than
 
 <span class='fu'><a href='initializeMazamaSpatialUtils.html'>initializeMazamaSpatialUtils</a></span>()
 
-<span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='fu'>pas_createNew</span>(<span class='st'>"US"</span>)
-
+<span class='no'>pas</span> <span class='kw'>&lt;-</span> <span class='fu'>pas_createNew</span>(<span class='st'>"US"</span>)</div><div class='output co'>#&gt; <span class='error'>Error: parse error: object key and value must be separated by a colon (':')</span>
+#&gt; <span class='error'>          602609450,"Hidden":"false","","LastSeen":1602609450,"Hidden"</span>
+#&gt; <span class='error'>                     (right here) ------^</span></div><div class='input'>
 <span class='kw'>if</span> ( <span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>() ) {
   <span class='no'>pas</span> <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='pas_filter.html'>pas_filter</a></span>(<span class='no'>stateCode</span> <span class='kw'>==</span> <span class='st'>"CA"</span>) <span class='kw'>%&gt;%</span>
