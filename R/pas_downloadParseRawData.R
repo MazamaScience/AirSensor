@@ -12,7 +12,7 @@
 #' The synoptic data provides a view of the entire Purple Air network and
 #' includes both metadata and recent PM2.5 averages for each deployed sensor.
 #' 
-#' @references \href{https://www.purpleair.com/json}{json formatted PurpleAir data}
+#' @references \href{https://www.purpleair.com/json?all=true}{json formatted PurpleAir data}
 #' @seealso \link{pas_enhanceData}
 #' @examples
 #' \donttest{
@@ -28,7 +28,7 @@
 #' }
 
 pas_downloadParseRawData <- function(
-  baseUrl = "https://www.purpleair.com/json"
+  baseUrl = "https://www.purpleair.com/json?all=true"
 ) {
 
   # ----- Validate parameters --------------------------------------------------

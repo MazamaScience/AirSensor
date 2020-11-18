@@ -1,3 +1,7 @@
+# AirSensor 1.0.4
+
+* Updated PAS baseUrl to 'https://www.purpleair.com/json?all=true'.
+
 # AirSensor 1.0.3
 
 * Improved legend in `pat_monitorComparision()`.

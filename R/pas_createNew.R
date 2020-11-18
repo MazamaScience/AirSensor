@@ -59,7 +59,7 @@ pas_createNew <- function(
   countryCodes = NULL,
   includePWFSL = TRUE,
   lookbackDays = 1,
-  baseUrl = 'https://www.purpleair.com/json'
+  baseUrl = 'https://www.purpleair.com/json?all=true'
 ) {
   
   # ----- Validate parameters --------------------------------------------------
@@ -125,7 +125,7 @@ pas_createNew <- function(
 
 if ( FALSE ) {
   
-  baseUrl <- 'https://www.purpleair.com/json'
+  baseUrl <- 'https://www.purpleair.com/json?all=true'
   countryCodes <- NULL
   includePWFSL <- TRUE
   lookbackDays <- 1

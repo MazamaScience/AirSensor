@@ -8,7 +8,7 @@
 A tibble with 1233 rows and 32 columns of data.
 }
 \source{
-https://www.purpleair.com/json
+https://www.purpleair.com/json?all=true
 }
 \usage{
 example_pas_raw

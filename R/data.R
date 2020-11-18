@@ -45,7 +45,7 @@
 #' }
 #' 
 #' @seealso example_pas
-#' @source https://www.purpleair.com/json
+#' @source https://www.purpleair.com/json?all=true
 "example_pas_raw"
 
 

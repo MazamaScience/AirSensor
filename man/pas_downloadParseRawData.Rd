@@ -4,7 +4,7 @@
 \alias{pas_downloadParseRawData}
 \title{Download synoptic data from PurpleAir}
 \usage{
-pas_downloadParseRawData(baseUrl = "https://www.purpleair.com/json")
+pas_downloadParseRawData(baseUrl = "https://www.purpleair.com/json?all=true")
 }
 \arguments{
 \item{baseUrl}{base URL for synoptic data}
@@ -33,7 +33,7 @@ if ( interactive() ) {
 }
 }
 \references{
-\href{https://www.purpleair.com/json}{json formatted PurpleAir data}
+\href{https://www.purpleair.com/json?all=true}{json formatted PurpleAir data}
 }
 \seealso{
 \link{pas_enhanceData}

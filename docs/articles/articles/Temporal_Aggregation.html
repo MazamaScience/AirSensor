@@ -12,19 +12,19 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../../apple-touch-icon-120x120.png">
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../../apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/lumen/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../../pkgdown.css" rel="stylesheet">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/lumen/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../../bootstrap-toc.css">
+<script src="../../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../../pkgdown.css" rel="stylesheet">
 <script src="../../pkgdown.js"></script><meta property="og:title" content="Temporally Aggregated Time Series">
-<meta property="og:description" content="">
-<meta name="twitter:card" content="summary">
+<meta property="og:description" content="AirSensor">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
     <div class="container template-article">
       <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
       </span>
     </div>
 
@@ -100,7 +100,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/MazamaScience/AirSensor">
+  <a href="https://github.com/MazamaScience/AirSensor/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -115,10 +115,11 @@
 
       
 
-      </header><div class="row">
+      </header><script src="Temporal_Aggregation_files/header-attrs-2.5/header-attrs.js"></script><link href="Temporal_Aggregation_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="Temporal_Aggregation_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Temporally Aggregated Time Series</h1>
+      <h1 data-toc-skip>Temporally Aggregated Time Series</h1>
                         <h4 class="author">Mazama Science</h4>
             
             <h4 class="date">2020-05-01</h4>
@@ -135,38 +136,43 @@
 <a href="#temporal-aggregation" class="anchor"></a>Temporal Aggregation</h2>
 <p>An essential piece of analysis for large data sets is efficient granularization: computing aggregations like <code>sum</code>, <code>mean</code>, <code>sd</code>, <code>min</code>, and <code>max</code>, in which a single number gives insight into the nature of a larger population of measurements. <em>Time series</em> aggregation is the aggregation of all data points over a specified <em>period</em>. Within the <strong>AirSensor</strong> package, this is achieved with <code><a href="../../reference/pat_aggregate.html">pat_aggregate()</a></code> which applies an aggregating function, similar to those mentioned above, over a temporal subset of data. By default time series data is broken up into 1-hour periods. The result of the aggregation is a new dataset where each data point reflects a statistical view of the collected and aggregated data points over each hour.</p>
 <p>To demonstrate this feature we’ll load a 24-hour period of Purple Air data and compare the data to the aggregated data.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># AirSensor setup</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(AirSensor)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="../../reference/setArchiveBaseUrl.html">setArchiveBaseUrl</a></span>(<span class="st">"http://data.mazamascience.com/PurpleAir/v1"</span>)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co"># Load the PurpleAir sensor data</span></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">pas &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/pas_load.html">pas_load</a></span>(<span class="dt">archival =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">pat &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="../../reference/pat_load.html">pat_load</a></span>(</a>
-<a class="sourceLine" id="cb1-9" data-line-number="9">    <span class="dt">label =</span> <span class="st">'SCSC_33'</span>, </a>
-<a class="sourceLine" id="cb1-10" data-line-number="10">    <span class="dt">pas =</span> pas,</a>
-<a class="sourceLine" id="cb1-11" data-line-number="11">    <span class="dt">startdate =</span> <span class="dv">20200501</span>,</a>
-<a class="sourceLine" id="cb1-12" data-line-number="12">    <span class="dt">enddate =</span> <span class="dv">20200502</span></a>
-<a class="sourceLine" id="cb1-13" data-line-number="13">  )</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># AirSensor setup</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MazamaScience/AirSensor">AirSensor</a></span><span class="op">)</span>
+<span class="fu"><a href="../../reference/setArchiveBaseUrl.html">setArchiveBaseUrl</a></span><span class="op">(</span><span class="st">"http://data.mazamascience.com/PurpleAir/v1"</span><span class="op">)</span>
+
+<span class="co"># Load the PurpleAir sensor data</span>
+<span class="va">pas</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/pas_load.html">pas_load</a></span><span class="op">(</span>archival <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">pat</span> <span class="op">&lt;-</span> 
+  <span class="fu"><a href="../../reference/pat_load.html">pat_load</a></span><span class="op">(</span>
+    label <span class="op">=</span> <span class="st">'SCSC_33'</span>, 
+    pas <span class="op">=</span> <span class="va">pas</span>,
+    startdate <span class="op">=</span> <span class="fl">20200501</span>,
+    enddate <span class="op">=</span> <span class="fl">20200502</span>
+  <span class="op">)</span></code></pre></div>
 <div id="no-aggregation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#no-aggregation" class="anchor"></a>No Aggregation</h3>
 <p>A standard 24-hour period of non-aggregated data typically consists of 720 data entries – one record every 2 minutes.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(pat<span class="op">$</span>data)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">pat</span><span class="op">$</span><span class="va">data</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 720</code></pre>
 <p>In the multi-plot below we can see the high temporal resolution of the raw data.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../../reference/pat_multiPlot.html">pat_multiPlot</a></span>(pat, <span class="dt">sampleSize =</span> <span class="ot">NULL</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../../reference/pat_multiPlot.html">pat_multiPlot</a></span><span class="op">(</span><span class="va">pat</span>, sampleSize <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
 <p><img src="Temporal_Aggregation_files/figure-html/raw_multiplot-1.png" width="700"></p>
 </div>
 <div id="hourly-aggregation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#hourly-aggregation" class="anchor"></a>Hourly Aggregation</h3>
 <p>Using <code><a href="../../reference/pat_aggregate.html">pat_aggregate()</a></code> we can aggregate the <code>pat</code> object to an hourly average of the data. Hourly reporting is the standard for most regulatory air quality monitoring and is the recommended <em>period</em> to use. It is also the default.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">hourly_pat &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/pat_aggregate.html">pat_aggregate</a></span>(pat)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(hourly_pat<span class="op">$</span>data)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">hourly_pat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/pat_aggregate.html">pat_aggregate</a></span><span class="op">(</span><span class="va">pat</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">hourly_pat</span><span class="op">$</span><span class="va">data</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 24</code></pre>
 <p>As we’d expect, an hourly aggregated <code>pat</code> contains 24 records, one for each hour. Spikes seen in the raw data contribute to each hourly average but the overall effect is a much smoother time series.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../../reference/pat_multiPlot.html">pat_multiPlot</a></span>(hourly_pat)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../../reference/pat_multiPlot.html">pat_multiPlot</a></span><span class="op">(</span><span class="va">hourly_pat</span><span class="op">)</span></code></pre></div>
 <p><img src="Temporal_Aggregation_files/figure-html/hourly_multiplot-1.png" width="700"></p>
 </div>
 <div id="sub-hour-aggregation" class="section level3">
@@ -174,15 +180,16 @@
 <a href="#sub-hour-aggregation" class="anchor"></a>Sub-hour Aggregation</h3>
 <p>With care, we can extend the use of <code><a href="../../reference/pat_aggregate.html">pat_aggregate()</a></code> to summarize time series <code>pat</code> data for nearly <em>any</em> period. Sub-hour aggregation may be useful in creating custom QC functions.</p>
 <p>You can create different aggregation periods by explicitly providing <code>unit</code>, a string describing the period to split by <code>unit =</code> <code>'hours'</code>, <code>'minutes'</code>, <code>'weeks'</code>, <code>'months'</code>, <em>etc.</em> and <code>count</code>, the number of units to aggregate in each bin. For example, a 15-minute standard deviation (<code>sd</code>) aggregation would look like this:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># Aggregate the standard deviation of 15-minute periods</span></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">sd_fifteen_minute_pat &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../../reference/pat_aggregate.html">pat_aggregate</a></span>(pat, </a>
-<a class="sourceLine" id="cb8-4" data-line-number="4">                <span class="cf">function</span>(x) { <span class="kw"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span>(x, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) }, </a>
-<a class="sourceLine" id="cb8-5" data-line-number="5">                <span class="dt">unit =</span> <span class="st">'minutes'</span>, </a>
-<a class="sourceLine" id="cb8-6" data-line-number="6">                <span class="dt">count =</span> <span class="dv">15</span>)</a>
-<a class="sourceLine" id="cb8-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co"># View first 5 entries of data</span></a>
-<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(sd_fifteen_minute_pat<span class="op">$</span>data)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Aggregate the standard deviation of 15-minute periods</span>
+<span class="va">sd_fifteen_minute_pat</span> <span class="op">&lt;-</span> 
+  <span class="fu"><a href="../../reference/pat_aggregate.html">pat_aggregate</a></span><span class="op">(</span><span class="va">pat</span>, 
+                <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">}</span>, 
+                unit <span class="op">=</span> <span class="st">'minutes'</span>, 
+                count <span class="op">=</span> <span class="fl">15</span><span class="op">)</span>
+
+<span class="co"># View first 5 entries of data</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sd_fifteen_minute_pat</span><span class="op">$</span><span class="va">data</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 19
 ##   datetime            pm25_A pm25_B temperature humidity pressure pm1_atm_A
 ##   &lt;dttm&gt;               &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
@@ -208,16 +215,11 @@
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-<li><a href="#temporal-aggregation">Temporal Aggregation</a></li>
-      </ul>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
 </div>
-      </div>
 
 </div>
 
@@ -228,7 +230,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

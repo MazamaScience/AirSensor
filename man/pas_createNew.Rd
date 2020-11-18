@@ -8,7 +8,7 @@ pas_createNew(
   countryCodes = NULL,
   includePWFSL = TRUE,
   lookbackDays = 1,
-  baseUrl = "https://www.purpleair.com/json"
+  baseUrl = "https://www.purpleair.com/json?all=true"
 )
 }
 \arguments{
