@@ -1,3 +1,7 @@
+# AirSensor 1.0.5
+
+* Improved monitor in `pat_externalFit()` and `pat_monitorComparison()`.
+
 # AirSensor 1.0.4
 
 * Updated PAS baseUrl to 'https://www.purpleair.com/json?all=true'.

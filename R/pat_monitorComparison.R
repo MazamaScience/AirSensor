@@ -98,9 +98,9 @@ pat_monitorComparison <- function(
       tidyr::gather("source", "pm25", -.data$datetime)
     
     title <- paste0(
-      "Sensor / Monitor comparison -- PurpleAir: \"",
+      "Sensor / Reference Monitor comparison -- PurpleAir: \"",
       pat$meta$label,
-      "\" No PWFSL monitors found within ", 
+      "\" No reference monitors found within ", 
       distanceCutoff, 
       " km"
     )
@@ -117,7 +117,7 @@ pat_monitorComparison <- function(
       pwfsl_monitor %>%
       PWFSLSmoke::monitor_extractData()
     
-    names(pwfsl_data) <- c("datetime", "PWFSL")
+    names(pwfsl_data) <- c("datetime", "Monitor")
     
     # Get monitor names for labeling
     pwfsl_siteName <- pwfsl_monitor$meta$siteName
@@ -129,11 +129,11 @@ pat_monitorComparison <- function(
       tidyr::gather("source", "pm25", -.data$datetime)
     
     title <- paste0(
-      "Sensor / Monitor comparison -- PurpleAir: \"",
+      "Sensor / Reference Monitor comparison -- PurpleAir: \"",
       pat$meta$label,
       "\" is ",
       round((pat$meta$pwfsl_closestDistance/1000),1),
-      " km from PWFSL: \"",
+      " km from Monitor: \"",
       pwfsl_siteName,
       "\""
     )
@@ -161,19 +161,19 @@ pat_monitorComparison <- function(
   cols <- c(
     "PA raw" = raw_color, 
     "PA hourly" = pa_color, 
-    "PWFSL" = pwfsl_color
+    "Monitor" = pwfsl_color
   )
   
   shapes = c(
     "PA raw" = raw_shape, 
     "PA hourly" = hourly_shape, 
-    "PWFSL" = hourly_shape
+    "Monitor" = hourly_shape
   )
   
   sizes = c(
     "PA raw" = raw_size, 
     "PA hourly" = hourly_size, 
-    "PWFSL" = hourly_size
+    "Monitor" = hourly_size
   )
   
   # ----- ggplot ---------------------------------------------------------------
@@ -215,15 +215,15 @@ pat_monitorComparison <- function(
     ) +
     ggplot2::scale_color_manual(
       values = cols, 
-      breaks = c("PA raw", "PA hourly", "PWFSL")
+      breaks = c("PA raw", "PA hourly", "Monitor")
     ) +
     ggplot2::scale_shape_manual(
       values = shapes,
-      breaks = c("PA raw", "PA hourly", "PWFSL")
+      breaks = c("PA raw", "PA hourly", "Monitor")
     ) +
     ggplot2::scale_size_manual(
       values = sizes,
-      breaks = c("PA raw", "PA hourly", "PWFSL")
+      breaks = c("PA raw", "PA hourly", "Monitor")
     ) +
     ggplot2::ylim(ylim) +
     ggplot2::scale_x_datetime(breaks = '1 day', date_labels = '%b %d') +

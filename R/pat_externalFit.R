@@ -166,7 +166,7 @@ pat_externalFit <- function(
                            method = "lm", size = lr_lwd) + 
       ggplot2::labs(title = "Correlation", 
                     x = paste0("PurpleAir: \"", pat$meta$label, "\""),
-                    y = paste0("PWFSL: \"", pwfsl_siteName, "\"")) + 
+                    y = paste0("Monitor: \"", pwfsl_siteName, "\"")) + 
       ggplot2::theme_bw() + 
       ggplot2::xlim(xylim) +
       ggplot2::ylim(xylim) +
@@ -189,14 +189,14 @@ pat_externalFit <- function(
                           alpha = alpha) +
       ggplot2::scale_color_manual(values = c(pa_color, pwfsl_color),
                                   name = "Source",
-                                  labels = c("PurpleAir", "PWFSL")) +
+                                  labels = c("PurpleAir", "Monitor")) +
       ggplot2::ylim(xylim) +
       ggplot2::ggtitle(expression("PM"[2.5])) + 
       ggplot2::xlab(year) + ggplot2::ylab("\u03bcg / m\u00b3")
     
     # Gather and arrange the linear regression and time series plots with a banner title
     roundedDistance <- round((pat$meta$pwfsl_closestDistance / 1000), 1)
-    bannerText <- paste0("Sensor / Monitor Comparison -- Distance: ",
+    bannerText <- paste0("Sensor / Reference Monitor Comparison -- Distance: ",
                          roundedDistance, "km")
     bannerGrob <- grid::textGrob(bannerText,
                              just = "left",
