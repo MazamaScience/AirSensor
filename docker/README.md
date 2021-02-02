@@ -16,7 +16,7 @@ You should then be able to see something like the following:
 $ docker images
 REPOSITORY                    TAG         IMAGE ID            CREATED             SIZE
 ...
-mazamascience/airsensor       1.0.5       796ae3ba57e5        2 minutes ago       3.74GB
+mazamascience/airsensor       1.0.3       796ae3ba57e5        2 minutes ago       3.74GB
 mazamascience/airsensor       latest      796ae3ba57e5        2 minutes ago       3.74GB
 ...
 ```
@@ -52,17 +52,18 @@ pas <- example_pas
 [17] "pressure"                         "age"                             
 [19] "parentID"                         "flag_highValue"                  
 [21] "flag_attenuation_hardware"        "Ozone1"                          
-[23] "pm25_current"                     "pm25_10min"                      
-[25] "pm25_30min"                       "pm25_1hr"                        
-[27] "pm25_6hr"                         "pm25_1day"                       
-[29] "pm25_1week"                       "statsLastModifiedDate"           
-[31] "statsLastModifiedInterval"        "countryCode"                     
-[33] "stateCode"                        "timezone"                        
-[35] "deviceID"                         "locationID"                      
-[37] "deviceDeploymentID"               "airDistrict"                     
-[39] "pwfsl_closestDistance"            "pwfsl_closestMonitorID"          
-[41] "sensorManufacturer"               "targetPollutant"                 
-[43] "technologyType"                   "communityRegion"     
+[23] "Voc"                              "pm25_current"                    
+[25] "pm25_10min"                       "pm25_30min"                      
+[27] "pm25_1hr"                         "pm25_6hr"                        
+[29] "pm25_1day"                        "pm25_1week"                      
+[31] "statsLastModifiedDate"            "statsLastModifiedInterval"       
+[33] "deviceID"                         "locationID"                      
+[35] "deviceDeploymentID"               "countryCode"                     
+[37] "stateCode"                        "timezone"                        
+[39] "airDistrict"                      "pwfsl_closestDistance"           
+[41] "pwfsl_closestMonitorID"           "sensorManufacturer"              
+[43] "targetPollutant"                  "technologyType"                  
+[45] "communityRegion"                 
 
 pas %>% 
   pas_filter(stateCode == 'CA') %>% 
@@ -87,6 +88,6 @@ make production_publish
 A recent image can also be obtained from DockerHub with:
 
 ```
-docker pull mazamascience/airsensor:1.0.5
+docker pull mazamascience/airsensor:1.0.3
 ```
 

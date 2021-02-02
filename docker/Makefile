@@ -3,14 +3,14 @@
 
 AirSensor_tarball:
 	cd ..; R CMD build --resave-data .
-	mv ../AirSensor_1.0.5.tar.gz .
+	mv ../AirSensor_1.0.3.tar.gz .
 
 # PRODUCTION version -----------------------------------------------------------
 
 production_build:
-	docker build --no-cache -t mazamascience/airsensor:1.0.5 -t mazamascience/airsensor:latest .
+	docker build --no-cache -t mazamascience/airsensor:1.0.3 -t mazamascience/airsensor:latest .
 
 production_publish:
-	docker login && docker push mazamascience/airsensor:1.0.5
+	docker login && docker push mazamascience/airsensor:1.0.3
 
 
