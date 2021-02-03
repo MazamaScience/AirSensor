@@ -1,3 +1,4 @@
+#' @encoding UTF-8
 #' @title Example Purple Air Synoptic dataset
 #' @format A tibble with 16584 rows and 44 columns of data.
 #' @description The \code{example_pas} dataset provides a quickly loadable
@@ -18,7 +19,7 @@
 #' @source https://www.purpleair.com/json
 "example_pas"
 
-
+#' @encoding UTF-8
 #' @title Example raw Purple Air Synoptic dataset
 #' @format A tibble with 1233 rows and 32 columns of data.
 #' @description The \code{example_pas_raw} dataset provides a quickly loadable
@@ -48,7 +49,7 @@
 #' @source https://www.purpleair.com/json?all=true
 "example_pas_raw"
 
-
+#' @encoding UTF-8
 #' @title Example PurpleAir Timeseries dataset
 #' @format An S3 object composed of "meta" and "data" data.
 #' @description The \code{example_pat} dataset provides a quickly loadable version of
@@ -74,7 +75,7 @@
 #' @seealso example_pat_failure_B
 "example_pat"
 
-
+#' @encoding UTF-8
 #' @title Example PurpleAir Timeseries dataset exhibiting moderate errors
 #' @format An S3 object composed of "meta" and "data" data.
 #' @description The \code{example_pat_failure_A} dataset provides a quickly loadable
@@ -100,7 +101,7 @@
 #' @seealso example_pat_failure_B
 "example_pat_failure_A"
 
-
+#' @encoding UTF-8
 #' @title Example PurpleAir Timeseries dataset exhibiting severe errors
 #' @format An S3 object composed of "meta" and "data" data.
 #' @description The \code{example_pat_failure_B} dataset provides a quickly loadable
@@ -126,7 +127,7 @@
 #' @seealso example_pat_failure_A
 "example_pat_failure_B"
 
-
+#' @encoding UTF-8
 #' @title Example AirSensor Timeseries dataset
 #' @format An S3 object composed of "meta" and "data" data.
 #' @description The \code{example_sensor} dataset provides a quickly loadable version of
@@ -150,7 +151,7 @@
 #' }
 "example_sensor"
 
-
+#' @encoding UTF-8
 #' @title Example AirSensor Timeseries dataset
 #' @format An S3 object composed of "meta" and "data" data.
 #' @description The \code{example_sensor_scaqmd} dataset provides a quickly
