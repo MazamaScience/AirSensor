@@ -127,7 +127,7 @@ communityRegion -- defined regional community.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.6</span>
       </span>
     </div>
 
@@ -292,12 +292,12 @@ and presence of core metadata columns:</p><ul>
 <span class='fu'><a href='initializeMazamaSpatialUtils.html'>initializeMazamaSpatialUtils</a></span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='co'># Use outdated pa_synoptic database</span>
-<span class='fu'><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl</a></span><span class='op'>(</span><span class='st'>'http://smoke.mazamascience.com/data/PurpleAir'</span><span class='op'>)</span>
+<span class='fu'><a href='setArchiveBaseUrl.html'>setArchiveBaseUrl</a></span><span class='op'>(</span><span class='st'>'http://data.mazamascience.com/PurpleAir/v1'</span><span class='op'>)</span>
 
 <span class='va'>pas</span> <span class='op'>&lt;-</span> 
   <span class='fu'><a href='pas_load.html'>pas_load</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>pas_upgrade</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Adding unique IDs...</span></div><div class='output co'>#&gt; <span class='message'>pa_synoptic object format upgraded.</span></div><div class='input'><span class='co'># } </span>
+</div><div class='output co'>#&gt; <span class='message'>pa_synoptic object does not require upgrade ... Skipping.</span></div><div class='input'><span class='co'># } </span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

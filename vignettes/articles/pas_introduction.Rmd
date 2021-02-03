@@ -230,7 +230,7 @@ Let's take a look at the counties that contain the most PurpleAir sensors.
 
 ```{r n_sensors_table, warning=FALSE, message=FALSE}
 n_sensors %>% 
-  select(sensorCount, name) %>% 
+  select(sensorCount, countyName) %>% 
   filter(sensorCount > 50) %>%
   st_drop_geometry() %>% 
   arrange(desc(sensorCount)) %>% 
@@ -276,7 +276,7 @@ sorted_n_sensors <-
 
 ggplot(sorted_n_sensors) + 
   geom_col(aes(
-    x = reorder(name, sensorCount), 
+    x = reorder(countyName, sensorCount), 
     y = sensorCount, 
     fill = cut_number(sensorCount, n = 8, breaks = my_breaks, labels = my_labels)
   )) + 
@@ -303,11 +303,11 @@ sensor data.
 mean_pm25 <- 
   ca_counties %>%
   st_join(ca_pas) %>% 
-  group_by(name) %>% 
+  group_by(countyName) %>% 
   summarise(pm25_weeklyMean = round(mean(pm25_1week, na.rm = TRUE), 1))
 
 mean_pm25 %>% 
-  select(name, pm25_weeklyMean) %>% 
+  select(countyName, pm25_weeklyMean) %>% 
   st_drop_geometry() %>% 
   arrange(desc(pm25_weeklyMean)) %>% 
   head(20) %>%
@@ -357,7 +357,7 @@ top15_mean_pm25 <-
 
 ggplot(top15_mean_pm25) + 
   geom_col(aes(
-    x = reorder(name, pm25_weeklyMean), 
+    x = reorder(countyName, pm25_weeklyMean), 
     y = pm25_weeklyMean, 
     fill = cut_number(pm25_weeklyMean, n = 8, breaks = my_breaks, labels = my_labels)
   )) +

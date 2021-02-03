@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.6</span>
       </span>
     </div>
 
@@ -153,15 +153,11 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>This package is designed to be used with <a href="https://cran.r-project.org">R</a> (&gt;= 3.5) and <a href="https://rstudio.com/">RStudio</a> so make sure you have those installed first.</p>
-<p>Until the package is available on CRAN or to get the latest development version, users will want to install the <strong>devtools</strong> package to have access to the latest version of the package from Github.</p>
-<p>The following packages should be installed by typing the following at the RStudio console:</p>
+<p>The package is available on CRAN or you get the latest development version from GitHub. To install the latest development version, users will want to install the <strong>devtools</strong> package and then type the following at the RStudio console:</p>
 <pre><code><a href="https://rdrr.io/r/utils/install.packages.html"># Note that vignettes require knitr and rmarkdown
 install.packages('knitr')
 install.packages('rmarkdown')
-install.packages('MazamaCoreUtils')
-install.packages('MazamaSpatialUtils')
-devtools::install_github('MazamaScience/worldmet')   # forked version includes fix
-devtools::install_github('MazamaScience/AirSensor')</a></code></pre>
+devtools::install_github("MazamaScience/AirSensor")</a></code></pre>
 <p>Any work with spatial data, <em>e.g.</em> assigning countries, states and timezones, will require installation of required spatial datasets. To get these datasets you should type the following at the RStudio console:</p>
 <pre><code><a href="https://github.com/MazamaScience/MazamaSpatialUtils">library(MazamaSpatialUtils)
 dir.create('~/Data/Spatial', recursive=TRUE)

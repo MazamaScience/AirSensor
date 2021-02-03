@@ -73,7 +73,7 @@ library(AirSensor)
 initializeMazamaSpatialUtils()
 
 # Use outdated pa_synoptic database
-setArchiveBaseUrl('http://smoke.mazamascience.com/data/PurpleAir')
+setArchiveBaseUrl('http://data.mazamascience.com/PurpleAir/v1')
 
 pas <- 
   pas_load() \%>\%

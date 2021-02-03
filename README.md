@@ -45,21 +45,16 @@ This package is designed to be used with [R](https://cran.r-project.org)
 (>= 3.5) and [RStudio](https://rstudio.com/) so make sure you have those 
 installed first.
 
-Until the package is available on CRAN or to get the latest development version, 
-users will want to install the **devtools** package to have access to the latest 
-version of the package from Github.
-
-The following packages should be installed by typing the following at the 
+The package is available on CRAN or you get the latest development version
+from GitHub. To install the latest development version, users will want to 
+install the **devtools** package and then type the following at the 
 RStudio console:
 
 ```
 # Note that vignettes require knitr and rmarkdown
 install.packages('knitr')
 install.packages('rmarkdown')
-install.packages('MazamaCoreUtils')
-install.packages('MazamaSpatialUtils')
-devtools::install_github('MazamaScience/worldmet')   # forked version includes fix
-devtools::install_github('MazamaScience/AirSensor')
+devtools::install_github("MazamaScience/AirSensor")
 ```
 
 Any work with spatial data, *e.g.* assigning countries, states and timezones, 
