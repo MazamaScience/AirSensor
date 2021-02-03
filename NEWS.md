@@ -1,3 +1,7 @@
+# AirSensor 1.0.6
+
+* Fixed documentation and included dataset encoding to UTF-8 standard.
+
 # AirSensor 1.0.5
 
 * Improved monitor labeling in `pat_externalFit()` and `pat_monitorComparison()`.
