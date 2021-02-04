@@ -50,8 +50,9 @@
 <meta property="og:description" content="The number of valid (i.e., not NA or out-of-spec) sensor 
 measurements are summed over the course of a calendar day, then divided by the 
 total number of measurements the sensor actually recorded during that day 
-(including NA and out-of-spec values) to return a percentage of the total
-recorded measurements that are considered plausible." />
+(including NA and out-of-spec values) to return a percentage of the total 
+recorded measurements that are considered plausible. This metric utilizes the 
+same bounds as the pat_qc() function to identify out-of-spec values." />
 
 
 
@@ -83,7 +84,7 @@ recorded measurements that are considered plausible." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.7</span>
       </span>
     </div>
 
@@ -173,8 +174,9 @@ recorded measurements that are considered plausible." />
     <p>The number of valid (<em>i.e.</em>, not NA or out-of-spec) sensor 
 measurements are summed over the course of a calendar day, then divided by the 
 total number of measurements the sensor actually recorded during that day 
-(including NA and out-of-spec values) to return a percentage of the total
-recorded measurements that are considered plausible.</p>
+(including NA and out-of-spec values) to return a percentage of the total 
+recorded measurements that are considered plausible. This metric utilizes the 
+same bounds as the <code><a href='pat_qc.html'>pat_qc()</a></code> function to identify out-of-spec values.</p>
     </div>
 
     <pre class="usage"><span class='fu'>PurpleAirSoH_dailyPctValid</span><span class='op'>(</span>pat <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>

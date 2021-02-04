@@ -9,8 +9,9 @@
 #' @description This function calculates a t-test between
 #' the \code{pm25_A}, \code{pm25_B}. A t-statistic and a p-value will be 
 #' returned for each day. All returned values are expected to hover near 0 for a 
-#' properly functioning sensor.
-#' 
+#' properly functioning sensor. The t-statistic and p-value serve to test whether 
+#' or not the \code{pm25_A} and \code{pm25_B} data are significantly different 
+#' based on a student’s t-test.
 #' 
 #' @examples  
 #' library(AirSensor)

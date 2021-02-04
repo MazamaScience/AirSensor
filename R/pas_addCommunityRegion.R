@@ -49,22 +49,22 @@ pas_addCommunityRegion <- function(
   #  ----- SCAQMD communities --------------------------------------------------
   
   # NOTE:  Need to match "sctv_15 (dawson canyon) b"
-  scah_mask <- stringr::str_detect(label, "^scah_[0-9][0-9]( ?.*$)")
-  scan_mask <- stringr::str_detect(label, "^scan_[0-9][0-9]( ?.*$)")
-  scap_mask <- stringr::str_detect(label, "^scap_[0-9][0-9]( ?.*$)")
-  scbb_mask <- stringr::str_detect(label, "^scbb_[0-9][0-9]( ?.*$)")
-  scem_mask <- stringr::str_detect(label, "^scem_[0-9][0-9]( ?.*$)")
-  schs_mask <- stringr::str_detect(label, "^schs_[0-9][0-9]( ?.*$)")
-  sciv_mask <- stringr::str_detect(label, "^sciv_[0-9][0-9]( ?.*$)")
-  scnp_mask <- stringr::str_detect(label, "^scnp_[0-9][0-9]( ?.*$)")
-  scpr_mask <- stringr::str_detect(label, "^scpr_[0-9][0-9]( ?.*$)")
-  scsb_mask <- stringr::str_detect(label, "^scsb_[0-9][0-9]( ?.*$)")
-  scsc_mask <- stringr::str_detect(label, "^scsc_[0-9][0-9]( ?.*$)")
-  scsg_mask <- stringr::str_detect(label, "^scsg_[0-9][0-9]( ?.*$)")
-  scsh_mask <- stringr::str_detect(label, "^scsh_[0-9][0-9]( ?.*$)")
-  scsj_mask <- stringr::str_detect(label, "^scsj_[0-9][0-9]( ?.*$)")
-  sctv_mask <- stringr::str_detect(label, "^sctv_[0-9][0-9]( ?.*$)")
-  scuv_mask <- stringr::str_detect(label, "^scuv_[0-9][0-9]( ?.*$)")
+  scah_mask <- stringr::str_detect(label, "^scah_[0-9]{1,2}( ?.*$)")
+  scan_mask <- stringr::str_detect(label, "^scan_[0-9]{1,2}( ?.*$)")
+  scap_mask <- stringr::str_detect(label, "^scap_[0-9]{1,2}( ?.*$)")
+  scbb_mask <- stringr::str_detect(label, "^scbb_[0-9]{1,2}( ?.*$)")
+  scem_mask <- stringr::str_detect(label, "^scem_[0-9]{1,2}( ?.*$)")
+  schs_mask <- stringr::str_detect(label, "^schs_[0-9]{1,2}( ?.*$)")
+  sciv_mask <- stringr::str_detect(label, "^sciv_[0-9]{1,2}( ?.*$)")
+  scnp_mask <- stringr::str_detect(label, "^scnp_[0-9]{1,2}( ?.*$)")
+  scpr_mask <- stringr::str_detect(label, "^scpr_[0-9]{1,2}( ?.*$)")
+  scsb_mask <- stringr::str_detect(label, "^scsb_[0-9]{1,2}( ?.*$)")
+  scsc_mask <- stringr::str_detect(label, "^scsc_[0-9]{1,2}( ?.*$)")
+  scsg_mask <- stringr::str_detect(label, "^scsg_[0-9]{1,2}( ?.*$)")
+  scsh_mask <- stringr::str_detect(label, "^scsh_[0-9]{1,2}( ?.*$)")
+  scsj_mask <- stringr::str_detect(label, "^scsj_[0-9]{1,2}( ?.*$)")
+  sctv_mask <- stringr::str_detect(label, "^sctv_[0-9]{1,2}( ?.*$)")
+  scuv_mask <- stringr::str_detect(label, "^scuv_[0-9]{1,2}( ?.*$)")
   
   pas$communityRegion[scah_mask] <- "SCAH"
   pas$communityRegion[scan_mask] <- "SCAN"

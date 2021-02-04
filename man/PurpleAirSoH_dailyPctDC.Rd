@@ -15,7 +15,12 @@ recorded by the \code{pm25_A}, \code{pm25_B}, \code{humidity}, and
 \code{temperature} channels. The data are flagged as DC signal when the 
 standard deviation of an hour of data from each channel equals zero.
 The number of hours with a DC signal are summed over the day and a daily DC 
-percentage for each channel is returned.
+percentage for each channel is returned. 
+
+This metric allows users to identify “sticky values”, or instances of a sensor 
+continuously logging the same value. A high percent DC value indicates the 
+likely occurrence of a “sticky value”, and a zero or low percent DC indicates 
+that the sensor is recording dynamic data.
 }
 \examples{
  

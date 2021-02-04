@@ -50,7 +50,9 @@
 <meta property="og:description" content="This function calculates a t-test between
 the pm25_A, pm25_B. A t-statistic and a p-value will be 
 returned for each day. All returned values are expected to hover near 0 for a 
-properly functioning sensor." />
+properly functioning sensor. The t-statistic and p-value serve to test whether 
+or not the pm25_A and pm25_B data are significantly different 
+based on a student’s t-test." />
 
 
 
@@ -82,7 +84,7 @@ properly functioning sensor." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.7</span>
       </span>
     </div>
 
@@ -172,7 +174,9 @@ properly functioning sensor." />
     <p>This function calculates a t-test between
 the <code>pm25_A</code>, <code>pm25_B</code>. A t-statistic and a p-value will be 
 returned for each day. All returned values are expected to hover near 0 for a 
-properly functioning sensor.</p>
+properly functioning sensor. The t-statistic and p-value serve to test whether 
+or not the <code>pm25_A</code> and <code>pm25_B</code> data are significantly different 
+based on a student’s t-test.</p>
     </div>
 
     <pre class="usage"><span class='fu'>PurpleAirSoH_dailyABtTest</span><span class='op'>(</span>pat <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>

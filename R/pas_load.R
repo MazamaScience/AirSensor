@@ -143,6 +143,11 @@ pas_load <- function(
       dataDir <- paste0(baseDir, '/pas/', yearstamp)
       dataUrl <- NULL
     }
+    
+    # Edge Case: pas files before 20190802 do not have 'archival' at the end
+    if ( as.numeric(datestamp) < 20190802 ) {
+      filename <- stringr::str_replace(filename, '_archival', '')
+    }
 
     # TODO:  Revisit better ways to ignore loadDataFile() messages
     
@@ -184,6 +189,16 @@ pas_load <- function(
     }
   }
   
+  # ----- Harmonize data -------------------------------------------------------
+  
+  # NOTE:  Some early 'pas' objects have a "Voc" column which is missing in later
+  # NOTE:  'pas' objects. This creates confusion when people attempt to merge
+  # NOTE:  current and archival 'pas' objects. We make an executive decision
+  # NOTE:  here to remove "Voc" as this is not the focus of this package.
+  
+  if ( "Voc" %in% names(pas) ) {
+    pas$Voc <- NULL
+  }
   
   # ----- Return ---------------------------------------------------------------
   

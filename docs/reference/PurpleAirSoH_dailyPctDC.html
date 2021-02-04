@@ -52,7 +52,11 @@ recorded by the pm25_A, pm25_B, humidity, and
 temperature channels. The data are flagged as DC signal when the 
 standard deviation of an hour of data from each channel equals zero.
 The number of hours with a DC signal are summed over the day and a daily DC 
-percentage for each channel is returned." />
+percentage for each channel is returned.
+This metric allows users to identify “sticky values”, or instances of a sensor 
+continuously logging the same value. A high percent DC value indicates the 
+likely occurrence of a “sticky value”, and a zero or low percent DC indicates 
+that the sensor is recording dynamic data." />
 
 
 
@@ -84,7 +88,7 @@ percentage for each channel is returned." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.7</span>
       </span>
     </div>
 
@@ -177,6 +181,10 @@ recorded by the <code>pm25_A</code>, <code>pm25_B</code>, <code>humidity</code>,
 standard deviation of an hour of data from each channel equals zero.
 The number of hours with a DC signal are summed over the day and a daily DC 
 percentage for each channel is returned.</p>
+<p>This metric allows users to identify “sticky values”, or instances of a sensor 
+continuously logging the same value. A high percent DC value indicates the 
+likely occurrence of a “sticky value”, and a zero or low percent DC indicates 
+that the sensor is recording dynamic data.</p>
     </div>
 
     <pre class="usage"><span class='fu'>PurpleAirSoH_dailyPctDC</span><span class='op'>(</span>pat <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>

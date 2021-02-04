@@ -7,8 +7,8 @@
 pat_dailySoH(
   pat = NULL,
   SoH_functions = c("PurpleAirSoH_dailyPctDC", "PurpleAirSoH_dailyPctReporting",
-    "PurpleAirSoH_dailyPctValid", "PurpleAirSoH_dailyOtherFit",
-    "PurpleAirSoH_dailyABFit", "PurpleAirSoH_dailyABtTest")
+    "PurpleAirSoH_dailyPctValid", "PurpleAirSoH_dailyMetFit", "PurpleAirSoH_dailyABFit",
+    "PurpleAirSoH_dailyABtTest")
 )
 }
 \arguments{

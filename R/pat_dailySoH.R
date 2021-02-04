@@ -30,7 +30,7 @@ pat_dailySoH <- function(
   SoH_functions = c("PurpleAirSoH_dailyPctDC", 
                     "PurpleAirSoH_dailyPctReporting", 
                     "PurpleAirSoH_dailyPctValid", 
-                    "PurpleAirSoH_dailyOtherFit", 
+                    "PurpleAirSoH_dailyMetFit", 
                     "PurpleAirSoH_dailyABFit",
                     "PurpleAirSoH_dailyABtTest")
 ) {
@@ -107,7 +107,7 @@ if ( FALSE ) {
   SoH_functions = c("PurpleAirSoH_dailyPctDC", 
                     "PurpleAirSoH_dailyPctReporting", 
                     "PurpleAirSoH_dailyPctValid", 
-                    "PurpleAirSoH_dailyOtherFit", 
+                    "PurpleAirSoH_dailyMetFit", 
                     "PurpleAirSoH_dailyABFit",
                     "PurpleAirSoH_dailyABtTest")
   

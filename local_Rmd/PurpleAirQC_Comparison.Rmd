@@ -69,7 +69,7 @@ PurpleAir daily state-of-health (`pat_dailySoH()`) applies six algorithms:
 - `PurpleAirSoH_dailyPctDC` 
 - `PurpleAirSoH_dailyPctReporting`
 - `PurpleAirSoH_dailyPctValid`
-- `PurpleAirSoH_dailyOtherFit`
+- `PurpleAirSoH_dailyMetFit`
 - `PurpleAirSoH_dailyABFit`
 - `PurpleAirSoH_dailyABtTest`
 
@@ -81,7 +81,7 @@ pat_dailySoHPlot(pat)
 
 ## Review QC Algorithms
 
-See `?pat_dailySoH`, `?PurpleAirSoH_dailyPctDC`, `?PurpleAirSoH_dailyPctReporting`, `?PurpleAirSoH_dailyPctValid`, `?PurpleAirSoH_dailyPctValid`, `?PurpleAirSoH_dailyOtherFit`, `?PurpleAirSoH_dailyABFit`, and `?PurpleAirSoH_dailyABtTest` for more details. 
+See `?pat_dailySoH`, `?PurpleAirSoH_dailyPctDC`, `?PurpleAirSoH_dailyPctReporting`, `?PurpleAirSoH_dailyPctValid`, `?PurpleAirSoH_dailyPctValid`, `?PurpleAirSoH_dailyMetFit`, `?PurpleAirSoH_dailyABFit`, and `?PurpleAirSoH_dailyABtTest` for more details. 
 
 ### PurpleAir Quality-Control 00
 

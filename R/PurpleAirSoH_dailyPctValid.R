@@ -9,8 +9,9 @@
 #' @description The number of valid (\emph{i.e.}, not NA or out-of-spec) sensor 
 #' measurements are summed over the course of a calendar day, then divided by the 
 #' total number of measurements the sensor actually recorded during that day 
-#' (including NA and out-of-spec values) to return a percentage of the total
-#' recorded measurements that are considered plausible.
+#' (including NA and out-of-spec values) to return a percentage of the total 
+#' recorded measurements that are considered plausible. This metric utilizes the 
+#' same bounds as the \code{pat_qc()} function to identify out-of-spec values.
 #' 
 #' @examples
 #' library(AirSensor)

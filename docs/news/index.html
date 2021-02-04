@@ -78,7 +78,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.7</span>
       </span>
     </div>
 
@@ -163,6 +163,18 @@
       <small>Source: <a href='https://github.com/MazamaScience/AirSensor/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="airsensor-107" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.7">
+<a href="#airsensor-107" class="anchor"></a>AirSensor 1.0.7<small> Unreleased </small>
+</h1>
+<ul>
+<li>Minor documentation updates to clarify “state-of-health” calculations.</li>
+<li>Improved pattern matching for South Coast communities in <code><a href="../reference/pas_addCommunityRegion.html">pas_addCommunityRegion()</a></code>.</li>
+<li>Remove “Voc” column during <code><a href="../reference/pas_load.html">pas_load()</a></code> so that current and archival ‘pas’ objects can be easily merged. (Some early ‘pas’ objects contained some “Voc” data but this has never been a focus of the <strong>AirSensor</strong> package. Later ‘pas’ objects do not contain the “Voc” parameter.)</li>
+<li>
+<code><a href="../reference/pas_load.html">pas_load()</a></code> now properly handles loading of archival ‘pas’ objects prior to 2019-08-02.</li>
+</ul>
+</div>
     <div id="airsensor-106" class="section level1">
 <h1 class="page-header" data-toc-text="1.0.6">
 <a href="#airsensor-106" class="anchor"></a>AirSensor 1.0.6<small> Unreleased </small>
@@ -819,7 +831,7 @@
 </h1>
 <p>Refactored <code>PurpleAirSoH_daily~()</code> functions to use <em>dplyr</em> resulting in code that runs faster and is easier to understand.</p>
 <ul>
-<li>Changed <code>~SoH_dailyCorrelation()</code> to <code>~SoH_dailyOtherFit()</code>.</li>
+<li>Changed <code>~SoH_dailyCorrelation()</code> to <code>~SoH_dailyMetFit()</code>.</li>
 <li>Changed <code><a href="../reference/timeseriesTbl_multiPlot.html">timeseriesTbl_multiPlot()</a></code> argument <code>parameterPatter</code> to <code>pattern</code>.</li>
 </ul>
 </div>
