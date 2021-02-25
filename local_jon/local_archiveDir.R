@@ -1,6 +1,5 @@
 # Demonstration of a local archive for the Methow Valley for Sep-Nov, 2020
 
-
 library(AirSensor)
 
 # ----- Get the PAS and then unset 'archiveBaseUrl' ----------------------------
@@ -16,12 +15,12 @@ getArchiveBaseUrl()
 
 # ----- Create the "well known structure" under 'archiveBaseDir' ---------------
 
-# OK. Now we need to create our on `baseDir`
+# OK. Now we need to create our own `baseDir`
 baseDir <- "~/Data/my_archive"
 dir.create(baseaDir, recursive = TRUE)
 setArchiveBaseDir(baseDir)
 
-# Create the "well known structure" four the files we need
+# Create the "well known structure" for the files we need
 # PAS
 dir.create(file.path(baseDir, "/pas/2021/02"), recursive = TRUE) # for latest PAS
 # PAT
@@ -44,9 +43,8 @@ save(pas, file = file.path(baseDir, "pas/2021/pas_20210225.rda"))
 
 # ----- Populate the local archive with a PAT object ---------------------------                          
 
-id <- "ab5dca99422f2c0d_13669"
+id <- "ab5dca99422f2c0d_13669"     # "Balky Hill" sensor
 
-# "Balky Hill" sensor
 pat <- pat_createNew(
   id = id, 
   pas = pas, 
@@ -69,7 +67,7 @@ rm(list = ls())
 getArchiveBaseDir()
 getArchiveBaseUrl()
 
-pas <- pas_load()
+pas <- pas_load(20210225)
 
 BalkyHill <- pat_load(
   id = "ab5dca99422f2c0d_13669", 
