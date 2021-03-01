@@ -1,0 +1,210 @@
+---
+title: "Tutorial: Creating A Local Archive For PurpleAir Sensors"
+author: "Mazama Science"
+date: "2021-02-25"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Data Model}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, echo=FALSE}
+knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
+```
+
+This article illustrates how to create a local archive of pre-generated data 
+files for PurpleAir sensors, using the [AirSensors](https://mazamascience.github.io/AirSensor/index.html) package. 
+For the purpuse of this tutorial, we are going to create a local archive
+for the Methow Valley's sensors by loading pre-generated 
+PurpleAir synoptic and time searies files from an [internal archive base url](http://data.mazamascience.com/PurpleAir/v1/) mantained by the AirSensor 
+package. This is the fastest way for obtaning sensors data but, alternatively, 
+you could download the data directly from the PurpleAir website. 
+More info on this alternative method is available in the [PurpleAir Synoptic Data](https://mazamascience.github.io/AirSensor/articles/articles/pas_introduction.html) and 
+[PurpleAir Time Series Data](https://mazamascience.github.io/AirSensor/articles/articles/pat_introduction.html) articles. 
+
+
+## Section 1: loading pre-generated files and create a *flat* archive 
+
+**Step 1** Load the `AirSensor` and `dplyr` libraries. You may need to install the 
+necessary packages first (see [AirSensor R Packeage](https://mazamascience.github.io/AirSensor/index.html) for more details).
+
+```{r, libraries, warning = FALSE, message=FALSE}
+library(AirSensor)
+library(dplyr)
+```
+
+**Step 2** Set the archive base directory to NULL. This step is necessary only if you previously set a base directory, since it would take precedence over the base 
+url we are going to set next.
+
+```{r, setArchiveBaseDir, warning = FALSE, message=FALSE}
+setArchiveBaseDir(NULL)
+```
+
+**Step 3** Set the archive base url to http://data.mazamascience.com/PurpleAir/v1/. 
+```{r, setArchiveBaseUrl, warning = FALSE, message=FALSE}
+setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1/")
+```
+
+**Step 4** Create a `pas` (PurpleAir Synoptic) object and create a list containing
+the Methow Valley'sensors data. The `pas` object contains all the sensor's data and metadata, 
+including latitude and longitude which allow us to easily visualize the 
+sensor on a map. You can then click the sensors represented by colored dots 
+on the map to quickly see the most important metadata and data.
+```{r, pas object and map, warning = FALSE, message=FALSE, results='hide'}
+mvcaa <-
+  pas_load() %>% # Load the most recent archived 'pas'(PurpleAir Synoptic)
+  pas_filter(stringr::str_detect(label, "MV Clean Air Ambassador"))
+```
+```{r, dynamic map}
+pas_leaflet(mvcaa) # Creates a dynamic map of the sensors.
+```
+<br>
+**Step 5** Create a list of unique time series identifiers or `DeviceDeploymentIDs`.
+```{r}
+ID =  pas_getDeviceDeploymentIDs(pas = mvcaa)
+```
+
+If you only want to obtain a list of unique time series identifiers, skip Step 4 
+and follow the example below.
+
+```{r, unique time series identifiers}
+ID <- pas_load() %>%
+  pas_getDeviceDeploymentIDs("MV Clean Air Ambassador")
+```
+<br>
+Now that we have our list of unique time series identifiers we can load the PurpuleAir time series data (heareafter `pat`) to build our local archive. 
+Here we have two options: 1) build a *flat* archive 
+where we simply store files; 2) build an archive using the *well-known* structure
+(aka internal archive base url structure), which will allow us to use other
+AirSensors functions for further off-line analysis, including:
+
+* `pas_load()`
+
+* `pat_load()`
+
+* `pat_loadLatest()`
+
+* `pat_loadMonth()`
+
+* `sensor_load()`
+
+* `sensor_loadLatest()`
+
+* `sensor_loadMonth()`
+
+If you choose option 1), got to Step 6; if you choose option 2) jump to the next section.
+
+**Step 6** Load and save `pas` and `pat` files in a *flat* archive. 
+```{r, load pat data for September 2020, eval=FALSE}
+
+my_archive <- "type/here/your/directory"
+
+# Load and save time series files for September 2020
+for (id in ID){
+  filename = paste0(my_archive, "/", id, ".rda")
+  pat = pat_createNew(id = id,
+                      pas = mvcaa,
+                      startdate = 20200901, 
+                      enddate = 20200930)
+  save(pat, file = filename)
+} 
+
+# save the pas object previously created in your flat archive
+save(mvcaa, file = paste0(my_archive, "/mvcaa.rda"))
+
+# load files from your flat archive (example) 
+mvcaa <- get(load(paste0(my_archive,"/mvcaa.rda")))
+
+```
+
+
+
+## Section 2: loading pre-generated files and saving them using the a *well-known* archive structure. 
+
+At this point you have completed Step 1 through 5 in Section 1, thus you have a
+the pas object `mvcaa` and the `ID` object in your R environemnt.
+
+**Step 1** Create a local archive using the *well-known* archive structure:
+
+* For `pas` files, the directory must have the following structure: ~pas/year.
+
+* For `pat` files, the directory must have the following structure: ~pat/year/month.
+
+* It is also critical to name the files as follow: pas_YYYYMMDD.rda or pat_id_YYYYMM.rda. 
+
+* Examples: ~pas/2021/pas_20210225.rda or 
+~pat/2020/09/pat_b56c0ef677852913_81495__202009.rda for `pas` or `pat` files respectively. 
+```{r, build well-known archive structure, eval=FALSE}
+my_archive <- "type/here/your/directory"
+
+# pas directory
+pas_2021 <- "pas/2021"
+dir.create(file.path(my_archive, pas_2021), recursive = TRUE)
+
+# pat directory
+pat_202009 <- "pat/2020/09"
+dir.create(file.path(my_archive, pat_202009), recursive = TRUE)
+
+# save the new directory as an object
+pat_202009 = paste0(my_archive,"/", pat_202009)
+```
+
+**Step 2** Save the `pas` object previously created (Step 4, Section 1) as an 
+.rda file in your "well known" archive structure. *NOTE*: the date in the file name corresponds to the day you loaded 
+the data. I did it on February 25, 2021.
+```{r, save pas file - well known archive, eval=FALSE}
+save(mvcaa, file = paste0(my_archive, "/pas/2021/pas_20210225.rda"))
+```
+
+**Step 3** Load and save the `pat` objects as .rda files in your "well known" archive structure. You'll need the `ID` object previously created (Step 5, Section1). If one or more sensors do not have data available for the time range specified in the function, you'll get `Error in pat_filterDatetime(., startdate = dateRange[1], enddate = dateRange[2],  :Parameter 'pat' has no data`. This error 
+does not tell you for which sensor the data is missing, and we are working on
+improving this error message such that in the near future it will include a 
+unique sensor ID. 
+
+```{r, load pat data for September 2020 - well known archive, eval=FALSE}
+
+for (id in ID){
+  filename = paste0(pat_202009, "/", "pat_", id, "_202009", ".rda")
+  pat = pat_createNew(id = id,
+                      pas = mvcaa,
+                      startdate = 20200901,
+                      enddate = 20200930)
+  save(pat, file = filename)
+}
+```
+
+**Step 4** Set your archive base directory and test if you can load the data 
+from your archive using the AirSensor functions. *NOTE*: to load `pat` data it 
+is important to *always* include the `startdate` and `enddate` arguments. 
+For consitency, I suggest you to include the `pas` object as well.
+```{r, load data with AirSensor functions, eval=FALSE}
+
+# Set your archive base directory
+setArchiveBaseDir(my_archive)
+
+# Check your archive base directory is correct
+getArchiveBaseDir()
+
+# load pas file 
+pas <- pas_load(20210225)
+
+# load one of the pat files. 
+pat <- pat_load(id = "ab5dca99422f2c0d_13669",
+         pas = pas,
+         startdate = 20200901,
+         enddate = 20200930, 
+         timezone = "America/Los_Angeles")
+```
+
+**Step 5** Now that you have your well-known archive all set, have fun working off-line by using the AirSensor functions. In the example below, I'm plotting `pat` data using the `pat_multiplot()` and `pat_scatterPlotMatrix()`.
+
+```{r, pat multiplot, warning=FALSE, message=FALSE, eval = FALSE}
+pat_multiplot(pat)
+```
+
+```{r, pat scatterPlotMatrix, warning=FALSE, message=FALSE, eval = FALSE}
+pat_scatterPlotMatrix(pat)
+```
+
+
