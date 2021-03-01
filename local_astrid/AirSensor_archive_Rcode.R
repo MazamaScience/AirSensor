@@ -8,6 +8,16 @@ devtools::install_github("MazamaScience/AirSensor")
 library(MazamaCoreUtils)
 library(AirSensor)
 library(dplyr)
+
+#create new working directory 
+getwd()
+wd <- "C:/Users/astri/Mirror/Mazamascience/Projects/AirSensor"
+my_archive <- "Data/my_archive"
+dir.create(file.path(wd, my_archive), recursive = TRUE)
+my_archive <- paste0(wd,"/", my_archive)
+setwd(my_archive)
+getwd()
+
 rm(list = ls())
 pas_ex <- AirSensor::example_pas
 id <- pas_getDeviceDeploymentIDs(pas_ex, "^Seattle$")
