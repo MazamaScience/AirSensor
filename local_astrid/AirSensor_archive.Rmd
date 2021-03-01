@@ -12,9 +12,6 @@ vignette: >
 ```{r, setup, include=FALSE}
 knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
 ```
-```{r, include=FALSE}
-#knitr::opts_knit$set(root.dir = 'C:/Users/astri/Mirror/Mazamascience/Projects/AirSensor/Data/my_archive')
-```
 
 This article illustrates how to create a local archive of pre-generated data 
 files for PurpleAir sensors, in order to use the **[AirSensors](https://mazamascience.github.io/AirSensor/index.html)** package off-line. 
