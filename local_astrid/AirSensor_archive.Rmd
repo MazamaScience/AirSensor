@@ -14,7 +14,7 @@ knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
 ```
 
 This article illustrates how to create a local archive of pre-generated data 
-files for PurpleAir sensors, in order to use the **[AirSensors](https://mazamascience.github.io/AirSensor/index.html)** package off-line. 
+files for PurpleAir sensors, in order to use the **[AirSensor](https://mazamascience.github.io/AirSensor/index.html)** package off-line. 
 For the purpuse of this tutorial, we are going to create a local archive
 for the Methow Valley's sensors by loading pre-generated 
 PurpleAir synoptic and time searies files from an [internal archive base url](http://data.mazamascience.com/PurpleAir/v1/) mantained by the AirSensor 
@@ -78,7 +78,7 @@ Now that we have our list of unique time series identifiers, we can load the Pur
 Here we have two options: 1) build a *flat* archive 
 where we simply store files; 2) build an archive using the *well-known* structure
 (aka archive base url structure). The latter will allow you to use 
-AirSensors `~load` functions for further off-line analysis, including:
+AirSensor `~load` functions for further off-line analysis, including:
 
 * `pas_load()`
 
