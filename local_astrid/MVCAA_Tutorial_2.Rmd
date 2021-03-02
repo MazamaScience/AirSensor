@@ -1,0 +1,77 @@
+---
+title: "MVCAA Tutorial 2: Exploring PAT Data"
+author: "Mazama Science"
+date: "2021-03-02"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{MVCAA Tutorial 2: Exploring PAT Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
+```
+
+## Introduction
+
+This tutorial demonstrates basic exploration of previously created 'pat' 
+timeseries data. In order to run the code in this tutoral you must have 
+followed the instructions in Tutorial 1 and created a directory with 'pas' 
+and 'pat' data files for the Methow Valley. Target
+audiences include grad students, researchers and any member of the public
+concerned about air quality and comfortable working with R and RStudio.
+
+Tutorials in this series include:
+
+* [MVCAA Tutorial 1: Creating PAT Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_1.html)
+* [MVCAA Tutorial 2: Examining PAT Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_2.html)
+* [MVCAA Tutorial 3: Creating Sensor Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_3.html)
+* [MVCAA Tutorial 4: Exploring Sensor Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_4.html)
+* [MVCAA Tutorial 5: Building a Local Archive](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_5.html)
+* [MVCAA Tutorial 6: Using a Local Archive](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_6.html)
+* [MVCAA Tutorial 7: Methow Vallely Smoke](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_7.html)
+
+## Goal
+
+Our goal in this tutorial is to explore a variety of `pat_~()` functions available
+in the **AirSensor** package and to explain their most important arguments and 
+the interpretation of output graphics.
+
+## pat_dygraph
+
+TODO
+
+## pat_multiPlot()
+
+TODO
+
+## pat_scatterPlotMatrix()
+
+TODO
+
+## pat_outliers()
+
+TODO
+
+## pat_internalFit()
+
+TODO
+
+## pat_dailySoHPlot()
+
+TODO
+
+## pat_monitorComparison()
+
+TODO
+
+## pat_externalFit()
+
+TODO
+
+
+
+----
+
+_Best of luck assessing air quality in your community!_
