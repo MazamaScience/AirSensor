@@ -25,8 +25,8 @@ Tutorials in this series include:
 
 * [MVCAA Tutorial 1: Creating PAT Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_1.html)
 * [MVCAA Tutorial 2: Examining PAT Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_2.html)
-* [MVCAA Tutorial 3: Creating Sensor Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_3.html)
-* [MVCAA Tutorial 4: Exploring Sensor Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_4.html)
+* [MVCAA Tutorial 3: Creating Airsensor Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_3.html)
+* [MVCAA Tutorial 4: Exploring Airsensor Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_4.html)
 * [MVCAA Tutorial 5: Building a Local Archive](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_5.html)
 * [MVCAA Tutorial 6: Using a Local Archive](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_6.html)
 * [MVCAA Tutorial 7: Methow Vallely Smoke](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_7.html)
