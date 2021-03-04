@@ -11,6 +11,7 @@ vignette: >
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
+knitr::opts_knit$set(root.dir = "C:/Users/astri/Mirror/Mazamascience/Projects/AirSensor")
 ```
 
 ## Introduction
@@ -113,10 +114,11 @@ small collections of data for other communities and other dates.
 # Methow Valley local data archive
 
 # ----- Setup ------------------------------------------------------------------
-
 # Create an archive directory underneath ~/Data
-archiveDir <- "~/Data/MVCAA"
-dir.create(archiveDir, recursive = TRUE)
+wd <- getwd()
+archiveDir <- "Data/MVCAA"
+dir.create(file.path(wd,archiveDir), recursive = TRUE)
+archiveDir <- paste0(wd, "/", archiveDir)
 
 # AirSensor package
 library(AirSensor)
@@ -139,7 +141,7 @@ mvcaa <-
 pas_leaflet(mvcaa)
 
 # Save it in our archive directory
-save(mvcaa, file = file.path(archiveDir, "mvcaa.rda"))
+save(mvcaa, file = paste0(archiveDir, "/mvcaa.rda"))
 
 # ----- Create PAT objects -----------------------------------------------------
 
@@ -155,11 +157,54 @@ timezone <- "America/Los_Angeles"
 patList <- list()
 
 # Initialize counters
-idCount <- length(mvcaa_ids)
+idCount<- length(mvcaa_ids_test)
 count <- 0
 successCount <- 0
 
 # Loop over ids and get data (might take a while). Start with just a few to test.
+mvcaa_ids_test <- c("ab5dca99422f2c0d_13669", "f6c44edd41c941c7_10182")
+idCount<- length(mvcaa_ids_test)
+
+for (id in mvcaa_ids_test[1:idCount]) {
+  
+  count <- count + 1
+  print(sprintf("Working on %s (%d/%d) ...", id, count, idCount))
+  
+  # Use a try-block in case you get "no data" errors
+  result <- try({
+    
+    # It's nice to copy-paste the full function signature so you can see all possible arguments
+    patList[[id]] <- pat_createNew(
+      id = id,
+      label = NULL,        # not needed if you have the id
+      pas = mvcaa,
+      startdate = startdate,
+      enddate = enddate,
+      timezone = timezone,
+      baseUrl = "https://api.thingspeak.com/channels/",
+      verbose = FALSE
+    )
+    successCount <- successCount + 1
+    
+  }, silent = FALSE)
+  
+  if ( "try-error" %in% class(result) ) {
+    print(geterrmessage()())
+  }
+  
+}
+
+??geterrormessage() #try geterrmessage()
+
+# How many did we get?
+print(sprintf("Successfully created %d/%d pat objects.", successCount, idCount))
+
+# Initialize counters
+idCount <- length(mvcaa_ids)
+count <- 0 
+successCount <- 0
+
+# Loop over all ids and get data (might take a while).
 for (id in mvcaa_ids[1:idCount]) {
   
   count <- count + 1
@@ -184,13 +229,19 @@ for (id in mvcaa_ids[1:idCount]) {
   }, silent = FALSE)
   
   if ( "try-error" %in% class(result) ) {
-    print(geterrormessage())
+    print(geterrmessage())
   }
   
 }
 
+
 # How many did we get?
 print(sprintf("Successfully created %d/%d pat objects.", successCount, idCount))
+
+# explore patList: each sensor has metadata and data that can be explored simply by saving them as objects. Have a look to the tables in the R environment. 
+
+meta <- patList$ab5dca99422f2c0d_13669$meta
+data <- patList$ab5dca99422f2c0d_13669$data
 
 # Save it in our archive directory
 save(patList, file = file.path(archiveDir, "patList.rda"))
@@ -223,11 +274,21 @@ rm(list = ls())
 library(AirSensor)
 
 # Examine archive directory
-list.files("~/Data/mvcaa")
+list.files("~/Data/mvcaa") #character(0), this doesn't work. Can't access directory. Can't use path, only folder.
+list.files("~/Data") # this works: [1] "MVCAA"  
 
 # Load files
-mvcaa <- get(load("~/Data/mvcaa/mvcaa.rda"))
-patList <- get(load("~/Data/mvcaa/patList.rda"))
+mvcaa <- get(load("~/Data/mvcaa/mvcaa.rda")) #this doesn't work, need to reset archiveDir
+archiveDir <- "Data/MVCAA"
+archiveDir <- paste0(wd, "/", archiveDir)
+
+# Examine archive directory again
+list.files(archiveDir) #"mvcaa.rda"   "patList.rda". OK!
+
+# Load files
+mvcaa <- get(load(paste0(archiveDir,"/mvcaa.rda")))
+patList <- get(load("~/Data/mvcaa/patList.rda")) #this doesn't work
+patList <- get(load(paste0(archiveDir,"/patList.rda"))) #OK!
 
 # Interactive map
 pas_leaflet(mvcaa)
