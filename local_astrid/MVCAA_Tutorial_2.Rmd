@@ -38,17 +38,53 @@ Our goal in this tutorial is to explore a variety of `pat_~()` functions availab
 in the **AirSensor** package and to explain their most important arguments and 
 the interpretation of output graphics.
 
+## How to interpret the graphics
+PurpleAir (PA) sensors are unique in that they have 2 separate optical particle 
+detectors — one labeled A and one labeled. B. All of the plotting functions 
+except `pat_monitorComparison()` and `pat_externalFit()` only use data from a 
+single PA sensor — with A and B data channels. When measurements from the A and 
+B channels are largely in agreement then the sensor is working properly. When 
+they differ, there is a problem. Moreover, when a sensor is properly 
+functioning, the only correlations will be a strong positive one between 
+the A and B channels (pm25_A:pm25_B) and a strong negative one between 
+temperature and humidity.
+
+## Refresh from MVCAA Tutorial 1: Creating PAT Data
+```{r}
+# Load files
+patList <- get(load(paste0(archiveDir,"/patList.rda")))
+
+# Print site names and associated ids
+sapply(patList, function(x) { return(x$meta$label) }) 
+
+# Pull out each sensor as a separate 'pat' object
+# Jon, I'm pretty sure there is a nice loop to do this ... ****************************
+# ... Didn't have time to explore how to do it 
+
+Balky_Hill <- patList[["ab5dca99422f2c0d_13669"]]
+Bush_School <- patList[["49215ad49d1a87e3_10188"]]
+Liberty_School <- patList[["db5d6b3b79f5830e_39237"]]
+McFarland_Creek <- patList[["f592adb5067ad9d3_13675"]]
+Pine_Forest <- patList[["0cbfeb2ce4c1553c_13661"]]
+Willowbrook_Farm <- patList[["f96deab8c29aa42b_10134"]]
+Benson_Creek <- patList[["f6c44edd41c941c7_10182"]]
+Gunn_Ranch <- patList[["f736fd3fb21fc4da_13667"]]
+Lower_Studhorse <- patList[["f736fd3fb21fc4da_13667"]]
+Methow_Estates <- patList[["4a47b9252e16e558_15077"]] 
+Beaver_Creek <- patList[["2e3b5ceea86a885b_10168"]]
+Little_Cougar <- patList[["96b108298883ca47_64441"]]
+```
+
+
 ## [pat_dygraph](https://mazamascience.github.io/AirSensor/reference/pat_dygraph.html)
 This function creates interactive graphs that will be displayed in RStudio's 'Viewer' tab.
-```{r}
-patList <- get(load(paste0(archiveDir,"/patList.rda")))
-Balky_Hill <- patList[["ab5dca99422f2c0d_13669"]]
-Balky_Hill_label <- Balky_Hill$meta$label #"MV Clean Air Ambassador @ Balky Hill"
 
-# note: consider creating a loop to create pat objects to fill in the pat argument. 
+Lets explore a couple of sensors. 
 
+### Balky_Hill
+```{r, Balky_Hill}
 pat_dygraph(
-  pat = Balky_Hill, #from tutorial 1
+  pat = Balky_Hill, 
   parameter = "pm25",
   sampleSize = 1000,
   title = NULL,
@@ -64,9 +100,154 @@ pat_dygraph(
 ```
 
 
-TODO
+### Willowbrook_Farm
+```{r, Willowbrook_Farm}
+pat_dygraph(
+  pat = Willowbrook_Farm,       
+  parameter = "pm25",
+  sampleSize = 1000,
+  title = NULL,
+  xlab = "September 2020",
+  ylab = NULL,
+  tlim = NULL,
+  rollPeriod = 6,
+  showLegend = TRUE,
+  colors = NULL,
+  timezone = NULL)
+```
 
-## pat_multiPlot()
+Both graphs show missing data for one of the two channels on certain days.
+For Balky Hill, measurements from the A and B channels are largely in agreement 
+while for Willowbrook Farm, the channels are largely in disagreement. This could 
+indicate a malfunctioning of the sensor, and it would be interesting to investigate
+if this is an isolated event by exploring a larger time range. 
+
+
+WIP: 
+## pat_multiPlot() 
+*****************Jon, I can't link the function because the doc online doesn't work (error 404)***************
+
+This function allow us to quickly display our raw `pat` data and desired plot 
+type. Available `plottype` options include:
+
+* "all" – pm25_A, pm25_B, temperature, humidity
+
+* "pm25_a" – PM2.5 from channel A only
+
+* "pm25_b" – PM2.5 from channel B only
+
+* "pm25" – PM2.5 from channels A and B in separate plots
+
+* "pm25_over" – PM2.5 from channels A and B in the same plot
+
+* "aux" – auxiliary data (temperature, humidity)
+
+For the purpuse of this turorial we'll use "all", "pm25_over", and "aux".
+```{r, pat_multiPlot - loop, eval=FALSE}
+# create a test list of sensors to loop through 
+test_list <- list(Balky_Hill, Bush_School, Liberty_School)
+
+#tried loop but doesn't work
+for (pat in test_list){
+  pat_multiPlot(
+    pat = pat,
+    plottype = "all",
+    sampleSize = 1000,
+    columns = NULL,
+    ylim = NULL,
+    a_size = 1,
+    a_shape = 15,
+    a_color = rgb(0.9, 0.25, 0.2),
+    b_size = 1,
+    b_shape = 15,
+    b_color = rgb(0.2, 0.25, 0.9),
+    t_size = 1,
+    t_shape = 15,
+    t_color = "black",
+    h_size = 1,
+    h_shape = 15,
+    h_color = "black",
+    alpha = 0.5,
+    timezone = NULL
+  )
+}
+
+```
+
+```{r, Balky_Hill "all"}
+  pat_multiPlot(
+    pat = Balky_Hill,
+    plottype = "all",
+    sampleSize = 1000,
+    columns = NULL,
+    ylim = NULL,
+    a_size = 1,
+    a_shape = 15,
+    a_color = rgb(0.9, 0.25, 0.2),
+    b_size = 1,
+    b_shape = 15,
+    b_color = rgb(0.2, 0.25, 0.9),
+    t_size = 1,
+    t_shape = 15,
+    t_color = "black",
+    h_size = 1,
+    h_shape = 15,
+    h_color = "black",
+    alpha = 0.5,
+    timezone = NULL
+  )
+
+```
+
+```{r, Balky_Hill "pm25_over"}
+  pat_multiPlot(
+    pat = Balky_Hill,
+    plottype = "pm25_over",
+    sampleSize = 1000,
+    columns = NULL,
+    ylim = NULL,
+    a_size = 1,
+    a_shape = 15,
+    a_color = rgb(0.9, 0.25, 0.2),
+    b_size = 1,
+    b_shape = 15,
+    b_color = rgb(0.2, 0.25, 0.9),
+    t_size = 1,
+    t_shape = 15,
+    t_color = "black",
+    h_size = 1,
+    h_shape = 15,
+    h_color = "black",
+    alpha = 0.5,
+    timezone = NULL
+  )
+
+```
+
+```{r, Balky_Hill "aux"}
+  pat_multiPlot(
+    pat = Balky_Hill,
+    plottype = "aux",
+    sampleSize = 1000,
+    columns = NULL,
+    ylim = NULL,
+    a_size = 1,
+    a_shape = 15,
+    a_color = rgb(0.9, 0.25, 0.2),
+    b_size = 1,
+    b_shape = 15,
+    b_color = rgb(0.2, 0.25, 0.9),
+    t_size = 1,
+    t_shape = 15,
+    t_color = "black",
+    h_size = 1,
+    h_shape = 15,
+    h_color = "black",
+    alpha = 0.5,
+    timezone = NULL
+  )
+
+```
 
 TODO
 
