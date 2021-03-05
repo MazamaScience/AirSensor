@@ -40,14 +40,13 @@ the interpretation of output graphics.
 
 ## How to interpret the graphics
 PurpleAir (PA) sensors are unique in that they have 2 separate optical particle 
-detectors — one labeled A and one labeled. B. All of the plotting functions 
-except `pat_monitorComparison()` and `pat_externalFit()` only use data from a 
-single PA sensor — with A and B data channels. When measurements from the A and 
-B channels are largely in agreement then the sensor is working properly. When 
-they differ, there is a problem. Moreover, when a sensor is properly 
-functioning, the only correlations will be a strong positive one between 
-the A and B channels (pm25_A:pm25_B) and a strong negative one between 
-temperature and humidity.
+detectors (hereafter "channels") — one labeled A and one labeled B.
+All of the plotting functions, except `pat_monitorComparison()` and 
+`pat_externalFit()`, only use data from a *single* PA sensor — with A and B data channels. When measurements from the A and B channels are largely in agreement 
+then the sensor is working properly. When they substantially differ, there is 
+a problem. Moreover, when a sensor is properly functioning, correlation between 
+the A and B channel (pm25_A:pm25_B) will be strongly positive, while correlation
+between temperature and humidity will be strongly negative.
 
 ## Refresh from MVCAA Tutorial 1: Creating PAT Data
 ```{r}
@@ -198,7 +197,10 @@ for (pat in test_list){
   )
 
 ```
+The "all" plot type offers a nice overview of all four variables. We can 
+already start seeing an agreement between channel A and B data and an inverse relationship between humidity and temperature measurments. 
 
+Let's give a closer look to the channels using the "pm25_over" plot type. 
 ```{r, Balky_Hill "pm25_over"}
   pat_multiPlot(
     pat = Balky_Hill,
@@ -223,12 +225,14 @@ for (pat in test_list){
   )
 
 ```
+Channels A and B show strong agreement, and we can strengthen our assumption by 
+increasing the sample size. Let's try `sampleSize = 5000`. 
 
-```{r, Balky_Hill "aux"}
+```{r, Balky_Hill "pm25_over",  sampleSize = 5000}
   pat_multiPlot(
     pat = Balky_Hill,
-    plottype = "aux",
-    sampleSize = 1000,
+    plottype = "pm25_over",
+    sampleSize = 5000,
     columns = NULL,
     ylim = NULL,
     a_size = 1,
@@ -248,12 +252,75 @@ for (pat in test_list){
   )
 
 ```
+The trend looks consistent, channels A and B are largely in agreement, and we 
+can assume that the Bulky Hill sensor is working correctly. 
 
-TODO
+Let's know more closely compare temperature and humidity by using the "aux" plot 
+type.
+```{r, Balky_Hill "aux"}
+  pat_multiPlot(
+    pat = Balky_Hill,
+    plottype = "aux",
+    sampleSize = 5000,
+    columns = NULL,
+    ylim = NULL,
+    a_size = 1,
+    a_shape = 15,
+    a_color = rgb(0.9, 0.25, 0.2),
+    b_size = 1,
+    b_shape = 15,
+    b_color = rgb(0.2, 0.25, 0.9),
+    t_size = 1,
+    t_shape = 15,
+    t_color = "black",
+    h_size = 1,
+    h_shape = 15,
+    h_color = "black",
+    alpha = 0.5,
+    timezone = NULL
+  )
 
-## pat_scatterPlotMatrix()
+```
+Fron the graph, we can start inferring a negative correlation between the two 
+variables, which supports the assumption that the sensor is functioning correctly. 
 
-TODO
+## [pat_scatterPlotMatrix()](https://mazamascience.github.io/AirSensor/reference/pat_scatterPlotMatrix.html)
+
+This function returns a matrix of scatterplots and correlation values for all  
+variables in the `pat` object. A great way to validate or eject our previous 
+assumptions. 
+
+The list of available parameters include:
+
+* datetime -- measurement time
+
+* pm25_A -- A channel PM2.5 (ug/m3)
+
+* pm25_B -- B channel PM2.5 (ug/m3)
+
+* temperature -- temperature (F)
+
+* humidity -- humidity (%)
+
+Let's compare all of them for the Balky Hill sensor.  
+
+```{r, pat_scatterPlotMatrix}
+pat_scatterPlotMatrix(
+  pat = Balky_Hill,
+  parameters = c("datetime", "pm25_A", "pm25_B", "temperature", "humidity"),
+  sampleSize = 5000,
+  sampleFraction = NULL,
+  size = 0.5,
+  shape = 15,
+  color = "black",
+  alpha = 0.25
+)
+```
+
+As we can see from the matrix, we have a perfect positive correlation of 1 between 
+channels A and B (pm25_A:pm25_B) and a quite strong negative correlation of -0.862 
+between temperature and humidity, using a sample size of 5000 measurments 
+for each variable.  
 
 ## pat_outliers()
 
