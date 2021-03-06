@@ -39,7 +39,7 @@ in the **AirSensor** package and to explain their most important arguments and
 the interpretation of output graphics.
 
 ## How to interpret the graphics
-PurpleAir (PA) sensors are unique in that they have 2 separate optical particle 
+PurpleAir (PA) sensors are unique in that they have two separate optical particle 
 detectors (hereafter "channels") — one labeled A and one labeled B.
 All of the plotting functions, except `pat_monitorComparison()` and 
 `pat_externalFit()`, only use data from a *single* PA sensor — with A and B data channels. When measurements from the A and B channels are largely in agreement 
@@ -48,8 +48,8 @@ a problem. Moreover, when a sensor is properly functioning, correlation between
 the A and B channel (pm25_A:pm25_B) will be strongly positive, while correlation
 between temperature and humidity will be strongly negative.
 
-## Refresh from MVCAA Tutorial 1: Creating PAT Data
-```{r}
+## Refresh from MVCAA Tutorial 1: Creating `pat` objects
+```{r, eval=FALSE}
 # Load files
 patList <- get(load(paste0(archiveDir,"/patList.rda")))
 
@@ -57,9 +57,6 @@ patList <- get(load(paste0(archiveDir,"/patList.rda")))
 sapply(patList, function(x) { return(x$meta$label) }) 
 
 # Pull out each sensor as a separate 'pat' object
-# Jon, I'm pretty sure there is a nice loop to do this ... ****************************
-# ... Didn't have time to explore how to do it 
-
 Balky_Hill <- patList[["ab5dca99422f2c0d_13669"]]
 Bush_School <- patList[["49215ad49d1a87e3_10188"]]
 Liberty_School <- patList[["db5d6b3b79f5830e_39237"]]
@@ -73,7 +70,8 @@ Methow_Estates <- patList[["4a47b9252e16e558_15077"]]
 Beaver_Creek <- patList[["2e3b5ceea86a885b_10168"]]
 Little_Cougar <- patList[["96b108298883ca47_64441"]]
 ```
-
+# ! 
+### Jon, I'm pretty sure there is a nice loop to pull out the sensors. I didn't have time to explore how to do it. 
 
 ## [pat_dygraph](https://mazamascience.github.io/AirSensor/reference/pat_dygraph.html)
 This function creates interactive graphs that will be displayed in RStudio's 'Viewer' tab.
@@ -81,7 +79,7 @@ This function creates interactive graphs that will be displayed in RStudio's 'Vi
 Lets explore a couple of sensors. 
 
 ### Balky_Hill
-```{r, Balky_Hill}
+```{r, Balky_Hill, eval=FALSE}
 pat_dygraph(
   pat = Balky_Hill, 
   parameter = "pm25",
@@ -100,7 +98,7 @@ pat_dygraph(
 
 
 ### Willowbrook_Farm
-```{r, Willowbrook_Farm}
+```{r, Willowbrook_Farm, eval=FALSE }
 pat_dygraph(
   pat = Willowbrook_Farm,       
   parameter = "pm25",
@@ -116,18 +114,22 @@ pat_dygraph(
 ```
 
 Both graphs show missing data for one of the two channels on certain days.
-For Balky Hill, measurements from the A and B channels are largely in agreement 
+For Balky Hill, measurements from the A and B channel are largely in agreement 
 while for Willowbrook Farm, the channels are largely in disagreement. This could 
 indicate a malfunctioning of the sensor, and it would be interesting to investigate
 if this is an isolated event by exploring a larger time range. 
 
+# ! 
+### what are some causes of missing data? maintanance? sporadic malfunctioning of the sensor?
 
-WIP: left here
+
 ## pat_multiPlot() 
-*****************Jon, I can't link the function because the doc online doesn't work (error 404)***************
 
-This function allow us to quickly display our raw `pat` data and desired plot 
-type. Available `plottype` options include:
+# ! 
+### Jon, I can't link the function because the doc online doesn't work (error 404)
+
+This function allow us to quickly display our raw `pat` data using the desired 
+plottype. Available `plottype` options include:
 
 * "all" – pm25_A, pm25_B, temperature, humidity
 
@@ -173,7 +175,8 @@ for (pat in test_list){
 
 ```
 
-```{r, Balky_Hill "all"}
+```{r, Balky_Hill all, eval=FALSE}
+# Balky Hill multiplot - plottype = "all"
   pat_multiPlot(
     pat = Balky_Hill,
     plottype = "all",
@@ -201,7 +204,8 @@ The "all" plot type offers a nice overview of all four variables. We can
 already start seeing an agreement between channel A and B data and an inverse relationship between humidity and temperature measurments. 
 
 Let's give a closer look to the channels using the "pm25_over" plot type. 
-```{r, Balky_Hill "pm25_over"}
+```{r, Balky_Hill pm25_over, eval=FALSE}
+# Balky Hill multiplot - plottype = "pm25_over"
   pat_multiPlot(
     pat = Balky_Hill,
     plottype = "pm25_over",
@@ -226,9 +230,11 @@ Let's give a closer look to the channels using the "pm25_over" plot type.
 
 ```
 Channels A and B show strong agreement, and we can strengthen our assumption by 
-increasing the sample size. Let's try `sampleSize = 5000`. 
+increasing the sample size. 
 
-```{r, Balky_Hill "pm25_over",  sampleSize = 5000}
+Let's try `sampleSize = 5000`. 
+```{r, Balky_Hill pm25_over sampleSize 5000, eval=FALSE}
+# Balky Hill multiplot - plottype = "pm25_over", sampleSize = 5000
   pat_multiPlot(
     pat = Balky_Hill,
     plottype = "pm25_over",
@@ -255,9 +261,10 @@ increasing the sample size. Let's try `sampleSize = 5000`.
 The trend looks consistent, channels A and B are largely in agreement, and we 
 can assume that the Bulky Hill sensor is working correctly. 
 
-Let's know more closely compare temperature and humidity by using the "aux" plot 
-type.
-```{r, Balky_Hill "aux"}
+Let's give a closer look to the relationship between temperature and humidity 
+by using the "aux" plot type.
+```{r, Balky_Hill aux, eval=FALSE}
+# Balky Hill multiplot - plottype = "aux"
   pat_multiPlot(
     pat = Balky_Hill,
     plottype = "aux",
@@ -281,14 +288,13 @@ type.
   )
 
 ```
-Fron the graph, we can start inferring a negative correlation between the two 
+From the graph, we can start inferring a negative correlation between the two 
 variables, which supports the assumption that the sensor is functioning correctly. 
 
 ## [pat_scatterPlotMatrix()](https://mazamascience.github.io/AirSensor/reference/pat_scatterPlotMatrix.html)
 
-This function returns a matrix of scatterplots and correlation values for all  
-variables in the `pat` object. A great way to validate or eject our previous 
-assumptions. 
+This function returns a matrix of scatterplots and correlation values for the 
+"pm25_A", "pm25_B", "temperature", and "humidity" variable in the `pat` object. 
 
 The list of available parameters include:
 
@@ -304,7 +310,8 @@ The list of available parameters include:
 
 Let's compare all of them for the Balky Hill sensor.  
 
-```{r, pat_scatterPlotMatrix}
+```{r, pat_scatterPlotMatrix, eval=FALSE}
+# Balky HIll scatterPlotMatrix
 pat_scatterPlotMatrix(
   pat = Balky_Hill,
   parameters = c("datetime", "pm25_A", "pm25_B", "temperature", "humidity"),
@@ -317,18 +324,116 @@ pat_scatterPlotMatrix(
 )
 ```
 
-As we can see from the matrix, we have a perfect positive correlation of 1 between 
-channels A and B (pm25_A:pm25_B) and a quite strong negative correlation of -0.862 
-between temperature and humidity, using a sample size of 5000 measurments 
-for each variable.  
+As we can see from the matrix, using a sample size of 5000 observations 
+for each variable, we have a perfect positive correlation of 1 between 
+channels A and B (pm25_A:pm25_B) and a strong negative correlation of -0.862 
+between temperature and humidity. These results support the assumption that the 
+sensor worked well throught September 2020. 
 
-## pat_outliers()
+## [pat_outliers()](https://mazamascience.github.io/AirSensor/reference/pat_outliers.html)
 
-TODO
+# !
+### this need some clarification. replace = TRUE does not replace all outliers. Also, why I can't calculate the mean of the observations (e.g. `mean(anysensor$data$pm25_A)` returns NA). I checked and the column is numeric. 
 
-## pat_internalFit()
+```{r, pat_outliers, replace true, eval=FALSE}
+Will_replace <- pat_outliers(
+  pat = Willowbrook_Farm,
+  windowSize = 15,
+  thresholdMin = 8,
+  replace = TRUE,
+  showPlot = TRUE,
+  data_shape = 18,
+  data_size = 1,
+  data_color = "black",
+  data_alpha = 0.5,
+  outlier_shape = 8,
+  outlier_size = 1,
+  outlier_color = "red",
+  outlier_alpha = 1
+)
+```
 
-TODO
+```{r, pat_outliers, Will_replace, eval=FALSE}
+pat_outliers(
+  pat = Will_replace,
+  windowSize = 15,
+  thresholdMin = 8,
+  replace = FALSE,
+  showPlot = TRUE,
+  data_shape = 18,
+  data_size = 1,
+  data_color = "black",
+  data_alpha = 0.5,
+  outlier_shape = 8,
+  outlier_size = 1,
+  outlier_color = "red",
+  outlier_alpha = 1
+)
+```
+
+## [pat_internalFit()](https://mazamascience.github.io/AirSensor/reference/pat_internalFit.html)
+This function uses a linear model to fit data from channel B to data from 
+channel A. If you save the model into an object, you can then interrogate the 
+linear model using the `base` function `summary()`. And because this is a linear 
+model, you can run your favorite statistical tests to investigate all possible 
+distribution parameters. Set `showPlot = TRUE` if you
+want to generate a utterly beautiful model fit plot.  
+
+Let's have a look to a well fucntioning sensor and to a not-so-well functioning
+one. 
+
+```{r, lm_Balky, eval=FALSE}
+# Balky Hill linear model 
+lm_Balky <- pat_internalFit(
+  pat = Balky_Hill,
+  showPlot = TRUE,
+  size = 1,
+  a_color = "red",
+  b_color = "blue",
+  alpha = 0.25,
+  lr_shape = 15,
+  lr_color = "black",
+  lr_lwd = 1.5,
+  lr_lcolor = "tomato",
+  lr_lalpha = 0.45,
+  ts_shape = 1,
+  xylim = NULL
+)
+
+summary(lm_Balky)
+```
+The model fit plot shows that the model is slightly biased towards channel A 
+(slope = 1.05) and that the linear model explains 100% of the data variability,
+supporting that the Balky Hill sensor's channels collected PM2.5 
+measurments consistenly throughout September 2020.
+
+
+```{r, lm_Willowbrook, eval=FALSE}
+# Willowbrook Farm linear model
+lm_Willowbrook <- pat_internalFit(
+  pat = Willowbrook_Farm,
+  showPlot = TRUE,
+  size = 1,
+  a_color = "red",
+  b_color = "blue",
+  alpha = 0.25,
+  lr_shape = 15,
+  lr_color = "black",
+  lr_lwd = 1.5,
+  lr_lcolor = "tomato",
+  lr_lalpha = 0.45,
+  ts_shape = 1,
+  xylim = NULL
+)
+
+summary(lm_Willowbrook)
+```
+The model fit plot shows that the model is biased towards channel A 
+(slope = 1.5), which is also supported by the bottom graphic, indicating the 
+malfunctioning of one or both of the Willowbrook Farm sensor's channels 
+throughout September 2020. 
+Additionally, we observe that the model explains ~ 92% of the data variability 
+(R2 = 0.922).
 
 ## pat_dailySoHPlot()
 
