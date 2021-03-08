@@ -374,9 +374,7 @@ pat_outliers(
 ## [pat_internalFit()](https://mazamascience.github.io/AirSensor/reference/pat_internalFit.html)
 This function uses a linear model to fit data from channel B to data from 
 channel A. If you save the model into an object, you can then interrogate the 
-linear model using the `base` function `summary()`. And because this is a linear 
-model, you can run your favorite statistical tests to investigate all possible 
-distribution parameters. Set `showPlot = TRUE` if you
+linear model using the `base` function `summary()`. Set `showPlot = TRUE` if you
 want to generate a utterly beautiful model fit plot.  
 
 Let's have a look to a well fucntioning sensor and to a not-so-well functioning
@@ -429,13 +427,47 @@ lm_Willowbrook <- pat_internalFit(
 summary(lm_Willowbrook)
 ```
 The model fit plot shows that the model is biased towards channel A 
-(slope = 1.5), which is also supported by the bottom graphic, indicating the 
+(slope = 1.5), as evident in the bottom graphic, indicating the 
 malfunctioning of one or both of the Willowbrook Farm sensor's channels 
 throughout September 2020. 
-Additionally, we observe that the model explains ~ 92% of the data variability 
-(R2 = 0.922).
+Despite that, we observe that the model explains ~ 92% of the data variability 
+(R2 = 0.922), suggesting that channel B is a reliable predictor of channel A's 
+observations. We can explore further if the difference between `pm25_A` and 
+`pm25_B` data are significantly different based on a student’s t-test. 
 
-## pat_dailySoHPlot()
+```{r, PurpleAirSoH_dailyABtTest() - Willowbrook_Farm}
+tbl <- 
+  Willowbrook_Farm %>%
+  PurpleAirSoH_dailyABtTest()
+
+timeseriesTbl_multiPlot(tbl)
+timeseriesTbl_multiPlot(tbl_Balky)
+hist(tbl$pm25_A_pm25_B_p_value)
+sum(tbl$pm25_A_pm25_B_p_value < 0.05, na.rm = TRUE) #29 days of significant differences 
+
+```
+
+The plot is showing that the daily p-values were all below 0.05 (alpha value), 
+and with a 95% confidence level we can state that the `pm25_A` and `pm25_B` data 
+are significantly different. Thus, the September 2020 PM2.5 data collected by the
+Willowbrook Farm sensor is not reliable.
+
+#!
+### is this sctually true? What's the alpha value generally used? I did the same
+### for an apperently well-functioning sensor (see code below), but that one too
+### shows signififcantly different data for most of the month. Am I missing something?
+
+```{r, PurpleAirSoH_dailyABtTest() - Balky_Hill}
+tbl_Balky <- 
+  Balky_Hill %>%
+  PurpleAirSoH_dailyABtTest()
+
+timeseriesTbl_multiPlot(tbl_Balky)
+hist(tbl_Balky$pm25_A_pm25_B_p_value)
+sum(tbl_Balky$pm25_A_pm25_B_p_value < 0.05) #19 days of significant differences 
+?nrow
+```
+## [pat_dailySoHPlot()](https://mazamascience.github.io/AirSensor/reference/pat_dailySoHIndexPlot.html)
 
 TODO
 
