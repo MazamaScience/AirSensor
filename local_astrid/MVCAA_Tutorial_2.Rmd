@@ -456,6 +456,9 @@ Willowbrook Farm sensor is not reliable.
 ### is this sctually true? What's the alpha value generally used? I did the same
 ### for an apperently well-functioning sensor (see code below), but that one too
 ### shows signififcantly different data for most of the month. Am I missing something?
+### I " hover near 0" should be substituted with an alpha value since we are 
+### analyzing p-values. How can we reject or fail to reject the Null hypothesis 
+### without alpha? (updated issue #261)
 
 ```{r, PurpleAirSoH_dailyABtTest() - Balky_Hill}
 tbl_Balky <- 
@@ -468,8 +471,60 @@ sum(tbl_Balky$pm25_A_pm25_B_p_value < 0.05) #19 days of significant differences
 ?nrow
 ```
 ## [pat_dailySoHPlot()](https://mazamascience.github.io/AirSensor/reference/pat_dailySoHIndexPlot.html)
+This function plots a subset of the most useful State of Health metrics calculated 
+by the [pat_dailySoH](https://mazamascience.github.io/AirSensor/reference/pat_dailySoH.html) 
+function. The function runs pat_dailySoH internally and uses
+the output to create the plot.
+To better understand each plot, see also:
 
-TODO
+* PurpleAirSoH_dailyPctDC()
+
+* PurpleAirSoH_dailyPctReporting()
+
+* PurpleAirSoH_dailyPctValid()
+
+* PurpleAirSoH_dailyMetFit()
+
+* PurpleAirSoH_dailyABFit()
+
+*PurpleAirSoH_dailyABtTest()
+
+```{r, pat_dailySoHPlot(), Balky_Hill}
+# create plots for Balky Hill sensor
+pat_dailySoHPlot(Balky_Hill, ncol = 2)
+
+# PurpleAirSoH_dailyPctDC()
+# --> A high percent DC value indicates the likely occurrence of a “sticky value”, 
+#     and a zero or low percent DC indicates that the sensor is recording dynamic data.
+# PurpleAirSoH_dailyPctReporting()
+# --> percentage of each day that the sensor is reporting data.
+# PurpleAirSoH_dailyPctValid()
+# --> percentage of the total recorded measurements that are considered plausible.
+# PurpleAirSoH_dailyMetFit()
+# --> This function calculates a daily linear model between the pm25_A, pm25_B, 
+#     humidity, and temperature channels. values are expected to hover near 0 
+#     for a properly functioning sensor.
+# PurpleAirSoH_dailyABFit()
+# --> daily linear model values between the pm25_A and pm25_B channels.
+#     daily r-squared value is returned in addition to the coefficients of the 
+#     linear fit (slope and intercept)
+# PurpleAirSoH_dailyABtTest()
+# --> This function calculates a t-test between the pm25_A, pm25_B.
+#     All returned values are expected to hover near 0 for a properly 
+#     functioning sensor.
+
+```
+The most concerning plot is pm25_A_temperature_rsquared given the persistent spikes 
+throughout the month. Values are expected to hover near 0 for a properly 
+functioning sensor. 
+The pm25_A_pctDC and pm25_A_pctDC plots show that the channels A and B were 
+recording dynamic data (value > 0) towards the beginning and the end of the month, 
+which is also when the R squared values were lower. Especially at the beginning 
+of the month, the pm25_A_pm25_B_rsquared plot shows R squared values hovering 
+around zero, indicating a poor functioning of the sensor. 
+
+#!
+### why pm25_B_temperature_rsquared is not included?
 
 ## pat_monitorComparison()
 
