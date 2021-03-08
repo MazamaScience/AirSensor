@@ -40,7 +40,7 @@ the interpretation of output graphics.
 
 ## How to interpret the graphics
 PurpleAir (PA) sensors are unique in that they have two separate optical particle 
-detectors (hereafter "channels") — one labeled A and one labeled B.
+detectors — one labeled A and one labeled B.
 All of the plotting functions, except `pat_monitorComparison()` and 
 `pat_externalFit()`, only use data from a *single* PA sensor — with A and B data channels. When measurements from the A and B channels are largely in agreement 
 then the sensor is working properly. When they substantially differ, there is 
@@ -78,7 +78,7 @@ This function creates interactive graphs that will be displayed in RStudio's 'Vi
 
 Lets explore a couple of sensors. 
 
-### Balky_Hill
+### Balky Hill
 ```{r, Balky_Hill, eval=FALSE}
 pat_dygraph(
   pat = Balky_Hill, 
@@ -97,7 +97,7 @@ pat_dygraph(
 ```
 
 
-### Willowbrook_Farm
+### Willowbrook Farm
 ```{r, Willowbrook_Farm, eval=FALSE }
 pat_dygraph(
   pat = Willowbrook_Farm,       
@@ -258,8 +258,10 @@ Let's try `sampleSize = 5000`.
   )
 
 ```
-The trend looks consistent, channels A and B are largely in agreement, and we 
-can assume that the Bulky Hill sensor is working correctly. 
+The trend looks consistent, channels A and B are largely in agreement. Purely 
+based on visual interpreation, we could assume that the Bulky Hill sensor is 
+working correctly. However, more in-depth statistical analysis is discussed later 
+in this tutorial. 
 
 Let's give a closer look to the relationship between temperature and humidity 
 by using the "aux" plot type.
@@ -333,9 +335,13 @@ sensor worked well throught September 2020.
 ## [pat_outliers()](https://mazamascience.github.io/AirSensor/reference/pat_outliers.html)
 
 # !
-### this need some clarification. replace = TRUE does not replace all outliers. Also, why I can't calculate the mean of the observations (e.g. `mean(anysensor$data$pm25_A)` returns NA). I checked and the column is numeric. 
+### this need some clarification. it seems that replace = TRUE does not replace 
+### all outliers. Also, why I can't calculate the mean of the observations 
+### (e.g. `mean(anysensor$data$pm25_A)` returns NA). I checked and the column 
+### is numeric. 
 
 ```{r, pat_outliers, replace true, eval=FALSE}
+# create an outliers plot for Willowbrook Farm 
 Will_replace <- pat_outliers(
   pat = Willowbrook_Farm,
   windowSize = 15,
@@ -354,6 +360,7 @@ Will_replace <- pat_outliers(
 ```
 
 ```{r, pat_outliers, Will_replace, eval=FALSE}
+# check if outliers were replaced with the median value 
 pat_outliers(
   pat = Will_replace,
   windowSize = 15,
@@ -369,6 +376,7 @@ pat_outliers(
   outlier_color = "red",
   outlier_alpha = 1
 )
+# apparently not all outliers were replaced 
 ```
 
 ## [pat_internalFit()](https://mazamascience.github.io/AirSensor/reference/pat_internalFit.html)
@@ -432,10 +440,10 @@ malfunctioning of one or both of the Willowbrook Farm sensor's channels
 throughout September 2020. 
 Despite that, we observe that the model explains ~ 92% of the data variability 
 (R2 = 0.922), suggesting that channel B is a reliable predictor of channel A's 
-observations. We can explore further if the difference between `pm25_A` and 
+observations. We can explore further if `pm25_A` and 
 `pm25_B` data are significantly different based on a student’s t-test. 
 
-```{r, PurpleAirSoH_dailyABtTest() - Willowbrook_Farm}
+```{r, PurpleAirSoH_dailyABtTest() - Willowbrook_Farm, eval= FALSE}
 tbl <- 
   Willowbrook_Farm %>%
   PurpleAirSoH_dailyABtTest()
@@ -452,15 +460,21 @@ and with a 95% confidence level we can state that the `pm25_A` and `pm25_B` data
 are significantly different. Thus, the September 2020 PM2.5 data collected by the
 Willowbrook Farm sensor is not reliable.
 
-#!
+#! 
+
 ### is this sctually true? What's the alpha value generally used? I did the same
+
 ### for an apperently well-functioning sensor (see code below), but that one too
+
 ### shows signififcantly different data for most of the month. Am I missing something?
-### I " hover near 0" should be substituted with an alpha value since we are 
+
+### I think " hover near 0" should be substituted with an alpha value since we are 
+
 ### analyzing p-values. How can we reject or fail to reject the Null hypothesis 
+
 ### without alpha? (updated issue #261)
 
-```{r, PurpleAirSoH_dailyABtTest() - Balky_Hill}
+```{r, PurpleAirSoH_dailyABtTest() - Balky_Hill, eval= FALSE}
 tbl_Balky <- 
   Balky_Hill %>%
   PurpleAirSoH_dailyABtTest()
@@ -468,31 +482,31 @@ tbl_Balky <-
 timeseriesTbl_multiPlot(tbl_Balky)
 hist(tbl_Balky$pm25_A_pm25_B_p_value)
 sum(tbl_Balky$pm25_A_pm25_B_p_value < 0.05) #19 days of significant differences 
-?nrow
 ```
 ## [pat_dailySoHPlot()](https://mazamascience.github.io/AirSensor/reference/pat_dailySoHIndexPlot.html)
 This function plots a subset of the most useful State of Health metrics calculated 
-by the [pat_dailySoH](https://mazamascience.github.io/AirSensor/reference/pat_dailySoH.html) 
+by the [pat_dailySoH()](https://mazamascience.github.io/AirSensor/reference/pat_dailySoH.html) 
 function. The function runs pat_dailySoH internally and uses
 the output to create the plot.
 To better understand each plot, see also:
 
-* PurpleAirSoH_dailyPctDC()
+* [PurpleAirSoH_dailyPctDC()](https://mazamascience.github.io/AirSensor/reference/PurpleAirSoH_dailyPctDC.html)
 
-* PurpleAirSoH_dailyPctReporting()
+* [PurpleAirSoH_dailyPctReporting()](https://mazamascience.github.io/AirSensor/reference/PurpleAirSoH_dailyPctReporting.html)
 
-* PurpleAirSoH_dailyPctValid()
+* [PurpleAirSoH_dailyPctValid()](https://mazamascience.github.io/AirSensor/reference/PurpleAirSoH_dailyPctValid.html)
 
-* PurpleAirSoH_dailyMetFit()
+* [PurpleAirSoH_dailyMetFit()](https://mazamascience.github.io/AirSensor/reference/PurpleAirSoH_dailyMetFit.html)
 
-* PurpleAirSoH_dailyABFit()
+* [PurpleAirSoH_dailyABFit()](https://mazamascience.github.io/AirSensor/reference/PurpleAirSoH_dailyABFit.html)
 
-*PurpleAirSoH_dailyABtTest()
+* [PurpleAirSoH_dailyABtTest()](https://mazamascience.github.io/AirSensor/reference/PurpleAirSoH_dailyABtTest.html)
 
-```{r, pat_dailySoHPlot(), Balky_Hill}
+```{r, pat_dailySoHPlot() - Balky_Hill, eval= FALSE}
 # create plots for Balky Hill sensor
 pat_dailySoHPlot(Balky_Hill, ncol = 2)
 
+# temporary notes to be removed in final tutorial.
 # PurpleAirSoH_dailyPctDC()
 # --> A high percent DC value indicates the likely occurrence of a “sticky value”, 
 #     and a zero or low percent DC indicates that the sensor is recording dynamic data.
@@ -523,19 +537,87 @@ which is also when the R squared values were lower. Especially at the beginning
 of the month, the pm25_A_pm25_B_rsquared plot shows R squared values hovering 
 around zero, indicating a poor functioning of the sensor. 
 
-#!
+#! 
+
 ### why pm25_B_temperature_rsquared is not included?
 
+### what is DC?
+
 ## pat_monitorComparison()
+This function creates and returns a ggplot object that plots raw pat data, 
+hourly aggregated pat data and hourly data from the nearest federal monitor 
+from the [PWFSL database](https://haze.airfire.org/monitoring/).
 
-TODO
+```{r, pat_monitorComparison() - Balky_Hill, eval= FALSE}
+# create comparison plot for balky Hill sensor
+pat_monitorComparison(
+  pat = Balky_Hill,
+  FUN = AirSensor::PurpleAirQC_hourly_AB_01,
+  distanceCutoff = 20,
+  ylim = NULL,
+  replaceOutliers = TRUE,
+  timezone = NULL
+)
+# Error in monitor_subset(ws_monitor, tlim = c(starttime, endtime)) : ws_monitor 
+# object contains zero monitors
 
-## pat_externalFit()
+?pat_monitorComparison
+# try example to see if it works 
+pat_monitorComparison(example_pat) # OK
+example_pat <- example_pat$data
 
-TODO
+# try Willowbrook_Farm
+pat_monitorComparison(
+  pat = Willowbrook_Farm,
+  FUN = AirSensor::PurpleAirQC_hourly_AB_01,
+  distanceCutoff = 20,
+  ylim = NULL,
+  replaceOutliers = TRUE,
+  timezone = NULL
+)
+# Error in monitor_subset(ws_monitor, tlim = c(starttime, endtime)) : ws_monitor 
+# object contains zero monitors
 
+```
 
+# !  
 
+### Could you explain the error? I see that the closest PWFSL monitor is 840530470016_01
+ 
+
+## [pat_externalFit()](https://mazamascience.github.io/AirSensor/reference/pat_externalFit.html)
+This function produces a linear model between data from PurpleAir and data from 
+the closest PWFSL monitor. A diagnostic plot is produced if `showPlot = TRUE`.
+
+```{r, pat_externalFit - Balky_Hill, eval= FALSE}
+# create comparison plot for balky Hill sensor
+pat_externalFit(
+  pat = Balky_Hill,
+  showPlot = TRUE,
+  size = 1,
+  pa_color = "purple",
+  pwfsl_color = "black",
+  alpha = 0.5,
+  lr_shape = 15,
+  lr_color = "black",
+  lr_lwd = 1.5,
+  lr_lcolor = "tomato",
+  lr_lalpha = 0.45,
+  ts_shape = 1,
+  xylim = NULL,
+  channel = "ab",
+  replaceOutliers = TRUE,
+  qc_algorithm = "hourly_AB_01",
+  min_count = 20
+)
+# Error in monitor_subset(ws_monitor, tlim = c(starttime, endtime)) : ws_monitor 
+# object contains zero monitors
+
+```
+
+# ! 
+
+### Could you explain the error? I see that the closest PWFSL monitor is 840530470016_01
 ----
 
 _Best of luck assessing air quality in your community!_
