@@ -38,7 +38,124 @@ Our goal in this tutorial is to explore a variety of `sensor_~()` functions avai
 in the **AirSensor** package and to explain their most important arguments and 
 the interpretation of output graphics.
 
+```{r airsensor data setup}
+# Directory with Methow Valley data
+wd <- getwd()
+archiveDir <- "Data/MVCAA"
+archiveDir <- paste0(wd, "/", archiveDir)
 
+# AirSensor package
+library(AirSensor)
+
+# Load previously generated airsensor data
+airsensorList <- get(load(paste0(archiveDir,"/airsensorList.rda")))
+
+# Print site names and associated ids
+sapply(airsensorList, function(x) { return(x$meta$label) }) 
+
+# Pull out each sensor as a separate 'airsensor' object
+Balky_Hill <- airsensorList[["ab5dca99422f2c0d_13669"]]
+Bush_School <- airsensorList[["49215ad49d1a87e3_10188"]]
+Liberty_School <- airsensorList[["db5d6b3b79f5830e_39237"]]
+McFarland_Creek <- airsensorList[["f592adb5067ad9d3_13675"]]
+Pine_Forest <- airsensorList[["0cbfeb2ce4c1553c_13661"]]
+Willowbrook_Farm <- airsensorList[["f96deab8c29aa42b_10134"]]
+Benson_Creek <- airsensorList[["f6c44edd41c941c7_10182"]]
+Gunn_Ranch <- airsensorList[["f736fd3fb21fc4da_13667"]]
+Lower_Studhorse <- airsensorList[["4f19d256e1787973_10166"]]
+Methow_Estates <- airsensorList[["4a47b9252e16e558_15077"]] 
+Beaver_Creek <- airsensorList[["2e3b5ceea86a885b_10168"]]
+Little_Cougar <- airsensorList[["96b108298883ca47_64441"]]
+```
+
+## [sensor_calendarPlot()](https://mazamascience.github.io/AirSensor/reference/pat_monitorComparison.html)
+
+Function for plotting PM2.5 concentration in a calendar format. This function wraps the openair calendarPlot() function
+
+Let's explore a couple of sensors using the US EPA Air Quality Index colors to see 
+which days during September 2020 had the worst PM2.5 levels, putting the health 
+of the Methow Valley's population at risk.  
+```{r sensor_calendarPlot}
+sensor_calendarPlot(
+  sensor = Balky_Hill,
+  colors = "aqi",
+  breaks = NULL,
+  labels = NULL,
+  limits = c(0, 100),
+  title = "September 2020 -- Balky Hill",
+  data.thresh = 50
+)
+  
+sensor_calendarPlot(
+  sensor = Bush_School,
+  colors = "aqi",
+  breaks = NULL,
+  labels = NULL,
+  limits = c(0, 100),
+  title = "September 2020 -- Balky Hill",
+  data.thresh = 50
+)
+
+sensor_calendarPlot(
+  sensor = Beaver_Creek,
+  colors = "aqi",
+  breaks = NULL,
+  labels = NULL,
+  limits = c(0, 100),
+  title = "September 2020 -- Balky Hill",
+  data.thresh = 50
+)
+```
+The Balky Hill, Bush School, and Beaver Creek sensor's calendar plots show that 
+the second and third weeks of September were the smokiest. Calendar plots are also 
+an easy way to quickly visualize missing data (e.g. Beaver Creek). This
+allow us to promptly evaluate which sensor to include in future analyses. 
+
+## sensor_polarPlot()
+Function for plotting PM2.5 concentration in polar coordinates showing concentration 
+by wind speed and direction. This function wraps the openair polarPlot() function.
+
+```{r sensor_polarPlot, eval=FALSE}
+sensor_polarPlot(
+  sensor = Balky_Hill,
+  windData = NULL,
+  statistic = "mean",
+  resolution = "fine",
+  colors = "default",
+  alpha = 1,
+  angleScale = 315,
+  normalize = FALSE,
+  key = TRUE,
+  keyPosition = "right",
+  ws_spread = 15,
+  wd_spread = 4,
+  verbose = TRUE
+)
+names(Balky_Hill$meta)
+
+```
+# ! no wind data available in airsensor object, how does the function generate the mean value?
+
+## sensor_pollutionRose()
+```{r sensor_pollutionRose, eval=FALSE}
+sensor_pollutionRose()
+```
+
+## sensor_extractData()
+```{r sensor_extractData, eval=FALSE}
+sensor_extractData()
+# can then be exported with readr::write_csv()
+```
+
+## timeseriesTbl_multiPlot() 
+```{r timeseriesTbl_multiPlot, eval=FALSE}
+timeseriesTbl_multiPlot() 
+```
+
+## More examples with PWFSLSmoke and AirMonitorPlots
+```{r PWFSLSmoke - AirMonitorPlots, eval=FALSE }
+# include some examples using functions from PWFSLSmoke or AirMonitorPlots 
+```
 
 
 _Best of luck assessing air quality in your community!_
