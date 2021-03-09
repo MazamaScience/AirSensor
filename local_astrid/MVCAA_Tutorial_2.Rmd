@@ -11,6 +11,7 @@ vignette: >
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
+knitr::opts_knit$set(root.dir = "C:/Users/astri/Mirror/Mazamascience/Projects/AirSensor")
 ```
 
 ## Introduction
@@ -610,11 +611,11 @@ pat_externalFit(
   qc_algorithm = "hourly_AB_01",
   min_count = 20
 )
+
 # Error in monitor_subset(ws_monitor, tlim = c(starttime, endtime)) : ws_monitor 
 # object contains zero monitors
 
 ```
-
 # ! 
 
 ### Could you explain the error? I see that the closest PWFSL monitor is 840530470016_01
