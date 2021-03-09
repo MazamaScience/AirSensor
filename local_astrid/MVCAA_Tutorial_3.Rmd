@@ -11,6 +11,7 @@ vignette: >
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
+knitr::opts_knit$set(root.dir = "C:/Users/astri/Mirror/Mazamascience/Projects/AirSensor")
 ```
 
 ## Introduction
@@ -83,13 +84,17 @@ section will demonstrate how to load and work with this local data file.
 This R script can be used as a starting point for those wishing to create 
 small collections of data for other communities and other dates.
 
-```
+```{r create_archive, eval = FALSE, warning = FALSE, message = FALSE}
 # Methow Valley local data archive
 
 # ----- Setup ------------------------------------------------------------------
 
 # Directory with Methow Valley data
-archiveDir <- "~/Data/MVCAA"
+#archiveDir <- "~/Data/MVCAA" -- this doesn't work 
+
+wd <- getwd()
+archiveDir <- "Data/MVCAA"
+archiveDir <- paste0(wd, "/", archiveDir)
 
 # AirSensor package
 library(AirSensor)
@@ -128,7 +133,7 @@ for ( id in names(patList) ) {
   }, silent = FALSE)
   
   if ( "try-error" %in% class(result) ) {
-    print(geterrormessage())
+    print(geterrmessage())
   }
   
 }
@@ -138,7 +143,9 @@ print(sprintf("Successfully created %d/%d pat objects.", successCount, idCount))
 
 # Save it in our archive directory
 save(airsensorList, file = file.path(archiveDir, "airsensorList.rda"))
+
 ```
+
 
 ### Script Comments
 
@@ -150,7 +157,7 @@ moment to describe the arguments to `pat_createAirSensor()`:
 only a single parameter. This will almost always be `pm25` but it is also possible
 to create 'airsensor' objects for `temperature` or `humidity` or any other
 parameter available in `pat$data`.
-* `FUN` -- This is the quality control function that will be used when aggregating
+* `FUN` -- This is the quality control (QC) function that will be used when aggregating
 `pat` data to an hourly axis. Several functions are available in the **AirSensor**
 package and it is also possible to create 
 [custom QC algorithms](https://mazamascience.github.io/AirSensor/articles/articles/Custom_QC_Algorithms.html).
@@ -170,24 +177,26 @@ rm(list = ls())
 library(AirSensor)
 
 # Examine archive directory
-list.files("~/Data/mvcaa")
+list.files(archiveDir) # you should see: "airsensorList.rda" "mvcaa.rda" "patList.rda" 
 
 # Load files
-mvcaa <- get(load("~/Data/mvcaa/mvcaa.rda"))
-patList <- get(load("~/Data/mvcaa/patList.rda"))
-airsensorList <- get(load("~/Data/mvcaa/airsensorList.rda"))
+mvcaa <- get(load(paste0(archiveDir, "/mvcaa.rda")))
+patList <- get(load(paste0(archiveDir, "/patList.rda")))
+airsensorList <- get(load(paste0(archiveDir,"/airsensorList.rda")))
 
 # Examine a 'pat' object
 pat1 <- patList[[1]]
 class(pat1)
 dim(pat1$data)
 names(pat1$data)       # single sensor, multiple parameters
+names(pat1$meta)
 
 # Examine an 'airsensor' object
 airsensor1 <- airsensorList[[1]]
 class(airsensor1)
 dim(airsensor1$data)
 names(airsensor1$data) # single parameter, one or more sensors
+names(airsensor1$meta)
 ```
 
 ## Fancy Plot
@@ -198,6 +207,7 @@ experienced with R and the Mazama Science packages.
 ```{r fancy plot, eval = TRUE, warning = FALSE, message = FALSE, fig.height = 12}
 # Combine single-sensor 'airsensor' objects into a multi-sensor 'monitor' object
 my_monitors <- PWFSLSmoke::monitor_combine(airsensorList)
+names(my_monitors$data) # single parameter, more sensors
 
 # Use MazamaCoreUtils::dateRange() to ensure we get POSIXct times in the local timezone
 dateRange <- MazamaCoreUtils::dateRange(
