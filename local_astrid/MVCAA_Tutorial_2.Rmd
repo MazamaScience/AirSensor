@@ -544,7 +544,7 @@ around zero, indicating a poor functioning of the sensor.
 
 ### what is DC?
 
-## pat_monitorComparison()
+## [pat_monitorComparison()](https://mazamascience.github.io/AirSensor/reference/pat_monitorComparison.html)
 This function creates and returns a ggplot object that plots raw pat data, 
 hourly aggregated pat data and hourly data from the nearest federal monitor 
 from the [PWFSL database](https://haze.airfire.org/monitoring/).
