@@ -66,15 +66,34 @@ This tutorial will demonstrate how to create 'pas' and 'pat data for this collec
 sensors for September, 2020 when the Methow Valley experienced poor air
 quality due to Wildfire smoke.
 
+## Set DATA_DIR
+
+Before you start, consider where on your computer you are going to save your data 
+and create your archive. By default, these tutorials will save data underneath
+your "home" directory.
+
+Run `path.expand("~")` in the R console to see the locaiton of your home directory. 
+If you wish to save data somewhere else, you can specify an alternate location by 
+modifying the code below. Otherwise you can jump to the next section.
+
+```{r setup-data-directory, eval = FALSE, warning = FALSE, message = FALSE}
+# Check your current home directory 
+path.expand("~")
+
+# Create your data directory anywhere you want, changing the home directory 
+# part ("~") and keeping the "/Data/MVCAA".
+#   Windows example: "C:/MethowValley/Data/MVCAA" 
+#   UNIX example: "~/Data/MVCAA" works well on UNIX/OSX.
+DATA_DIR <- "~/Data/MVCAA" 
+```
+
 ## Find Sensors
 
 The first task is to identify the senors we wish to use. This can be done by
 loading the default 'pas' object from the Mazama Science maintained data archvie, 
-zooming in on the Methow Valley and clicking on some of the sensors. 
-It should be quickly apparent that many of those sensors have a
-label containing "MV Clean Air Ambassador".
+zooming in on the Methow Valley.
 
-```{r wa_leaflet, eval = TRUE, warning = FALSE, message = FALSE}
+```{r wa-leaflet, eval = TRUE, warning = FALSE, message = FALSE}
 # AirSensor package
 library(AirSensor)
 
@@ -91,8 +110,10 @@ wa <- pas_filter(pas, stateCode == "WA")
 pas_leaflet(wa)
 ```
 
-With this information, we can now create a script to create 'pat' objects for
-each of the Methow Valley Clean Air Ambassador (MVCAA) sensors.
+Clicking on some of the sensors in the Methow Valley, it quickly becomes 
+apparent that many of those sensors have a label containing "MV Clean Air 
+Ambassador". With this information, we can now create a script to create 'pat' 
+objects for each of the Methow Valley Clean Air Ambassador (MVCAA) sensors.
 
 _NOTE:_ We could use the `pas_filterArea()` function to define a bounding box and get 
 all sensors in the area. But for this tutorial we will limit ourselves to those
@@ -109,26 +130,11 @@ section will demonstrate how to load and work with these local data files.
 This R script can be used as a starting point for those wishing to create 
 small collections of data for other communities and other dates.
 
-Before you start, consider where in your computer you are going to save your data 
-and create your archive. 
-Run `path.expand("~")` in the R console to see where the data will be saved by default. 
-If you wish to create a new data directory, you'll have to specify it in the code
-section `Setup new data directory`, otherwise you can jump to the next R script
-(`Methow Valley local data archive`). 
-
-```{r Setup new data directory, eval = TRUE}
-# ----- Setup new data directory -----------------------------------------------
-# check your current home directory 
-path.expand("~")
-
-# create a new data directory 
-DATA_DIR <- "~/Data/MVCAA" # type yours changing only "~" and keeping "/Data/MVCAA". Example: "C:/MethowValley/Data/MVCAA" 
-```
-
-```{r create_archive setup, eval = TRUE, warning = FALSE, message = FALSE}
+```{r create-archive, eval = FALSE, warning = FALSE, message = FALSE}
 # Methow Valley local data archive: Setup
 
 # ----- Setup ------------------------------------------------------------------
+
 # Create an archive directory underneath ~/Data
 if ( exists("DATA_DIR") ) {
   archiveDir <- file.path(DATA_DIR)
@@ -143,9 +149,7 @@ library(AirSensor)
 
 # Set the archiveBaseUrl so we can get a 'pas' object
 setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
-```
 
-```{r create_archive pas object, eval = TRUE, warning = FALSE, message = FALSE}
 # ----- Create PAS object ------------------------------------------------------
 
 # Create a 'pas' object limited to MVCAA sensors
@@ -164,10 +168,8 @@ pas_leaflet(mvcaa)
 save(mvcaa, file = paste0(archiveDir, "/mvcaa.rda"))
 
 # Examine archive directory:
-list.files(file.path(archiveDir)) #had to add file.path()
-```
+list.files(file.path(archiveDir))
 
-```{r create_archive pat object, eval = TRUE, warning = FALSE, message = FALSE}
 # ----- Create PAT objects -----------------------------------------------------
 
 # Get all the deviceDeploymentIDs
@@ -180,46 +182,6 @@ timezone <- "America/Los_Angeles"
 
 # Create an empty List to store things
 patList <- list()
-
-
-# Jon -- evaluate if we should include a test section like the one below 
-# # Loop over ids and get data (might take a while). Start with just a few to test.
-# mvcaa_ids_test <- c("ab5dca99422f2c0d_13669", "f6c44edd41c941c7_10182")
-# idCount<- length(mvcaa_ids_test)
-# count <- 0
-# successCount <- 0
-# 
-# for (id in mvcaa_ids_test[1:idCount]) {
-#   
-#   count <- count + 1
-#   print(sprintf("Working on %s (%d/%d) ...", id, count, idCount))
-#   
-#   # Use a try-block in case you get "no data" errors
-#   result <- try({
-#     
-#     # It's nice to copy-paste the full function signature so you can see all possible arguments
-#     patList[[id]] <- pat_createNew(
-#       id = id,
-#       label = NULL,        # not needed if you have the id
-#       pas = mvcaa,
-#       startdate = startdate,
-#       enddate = enddate,
-#       timezone = timezone,
-#       baseUrl = "https://api.thingspeak.com/channels/",
-#       verbose = FALSE
-#     )
-#     successCount <- successCount + 1
-#     
-#   }, silent = FALSE)
-#   
-#   if ( "try-error" %in% class(result) ) {
-#     print(geterrmessage()())
-#   }
-#   
-# }
-# 
-# # How many did we get?
-# print(sprintf("Successfully created %d/%d pat objects.", successCount, idCount))
 
 # Initialize counters
 idCount <- length(mvcaa_ids)
@@ -256,14 +218,8 @@ for (id in mvcaa_ids[1:idCount]) {
   
 }
 
-
 # How many did we get?
 print(sprintf("Successfully created %d/%d pat objects.", successCount, idCount))
-
-# explore patList: each sensor has metadata and data that can be explored simply by saving them as objects. Have a look to the tables in the R environment. 
-
-meta <- patList$ab5dca99422f2c0d_13669$meta
-data <- patList$ab5dca99422f2c0d_13669$data
 
 # Save it in our archive directory
 save(patList, file = file.path(archiveDir, "patList.rda"))
@@ -283,15 +239,13 @@ sprintf("%.1f Mb", fileSize/1e6)
 
 ## Loading Local Data
 
-Now we have a local copy of all of the 'pas' and 'pat' data we wanted, precompiled
+Now we have a local copy of all of the 'pas' and 'pat' data we wanted, pre-compiled
 into 'pas' and 'pat' objects.
 
 ```{r load_local_data, eval = TRUE, warning = FALSE, message = FALSE}
-# Remove mvcaa from your current environment to ensure we're using our local archive
-
-rm(list = ls()) #this would remove the archiveDir object and complicate things for those who created a new DATA_DIR previously. Is there a way to leave archiveDir in the environemt? 
-
-DATA_DIR <- "~/Data/MVCAA" # type yours changing only "~" and keeping "/Data/MVCAA". Example: "C:/MethowValley/Data/MVCAA" 
+# Empty current environment to ensure we're using our local archive.
+# But retain "DATA_DIR if it has been set.
+rm(list = setdiff(ls(), c("DATA_DIR")))
 
 if ( exists("DATA_DIR") ) {
   archiveDir <- file.path(DATA_DIR)
@@ -303,15 +257,11 @@ if ( exists("DATA_DIR") ) {
 library(AirSensor)
 
 # Examine archive directory:
-#list.files("~/Data/mvcaa")
-list.files(file.path(archiveDir)) #had to add file.path()
+list.files(file.path(archiveDir))
  
 # Load files
-# mvcaa <- get(load("~/Data/mvcaa/mvcaa.rda"))
-# patList <- get(load("~/Data/mvcaa/patList.rda"))
 mvcaa <- get(load(file.path(archiveDir, "mvcaa.rda"))) 
 patList <- get(load(file.path(archiveDir, "patList.rda")))
-
 
 # Interactive map
 pas_leaflet(mvcaa)
