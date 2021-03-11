@@ -1,3 +1,7 @@
+# AirSensor 1.0.8
+
+* Minor documentation updates.
+
 # AirSensor 1.0.7
 
 * Minor documentation updates to clarify "state-of-health" calculations.

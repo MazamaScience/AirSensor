@@ -4,16 +4,16 @@
 #' @title Interactive time series plot
 #' 
 #' @param pat PurpleAir Timeseries \emph{pat} object from \code{pat_createNew()}
-#' @param parameter Data to display: "pm25", "humidity", "temperature"
-#' @param sampleSize Either an integer or fraction to determine sample size
+#' @param parameter Data to display: "pm25", "humidity", "temperature" or "pressure".
+#' @param sampleSize Either an integer or fraction to determine sample size.
 #' @param title title text
 #' @param xlab optional title for the x axis
 #' @param ylab optional title for the y axis
 #' @param tlim optional vector with start and end times (integer or character
 #'   representing YYYYMMDD[HH])
-#' @param rollPeriod rolling mean to be applied to the data
-#' @param showLegend logical to toggle display of the legend
-#' @param colors string vector of colors to be used for plotting
+#' @param rollPeriod Width (hours) of rolling mean to be applied to the data.
+#' @param showLegend Logical specifying whether to add a legend.
+#' @param colors Vector of colors to be used for plotting.
 #' @param timezone Olson timezone used to interpret \code{tlim}. (Defaults to 
 #' \code{pat} local time.)
 #' 
@@ -36,6 +36,7 @@
 #' \donttest{
 #' library(AirSensor)
 #' 
+#' # Create a new pat object for North Bend, WA
 #' North_Bend_Weather <- 
 #'   pat_createNew(
 #'     label = "North Bend Weather", 
@@ -46,6 +47,9 @@
 #'   )
 #' 
 #' if ( interactive() ) {
+#'   # Create interactive timeseries plot
+#'   #  - sample just 1000 points for more efficient plotting
+#'   #  - plot using a 6-hour rolling mean to fill in holes
 #'   North_Bend_Weather %>%
 #'     pat_sample(sampleSize = 1000, setSeed = 1) %>%
 #'     pat_dygraph(xlab = "2018", rollPeriod = 6)

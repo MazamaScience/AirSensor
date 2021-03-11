@@ -16,7 +16,7 @@
 #' }
 #'
 #' @seealso example_pas_raw
-#' @source https://www.purpleair.com/json
+#' @source https://www.purpleair.com/json?all=true
 "example_pas"
 
 #' @encoding UTF-8

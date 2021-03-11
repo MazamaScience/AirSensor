@@ -44,9 +44,12 @@ recommended formats:
 \item{\code{"YYYY-mm-dd"}}
 \item{\code{"YYYY-mm-dd HH:MM:SS"}}
 }
+
+When no dates are specified, \code{pat_loadLatest()} is used, loading data
+for the last 7 days.
 }
 \note{
-Starting with \pkg{AirSensor} version 0.6, archive file names are 
+Archive file names are 
 generated with a unique "device-deployment" identifier by combining a unique 
 location ID with a unique device ID. These "device-deployment" identifiers 
 guarantee that movement of a sensor will result in the creation of a new
