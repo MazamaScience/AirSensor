@@ -60,7 +60,7 @@ sapply(patList, function(x) { return(x$meta$label) })
 # Pull out each sensor as a separate 'pat' object
 Balky_Hill <- patList[["ab5dca99422f2c0d_13669"]]
 Bush_School <- patList[["49215ad49d1a87e3_10188"]]
-Liberty_School <- patList[["db5d6b3b79f5830e_39237"]]
+Liberty_School <- patList[["db5d6b3b79f5830e_39237"]] # good
 McFarland_Creek <- patList[["f592adb5067ad9d3_13675"]]
 Pine_Forest <- patList[["0cbfeb2ce4c1553c_13661"]]
 Willowbrook_Farm <- patList[["f96deab8c29aa42b_10134"]]
@@ -79,10 +79,10 @@ This function creates interactive graphs that will be displayed in RStudio's 'Vi
 
 Lets explore a couple of sensors. 
 
-### Balky Hill
-```{r, Balky_Hill, eval=FALSE}
+### Liberty School
+```{r Liberty-School, eval=FALSE}
 pat_dygraph(
-  pat = Balky_Hill, 
+  pat = Liberty_School, 
   parameter = "pm25",
   sampleSize = 1000,
   title = NULL,
@@ -114,10 +114,10 @@ pat_dygraph(
   timezone = NULL)
 ```
 
-Both graphs show missing data for one of the two channels on certain days.
-For Balky Hill, measurements from the A and B channel are largely in agreement 
+Both graphs show missing data for one of the two channels on certain days, but this is not a major concearn given the isolated episodes.
+For Liberty School, measurements from the A and B channel are largely in agreement 
 while for Willowbrook Farm, the channels are largely in disagreement. This could 
-indicate a malfunctioning of the sensor, and it would be interesting to investigate
+indicate a malfunctioning of the sensor, and it could be interesting to investigate
 if this is an isolated event by exploring a larger time range. 
 
 # ! 
@@ -127,7 +127,7 @@ if this is an isolated event by exploring a larger time range.
 ## pat_multiPlot() 
 
 # ! 
-### Jon, I can't link the function because the doc online doesn't work (error 404)
+### Jon, I can't link the function because the doc online doesn't work (error 404). I have already open an issue. 
 
 This function allow us to quickly display our raw `pat` data using the desired 
 plottype. Available `plottype` options include:
@@ -145,41 +145,11 @@ plottype. Available `plottype` options include:
 * "aux" – auxiliary data (temperature, humidity)
 
 For the purpuse of this turorial we'll use "all", "pm25_over", and "aux".
-```{r, pat_multiPlot - loop, eval=FALSE}
-# create a test list of sensors to loop through 
-test_list <- list(Balky_Hill, Bush_School, Liberty_School)
 
-#tried loop but doesn't work
-for (pat in test_list){
+```{r Liberty-School-all, eval=FALSE}
+# Liberty School multiplot - plottype = "all"
   pat_multiPlot(
-    pat = pat,
-    plottype = "all",
-    sampleSize = 1000,
-    columns = NULL,
-    ylim = NULL,
-    a_size = 1,
-    a_shape = 15,
-    a_color = rgb(0.9, 0.25, 0.2),
-    b_size = 1,
-    b_shape = 15,
-    b_color = rgb(0.2, 0.25, 0.9),
-    t_size = 1,
-    t_shape = 15,
-    t_color = "black",
-    h_size = 1,
-    h_shape = 15,
-    h_color = "black",
-    alpha = 0.5,
-    timezone = NULL
-  )
-}
-
-```
-
-```{r, Balky_Hill all, eval=FALSE}
-# Balky Hill multiplot - plottype = "all"
-  pat_multiPlot(
-    pat = Balky_Hill,
+    pat = Liberty_School,
     plottype = "all",
     sampleSize = 1000,
     columns = NULL,
@@ -205,10 +175,10 @@ The "all" plot type offers a nice overview of all four variables. We can
 already start seeing an agreement between channel A and B data and an inverse relationship between humidity and temperature measurments. 
 
 Let's give a closer look to the channels using the "pm25_over" plot type. 
-```{r, Balky_Hill pm25_over, eval=FALSE}
-# Balky Hill multiplot - plottype = "pm25_over"
+```{r, Liberty-School-pm25over, eval=FALSE}
+# Liberty School multiplot - plottype = "pm25_over"
   pat_multiPlot(
-    pat = Balky_Hill,
+    pat = Liberty_School,
     plottype = "pm25_over",
     sampleSize = 1000,
     columns = NULL,
@@ -234,10 +204,10 @@ Channels A and B show strong agreement, and we can strengthen our assumption by
 increasing the sample size. 
 
 Let's try `sampleSize = 5000`. 
-```{r, Balky_Hill pm25_over sampleSize 5000, eval=FALSE}
+```{r, Liberty-School-pm25over-n5000, eval=FALSE}
 # Balky Hill multiplot - plottype = "pm25_over", sampleSize = 5000
   pat_multiPlot(
-    pat = Balky_Hill,
+    pat = Liberty_School,
     plottype = "pm25_over",
     sampleSize = 5000,
     columns = NULL,
@@ -260,14 +230,14 @@ Let's try `sampleSize = 5000`.
 
 ```
 The trend looks consistent, channels A and B are largely in agreement. Purely 
-based on visual interpreation, we could assume that the Bulky Hill sensor is 
+based on visual interpreation, we could assume that the Liberty School sensor is 
 working correctly. However, more in-depth statistical analysis is discussed later 
 in this tutorial. 
 
 Let's give a closer look to the relationship between temperature and humidity 
 by using the "aux" plot type.
-```{r, Balky_Hill aux, eval=FALSE}
-# Balky Hill multiplot - plottype = "aux"
+```{r, Liberty-School-aux, eval=FALSE}
+# Liberty School multiplot - plottype = "aux"
   pat_multiPlot(
     pat = Balky_Hill,
     plottype = "aux",
@@ -311,12 +281,12 @@ The list of available parameters include:
 
 * humidity -- humidity (%)
 
-Let's compare all of them for the Balky Hill sensor.  
+Let's compare all of them for the Liberty School sensor.  
 
-```{r, pat_scatterPlotMatrix, eval=FALSE}
-# Balky HIll scatterPlotMatrix
+```{r, pat-scatterPlotMatrix-Liberty-School, eval=FALSE}
+# Liberty School scatterPlotMatrix
 pat_scatterPlotMatrix(
-  pat = Balky_Hill,
+  pat = Liberty_School,
   parameters = c("datetime", "pm25_A", "pm25_B", "temperature", "humidity"),
   sampleSize = 5000,
   sampleFraction = NULL,
@@ -328,23 +298,29 @@ pat_scatterPlotMatrix(
 ```
 
 As we can see from the matrix, using a sample size of 5000 observations 
-for each variable, we have a perfect positive correlation of 1 between 
-channels A and B (pm25_A:pm25_B) and a strong negative correlation of -0.862 
+for each variable, there is a perfect positive correlation of 1 between 
+channels A and B (pm25_A:pm25_B) and a strong negative correlation of -0.839 
 between temperature and humidity. These results support the assumption that the 
-sensor worked well throught September 2020. 
+sensor worked well throughout September 2020. 
 
 ## [pat_outliers()](https://mazamascience.github.io/AirSensor/reference/pat_outliers.html)
 
-# !
-### this need some clarification. it seems that replace = TRUE does not replace 
-### all outliers. Also, why I can't calculate the mean of the observations 
-### (e.g. `mean(anysensor$data$pm25_A)` returns NA). I checked and the column 
-### is numeric. 
+This function detects outliers using a Median Average Deviation "Hampel" filter, appling a rolling Hampel filter to find those points that are very far out in the tails of the distribution of values within the window. 
 
-```{r, pat_outliers, replace true, eval=FALSE}
-# create an outliers plot for Willowbrook Farm 
-Will_replace <- pat_outliers(
-  pat = Willowbrook_Farm,
+`windowSize = 15` corresponds to a temporal window of approximately 30 minutes.
+
+The default threshold setting `thresholdMin = 8` identifies points that are extremely unlikely to be part of a normal distribution and therefore very likely to be an outlier.
+
+Specifying `replace = TRUE` allows you to perform smoothing by replacing outliers with the window median value. Using this technique, you can create an highly smoothed, artificial dataset by setting thresholdMin = 1 or lower (but always above zero).
+
+In order to store the new dataset including the replaced values, you can create a new sensor object and save it in your archive directory (already defined in 
+Tutorial 1) like in the example below. 
+
+
+```{r, pat-outliers-Liberty-School, replace true, eval=FALSE}
+# create an outliers plot for Liberty School 
+Liberty_School_new <- pat_outliers(
+  pat = Liberty_School,
   windowSize = 15,
   thresholdMin = 8,
   replace = TRUE,
@@ -358,27 +334,12 @@ Will_replace <- pat_outliers(
   outlier_color = "red",
   outlier_alpha = 1
 )
+
+# Liberty_School_new contains the replaced values and can be saved in your archive 
+# directory.
+save(Liberty_School_new, file = file.path(archiveDir, "Liberty_School_new.rda"))
 ```
 
-```{r, pat_outliers, Will_replace, eval=FALSE}
-# check if outliers were replaced with the median value 
-pat_outliers(
-  pat = Will_replace,
-  windowSize = 15,
-  thresholdMin = 8,
-  replace = FALSE,
-  showPlot = TRUE,
-  data_shape = 18,
-  data_size = 1,
-  data_color = "black",
-  data_alpha = 0.5,
-  outlier_shape = 8,
-  outlier_size = 1,
-  outlier_color = "red",
-  outlier_alpha = 1
-)
-# apparently not all outliers were replaced 
-```
 
 ## [pat_internalFit()](https://mazamascience.github.io/AirSensor/reference/pat_internalFit.html)
 This function uses a linear model to fit data from channel B to data from 
@@ -389,10 +350,10 @@ want to generate a utterly beautiful model fit plot.
 Let's have a look to a well fucntioning sensor and to a not-so-well functioning
 one. 
 
-```{r, lm_Balky, eval=FALSE}
-# Balky Hill linear model 
-lm_Balky <- pat_internalFit(
-  pat = Balky_Hill,
+```{r, lm-Liberty-School, eval=FALSE}
+# Liberty School linear model 
+lm_Liberty_School <- pat_internalFit(
+  pat = Liberty_School,
   showPlot = TRUE,
   size = 1,
   a_color = "red",
@@ -409,13 +370,13 @@ lm_Balky <- pat_internalFit(
 
 summary(lm_Balky)
 ```
-The model fit plot shows that the model is slightly biased towards channel A 
-(slope = 1.05) and that the linear model explains 100% of the data variability,
-supporting that the Balky Hill sensor's channels collected PM2.5 
-measurments consistenly throughout September 2020.
+The model fit plot shows that the model is slightly biased towards channel B 
+(slope = 0.95) and that the linear model explains 99.9% of the data variability.
+This supports the assumption that the Liberty School sensor functioned correctly
+throughout most of September 2020.
 
 
-```{r, lm_Willowbrook, eval=FALSE}
+```{r, lm-Willowbrook-Farm, eval=FALSE}
 # Willowbrook Farm linear model
 lm_Willowbrook <- pat_internalFit(
   pat = Willowbrook_Farm,
@@ -439,18 +400,14 @@ The model fit plot shows that the model is biased towards channel A
 (slope = 1.5), as evident in the bottom graphic, indicating the 
 malfunctioning of one or both of the Willowbrook Farm sensor's channels 
 throughout September 2020. 
-Despite that, we observe that the model explains ~ 92% of the data variability 
-(R2 = 0.922), suggesting that channel B is a reliable predictor of channel A's 
-observations. We can explore further if `pm25_A` and 
-`pm25_B` data are significantly different based on a student’s t-test. 
 
 ```{r, PurpleAirSoH_dailyABtTest() - Willowbrook_Farm, eval= FALSE}
+# not included in final tutorial. 
 tbl <- 
   Willowbrook_Farm %>%
   PurpleAirSoH_dailyABtTest()
 
 timeseriesTbl_multiPlot(tbl)
-timeseriesTbl_multiPlot(tbl_Balky)
 hist(tbl$pm25_A_pm25_B_p_value)
 sum(tbl$pm25_A_pm25_B_p_value < 0.05, na.rm = TRUE) #29 days of significant differences 
 
@@ -463,7 +420,7 @@ Willowbrook Farm sensor is not reliable.
 
 #! 
 
-### is this sctually true? What's the alpha value generally used? I did the same
+### is this actually true? What's the alpha value generally used? I did the same
 
 ### for an apperently well-functioning sensor (see code below), but that one too
 
@@ -476,18 +433,20 @@ Willowbrook Farm sensor is not reliable.
 ### without alpha? (updated issue #261)
 
 ```{r, PurpleAirSoH_dailyABtTest() - Balky_Hill, eval= FALSE}
-tbl_Balky <- 
-  Balky_Hill %>%
+# not included in final tutorial. 
+tbl_Liberty <- 
+  Liberty_School %>%
   PurpleAirSoH_dailyABtTest()
 
-timeseriesTbl_multiPlot(tbl_Balky)
-hist(tbl_Balky$pm25_A_pm25_B_p_value)
-sum(tbl_Balky$pm25_A_pm25_B_p_value < 0.05) #19 days of significant differences 
+timeseriesTbl_multiPlot(tbl_Liberty)
+hist(tbl_Liberty$pm25_A_pm25_B_p_value)
+sum(tbl_Liberty$pm25_A_pm25_B_p_value < 0.05) #25 days of significant differences 
 ```
+
 ## [pat_dailySoHPlot()](https://mazamascience.github.io/AirSensor/reference/pat_dailySoHIndexPlot.html)
 This function plots a subset of the most useful State of Health metrics calculated 
 by the [pat_dailySoH()](https://mazamascience.github.io/AirSensor/reference/pat_dailySoH.html) 
-function. The function runs pat_dailySoH internally and uses
+function. The function runs `pat_dailySoH()` internally and uses
 the output to create the plot.
 To better understand each plot, see also:
 
@@ -503,9 +462,9 @@ To better understand each plot, see also:
 
 * [PurpleAirSoH_dailyABtTest()](https://mazamascience.github.io/AirSensor/reference/PurpleAirSoH_dailyABtTest.html)
 
-```{r, pat_dailySoHPlot() - Balky_Hill, eval= FALSE}
+```{r, pat_dailySoHPlot-Liberty-School, eval= FALSE}
 # create plots for Balky Hill sensor
-pat_dailySoHPlot(Balky_Hill, ncol = 2)
+pat_dailySoHPlot(Liberty_School, ncol = 2)
 
 # temporary notes to be removed in final tutorial.
 # PurpleAirSoH_dailyPctDC()
@@ -529,44 +488,45 @@ pat_dailySoHPlot(Balky_Hill, ncol = 2)
 #     functioning sensor.
 
 ```
-The most concerning plot is pm25_A_temperature_rsquared given the persistent spikes 
+The most concerning plot is `pm25_A_temperature_rsquared` given the persistent spikes 
 throughout the month. Values are expected to hover near 0 for a properly 
-functioning sensor. 
-The pm25_A_pctDC and pm25_A_pctDC plots show that the channels A and B were 
-recording dynamic data (value > 0) towards the beginning and the end of the month, 
-which is also when the R squared values were lower. Especially at the beginning 
-of the month, the pm25_A_pm25_B_rsquared plot shows R squared values hovering 
-around zero, indicating a poor functioning of the sensor. 
+functioning sensor under normal conditions. Wildfire events during summer and the 
+heavy use of heating systems during winter could explain oscillating R squared values. 
+The `pm25_A_pctDC` plot shows that channel A
+recorded dynamic data (value > 0) towards the beginning and the end of the month
+in contrast to channel B, which collected sticky values throughout the entire month. This also corresponds to the period when the R squared values were lower as shown in
+in the `pm25_A_pm25_B_rsquared` plot. Especially at the beginning of the month, the
+plot shows R squared values hovering around zero, indicating the poor functioning of
+the sensor.
+
 
 #! 
 
 ### why pm25_B_temperature_rsquared is not included?
 
-### what is DC?
+### what is DC? direct current
 
 ## [pat_monitorComparison()](https://mazamascience.github.io/AirSensor/reference/pat_monitorComparison.html)
 This function creates and returns a ggplot object that plots raw pat data, 
 hourly aggregated pat data and hourly data from the nearest federal monitor 
 from the [PWFSL database](https://haze.airfire.org/monitoring/).
 
+**left here**
+
 ```{r, pat_monitorComparison() - Balky_Hill, eval= FALSE}
 # create comparison plot for balky Hill sensor
 pat_monitorComparison(
-  pat = Balky_Hill,
+  pat = Liberty_School,
   FUN = AirSensor::PurpleAirQC_hourly_AB_01,
   distanceCutoff = 20,
   ylim = NULL,
   replaceOutliers = TRUE,
   timezone = NULL
 )
-# Error in monitor_subset(ws_monitor, tlim = c(starttime, endtime)) : ws_monitor 
-# object contains zero monitors
+```
 
-?pat_monitorComparison
-# try example to see if it works 
-pat_monitorComparison(example_pat) # OK
-example_pat <- example_pat$data
 
+```{r}
 # try Willowbrook_Farm
 pat_monitorComparison(
   pat = Willowbrook_Farm,
@@ -578,7 +538,6 @@ pat_monitorComparison(
 )
 # Error in monitor_subset(ws_monitor, tlim = c(starttime, endtime)) : ws_monitor 
 # object contains zero monitors
-
 ```
 
 # !  
