@@ -74,7 +74,7 @@ Function for plotting PM2.5 concentration in a calendar format. This function wr
 
 Let's explore a couple of sensors using the US EPA Air Quality Index colors to see 
 which days during September 2020 had the worst PM2.5 levels, putting the health 
-of the Methow Valley's population at risk.  
+of the Methow Valley's population at risk.  Data from the nearest airport station obtained with the worldmet package. 
 ```{r sensor_calendarPlot}
 sensor_calendarPlot(
   sensor = Balky_Hill,
@@ -134,7 +134,6 @@ sensor_polarPlot(
 names(Balky_Hill$meta)
 
 ```
-# ! no wind data available in airsensor object, how does the function generate the mean value?
 
 ## sensor_pollutionRose()
 ```{r sensor_pollutionRose, eval=FALSE}
