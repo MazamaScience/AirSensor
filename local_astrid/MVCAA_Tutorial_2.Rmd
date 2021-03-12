@@ -11,7 +11,7 @@ vignette: >
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
-knitr::opts_knit$set(root.dir = "C:/Users/astri/Mirror/Mazamascience/Projects/AirSensor")
+knitr::opts_knit$set(root.dir = "C:/Users/astri/Mirror/Mazamascience/Projects/AirSensor") #remove
 ```
 
 ## Introduction
@@ -52,7 +52,8 @@ between temperature and humidity will be strongly negative.
 ## Refresh from MVCAA Tutorial 1: Creating `pat` objects
 ```{r, eval=FALSE}
 # Load files
-patList <- get(load(paste0(archiveDir,"/patList.rda")))
+archiveDir <- "C:/Users/astri/Mirror/Mazamascience/Projects/AirSensor/Data/MVCAA" #remove
+patList <- get(load(file.path(archiveDir,"/patList.rda")))
 
 # Print site names and associated ids
 sapply(patList, function(x) { return(x$meta$label) }) 
@@ -305,16 +306,24 @@ sensor worked well throughout September 2020.
 
 ## [pat_outliers()](https://mazamascience.github.io/AirSensor/reference/pat_outliers.html)
 
-This function detects outliers using a Median Average Deviation "Hampel" filter, appling a rolling Hampel filter to find those points that are very far out in the tails of the distribution of values within the window. 
+This function detects outliers using a Median Average Deviation "Hampel" filter, 
+appling a rolling Hampel filter to find those points that are very far out in 
+the tails of the distribution of values within the window. 
 
 `windowSize = 15` corresponds to a temporal window of approximately 30 minutes.
 
-The default threshold setting `thresholdMin = 8` identifies points that are extremely unlikely to be part of a normal distribution and therefore very likely to be an outlier.
+The default threshold setting `thresholdMin = 8` identifies points that are
+extremely unlikely to be part of a normal distribution and therefore very likely
+to be an outlier.
 
-Specifying `replace = TRUE` allows you to perform smoothing by replacing outliers with the window median value. Using this technique, you can create an highly smoothed, artificial dataset by setting thresholdMin = 1 or lower (but always above zero).
+Specifying `replace = TRUE` allows you to perform smoothing by replacing outliers
+with the window median value. Using this technique, you can create an highly 
+smoothed, artificial dataset by setting thresholdMin = 1 or lower (but always 
+above zero).
 
-In order to store the new dataset including the replaced values, you can create a new sensor object and save it in your archive directory (already defined in 
-Tutorial 1) like in the example below. 
+In order to store the new dataset including the replaced values, you can create 
+a new pat object and save it in your archive directory (already defined in 
+Tutorial 1) as in the example below. 
 
 
 ```{r, pat-outliers-Liberty-School, replace true, eval=FALSE}
@@ -344,7 +353,9 @@ save(Liberty_School_new, file = file.path(archiveDir, "Liberty_School_new.rda"))
 ## [pat_internalFit()](https://mazamascience.github.io/AirSensor/reference/pat_internalFit.html)
 This function uses a linear model to fit data from channel B to data from 
 channel A. If you save the model into an object, you can then interrogate the 
-linear model using the `base` function `summary()`. Set `showPlot = TRUE` if you
+linear model using the `base` function `summary()`. 
+
+Set `showPlot = TRUE` if you
 want to generate a utterly beautiful model fit plot.  
 
 Let's have a look to a well fucntioning sensor and to a not-so-well functioning
@@ -352,6 +363,7 @@ one.
 
 ```{r, lm-Liberty-School, eval=FALSE}
 # Liberty School linear model 
+library(AirSensor)
 lm_Liberty_School <- pat_internalFit(
   pat = Liberty_School,
   showPlot = TRUE,
@@ -368,7 +380,7 @@ lm_Liberty_School <- pat_internalFit(
   xylim = NULL
 )
 
-summary(lm_Balky)
+summary(lm_Liberty_School)
 ```
 The model fit plot shows that the model is slightly biased towards channel B 
 (slope = 0.95) and that the linear model explains 99.9% of the data variability.
@@ -397,12 +409,13 @@ lm_Willowbrook <- pat_internalFit(
 summary(lm_Willowbrook)
 ```
 The model fit plot shows that the model is biased towards channel A 
-(slope = 1.5), as evident in the bottom graphic, indicating the 
-malfunctioning of one or both of the Willowbrook Farm sensor's channels 
-throughout September 2020. 
+(slope = 1.5), as aslo evident in the bottom graphic, indicating the 
+malfunctioning of one or both of the Willowbrook Farm sensor's channels. 
+The model explains only 92.2% of the data variability, supporting the assumption
+that the sensor didn't function very well during September 2020. 
 
 ```{r, PurpleAirSoH_dailyABtTest() - Willowbrook_Farm, eval= FALSE}
-# not included in final tutorial. 
+# not included in final tutorial. remove
 tbl <- 
   Willowbrook_Farm %>%
   PurpleAirSoH_dailyABtTest()
@@ -418,7 +431,7 @@ and with a 95% confidence level we can state that the `pm25_A` and `pm25_B` data
 are significantly different. Thus, the September 2020 PM2.5 data collected by the
 Willowbrook Farm sensor is not reliable.
 
-#! 
+#! REMOVE
 
 ### is this actually true? What's the alpha value generally used? I did the same
 
@@ -433,7 +446,7 @@ Willowbrook Farm sensor is not reliable.
 ### without alpha? (updated issue #261)
 
 ```{r, PurpleAirSoH_dailyABtTest() - Balky_Hill, eval= FALSE}
-# not included in final tutorial. 
+# not included in final tutorial. # remove 
 tbl_Liberty <- 
   Liberty_School %>%
   PurpleAirSoH_dailyABtTest()
@@ -450,23 +463,37 @@ function. The function runs `pat_dailySoH()` internally and uses
 the output to create the plot.
 To better understand each plot, see also:
 
-* [PurpleAirSoH_dailyPctDC()](https://mazamascience.github.io/AirSensor/reference/PurpleAirSoH_dailyPctDC.html)
+* [PurpleAirSoH_dailyPctReporting()](https://mazamascience.github.io/AirSensor/reference/PurpleAirSoH_dailyPctReporting.html), 
+for `pm25_A_PctReporting` and `pm25_B_PctReporting`.Plots show the percentage of 
+each day that the sensor is reporting data.
 
-* [PurpleAirSoH_dailyPctReporting()](https://mazamascience.github.io/AirSensor/reference/PurpleAirSoH_dailyPctReporting.html)
+* [PurpleAirSoH_dailyPctValid()](https://mazamascience.github.io/AirSensor/reference/PurpleAirSoH_dailyPctValid.html), 
+for `pm25_A_PctValid` and `pm25_B_PctValid`. Plots show percentage of the total 
+recorded measurements that are considered plausible.
 
-* [PurpleAirSoH_dailyPctValid()](https://mazamascience.github.io/AirSensor/reference/PurpleAirSoH_dailyPctValid.html)
+* [PurpleAirSoH_dailyPctDC()](https://mazamascience.github.io/AirSensor/reference/PurpleAirSoH_dailyPctDC.html), 
+for `pm25_A_pctDC`, `pm25_B_pctDC`. A high percent DC (direct current) value 
+indicates the likely occurrence of a “sticky value”, and a zero or low percent 
+DC indicates that the sensor is recording dynamic data.
 
-* [PurpleAirSoH_dailyMetFit()](https://mazamascience.github.io/AirSensor/reference/PurpleAirSoH_dailyMetFit.html)
+* [PurpleAirSoH_dailyMetFit()](https://mazamascience.github.io/AirSensor/reference/PurpleAirSoH_dailyMetFit.html), 
+for `pm25_A_temperature_rsquared`. The plot show daily linear model values between 
+the pm25_A and temperature channels. The daily r-squared value is returned and is
+expected to hover near 0 for a properly functioning sensor, under normal 
+environemntal conditions.
 
-* [PurpleAirSoH_dailyABFit()](https://mazamascience.github.io/AirSensor/reference/PurpleAirSoH_dailyABFit.html)
+* [PurpleAirSoH_dailyABFit()](https://mazamascience.github.io/AirSensor/reference/PurpleAirSoH_dailyABFit.html), 
+for `pm25_A_pm25_B_slope`, `pm25_A_pm25_B_intercept`, and `pm25_A_pm25_B_rsquared`.
+Plots show daily linear model values between 
+the pm25_A and pm25_B channels. The daily r-squared value is returned in addition to
+the coefficients of the linear fit (slope and intercept).
 
-* [PurpleAirSoH_dailyABtTest()](https://mazamascience.github.io/AirSensor/reference/PurpleAirSoH_dailyABtTest.html)
 
 ```{r, pat_dailySoHPlot-Liberty-School, eval= FALSE}
 # create plots for Balky Hill sensor
 pat_dailySoHPlot(Liberty_School, ncol = 2)
 
-# temporary notes to be removed in final tutorial.
+# temporary notes to be removed in final tutorial. #remove
 # PurpleAirSoH_dailyPctDC()
 # --> A high percent DC value indicates the likely occurrence of a “sticky value”, 
 #     and a zero or low percent DC indicates that the sensor is recording dynamic data.
@@ -488,33 +515,48 @@ pat_dailySoHPlot(Liberty_School, ncol = 2)
 #     functioning sensor.
 
 ```
-The most concerning plot is `pm25_A_temperature_rsquared` given the persistent spikes 
-throughout the month. Values are expected to hover near 0 for a properly 
-functioning sensor under normal conditions. Wildfire events during summer and the 
-heavy use of heating systems during winter could explain oscillating R squared values. 
+The plot that grabs our attention the most is `pm25_A_temperature_rsquared` given 
+the persistent spikes throughout the month. Values are expected to hover near 0 for 
+a properly functioning sensor under normal environemntal conditions. 
+Wildfire events during summer and the heavy use of heating systems during winter
+could explain fluctuating R squared values.
+In this case, it's possible that the spikes recorded are due to wildfire events 
+around that period.
+
 The `pm25_A_pctDC` plot shows that channel A
 recorded dynamic data (value > 0) towards the beginning and the end of the month
-in contrast to channel B, which collected sticky values throughout the entire month. This also corresponds to the period when the R squared values were lower as shown in
-in the `pm25_A_pm25_B_rsquared` plot. Especially at the beginning of the month, the
-plot shows R squared values hovering around zero, indicating the poor functioning of
-the sensor.
+in contrast to channel B (`pm25_B_pctDC`), which collected sticky values throughout 
+the entire month. 
+We notice that this overlaps with periods when the R squared values were lower 
+as shown in the `pm25_A_pm25_B_rsquared` plot. Especially at the beginning of the 
+month, the plot shows R squared values hovering around zero, 
+indicating the poor functioning of the sensor.
 
-
-#! 
-
-### why pm25_B_temperature_rsquared is not included?
-
-### what is DC? direct current
 
 ## [pat_monitorComparison()](https://mazamascience.github.io/AirSensor/reference/pat_monitorComparison.html)
 This function creates and returns a ggplot object that plots raw pat data, 
 hourly aggregated pat data and hourly data from the nearest federal monitor 
 from the [PWFSL database](https://haze.airfire.org/monitoring/).
+If the nearest federal monitor didn't collect data during the period of time investigated
+or is not within the distance specified, it is possible that you'll ecounter the following error: 
+` Error in monitor_subset(ws_monitor, tlim = c(starttime, endtime)) : ws_monitor object contains zero monitors`.
+You can try to change the `distanceCutoff = 20` to 50 (km). However, 20 km is the 
+reccomended distance for the best analysis. Additionally you could use the AirFire 
+tool [Monitoring v4.1](https://tools.airfire.org/monitoring/v4/#!/?monitors=530470010_01&monitors=840530470016_01&monitors=530070007_01&category=PM2.5_nowcast&centerlat=48.21&centerlon=-120.1498&zoom=8) to gather more info about the 
+federal monitors in your area of interest and discover their exact location. 
 
-**left here**
+The `FUN` argument lets you specify which algorithm to use in order to apply 
+hourly aggregation QC. 
+For specific details on the QC logic, have look at the online documentation avialable 
+for each of the four algorithms: [PurpleAirQC_hourly_AB_00](https://mazamascience.github.io/AirSensor/reference/PurpleAirQC_hourly_AB_00.html), 
+[PurpleAirQC_hourly_AB_01](https://mazamascience.github.io/AirSensor/reference/PurpleAirQC_hourly_AB_01.html), 
+[PurpleAirQC_hourly_AB_02](https://mazamascience.github.io/AirSensor/reference/PurpleAirQC_hourly_AB_02.html), 
+[PurpleAirQC_hourly_AB_03](https://mazamascience.github.io/AirSensor/reference/PurpleAirQC_hourly_AB_03.html).
 
-```{r, pat_monitorComparison() - Balky_Hill, eval= FALSE}
-# create comparison plot for balky Hill sensor
+
+
+```{r, patmonitorComparison() - Liberty_School, eval= FALSE}
+# create comparison plot for Liberty School sensor
 pat_monitorComparison(
   pat = Liberty_School,
   FUN = AirSensor::PurpleAirQC_hourly_AB_01,
@@ -523,36 +565,31 @@ pat_monitorComparison(
   replaceOutliers = TRUE,
   timezone = NULL
 )
+
+# find out which is the nearest monitor
+Liberty_School$meta$pwfsl_closestMonitorID # "530470010_01"
 ```
 
-
-```{r}
-# try Willowbrook_Farm
-pat_monitorComparison(
-  pat = Willowbrook_Farm,
-  FUN = AirSensor::PurpleAirQC_hourly_AB_01,
-  distanceCutoff = 20,
-  ylim = NULL,
-  replaceOutliers = TRUE,
-  timezone = NULL
-)
-# Error in monitor_subset(ws_monitor, tlim = c(starttime, endtime)) : ws_monitor 
-# object contains zero monitors
-```
-
-# !  
-
-### Could you explain the error? I see that the closest PWFSL monitor is 840530470016_01
+The graph shows in grey the sensor data before the QC treatment (PA raw), in purple 
+the sensor data after the QC treatment (PA hourly), and in balck the data collected by 
+the nearest federal monitor (Monitor). We observe some agreement between the PA 
+hourly and the Monitor data. Their statistical relationship is discussed in the 
+next section. 
  
 
 ## [pat_externalFit()](https://mazamascience.github.io/AirSensor/reference/pat_externalFit.html)
 This function produces a linear model between data from PurpleAir and data from 
 the closest PWFSL monitor. A diagnostic plot is produced if `showPlot = TRUE`.
 
-```{r, pat_externalFit - Balky_Hill, eval= FALSE}
-# create comparison plot for balky Hill sensor
-pat_externalFit(
-  pat = Balky_Hill,
+#!
+### it would be helpful to have a few sentences describing the graphs, and what are the minumum expected values for slope and R sq. Here we are comparing PA sensor data to Monitor data, how tolerant can we be in assessing their relationship?
+
+### I think the function uses the default qc_algorithm value despite I specify different ones. lm_01 and lm_00 look alike, which is not possible. 
+
+```{r, patexternalFit - Liberty_Schooll, eval= FALSE}
+# create comparison plot for Liberty School sensor
+lm_01 <- pat_externalFit(
+  pat = Liberty_School,
   showPlot = TRUE,
   size = 1,
   pa_color = "purple",
@@ -571,13 +608,34 @@ pat_externalFit(
   min_count = 20
 )
 
-# Error in monitor_subset(ws_monitor, tlim = c(starttime, endtime)) : ws_monitor 
-# object contains zero monitors
+summary(lm_01)
 
 ```
-# ! 
+```{r, patexternalFit - Liberty_Schooll, eval= FALSE}
+# create comparison plot for Liberty School sensor
+lm_00 <- pat_externalFit(
+  pat = Liberty_School,
+  showPlot = TRUE,
+  size = 1,
+  pa_color = "purple",
+  pwfsl_color = "black",
+  alpha = 0.5,
+  lr_shape = 15,
+  lr_color = "black",
+  lr_lwd = 1.5,
+  lr_lcolor = "tomato",
+  lr_lalpha = 0.45,
+  ts_shape = 1,
+  xylim = NULL,
+  channel = "ab",
+  replaceOutliers = TRUE,
+  qc_algorithm = "hourly_AB_00",
+  min_count = 20
+)
 
-### Could you explain the error? I see that the closest PWFSL monitor is 840530470016_01
+summary(lm_00)
+
+```
 ----
 
 _Best of luck assessing air quality in your community!_
