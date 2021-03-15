@@ -38,11 +38,32 @@ Our goal in this tutorial is to explore a variety of `sensor_~()` functions avai
 in the **AirSensor** package and to explain their most important arguments and 
 the interpretation of output graphics.
 
-```{r airsensor data setup}
-# Directory with Methow Valley data
-wd <- getwd()
-archiveDir <- "Data/MVCAA"
-archiveDir <- paste0(wd, "/", archiveDir)
+```{r setup-data-directory, eval = FALSE, warning = FALSE, message = FALSE}
+# Methow Valley local data archive
+
+# ----- Setup ------------------------------------------------------------------
+
+# Directory with Methow Valley data: 
+# - choose "Option 1" if you created your data directory under your R home 
+# directory (~).
+# - choose "Option 2" if you created your data directory somewhere else.
+# Then go ahead running the rest of the script.
+
+# Option 1
+path.expand("~") # if you want to check your current home directory (~)
+archiveDir <- "~/Data/MVCAA"  
+
+# Option 2
+# Change "~" and keep "/Data/MVCAA".
+# Example: "C:/MethowValley/Data/MVCAA".
+DATA_DIR <- "~/Data/MVCAA" 
+
+# assign you data directory to "archiveDir"
+if ( exists("DATA_DIR") ) {
+  archiveDir <- file.path(DATA_DIR)
+} else {
+  archiveDir <- file.path("~/Data/MVCAA")
+}
 
 # AirSensor package
 library(AirSensor)
@@ -70,54 +91,61 @@ Little_Cougar <- airsensorList[["96b108298883ca47_64441"]]
 
 ## [sensor_calendarPlot()](https://mazamascience.github.io/AirSensor/reference/pat_monitorComparison.html)
 
-Function for plotting PM2.5 concentration in a calendar format. This function wraps the openair calendarPlot() function
+This function plots PM2.5 concentration in a calendar format and wraps the 
+[openair](https://bookdown.org/david_carslaw/openair/) 
+calendarPlot() function.
 
-Let's explore a couple of sensors using the US EPA Air Quality Index colors to see 
-which days during September 2020 had the worst PM2.5 levels, putting the health 
-of the Methow Valley's population at risk.  Data from the nearest airport station obtained with the worldmet package. 
-```{r sensor_calendarPlot}
+Let's explore a couple of sensors using the US EPA Air Quality Index colors, 
+`colors = "aqi"`. This way, we can see which days during September 2020 had the 
+worst PM2.5 levels, putting the health of the Methow Valley's population at risk.
+
+
+```{r sensor-calendarPlots,eval = FALSE, warning = FALSE, message = FALSE}
+# Create a calendar plot for Liberty School
 sensor_calendarPlot(
-  sensor = Balky_Hill,
+  sensor = Liberty_School,
   colors = "aqi",
   breaks = NULL,
   labels = NULL,
   limits = c(0, 100),
-  title = "September 2020 -- Balky Hill",
-  data.thresh = 50
-)
-  
-sensor_calendarPlot(
-  sensor = Bush_School,
-  colors = "aqi",
-  breaks = NULL,
-  labels = NULL,
-  limits = c(0, 100),
-  title = "September 2020 -- Balky Hill",
+  title = "September 2020 -- Liberty School",
   data.thresh = 50
 )
 
+# Create a calendar plot for Willowbrook Farm
 sensor_calendarPlot(
-  sensor = Beaver_Creek,
+  sensor = Willowbrook_Farm,
   colors = "aqi",
   breaks = NULL,
   labels = NULL,
   limits = c(0, 100),
-  title = "September 2020 -- Balky Hill",
+  title = "September 2020 -- Willowbrook Farm",
   data.thresh = 50
 )
 ```
-The Balky Hill, Bush School, and Beaver Creek sensor's calendar plots show that 
-the second and third weeks of September were the smokiest. Calendar plots are also 
-an easy way to quickly visualize missing data (e.g. Beaver Creek). This
+From the calendar plots we see that the second and third weeks of September were 
+the smokiest as revealed by the Liberty School sensor. Calendar plots are also 
+an easy way to quickly visualize missing data. This
 allow us to promptly evaluate which sensor to include in future analyses. 
+The Willowbrook Farm sensor had 11 days of mising data, probably the smokiest. 
+It would be risky to include this sensor in future analysis, since it's not 
+representative of the air quality conditions of September 2020. 
 
-## sensor_polarPlot()
-Function for plotting PM2.5 concentration in polar coordinates showing concentration 
+## [sensor_polarPlot()](https://mazamascience.github.io/AirSensor/reference/sensor_polarPlot.html)
+This function plots PM2.5 concentration in polar coordinates showing concentration 
 by wind speed and direction. This function wraps the openair polarPlot() function.
 
-```{r sensor_polarPlot, eval=FALSE}
-sensor_polarPlot(
-  sensor = Balky_Hill,
+If no wind data is specified, `windData = NULL`, the function uses wind data 
+of the nearest airport station obtained with the [worldmet](https://www.rdocumentation.org/packages/worldmet/versions/0.9.2/topics/worldmet) 
+package. 
+
+The colour scale for some of the statistics is only to provide an indication of overall 
+pattern and should not be interpreted in concentration units (µg/m3). 
+
+```{r sensor-polarPlot-Liberty_School, eval = FALSE, warning = FALSE, message = FALSE}
+# Create a polar plot for Liberty School
+polar_plot <- sensor_polarPlot(
+  sensor = Liberty_School,
   windData = NULL,
   statistic = "mean",
   resolution = "fine",
@@ -131,13 +159,81 @@ sensor_polarPlot(
   wd_spread = 4,
   verbose = TRUE
 )
-names(Balky_Hill$meta)
+```
+The plot shows that there is eveidence of increasing PM25 concentrations as the 
+wind speed (ws) decreases from all direction and mostly from N.
 
+To see the wind speed/direction conditions that dominate the overall mean, we 
+can use `statistic = "weighted_mean"`. As we can see from the plot below, wind 
+from N with a speed beteen 6 and 4 m/s carries the highest PM25 concentration. 
+```{r sensor-polarPlot-Liberty_School-wm, eval = FALSE, warning = FALSE, message = FALSE}
+# Create a polar plot for Liberty School
+polar_plot <- sensor_polarPlot(
+  sensor = Liberty_School,
+  windData = NULL,
+  statistic = "weighted_mean",
+  resolution = "fine",
+  colors = "default",
+  alpha = 1,
+  angleScale = 315,
+  normalize = FALSE,
+  key = TRUE,
+  keyPosition = "right",
+  ws_spread = 15,
+  wd_spread = 4,
+  verbose = TRUE
+)
 ```
 
-## sensor_pollutionRose()
-```{r sensor_pollutionRose, eval=FALSE}
-sensor_pollutionRose()
+## [sensor_pollutionRose()](https://mazamascience.github.io/AirSensor/reference/sensor_pollutionRose.html)
+This fucntion plots a traditional wind rose plot for wind direction and PM2.5.
+Wind speed data can be accessed by saving the the output into an R object. 
+```{r sensor_pollutionRose,eval = FALSE, warning = FALSE, message = FALSE}
+poll_rose <- sensor_pollutionRose(
+  sensor = Liberty_School,
+  windData = NULL,
+  statistic = "prop.count",
+  key = TRUE,
+  keyPosition = "right",
+  annotate = TRUE,
+  angle = 30,
+  angleScale = 315,
+  gridLine = NULL,
+  breaks = 6,
+  paddle = FALSE,
+  seg = 0.9,
+  normalize = FALSE,
+  verbose = TRUE
+)
+```
+
+```{r sensor_pollutionRose,eval = FALSE, warning = FALSE, message = FALSE}
+poll_rose <- sensor_pollutionRose(
+  sensor = Liberty_School,
+  windData = NULL,
+  statistic = "abs.count",
+  key = TRUE,
+  keyPosition = "right",
+  annotate = TRUE,
+  angle = 30,
+  angleScale = 315,
+  gridLine = NULL,
+  breaks = 6,
+  paddle = FALSE,
+  seg = 0.9,
+  normalize = FALSE,
+  verbose = TRUE
+)
+```
+The plot shows that higher PM25 concentrations are not strongly associated with a 
+particular direction, however wind from N seems to carry more PM25 particles 
+than any other direction.
+**left here **
+
+```{r-to-be-removed, warning = FALSE, message = FALSE}
+# trying to plot the plots next to each other (https://bookdown.org/david_carslaw/openair/sec-openair-package.html#sec:multiple-plots-page)
+print(polar_plot, split = c(1,1,2,1))
+print(poll_rose, split = c(2,1,2,1))
 ```
 
 ## sensor_extractData()
