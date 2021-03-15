@@ -83,9 +83,10 @@ path.expand("~")
 # Create your data directory anywhere you want, changing the home directory 
 # part ("~") and keeping the "/Data/MVCAA".
 #   Windows example: "C:/MethowValley/Data/MVCAA" 
-#   UNIX example: "~/Data/MVCAA" works well on UNIX/OSX.
+#   UNIX example: "~/Data/MVCAA" works well on UNIX/OSX.!to be removed!
 DATA_DIR <- "~/Data/MVCAA" 
 ```
+code above: UNIX example: "~/Data/MVCAA" works well on UNIX/OSX.!to be removed!
 
 ## Find Sensors
 
