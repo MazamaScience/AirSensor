@@ -41,7 +41,7 @@ The \code{datestamp} must be in the following format:
 By default, the current month is loaded.
 }
 \note{
-Starting with \pkg{AirSensor} version 0.6, archive file names are 
+Archive file names are 
 generated with a unique "device-deployment" identifier by combining a unique 
 location ID with a unique device ID. These "device-deployment" identifiers 
 guarantee that movement of a sensor will result in the creation of a new

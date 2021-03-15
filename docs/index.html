@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8</span>
       </span>
     </div>
 
@@ -128,11 +128,11 @@
 <div id="background" class="section level2">
 <h2 class="hasAnchor">
 <a href="#background" class="anchor"></a>Background</h2>
-<p>The AirSensor R package is being developed to help air quality analysts, scientists and interested members of the public more easily work with air quality data from consumer-grade air quality sensors. Initial focus is on PM2.5 measurements from sensors produced by <a href="https://www.purpleair.com">PurpleAir</a>.</p>
+<p>The AirSensor R package is being developed to help air quality analysts, scientists and interested members of the public more easily work with air quality data from consumer-grade air quality sensors. Initial focus is on PM2.5 measurements from sensors produced by <a href="https://www2.purpleair.com">PurpleAir</a>.</p>
 <p>The package makes it easier to obtain data, perform analyses and create visualizations. It includes functionality to:</p>
 <ul>
 <li>download and easily work with PM2.5 data from PurpleAir</li>
-<li>visualize raw “engineering” data from a PurpleAir sensor</li>
+<li>visualize raw “engineering-level” data from a PurpleAir sensor</li>
 <li>visualize data quality using built-in analytics and plots</li>
 <li>aggregate raw data onto an hourly axis</li>
 <li>create interactive maps and time series plots</li>
@@ -159,10 +159,12 @@ install.packages('knitr')
 install.packages('rmarkdown')
 devtools::install_github("MazamaScience/AirSensor")</a></code></pre>
 <p>Any work with spatial data, <em>e.g.</em> assigning countries, states and timezones, will require installation of required spatial datasets. To get these datasets you should type the following at the RStudio console:</p>
-<pre><code><a href="https://github.com/MazamaScience/MazamaSpatialUtils">library(MazamaSpatialUtils)
+<pre><code>library(MazamaSpatialUtils)
 dir.create('~/Data/Spatial', recursive=TRUE)
 setSpatialDataDir('~/Data/Spatial')
-installSpatialData()</a></code></pre>
+installSpatialData("NaturalEarthAdm1")
+installSpatialData("USCensusStates"")
+installSpatialData("CA_AirBasins_01")</code></pre>
 </div>
 </div>
 

@@ -53,6 +53,7 @@
 #' LA_basin <- 
 #'   example_pas %>% 
 #'   pas_filterArea(-118.5, -117.5, 33.5, 34.5)
+#'   
 #' pas_staticMap(LA_basin, paletteName = "AQI", zoomAdjust = 1)
 
 pas_staticMap <- function(

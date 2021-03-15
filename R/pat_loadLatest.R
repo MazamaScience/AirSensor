@@ -8,7 +8,7 @@
 #' loaded from the archive set with either \code{setArchiveBaseUrl()} or 
 #' \code{setArchiveBaseDir()} for locally archived files.
 #' 
-#' @note Starting with \pkg{AirSensor} version 0.6, archive file names are 
+#' @note Archive file names are 
 #' generated with a unique "device-deployment" identifier by combining a unique 
 #' location ID with a unique device ID. These \code{deviceDeploymentID} 
 #' identifiers guarantee that movement of a sensor will result in the creation 

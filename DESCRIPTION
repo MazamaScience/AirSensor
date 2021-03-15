@@ -1,6 +1,6 @@
 Type: Package
 Package: AirSensor
-Version: 1.0.7
+Version: 1.0.8
 Title: Process and Display Data from Air Quality Sensors
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
@@ -44,7 +44,7 @@ Imports:
     MazamaLocationUtils (>= 0.1.13),
     MazamaSpatialUtils (>= 0.7.3),
     openair,
-    PWFSLSmoke (>= 1.2.100),
+    PWFSLSmoke (>= 1.2.111),
     readr,
     RColorBrewer,
     rlang,
