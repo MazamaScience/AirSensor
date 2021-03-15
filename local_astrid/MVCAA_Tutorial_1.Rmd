@@ -86,7 +86,9 @@ path.expand("~")
 #   UNIX example: "~/Data/MVCAA" works well on UNIX/OSX.!to be removed!
 DATA_DIR <- "~/Data/MVCAA" 
 ```
-code above: UNIX example: "~/Data/MVCAA" works well on UNIX/OSX.!to be removed!
+Jon, I think the code above should be removed: "UNIX example: "~/Data/MVCAA" works well on UNIX/OSX".
+"~" works well with Windows as well, if one wants to create a data directory under the 
+home directory "~". 
 
 ## Find Sensors
 
