@@ -89,12 +89,27 @@ small collections of data for other communities and other dates.
 
 # ----- Setup ------------------------------------------------------------------
 
-# Directory with Methow Valley data
-#archiveDir <- "~/Data/MVCAA" -- this doesn't work 
+# Directory with Methow Valley data: 
+# - choose "Option 1" if you created your data directory under your R home 
+# directory (~).
+# - choose "Option 2" if you created your data directory somewhere else.
+# Then go ahead running the rest of the script.
 
-wd <- getwd()
-archiveDir <- "Data/MVCAA"
-archiveDir <- paste0(wd, "/", archiveDir)
+# Option 1
+path.expand("~") # if you want to check your current home directory (~)
+archiveDir <- "~/Data/MVCAA"  
+
+# Option 2
+# Change "~" and keep "/Data/MVCAA".
+# Example: "C:/MethowValley/Data/MVCAA".
+DATA_DIR <- "C:/Users/astri/Mirror/Mazamascience/Projects/AirSensor/Data/MVCAA" 
+
+# assign you data directory to "archiveDir"
+if ( exists("DATA_DIR") ) {
+  archiveDir <- file.path(DATA_DIR)
+} else {
+  archiveDir <- file.path("~/Data/MVCAA")
+}
 
 # AirSensor package
 library(AirSensor)
@@ -171,7 +186,14 @@ load it from our archive and briefly explore it.
 
 ```{r load_local_data, eval = TRUE, warning = FALSE, message = FALSE}
 # Empty current environment to ensure we're using our local archive
-rm(list = ls())
+# But retain "DATA_DIR if it has been set.
+rm(list = setdiff(ls(), c("DATA_DIR")))
+
+if ( exists("DATA_DIR") ) {
+  archiveDir <- file.path(DATA_DIR)
+} else {
+  archiveDir <- file.path("~/Data/MVCAA")
+}
 
 # AirSensor package
 library(AirSensor)
