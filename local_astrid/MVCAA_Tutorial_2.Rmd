@@ -167,7 +167,7 @@ For the purpuse of this turorial we'll use "all", "pm25_over", and "aux".
 
 ```
 The "all" plot type offers a nice overview of all four variables. We can 
-already start seeing an agreement between channel A and B data and an inverse relationship between humidity and temperature measurments. 
+already start seeing an agreement between channel A and B data and an inverse relationship between humidity and temperature measurements. 
 
 Let's give a closer look at the channels using the "pm25_over" plot type. 
 ```{r, Liberty-School-pm25over, eval=FALSE}
@@ -459,7 +459,7 @@ The plot that grabs our attention the most is `pm25_A_temperature_rsquared` give
 the persistent spikes occurring throughout the month. Values are expected to hover near 0 for 
 a properly functioning sensor under normal environemntal conditions. 
 Wildfire events during summer and the heavy use of heating systems during winter
-could explain fluctuating R squared values.
+could explain fluctuating r-squared values.
 In this case, it's possible that the spikes recorded in this plot are due to 
 wildfire events around that period.
 
@@ -467,9 +467,9 @@ The `pm25_A_pctDC` plot shows that channel A
 recorded dynamic data (value > 0) towards the beginning and the end of the month
 in contrast to channel B (`pm25_B_pctDC`), which collected sticky values throughout 
 the entire month. 
-We notice that this overlaps with periods when the R squared values were lower 
+We notice that this overlaps with periods when the r-squared values were lower 
 as shown in the `pm25_A_pm25_B_rsquared` plot. Especially at the beginning of the 
-month, the plot shows R squared values hovering around zero, 
+month, the plot shows r-squared values hovering around zero, 
 indicating the poor functioning of the sensor.
 
 
@@ -517,6 +517,15 @@ the nearest federal monitor (Monitor). We observe some agreement between the PA
 hourly and the Monitor data. Their statistical relationship is discussed in the 
 next section. 
  
+# !
+
+### Jon, is there a difference between federal monitor and PWFSL monitor. 
+
+### I thought they were the same. Maybe we need a sentence to expain this. 
+
+### Also, we have different agencies (e.g. AirNow, AIRSIS, etc), so what do we mean by 
+
+### PWFSL monitor? for pat_externalFit(), the doc says "PWFSL monitor". 
 
 ## [pat_externalFit()](https://mazamascience.github.io/AirSensor/reference/pat_externalFit.html)
 This function produces a linear model between data from PurpleAir and data from 
