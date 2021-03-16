@@ -30,6 +30,23 @@ Tutorials in this series include:
 * [MVCAA Tutorial 6: Using a Local Archive](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_6.html)
 * [MVCAA Tutorial 7: Methow Vallely Smoke](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_7.html)
 
+## Goal
+
+Our goal in this tutorial is to create 'pas' and 'pat' data for a single month
+for the Methow Valley -- a community in north-central Washington State.
+[Clean Air Methow](https://www.cleanairmethow.org) 
+operates as a project of the
+[Methow Valley Citizens Council](http://mvcitizens.org)
+and began deploying Purple Air Sensors in 2018:
+
+> In the summer of 2018, Clean Air Methow launched the Clean Air Ambassador 
+> Program, an exciting citizen science project, and one of the largest, rural 
+> networks of low-cost sensors in the world!
+
+This tutorial will demonstrate how to create 'pas' and 'pat data for this collection of
+sensors for September, 2020 when the Methow Valley experienced poor air
+quality due to Wildfire smoke.
+
 ## PAS and PAT Objects
 
 `pas` objects in the **AirSensor** package are described in
@@ -48,23 +65,6 @@ as well as the actual time series measurements made by that sensor.
 In order to successfully work with PurpleAir sensor data, we will need to create
 both a 'pas' object and a collection of 'pat' objects for the sensors we are
 interested in.
-
-## Goal
-
-Our goal in this tutorial is to create 'pas' and 'pat' data for a single month
-for the Methow Valley -- a community in north-central Washington State.
-[Clean Air Methow](https://www.cleanairmethow.org) 
-operates as a project of the
-[Methow Valley Citizens Council](http://mvcitizens.org)
-and began deploying Purple Air Sensors in 2018:
-
-> In the summer of 2018, Clean Air Methow launched the Clean Air Ambassador 
-> Program, an exciting citizen science project, and one of the largest, rural 
-> networks of low-cost sensors in the world!
-
-This tutorial will demonstrate how to create 'pas' and 'pat data for this collection of
-sensors for September, 2020 when the Methow Valley experienced poor air
-quality due to Wildfire smoke.
 
 ## Set DATA_DIR
 

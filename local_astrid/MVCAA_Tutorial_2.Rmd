@@ -1,7 +1,7 @@
 ---
 title: "MVCAA Tutorial 2: Exploring PAT Data"
 author: "Mazama Science"
-date: "2021-03-12"
+date: "2021-03-16"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{MVCAA Tutorial 2: Exploring PAT Data}
@@ -38,7 +38,8 @@ Our goal in this tutorial is to explore a variety of `pat_~()` functions availab
 in the **AirSensor** package and to explain their most important arguments and 
 the interpretation of output graphics.
 
-## How to interpret the graphics
+## PurpleAir A & B Channels
+
 PurpleAir (PA) sensors are unique in that they have two separate optical particle 
 detectors — one labeled A and one labeled B.
 All of the plotting functions, except `pat_monitorComparison()` and 
@@ -50,6 +51,7 @@ the A and B channel (pm25_A:pm25_B) will be strongly positive, while correlation
 between temperature and humidity will typically be strongly negative.
 
 ## Loading `pat` objects created in MVCAA Tutorial 1
+
 ```{r load-data, eval = TRUE, warning = FALSE, message = FALSE}
 library(AirSensor)
 
@@ -79,7 +81,7 @@ Beaver_Creek <- patList[["2e3b5ceea86a885b_10168"]]
 Little_Cougar <- patList[["96b108298883ca47_64441"]]
 ```
 
-## pat_dygraph()
+## pat_dygraph
 
 The [pat_dygraph()](https://mazamascience.github.io/AirSensor/reference/pat_dygraph.html)
 function creates interactive graphs that will be displayed in RStudio's 'Viewer' tab.

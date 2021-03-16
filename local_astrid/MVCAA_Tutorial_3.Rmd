@@ -1,7 +1,7 @@
 ---
 title: "MVCAA Tutorial 3: Creating Airsensor Data"
 author: "Mazama Science"
-date: "2021-03-02"
+date: "2021-03-16"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{MVCAA Tutorial 3: Creating Airsensor Data}
@@ -11,7 +11,6 @@ vignette: >
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
-knitr::opts_knit$set(root.dir = "C:/Users/astri/Mirror/Mazamascience/Projects/AirSensor")
 ```
 
 ## Introduction
@@ -33,6 +32,14 @@ Tutorials in this series include:
 * [MVCAA Tutorial 5: Building a Local Archive](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_5.html)
 * [MVCAA Tutorial 6: Using a Local Archive](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_6.html)
 * [MVCAA Tutorial 7: Methow Vallely Smoke](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_7.html)
+
+## Goal
+
+The goal in this tutorial is to load previously generated 'pat' data and then
+create and save a multi-sensor 'airsensor' object. Aggregation of raw data to 
+quality controlled, hourly averages allows sensor
+data to be compared with meteorological and air quality data from other sources.
+Hourly aggregation is the _de facto_ standard for most air quality analysis.
 
 ## Sensor Objects
 
@@ -65,14 +72,6 @@ designed to work with 'ws_monitor' objects can also be used with 'airsensor' obj
 This opens up a wide suite of of functionality that can be used to analyze and plot
 sensor data after it has been converted into an 'airsensor' object.
 
-## Goal
-
-The goal in this tutorial is to load previously generated 'pat' data and then
-create and save a multi-sensor 'airsensor' object. Aggregation of raw data to 
-quality controlled, hourly averages allows sensor
-data to be compared with meteorological and air quality data from other sources.
-Hourly aggregation is the _de facto_ standard for most air quality analysis.
-
 ## R Script
 
 The following R script will take a few moments to run and will create an
@@ -89,30 +88,12 @@ small collections of data for other communities and other dates.
 
 # ----- Setup ------------------------------------------------------------------
 
-# Directory with Methow Valley data: 
-# - choose "Option 1" if you created your data directory under your R home 
-# directory (~).
-# - choose "Option 2" if you created your data directory somewhere else.
-# Then go ahead running the rest of the script.
+library(AirSensor)
 
-# Option 1
-path.expand("~") # if you want to check your current home directory (~)
-archiveDir <- "~/Data/MVCAA"  
-
-# Option 2
-# Change "~" and keep "/Data/MVCAA".
-# Example: "C:/MethowValley/Data/MVCAA".
-DATA_DIR <- "C:/Users/astri/Mirror/Mazamascience/Projects/AirSensor/Data/MVCAA" 
-
-# assign you data directory to "archiveDir"
-if ( exists("DATA_DIR") ) {
-  archiveDir <- file.path(DATA_DIR)
-} else {
+# Use the default archiveDir unless it is already defined
+if ( !exists("archiveDir") ) {
   archiveDir <- file.path("~/Data/MVCAA")
 }
-
-# AirSensor package
-library(AirSensor)
 
 # Load previously generated 'pas' and 'pat' data
 mvcaa <- get(load(file.path(archiveDir, "mvcaa.rda")))
@@ -185,26 +166,21 @@ load it from our archive and briefly explore it.
 
 
 ```{r load_local_data, eval = TRUE, warning = FALSE, message = FALSE}
-# Empty current environment to ensure we're using our local archive
-# But retain "DATA_DIR if it has been set.
-rm(list = setdiff(ls(), c("DATA_DIR")))
-
-if ( exists("DATA_DIR") ) {
-  archiveDir <- file.path(DATA_DIR)
-} else {
-  archiveDir <- file.path("~/Data/MVCAA")
-}
-
 # AirSensor package
 library(AirSensor)
+
+# Use the default archiveDir unless it is already defined
+if ( !exists("archiveDir") ) {
+  archiveDir <- file.path("~/Data/MVCAA")
+}
 
 # Examine archive directory
 list.files(archiveDir) # you should see: "airsensorList.rda" "mvcaa.rda" "patList.rda" 
 
 # Load files
-mvcaa <- get(load(paste0(archiveDir, "/mvcaa.rda")))
-patList <- get(load(paste0(archiveDir, "/patList.rda")))
-airsensorList <- get(load(paste0(archiveDir,"/airsensorList.rda")))
+mvcaa <- get(load(file.path(archiveDir, "mvcaa.rda")))
+patList <- get(load(file.path(archiveDir, "patList.rda")))
+airsensorList <- get(load(file.path(archiveDir,"airsensorList.rda")))
 
 # Examine a 'pat' object
 pat1 <- patList[[1]]
@@ -229,7 +205,7 @@ experienced with R and the Mazama Science packages.
 ```{r fancy plot, eval = TRUE, warning = FALSE, message = FALSE, fig.height = 12}
 # Combine single-sensor 'airsensor' objects into a multi-sensor 'monitor' object
 my_monitors <- PWFSLSmoke::monitor_combine(airsensorList)
-names(my_monitors$data) # single parameter, more sensors
+names(my_monitors$data) # datetime + deviceDeploymentIDs
 
 # Use MazamaCoreUtils::dateRange() to ensure we get POSIXct times in the local timezone
 dateRange <- MazamaCoreUtils::dateRange(
