@@ -16,7 +16,7 @@ knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
 ## Introduction
 
 This tutorial demonstrates basic exploration of previously created 'pat' 
-timeseries data. In order to run the code in this tutoral you must have 
+timeseries data. In order to run the code in this tutorial you must have 
 followed the instructions in Tutorial 1 and created a directory with 'pas' 
 and 'pat' data files for the Methow Valley. Target
 audiences include grad students, researchers and any member of the public
@@ -93,7 +93,7 @@ disconnected points.
 Specifying the correct Olson `timezone` ensures that times are displayed in 
 local time.
 
-_NOTE:_ You can expriment with the `rollPeriod` by adjusting the number in the
+_NOTE:_ You can experiment with the `rollPeriod` by adjusting the number in the
 dygraph viewer.
 
 _NOTE:_ You can use the sliders underneath each plot to change the time period
@@ -148,10 +148,10 @@ common plot types. Available `plottype` options include:
 
 * "aux" – auxiliary data (temperature, humidity)
 
-For the purpuse of this turorial we'll use "all", "pm25_over", and "aux". 
-As before, subsampling to only 1000 points speeds up plotting.
+For the purpose of this tutorial we'll use "all", "pm25_over", and "aux". 
+As before, sub-sampling to only 1000 points speeds up plotting.
 
-_NOTE:_ This plot carefuly retains outliers in the A and B channels while 
+_NOTE:_ This plot carefully retains outliers in the A and B channels while 
 sampling so that the overall appearance of the A and and B plots should remain 
 the same regardless of the `sampleSize`.
 
@@ -287,7 +287,7 @@ save(Liberty_School_clean, file = file.path(archiveDir, "Liberty_School_clean.rd
 ```
 
 The `pat_outlier()` function will always find some outliers, often insignificant 
-ones. The plot aove shows a few non-concerning outliers. Outliers of concern may be
+ones. The plot above shows a few non-concerning outliers. Outliers of concern may be
 associated with electronic "glitches" and appear far away from the main 
 distribution as depicted in the example 
 below (notice data around August 3, 2018). 
@@ -336,7 +336,7 @@ summary(lm_Willowbrook)
 ```
 
 The model fit plot shows that the model is biased towards channel A 
-(slope = 1.5), as is aslo evident in the bottom graphic, indicating the 
+(slope = 1.5), as is also evident in the bottom graphic, indicating the 
 malfunctioning of one or both Willowbrook Farm sensor's channels. 
 The model explains only 92.2% of the data variability, reinforcing the assumption
 that the sensor did not function properly in September, 2020. 
@@ -418,8 +418,8 @@ indicating the poor functioning of the sensor during that period.
 ## pat_monitorComparison
 
 The [pat_monitorComparison()](https://mazamascience.github.io/AirSensor/reference/pat_monitorComparison.html)
-function is in anotgher new category of functions that compare hourly aggregated sensor 
-data with data from a professionally maintained sensor.
+function is in another new category of functions that compare hourly aggregated sensor 
+data with data from a professionally maintained "Federal Reference Method" (FRM) monitor
 
 `pat_monitorComparison()` 
 creates and returns a ggplot object that plots raw pat data, 
@@ -428,17 +428,17 @@ from the US Forest Service maintained
 [PWFSL database](https://haze.airfire.org/monitoring/).
 
 If the nearest monitor didn't collect data during the period of time investigated
-or is not within the `distanceCutoff`, it is possible that you will ecounter the following error: 
+or is not within the `distanceCutoff`, it is possible that you will encounter the following error: 
 
 ```
 Error in monitor_subset(ws_monitor, tlim = c(starttime, endtime)) : ws_monitor object contains zero monitors
 ```
 
 You can try to change the `distanceCutoff = 20` to 50 (km). However, 20 km is the 
-recommended distance to ensure that both instruments are measuing similar parcels
+recommended distance to ensure that both instruments are measuring similar parcels
 of air.
 
-To learn more info about the PWFSL monitors in your area of interest and 
+To learn more info about the FRM monitors in your area of interest and 
 discover their exact location, you can use the USFS AirFire 
 [Monitoring Site](https://tools.airfire.org/monitoring/v4).
 
@@ -447,7 +447,7 @@ one of several Quality Control functions available in the **AirSensor**
 package. These functions use various algorithms to invalidate certain hourly 
 values that don't pass QC. The `FUN` argument lets you specify which QC algorithm to use. 
 
-For specific details on the QC logic, have look at the online documentation avialable 
+For specific details on the QC logic, have look at the online documentation available 
 for each of the four algorithms: 
 
 * [PurpleAirQC_hourly_AB_00](https://mazamascience.github.io/AirSensor/reference/PurpleAirQC_hourly_AB_00.html), 
@@ -474,9 +474,9 @@ Liberty_School$meta$pwfsl_closestMonitorID # "530470010_01"
 
 The graph shows:
 
-* in grey -- sensor data before aggregation and QC (PA raw)
+* in gray -- sensor data before aggregation and QC (PA raw)
 * in purple -- sensor data after the QC treatment (PA hourly)
-* in balck -- data collected by the nearest onitor (Monitor)
+* in black -- data collected by the nearest monitor (Monitor)
 
 There is general agreement between "PA hourly" and "Monitor" but many of the 
 hourly aggregated values are missing because they have been invalidated by our
@@ -495,8 +495,6 @@ pat_monitorComparison(
 )
 ```
 
-
-
 We observe some agreement between the PA hourly and the monitor data. The trends
 are similar but the absolute values differ. A more detailed assessment of their 
 statistical relationship is discussed in the next section. 
@@ -505,66 +503,32 @@ statistical relationship is discussed in the next section.
 
 The [pat_externalFit()](https://mazamascience.github.io/AirSensor/reference/pat_externalFit.html)
 function produces a linear model between data from PurpleAir and data from 
-the closest PWFSL monitor (federal monitor). A diagnostic plot is produced if 
+the closest FRM monitor. A diagnostic plot is produced if 
 `showPlot = TRUE`.
 
-# !
+_NOTE:_ As of **AirSensor** version 1.0.8, this function does not properly
+support choosing the QC algorithm and `hourly_AB_01` is always used.
 
-### Jon, since we are comparing PA sensor data to Monitor data, how tolerant can we be in assessing their relationship?
-
-### Issue: I think the function uses the default qc_algorithm value despite I specify different ones. lm_01 and lm_00 look alike, which is not possible. 
-
-```{r patexternalFit-01-Liberty-Schooll, eval = TRUE, warning = FALSE, message = FALSE}
+```{r patexternalFit-01-Liberty-School, eval = TRUE, warning = FALSE, message = FALSE}
 # create comparison plot for Liberty School sensor
 lm_01 <- pat_externalFit(
   pat = Liberty_School,
-  showPlot = TRUE,
-  size = 1,
-  pa_color = "purple",
-  pwfsl_color = "black",
-  alpha = 0.5,
-  lr_shape = 15,
-  lr_color = "black",
-  lr_lwd = 1.5,
-  lr_lcolor = "tomato",
-  lr_lalpha = 0.45,
-  ts_shape = 1,
-  xylim = NULL,
-  channel = "ab",
-  replaceOutliers = TRUE,
-  qc_algorithm = "hourly_AB_01",
-  min_count = 20
+  showPlot = TRUE
 )
 
 summary(lm_01)
-
 ```
 
-```{r patexternalFit-00-Liberty-Schooll, eval = TRUE, warning = FALSE, message = FALSE}
-# create comparison plot for Liberty School sensor
-lm_00 <- pat_externalFit(
-  pat = Liberty_School,
-  showPlot = TRUE,
-  size = 1,
-  pa_color = "purple",
-  pwfsl_color = "black",
-  alpha = 0.5,
-  lr_shape = 15,
-  lr_color = "black",
-  lr_lwd = 1.5,
-  lr_lcolor = "tomato",
-  lr_lalpha = 0.45,
-  ts_shape = 1,
-  xylim = NULL,
-  channel = "ab",
-  replaceOutliers = TRUE,
-  qc_algorithm = "hourly_AB_00",
-  min_count = 20
-)
+We can _almost_ see that the nearest FRM monitor to the Liberty School sensor
+is 4.2 km away -- nicely close for this analysis.
 
-summary(lm_00)
+Unfortunately, several of the hourly aggregated values have been invalidated 
+during the periods of highest wildfire smoke. Of the remaining hourly values, the
+linear fit is actually pretty good with an r-squared of 0.94 and a slope of 0.69
+implying that the PurpleAir sensor is overstating the PM2.5 values.
 
-```
+Overall, the Liberty sensor tracked wildfire smoke intrusions quite well.
+
 ----
 
 _Best of luck assessing air quality in your community!_
