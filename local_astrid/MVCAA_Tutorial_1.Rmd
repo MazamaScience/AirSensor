@@ -23,7 +23,7 @@ concerned about air quality and comfortable working with R and RStudio.
 Tutorials in this series include:
 
 * [MVCAA Tutorial 1: Creating PAT Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_1.html)
-* [MVCAA Tutorial 2: Examining PAT Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_2.html)
+* [MVCAA Tutorial 2: Exploring PAT Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_2.html)
 * [MVCAA Tutorial 3: Creating Airsensor Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_3.html)
 * [MVCAA Tutorial 4: Exploring Airsensor Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_4.html)
 * [MVCAA Tutorial 5: Building a Local Archive](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_5.html)
@@ -72,7 +72,7 @@ Before you start, consider where on your computer you are going to save your dat
 and create your archive. By default, these tutorials will save data underneath
 your "home" directory.
 
-Run `path.expand("~")` in the R console to see the locaiton of your home directory. 
+Run `path.expand("~")` in the R console to see the location of your home directory. 
 If you wish to save data somewhere else, you can specify an alternate location by 
 modifying the code below. Otherwise you can jump to the next section.
 
@@ -81,20 +81,20 @@ modifying the code below. Otherwise you can jump to the next section.
 path.expand("~")
 
 # Create your data directory anywhere you want, changing the home directory 
-# part ("~") and keeping the "/Data/MVCAA".
-#   Windows example: "C:/MethowValley/Data/MVCAA" 
-#   UNIX example: "~/Data/MVCAA" works well on UNIX/OSX.!to be removed!
+# part ("~") and keeping "Data/MVCAA".
+#
+# Windows example: DATA_DIR <- "C:/MethowValley/Data/MVCAA" 
+#    UNIX example: DATA_DIR <- "/MethowValley/Data/MVCAA"
+
+# The default choice places data underneath your home directory
 DATA_DIR <- "~/Data/MVCAA" 
 ```
-Jon, I think the code above should be removed: "UNIX example: "~/Data/MVCAA" works well on UNIX/OSX".
-"~" works well with Windows as well, if one wants to create a data directory under the 
-home directory "~". 
 
 ## Find Sensors
 
 The first task is to identify the senors we wish to use. This can be done by
-loading the default 'pas' object from the Mazama Science maintained data archvie, 
-zooming in on the Methow Valley.
+loading the default 'pas' object from the Mazama Science maintained data archive 
+and then zooming in on the Methow Valley.
 
 ```{r wa-leaflet, eval = TRUE, warning = FALSE, message = FALSE}
 # AirSensor package
@@ -125,12 +125,13 @@ labeled with "MV Clean Air Ambassador".
 ## R Script
 
 The following R script will take several minutes to run and will create 'pas'
-and 'pat' data files on your computer.
+and 'pat' data files on your computer. Once these files have been created, 
+loading them will be very fast.
 
 After running the script, a final 
 section will demonstrate how to load and work with these local data files.
 
-This R script can be used as a starting point for those wishing to create 
+This R script can be used as a starting point for anyone interested in creating 
 small collections of data for other communities and other dates.
 
 ```{r create-archive, eval = FALSE, warning = FALSE, message = FALSE}
@@ -245,7 +246,7 @@ sprintf("%.1f Mb", fileSize/1e6)
 Now we have a local copy of all of the 'pas' and 'pat' data we wanted, pre-compiled
 into 'pas' and 'pat' objects.
 
-```{r load_local_data, eval = TRUE, warning = FALSE, message = FALSE}
+```{r load-local-data, eval = TRUE, warning = FALSE, message = FALSE}
 # Empty current environment to ensure we're using our local archive.
 # But retain "DATA_DIR if it has been set.
 rm(list = setdiff(ls(), c("DATA_DIR")))

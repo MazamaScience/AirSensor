@@ -25,7 +25,7 @@ concerned about air quality and comfortable working with R and RStudio.
 Tutorials in this series include:
 
 * [MVCAA Tutorial 1: Creating PAT Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_1.html)
-* [MVCAA Tutorial 2: Examining PAT Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_2.html)
+* [MVCAA Tutorial 2: Exploring PAT Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_2.html)
 * [MVCAA Tutorial 3: Creating Airsensor Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_3.html)
 * [MVCAA Tutorial 4: Exploring Airsensor Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_4.html)
 * [MVCAA Tutorial 5: Building a Local Archive](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_5.html)
@@ -42,19 +42,26 @@ the interpretation of output graphics.
 PurpleAir (PA) sensors are unique in that they have two separate optical particle 
 detectors — one labeled A and one labeled B.
 All of the plotting functions, except `pat_monitorComparison()` and 
-`pat_externalFit()`, only use data from a *single* PA sensor — with A and B data channels. When measurements from the A and B channels are largely in agreement 
-then the sensor is working properly. When they substantially differ, there is 
+`pat_externalFit()`, only use data from a *single* PA sensor — with A and B data channels. 
+When measurements from the A and B channels are largely in agreement,
+the sensor is working properly. When they substantially differ, there is 
 a problem. Moreover, when a sensor is properly functioning, correlation between 
 the A and B channel (pm25_A:pm25_B) will be strongly positive, while correlation
-between temperature and humidity will be strongly negative.
+between temperature and humidity will typically be strongly negative.
 
-## Refresh from MVCAA Tutorial 1: Creating `pat` objects
-```{r, eval=FALSE}
-# Load files (your archiveDir was defined in Tutorial 1 and should be in your R 
-# environment)
+## Loading `pat` objects created in MVCAA Tutorial 1
+```{r load-data, eval = TRUE, warning = FALSE, message = FALSE}
+library(AirSensor)
+
+# Use the default archiveDir unless it is already defined
+if ( !exists("archiveDir") ) {
+  archiveDir <- file.path("~/Data/MVCAA")
+}
+
+# Load pat data
 patList <- get(load(file.path(archiveDir,"/patList.rda")))
 
-# Print site names and associated ids
+# Print site ids and associated names
 sapply(patList, function(x) { return(x$meta$label) }) 
 
 # Pull out each sensor as a separate 'pat' object
@@ -72,56 +79,52 @@ Beaver_Creek <- patList[["2e3b5ceea86a885b_10168"]]
 Little_Cougar <- patList[["96b108298883ca47_64441"]]
 ```
 
-## [pat_dygraph](https://mazamascience.github.io/AirSensor/reference/pat_dygraph.html)
-This function creates interactive graphs that will be displayed in RStudio's 'Viewer' tab.
+## pat_dygraph()
 
-Lets explore a couple of sensors. 
+The [pat_dygraph](https://mazamascience.github.io/AirSensor/reference/pat_dygraph.html)
+function creates interactive graphs that will be displayed in RStudio's 'Viewer' tab.
+
+Lets explore a couple of sensors. We will accept default settings for most of
+the `pat_dygraph()` parameters but will apply use `sampleSize = 1000` and 
+`rollPeriod = 6`. Reducing the `sampleSize` prevents the interactive viewer from
+bogging down and increasing the `rollPeriod` results in smooth lines rather than
+disconnected points.
+
+Specifying the correct Olson `timezone` ensures that times are displayed in 
+local time.
+
+_NOTE:_ You can expriment with the `rollPeriod` by adjusting the number in the
+dygraph viewer.
 
 ### Liberty School
-```{r Liberty-School, eval=FALSE}
+
+```{r Liberty-School, eval = TRUE, warning = FALSE, message = FALSE}
 pat_dygraph(
   pat = Liberty_School, 
-  parameter = "pm25",
   sampleSize = 1000,
-  title = NULL,
   xlab = "September 2020",
-  ylab = NULL,
-  tlim = NULL,
   rollPeriod = 6,
-  showLegend = TRUE,
-  colors = NULL,
-  timezone = NULL
+  timezone = "America/Los_Angeles"
 )
-
 ```
 
 
 ### Willowbrook Farm
-```{r, Willowbrook_Farm, eval=FALSE }
+
+```{r Willowbrook-Farm, eval = TRUE, warning = FALSE, message = FALSE}
 pat_dygraph(
   pat = Willowbrook_Farm,       
-  parameter = "pm25",
   sampleSize = 1000,
-  title = NULL,
   xlab = "September 2020",
-  ylab = NULL,
-  tlim = NULL,
   rollPeriod = 6,
-  showLegend = TRUE,
-  colors = NULL,
-  timezone = NULL)
+  timezone = "America/Los_Angeles"
+)
 ```
-
-Both graphs show missing data for one of the two channels on certain days, 
-and the episodes are isolated. Days with missing data 
-are not unusual events. However, this can be considered more or less relavant 
-depending on the importance that the missing data could have in your study. 
 
 For Liberty School, the A and B channel measurements are largely in agreement 
 while for Willowbrook Farm, the channels are largely in disagreement. This could 
 indicate a malfunctioning of the sensor, and it could be interesting to investigate
 if this is an isolated event by exploring a larger time range. 
-
 
 ## pat_multiPlot() 
 This function allow us to quickly display our raw `pat` data using the desired 
@@ -141,7 +144,7 @@ plottype. Available `plottype` options include:
 
 For the purpuse of this turorial we'll use "all", "pm25_over", and "aux".
 
-```{r Liberty-School-all, eval=FALSE}
+```{r Liberty-School-all, eval = TRUE, warning = FALSE, message = FALSE}
 # Liberty School multiplot - plottype = "all"
   pat_multiPlot(
     pat = Liberty_School,
@@ -170,7 +173,7 @@ The "all" plot type offers a nice overview of all four variables. We can
 already start seeing an agreement between channel A and B data and an inverse relationship between humidity and temperature measurements. 
 
 Let's give a closer look at the channels using the "pm25_over" plot type. 
-```{r, Liberty-School-pm25over, eval=FALSE}
+```{r Liberty-School-pm25over, eval = TRUE, warning = FALSE, message = FALSE}
 # Liberty School multiplot - plottype = "pm25_over"
   pat_multiPlot(
     pat = Liberty_School,
@@ -199,7 +202,7 @@ Channels A and B show strong agreement, and we can strengthen our assumption by
 increasing the sample size. 
 
 Let's try `sampleSize = 5000`. 
-```{r, Liberty-School-pm25over-n5000, eval=FALSE}
+```{r Liberty-School-pm25over-n5000, eval = TRUE, warning = FALSE, message = FALSE}
 # Balky Hill multiplot - plottype = "pm25_over", sampleSize = 5000
   pat_multiPlot(
     pat = Liberty_School,
@@ -231,7 +234,7 @@ in this tutorial.
 
 Let's give a closer look at the relationship between temperature and humidity 
 by using the "aux" plot type.
-```{r, Liberty-School-aux, eval=FALSE}
+```{r Liberty-School-aux, eval = TRUE, warning = FALSE, message = FALSE}
 # Liberty School multiplot - plottype = "aux"
   pat_multiPlot(
     pat = Balky_Hill,
@@ -278,7 +281,7 @@ The list of available parameters include:
 
 Let's compare all of them for the Liberty School sensor.  
 
-```{r, pat-scatterPlotMatrix-Liberty-School, eval=FALSE}
+```{r pat-scatterPlotMatrix-Liberty-School, eval = TRUE, warning = FALSE, message = FALSE}
 # Liberty School scatterPlotMatrix
 pat_scatterPlotMatrix(
   pat = Liberty_School,
@@ -320,7 +323,7 @@ a new pat object and save it in your archive directory (already defined in
 Tutorial 1) as in the example below. 
 
 
-```{r, pat-outliers-Liberty-School, replace true, eval=FALSE}
+```{r pat-outliers-Liberty-School, eval = TRUE, warning = FALSE, message = FALSE}
 # create an outliers plot for Liberty School 
 Liberty_School_new <- pat_outliers(
   pat = Liberty_School,
@@ -348,7 +351,7 @@ some outliers, and those that we may want to replace with the window median
 value would occur further away from the main distribution as depicted in the example 
 below (notice data around August 3, 2018). 
 
-```{r AirSensor-example-patoutliers(), eval=FALSE }
+```{r AirSensor-example-patoutliers(), eval = TRUE, warning = FALSE, message = FALSE}
 example_pat %>%
   pat_filterDate(20180801, 20180815) %>%
   pat_outliers(replace = TRUE, showPlot = TRUE)
@@ -365,7 +368,7 @@ want to generate an utterly beautiful model fit plot.
 Let's have a look at a well fucntioning sensor and to a not-so-well functioning
 one. 
 
-```{r, lm-Liberty-School, eval=FALSE}
+```{r lm-Liberty-School, eval = TRUE, warning = FALSE, message = FALSE}
 # Liberty School linear model 
 library(AirSensor)
 lm_Liberty <- pat_internalFit(
@@ -392,7 +395,7 @@ This supports the assumption that the Liberty School sensor functioned correctly
 throughout most of September 2020.
 
 
-```{r, lm-Willowbrook-Farm, eval=FALSE}
+```{r lm-Willowbrook-Farm, eval = TRUE, warning = FALSE, message = FALSE}
 # Willowbrook Farm linear model
 lm_Willowbrook <- pat_internalFit(
   pat = Willowbrook_Farm,
@@ -451,7 +454,7 @@ the pm25_A and pm25_B channels. The daily r-squared value is returned in additio
 the coefficients of the linear fit (slope and intercept).
 
 
-```{r, pat_dailySoHPlot-Liberty-School, eval= FALSE}
+```{r pat_dailySoHPlot-Liberty-School, eval = TRUE, warning = FALSE, message = FALSE}
 # create plots for Liberty School
 pat_dailySoHPlot(Liberty_School, ncol = 2)
 ```
@@ -496,7 +499,7 @@ for each of the four algorithms: [PurpleAirQC_hourly_AB_00](https://mazamascienc
 
 
 
-```{r, patmonitorComparison() - Liberty_School, eval= FALSE}
+```{r patmonitorComparison-Liberty-School, eval = TRUE, warning = FALSE, message = FALSE}
 # comparison plot for Liberty School sensor
 pat_monitorComparison(
   pat = Liberty_School,
@@ -538,7 +541,7 @@ the closest PWFSL monitor (federal monitor). A diagnostic plot is produced if
 
 ### Issue: I think the function uses the default qc_algorithm value despite I specify different ones. lm_01 and lm_00 look alike, which is not possible. 
 
-```{r, patexternalFit-01 - Liberty_Schooll, eval= FALSE}
+```{r patexternalFit-01-Liberty-Schooll, eval = TRUE, warning = FALSE, message = FALSE}
 # create comparison plot for Liberty School sensor
 lm_01 <- pat_externalFit(
   pat = Liberty_School,
@@ -564,7 +567,7 @@ summary(lm_01)
 
 ```
 
-```{r, patexternalFit-00 - Liberty_Schooll, eval= FALSE}
+```{r patexternalFit-00-Liberty-Schooll, eval = TRUE, warning = FALSE, message = FALSE}
 # create comparison plot for Liberty School sensor
 lm_00 <- pat_externalFit(
   pat = Liberty_School,
