@@ -95,7 +95,7 @@ This function plots PM2.5 concentration in a calendar format and wraps the
 [openair](https://bookdown.org/david_carslaw/openair/) 
 calendarPlot() function.
 
-Let's explore a couple of sensors using the US EPA Air Quality Index colors, 
+Let's explore a couple of sensors using the [US EPA Air Quality Index colors](https://www.epa.gov/wildfire-smoke-course/wildfire-smoke-and-your-patients-health-air-quality-index), 
 `colors = "aqi"`. This way, we can see which days during September 2020 had the 
 worst PM2.5 levels, putting the health of the Methow Valley's population at risk.
 
@@ -167,7 +167,7 @@ To see the wind speed/direction conditions that dominate the overall mean, we
 can use `statistic = "weighted_mean"`. As we can see from the plot below, wind 
 from N with a speed beteen 6 and 4 m/s carries the highest PM25 concentration. 
 ```{r sensor-polarPlot-Liberty_School-wm, eval = FALSE, warning = FALSE, message = FALSE}
-# Create a polar plot for Liberty School
+# Create a polar plot for Liberty School using the weighted mean
 polar_plot <- sensor_polarPlot(
   sensor = Liberty_School,
   windData = NULL,
@@ -189,6 +189,8 @@ polar_plot <- sensor_polarPlot(
 This fucntion plots a traditional wind rose plot for wind direction and PM2.5.
 Wind speed data can be accessed by saving the the output into an R object. 
 ```{r sensor_pollutionRose,eval = FALSE, warning = FALSE, message = FALSE}
+# Create a pollution rose plot for Liberty School using the proportion of the 
+# frequency of measurements 
 poll_rose <- sensor_pollutionRose(
   sensor = Liberty_School,
   windData = NULL,
@@ -206,12 +208,17 @@ poll_rose <- sensor_pollutionRose(
   verbose = TRUE
 )
 ```
-
+Highest PM25 concentrations are mostly associated with southerly winds. However 
+the largest proportion of PM25 concentrations is associated with northerly winds.
+By setting `statistic = "prop.mean"`, we can see that indeed northerly winds 
+contribute the most to overall concentrations as shwon in the plot below. 
 ```{r sensor_pollutionRose,eval = FALSE, warning = FALSE, message = FALSE}
-poll_rose <- sensor_pollutionRose(
+# Create a pollution rose plot for Liberty School using the relative contribution 
+# of the measurements to the mean
+sensor_pollutionRose(
   sensor = Liberty_School,
   windData = NULL,
-  statistic = "abs.count",
+  statistic = "prop.mean",
   key = TRUE,
   keyPosition = "right",
   annotate = TRUE,
@@ -225,10 +232,10 @@ poll_rose <- sensor_pollutionRose(
   verbose = TRUE
 )
 ```
-The plot shows that higher PM25 concentrations are not strongly associated with a 
-particular direction, however wind from N seems to carry more PM25 particles 
-than any other direction.
-**left here **
+More examples and explanations on how to interpret pollution rose plots can be 
+found in 
+["Section 5 Wind and Pollution Roses"](https://bookdown.org/david_carslaw/openair/sec-windRose.html) 
+of The Openair Book. 
 
 ```{r-to-be-removed, warning = FALSE, message = FALSE}
 # trying to plot the plots next to each other (https://bookdown.org/david_carslaw/openair/sec-openair-package.html#sec:multiple-plots-page)
@@ -236,21 +243,64 @@ print(polar_plot, split = c(1,1,2,1))
 print(poll_rose, split = c(2,1,2,1))
 ```
 
-## sensor_extractData()
+## [sensor_extractData() and sensor_extractMeta() ](https://mazamascience.github.io/AirSensor/reference/sensor_extractDataFrame.html)
+These functions are convenient wrappers for extracting the dataframes that comprise 
+an airsensor object. These functions are designed to be useful when manipulating 
+data in a pipeline chain using %>%.
 ```{r sensor_extractData, eval=FALSE}
-sensor_extractData()
+# Explore data and metadata of Liberty_School 
+data <- sensor_extractData(Liberty_School) # equivalent opration sensor[["data"]]
+meta <- sensor_extractMeta(Liberty_School) # equivalent opration sensor[["meta"]]
+
 # can then be exported with readr::write_csv()
+readr::write_csv(data, file = paste0(archiveDir,"/", "Liberty_data.csv"))
+list.files(archiveDir)
+
+# pipeline chain example  
+library(ggplot2)
+Liberty_School$meta$deviceDeploymentID
+Smoky_days <- Liberty_School %>%
+   sensor_filterDate(
+    startdate = "2020-09-8", 
+    enddate = "2020-09-18",
+    timezone = "UTC"
+  ) %>%
+  sensor_extractData() %>%
+  ggplot(mapping = aes(x = datetime, y = db5d6b3b79f5830e_39237)) +
+  labs(title = "Unhealthy days - 09/2020 - Liberty School",
+         x = "days",
+         y = "PM25") +
+  stat_AQCategory(color = NA) 
+
+print(Smoky_days)
 ```
 
+
 ## timeseriesTbl_multiPlot() 
+A plotting function that uses ggplot2 to display a suite of timeseries plots all 
+at once.
 ```{r timeseriesTbl_multiPlot, eval=FALSE}
-timeseriesTbl_multiPlot() 
+Liberty_School %>%
+  sensor_extractData() %>%
+  timeseriesTbl_multiPlot() 
 ```
 
 ## More examples with PWFSLSmoke and AirMonitorPlots
-```{r PWFSLSmoke - AirMonitorPlots, eval=FALSE }
+**left here**
+```{r PWFSLSmoke-AirMonitorPlots, eval=FALSE }
 # include some examples using functions from PWFSLSmoke or AirMonitorPlots 
+
+# Create an interactive map of all PA sensor 
+PWFSLSmoke::monitor_leaflet(my_monitors) # my_monitors was created in Tutorial 3
+PWFSLSmoke::monitor_rollingMeanPlot(Liberty_School)
+PWFSLSmoke::monitor_dailyBarplot(Liberty_School)
+
 ```
+
+```{r}
+
+```
+
 
 
 _Best of luck assessing air quality in your community!_
