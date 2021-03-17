@@ -1,0 +1,128 @@
+---
+title: "MVCAA Tutorial 5: Building a Local Archive"
+author: "Mazama Science"
+date: "2021-03-16"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{MVCAA Tutorial 5: Building a Local Archive}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
+```
+
+## Introduction
+
+This tutorial demonstrates how to create a multi-month archive of PurpleAir
+timeseries data that can be loaded from a local `archiveDataDir`. Where 
+Tutorial 1 demonstrated how to save and work with a small number of sensors
+for a single month, this tutorial provides a more organized approach for working
+with larger networks of sensors over extended periods of time. Target
+audiences include grad students, researchers and any member of the public
+concerned about air quality and comfortable working with R and RStudio.
+
+Tutorials in this series include:
+
+* [MVCAA Tutorial 1: Creating PAT Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_1.html)
+* [MVCAA Tutorial 2: Exploring PAT Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_2.html)
+* [MVCAA Tutorial 3: Creating Airsensor Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_3.html)
+* [MVCAA Tutorial 4: Exploring Airsensor Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_4.html)
+* [MVCAA Tutorial 5: Building a Local Archive](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_5.html)
+* [MVCAA Tutorial 6: Methow Vallely Smoke](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_6.html)
+
+## Goal
+
+The goal in this tutorial is to explain the _well known_ file naming protocol
+and directory structure required for data to be loaded using the `pat_load()`
+and `sensor_load()` functions. We will build a multi-month archive for the 
+Methow Valley and demonstrate accessing that data.
+
+## Directory Structure
+
+The *AirSensor* package has a variety of "load" functions, all of which assume
+that pre-generated data files will be found in specific locations underneath
+an archive directory. The base of this directory is specified by 
+`setArchiveBaseUrl()` if the archive is web based or `setArchiveBaseDir()` if
+the archive is local.
+
+For a multi-year archive, the overall structure beneath the `baseDir` will look 
+something like this, depending on how many years of data you have:
+
+```
+├── airsensor
+│   ├── 2020
+│   ├── 2021
+│   └── latest
+├── pas
+│   ├── 2020
+│   └── 2021
+├── pat
+│   ├── 2019
+│   │   ├── 01
+│   │   ├── ...
+│   │   └── 12
+│   ├── 2020
+│   │   ├── 01
+│   │   ├── ...
+│   │   └── 12
+│   ├── 2021
+│   │   ├── 01
+│   │   ├── 02
+│   │   └── 03
+│   └── latest
+```
+
+### airsensor
+
+_TODO: Explain directories and file naming protocol._
+
+### pas
+
+_TODO: Explain directories and file naming protocol._
+
+### pat
+
+_TODO: Explain directories and file naming protocol._
+
+## _load() Functions
+
+_TODO:  Describe the difference between
+setArchiveBaseurl() and setArchiveBaseDir() annd how the load function behave
+differently when `baseDir` is set. (They are supposed to override any `baseUrl`
+settingn but this needs to be tested.)_
+
+## R script
+
+The following R script will take several minutes to run and will create an
+archive of 'pas', 'pat' and 'airsensor' data files on your computer. Once these 
+files have been created, loading them will be very fast.
+
+After running the script, a final 
+section will demonstrate how to load and work with these local data files.
+
+This R script can be used as a starting point for anyone interested in creating 
+small collections of data for other communities and other dates.
+
+_TODO: R script similar to tutorial 1 but using the "well known" structure._
+
+```{r create-archive, eval = FALSE, warning = FALSE, message = FALSE}
+# Methow Valley local data archive: Setup
+
+# TODO similar to Tutorial 1
+```
+
+## Loading Local Data
+
+Now we have a local archive of data that we can work with by running
+`setArchiveBasedir()`.
+
+```{r load-local-data, eval = TRUE, warning = FALSE, message = FALSE}
+# TODO similar to Tutorial 1
+```
+
+
+----
+
+_Best of luck assessing air quality in your community!_
