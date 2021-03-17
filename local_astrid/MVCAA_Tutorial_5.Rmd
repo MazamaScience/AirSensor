@@ -47,7 +47,7 @@ an archive directory. The base of this directory is specified by
 `setArchiveBaseUrl()` if the archive is web based or `setArchiveBaseDir()` if
 the archive is local.
 
-For a multi-year archive, the overall structure beneath the `baseDir` will look 
+For a multi-year archive, the overall structure beneath the `BaseDir` will look 
 something like this, depending on how many years of data you have:
 
 ```
@@ -75,22 +75,60 @@ something like this, depending on how many years of data you have:
 ```
 
 ### airsensor
+* The directory must have the following structure: ~airsensor/year.
 
-_TODO: Explain directories and file naming protocol._
+* File naming must be airsensor_scaqmd_YYYYMM.rda
+
+* Example: ~airsensor_scaqmd_202009.rda
 
 ### pas
+* The directory must have the following structure: ~pas/year.
 
-_TODO: Explain directories and file naming protocol._
+* File naming must be pas_YYYYMMDD.rda
+
+* Example: ~pas/2021/pas_20210317.rda
+
+*NOTE*: we are using 2021 as an example since we'll be downloading the latest `pas`
+data. For this local archive, the only purpuse of the `pas` data is to be used for 
+extracting the device deoploymet IDs for the Methow Valley.
 
 ### pat
+* The directory must have the following structure: ~pat/year/month.
 
-_TODO: Explain directories and file naming protocol._
+* File naming must be pat_id_YYYYMM.rda
+
+* Example: ~pat/2020/09/pat_ab5dca99422f2c0d_13669__202009.rda
+
+*NOTE*: "ab5dca99422f2c0d_13669" corresponds to the device deployment ID, and each 
+month directory will have individual `pat` files rather than a `patList` like the one we created in Tutorial 1. 
 
 ## _load() Functions
+Unless a `BaseDir` for a local archive is specified using the function setArchiveBaseDir(), by default all `_load()` functions in the *AirSensor* package will load data from the `Baseurl` mantained by the package http://data.mazamascience.com/PurpleAir/v1/. 
 
-_TODO:  Describe the difference between
-setArchiveBaseurl() and setArchiveBaseDir() annd how the load function behave
-differently when `baseDir` is set. (They are supposed to override any `baseUrl`
+Package functions that load pre-generated data files download data from this URL. 
+
+These functions include:
+
+pas_load()
+
+pat_load()
+
+pat_loadLatest()
+
+pat_loadMonth()
+
+sensor_load()
+
+sensor_loadLatest()
+
+sensor_loadMonth()
+
+To avoid internet latency, specification of `BaseDir` will always take precedence over specification of `Baseurl`. For this reason, if you previously set a `BaseDir`
+and you then want to load data from the `Baseurl` using the setArchiveBaseurl() 
+function, you have to set `BaseDir` to 
+NULL first (i.e. `setArchiveBaseDir(NULL)`).
+
+(They are supposed to override any `baseUrl`
 settingn but this needs to be tested.)_
 
 ## R script
@@ -107,10 +145,124 @@ small collections of data for other communities and other dates.
 
 _TODO: R script similar to tutorial 1 but using the "well known" structure._
 
+*LEFT AT ROW 200!!*
 ```{r create-archive, eval = FALSE, warning = FALSE, message = FALSE}
 # Methow Valley local data archive: Setup
 
 # TODO similar to Tutorial 1
+
+# ----- Setup ------------------------------------------------------------------
+# Use the default archiveDir unless it is already defined
+if ( !exists("archiveDir") ) {
+  archiveDir <- file.path("~/Data/MVCAA")
+}
+
+# Create a ~pas/2021 directory
+dir.create(file.path(archiveDir, "pas/2021"), recursive = TRUE)
+
+# Create a pat/2020/MM directory underneath for September, October, and November
+dir.create(file.path(archiveDir, "pat/2020/09"), recursive = TRUE)
+dir.create(file.path(archiveDir, "pat/2020/10"), recursive = TRUE)
+dir.create(file.path(archiveDir, "pat/2020/11"), recursive = TRUE)
+
+# Create an airsensor/2020 directory 
+dir.create(file.path(archiveDir, "airsensor/2020"), recursive = TRUE)
+
+# Check the directories you just created 
+list.dirs(archiveDir)
+
+# AirSensor package
+library(AirSensor)
+
+# Set the archiveBaseUrl so we can get a 'pas' object
+setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+
+# ----- Create PAS object ------------------------------------------------------
+
+# Create a 'pas' object limited to MVCAA sensors
+#   - load most recent 'pas' for the entire country
+#   - subset to include sensors labeled MVCAA
+mvcaa <-
+  pas_load() %>%
+  pas_filter(stringr::str_detect(label, "MV Clean Air Ambassador"))
+  # NOTE: Could have filtered by area with:
+  #pas_filterArea(w = -120.5, e = -120.0, s = 48.0, n = 49.0)
+
+# Look at it
+pas_leaflet(mvcaa)
+
+# Save it in our archive directory
+save(mvcaa, file = paste0(archiveDir, "/pas/2021/pas_20210317.rda"))
+list.files(file.path(archiveDir, "pas/2021"))
+
+# Examine the pas directory:
+list.files(file.path(archiveDir, "pas/2021"))
+#### LEFT HERE###
+# ----- Create PAT objects for September----------------------------------------
+
+# Get all the deviceDeploymentIDs
+mvcaa_ids <- pas_getDeviceDeploymentIDs(mvcaa)
+
+# Specify times
+startdate <- "2020-09-01"
+enddate <- "2020-10-01"
+timezone <- "America/Los_Angeles"
+
+# Create an empty List to store things
+patList <- list()
+
+# Initialize counters
+idCount <- length(mvcaa_ids)
+count <- 0 
+successCount <- 0
+
+# Loop over all ids and get data (might take a while).
+for (id in mvcaa_ids[1:idCount]) {
+  
+  count <- count + 1
+  print(sprintf("Working on %s (%d/%d) ...", id, count, idCount))
+  
+  # Use a try-block in case you get "no data" errors
+  result <- try({
+    
+    # It's nice to copy-paste the full function signature so you can see all possible arguments
+    patList[[id]] <- pat_createNew(
+      id = id,
+      label = NULL,        # not needed if you have the id
+      pas = mvcaa,
+      startdate = startdate,
+      enddate = enddate,
+      timezone = timezone,
+      baseUrl = "https://api.thingspeak.com/channels/",
+      verbose = FALSE
+    )
+    successCount <- successCount + 1
+    
+  }, silent = FALSE)
+  
+  if ( "try-error" %in% class(result) ) {
+    print(geterrmessage())
+  }
+  
+}
+
+# How many did we get?
+print(sprintf("Successfully created %d/%d pat objects.", successCount, idCount))
+
+# Save it in our archive directory
+save(patList, file = file.path(archiveDir, "patList.rda"))
+
+# ----- Evaluate patList -------------------------------------------------------
+
+# We can use sapply() to apply a function to each element of the list
+sapply(patList, function(x) { return(x$meta$label) })
+
+# How big is patList in memory?
+print(object.size(patList), units="MB")
+
+# How big patList.rda on disk (as compressed binary) 
+fileSize <- file.size(file.path(archiveDir, "patList.rda"))
+sprintf("%.1f Mb", fileSize/1e6)
 ```
 
 ## Loading Local Data
@@ -120,8 +272,38 @@ Now we have a local archive of data that we can work with by running
 
 ```{r load-local-data, eval = TRUE, warning = FALSE, message = FALSE}
 # TODO similar to Tutorial 1
-```
+# Empty current environment to ensure we're using our local archive.
+# But retain "DATA_DIR if it has been set.
+rm(list = setdiff(ls(), c("DATA_DIR")))
 
+if ( exists("DATA_DIR") ) {
+  archiveDir <- file.path(DATA_DIR)
+} else {
+  archiveDir <- file.path("~/Data/MVCAA")
+}
+
+# AirSensor package
+library(AirSensor)
+
+# Examine archive directory:
+list.files(file.path(archiveDir))
+ 
+# Load files
+mvcaa <- get(load(file.path(archiveDir, "mvcaa.rda"))) 
+patList <- get(load(file.path(archiveDir, "patList.rda")))
+
+# Interactive map
+pas_leaflet(mvcaa)
+
+# Print site names and associated ids
+sapply(patList, function(x) { return(x$meta$label) })
+
+# Pull out Balky Hill as a separate 'pat' object
+Balky_Hill <- patList[["ab5dca99422f2c0d_13669"]]
+
+# Basic plot
+pat_multiplot(Balky_Hill)
+```
 
 ----
 
