@@ -29,8 +29,7 @@ Tutorials in this series include:
 * [MVCAA Tutorial 3: Creating Airsensor Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_3.html)
 * [MVCAA Tutorial 4: Exploring Airsensor Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_4.html)
 * [MVCAA Tutorial 5: Building a Local Archive](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_5.html)
-* [MVCAA Tutorial 6: Using a Local Archive](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_6.html)
-* [MVCAA Tutorial 7: Methow Vallely Smoke](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_7.html)
+* [MVCAA Tutorial 6: Methow Vallely Smoke](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_6.html)
 
 ## Goal
 
@@ -114,7 +113,6 @@ pat_dygraph(
 )
 ```
 
-
 ### Willowbrook Farm
 
 ```{r Willowbrook-Farm, eval = TRUE, warning = FALSE, message = FALSE}
@@ -171,6 +169,7 @@ The "all" plot type offers a nice overview of all four variables. We can
 already start seeing an agreement between channel A and B data and an inverse relationship between humidity and temperature measurements. 
 
 Let's give a closer look at the channels using the "pm25_over" plot type. 
+
 ```{r Liberty-School-pm25over, eval = TRUE, warning = FALSE, message = FALSE}
 # Liberty School multiplot - plottype = "pm25_over"
 pat_multiPlot(
