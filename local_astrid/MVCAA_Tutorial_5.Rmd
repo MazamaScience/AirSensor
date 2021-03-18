@@ -145,7 +145,7 @@ small collections of data for other communities and other dates.
 
 _TODO: R script similar to tutorial 1 but using the "well known" structure._
 
-*LEFT AT ROW 200!!*
+*LEFT AT ROW 403!!*
 ```{r create-archive, eval = FALSE, warning = FALSE, message = FALSE}
 # Methow Valley local data archive: Setup
 
@@ -153,11 +153,14 @@ _TODO: R script similar to tutorial 1 but using the "well known" structure._
 
 # ----- Setup ------------------------------------------------------------------
 # Use the default archiveDir unless it is already defined
-if ( !exists("archiveDir") ) {
+if ( exists("DATA_DIR") ) {
+  archiveDir <- file.path(DATA_DIR)
+} else {
   archiveDir <- file.path("~/Data/MVCAA")
 }
 
-# Create a ~pas/2021 directory
+# Create a ~pas/2021 directory. Edit the year beased on the date of the pas data 
+# loading
 dir.create(file.path(archiveDir, "pas/2021"), recursive = TRUE)
 
 # Create a pat/2020/MM directory underneath for September, October, and November
@@ -175,6 +178,9 @@ list.dirs(archiveDir)
 library(AirSensor)
 
 # Set the archiveBaseUrl so we can get a 'pas' object
+setArchiveBaseDir(NULL)
+getArchiveBaseDir()
+
 setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 
 # ----- Create PAS object ------------------------------------------------------
@@ -191,13 +197,15 @@ mvcaa <-
 # Look at it
 pas_leaflet(mvcaa)
 
-# Save it in our archive directory
+# Save it in our archive directory.
+# Change the the year of the directory and the date in pas_YYYYMMDD based on the
+# date of the pas data loading 
 save(mvcaa, file = paste0(archiveDir, "/pas/2021/pas_20210317.rda"))
 list.files(file.path(archiveDir, "pas/2021"))
 
 # Examine the pas directory:
 list.files(file.path(archiveDir, "pas/2021"))
-#### LEFT HERE###
+
 # ----- Create PAT objects for September----------------------------------------
 
 # Get all the deviceDeploymentIDs
@@ -208,8 +216,15 @@ startdate <- "2020-09-01"
 enddate <- "2020-10-01"
 timezone <- "America/Los_Angeles"
 
-# Create an empty List to store things
-patList <- list()
+# # Create pat files for September 2020
+# for (id in mvcaa_ids){
+#   filename = paste0(archiveDir,"pat/2020/09", "/", id, ".rda")
+#   pat = pat_createNew(id = id,
+#                       pas = mvcaa,
+#                       startdate = startdate, 
+#                       enddate = enddate)
+#   save(pat, file = filename)
+# }
 
 # Initialize counters
 idCount <- length(mvcaa_ids)
@@ -219,6 +234,7 @@ successCount <- 0
 # Loop over all ids and get data (might take a while).
 for (id in mvcaa_ids[1:idCount]) {
   
+  filename = paste0(archiveDir,"/pat/2020/09/", "pat_", id, "_202009", ".rda") 
   count <- count + 1
   print(sprintf("Working on %s (%d/%d) ...", id, count, idCount))
   
@@ -226,7 +242,7 @@ for (id in mvcaa_ids[1:idCount]) {
   result <- try({
     
     # It's nice to copy-paste the full function signature so you can see all possible arguments
-    patList[[id]] <- pat_createNew(
+    pat<- pat_createNew(
       id = id,
       label = NULL,        # not needed if you have the id
       pas = mvcaa,
@@ -237,38 +253,199 @@ for (id in mvcaa_ids[1:idCount]) {
       verbose = FALSE
     )
     successCount <- successCount + 1
+    save(pat, file = filename)  #Save each pat file in ~ pat/2020/09
     
   }, silent = FALSE)
   
   if ( "try-error" %in% class(result) ) {
     print(geterrmessage())
   }
-  
 }
 
 # How many did we get?
 print(sprintf("Successfully created %d/%d pat objects.", successCount, idCount))
 
-# Save it in our archive directory
-save(patList, file = file.path(archiveDir, "patList.rda"))
 
-# ----- Evaluate patList -------------------------------------------------------
+# ----- Create PAT objects for October -----------------------------------------
 
-# We can use sapply() to apply a function to each element of the list
-sapply(patList, function(x) { return(x$meta$label) })
+# Specify times
+startdate <- "2020-10-01"
+enddate <- "2020-11-01"
+timezone <- "America/Los_Angeles"
 
-# How big is patList in memory?
-print(object.size(patList), units="MB")
+# Initialize counters
+idCount <- length(mvcaa_ids)
+count <- 0 
+successCount <- 0
 
-# How big patList.rda on disk (as compressed binary) 
-fileSize <- file.size(file.path(archiveDir, "patList.rda"))
-sprintf("%.1f Mb", fileSize/1e6)
+# Loop over all ids and get data (might take a while).
+for (id in mvcaa_ids[1:idCount]) {
+  
+  filename = paste0(archiveDir,"/pat/2020/10/", "pat_", id, "_202010", ".rda")
+  count <- count + 1
+  print(sprintf("Working on %s (%d/%d) ...", id, count, idCount))
+  
+  # Use a try-block in case you get "no data" errors
+  result <- try({
+    
+    # It's nice to copy-paste the full function signature so you can see all possible arguments
+    pat<- pat_createNew(
+      id = id,
+      label = NULL,        # not needed if you have the id
+      pas = mvcaa,
+      startdate = startdate,
+      enddate = enddate,
+      timezone = timezone,
+      baseUrl = "https://api.thingspeak.com/channels/",
+      verbose = FALSE
+    )
+    successCount <- successCount + 1
+    save(pat, file = filename)  #Save each pat file in ~ pat/2020/09
+    
+  }, silent = FALSE)
+  
+  if ( "try-error" %in% class(result) ) {
+    print(geterrmessage())
+  }
+}
+
+# How many did we get?
+print(sprintf("Successfully created %d/%d pat objects.", successCount, idCount))
+
+# ----- Create PAT objects for November ----------------------------------------
+
+# Specify times
+startdate <- "2020-11-01"
+enddate <- "2020-12-01"
+timezone <- "America/Los_Angeles"
+
+# Initialize counters
+idCount <- length(mvcaa_ids)
+count <- 0 
+successCount <- 0
+
+# Loop over all ids and get data (might take a while).
+for (id in mvcaa_ids[1:idCount]) {
+  
+  filename = paste0(archiveDir,"/pat/2020/11/", "pat_", id, "_202011", ".rda")
+  count <- count + 1
+  print(sprintf("Working on %s (%d/%d) ...", id, count, idCount))
+  
+  # Use a try-block in case you get "no data" errors
+  result <- try({
+    
+    # It's nice to copy-paste the full function signature so you can see all possible arguments
+    pat<- pat_createNew(
+      id = id,
+      label = NULL,        # not needed if you have the id
+      pas = mvcaa,
+      startdate = startdate,
+      enddate = enddate,
+      timezone = timezone,
+      baseUrl = "https://api.thingspeak.com/channels/",
+      verbose = FALSE
+    )
+    successCount <- successCount + 1
+    save(pat, file = filename)  #Save each pat file in ~ pat/2020/09
+    
+  }, silent = FALSE)
+  
+  if ( "try-error" %in% class(result) ) {
+    print(geterrmessage())
+  }
+}
+
+# How many did we get?
+print(sprintf("Successfully created %d/%d pat objects.", successCount, idCount))
+
+# ----- Evaluate each month directory under ~ pat/2020 -------------------------
+list.files(file.path(archiveDir, "pat/2020/09"))
+list.files(file.path(archiveDir, "pat/2020/10"))
+list.files(file.path(archiveDir, "pat/2020/11"))
+
+# ----- Create airsensor objects for September ---------------------------------
+# Initialize counters
+idCount <- length(patList)
+count <- 0
+successCount <- 0
+
+# # Loop over ids and create 'airsensor' objects (might take a while).
+# for ( id in names(patList) ) {
+# 
+#   count <- count + 1
+#   print(sprintf("Working on %s (%d/%d) ...", id, count, idCount))
+#   
+#   # Use a try-block in case you get "no data" errors
+#   result <- try({
+#     
+#     # It's nice to copy-paste the full function signature so you can see all possible arguments
+#     airsensorList[[id]] <- pat_createAirSensor(
+#       pat = patList[[id]],
+#       parameter <- "pm25",
+#       FUN = PurpleAirQC_hourly_AB_01
+#     )
+#     successCount <- successCount + 1
+#     
+#   }, silent = FALSE)
+#   
+#   if ( "try-error" %in% class(result) ) {
+#     print(geterrmessage())
+#   }
+#   
+# }
+# 
+# # How many did we get?
+# print(sprintf("Successfully created %d/%d pat objects.", successCount, idCount))
+# 
+# # Save it in our archive directory
+# save(airsensorList, file = file.path(archiveDir, "airsensorList.rda"))
+
+# WIP
+# from JOn: First you have to create individual sensor objects, one for each pat. 
+# Then use PWFSLSmoke::combine() to combine them into a single sensor object.
+
+# load files 
+list.files(archiveDir)
+patList <- get(load(file.path(archiveDir, "patList.rda")))
+airList <- get(load(file.path(archiveDir, "airsensorList.rda")))
+save(airList, file = file.path(archiveDir, "airsensor/2020/airsensor_scaqmd_202009.rda"))
+
+startdate <- "2020-09-01"
+enddate <- "2020-10-01"
+
+getArchiveBaseDir() #OK
+
+# try to load the airlist 
+test <- sensor_load(
+  collection = "scaqmd",
+  startdate = startdate,
+  enddate = enddate,
+  days = 7,
+  timezone = "America/Los_Angeles"
+)
+# Error in sensor_filterDatetime(., startdate = startdate, enddate = enddate,  : 
+#   Parameter 'sensor' is not a valid 'airsensor' object.
+
+
+test <- pat_createAirSensor(
+      pat = ,
+      parameter <- "pm25",
+      FUN = PurpleAirQC_hourly_AB_01
+    )
+
+
+
+# ----- Create airsensor objects for October -----------------------------------
+
+# ----- Create airsensor objects for November ----------------------------------
+
 ```
 
 ## Loading Local Data
 
-Now we have a local archive of data that we can work with by running
-`setArchiveBasedir()`.
+Now we have a local archive of data created by following the _well known_ 
+directory structure that we can work with by running
+`setArchiveBaseDir()`.
 
 ```{r load-local-data, eval = TRUE, warning = FALSE, message = FALSE}
 # TODO similar to Tutorial 1
@@ -282,27 +459,46 @@ if ( exists("DATA_DIR") ) {
   archiveDir <- file.path("~/Data/MVCAA")
 }
 
-# AirSensor package
-library(AirSensor)
+setArchiveBaseDir(archiveDir)
 
-# Examine archive directory:
-list.files(file.path(archiveDir))
- 
-# Load files
-mvcaa <- get(load(file.path(archiveDir, "mvcaa.rda"))) 
-patList <- get(load(file.path(archiveDir, "patList.rda")))
+# Set your archive base directory and check that is correct
+setArchiveBaseDir(archiveDir)
+getArchiveBaseDir()
 
-# Interactive map
+# Load the pas file
+mvcaa <- pas_load(datestamp = 20210317) 
+
+# Use the interactive map to quickly get the "deviceDeploymentID" of the sensors
+# you want to explore further based on their location. 
 pas_leaflet(mvcaa)
 
-# Print site names and associated ids
-sapply(patList, function(x) { return(x$meta$label) })
+# However, data for a specific sensor could not be available for a given month,
+# so you should make sure to have the pat file in your month directory as well.
+list.files(file.path(archiveDir, "pat/2020/09"))
+list.files(file.path(archiveDir, "pat/2020/10"))
+list.files(file.path(archiveDir, "pat/2020/11"))
 
-# Pull out Balky Hill as a separate 'pat' object
-Balky_Hill <- patList[["ab5dca99422f2c0d_13669"]]
+# Load the September pat data for Little Cougar 
+Little_Cougar  <- 
+  pat_load(id = "96b108298883ca47_64441",
+           pas = mvcaa, 
+           startdate = 20200901,
+           enddate = 20200930, 
+           timezone = "America/Los_Angeles")
 
-# Basic plot
-pat_multiplot(Balky_Hill)
+# Load the fall pat data for Little Cougar by loading all 3 months of data 
+Little_Cougar_fall  <- 
+  pat_load(id = "96b108298883ca47_64441",
+           pas = mvcaa, 
+           startdate = 20200901,
+           enddate = 20201201, 
+           timezone = "America/Los_Angeles")
+
+# Explore the data 
+LC_fall_data <- Little_Cougar_fall$data
+
+# Basic plot for Little_Cougar 
+pat_multiplot(Little_Cougar_fall)
 ```
 
 ----
