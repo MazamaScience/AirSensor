@@ -17,7 +17,7 @@ knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
 
 This tutorial demonstrates how to analyze 'airsensor' data using functions
 tailored to that data type, all of which have names beginning with `airsensor_`. 
-In order to run the code in this tutoral you must have 
+In order to run the code in this tutorial you must have 
 followed the instructions in Tutorials 1-33 and created a directory with 'pas', 
 'pat', and 'airsensor' data files for the Methow Valley. Target audiences 
 include grad students, researchers and any member of the public
@@ -125,7 +125,7 @@ polar_plot <- sensor_polarPlot(
 
 The plot shows that there is evidence of increasing PM25 (smoke) concentrations 
 at low wind speeds from all direction with more smoke coming from from the north.
-If you look at a map a function from the **PWFSLSmoke** package, 
+You can use a function from the **PWFSLSmoke** package to create a local map where 
 you will see that the Methow 
 Valley runs primarily north-south at Liberty Bell High School.
 
@@ -151,8 +151,7 @@ polar_plot <- sensor_polarPlot(
 ## sensor_pollutionRose
 
 The [sensor_pollutionRose()](https://mazamascience.github.io/AirSensor/reference/sensor_pollutionRose.html)
-function plots a traditional wind rose plot for wind direction and PM2.5.
-Wind speed data can be accessed by saving the the output into an R object. 
+function plots a traditional wind rose plot for wind direction and PM2.5. 
 
 ```{r sensor_pollutionRose_1, eval = TRUE, warning = FALSE, message = FALSE}
 # Create a pollution rose plot for Liberty School using the proportion of the 
@@ -181,76 +180,66 @@ found in
 ["Section 5 Wind and Pollution Roses"](https://bookdown.org/david_carslaw/openair/sec-windRose.html) 
 of The Openair Book. 
 
-```{r to-be-removed, eval = FALSE, warning = FALSE, message = FALSE}
-# trying to plot the plots next to each other (https://bookdown.org/david_carslaw/openair/sec-openair-package.html#sec:multiple-plots-page)
-print(polar_plot, split = c(1,1,2,1))
-print(pollution_rose, split = c(2,1,2,1))
-```
-
 ## sensor_extractData
 
 The [sensor_extractData() and sensor_extractMeta() ](https://mazamascience.github.io/AirSensor/reference/sensor_extractDataFrame.html)
-functions are convenient wrappers for extracting the dataframes that comprise 
-an airsensor object. These functions are designed to be useful when manipulating 
-data in a pipeline chain using `%>%`.
+functions are convenient wrappers for extracting the airsensor `meta` and `data`
+dataframes. These functions are designed to be useful when manipulating 
+data in an R pipeline using `%>%`.
 
-```{r sensor_extractData, eval = FALSE, warning = FALSE, message = FALSE}
-# Explore data and metadata of Liberty_School 
-data <- sensor_extractData(Liberty_School) # equivalent opration sensor[["data"]]
-meta <- sensor_extractMeta(Liberty_School) # equivalent opration sensor[["meta"]]
+In the example below, we will use functions from **PWFSLSmoke** and **dplyr** 
+to calculate some daily statistics for Pine Forest.
 
-# can then be exported with readr::write_csv()
-readr::write_csv(data, file = paste0(archiveDir,"/", "Liberty_data.csv"))
-list.files(archiveDir)
+```{r sensor_extractData, eval = TRUE, warning = FALSE, message = FALSE}
+# Show daily max for Pine Forest  
+Pine_Forest %>%
+  PWFSLSmoke::monitor_dailyStatistic(FUN = max) %>%
+  sensor_extractData() %>%
+  dplyr::mutate_if(is.numeric, round, 0)
 
-# pipeline chain example  
+# Show daily averages for Pine Forest 
+Pine_Forest %>%
+  PWFSLSmoke::monitor_dailyStatistic(FUN = mean) %>%
+  sensor_extractData() %>%
+  dplyr::mutate_if(is.numeric, round, 0)
+
+# Show daily standard deviations for Pine Forest  
+Pine_Forest %>%
+  PWFSLSmoke::monitor_dailyStatistic(FUN = sd) %>%
+  sensor_extractData() %>%
+  dplyr::mutate_if(is.numeric, round, 1)
+```
+
+
+## PWFSLSmoke and AirMonitorPlots
+
+All 'airsensor' objects are compatible with 'monitor' functions from the
+[PWFSLSmoke](http://mazamascience.github.io/PWFSLSmoke/) for data manipulation
+and the 
+[AirMonitorPlots](http://mazamascience.github.io/AirMonitorPlots/) package for
+generating **ggplot2** graphics.
+
+The following examples are designed to encourage further exploration of those packages.
+
+```{r monitor_ggTimeseries, eval = TRUE, warning = FALSE, message = FALSE}
+library(PWFSLSmoke)
 library(ggplot2)
 library(AirMonitorPlots)
 
-Liberty_School$meta$deviceDeploymentID
-Smoky_days <- Liberty_School %>%
-   sensor_filterDate(
-    startdate = "2020-09-8", 
-    enddate = "2020-09-18",
-    timezone = "UTC"
-  ) %>%
-  sensor_extractData() %>%
-  ggplot(mapping = aes(x = datetime, y = db5d6b3b79f5830e_39237)) +
-  labs(title = "Unhealthy days - 09/2020 - Liberty School",
-         x = "days",
-         y = "PM25") +
-  stat_AQCategory(color = NA) 
-
-print(Smoky_days)
+# "publication-ready" time-series plot
+AirMonitorPlots::monitor_ggTimeseries(Pine_Forest)
 ```
 
-
-## timeseriesTbl_multiPlot() 
-
-A plotting function that uses ggplot2 to display a suite of timeseries plots all 
-at once.
-```{r timeseriesTbl_multiPlot, eval = TRUE, warning = FALSE, message = FALSE}
-Liberty_School %>%
-  sensor_extractData() %>%
-  timeseriesTbl_multiPlot() 
+```{r monitor_ggDailyHourlyBarplot, eval = TRUE, warning = FALSE, message = FALSE}
+# Custom plot showing data + daily averages for the entire Valley
+airsensorList %>%
+  PWFSLSmoke::monitor_combine() %>%
+  AirMonitorPlots::ggplot_pm25Timeseries() + 
+  ggplot2::ggtitle("Methow Valley -- September, 2020") +
+  AirMonitorPlots::geom_pm25Points(shape = "square", alpha = .1) + 
+  AirMonitorPlots::stat_dailyAQCategory(alpha = .5) + 
+  ggplot2::scale_y_continuous(limits = c(0, 300)) +
+  AirMonitorPlots::custom_aqiStackedBar(width = 0.01) 
 ```
-
-## More examples with PWFSLSmoke and AirMonitorPlots
-**left here**
-```{r PWFSLSmoke-AirMonitorPlots, eval = FALSE, warning = FALSE, message = FALSE}
-# include some examples using functions from PWFSLSmoke or AirMonitorPlots 
-
-# Create an interactive map of all PA sensor 
-PWFSLSmoke::monitor_leaflet(my_monitors) # my_monitors was created in Tutorial 3
-PWFSLSmoke::monitor_rollingMeanPlot(Liberty_School)
-PWFSLSmoke::monitor_dailyBarplot(Liberty_School)
-
-```
-
-```{r}
-
-```
-
-
 
 _Best of luck assessing air quality in your community!_
