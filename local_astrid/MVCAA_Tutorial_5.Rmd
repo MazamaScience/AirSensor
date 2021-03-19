@@ -364,6 +364,12 @@ list.files(file.path(archiveDir, "pat/2020/10"))
 list.files(file.path(archiveDir, "pat/2020/11"))
 
 # ----- Create airsensor objects for September ---------------------------------
+setArchiveBaseDir(NULL)
+getArchiveBaseDir()
+
+setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+
+
 # Specify times
 startdate <- "2020-09-01"
 enddate <- "2020-10-01"
@@ -447,8 +453,9 @@ print(sprintf("Successfully created %d/%d pat objects.", successCount, idCount))
 #FATAL [2021-03-19 10:35:18] Error creating monthly AirSensor file:  Error: $ operator is invalid for atomic vectors
 
 # error due to list containing $, don't know how to fix it 
+# i tryied loading pat files from local dir and base url. 
 
-#try to manually combine pat objects 
+#try to manually combine pat objects to see if the function works 
 
 mvcaa_ids # take 2 ids from this list 
 
@@ -497,11 +504,44 @@ air_202009 <- sensor_loadMonth(
   timezone = "America/Los_Angeles"
 ) %>% 
 PWFSLSmoke::monitor_subset(monitorIDs = mvcaa_ids) 
+# air_2009 has no data. I wonder if it's because the file does not contain mvcaa_ids sensors
 
+# create a test list of sensors from the unfiltered airsensor object 
+air_202009 <- sensor_loadMonth(
+  collection = "scaqmd",
+  datestamp = 202009,
+  timezone = "America/Los_Angeles"
+)
+
+
+air_202009$meta$deviceDeploymentID
+
+list_test <- c("4565cea0bf1881e5_5238",  "7469f3846aa28fbb_5236",  
+               "c6f6ba9a91fd90a6_5220",  "f41bea1bac733fb6_5044")
+
+# subset using list_test
+air_test <- sensor_loadMonth(
+  collection = "scaqmd",
+  datestamp = 202009,
+  timezone = "America/Los_Angeles"
+) %>% 
+PWFSLSmoke::monitor_subset(monitorIDs = list_test) 
+
+air_test$meta$deviceDeploymentID #"4565cea0bf1881e5_5238" "7469f3846aa28fbb_5236" "c6f6ba9a91fd90a6_5220" "f41bea1bac733fb6_5044"
+# it worked 
+
+
+# check if Methow Valley IDS are in air_202009
+mvcaa_ids
+air_202009_meta <- air_202009$meta
+#Methow Valley sensors are not listed in air_202009. Why?
+
+
+# (for later) save airsensor data locally 
 save(air_202009, file = paste0(outputDir, "airsensor_", "scaqmd_" , "202009", ".rda"))
 
 
-# load airsensor file from local archive 
+# (for later) load airsensor file from local archive 
 setArchiveBaseDir(archiveDir)
 getArchiveBaseDir()
 
@@ -510,6 +550,7 @@ airsensor_202009 <- sensor_loadMonth(
   datestamp = 202009,
   timezone = timezone
 )
+
 
 # ----- Create airsensor objects for October -----------------------------------
 
