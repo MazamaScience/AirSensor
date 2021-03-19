@@ -75,14 +75,14 @@ something like this, depending on how many years of data you have:
 ```
 
 ### airsensor
-* The directory must have the following structure: ~airsensor/year.
+* The directory must have the following structure: ~airsensor/YYYY.
 
 * File naming must be airsensor_scaqmd_YYYYMM.rda
 
-* Example: ~airsensor_scaqmd_202009.rda
+* Example: ~airsensor/2020/airsensor_scaqmd_202009.rda
 
 ### pas
-* The directory must have the following structure: ~pas/year.
+* The directory must have the following structure: ~pas/YYYY.
 
 * File naming must be pas_YYYYMMDD.rda
 
@@ -93,7 +93,7 @@ data. For this local archive, the only purpuse of the `pas` data is to be used f
 extracting the device deoploymet IDs for the Methow Valley.
 
 ### pat
-* The directory must have the following structure: ~pat/year/month.
+* The directory must have the following structure: ~pat/YYYY/MM.
 
 * File naming must be pat_id_YYYYMM.rda
 
@@ -145,7 +145,7 @@ small collections of data for other communities and other dates.
 
 _TODO: R script similar to tutorial 1 but using the "well known" structure._
 
-*LEFT AT ROW 403!!*
+*LEFT AT ROW 481!!*
 ```{r create-archive, eval = FALSE, warning = FALSE, message = FALSE}
 # Methow Valley local data archive: Setup
 
@@ -364,76 +364,152 @@ list.files(file.path(archiveDir, "pat/2020/10"))
 list.files(file.path(archiveDir, "pat/2020/11"))
 
 # ----- Create airsensor objects for September ---------------------------------
+# Specify times
+startdate <- "2020-09-01"
+enddate <- "2020-10-01"
+timezone <- "America/Los_Angeles"
+
+# Specify output directory
+outputDir <- paste0(archiveDir,"/airsensor/2020/")
+
 # Initialize counters
-idCount <- length(patList)
+idCount <- length(mvcaa_ids)
 count <- 0
 successCount <- 0
 
-# # Loop over ids and create 'airsensor' objects (might take a while).
-# for ( id in names(patList) ) {
-# 
-#   count <- count + 1
-#   print(sprintf("Working on %s (%d/%d) ...", id, count, idCount))
-#   
-#   # Use a try-block in case you get "no data" errors
-#   result <- try({
-#     
-#     # It's nice to copy-paste the full function signature so you can see all possible arguments
-#     airsensorList[[id]] <- pat_createAirSensor(
-#       pat = patList[[id]],
-#       parameter <- "pm25",
-#       FUN = PurpleAirQC_hourly_AB_01
-#     )
-#     successCount <- successCount + 1
-#     
-#   }, silent = FALSE)
-#   
-#   if ( "try-error" %in% class(result) ) {
-#     print(geterrmessage())
-#   }
-#   
-# }
-# 
-# # How many did we get?
-# print(sprintf("Successfully created %d/%d pat objects.", successCount, idCount))
-# 
-# # Save it in our archive directory
-# save(airsensorList, file = file.path(archiveDir, "airsensorList.rda"))
+dataList <- list()
 
-# WIP
-# from JOn: First you have to create individual sensor objects, one for each pat. 
-# Then use PWFSLSmoke::combine() to combine them into a single sensor object.
+for ( deviceDeploymentID in mvcaa_ids[1:idCount] ) {
+  
+  count <- count + 1
+  print(sprintf("Working on %s (%d/%d) ...", deviceDeploymentID, count, idCount))
+  
+  # Debug info
+  logger.debug(
+    "%4d/%d pat_createAirSensor('%s')",
+    count,
+    length(mvcaa_ids),
+    deviceDeploymentID
+  )
+  
+  # Load the pat data, convert to an airsensor and add to dataList
+  dataList[[deviceDeploymentID]] <- tryCatch(
+    expr = {
+      airsensor <- pat_load(
+        id = deviceDeploymentID,
+        label = NULL,
+        pas = mvcaa,
+        startdate = startdate,
+        enddate = enddate,
+        timezone = timezone
+      ) %>%
+        pat_createAirSensor(
+          FUN = AirSensor::PurpleAirQC_hourly_AB_01
+        )
+      successCount <- successCount + 1
+    }, 
+    error = function(e) {
+      logger.warn('Unable to load PAT data for %s ', deviceDeploymentID)
+      NULL
+    }
+    
+    # Keep going in the face of errors
+  )
+  
+} # END of mvcaa_ids loop
 
-# load files 
-list.files(archiveDir)
-patList <- get(load(file.path(archiveDir, "patList.rda")))
-airList <- get(load(file.path(archiveDir, "airsensorList.rda")))
-save(airList, file = file.path(archiveDir, "airsensor/2020/airsensor_scaqmd_202009.rda"))
+# Combine the airsensors into a single ws_monitor opbject and save
+tryCatch(
+  expr = {
+    logger.info('Combining airsensors...')
+    
+    airsensor <- PWFSLSmoke::monitor_combine(dataList)
+    class(airsensor) <- c("airsensor", "ws_monitor", "list")
+    
+    logger.info('Combined successfully...')
+    
+    collectionName <- "scaqmd"
+    filename <- paste0("airsensor_", opt$collectionName, "_", "202009", ".rda")
+    filepath <- file.path(outputDir, filename)
+    
+    save(list = "airsensor", file = filepath)
+    logger.info("Saved: %s", filename)
+  }, 
+  error = function(e) {
+    msg <- paste("Error creating monthly AirSensor file: ", e)
+    logger.fatal(msg)
+  }
+)
 
+
+print(sprintf("Successfully created %d/%d pat objects.", successCount, idCount))
+
+#FATAL [2021-03-19 10:35:18] Error creating monthly AirSensor file:  Error: $ operator is invalid for atomic vectors
+
+# error due to list containing $, don't know how to fix it 
+
+#try to manually combine pat objects 
+
+mvcaa_ids # take 2 ids from this list 
+
+pat1 <- pat_load(id = "96b108298883ca47_64441",
+           pas = mvcaa, 
+           startdate = 20200901,
+           enddate = 20200930, 
+           timezone = "America/Los_Angeles")
+pat1 <- pat_createAirSensor(
+  pat = pat1,
+  parameter = "pm25",
+  FUN = PurpleAirQC_hourly_AB_01,
+)
+
+pat2 <- pat_load(id = "f96deab8c29aa42b_10134",
+           pas = mvcaa, 
+           startdate = 20200901,
+           enddate = 20200930, 
+           timezone = "America/Los_Angeles")
+pat2 <- pat_createAirSensor(
+  pat = pat2,
+  parameter = "pm25",
+  FUN = PurpleAirQC_hourly_AB_01,
+)
+
+air_list <- list()
+air_list[[1]] <- pat1
+air_list[[2]] <- pat2
+
+air_test <- monitor_combine(air_list) #OK
+
+# try to load airsensor data from base url 
+setArchiveBaseDir(NULL)
+getArchiveBaseDir()
+
+setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+
+# Specify times
 startdate <- "2020-09-01"
 enddate <- "2020-10-01"
+timezone <- "America/Los_Angeles"
 
-getArchiveBaseDir() #OK
-
-# try to load the airlist 
-test <- sensor_load(
+air_202009 <- sensor_loadMonth(
   collection = "scaqmd",
-  startdate = startdate,
-  enddate = enddate,
-  days = 7,
+  datestamp = 202009,
   timezone = "America/Los_Angeles"
+) %>% 
+PWFSLSmoke::monitor_subset(monitorIDs = mvcaa_ids) 
+
+save(air_202009, file = paste0(outputDir, "airsensor_", "scaqmd_" , "202009", ".rda"))
+
+
+# load airsensor file from local archive 
+setArchiveBaseDir(archiveDir)
+getArchiveBaseDir()
+
+airsensor_202009 <- sensor_loadMonth(
+  collection = "scaqmd",
+  datestamp = 202009,
+  timezone = timezone
 )
-# Error in sensor_filterDatetime(., startdate = startdate, enddate = enddate,  : 
-#   Parameter 'sensor' is not a valid 'airsensor' object.
-
-
-test <- pat_createAirSensor(
-      pat = ,
-      parameter <- "pm25",
-      FUN = PurpleAirQC_hourly_AB_01
-    )
-
-
 
 # ----- Create airsensor objects for October -----------------------------------
 
