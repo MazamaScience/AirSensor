@@ -30,3 +30,57 @@ Tutorials in this series include:
 _TO DO_
 
 Outline:
+
+Intro
+* wildfire situation during fall 2020
+* what about airquality? (transition to data)
+
+Data and graphics 
+```{r}
+# load monthly data to combine later
+sep <- sensor_loadMonth("scaqmd", 202009)
+oct <- sensor_loadMonth("scaqmd", 202010)
+nov <- sensor_loadMonth("scaqmd", 202011)
+
+fall <- sensor_join(sep, oct, nov)
+
+# dynamic map
+monitor_leaflet(fall, slice = max)
+
+# panoramic timeseries plot
+PWFSLSmoke::monitor_timeseriesPlot(fall, style = 'gnats')
+
+# closer look at at the AQI of each location 
+# Load AirMonitorPlots
+library(AirMonitorPlots)
+
+# Help ggplot out by assigning short labels to be used as the facet label
+fall$meta$shortName <- 
+  my_monitors$meta$siteName %>%
+  stringr::str_replace("MV Clean Air Ambassador @", "") %>%
+  stringr::str_replace("MV Clean Air Ambassador-", "") %>%
+  stringr::str_trim()
+
+# Fancy plot with AQI bars
+gg <- 
+  ggplot_pm25Timeseries(
+    my_monitors,
+    dateRange[1],
+    dateRange[2],
+    timezone = "America/Los_Angeles"
+  ) +
+  ggtitle("Methow Valley PM2.5 values -- Sep 03 - 21, 2020") +
+  stat_AQCategory(color = NA) + 
+  facet_grid(rows = vars(shortName)) 
+
+print(gg)
+
+# sites with worst chronic days 
+fall_dailyAvg <- monitor_dailyStatistic(fall, FUN = mean, minHours = 20) # 20 or what number? 
+data.daily <- fall_dailyAvg$data[,-1] # "-1" removes datetime column 
+unhealthyDays <- apply(data.daily, 2, function(x) { sum(x >= AQI$breaks_24[4], na.rm = TRUE) }) #above 55.5, 2 = columns
+worstChronic <- names(sort(unhealthyDays, decreasing = TRUE))[1:6]
+fall$meta[worstChronic[1:3],"siteName"]
+```
+
+Conclusion
