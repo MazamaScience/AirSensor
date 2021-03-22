@@ -455,7 +455,18 @@ print(sprintf("Successfully created %d/%d pat objects.", successCount, idCount))
 # error due to list containing $, don't know how to fix it 
 # i tryied loading pat files from local dir and base url. 
 
-#try to manually combine pat objects to see if the function works 
+# _________________ remove later _______________________________________________
+# try to manually combine pat objects to see if pat_createAirSensor() works 
+DATA_DIR <- "C:/Users/astri/Mirror/Mazamascience/Projects/AirSensor/Data/MVCAA" #remove later
+
+if ( exists("DATA_DIR") ) {
+  archiveDir <- file.path(DATA_DIR)
+} else {
+  archiveDir <- file.path("~/Data/MVCAA")
+}
+
+setArchiveBaseDir(archiveDir)
+getArchiveBaseDir()
 
 mvcaa_ids # take 2 ids from this list 
 
@@ -485,7 +496,20 @@ air_list <- list()
 air_list[[1]] <- pat1
 air_list[[2]] <- pat2
 
-air_test <- monitor_combine(air_list) #OK
+air_test <- PWFSLSmoke::monitor_combine(air_list) #OK, this creates an airsensor object 
+
+air_test_meta <- air_test$meta # explore meta 
+
+# save and then load the airsensor object and file to see if it works 
+save(air_test, file = paste0(outputDir, "airsensor_", "scaqmd_" , "202009", ".rda")) # remove from directory 
+
+airsensor_202009 <- sensor_loadMonth(
+  collection = "scaqmd",
+  datestamp = 202009,
+  timezone = timezone
+)
+# OK
+
 
 # try to load airsensor data from base url 
 setArchiveBaseDir(NULL)
@@ -535,7 +559,7 @@ air_test$meta$deviceDeploymentID #"4565cea0bf1881e5_5238" "7469f3846aa28fbb_5236
 mvcaa_ids
 air_202009_meta <- air_202009$meta
 #Methow Valley sensors are not listed in air_202009. Why?
-
+#______________________________________________________________________________
 
 # (for later) save airsensor data locally 
 save(air_202009, file = paste0(outputDir, "airsensor_", "scaqmd_" , "202009", ".rda"))
@@ -551,7 +575,7 @@ airsensor_202009 <- sensor_loadMonth(
   timezone = timezone
 )
 
-
+airsensor_202009_meta <- airsensor_202009$meta
 # ----- Create airsensor objects for October -----------------------------------
 
 # ----- Create airsensor objects for November ----------------------------------
