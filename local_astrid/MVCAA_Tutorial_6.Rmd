@@ -1,0 +1,32 @@
+---
+title: "MVCAA Tutorial 6: Methow Vallely Smoke"
+author: "Mazama Science"
+date: "2021-03-22"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{MVCAA Tutorial 5: Building a Local Archive}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
+```
+
+## Introduction
+
+_TO DO_
+
+Tutorials in this series include:
+
+* [MVCAA Tutorial 1: Creating PAT Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_1.html)
+* [MVCAA Tutorial 2: Exploring PAT Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_2.html)
+* [MVCAA Tutorial 3: Creating Airsensor Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_3.html)
+* [MVCAA Tutorial 4: Exploring Airsensor Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_4.html)
+* [MVCAA Tutorial 5: Building a Local Archive](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_5.html)
+* [MVCAA Tutorial 6: Methow Vallely Smoke](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_6.html)
+
+## Goal
+_TO DO_
+
+Outline:
