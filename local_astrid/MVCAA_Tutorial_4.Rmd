@@ -89,7 +89,7 @@ September 2020 had the worst PM2.5 levels, putting the health of Methow Valley
 residents at risk.
 
 ```{r sensor-calendarPlots, eval = TRUE, warning = FALSE, message = FALSE}
-# Create a calendar plot for Liberty School
+# Create a calendar plot for Pine_Forest
 sensor_calendarPlot(
   sensor = Pine_Forest,
   colors = "aqi",
