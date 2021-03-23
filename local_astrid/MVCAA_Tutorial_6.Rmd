@@ -36,51 +36,779 @@ Intro
 * what about airquality? (transition to data)
 
 Data and graphics 
-```{r}
+```{r airsensor-objects}
+# create airsensor objects for each month 
+
+mvcaa_ids <- pas_load(datestamp = 20210317) %>%
+  pas_getDeviceDeploymentIDs()
+
+#  [1] "ab5dca99422f2c0d_13669" "f6c44edd41c941c7_10182" "49215ad49d1a87e3_10188"
+#  [4] "5878fbe6cdd90732_13659" "f736fd3fb21fc4da_13667" "db5d6b3b79f5830e_39237"
+#  [7] "d90df6cfc455c132_13677" "4f19d256e1787973_10166" "f592adb5067ad9d3_13675"
+# [10] "4a47b9252e16e558_15077" "0cbfeb2ce4c1553c_13661" "2e3b5ceea86a885b_10168"
+# [13] "f96deab8c29aa42b_10134" "96b108298883ca47_64441" "b56c0ef677852913_81495"
+
+
+#---------------------------- Sep ----------------------------------------------
+startdate = 20200901
+enddate = 20201001
+
+sens1 <- pat_load(id = "ab5dca99422f2c0d_13669",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens2 <- pat_load(id = "f6c44edd41c941c7_10182",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens3 <- pat_load(id = "49215ad49d1a87e3_10188",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate,
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens4 <- pat_load(id = "5878fbe6cdd90732_13659",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens5 <- pat_load(id = "f736fd3fb21fc4da_13667",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens6 <- pat_load(id = "db5d6b3b79f5830e_39237",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens7 <- pat_load(id = "d90df6cfc455c132_13677",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens8 <- pat_load(id = "4f19d256e1787973_10166",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens9 <- pat_load(id = "f592adb5067ad9d3_13675",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens10 <- pat_load(id = "4a47b9252e16e558_15077",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+
+sens11 <- pat_load(id = "0cbfeb2ce4c1553c_13661",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens12 <- pat_load(id = "2e3b5ceea86a885b_10168",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens13 <- pat_load(id = "f96deab8c29aa42b_10134",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens14 <- pat_load(id = "96b108298883ca47_64441",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+# sens15 <- pat_load(id = "b56c0ef677852913_81495", ----- NO DATA 
+#            pas = mvcaa, 
+#            startdate = 20200901,
+#            enddate = 20200930, 
+#            timezone = "America/Los_Angeles") %>% 
+#   pat_createAirSensor(
+#     parameter = "pm25", 
+#     FUN = PurpleAirQC_hourly_AB_01)
+
+# create list of sensors 
+sens_list_09 <- list()
+sens_list_09[[1]] <- sens1
+sens_list_09[[2]] <- sens2
+sens_list_09[[3]] <- sens3
+sens_list_09[[4]] <- sens4
+sens_list_09[[5]] <- sens5
+sens_list_09[[6]] <- sens6
+sens_list_09[[7]] <- sens7
+sens_list_09[[8]] <- sens8
+sens_list_09[[9]] <- sens9
+sens_list_09[[10]] <- sens10
+sens_list_09[[11]] <- sens11
+sens_list_09[[12]] <- sens12
+sens_list_09[[13]] <- sens13
+sens_list_09[[14]] <- sens14
+#sens_list_09[[15]] <- sens15 --- NO DATA
+
+# combine sensors 
+sens_list_09 <- PWFSLSmoke::monitor_combine(sens_list_09)
+
+# save combined sensor object 
+save(sens_list_09, file = paste0(outputDir, "airsensor_", "scaqmd_" , "202009", ".rda"))
+
+# load sensor file 
+airsensor_09 <- sensor_loadMonth(
+  collection = "scaqmd",
+  datestamp = 202009,
+  timezone = timezone
+)
+
+meta_09 <- (airsensor_09$meta)
+
+#---------------------------- Oct ----------------------------------------------
+startdate = 20201001
+enddate = 20201101
+
+sens1 <- pat_load(id = "ab5dca99422f2c0d_13669",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens2 <- pat_load(id = "f6c44edd41c941c7_10182",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens3 <- pat_load(id = "49215ad49d1a87e3_10188",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate,
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens4 <- pat_load(id = "5878fbe6cdd90732_13659",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens5 <- pat_load(id = "f736fd3fb21fc4da_13667",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens6 <- pat_load(id = "db5d6b3b79f5830e_39237",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens7 <- pat_load(id = "d90df6cfc455c132_13677",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens8 <- pat_load(id = "4f19d256e1787973_10166",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens9 <- pat_load(id = "f592adb5067ad9d3_13675",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens10 <- pat_load(id = "4a47b9252e16e558_15077",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+
+sens11 <- pat_load(id = "0cbfeb2ce4c1553c_13661",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens12 <- pat_load(id = "2e3b5ceea86a885b_10168",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens13 <- pat_load(id = "f96deab8c29aa42b_10134",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens14 <- pat_load(id = "96b108298883ca47_64441",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens15 <- pat_load(id = "b56c0ef677852913_81495", 
+           pas = mvcaa,
+           startdate = startdate,
+           enddate = enddate,
+           timezone = "America/Los_Angeles") %>%
+  pat_createAirSensor(
+    parameter = "pm25",
+    FUN = PurpleAirQC_hourly_AB_01)
+
+# create list of sensors 
+sens_list_10 <- list()
+sens_list_10[[1]] <- sens1
+sens_list_10[[2]] <- sens2
+sens_list_10[[3]] <- sens3
+sens_list_10[[4]] <- sens4
+sens_list_10[[5]] <- sens5
+sens_list_10[[6]] <- sens6
+sens_list_10[[7]] <- sens7
+sens_list_10[[8]] <- sens8
+sens_list_10[[9]] <- sens9
+sens_list_10[[10]] <- sens10
+sens_list_10[[11]] <- sens11
+sens_list_10[[12]] <- sens12
+sens_list_10[[13]] <- sens13
+sens_list_10[[14]] <- sens14
+sens_list_10[[15]] <- sens15 
+
+# combine sensors 
+sens_list_10 <- PWFSLSmoke::monitor_combine(sens_list_10)
+
+# save combined sensor object 
+save(sens_list_10, file = paste0(outputDir, "airsensor_", "scaqmd_" , "202010", ".rda"))
+
+# load sensor file 
+airsensor_10 <- sensor_loadMonth(
+  collection = "scaqmd",
+  datestamp = 202010,
+  timezone = timezone
+)
+
+meta_10 <- (airsensor_10$meta)
+
+#---------------------------- Nov ----------------------------------------------
+startdate = 20201101
+enddate = 20201201
+
+sens1 <- pat_load(id = "ab5dca99422f2c0d_13669",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens2 <- pat_load(id = "f6c44edd41c941c7_10182",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens3 <- pat_load(id = "49215ad49d1a87e3_10188",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate,
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens4 <- pat_load(id = "5878fbe6cdd90732_13659",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens5 <- pat_load(id = "f736fd3fb21fc4da_13667",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens6 <- pat_load(id = "db5d6b3b79f5830e_39237",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens7 <- pat_load(id = "d90df6cfc455c132_13677",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens8 <- pat_load(id = "4f19d256e1787973_10166",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens9 <- pat_load(id = "f592adb5067ad9d3_13675",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens10 <- pat_load(id = "4a47b9252e16e558_15077",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+
+sens11 <- pat_load(id = "0cbfeb2ce4c1553c_13661",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens12 <- pat_load(id = "2e3b5ceea86a885b_10168",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens13 <- pat_load(id = "f96deab8c29aa42b_10134",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens14 <- pat_load(id = "96b108298883ca47_64441",
+           pas = mvcaa, 
+           startdate = startdate,
+           enddate = enddate, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sens15 <- pat_load(id = "b56c0ef677852913_81495", 
+           pas = mvcaa,
+           startdate = startdate,
+           enddate = enddate,
+           timezone = "America/Los_Angeles") %>%
+  pat_createAirSensor(
+    parameter = "pm25",
+    FUN = PurpleAirQC_hourly_AB_01)
+
+# create list of sensors 
+sens_list_11 <- list()
+sens_list_11[[1]] <- sens1
+sens_list_11[[2]] <- sens2
+sens_list_11[[3]] <- sens3
+sens_list_11[[4]] <- sens4
+sens_list_11[[5]] <- sens5
+sens_list_11[[6]] <- sens6
+sens_list_11[[7]] <- sens7
+sens_list_11[[8]] <- sens8
+sens_list_11[[9]] <- sens9
+sens_list_11[[10]] <- sens10
+sens_list_11[[11]] <- sens11
+sens_list_11[[12]] <- sens12
+sens_list_11[[13]] <- sens13
+sens_list_11[[14]] <- sens14
+sens_list_11[[15]] <- sens15 
+
+# combine sensors 
+sens_list_11 <- PWFSLSmoke::monitor_combine(sens_list_11)
+
+# save combined sensor object 
+save(sens_list_11, file = paste0(outputDir, "airsensor_", "scaqmd_" , "202011", ".rda"))
+
+# load sensor file 
+airsensor_11 <- sensor_loadMonth(
+  collection = "scaqmd",
+  datestamp = 202011,
+  timezone = timezone
+)
+
+meta_11 <- (airsensor_11$meta)
+#------------------------------------------------------------------------------
+
+```
+
+
+```{r timeseries}
 # load monthly data to combine later
 sep <- sensor_loadMonth("scaqmd", 202009)
 oct <- sensor_loadMonth("scaqmd", 202010)
 nov <- sensor_loadMonth("scaqmd", 202011)
 
-fall <- sensor_join(sep, oct, nov)
+fall <- sensor_join(sep, oct) 
+#Only two airsensor objects at a time may be joined.
 
 # dynamic map
 monitor_leaflet(fall, slice = max)
 
-# panoramic timeseries plot
-PWFSLSmoke::monitor_timeseriesPlot(fall, style = 'gnats')
+# sep timeseries plot
+PWFSLSmoke::monitor_timeseriesPlot(sep, style = 'gnats')
+abline(h = AQI$breaks_24, col = AQI$colors, lwd = 2)
+addAQILegend()
+title("Methow Valley PM2.5 values, Oct 2020")
+
+# oct timeseries plot
+PWFSLSmoke::monitor_timeseriesPlot(oct, style = 'gnats')
+abline(h = AQI$breaks_24, col = AQI$colors, lwd = 2)
+addAQILegend()
+title("Methow Valley PM2.5 values, Oct 2020")
+
+# nov timeseries plot
+PWFSLSmoke::monitor_timeseriesPlot(nov, style = 'gnats')
+abline(h = AQI$breaks_24, col = AQI$colors, lwd = 2)
+addAQILegend()
+title("Methow Valley PM2.5 values, Nov 2020")
+```
+
+```{r timeseries-per-sensor}
 
 # closer look at at the AQI of each location 
 # Load AirMonitorPlots
 library(AirMonitorPlots)
 
+#--------------------------------- sep------------------------------------------
+startdate = 20200901
+enddate = 20201001
+
 # Help ggplot out by assigning short labels to be used as the facet label
-fall$meta$shortName <- 
-  my_monitors$meta$siteName %>%
+sep$meta$shortName <- 
+  sep$meta$siteName %>%
   stringr::str_replace("MV Clean Air Ambassador @", "") %>%
   stringr::str_replace("MV Clean Air Ambassador-", "") %>%
   stringr::str_trim()
 
+names(sep$meta)
+
 # Fancy plot with AQI bars
 gg <- 
   ggplot_pm25Timeseries(
-    my_monitors,
-    dateRange[1],
-    dateRange[2],
+    sep,
+    startdate,
+    enddate,
     timezone = "America/Los_Angeles"
   ) +
-  ggtitle("Methow Valley PM2.5 values -- Sep 03 - 21, 2020") +
+  ggtitle("Methow Valley PM2.5 values -- Sep, 2020") +
   stat_AQCategory(color = NA) + 
   facet_grid(rows = vars(shortName)) 
 
 print(gg)
 
+# most sensors have many days with missing data. 
+
+# create airsensor object for sensors with little/no missing data 
+sep_meta <- sep$meta #Gunn Ranch f736fd3fb21fc4da_13667, Pine Forest "0cbfeb2ce4c1553c_13661"
+Gunn_Ranch <- "f736fd3fb21fc4da_13667"
+Pine_Forest <- "0cbfeb2ce4c1553c_13661"
+
+
+GR_09 <- pat_load(id = Gunn_Ranch,
+           pas = mvcaa, 
+           startdate = 20200901,
+           enddate = 20201001, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+
+PF_09 <- pat_load(id = Pine_Forest,
+           pas = mvcaa, 
+           startdate = 20200901,
+           enddate = 20201001, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+sensor_calendarPlot(
+  sensor = PF_09,
+  colors = "aqi",
+  title = "September 2020 -- Pine Forest"
+)
+
+sensor_calendarPlot(
+  sensor = GR_09,
+  colors = "aqi",
+  title = "September 2020 -- Gunn Ranch"
+)
+
+#--------------------------------- Oct -----------------------------------------
+startdate = 20201001
+enddate = 20201101
+
+# Help ggplot out by assigning short labels to be used as the facet label
+oct$meta$shortName <- 
+  oct$meta$siteName %>%
+  stringr::str_replace("MV Clean Air Ambassador @", "") %>%
+  stringr::str_replace("MV Clean Air Ambassador-", "") %>%
+  stringr::str_trim()
+
+names(oct$meta)
+
+# Fancy plot with AQI bars
+gg <- 
+  ggplot_pm25Timeseries(
+    oct,
+    startdate,
+    enddate,
+    timezone = "America/Los_Angeles"
+  ) +
+  ggtitle("Methow Valley PM2.5 values -- Oct, 2020") +
+  stat_AQCategory(color = NA) + 
+  facet_grid(rows = vars(shortName)) 
+
+print(gg)
+#impossible to see if data is missing due to resolution. 
+#see if PF and GR have good data.
+
+# create airsensor object for GR and PF during oct
+
+GR_10 <- pat_load(id = Gunn_Ranch,
+           pas = mvcaa, 
+           startdate = 20201001,
+           enddate = 20201101, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+
+PF_10 <- pat_load(id = Pine_Forest,
+           pas = mvcaa, 
+           startdate = 20201001,
+           enddate = 20201101, 
+           timezone = "America/Los_Angeles") %>% 
+  pat_createAirSensor(
+    parameter = "pm25", 
+    FUN = PurpleAirQC_hourly_AB_01)
+
+
+sensor_calendarPlot(
+  sensor = PF_10,
+  colors = "aqi",
+  title = "October 2020 -- Pine Forest"
+)
+
+sensor_calendarPlot(
+  sensor = GR_10,
+  colors = "aqi",
+  title = "October 2020 -- Gunn Ranch"
+)
+ 
+
+#PF_10 AND GR_10 have data all days!
+
+# random check of another sensor apparently with missing data from previous timeseries
+
+cougar <- pat_load(
+  id = "96b108298883ca47_64441",
+  startdate = 20201001,
+  enddate = 20201101,
+  timezone = "America/Los_Angeles"
+)
+
+pat_dygraph(cougar) # the sensor does miss data. 
+
+# How to tell a story if data is missing? use only sensors with "good data"?
+```
+
+
+WIP: code below needs editing 
+```{r chronic-days}
 # sites with worst chronic days 
 fall_dailyAvg <- monitor_dailyStatistic(fall, FUN = mean, minHours = 20) # 20 or what number? 
 data.daily <- fall_dailyAvg$data[,-1] # "-1" removes datetime column 
 unhealthyDays <- apply(data.daily, 2, function(x) { sum(x >= AQI$breaks_24[4], na.rm = TRUE) }) #above 55.5, 2 = columns
 worstChronic <- names(sort(unhealthyDays, decreasing = TRUE))[1:6]
 fall$meta[worstChronic[1:3],"siteName"]
+
+# WIP
+# fire map 
+# cold psrings fire coordinates 48.635 latitude, -119.818 longitude -- 6 Sept
+# pearl hill fire coordinates 48.056 latitude, -119.484 longitude -- 7 Sept
+airsensor_202009 # just an example of 2 airsensors 
+
+fireLons <- c(-119.818, -119.484)
+fireLats <- c(48.635, 48.056)
+PWFSLSmoke::monitor_staticmap(
+  airsensor_202009,
+  slice = max,
+  maptype = 'terrain',
+  centerLon = mean(fireLons),
+  centerLat = mean(fireLats),
+  zoom = 7
+)
+PWFSLSmoke::addIcon('redFlame', fireLons, fireLats, expansion = .002)
+PWFSLSmoke::addAQILegend(cex = 0.8, x = "bottomleft")
+#title("September - October, 2020", line = -1.5, cex.main = 2)
+layout(1)
+
 ```
+
+```{r}
+# dynamic map
+monitor_leaflet( airsensor_202009, slice = max)
+```
+
+```{r}
+# pollution rose plot
+sensor_pollutionRose(
+  sensor = pat2,
+  statistic = "prop.mean"
+)
+
+```
+
+```{r}
+polar_plot <- sensor_polarPlot(
+  sensor = pat2,
+  statistic = "weighted_mean"
+)
+```
+
+
 
 Conclusion
