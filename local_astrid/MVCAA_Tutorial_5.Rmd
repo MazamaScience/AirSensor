@@ -16,7 +16,7 @@ knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
 ## Introduction
 
 This tutorial demonstrates how to create a multi-month archive of PurpleAir
-timeseries data that can be loaded from a local `archiveDataDir`. Where 
+timeseries data that can be loaded from a local `archiveBaseDir`. Where 
 Tutorial 1 demonstrated how to save and work with a small number of sensors
 for a single month, this tutorial provides a more organized approach for working
 with larger networks of sensors over extended periods of time. Target
@@ -47,8 +47,8 @@ an archive directory. The base of this directory is specified by
 `setArchiveBaseUrl()` if the archive is web based or `setArchiveBaseDir()` if
 the archive is local.
 
-For a multi-year archive, the overall structure beneath the `BaseDir` will look 
-something like this, depending on how many years of data you have:
+For a multi-year archive, the overall structure beneath the `archiveBaseDir` 
+will look something like this, depending on how many years of data you have:
 
 ```
 ├── airsensor
@@ -74,67 +74,60 @@ something like this, depending on how many years of data you have:
 │   └── latest
 ```
 
+## File Naming Protocol
+
+The prtocol for creating pre-generated edata files depends on the type of object
+being created.
+
 ### airsensor
-* The directory must have the following structure: ~airsensor/YYYY.
 
-* File naming must be airsensor_scaqmd_YYYYMM.rda
-
-* Example: ~airsensor/2020/airsensor_scaqmd_202009.rda
+* Directory: `<archiveBaseDir>/airsensor/<YYYY>/`
+* File name: `airsensor_<collection>_<YYYYMM>.rda`
+* Example: `~/Data/MVCAA/airsensor/2020/airsensor_mvcaa_202009.rda`
 
 ### pas
-* The directory must have the following structure: ~pas/YYYY.
 
-* File naming must be pas_YYYYMMDD.rda
+* Directory: `<archiveBaseDir>/pas/<YYYY>/`
+* File name: `pas_<YYYYMMDD>.rda`
+* Example: `~/Data/MVCAA/pas/2020/pas_20200901.rda`
 
-* Example: ~pas/2021/pas_20210317.rda
-
-*NOTE*: we are using 2021 as an example since we'll be downloading the latest `pas`
-data. For this local archive, the only purpuse of the `pas` data is to be used for 
-extracting the device deoploymet IDs for the Methow Valley.
+_NOTE:_  We won't use the archive directories for the pas object because we
+already have exactly what we want in our `mvcaa.rda` file.
 
 ### pat
-* The directory must have the following structure: ~pat/YYYY/MM.
 
-* File naming must be pat_id_YYYYMM.rda
-
-* Example: ~pat/2020/09/pat_ab5dca99422f2c0d_13669__202009.rda
-
-*NOTE*: "ab5dca99422f2c0d_13669" corresponds to the device deployment ID, and each 
-month directory will have individual `pat` files rather than a `patList` like the one we created in Tutorial 1. 
+* Directory: `<archiveBaseDir>/pas/<YYYY>/<MM>/`
+* File name: `pat_<deviceDeploymentID>_<YYYYMM>.rda`
+* Example: `~/Data/MVCAA/pat/2020/09/pat_ab5dca99422f2c0d_13669__202009.rda`
 
 ## _load() Functions
-Unless a `BaseDir` for a local archive is specified using the function setArchiveBaseDir(), by default all `_load()` functions in the *AirSensor* package will load data from the `Baseurl` mantained by the package http://data.mazamascience.com/PurpleAir/v1/. 
 
-Package functions that load pre-generated data files download data from this URL. 
+When loading data, package `_load()` functions look for any local archive 
+specified with `setArchiveBaseDir()`. If no local archive is found, a web based
+archive is searched for at the URL specified with `setArchiveBaseUrl()`. Mazama
+Science maintains a small archive of data associated with the South Coast
+Air Quality Management District at:
+http://data.mazamascience.com/PurpleAir/v1/. 
 
-These functions include:
+Package functions that load pre-generated data files include:
 
-pas_load()
+* `pas_load()`
+* `pat_load()`
+* `pat_loadLatest()`
+* `pat_loadMonth()`
+* `sensor_load()`
+* `sensor_loadLatest()`
+* `sensor_loadMonth()`
 
-pat_load()
-
-pat_loadLatest()
-
-pat_loadMonth()
-
-sensor_load()
-
-sensor_loadLatest()
-
-sensor_loadMonth()
-
-To avoid internet latency, specification of `BaseDir` will always take precedence over specification of `Baseurl`. For this reason, if you previously set a `BaseDir`
-and you then want to load data from the `Baseurl` using the setArchiveBaseurl() 
-function, you have to set `BaseDir` to 
-NULL first (i.e. `setArchiveBaseDir(NULL)`).
-
-(They are supposed to override any `baseUrl`
-settingn but this needs to be tested.)_
+To avoid internet latency, specification of `archiveBaseDir` will always take precedence 
+over specification of `archiveBaseUrl`. For this reason, if you previously set `archiveBaseDir`
+and you then want to load data from some `archiveBaseUrl`, you will have to 
+first: `setArchiveBaseDir(NULL)`.
 
 ## R script
 
 The following R script will take several minutes to run and will create an
-archive of 'pas', 'pat' and 'airsensor' data files on your computer. Once these 
+archive of 'pat' and 'airsensor' data files on your computer. Once these 
 files have been created, loading them will be very fast.
 
 After running the script, a final 
@@ -143,15 +136,19 @@ section will demonstrate how to load and work with these local data files.
 This R script can be used as a starting point for anyone interested in creating 
 small collections of data for other communities and other dates.
 
-_TODO: R script similar to tutorial 1 but using the "well known" structure._
-
-*LEFT AT ROW 481!!*
 ```{r create-archive, eval = FALSE, warning = FALSE, message = FALSE}
 # Methow Valley local data archive: Setup
 
-# TODO similar to Tutorial 1
+# NOTE:  https://mazamascience.github.io/MazamaCoreUtils/articles/logging.html
+
+library(MazamaCoreUtils)    # for logging
+library(AirSensor)
 
 # ----- Setup ------------------------------------------------------------------
+
+# Have log messages sent to the console
+MazamaCoreUtils::logger.setLevel(TRACE)
+
 # Use the default archiveDir unless it is already defined
 if ( exists("DATA_DIR") ) {
   archiveDir <- file.path(DATA_DIR)
@@ -159,444 +156,191 @@ if ( exists("DATA_DIR") ) {
   archiveDir <- file.path("~/Data/MVCAA")
 }
 
-# Create a ~pas/2021 directory. Edit the year beased on the date of the pas data 
-# loading
-dir.create(file.path(archiveDir, "pas/2021"), recursive = TRUE)
-
-# Create a pat/2020/MM directory underneath for September, October, and November
-dir.create(file.path(archiveDir, "pat/2020/09"), recursive = TRUE)
-dir.create(file.path(archiveDir, "pat/2020/10"), recursive = TRUE)
-dir.create(file.path(archiveDir, "pat/2020/11"), recursive = TRUE)
-
-# Create an airsensor/2020 directory 
-dir.create(file.path(archiveDir, "airsensor/2020"), recursive = TRUE)
-
-# Check the directories you just created 
-list.dirs(archiveDir)
-
 # AirSensor package
 library(AirSensor)
 
-# Set the archiveBaseUrl so we can get a 'pas' object
-setArchiveBaseDir(NULL)
-getArchiveBaseDir()
+# Set the package archiveBaseDir so we can load pat objects with `pat_load()`
+setArchiveBaseDir(archiveDir)
 
-setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+# ----- Get PAS object ---------------------------------------------------------
 
-# ----- Create PAS object ------------------------------------------------------
+# NOTE:  We won't use the archive directories for the pas object because we
+# NOTE:  already have exactly what we want in our `mvcaa.rda` file.
 
-# Create a 'pas' object limited to MVCAA sensors
-#   - load most recent 'pas' for the entire country
-#   - subset to include sensors labeled MVCAA
-mvcaa <-
-  pas_load() %>%
-  pas_filter(stringr::str_detect(label, "MV Clean Air Ambassador"))
-  # NOTE: Could have filtered by area with:
-  #pas_filterArea(w = -120.5, e = -120.0, s = 48.0, n = 49.0)
+mvcaa <- get(load(file.path(archiveDir,"mvcaa.rda")))
 
-# Look at it
-pas_leaflet(mvcaa)
-
-# Save it in our archive directory.
-# Change the the year of the directory and the date in pas_YYYYMMDD based on the
-# date of the pas data loading 
-save(mvcaa, file = paste0(archiveDir, "/pas/2021/pas_20210317.rda"))
-list.files(file.path(archiveDir, "pas/2021"))
-
-# Examine the pas directory:
-list.files(file.path(archiveDir, "pas/2021"))
-
-# ----- Create PAT objects for September----------------------------------------
+# ----- Prepare PAT info -------------------------------------------------------
 
 # Get all the deviceDeploymentIDs
 mvcaa_ids <- pas_getDeviceDeploymentIDs(mvcaa)
 
-# Specify times
-startdate <- "2020-09-01"
-enddate <- "2020-10-01"
+# Set up months
 timezone <- "America/Los_Angeles"
+monthStamps <- c(202009, 202010, 202011)
 
-# # Create pat files for September 2020
-# for (id in mvcaa_ids){
-#   filename = paste0(archiveDir,"pat/2020/09", "/", id, ".rda")
-#   pat = pat_createNew(id = id,
-#                       pas = mvcaa,
-#                       startdate = startdate, 
-#                       enddate = enddate)
-#   save(pat, file = filename)
-# }
+# Loop over months
+for ( monthStamp in monthStamps ) {
 
-# Initialize counters
-idCount <- length(mvcaa_ids)
-count <- 0 
-successCount <- 0
-
-# Loop over all ids and get data (might take a while).
-for (id in mvcaa_ids[1:idCount]) {
+  logger.debug("Working on monthStamp %s ---------- ...", monthStamp)
   
-  filename = paste0(archiveDir,"/pat/2020/09/", "pat_", id, "_202009", ".rda") 
-  count <- count + 1
-  print(sprintf("Working on %s (%d/%d) ...", id, count, idCount))
+  # Get date components
+  startdate <- MazamaCoreUtils::parseDatetime(monthStamp, timezone = timezone)
   
-  # Use a try-block in case you get "no data" errors
-  result <- try({
-    
-    # It's nice to copy-paste the full function signature so you can see all possible arguments
-    pat<- pat_createNew(
-      id = id,
-      label = NULL,        # not needed if you have the id
-      pas = mvcaa,
-      startdate = startdate,
-      enddate = enddate,
-      timezone = timezone,
-      baseUrl = "https://api.thingspeak.com/channels/",
-      verbose = FALSE
-    )
-    successCount <- successCount + 1
-    save(pat, file = filename)  #Save each pat file in ~ pat/2020/09
-    
-  }, silent = FALSE)
-  
-  if ( "try-error" %in% class(result) ) {
-    print(geterrmessage())
-  }
-}
-
-# How many did we get?
-print(sprintf("Successfully created %d/%d pat objects.", successCount, idCount))
-
-
-# ----- Create PAT objects for October -----------------------------------------
-
-# Specify times
-startdate <- "2020-10-01"
-enddate <- "2020-11-01"
-timezone <- "America/Los_Angeles"
-
-# Initialize counters
-idCount <- length(mvcaa_ids)
-count <- 0 
-successCount <- 0
-
-# Loop over all ids and get data (might take a while).
-for (id in mvcaa_ids[1:idCount]) {
-  
-  filename = paste0(archiveDir,"/pat/2020/10/", "pat_", id, "_202010", ".rda")
-  count <- count + 1
-  print(sprintf("Working on %s (%d/%d) ...", id, count, idCount))
-  
-  # Use a try-block in case you get "no data" errors
-  result <- try({
-    
-    # It's nice to copy-paste the full function signature so you can see all possible arguments
-    pat<- pat_createNew(
-      id = id,
-      label = NULL,        # not needed if you have the id
-      pas = mvcaa,
-      startdate = startdate,
-      enddate = enddate,
-      timezone = timezone,
-      baseUrl = "https://api.thingspeak.com/channels/",
-      verbose = FALSE
-    )
-    successCount <- successCount + 1
-    save(pat, file = filename)  #Save each pat file in ~ pat/2020/09
-    
-  }, silent = FALSE)
-  
-  if ( "try-error" %in% class(result) ) {
-    print(geterrmessage())
-  }
-}
-
-# How many did we get?
-print(sprintf("Successfully created %d/%d pat objects.", successCount, idCount))
-
-# ----- Create PAT objects for November ----------------------------------------
-
-# Specify times
-startdate <- "2020-11-01"
-enddate <- "2020-12-01"
-timezone <- "America/Los_Angeles"
-
-# Initialize counters
-idCount <- length(mvcaa_ids)
-count <- 0 
-successCount <- 0
-
-# Loop over all ids and get data (might take a while).
-for (id in mvcaa_ids[1:idCount]) {
-  
-  filename = paste0(archiveDir,"/pat/2020/11/", "pat_", id, "_202011", ".rda")
-  count <- count + 1
-  print(sprintf("Working on %s (%d/%d) ...", id, count, idCount))
-  
-  # Use a try-block in case you get "no data" errors
-  result <- try({
-    
-    # It's nice to copy-paste the full function signature so you can see all possible arguments
-    pat<- pat_createNew(
-      id = id,
-      label = NULL,        # not needed if you have the id
-      pas = mvcaa,
-      startdate = startdate,
-      enddate = enddate,
-      timezone = timezone,
-      baseUrl = "https://api.thingspeak.com/channels/",
-      verbose = FALSE
-    )
-    successCount <- successCount + 1
-    save(pat, file = filename)  #Save each pat file in ~ pat/2020/09
-    
-  }, silent = FALSE)
-  
-  if ( "try-error" %in% class(result) ) {
-    print(geterrmessage())
-  }
-}
-
-# How many did we get?
-print(sprintf("Successfully created %d/%d pat objects.", successCount, idCount))
-
-# ----- Evaluate each month directory under ~ pat/2020 -------------------------
-list.files(file.path(archiveDir, "pat/2020/09"))
-list.files(file.path(archiveDir, "pat/2020/10"))
-list.files(file.path(archiveDir, "pat/2020/11"))
-
-# ----- Create airsensor objects for September ---------------------------------
-setArchiveBaseDir(NULL)
-getArchiveBaseDir()
-
-setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
-
-
-# Specify times
-startdate <- "2020-09-01"
-enddate <- "2020-10-01"
-timezone <- "America/Los_Angeles"
-
-# Specify output directory
-outputDir <- paste0(archiveDir,"/airsensor/2020/")
-
-# Initialize counters
-idCount <- length(mvcaa_ids)
-count <- 0
-successCount <- 0
-
-dataList <- list()
-
-for ( deviceDeploymentID in mvcaa_ids[1:idCount] ) {
-  
-  count <- count + 1
-  print(sprintf("Working on %s (%d/%d) ...", deviceDeploymentID, count, idCount))
-  
-  # Debug info
-  logger.debug(
-    "%4d/%d pat_createAirSensor('%s')",
-    count,
-    length(mvcaa_ids),
-    deviceDeploymentID
+  # Guarantee that the enddate is the first of the next month
+  enddate <- lubridate::floor_date(
+    startdate + lubridate::ddays(40),
+    unit = "month"
   )
   
-  # Load the pat data, convert to an airsensor and add to dataList
-  dataList[[deviceDeploymentID]] <- tryCatch(
-    expr = {
-      airsensor <- pat_load(
-        id = deviceDeploymentID,
-        label = NULL,
+  year <- strftime(startdate, "%Y")
+  month <- strftime(startdate, "%m")
+  
+  # Initialize counters
+  idCount <- length(mvcaa_ids)
+  count <- 0 
+  successCount <- 0
+  
+  # ----- Create PAT objects ---------------------------------------------------
+
+  # Create the archiveDir/pat/YYYY/MM/ directory
+  dir.create(
+    file.path(archiveDir, "pat", year, month), 
+    showWarnings = FALSE,
+    recursive = TRUE
+  )
+  
+  # Loop over all ids and get data (might take a while).
+  for ( id in mvcaa_ids ) {
+
+    # Create PAT canonical file name
+    fileName <- paste0("pat_", id, "_", year, month, ".rda")
+
+    # Create PAT canonical file path
+    filePath <- file.path(archiveDir, "pat", year, month, fileName)
+
+    count <- count + 1
+    logger.debug("Working on %s (%d/%d) ...", id, count, idCount)
+
+    # Use a try-block in case you get "no data" errors
+    result <- try({
+
+      # Create PAT
+      pat <- pat_createNew(
+        id = id,
+        label = NULL,        # not needed if you have the id
         pas = mvcaa,
         startdate = startdate,
         enddate = enddate,
-        timezone = timezone
-      ) %>%
-        pat_createAirSensor(
-          FUN = AirSensor::PurpleAirQC_hourly_AB_01
-        )
+        timezone = timezone,
+        baseUrl = "https://api.thingspeak.com/channels/",
+        verbose = FALSE
+      )
       successCount <- successCount + 1
-    }, 
-    error = function(e) {
-      logger.warn('Unable to load PAT data for %s ', deviceDeploymentID)
-      NULL
+      save(pat, file = filePath)
+
+    }, silent = FALSE)
+
+    if ( "try-error" %in% class(result) ) {
+      logger.error(geterrmessage())
     }
-    
-    # Keep going in the face of errors
+
+  }
+  
+  # ------ Create AirSensor objects --------------------------------------------
+  
+  # Create the archiveDir/airsensor/YYYY/ directory
+  dir.create(
+    file.path(archiveDir, "airsensor", year), 
+    showWarnings = FALSE,
+    recursive = TRUE
   )
   
-} # END of mvcaa_ids loop
-
-# Combine the airsensors into a single ws_monitor opbject and save
-tryCatch(
-  expr = {
-    logger.info('Combining airsensors...')
+  collectionName <- "mvcaa"
+  
+  # Init counts
+  successCount <- 0
+  count <- 0
+  
+  dataList <- list()
+  
+  # Loop over all ids and aggregate to hourly (might take a while).
+  for ( id in mvcaa_ids ) {
     
-    airsensor <- PWFSLSmoke::monitor_combine(dataList)
-    class(airsensor) <- c("airsensor", "ws_monitor", "list")
+    count <- count + 1
     
-    logger.info('Combined successfully...')
+    # Debug info
+    logger.debug(
+      "%4d/%d Calling pat_createAirSensor('%s')",
+      count,
+      length(mvcaa_ids),
+      id
+    )
     
-    collectionName <- "scaqmd"
-    filename <- paste0("airsensor_", opt$collectionName, "_", "202009", ".rda")
-    filepath <- file.path(outputDir, filename)
+    # Load the pat data, convert to an airsensor and add to dataList
+    dataList[[id]] <- tryCatch(
+      expr = {
+        airsensor <- pat_load(
+          id = id,
+          label = NULL,
+          pas = mvcaa,
+          startdate = startdate,
+          enddate = enddate,
+          timezone = "America/Los_Angeles"
+        ) %>%
+          pat_createAirSensor(
+            FUN = AirSensor::PurpleAirQC_hourly_AB_01
+          )
+      }, 
+      error = function(e) {
+        logger.warn('Unable to load PAT data for %s ', id)
+        NULL
+      }
+      
+      # Keep going in the face of errors
+    )
     
-    save(list = "airsensor", file = filepath)
-    logger.info("Saved: %s", filename)
-  }, 
-  error = function(e) {
-    msg <- paste("Error creating monthly AirSensor file: ", e)
-    logger.fatal(msg)
-  }
-)
+  } # END of deviceDeploymentIDs loop
+  
+  # Combine the airsensors into a single airsensor object and save
+  tryCatch(
+    expr = {
+      logger.info('Combining airsensors...')
+      
+      airsensor <- PWFSLSmoke::monitor_combine(dataList)
+      class(airsensor) <- c("airsensor", "ws_monitor", "list")
+      
+      logger.info('Combined successfully...')
+      
+      # Create Airsensor canonical file name
+      fileName <- paste0("airsensor_", collectionName, "_", monthStamp, ".rda")
+      
+      # Create Airsensor canonical file p ath
+      filePath <- file.path(archiveDir, "airsensor", year, fileName)
 
+      save(list = "airsensor", file = filePath)
+    }, 
+    error = function(e) {
+      msg <- paste("Error creating monthly AirSensor file: ", e)
+      logger.error(msg)
+    }
+  )
 
-print(sprintf("Successfully created %d/%d pat objects.", successCount, idCount))
-
-#FATAL [2021-03-19 10:35:18] Error creating monthly AirSensor file:  Error: $ operator is invalid for atomic vectors
-
-# error due to list containing $, don't know how to fix it 
-# i tryied loading pat files from local dir and base url. 
-
-# _________________ remove later _______________________________________________
-# try to manually combine pat objects to see if pat_createAirSensor() works 
-DATA_DIR <- "C:/Users/astri/Mirror/Mazamascience/Projects/AirSensor/Data/MVCAA" #remove later
-
-if ( exists("DATA_DIR") ) {
-  archiveDir <- file.path(DATA_DIR)
-} else {
-  archiveDir <- file.path("~/Data/MVCAA")
+  # Now proceed to the next month
 }
-
-setArchiveBaseDir(archiveDir)
-getArchiveBaseDir()
-
-mvcaa_ids # take 2 ids from this list 
-
-pat1 <- pat_load(id = "96b108298883ca47_64441",
-           pas = mvcaa, 
-           startdate = 20200901,
-           enddate = 20200930, 
-           timezone = "America/Los_Angeles")
-pat1 <- pat_createAirSensor(
-  pat = pat1,
-  parameter = "pm25",
-  FUN = PurpleAirQC_hourly_AB_01,
-)
-
-pat2 <- pat_load(id = "f96deab8c29aa42b_10134",
-           pas = mvcaa, 
-           startdate = 20200901,
-           enddate = 20200930, 
-           timezone = "America/Los_Angeles")
-pat2 <- pat_createAirSensor(
-  pat = pat2,
-  parameter = "pm25",
-  FUN = PurpleAirQC_hourly_AB_01,
-)
-
-air_list <- list()
-air_list[[1]] <- pat1
-air_list[[2]] <- pat2
-
-air_test <- PWFSLSmoke::monitor_combine(air_list) #OK, this creates an airsensor object 
-
-air_test_meta <- air_test$meta # explore meta 
-
-# save and then load the airsensor object and file to see if it works 
-save(air_test, file = paste0(outputDir, "airsensor_", "scaqmd_" , "202009", ".rda")) # remove from directory 
-
-airsensor_202009 <- sensor_loadMonth(
-  collection = "scaqmd",
-  datestamp = 202009,
-  timezone = timezone
-)
-# OK
-
-
-# try to load airsensor data from base url 
-setArchiveBaseDir(NULL)
-getArchiveBaseDir()
-
-setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
-
-# Specify times
-startdate <- "2020-09-01"
-enddate <- "2020-10-01"
-timezone <- "America/Los_Angeles"
-
-air_202009 <- sensor_loadMonth(
-  collection = "scaqmd",
-  datestamp = 202009,
-  timezone = "America/Los_Angeles"
-) %>% 
-PWFSLSmoke::monitor_subset(monitorIDs = mvcaa_ids) 
-# air_2009 has no data. I wonder if it's because the file does not contain mvcaa_ids sensors
-
-# create a test list of sensors from the unfiltered airsensor object 
-air_202009 <- sensor_loadMonth(
-  collection = "scaqmd",
-  datestamp = 202009,
-  timezone = "America/Los_Angeles"
-)
-
-
-air_202009$meta$deviceDeploymentID
-
-list_test <- c("4565cea0bf1881e5_5238",  "7469f3846aa28fbb_5236",  
-               "c6f6ba9a91fd90a6_5220",  "f41bea1bac733fb6_5044")
-
-# subset using list_test
-air_test <- sensor_loadMonth(
-  collection = "scaqmd",
-  datestamp = 202009,
-  timezone = "America/Los_Angeles"
-) %>% 
-PWFSLSmoke::monitor_subset(monitorIDs = list_test) 
-
-air_test$meta$deviceDeploymentID #"4565cea0bf1881e5_5238" "7469f3846aa28fbb_5236" "c6f6ba9a91fd90a6_5220" "f41bea1bac733fb6_5044"
-# it worked 
-
-
-# check if Methow Valley IDS are in air_202009
-mvcaa_ids
-air_202009_meta <- air_202009$meta
-#Methow Valley sensors are not listed in air_202009. Why?
-#______________________________________________________________________________
-
-# (for later) save airsensor data locally 
-save(air_202009, file = paste0(outputDir, "airsensor_", "scaqmd_" , "202009", ".rda"))
-
-
-# (for later) load airsensor file from local archive 
-setArchiveBaseDir(archiveDir)
-getArchiveBaseDir()
-
-airsensor_202009 <- sensor_loadMonth(
-  collection = "scaqmd",
-  datestamp = 202009,
-  timezone = timezone
-)
-
-airsensor_202009_meta <- airsensor_202009$meta
-# ----- Create airsensor objects for October -----------------------------------
-
-# ----- Create airsensor objects for November ----------------------------------
-
 ```
 
 ## Loading Local Data
 
-Now we have a local archive of data created by following the _well known_ 
-directory structure that we can work with by running
+Now we have a local archive of data created by following the directory and file
+name protocol. We can now work with this archive by running
 `setArchiveBaseDir()`.
 
 ```{r load-local-data, eval = TRUE, warning = FALSE, message = FALSE}
-# TODO similar to Tutorial 1
-# Empty current environment to ensure we're using our local archive.
-# But retain "DATA_DIR if it has been set.
-rm(list = setdiff(ls(), c("DATA_DIR")))
+library(AirSensor)
+library(AirMonitorPlots)
 
-if ( exists("DATA_DIR") ) {
-  archiveDir <- file.path(DATA_DIR)
-} else {
+# Use the tutorial default archiveDir unless it is already defined
+if ( !exists("archiveDir") ) {
   archiveDir <- file.path("~/Data/MVCAA")
 }
 
@@ -607,39 +351,48 @@ setArchiveBaseDir(archiveDir)
 getArchiveBaseDir()
 
 # Load the pas file
-mvcaa <- pas_load(datestamp = 20210317) 
+mvcaa <- get(load(file.path(archiveDir, "mvcaa.rda")))
 
 # Use the interactive map to quickly get the "deviceDeploymentID" of the sensors
 # you want to explore further based on their location. 
 pas_leaflet(mvcaa)
 
-# However, data for a specific sensor could not be available for a given month,
-# so you should make sure to have the pat file in your month directory as well.
+# However, data for a specific sensor might not be available for a given month.
+# You should make sure to have the pat file in your month directory as well.
 list.files(file.path(archiveDir, "pat/2020/09"))
 list.files(file.path(archiveDir, "pat/2020/10"))
 list.files(file.path(archiveDir, "pat/2020/11"))
 
-# Load the September pat data for Little Cougar 
-Little_Cougar  <- 
-  pat_load(id = "96b108298883ca47_64441",
-           pas = mvcaa, 
-           startdate = 20200901,
-           enddate = 20200930, 
-           timezone = "America/Los_Angeles")
+# Load specific days of pat data for Pine Forest
+Pine_Forest  <- 
+  pat_load(
+    id = "0cbfeb2ce4c1553c_13661",
+    pas = mvcaa, 
+    startdate = 20200901,
+    enddate = 20201008, 
+    timezone = "America/Los_Angeles"
+  )
 
-# Load the fall pat data for Little Cougar by loading all 3 months of data 
-Little_Cougar_fall  <- 
-  pat_load(id = "96b108298883ca47_64441",
-           pas = mvcaa, 
-           startdate = 20200901,
-           enddate = 20201201, 
-           timezone = "America/Los_Angeles")
+# Basic plot for Pine_Forest 
+pat_multiplot(Pine_Forest)
 
-# Explore the data 
-LC_fall_data <- Little_Cougar_fall$data
+# Load the all-hourly-data-combined sensor object
+all_sensors <- 
+  sensor_load(
+    collection = "mvcaa",
+    startdate = 20200901,
+    enddate = 20201008,
+    timezone = "America/Los_Angeles"
+  )
 
-# Basic plot for Little_Cougar 
-pat_multiplot(Little_Cougar_fall)
+# Plot all hourly values with daily averages
+all_sensors %>%
+  AirMonitorPlots::ggplot_pm25Timeseries() + 
+  ggplot2::ggtitle("Methow Valley -- September, 2020") +
+  AirMonitorPlots::geom_pm25Points(shape = "square", alpha = .1) + 
+  AirMonitorPlots::stat_dailyAQCategory(alpha = .5) + 
+  ggplot2::scale_y_continuous(limits = c(0, 300)) +
+  AirMonitorPlots::custom_aqiStackedBar(width = 0.01) 
 ```
 
 ----
