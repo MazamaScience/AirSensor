@@ -15,10 +15,10 @@ knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
 
 ## Introduction
 
-This tutorial demonstrates how to create a multi-MM archive of PurpleAir
+This tutorial demonstrates how to create a multi-month archive of PurpleAir
 timeseries data that can be loaded from a local `archiveBaseDir`. Where 
 Tutorial 1 demonstrated how to save and work with a small number of sensors
-for a single MM, this tutorial provides a more organized approach for working
+for a single month, this tutorial provides a more organized approach for working
 with larger networks of sensors over extended periods of time. Target
 audiences include grad students, researchers and any member of the public
 concerned about air quality and comfortable working with R and RStudio.
@@ -36,7 +36,7 @@ Tutorials in this series include:
 
 The goal in this tutorial is to explain the _well known_ file naming protocol
 and directory structure required for data to be loaded using the `pat_load()`
-and `sensor_load()` functions. We will build a multi-MM archive for the 
+and `sensor_load()` functions. We will build a multi-month archive for the 
 Methow Valley and demonstrate accessing that data.
 
 ## Directory Structure
@@ -82,8 +82,10 @@ being created.
 ### airsensor
 
 * Directory: `<archiveBaseDir>/airsensor/<YYYY>/`
-* File name: `airsensor_<collection>_<YYYYMM>.rda`
+* File name: `airsensor_<collectionName>_<YYYYMM>.rda`
 * Example: `~/Data/MVCAA/airsensor/2020/airsensor_mvcaa_202009.rda`
+
+_NOTE:_ in file name, "collectionName" is a name defined by the user.  
 
 ### pas
 
@@ -176,11 +178,11 @@ mvcaa <- get(load(file.path(archiveDir,"mvcaa.rda")))
 # Get all the deviceDeploymentIDs
 mvcaa_ids <- pas_getDeviceDeploymentIDs(mvcaa)
 
-# Set up MMs
+# Set up months
 timezone <- "America/Los_Angeles"
 monthStamps <- c(202009, 202010, 202011)
 
-# Loop over MMs
+# Loop over months
 for ( monthStamp in monthStamps ) {
 
   logger.debug("Working on monthStamp %s ---------- ...", monthStamp) 
@@ -188,10 +190,10 @@ for ( monthStamp in monthStamps ) {
   # Get date components
   startdate <- MazamaCoreUtils::parseDatetime(monthStamp, timezone = timezone)
   
-  # Guarantee that the enddate is the first of the next MM
+  # Guarantee that the enddate is the first of the next month
   enddate <- lubridate::floor_date(
     startdate + lubridate::ddays(40),
-    unit = "MM"
+    unit = "month"
   )
   
   YYYY <- strftime(startdate, "%Y")
@@ -322,12 +324,12 @@ for ( monthStamp in monthStamps ) {
       save(list = "airsensor", file = filePath)
     }, 
     error = function(e) {
-      msg <- paste("Error creating MMly AirSensor file: ", e)
+      msg <- paste("Error creating monthly AirSensor file: ", e)
       logger.error(msg)
     }
   )
 
-  # Now proceed to the next MM
+  # Now proceed to the next month
 }
 ```
 
@@ -359,8 +361,8 @@ mvcaa <- get(load(file.path(archiveDir, "mvcaa.rda")))
 # you want to explore further based on their location. 
 pas_leaflet(mvcaa)
 
-# However, data for a specific sensor might not be available for a given MM.
-# You should make sure to have the pat file in your MM directory as well.
+# However, data for a specific sensor might not be available for a given month.
+# You should make sure to have the pat file in your month directory as well.
 list.files(file.path(archiveDir, "pat/2020/09"))
 list.files(file.path(archiveDir, "pat/2020/10"))
 list.files(file.path(archiveDir, "pat/2020/11"))
@@ -381,7 +383,7 @@ pat_multiplot(Pine_Forest)
 # Load the all-hourly-data-combined sensor object
 all_sensors <- 
   sensor_load(
-    collection = "mvcaa",
+    collection = "mvcaa", # collectionName defined by user 
     startdate = 20200901,
     enddate = 20201008,
     timezone = "America/Los_Angeles"
