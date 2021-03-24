@@ -15,10 +15,10 @@ knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
 
 ## Introduction
 
-This tutorial demonstrates how to create a multi-month archive of PurpleAir
+This tutorial demonstrates how to create a multi-MM archive of PurpleAir
 timeseries data that can be loaded from a local `archiveBaseDir`. Where 
 Tutorial 1 demonstrated how to save and work with a small number of sensors
-for a single month, this tutorial provides a more organized approach for working
+for a single MM, this tutorial provides a more organized approach for working
 with larger networks of sensors over extended periods of time. Target
 audiences include grad students, researchers and any member of the public
 concerned about air quality and comfortable working with R and RStudio.
@@ -36,7 +36,7 @@ Tutorials in this series include:
 
 The goal in this tutorial is to explain the _well known_ file naming protocol
 and directory structure required for data to be loaded using the `pat_load()`
-and `sensor_load()` functions. We will build a multi-month archive for the 
+and `sensor_load()` functions. We will build a multi-MM archive for the 
 Methow Valley and demonstrate accessing that data.
 
 ## Directory Structure
@@ -47,8 +47,8 @@ an archive directory. The base of this directory is specified by
 `setArchiveBaseUrl()` if the archive is web based or `setArchiveBaseDir()` if
 the archive is local.
 
-For a multi-year archive, the overall structure beneath the `archiveBaseDir` 
-will look something like this, depending on how many years of data you have:
+For a multi-YYYY archive, the overall structure beneath the `archiveBaseDir` 
+will look something like this, depending on how many YYYYs of data you have:
 
 ```
 ├── airsensor
@@ -114,10 +114,10 @@ Package functions that load pre-generated data files include:
 * `pas_load()`
 * `pat_load()`
 * `pat_loadLatest()`
-* `pat_loadMonth()`
+* `pat_loadMM()`
 * `sensor_load()`
 * `sensor_loadLatest()`
-* `sensor_loadMonth()`
+* `sensor_loadMM()`
 
 To avoid internet latency, specification of `archiveBaseDir` will always take precedence 
 over specification of `archiveBaseUrl`. For this reason, if you previously set `archiveBaseDir`
@@ -149,6 +149,8 @@ library(AirSensor)
 # Have log messages sent to the console
 MazamaCoreUtils::logger.setLevel(TRACE)
 
+DATA_DIR <- "C:/Users/astri/Mirror/Mazamascience/Projects/AirSensor/Data2/MVCAA"
+
 # Use the default archiveDir unless it is already defined
 if ( exists("DATA_DIR") ) {
   archiveDir <- file.path(DATA_DIR)
@@ -174,26 +176,26 @@ mvcaa <- get(load(file.path(archiveDir,"mvcaa.rda")))
 # Get all the deviceDeploymentIDs
 mvcaa_ids <- pas_getDeviceDeploymentIDs(mvcaa)
 
-# Set up months
+# Set up MMs
 timezone <- "America/Los_Angeles"
 monthStamps <- c(202009, 202010, 202011)
 
-# Loop over months
+# Loop over MMs
 for ( monthStamp in monthStamps ) {
 
-  logger.debug("Working on monthStamp %s ---------- ...", monthStamp)
+  logger.debug("Working on monthStamp %s ---------- ...", monthStamp) 
   
   # Get date components
   startdate <- MazamaCoreUtils::parseDatetime(monthStamp, timezone = timezone)
   
-  # Guarantee that the enddate is the first of the next month
+  # Guarantee that the enddate is the first of the next MM
   enddate <- lubridate::floor_date(
     startdate + lubridate::ddays(40),
-    unit = "month"
+    unit = "MM"
   )
   
-  year <- strftime(startdate, "%Y")
-  month <- strftime(startdate, "%m")
+  YYYY <- strftime(startdate, "%Y")
+  MM <- strftime(startdate, "%m")
   
   # Initialize counters
   idCount <- length(mvcaa_ids)
@@ -204,7 +206,7 @@ for ( monthStamp in monthStamps ) {
 
   # Create the archiveDir/pat/YYYY/MM/ directory
   dir.create(
-    file.path(archiveDir, "pat", year, month), 
+    file.path(archiveDir, "pat", YYYY, MM), 
     showWarnings = FALSE,
     recursive = TRUE
   )
@@ -213,10 +215,10 @@ for ( monthStamp in monthStamps ) {
   for ( id in mvcaa_ids ) {
 
     # Create PAT canonical file name
-    fileName <- paste0("pat_", id, "_", year, month, ".rda")
+    fileName <- paste0("pat_", id, "_", YYYY, MM, ".rda")
 
     # Create PAT canonical file path
-    filePath <- file.path(archiveDir, "pat", year, month, fileName)
+    filePath <- file.path(archiveDir, "pat", YYYY, MM, fileName)
 
     count <- count + 1
     logger.debug("Working on %s (%d/%d) ...", id, count, idCount)
@@ -250,12 +252,12 @@ for ( monthStamp in monthStamps ) {
   
   # Create the archiveDir/airsensor/YYYY/ directory
   dir.create(
-    file.path(archiveDir, "airsensor", year), 
+    file.path(archiveDir, "airsensor", YYYY), 
     showWarnings = FALSE,
     recursive = TRUE
   )
   
-  collectionName <- "mvcaa"
+  collectionName <- "mvcaa" # user defined 
   
   # Init counts
   successCount <- 0
@@ -315,17 +317,17 @@ for ( monthStamp in monthStamps ) {
       fileName <- paste0("airsensor_", collectionName, "_", monthStamp, ".rda")
       
       # Create Airsensor canonical file p ath
-      filePath <- file.path(archiveDir, "airsensor", year, fileName)
+      filePath <- file.path(archiveDir, "airsensor", YYYY, fileName)
 
       save(list = "airsensor", file = filePath)
     }, 
     error = function(e) {
-      msg <- paste("Error creating monthly AirSensor file: ", e)
+      msg <- paste("Error creating MMly AirSensor file: ", e)
       logger.error(msg)
     }
   )
 
-  # Now proceed to the next month
+  # Now proceed to the next MM
 }
 ```
 
@@ -357,8 +359,8 @@ mvcaa <- get(load(file.path(archiveDir, "mvcaa.rda")))
 # you want to explore further based on their location. 
 pas_leaflet(mvcaa)
 
-# However, data for a specific sensor might not be available for a given month.
-# You should make sure to have the pat file in your month directory as well.
+# However, data for a specific sensor might not be available for a given MM.
+# You should make sure to have the pat file in your MM directory as well.
 list.files(file.path(archiveDir, "pat/2020/09"))
 list.files(file.path(archiveDir, "pat/2020/10"))
 list.files(file.path(archiveDir, "pat/2020/11"))
