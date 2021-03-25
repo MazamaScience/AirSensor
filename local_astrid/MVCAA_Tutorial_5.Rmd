@@ -34,7 +34,7 @@ Tutorials in this series include:
 
 ## Goal
 
-The goal in this tutorial is to explain the _well known_ file naming protocol
+The goal in this tutorial is to explain the file naming protocol
 and directory structure required for data to be loaded using the `pat_load()`
 and `sensor_load()` functions. We will build a multi-month archive for the 
 Methow Valley and demonstrate accessing that data.
@@ -47,8 +47,8 @@ an archive directory. The base of this directory is specified by
 `setArchiveBaseUrl()` if the archive is web based or `setArchiveBaseDir()` if
 the archive is local.
 
-For a multi-YYYY archive, the overall structure beneath the `archiveBaseDir` 
-will look something like this, depending on how many YYYYs of data you have:
+For a multi-year archive, the overall structure beneath the `archiveBaseDir` 
+will look something like this, depending on how many years of data you have:
 
 ```
 ├── airsensor
@@ -76,7 +76,7 @@ will look something like this, depending on how many YYYYs of data you have:
 
 ## File Naming Protocol
 
-The prtocol for creating pre-generated edata files depends on the type of object
+The protocol for creating pre-generated edata files depends on the type of object
 being created.
 
 ### airsensor
@@ -85,7 +85,7 @@ being created.
 * File name: `airsensor_<collectionName>_<YYYYMM>.rda`
 * Example: `~/Data/MVCAA/airsensor/2020/airsensor_mvcaa_202009.rda`
 
-_NOTE:_ in file name, "collectionName" is a name defined by the user.  
+_NOTE:_ `<collectionName>` is an arbitrary character string defined by the user.  
 
 ### pas
 
@@ -104,9 +104,9 @@ already have exactly what we want in our `mvcaa.rda` file.
 
 ## _load() Functions
 
-When loading data, package `_load()` functions look for any local archive 
+When loading data, package `~_load()` functions look for any local archive 
 specified with `setArchiveBaseDir()`. If no local archive is found, a web based
-archive is searched for at the URL specified with `setArchiveBaseUrl()`. Mazama
+archive is searched at the URL specified with `setArchiveBaseUrl()`. Mazama
 Science maintains a small archive of data associated with the South Coast
 Air Quality Management District at:
 http://data.mazamascience.com/PurpleAir/v1/. 
@@ -151,17 +151,10 @@ library(AirSensor)
 # Have log messages sent to the console
 MazamaCoreUtils::logger.setLevel(TRACE)
 
-DATA_DIR <- "C:/Users/astri/Mirror/Mazamascience/Projects/AirSensor/Data2/MVCAA"
-
 # Use the default archiveDir unless it is already defined
-if ( exists("DATA_DIR") ) {
-  archiveDir <- file.path(DATA_DIR)
-} else {
+if ( !exists("archiveDir") ) {
   archiveDir <- file.path("~/Data/MVCAA")
 }
-
-# AirSensor package
-library(AirSensor)
 
 # Set the package archiveBaseDir so we can load pat objects with `pat_load()`
 setArchiveBaseDir(archiveDir)
@@ -171,7 +164,7 @@ setArchiveBaseDir(archiveDir)
 # NOTE:  We won't use the archive directories for the pas object because we
 # NOTE:  already have exactly what we want in our `mvcaa.rda` file.
 
-mvcaa <- get(load(file.path(archiveDir,"mvcaa.rda")))
+mvcaa <- get(load(file.path(archiveDir, "mvcaa.rda")))
 
 # ----- Prepare PAT info -------------------------------------------------------
 
@@ -187,7 +180,7 @@ for ( monthStamp in monthStamps ) {
 
   logger.debug("Working on monthStamp %s ---------- ...", monthStamp) 
   
-  # Get date components
+  # Get POSXct startdate
   startdate <- MazamaCoreUtils::parseDatetime(monthStamp, timezone = timezone)
   
   # Guarantee that the enddate is the first of the next month
@@ -196,6 +189,7 @@ for ( monthStamp in monthStamps ) {
     unit = "month"
   )
   
+  # Get YYYY and MM strings
   YYYY <- strftime(startdate, "%Y")
   MM <- strftime(startdate, "%m")
   
@@ -213,7 +207,7 @@ for ( monthStamp in monthStamps ) {
     recursive = TRUE
   )
   
-  # Loop over all ids and get data (might take a while).
+  # Loop over all deviceDeploymentIDs
   for ( id in mvcaa_ids ) {
 
     # Create PAT canonical file name
@@ -259,7 +253,8 @@ for ( monthStamp in monthStamps ) {
     recursive = TRUE
   )
   
-  collectionName <- "mvcaa" # user defined 
+  # Assign a collection name that makes sense
+  collectionName <- "mvcaa"
   
   # Init counts
   successCount <- 0
@@ -267,7 +262,7 @@ for ( monthStamp in monthStamps ) {
   
   dataList <- list()
   
-  # Loop over all ids and aggregate to hourly (might take a while).
+  # Loop over all ids and aggregate to hourly
   for ( id in mvcaa_ids ) {
     
     count <- count + 1
@@ -316,9 +311,9 @@ for ( monthStamp in monthStamps ) {
       logger.info('Combined successfully...')
       
       # Create Airsensor canonical file name
-      fileName <- paste0("airsensor_", collectionName, "_", monthStamp, ".rda")
+      fileName <- paste0("airsensor_", collectionName, "_", YYYY, MM, ".rda")
       
-      # Create Airsensor canonical file p ath
+      # Create Airsensor canonical file path
       filePath <- file.path(archiveDir, "airsensor", YYYY, fileName)
 
       save(list = "airsensor", file = filePath)
@@ -335,8 +330,8 @@ for ( monthStamp in monthStamps ) {
 
 ## Loading Local Data
 
-Now we have a local archive of data created by following the directory and file
-name protocol. We can now work with this archive by running
+Our local archive of data was created following the directory and file
+naming protocol. We can now work with this archive by running
 `setArchiveBaseDir()`.
 
 ```{r load-local-data, eval = TRUE, warning = FALSE, message = FALSE}
@@ -348,13 +343,11 @@ if ( !exists("archiveDir") ) {
   archiveDir <- file.path("~/Data/MVCAA")
 }
 
-setArchiveBaseDir(archiveDir)
-
 # Set your archive base directory and check that is correct
 setArchiveBaseDir(archiveDir)
 getArchiveBaseDir()
 
-# Load the pas file
+# Load the custom pas file directly
 mvcaa <- get(load(file.path(archiveDir, "mvcaa.rda")))
 
 # Use the interactive map to quickly get the "deviceDeploymentID" of the sensors
@@ -362,10 +355,9 @@ mvcaa <- get(load(file.path(archiveDir, "mvcaa.rda")))
 pas_leaflet(mvcaa)
 
 # However, data for a specific sensor might not be available for a given month.
-# You should make sure to have the pat file in your month directory as well.
+# You can make sure to have the expected pat file in your month directory by 
+# looking for that file.
 list.files(file.path(archiveDir, "pat/2020/09"))
-list.files(file.path(archiveDir, "pat/2020/10"))
-list.files(file.path(archiveDir, "pat/2020/11"))
 
 # Load specific days of pat data for Pine Forest
 Pine_Forest  <- 
@@ -392,7 +384,7 @@ all_sensors <-
 # Plot all hourly values with daily averages
 all_sensors %>%
   AirMonitorPlots::ggplot_pm25Timeseries() + 
-  ggplot2::ggtitle("Methow Valley -- September, 2020") +
+  ggplot2::ggtitle("Methow Valley Smoke -- September, 2020") +
   AirMonitorPlots::geom_pm25Points(shape = "square", alpha = .1) + 
   AirMonitorPlots::stat_dailyAQCategory(alpha = .5) + 
   ggplot2::scale_y_continuous(limits = c(0, 300)) +

@@ -32,7 +32,7 @@ Tutorials in this series include:
 ## Goal
 
 Our goal in this tutorial is to create 'pas' and 'pat' data for a single month
-for the Methow Valley -- a community in north-central Washington State.
+for the Methow Valley -- a community in north-central Washington state.
 [Clean Air Methow](https://www.cleanairmethow.org) 
 operates as a project of the
 [Methow Valley Citizens Council](http://mvcitizens.org)
@@ -42,13 +42,13 @@ and began deploying Purple Air Sensors in 2018:
 > Program, an exciting citizen science project, and one of the largest, rural 
 > networks of low-cost sensors in the world!
 
-This tutorial will demonstrate how to create 'pas' and 'pat data for this collection of
+This tutorial will demonstrate how to create 'pas' and 'pat' data for this collection of
 sensors for September, 2020 when the Methow Valley experienced poor air
-quality due to Wildfire smoke.
+quality due to wildfire smoke.
 
 ## PAS and PAT Objects
 
-`pas` objects in the **AirSensor** package are described in
+_pas_ objects in the **AirSensor** package are described in
 [Purple Air Synoptic Data](https://mazamascience.github.io/AirSensor/articles/articles/pas_introduction.html).
 They contain per instrument metadata for all Purple Air sensors operating at a 
 particular moment in time. This will 
@@ -56,16 +56,16 @@ include both "spatial metadata" like longitude, latitude, timezone, _etc._ as
 well as per-instrument keys allowing us to obtain timeseries data from 
 web services.
 
-`pat` objects are described in
+_pat_ objects are described in
 [Purple Air Timeseries Data](https://mazamascience.github.io/AirSensor/articles/articles/pat_introduction.html).
-These contain both temporally invariant spatial metadata for a single sensor
+These contain temporally invariant spatial metadata for a single sensor
 as well as the actual time series measurements made by that sensor.
 
-In order to successfully work with PurpleAir sensor data, we will need to create
+In order to work successfully with PurpleAir sensor data, we will need to create
 both a 'pas' object and a collection of 'pat' objects for the sensors we are
 interested in.
 
-## Set DATA_DIR
+## Set the Archive Directory
 
 Before you start, consider where on your computer you are going to save your data 
 and create your archive. By default, these tutorials will save data underneath
@@ -82,11 +82,11 @@ path.expand("~")
 # Create your data directory anywhere you want, changing the home directory 
 # part ("~") and keeping "Data/MVCAA".
 #
-# Windows example: DATA_DIR <- "C:/MethowValley/Data/MVCAA" 
-#    UNIX example: DATA_DIR <- "/MethowValley/Data/MVCAA"
+# Windows example: archiveDir <- "C:/MethowValley/Data/MVCAA" 
+#    UNIX example: archiveDir <- "/MethowValley/Data/MVCAA"
 
 # The default choice places data underneath your home directory
-DATA_DIR <- "~/Data/MVCAA" 
+archiveDir <- "~/Data/MVCAA" 
 ```
 
 ## Find Sensors
@@ -112,9 +112,11 @@ wa <- pas_filter(pas, stateCode == "WA")
 pas_leaflet(wa)
 ```
 
-Clicking on some of the sensors in the Methow Valley, it quickly becomes 
+The Methow Valley is located in north central Washington in the Okanagan National
+Forest.
+Clicking on some of the sensors in the Methow, it quickly becomes 
 apparent that many of those sensors have a label containing "MV Clean Air 
-Ambassador". With this information, we can now create a script to create 'pat' 
+Ambassador". With this information, we can now write a script to create 'pat' 
 objects for each of the Methow Valley Clean Air Ambassador (MVCAA) sensors.
 
 _NOTE:_ We could use the `pas_filterArea()` function to define a bounding box and get 
@@ -138,10 +140,8 @@ small collections of data for other communities and other dates.
 
 # ----- Setup ------------------------------------------------------------------
 
-# Create an archive directory underneath ~/Data
-if ( exists("DATA_DIR") ) {
-  archiveDir <- file.path(DATA_DIR)
-} else {
+# Use the default archiveDir unless it is already defined
+if ( !exists("archiveDir") ) {
   archiveDir <- file.path("~/Data/MVCAA")
 }
 
@@ -150,10 +150,10 @@ dir.create(archiveDir, recursive = TRUE)
 # AirSensor package
 library(AirSensor)
 
-# Set the archiveBaseUrl so we can get a 'pas' object
+# Set the archiveBaseUrl so we can get a pre-generated 'pas' object
 setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 
-# ----- Create PAS object ------------------------------------------------------
+# ----- Subset PAS object ------------------------------------------------------
 
 # Create a 'pas' object limited to MVCAA sensors
 #   - load most recent 'pas' for the entire country
@@ -168,7 +168,7 @@ mvcaa <-
 pas_leaflet(mvcaa)
 
 # Save it in our archive directory
-save(mvcaa, file = paste0(archiveDir, "/mvcaa.rda"))
+save(mvcaa, file = file.path(archiveDir, "mvcaa.rda"))
 
 # Examine archive directory:
 list.files(file.path(archiveDir))
@@ -178,7 +178,7 @@ list.files(file.path(archiveDir))
 # Get all the deviceDeploymentIDs
 mvcaa_ids <- pas_getDeviceDeploymentIDs(mvcaa)
 
-# Specify times
+# Specify time range
 startdate <- "2020-09-01"
 enddate <- "2020-10-01"
 timezone <- "America/Los_Angeles"
@@ -191,7 +191,7 @@ idCount <- length(mvcaa_ids)
 count <- 0 
 successCount <- 0
 
-# Loop over all ids and get data (might take a while).
+# Loop over all ids and get data (This might take a while.)
 for (id in mvcaa_ids[1:idCount]) {
   
   count <- count + 1
@@ -200,7 +200,7 @@ for (id in mvcaa_ids[1:idCount]) {
   # Use a try-block in case you get "no data" errors
   result <- try({
     
-    # It's nice to copy-paste the full function signature so you can see all possible arguments
+    # Here we show the full function signature so you can see all possible arguments
     patList[[id]] <- pat_createNew(
       id = id,
       label = NULL,        # not needed if you have the id
@@ -233,7 +233,7 @@ save(patList, file = file.path(archiveDir, "patList.rda"))
 sapply(patList, function(x) { return(x$meta$label) })
 
 # How big is patList in memory?
-print(object.size(patList), units="MB")
+print(object.size(patList), units = "MB")
 
 # How big patList.rda on disk (as compressed binary) 
 fileSize <- file.size(file.path(archiveDir, "patList.rda"))
@@ -242,22 +242,20 @@ sprintf("%.1f Mb", fileSize/1e6)
 
 ## Loading Local Data
 
-Now we have a local copy of all of the 'pas' and 'pat' data we wanted, pre-compiled
-into 'pas' and 'pat' objects.
+Now we have a local set of data files containing 'pas' and 'pat' data for all
+the sensors we are interested in.
 
 ```{r load-local-data, eval = TRUE, warning = FALSE, message = FALSE}
 # Empty current environment to ensure we're using our local archive.
-# But retain "DATA_DIR if it has been set.
-rm(list = setdiff(ls(), c("DATA_DIR")))
-
-if ( exists("DATA_DIR") ) {
-  archiveDir <- file.path(DATA_DIR)
-} else {
-  archiveDir <- file.path("~/Data/MVCAA")
-}
+rm(list = setdiff(ls(), c("archiveDir")))
 
 # AirSensor package
 library(AirSensor)
+
+# Use the default archiveDir unless it is already defined
+if ( !exists("archiveDir") ) {
+  archiveDir <- file.path("~/Data/MVCAA")
+}
 
 # Examine archive directory:
 list.files(file.path(archiveDir))

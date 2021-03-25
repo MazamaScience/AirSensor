@@ -42,12 +42,13 @@ the interpretation of output graphics.
 PurpleAir (PA) sensors are unique in that they have two separate optical particle 
 detectors — one labeled A and one labeled B.
 All of the plotting functions, except `pat_monitorComparison()` and 
-`pat_externalFit()`, only use data from a *single* PA sensor — with A and B data channels. 
+`pat_externalFit()`, only use data from a *single* PA sensor with A and B data channels.
+
 When measurements from the A and B channels are largely in agreement,
 the sensor is working properly. When they substantially differ, there is 
 a problem. Moreover, when a sensor is properly functioning, correlation between 
-the A and B channel (pm25_A:pm25_B) will be strongly positive, while correlation
-between temperature and humidity will typically be strongly negative.
+the A and B channel (pm25_A:pm25_B) will be strongly positive. In western states,
+the correlation between temperature and humidity will typically be strongly negative.
 
 ## Loading `pat` objects created in MVCAA Tutorial 1
 
@@ -68,10 +69,10 @@ sapply(patList, function(x) { return(x$meta$label) })
 # Pull out each sensor as a separate 'pat' object
 Balky_Hill <- patList[["ab5dca99422f2c0d_13669"]]
 Bush_School <- patList[["49215ad49d1a87e3_10188"]]
-Liberty_School <- patList[["db5d6b3b79f5830e_39237"]] # good
+Liberty_School <- patList[["db5d6b3b79f5830e_39237"]]      # good
 McFarland_Creek <- patList[["f592adb5067ad9d3_13675"]]
-Pine_Forest <- patList[["0cbfeb2ce4c1553c_13661"]]
-Willowbrook_Farm <- patList[["f96deab8c29aa42b_10134"]]
+Pine_Forest <- patList[["0cbfeb2ce4c1553c_13661"]]         # great
+Willowbrook_Farm <- patList[["f96deab8c29aa42b_10134"]]    # poor
 Benson_Creek <- patList[["f6c44edd41c941c7_10182"]]
 Gunn_Ranch <- patList[["f736fd3fb21fc4da_13667"]]
 Lower_Studhorse <- patList[["4f19d256e1787973_10166"]]
@@ -88,10 +89,10 @@ function creates interactive graphs that will be displayed in RStudio's 'Viewer'
 Lets explore a couple of sensors. We will accept default settings for most of
 the `pat_dygraph()` parameters but will apply use `sampleSize = 1000` and 
 `rollPeriod = 6`. Reducing the `sampleSize` prevents the interactive viewer from
-bogging down and increasing the `rollPeriod` results in smooth lines rather than
-disconnected points.
+bogging down with too much data and increasing the `rollPeriod` results in 
+smooth lines rather than disconnected points.
 
-Specifying the correct Olson `timezone` ensures that times are displayed in 
+Specifying the correct `timezone` ensures that times are displayed in 
 local time.
 
 _NOTE:_ You can experiment with the `rollPeriod` by adjusting the number in the
@@ -126,15 +127,15 @@ pat_dygraph(
 ```
 
 For Liberty School, the A and B channel measurements are largely in agreement 
-while for Willowbrook Farm, the channels are largely in disagreement. This could 
-indicate a malfunctioning of the sensor, and it could be interesting to investigate
-if this is an isolated event by exploring a larger time range. 
+while for Willowbrook Farm, the channels show serious discrepancies. This  
+indicates a poorly functioning sensor. It would be interesting to explore a 
+larger time range to investigate whether these discrepancies persist. 
 
 ## pat_multiPlot 
 
 The [pat_multiplot()](https://mazamascience.github.io/AirSensor/reference/pat_multiplot.html)
-function allow us to quickly display our raw `pat` data using one of several
-common plot types. Available `plottype` options include:
+function allow us to quickly display several parameters from our raw `pat` data 
+using one of the pre-defined plot types. Available `plottype` options include:
 
 * "all" – pm25_A, pm25_B, temperature, humidity
 
@@ -148,11 +149,10 @@ common plot types. Available `plottype` options include:
 
 * "aux" – auxiliary data (temperature, humidity)
 
-For the purpose of this tutorial we'll use "all", "pm25_over", and "aux". 
 As before, sub-sampling to only 1000 points speeds up plotting.
 
-_NOTE:_ This plot carefully retains outliers in the A and B channels while 
-sampling so that the overall appearance of the A and and B plots should remain 
+_NOTE:_ The sub-sampling algorithm carefully retains outliers in the A and B channels 
+so that the overall appearance of the A and and B plots should remain 
 the same regardless of the `sampleSize`.
 
 ```{r Liberty-School-all, eval = TRUE, warning = FALSE, message = FALSE}
@@ -165,10 +165,11 @@ pat_multiPlot(
 
 ```
 
-The "all" plot type offers a nice overview of all four variables. We can 
-already start seeing an agreement between channel A and B data and an inverse relationship between humidity and temperature measurements. 
+The "all" plot type above offers a nice overview of all four variables. We can 
+see general agreement between channel A and B data and an inverse 
+relationship between humidity and temperature measurements. 
 
-Let's give a closer look at the channels using the "pm25_over" plot type. 
+Let's take a closer look at the A and B PM2.5 measurements using the "pm25_over" plot type. 
 
 ```{r Liberty-School-pm25over, eval = TRUE, warning = FALSE, message = FALSE}
 # Liberty School multiplot - plottype = "pm25_over"
@@ -179,7 +180,7 @@ pat_multiPlot(
 )
 ```
 
-Channels A and B show strong agreement, and we can improve our faith in this
+Channels A and B show strong agreement. We improve our faith in this
 assessment by increasing the sample size.  Let's try `sampleSize = 5000`. 
 
 ```{r Liberty-School-pm25over-n5000, eval = TRUE, warning = FALSE, message = FALSE}
@@ -193,10 +194,10 @@ pat_multiPlot(
 
 Again, channels A and B are largely in agreement. Purely 
 based on visual inspection, we can assume that the Liberty School sensor is 
-working correctly. However, more in-depth statistical analysis is discussed later 
-in this tutorial. 
+working properly A more in-depth statistical analysis of A and B channel agreement
+is discussed later in this tutorial. 
 
-Let's give a closer look at the relationship between temperature and humidity 
+Let's take a closer look at the relationship between temperature and humidity 
 by using the "aux" plot type.
 
 ```{r Liberty-School-aux, eval = TRUE, warning = FALSE, message = FALSE}
@@ -208,8 +209,9 @@ pat_multiPlot(
 )
 ```
 
-From the graph, we can see what looks like a negative correlation between the two 
-variables, which supports the assumption that the sensor is functioning correctly. 
+From the graph, we can see a strong anti-correlation between the two 
+variables. This also supports the assessment that the sensor is functioning 
+properly 
 
 ## pat_scatterPlotMatrix
 
@@ -218,7 +220,7 @@ function returns a matrix of scatterplots and correlation values for the most
 important variables in the `pat` object. Various sensor failure modes are often
 evident as unexpected or missing correlations in this plot.
 
-The list of available parameters include:
+The list of parameters used by default includes:
 
 * datetime -- measurement time
 
@@ -235,16 +237,16 @@ Let's compare all of them for the Liberty School sensor.
 ```{r pat-scatterPlotMatrix-Liberty-School, eval = TRUE, warning = FALSE, message = FALSE}
 # Liberty School scatterPlotMatrix
 pat_scatterPlotMatrix(
-  pat = Liberty_School
+  pat = Liberty_School,
+  sampleSize = 5000
 )
 ```
 
-As we can see from the matrix, using a sample size of 5000 observations 
-for each variable, there is an excellent correlation of near 1 between 
-channels A and B (pm25_A:pm25_B) and a strong negative correlation of around -0.84
-between temperature and humidity. (We say "around" because we are using a sub-sample
-of the entire population.) These results support the assumption that the 
-sensor worked well throughout September 2020. 
+As we can see from the plot above, there is an excellent correlation of near 1 
+between PM2.5 measurements in channels A and B and a strong negative correlation 
+of around -0.84 between temperature and humidity. (We say "around" because we 
+are sampling only 5000 points from the entire population.) These results support 
+the conclusion that the sensor worked well throughout September 2020. 
 
 ## pat_outliers
 
@@ -256,8 +258,8 @@ The filter window is then "rolled" over the entire length of the
 time series, much like a "rolling mean". 
 
 `windowSize = 15` corresponds to a temporal window of approximately 30 minutes
-given the current PurpleAir sampling frequency of 1/120 sec. This long enough
-that we have a reasonable number of values from which to calculate sub-population statistics and
+given the current PurpleAir sampling interval of 2 minutes. This is long enough
+that we have a reasonable number of values from which to calculate statistics and
 short enough that we would not expect radical changes in atmospheric conditions
 
 The default threshold setting `thresholdMin = 8` identifies points that are
@@ -265,12 +267,14 @@ extremely unlikely to be part of a normal distribution and therefore very likely
 to be outliers.
 
 Specifying `replace = TRUE` will return a new pat object with outliers replaced
-by the window median values. Using this technique, you can create a highly 
-smoothed, artificial dataset by setting thresholdMin = 1 or lower (but always 
+by the window median values. 
+
+_NOTE:_ Using this technique, you can create a highly 
+smoothed, artificial dataset by setting `thresholdMin = 1` or lower (but always 
 above zero).
 
-You can create a new pat object and save it in your archive directory 
-(already defined in Tutorial 1) as in the example below. 
+If desired, you can use `pat_outlisers()` to create a new pat object and save 
+it in your archive directory as in the example below. 
 
 ```{r pat-outliers-Liberty-School, eval = TRUE, warning = FALSE, message = FALSE}
 # create an outliers plot for Liberty School 
@@ -287,10 +291,10 @@ Liberty_School_clean <- pat_outliers(
 save(Liberty_School_clean, file = file.path(archiveDir, "Liberty_School_clean.rda"))
 ```
 
-The `pat_outlier()` function will always find some outliers, often insignificant 
+The `pat_outlier()` function will almost always find some outliers, often insignificant 
 ones. The plot above shows a few non-concerning outliers. Outliers of concern may be
 associated with electronic "glitches" and appear far away from the main 
-distribution as depicted in the example 
+time-series trace as depicted in the example 
 below (notice data around August 3, 2018). 
 
 ```{r AirSensor-example-patoutliers(), eval = TRUE, warning = FALSE, message = FALSE}
@@ -302,11 +306,11 @@ example_pat %>%
 ## pat_internalFit
 
 The [pat_internalFit()](https://mazamascience.github.io/AirSensor/reference/pat_internalFit.html)
-function uses a linear model to fit data from channel B to data from 
-channel A and returns an object of class "lm". If you assign the result to an object, you can 
+function uses a linear model to fit data from channel A to data from 
+channel B and returns an object of class "lm". If you assign the result to an object, you can 
 then interrogate the linear model using the base R function `summary()`. 
 
-The default setting of `showPlot = TRUE` will also generate a model fit plot.  
+The default setting of `showPlot = TRUE` will generate a model fit plot.  
 
 Let's have a look at a well functioning sensor and a not-so-well functioning
 one. 
@@ -337,16 +341,16 @@ summary(lm_Willowbrook)
 ```
 
 The model fit plot shows that the model is biased towards channel A 
-(slope = 1.5), as is also evident in the bottom graphic, indicating the 
-malfunctioning of one or both Willowbrook Farm sensor's channels. 
-The model explains only 92.2% of the data variability, reinforcing the assumption
-that the sensor did not function properly in September, 2020. 
+(slope = 1.5), as is also evident in the bottom graphic. 
+The model explains only 92.2% of the data variability, reinforcing the notion
+that the sensor was not functioning properly in September, 2020. 
 
-_But we knew something was wrong from a first glance at the plot!_
+_But we knew something was wrong from a first glance at the plots!_
 
 While statistical
 calculations are important, we encourage everyone to use the **AirSensor** package 
-to truly "look at" the data from these sensors.
+to truly "look at" the data from these sensors. Your eyes are a very powerful
+statistical tool all on their own.
 
 ## pat_dailySoHPlot
 
@@ -356,7 +360,7 @@ far. It works with daily "State-of-Health" metrics that attempt to identify days
 when a sensor is performing well or poorly. The idea is that State-of-Health
 metrics can be used as a sort of daily checkup so that people can identify 
 sensors that are beginning to malfunction due to acute problems like disconnected
-wires or due to gradual deterioration associated with old age.
+wires or due to gradual deterioration.
 
 
 The `pat_dailySoHPlot()` function plots a subset of the most useful State of Health metrics calculated 
@@ -373,7 +377,7 @@ each day that the sensor is reporting data.
 * [PurpleAirSoH_dailyPctValid()](https://mazamascience.github.io/AirSensor/reference/PurpleAirSoH_dailyPctValid.html), 
 for `pm25_A_PctValid` and `pm25_B_PctValid`. Plots show percentage of the total 
 recorded measurements that are considered physically plausible, _e.g._ no negative
-values for pm2.5.
+values for PM2.5.
 
 * [PurpleAirSoH_dailyPctDC()](https://mazamascience.github.io/AirSensor/reference/PurpleAirSoH_dailyPctDC.html), 
 for `pm25_A_pctDC` and `pm25_B_pctDC`. A high percent DC (direct current) value 
@@ -398,19 +402,19 @@ the coefficients of the linear fit (slope and intercept).
 pat_dailySoHPlot(Liberty_School, ncol = 2)
 ```
 
-The red line in each plot identifies expected values. 
+The red line in each plot above identifies expected values. 
 The plot that grabs our attention the most is `pm25_A_temperature_rsquared` with 
 the persistent elevated values occurring throughout the month. Values are expected to hover near 0 for 
 a properly functioning sensor under normal environmental conditions. 
 However, wildfire events during the summer and the heavy use of wood heat during winter
-months could explain fluctuating r-squared values.
+months could explain a non-zero correlation between PM2.5 and temperature.
 In our case, it's possible that the elevated values recorded in this plot are 
-due to the wildfire events during that period.
+due to wildfire events during that period.
 
 The `pm25_A_pctDC` plot shows that channel B reported dynamic data throughout
 the month while channel A recorded a higher percentage of "sticky values" 
 towards the beginning and the end of the month. (Looking at the raw data, channel
-A had periods where it reported repeated PM2.5 values of `0.0`.)
+A had periods where it reported repeated PM2.5 values of 0.0.)
 We notice that this overlaps with periods when the r-squared values were lower 
 as shown in the `pm25_A_pm25_B_rsquared` plot. Especially at the beginning of the 
 month, the plot shows r-squared values hovering around zero, 
@@ -425,7 +429,7 @@ data with data from a professionally maintained "Federal Reference Method" (FRM)
 `pat_monitorComparison()` 
 creates and returns a ggplot object that plots raw pat data, 
 hourly aggregated pat data and hourly data from the nearest monitor 
-from the US Forest Service maintained 
+in the US Forest Service maintained 
 [PWFSL database](https://haze.airfire.org/monitoring/).
 
 If the nearest monitor didn't collect data during the period of time investigated
@@ -435,7 +439,7 @@ or is not within the `distanceCutoff`, it is possible that you will encounter th
 Error in monitor_subset(ws_monitor, tlim = c(starttime, endtime)) : ws_monitor object contains zero monitors
 ```
 
-You can try to change the `distanceCutoff = 20` to 50 (km). However, 20 km is the 
+You can try to change the default `distanceCutoff = 20` to 50 (km). However, 20 km is the 
 recommended distance to ensure that both instruments are measuring similar parcels
 of air.
 
@@ -456,24 +460,25 @@ for each of the four algorithms:
 * [PurpleAirQC_hourly_AB_02](https://mazamascience.github.io/AirSensor/reference/PurpleAirQC_hourly_AB_02.html), 
 * [PurpleAirQC_hourly_AB_03](https://mazamascience.github.io/AirSensor/reference/PurpleAirQC_hourly_AB_03.html).
 
-The default "AB_01" algorithm attempts to find a balance between throwing out
-data of interest and including data that is obviously junk. It works tolerably
-well under normal conditions but is a little too strict during periods of very
-high PM2.5 values like the Fourth of July and wildfire events.
+The default "AB_01" algorithm attempts to find a balance where it throws out data
+that is "obviously" junk while retaining data during "periods of interest". It works tolerably
+well under normal conditions but is perhaps too strict during periods of very
+high PM2.5 values like the Fourth of July and wildfire events where it ends up
+invalidating many hourly values.
 
 ```{r patmonitorComparison-Liberty-School, eval = TRUE, warning = FALSE, message = FALSE}
-# comparison plot for Liberty School sensor
+# Comparison plot for Liberty School sensor
 pat_monitorComparison(
   pat = Liberty_School,
   FUN = AirSensor::PurpleAirQC_hourly_AB_01, # default QC
   distanceCutoff = 20
 )
 
-# find out which is the nearest monitor
+# Find the nearest monitor
 Liberty_School$meta$pwfsl_closestMonitorID # "530470010_01"
 ```
 
-The graph shows:
+The graph above shows:
 
 * in gray -- sensor data before aggregation and QC (PA raw)
 * in purple -- sensor data after the QC treatment (PA hourly)
@@ -484,7 +489,7 @@ hourly aggregated values are missing because they have been invalidated by our
 QC function.
 
 Because we have looked carefully at the raw data from Liberty School and know 
-this sensor is functioning well, we feel comfortable use the very forgiving "AB_00"
+this sensor to be functioning well, we feel comfortable using the very forgiving "AB_00"
 QC function to see more of the hourly aggregated values:
 
 ```{r patmonitorComparison-Liberty-School-QC00, eval = TRUE, warning = FALSE, message = FALSE}
@@ -496,9 +501,9 @@ pat_monitorComparison(
 )
 ```
 
-We observe some agreement between the PA hourly and the monitor data. The trends
-are similar but the absolute values differ. A more detailed assessment of their 
-statistical relationship is discussed in the next section. 
+In the plot above, the PA hourly and the monitor data are telling the same basic 
+story. The trends are similar but the absolute values differ. A more detailed 
+assessment of their statistical relationship is discussed in the next section. 
  
 ## pat_externalFit
 
@@ -511,7 +516,7 @@ _NOTE:_ As of **AirSensor** version 1.0.8, this function does not properly
 support choosing the QC algorithm and `hourly_AB_01` is always used.
 
 ```{r patexternalFit-01-Liberty-School, eval = TRUE, warning = FALSE, message = FALSE}
-# create comparison plot for Liberty School sensor
+# Create comparison plot for Liberty School sensor
 lm_01 <- pat_externalFit(
   pat = Liberty_School,
   showPlot = TRUE
@@ -520,10 +525,11 @@ lm_01 <- pat_externalFit(
 summary(lm_01)
 ```
 
-We can _almost_ see that the nearest FRM monitor to the Liberty School sensor
-is 4.2 km away -- nicely close for this analysis.
+We can _almost_ see in the title that the nearest FRM monitor to the Liberty 
+School sensor is 4.2 km away -- nicely close for this analysis.
 
-Unfortunately, several of the hourly aggregated values have been invalidated 
+Unfortunately, several of the hourly aggregated values have been invalidated by
+default QC algorithm "AB_01"
 during the periods of highest wildfire smoke. Of the remaining hourly values, the
 linear fit is actually pretty good with an r-squared of 0.94 and a slope of 0.69
 implying that the PurpleAir sensor is overstating the PM2.5 values.
