@@ -17,7 +17,7 @@ knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
 
 This tutorial demonstrates how to convert previously generated 'pat' 
 timeseries data into hourly-aggregated 'airsensor' objects. 
-In order to run the code in this tutoral you must have 
+In order to run the code in this tutorial you must have 
 followed the instructions in Tutorial 1 and created a directory with 'pas' 
 and 'pat' data files for the Methow Valley. Target
 audiences include grad students, researchers and any member of the public
@@ -160,7 +160,7 @@ package and it is also possible to create
 
 ## Loading Local Data
 
-Now that we have an 'airsensorList` object with quality controlled data we can
+Now that we have an `airsensorList` object with quality controlled data we can
 load it from our archive and briefly explore it.
 
 

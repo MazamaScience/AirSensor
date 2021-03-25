@@ -18,7 +18,7 @@ knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
 This tutorial demonstrates how to analyze 'airsensor' data using functions
 tailored to that data type, all of which have names beginning with `airsensor_`. 
 In order to run the code in this tutorial you must have 
-followed the instructions in Tutorials 1-33 and created a directory with 'pas', 
+followed the instructions in Tutorials 1-3 and created a directory with 'pas', 
 'pat', and 'airsensor' data files for the Methow Valley. Target audiences 
 include grad students, researchers and any member of the public
 concerned about air quality and comfortable working with R and RStudio.
@@ -59,10 +59,10 @@ sapply(airsensorList, function(x) { return(x$meta$label) })
 # Pull out each sensor as a separate 'airsensor' object
 Balky_Hill <- airsensorList[["ab5dca99422f2c0d_13669"]]
 Bush_School <- airsensorList[["49215ad49d1a87e3_10188"]]
-Liberty_School <- airsensorList[["db5d6b3b79f5830e_39237"]]
+Liberty_School <- airsensorList[["db5d6b3b79f5830e_39237"]]      # good
 McFarland_Creek <- airsensorList[["f592adb5067ad9d3_13675"]]
-Pine_Forest <- airsensorList[["0cbfeb2ce4c1553c_13661"]]
-Willowbrook_Farm <- airsensorList[["f96deab8c29aa42b_10134"]]
+Pine_Forest <- airsensorList[["0cbfeb2ce4c1553c_13661"]]         # great
+Willowbrook_Farm <- airsensorList[["f96deab8c29aa42b_10134"]]    # poor
 Benson_Creek <- airsensorList[["f6c44edd41c941c7_10182"]]
 Gunn_Ranch <- airsensorList[["f736fd3fb21fc4da_13667"]]
 Lower_Studhorse <- airsensorList[["4f19d256e1787973_10166"]]
@@ -82,8 +82,8 @@ prepares data and ultimately calls the
 From the final plot in Tutorial 3, it is clear that the sensor labeled "Pine Forest" 
 has the most complete data after hourly aggregation. Let's look at air quality 
 impacts at "Pine Forest" using the 
-[US EPA Air Quality Index colors](https://www.epa.gov/wildfire-smoke-course/wildfire-smoke-and-your-patients-health-air-quality-index), 
-`colors = "aqi"`. We expect that the PM2.5 values reported by the sensor will be exaggerated
+[US EPA Air Quality Index colors](https://www.epa.gov/wildfire-smoke-course/wildfire-smoke-and-your-patients-health-air-quality-index)  
+(`colors = "aqi"`). We expect that the PM2.5 values reported by the sensor will be exaggerated
 to some extent. Nevertheless, the calendar plot will still show us which days during 
 September 2020 had the worst PM2.5 levels, putting the health of Methow Valley 
 residents at risk.
@@ -97,16 +97,15 @@ sensor_calendarPlot(
 )
 ```
 
-From the calendar plot we see that the September 8-18 were all days of dangerous
-smoke levels with September 13-14 being the worst days.
+From the calendar plot we see that the September 8-18 were all days of unhealthy
+smoke levels with September 13-14 being the worst.
 
 ## sensor_polarPlot
 
 The [sensor_polarPlot()](https://mazamascience.github.io/AirSensor/reference/sensor_polarPlot.html)
 function wraps `openair::polarPlot()` which plots PM2.5 concentration as a 
-function of wind speed and direction. This type of plot can be very helpful in
-determining the source of a pollutant. See the documentation for `sensor_polarPlot()`
-for details.
+function of wind speed and direction. This type of plot can be helpful in
+determining the source of a pollutant.
 
 If no wind data is specified, (default) `windData = NULL`, the function uses 
 wind data from the nearest airport station obtained with the 
@@ -115,6 +114,7 @@ package.
 
 The color scale for some of the statistics is only to provide an indication of 
 overall pattern and should not be interpreted in concentration units (µg/m3). 
+(See the documentation for `openair::polarPlot()` for details.)
 
 ```{r sensor-polarPlot-Liberty_School, eval = TRUE, warning = FALSE, message = FALSE}
 # Create a polar plot for Liberty School
@@ -151,7 +151,8 @@ polar_plot <- sensor_polarPlot(
 ## sensor_pollutionRose
 
 The [sensor_pollutionRose()](https://mazamascience.github.io/AirSensor/reference/sensor_pollutionRose.html)
-function plots a traditional wind rose plot for wind direction and PM2.5. 
+function wraps `openair::pollutionRose()` which plots a traditional wind rose plot 
+for wind direction and PM2.5. 
 
 ```{r sensor_pollutionRose_1, eval = TRUE, warning = FALSE, message = FALSE}
 # Create a pollution rose plot for Liberty School using the proportion of the 
@@ -163,7 +164,7 @@ pollution_rose <- sensor_pollutionRose(
 
 Highest PM25 concentrations are mostly associated with southerly winds. However 
 the largest proportion of PM25 concentrations is associated with northerly winds.
-By setting `statistic = "prop.mean"`, we can see that indeed northerly winds 
+By setting `statistic = "prop.mean"` in the plot below, we can see that northerly winds 
 contribute the most to overall concentrations as shown in the plot below. 
 
 ```{r sensor_pollutionRose_2, eval = TRUE, warning = FALSE, message = FALSE}
@@ -187,24 +188,33 @@ functions are convenient wrappers for extracting the airsensor `meta` and `data`
 dataframes. These functions are designed to be useful when manipulating 
 data in an R pipeline using `%>%`.
 
-In the example below, we will use functions from **PWFSLSmoke** and **dplyr** 
-to calculate some daily statistics for Pine Forest.
+In the example below, we will use data manipulation functions from 
+**PWFSLSmoke** and **dplyr** to calculate some daily statistics for Pine Forest.
 
 ```{r sensor_extractData, eval = TRUE, warning = FALSE, message = FALSE}
+# Use MazamaCoreUtils::dateRange() to ensure we get POSIXct times in the local timezone
+dateRange <- MazamaCoreUtils::dateRange(
+  startdate = 20200906, 
+  enddate = 20200920, 
+  timezone = "America/Los_Angeles"
+)
 # Show daily max for Pine Forest  
 Pine_Forest %>%
+  PWFSLSmoke::monitor_subset(tlim = dateRange) %>%
   PWFSLSmoke::monitor_dailyStatistic(FUN = max) %>%
   sensor_extractData() %>%
   dplyr::mutate_if(is.numeric, round, 0)
 
 # Show daily averages for Pine Forest 
 Pine_Forest %>%
+  PWFSLSmoke::monitor_subset(tlim = dateRange) %>%
   PWFSLSmoke::monitor_dailyStatistic(FUN = mean) %>%
   sensor_extractData() %>%
   dplyr::mutate_if(is.numeric, round, 0)
 
 # Show daily standard deviations for Pine Forest  
 Pine_Forest %>%
+  PWFSLSmoke::monitor_subset(tlim = dateRange) %>%
   PWFSLSmoke::monitor_dailyStatistic(FUN = sd) %>%
   sensor_extractData() %>%
   dplyr::mutate_if(is.numeric, round, 1)
@@ -214,8 +224,8 @@ Pine_Forest %>%
 ## PWFSLSmoke and AirMonitorPlots
 
 All 'airsensor' objects are compatible with 'monitor' functions from the
-[PWFSLSmoke](http://mazamascience.github.io/PWFSLSmoke/) for data manipulation
-and the 
+[PWFSLSmoke](http://mazamascience.github.io/PWFSLSmoke/) 
+package as well as functions from the
 [AirMonitorPlots](http://mazamascience.github.io/AirMonitorPlots/) package for
 generating **ggplot2** graphics.
 
@@ -235,7 +245,7 @@ AirMonitorPlots::monitor_ggTimeseries(Pine_Forest)
 airsensorList %>%
   PWFSLSmoke::monitor_combine() %>%
   AirMonitorPlots::ggplot_pm25Timeseries() + 
-  ggplot2::ggtitle("Methow Valley -- September, 2020") +
+  ggplot2::ggtitle("Methow Valley Smoke -- September, 2020") +
   AirMonitorPlots::geom_pm25Points(shape = "square", alpha = .1) + 
   AirMonitorPlots::stat_dailyAQCategory(alpha = .5) + 
   ggplot2::scale_y_continuous(limits = c(0, 300)) +
