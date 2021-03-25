@@ -30,16 +30,148 @@ Tutorials in this series include:
 ## Goal
 _TO DO_
 
-Outline:
+# Outline:
 
-Overarching question: How would you decide if sensors work?
+## Overarching question: 
 
-Intro
-* wildfire situation during fall 2020
-* what about airquality? (transition to data)
+How would you decide if sensors work?
 
-Data and graphics 
-```{r timeseries-fall, eval = TRUE, warning = FALSE, message = FALSE}
+## Intro
+On September 6 and 7 two wildfires were ignited not far from the Methow Valley – 
+Cold Springs and Pearl Hill, which burned over 410,000 acres throughout the month.
+Additionally, at the beginning of September several wildfires exploded in the 
+southern, central and northern Oregon, and a “super massive” plume was carried 
+to Washington State by the southerly winds. Eventually the smoke settled in the 
+valleys and basins of Washington and air pollution reached unhealthy levels 
+across the state (https://wasmoke.blogspot.com/). 
+Let's see how Purple Air sensors performed compared to federal monitors in the 
+Methow Valley.
+
+
+## Compare monitor to nearest sensors:
+
+* find monitors and nearest sensors (create a map?)
+
+* see timeseries for both
+
+* check fit
+
+* what could have gone wrong?
+
+## Data and graphics 
+
+```{r prep-monitor-data, eval = TRUE, warning = FALSE, message = FALSE}
+
+# find federal monitors in the Methow Valley
+# define longitude and latitude 
+xlim <- c(-120.093, -120.284)
+ylim <- c(48.313, 48.510)
+
+# load Sep data
+mv_monitors <- PWFSLSmoke::monitor_load(startdate = 20200901, enddate = 20201001) %>%
+  monitor_subset(xlim = xlim, ylim = ylim)
+
+# select only columns of interest for federal monitors 
+names(mv_monitors$meta)
+mv_monitors_meta <- as_tibble(mv_monitors$meta) %>%
+  select(monitorID, siteName, longitude, latitude)
+
+print(mv_monitors_meta$siteName) #"Winthrop-Chewuch Rd" "Twisp-Glover St" 
+
+```
+
+```{r prep-sensor-data, eval = TRUE, warning = FALSE, message = FALSE}
+# Use the tutorial default archiveDir unless it is already defined
+if ( !exists("archiveDir") ) {
+  archiveDir <- file.path("~/Data/MVCAA")
+}
+
+setArchiveBaseDir(archiveDir)
+
+# Set your archive base directory and check that is correct
+setArchiveBaseDir(archiveDir)
+getArchiveBaseDir()
+
+# find sensors close to the monitor Winthrop-Chewuch Rd
+sensors <- pas_filterNear(pas = mvcaa, longitude = -120.1906, latitude = 48.47720, 
+               radius = "5 km")
+
+# select only columns of interest for federal monitors 
+names(sensors)
+sensors_meta <- as_tibble(sensors) %>%
+  select(label, deviceDeploymentID, latitude, longitude)
+
+# create sensor IDs object (must be as.character())
+sensorIDs <- as.character(unique(sensors_meta$deviceDeploymentID))
+print(sensorIDs) # 3 sensors 
+
+# subset airsensor file for Sep using sensorIDs
+sensors_subset <- 
+  sensor_load(
+    collection = "mvcaa",  
+    startdate = 20200901,
+    enddate = 20201001,
+    timezone = "America/Los_Angeles") %>%
+  monitor_subset(monitorIDs = sensorIDs)
+
+# check if all 3 sensors are present
+print(sensors_subset$meta$deviceDeploymentID)
+# since we didn't have data for b56c0ef677852913_81495 during Sep, 
+# this sensor is not present.
+
+```
+
+```{r timeseries-monitor, eval = TRUE, warning = FALSE, message = FALSE}
+# create a timeseries for monitor Winthrop-Chewuch Rd
+Winthrop <- mv_monitors %>%
+  monitor_subset(monitorIDs = "530470010_01")
+
+monitor_timeseriesPlot(Winthrop, style = 'gnats')
+title('Winthrop, Sep 2020')
+addAQILines()
+addAQILegend(cex = 0.7)
+```
+
+```{r timeseries-sensors, eval = TRUE, warning = FALSE, message = FALSE}
+# create short name for timeseries title 
+sensors_subset$meta$shortName <-
+  sensors_subset$meta$siteName %>%
+  stringr::str_replace("MV Clean Air Ambassador @", "") %>%
+  stringr::str_replace("MV Clean Air Ambassador-", "") %>%
+  stringr::str_trim()
+
+# create timeseries for the 2 sensors 
+layout(matrix(seq(2)))
+opar <- par(mar = c(1,1,1,1))
+on.exit(par(opar))
+for (ID in sensorIDs) {
+  siteName <- sensors_subset$meta[ID, 'siteName']
+  title <- sensors_subset$meta[ID, 'shortName']
+  monitor_timeseriesPlot(
+    sensors_subset,
+    monitorID = ID,
+    main = siteName,
+    style = 'gnats',
+  )
+  title(title)
+  addAQILines()
+  addAQILegend(cex = 0.7)
+}
+par(opar)
+layout(1)
+```
+ 
+We can see that the monitor and sensors recorded increasing PM25
+concentrations up to very unhealthy levels between Sep 10 and 20. 
+Lets see how the sensors performed individually and compared to the monitor.
+
+```{r more-data-exploration, eval = TRUE, warning = FALSE, message = FALSE}
+
+```
+
+
+```{r overview-timeseries-fall, eval = TRUE, warning = FALSE, message = FALSE}
+# maybe to be included 
 # Load the all-hourly-data-combined sensor object
 all_sensors_fall <- 
   sensor_load(
@@ -59,232 +191,6 @@ all_sensors_fall %>%
   AirMonitorPlots::custom_aqiStackedBar(width = 0.01) 
 
 ```
-
-```{r mvcca-minitors}
-# find federal monitros in the Methow Valley for comparison with the sensors 
-xlim <- c(-120.092,-120.284)
-ylim <- c(48.313, 48.510)
-
-mvcaa_monitors <- PWFSLSmoke::loadLatest() %>%
-  monitor_subset(xlim = xlim, ylim = ylim)
-
-mvcaa_monitors$meta$siteName # "Winthrop-Chewuch Rd" "Twisp-Ewell St"
-
-mvcaa_monitors$meta$longitude
-mvcaa_monitors$meta$latitude
-
-# find sensors close to the monitors 
-sensors <- pas_filterNear(pas = mvcaa, longitude = -120.1906, latitude = 48.47720, 
-               radius = "5 km")
-```
- 
-
-```{r timeseries-per-sensor}
-
-# closer look at at the AQI of each location 
-# Load AirMonitorPlots
-library(AirMonitorPlots)
-
-#--------------------------------- sep------------------------------------------
-startdate = 20200901
-enddate = 20201001
-
-# Help ggplot out by assigning short labels to be used as the facet label
-sep$meta$shortName <- 
-  sep$meta$siteName %>%
-  stringr::str_replace("MV Clean Air Ambassador @", "") %>%
-  stringr::str_replace("MV Clean Air Ambassador-", "") %>%
-  stringr::str_trim()
-
-names(sep$meta)
-
-# Fancy plot with AQI bars
-gg <- 
-  ggplot_pm25Timeseries(
-    sep,
-    startdate,
-    enddate,
-    timezone = "America/Los_Angeles"
-  ) +
-  ggtitle("Methow Valley PM2.5 values -- Sep, 2020") +
-  stat_AQCategory(color = NA) + 
-  facet_grid(rows = vars(shortName)) 
-
-print(gg)
-
-# most sensors have many days with missing data. 
-
-# create airsensor object for sensors with little/no missing data 
-sep_meta <- sep$meta #Gunn Ranch f736fd3fb21fc4da_13667, Pine Forest "0cbfeb2ce4c1553c_13661"
-Gunn_Ranch <- "f736fd3fb21fc4da_13667"
-Pine_Forest <- "0cbfeb2ce4c1553c_13661"
-
-
-GR_09 <- pat_load(id = Gunn_Ranch,
-           pas = mvcaa, 
-           startdate = 20200901,
-           enddate = 20201001, 
-           timezone = "America/Los_Angeles") %>% 
-  pat_createAirSensor(
-    parameter = "pm25", 
-    FUN = PurpleAirQC_hourly_AB_01)
-
-
-PF_09 <- pat_load(id = Pine_Forest,
-           pas = mvcaa, 
-           startdate = 20200901,
-           enddate = 20201001, 
-           timezone = "America/Los_Angeles") %>% 
-  pat_createAirSensor(
-    parameter = "pm25", 
-    FUN = PurpleAirQC_hourly_AB_01)
-
-sensor_calendarPlot(
-  sensor = PF_09,
-  colors = "aqi",
-  title = "September 2020 -- Pine Forest"
-)
-
-sensor_calendarPlot(
-  sensor = GR_09,
-  colors = "aqi",
-  title = "September 2020 -- Gunn Ranch"
-)
-
-#--------------------------------- Oct -----------------------------------------
-startdate = 20201001
-enddate = 20201101
-
-# Help ggplot out by assigning short labels to be used as the facet label
-oct$meta$shortName <- 
-  oct$meta$siteName %>%
-  stringr::str_replace("MV Clean Air Ambassador @", "") %>%
-  stringr::str_replace("MV Clean Air Ambassador-", "") %>%
-  stringr::str_trim()
-
-names(oct$meta)
-
-# Fancy plot with AQI bars
-gg <- 
-  ggplot_pm25Timeseries(
-    oct,
-    startdate,
-    enddate,
-    timezone = "America/Los_Angeles"
-  ) +
-  ggtitle("Methow Valley PM2.5 values -- Oct, 2020") +
-  stat_AQCategory(color = NA) + 
-  facet_grid(rows = vars(shortName)) 
-
-print(gg)
-#impossible to see if data is missing due to resolution. 
-#see if PF and GR have good data.
-
-# create airsensor object for GR and PF during oct
-
-GR_10 <- pat_load(id = Gunn_Ranch,
-           pas = mvcaa, 
-           startdate = 20201001,
-           enddate = 20201101, 
-           timezone = "America/Los_Angeles") %>% 
-  pat_createAirSensor(
-    parameter = "pm25", 
-    FUN = PurpleAirQC_hourly_AB_01)
-
-
-PF_10 <- pat_load(id = Pine_Forest,
-           pas = mvcaa, 
-           startdate = 20201001,
-           enddate = 20201101, 
-           timezone = "America/Los_Angeles") %>% 
-  pat_createAirSensor(
-    parameter = "pm25", 
-    FUN = PurpleAirQC_hourly_AB_01)
-
-
-sensor_calendarPlot(
-  sensor = PF_10,
-  colors = "aqi",
-  title = "October 2020 -- Pine Forest"
-)
-
-sensor_calendarPlot(
-  sensor = GR_10,
-  colors = "aqi",
-  title = "October 2020 -- Gunn Ranch"
-)
- 
-
-#PF_10 AND GR_10 have data all days!
-
-# random check of another sensor apparently with missing data from previous timeseries
-
-cougar <- pat_load(
-  id = "96b108298883ca47_64441",
-  startdate = 20201001,
-  enddate = 20201101,
-  timezone = "America/Los_Angeles"
-)
-
-pat_dygraph(cougar) # the sensor does miss data. 
-
-# How to tell a story if data is missing? use only sensors with "good data"?
-```
-
-
-WIP: code below needs editing 
-```{r chronic-days}
-# sites with worst chronic days 
-fall_dailyAvg <- monitor_dailyStatistic(fall, FUN = mean, minHours = 20) # 20 or what number? 
-data.daily <- fall_dailyAvg$data[,-1] # "-1" removes datetime column 
-unhealthyDays <- apply(data.daily, 2, function(x) { sum(x >= AQI$breaks_24[4], na.rm = TRUE) }) #above 55.5, 2 = columns
-worstChronic <- names(sort(unhealthyDays, decreasing = TRUE))[1:6]
-fall$meta[worstChronic[1:3],"siteName"]
-
-# WIP
-# fire map 
-# cold psrings fire coordinates 48.635 latitude, -119.818 longitude -- 6 Sept
-# pearl hill fire coordinates 48.056 latitude, -119.484 longitude -- 7 Sept
-airsensor_202009 # just an example of 2 airsensors 
-
-fireLons <- c(-119.818, -119.484)
-fireLats <- c(48.635, 48.056)
-PWFSLSmoke::monitor_staticmap(
-  airsensor_202009,
-  slice = max,
-  maptype = 'terrain',
-  centerLon = mean(fireLons),
-  centerLat = mean(fireLats),
-  zoom = 7
-)
-PWFSLSmoke::addIcon('redFlame', fireLons, fireLats, expansion = .002)
-PWFSLSmoke::addAQILegend(cex = 0.8, x = "bottomleft")
-#title("September - October, 2020", line = -1.5, cex.main = 2)
-layout(1)
-
-```
-
-```{r}
-# dynamic map
-monitor_leaflet( airsensor_202009, slice = max)
-```
-
-```{r}
-# pollution rose plot
-sensor_pollutionRose(
-  sensor = pat2,
-  statistic = "prop.mean"
-)
-
-```
-
-```{r}
-polar_plot <- sensor_polarPlot(
-  sensor = pat2,
-  statistic = "weighted_mean"
-)
-```
-
 
 
 Conclusion
