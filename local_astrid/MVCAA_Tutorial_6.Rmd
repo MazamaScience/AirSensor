@@ -1,7 +1,7 @@
 ---
 title: "MVCAA Tutorial 6: Methow Vallely Smoke"
 author: "Mazama Science"
-date: "2021-03-22"
+date: "2021-03-26"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{MVCAA Tutorial 5: Building a Local Archive}
@@ -12,11 +12,15 @@ vignette: >
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
 ```
-left at line 78 -- WIP
 
 ## Introduction
-
-_TO DO_
+This tutorial demostrates how to evaluate the functioning of PA sensors by applying 
+some of the AirSensors fucntions explored in the previous turorials of this series.
+In order to run the code in this tutorial you must have 
+followed the instructions in Tutorial 5 and created a local multi-month archive 
+of PurpleAir timeseries data. Target audiences include grad students, 
+researchers and any member of the public concerned about air quality and 
+comfortable working with R and RStudio.
 
 Tutorials in this series include:
 
@@ -28,13 +32,11 @@ Tutorials in this series include:
 * [MVCAA Tutorial 6: Methow Vallely Smoke](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_6.html)
 
 ## Goal
-_TO DO_
-
-# Outline:
-
-## Overarching question: 
-
-How would you decide if sensors work?
+The overarching goal is to show how to evaluate if PA sensors functioned well
+under extreme environmental conditions such us the high level of PM25 concentratons
+in the air caused by the wildfires that scorched the Pacific Northwest and California during 
+Fall 2020. In order to do so, we are going to do some data exploration and 
+compare measurments from an FRM monitor and a PA sensor for the Methow Valley. 
 
 ## Intro
 On September 6 and 7 two wildfires were ignited not far from the Methow Valley – 
@@ -43,22 +45,45 @@ Additionally, at the beginning of September several wildfires exploded in the
 southern, central and northern Oregon, and a “super massive” plume was carried 
 to Washington State by the southerly winds. Eventually the smoke settled in the 
 valleys and basins of Washington and air pollution reached unhealthy levels 
-across the state (https://wasmoke.blogspot.com/). 
-Let's see how Purple Air sensors performed compared to federal monitors in the 
-Methow Valley.
+across the state (https://wasmoke.blogspot.com/). September was definetely the 
+smokiest month during the Fall season as shown in the timeseries plots below. 
 
+## Data and Graphics 
+```{r fall-overview-sensors, eval = TRUE, warning = FALSE, message = FALSE}
+all_sensors_fall <- 
+  sensor_load(
+    collection = "mvcaa", # collectionName defined by user 
+    startdate = 20200901,
+    enddate = 20201201,
+    timezone = "America/Los_Angeles"
+  )
 
-## Compare monitor to nearest sensors:
+# Plot all hourly values with daily averages
+all_sensors_fall %>%
+  AirMonitorPlots::ggplot_pm25Timeseries() + 
+  ggplot2::ggtitle("Methow Valley PA Sensors -- Fall, 2020") +
+  AirMonitorPlots::geom_pm25Points(shape = "square", alpha = .1) + 
+  AirMonitorPlots::stat_dailyAQCategory(alpha = .5) + 
+  ggplot2::scale_y_continuous(limits = c(0, 300)) +
+  AirMonitorPlots::custom_aqiStackedBar(width = 0.01) 
+```
 
-* find monitors and nearest sensors (create a map?)
+```{r r fall-overview-monitors, eval = TRUE, warning = FALSE, message = FALSE}
+# Plot all hourly values with daily averages
+mv_monitors_fall <- PWFSLSmoke::monitor_load(startdate = 20200901, enddate = 20201201) %>%
+  monitor_subset(xlim = xlim, ylim = ylim)
 
-* see timeseries for both
-
-* check fit
-
-* what could have gone wrong?
-
-## Data and graphics 
+mv_monitors_fall %>%
+  AirMonitorPlots::ggplot_pm25Timeseries() + 
+  ggplot2::ggtitle("Methow Valley FRM monitors -- Fall, 2020") +
+  AirMonitorPlots::geom_pm25Points(shape = "square", alpha = .1) + 
+  AirMonitorPlots::stat_dailyAQCategory(alpha = .5) + 
+  ggplot2::scale_y_continuous(limits = c(0, 300)) +
+  AirMonitorPlots::custom_aqiStackedBar(width = 0.01)
+```
+Data from the FRM monitors and the PA sensors have similar trends.
+Let's see more closely how Purple Air sensors performed compared to federal monitors
+during September 2020.
 
 ```{r prep-monitor-data, eval = TRUE, warning = FALSE, message = FALSE}
 
@@ -92,11 +117,13 @@ setArchiveBaseDir(archiveDir)
 setArchiveBaseDir(archiveDir)
 getArchiveBaseDir()
 
-# find sensors close to the monitor Winthrop-Chewuch Rd
-sensors <- pas_filterNear(pas = mvcaa, longitude = -120.1906, latitude = 48.47720, 
-               radius = "5 km")
+# find sensors close to the monitor "Twisp-Glover St"
+sensors <- pas_filterNear(pas = mvcaa, longitude = -120.1211, latitude = 48.3645, 
+                          radius = "10 km")
 
-# select only columns of interest for federal monitors 
+print(sensors$label)
+
+# select only meta data of interest for sensors
 names(sensors)
 sensors_meta <- as_tibble(sensors) %>%
   select(label, deviceDeploymentID, latitude, longitude)
@@ -105,7 +132,7 @@ sensors_meta <- as_tibble(sensors) %>%
 sensorIDs <- as.character(unique(sensors_meta$deviceDeploymentID))
 print(sensorIDs) # 3 sensors 
 
-# subset airsensor file for Sep using sensorIDs
+# subset airsensor file for September using sensorIDs
 sensors_subset <- 
   sensor_load(
     collection = "mvcaa",  
@@ -114,83 +141,119 @@ sensors_subset <-
     timezone = "America/Los_Angeles") %>%
   monitor_subset(monitorIDs = sensorIDs)
 
-# check if all 3 sensors are present
+# check if all 4 sensors are present
 print(sensors_subset$meta$deviceDeploymentID)
-# since we didn't have data for b56c0ef677852913_81495 during Sep, 
-# this sensor is not present.
-
+# if we didn't have data for a sensor during September, 
+# that sensor would not be present although it would appear in the $meta.
 ```
 
-```{r timeseries-monitor, eval = TRUE, warning = FALSE, message = FALSE}
-# create a timeseries for monitor Winthrop-Chewuch Rd
-Winthrop <- mv_monitors %>%
-  monitor_subset(monitorIDs = "530470010_01")
+```{r dailyBarplot-Twisp-Glover, eval = TRUE, warning = FALSE, message = FALSE}
+# create a dailyBarplot for the Twisp-Glover monitor
 
-monitor_timeseriesPlot(Winthrop, style = 'gnats')
-title('Winthrop, Sep 2020')
-addAQILines()
+print(mv_monitors_meta) # find monitorID 
+
+Twisp <- mv_monitors %>%
+  monitor_subset(monitorIDs = "530470009_01")
+
+monitor_dailyBarplot(
+  Twisp,
+  main = "Daily Average PM2.5 for Twisp, Sep 2020",
+  axes = TRUE)
 addAQILegend(cex = 0.7)
+
 ```
 
-```{r timeseries-sensors, eval = TRUE, warning = FALSE, message = FALSE}
-# create short name for timeseries title 
+```{r dailyBarplot-sensors, eval = TRUE, warning = FALSE, message = FALSE}
+
+# create short name for dailyBarplot title 
 sensors_subset$meta$shortName <-
   sensors_subset$meta$siteName %>%
   stringr::str_replace("MV Clean Air Ambassador @", "") %>%
   stringr::str_replace("MV Clean Air Ambassador-", "") %>%
   stringr::str_trim()
 
-# create timeseries for the 2 sensors 
-layout(matrix(seq(2)))
+# create dailyBarplot for the 4 sensors 
+layout(matrix(seq(4)))
 opar <- par(mar = c(1,1,1,1))
 on.exit(par(opar))
 for (ID in sensorIDs) {
-  siteName <- sensors_subset$meta[ID, 'siteName']
-  title <- sensors_subset$meta[ID, 'shortName']
-  monitor_timeseriesPlot(
+  siteName <- sensors_subset$meta[ID, 'shortName']
+  monitor_dailyBarplot(
     sensors_subset,
     monitorID = ID,
     main = siteName,
-    style = 'gnats',
+    axes = TRUE
   )
-  title(title)
-  addAQILines()
   addAQILegend(cex = 0.7)
 }
 par(opar)
 layout(1)
 ```
  
-We can see that the monitor and sensors recorded increasing PM25
-concentrations up to very unhealthy levels between Sep 10 and 20. 
-Lets see how the sensors performed individually and compared to the monitor.
+We can see that the Twisp monitor recorded increasing PM25
+concentrations up to very unhealthy levels between ~ Sep 10 and 19. Three out of 
+four PA sensors within a radius of 10 km from the monitor failed to record most 
+of data during the smokiest day. 
+The Balky Hill sensor had only two days missing and the data recorded seems to 
+reflect the Twisp's data trend. Let's give a closer look at this sensor performance.
 
-```{r more-data-exploration, eval = TRUE, warning = FALSE, message = FALSE}
+```{r scatterPlotMatrix-BalkyHill, eval = TRUE, warning = FALSE, message = FALSE}
+print(sensors_meta) # find Balky Hill deviceDeploymentID 
+
+# Load pat for Balky Hill 
+Balky_Hill <- pat_loadMonth(
+  id = "ab5dca99422f2c0d_13669",
+  datestamp = 202009,
+  timezone = "America/Los_Angeles"
+)
+
+# Balky Hill scatterPlotMatrix
+pat_scatterPlotMatrix(
+  pat = Balky_Hill,
+  parameters = c("datetime", "pm25_A", "pm25_B", "temperature", "humidity"),
+  sampleSize = 5000,
+  size = 0.5,
+  shape = 15,
+  color = "black",
+  alpha = 0.25
+)
 
 ```
 
+The plot shows us a perfect correlation of 1 between the two sensor's channels 
+(pm25_A:pm25_B) and a strong negative correlation between temperature and humidity. 
+This results support the assumption that the sensor funcioned well during September.
+We can now compare the sensor performance to the monitor by fitting a linear model
+(Twisp ~ Balky Hill).
 
-```{r overview-timeseries-fall, eval = TRUE, warning = FALSE, message = FALSE}
-# maybe to be included 
-# Load the all-hourly-data-combined sensor object
-all_sensors_fall <- 
-  sensor_load(
-    collection = "mvcaa", # collectionName defined by user 
-    startdate = 20200901,
-    enddate = 20201201,
-    timezone = "America/Los_Angeles"
-  )
+*NOTE*: By looking at the `$meta` data of the Balky Hill `pat`, we can see that the currurent  
+nearest monitor is different from the monitor that collected PM25 concentrations 
+during September 2020. For this reason we are going to edit the metadata by replacing
+the new `pwfsl_closestMonitorID` with the old one. 
 
-# Plot all hourly values with daily averages
-all_sensors_fall %>%
-  AirMonitorPlots::ggplot_pm25Timeseries() + 
-  ggplot2::ggtitle("Methow Valley -- September, 2020") +
-  AirMonitorPlots::geom_pm25Points(shape = "square", alpha = .1) + 
-  AirMonitorPlots::stat_dailyAQCategory(alpha = .5) + 
-  ggplot2::scale_y_continuous(limits = c(0, 300)) +
-  AirMonitorPlots::custom_aqiStackedBar(width = 0.01) 
+```{r pat_externalFit, eval = TRUE, warning = FALSE, message = FALSE}
+# Current nearest monitor 
+Balky_Hill$meta$pwfsl_closestMonitorID #"840530470016_01"
 
+# Assign Twisp monitor ID to pwfsl_closestMonitorID 
+Balky_Hill$meta$pwfsl_closestMonitorID <- "530470009_01"
+
+# Linear model (Twisp ~ Balky Hill)
+lm <- pat_externalFit(
+  pat = Balky_Hill,
+  showPlot = TRUE
+)
+
+summary(lm)
 ```
 
+The linear model captures 95.3% of the data variability and shows a strong correlation
+between the sensor and the monitor. Given the thousands of observations included in 
+each data set, having an r-squared value > 0.99 would be more reassuring about the 
+functioning of the sensor. From the timeseries at the bottom of the graphic, 
+we see that the sensor tends to overestimate PM25 concentrations when levels 
+get near and above 50 µg/m3. However, we also observe that both trends are fairly 
+close despite the fact that the sensor didn't record PM25 concentrations for 2 days.  
 
-Conclusion
+
+## Conclusion
