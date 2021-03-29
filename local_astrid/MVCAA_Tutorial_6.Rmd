@@ -49,7 +49,27 @@ across the state (https://wasmoke.blogspot.com/). September was definetely the
 smokiest month during the Fall season as shown in the timeseries plots below. 
 
 ## Data and Graphics 
+
+```{r directory-setup, eval = TRUE, warning = FALSE, message = FALSE}
+# libraries
+library(AirSensor)
+library(PWFSLSmoke)
+library(AirMonitorPlots)
+
+# Use the tutorial default archiveDir unless it is already defined
+if ( !exists("archiveDir") ) {
+  archiveDir <- file.path("C:/Users/astri/Mirror/Mazamascience/Projects/AirSensor/Data2/MVCAA/")}
+
+setArchiveBaseDir(archiveDir)
+
+# Set your archive base directory and check that is correct
+setArchiveBaseDir(archiveDir)
+getArchiveBaseDir()
+
+```
+
 ```{r fall-overview-sensors, eval = TRUE, warning = FALSE, message = FALSE}
+# load September sensors' data 
 all_sensors_fall <- 
   sensor_load(
     collection = "mvcaa", # collectionName defined by user 
@@ -69,10 +89,15 @@ all_sensors_fall %>%
 ```
 
 ```{r r fall-overview-monitors, eval = TRUE, warning = FALSE, message = FALSE}
-# Plot all hourly values with daily averages
+# define longitude and latitude 
+xlim <- c(-120.093, -120.284)
+ylim <- c(48.313, 48.510)
+
+# load September monitors' data 
 mv_monitors_fall <- PWFSLSmoke::monitor_load(startdate = 20200901, enddate = 20201201) %>%
   monitor_subset(xlim = xlim, ylim = ylim)
 
+# Plot all hourly values with daily averages
 mv_monitors_fall %>%
   AirMonitorPlots::ggplot_pm25Timeseries() + 
   ggplot2::ggtitle("Methow Valley FRM monitors -- Fall, 2020") +
@@ -106,16 +131,9 @@ print(mv_monitors_meta$siteName) #"Winthrop-Chewuch Rd" "Twisp-Glover St"
 ```
 
 ```{r prep-sensor-data, eval = TRUE, warning = FALSE, message = FALSE}
-# Use the tutorial default archiveDir unless it is already defined
-if ( !exists("archiveDir") ) {
-  archiveDir <- file.path("~/Data/MVCAA")
-}
-
-setArchiveBaseDir(archiveDir)
-
-# Set your archive base directory and check that is correct
-setArchiveBaseDir(archiveDir)
-getArchiveBaseDir()
+# load mvcaa pas file 
+list.files(file.path(archiveDir, "/pas/2021")) # to get the datestamp from the file name
+mvcaa <- pas_load(datestamp = 20210317)
 
 # find sensors close to the monitor "Twisp-Glover St"
 sensors <- pas_filterNear(pas = mvcaa, longitude = -120.1211, latitude = 48.3645, 
@@ -149,7 +167,6 @@ print(sensors_subset$meta$deviceDeploymentID)
 
 ```{r dailyBarplot-Twisp-Glover, eval = TRUE, warning = FALSE, message = FALSE}
 # create a dailyBarplot for the Twisp-Glover monitor
-
 print(mv_monitors_meta) # find monitorID 
 
 Twisp <- mv_monitors %>%
