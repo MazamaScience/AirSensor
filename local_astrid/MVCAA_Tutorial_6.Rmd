@@ -174,7 +174,7 @@ Twisp <- mv_monitors %>%
 
 monitor_dailyBarplot(
   Twisp,
-  main = "Daily Average PM2.5 for Twisp, Sep 2020",
+  main = "Daily Average PM2.5 for Twisp -- Sep 2020",
   axes = TRUE)
 addAQILegend(cex = 0.7)
 
@@ -207,69 +207,181 @@ layout(1)
 ```
  
 We can see that the Twisp monitor recorded increasing PM25
-concentrations up to very unhealthy levels between ~ Sep 10 and 19. Three out of 
-four PA sensors within a radius of 10 km from the monitor failed to record most 
-of data during the smokiest day. 
-The Balky Hill sensor had only two days missing and the data recorded seems to 
-reflect the Twisp's data trend. Let's give a closer look at this sensor performance.
+concentrations up to very unhealthy levels between ~ Sep 10 and 19. Three out of
+four PA sensors within a radius of 10 km from the don't show data during the smokiest day.
+The [QC algorithm AB_01](https://mazamascience.github.io/AirSensor/reference/PurpleAirQC_hourly_AB_01.html), that used into the function `pat_createAirSensor()` in
+Tutorial 5, is invalidating many hourly values on those days presumably
+because the A and B PM2.5 values differ by more than is allowed in AB_01.
+We can demostrate this and fix the problem by creating a new airsensor object
+for each sensor by applying the [QC algorithm AB_00](https://mazamascience.github.io/AirSensor/reference/PurpleAirQC_hourly_AB_00.html)
+and replot the data.
+Let's start exploring the raw data by running `pat_internalFit()` and
+for a quick assessment.
+We'll then compare each sensor performance against the Twisp monitor by fitting
+a linear model (monitor ~ senosr) with the `pat_externalFit()` function.
 
-```{r scatterPlotMatrix-BalkyHill, eval = TRUE, warning = FALSE, message = FALSE}
-print(sensors_meta) # find Balky Hill deviceDeploymentID 
+*NOTE*: By looking at the meta data in the pat` objects, we can see that the currurent
+nearest monitor is different from the monitor that collected PM25 concentrations
+during September 2020. For this reason we are going to edit the metadata by replacing
+the new `pwfsl_closestMonitorID` with the old one.
 
-# Load pat for Balky Hill 
+```{r pat-exploration, eval = TRUE, warning = FALSE, message = FALSE}
+#--------------- pat internal fits----------------------------------------------
 Balky_Hill <- pat_loadMonth(
   id = "ab5dca99422f2c0d_13669",
   datestamp = 202009,
   timezone = "America/Los_Angeles"
 )
+pat_internalFit(Balky_Hill)
 
-# Balky Hill scatterPlotMatrix
-pat_scatterPlotMatrix(
-  pat = Balky_Hill,
-  parameters = c("datetime", "pm25_A", "pm25_B", "temperature", "humidity"),
-  sampleSize = 5000,
-  size = 0.5,
-  shape = 15,
-  color = "black",
-  alpha = 0.25
+Benson_Creek <- pat_loadMonth(
+  id = "f6c44edd41c941c7_10182",
+  datestamp = 202009,
+  timezone = "America/Los_Angeles"
+)
+  
+pat_internalFit(Benson_Creek)
+
+Liberty_Bell <- pat_loadMonth(
+  id = "db5d6b3b79f5830e_39237",
+  datestamp = 202009,
+  timezone = "America/Los_Angeles"
 )
 
-```
+pat_internalFit(Liberty_Bell)
 
-The plot shows us a perfect correlation of 1 between the two sensor's channels 
-(pm25_A:pm25_B) and a strong negative correlation between temperature and humidity. 
-This results support the assumption that the sensor funcioned well during September.
-We can now compare the sensor performance to the monitor by fitting a linear model
-(Twisp ~ Balky Hill).
 
-*NOTE*: By looking at the `$meta` data of the Balky Hill `pat`, we can see that the currurent  
-nearest monitor is different from the monitor that collected PM25 concentrations 
-during September 2020. For this reason we are going to edit the metadata by replacing
-the new `pwfsl_closestMonitorID` with the old one. 
+Beaver_Creek <- pat_loadMonth(
+  id = "2e3b5ceea86a885b_10168",
+  datestamp = 202009,
+  timezone = "America/Los_Angeles"
+)
 
-```{r pat_externalFit, eval = TRUE, warning = FALSE, message = FALSE}
-# Current nearest monitor 
+pat_internalFit(Beaver_Creek)
+
+#--------------- pat external fits----------------------------------------------
+# First fix the closest monitor ID by substituting the current one with the Twisp
+# monitor ID
+
+# check the current nearest monitor 
 Balky_Hill$meta$pwfsl_closestMonitorID #"840530470016_01"
 
-# Assign Twisp monitor ID to pwfsl_closestMonitorID 
+# assign Twisp monitor ID to pwfsl_closestMonitorID 
 Balky_Hill$meta$pwfsl_closestMonitorID <- "530470009_01"
+Benson_Creek$meta$pwfsl_closestMonitorID <- "530470009_01"
+Liberty_Bell$meta$pwfsl_closestMonitorID <- "530470009_01"
+Beaver_Creek$meta$pwfsl_closestMonitorID <- "530470009_01"
 
-# Linear model (Twisp ~ Balky Hill)
-lm <- pat_externalFit(
+# fit linear models
+# Twisp ~ Balky_Hill
+lm_BH <- pat_externalFit(
   pat = Balky_Hill,
   showPlot = TRUE
 )
 
-summary(lm)
+# Twisp ~ Benson_Creek
+lm_BC <- pat_externalFit(
+  pat = Benson_Creek,
+  showPlot = TRUE
+)
+
+# Twisp ~ Liberty_Bell
+lm_LB <- pat_externalFit(
+  pat = Liberty_Bell,
+  showPlot = TRUE
+)
+# distance: 4.2 km
+# fit: 0.901 (missing days)
+
+# Twisp ~ Beaver_Creek
+lm_BeC <- pat_externalFit(
+  pat = Beaver_Creek,
+  showPlot = TRUE
+)
 ```
 
-The linear model captures 95.3% of the data variability and shows a strong correlation
-between the sensor and the monitor. Given the thousands of observations included in 
-each data set, having an r-squared value > 0.99 would be more reassuring about the 
-functioning of the sensor. From the timeseries at the bottom of the graphic, 
-we see that the sensor tends to overestimate PM25 concentrations when levels 
-get near and above 50 µg/m3. However, we also observe that both trends are fairly 
-close despite the fact that the sensor didn't record PM25 concentrations for 2 days.  
+The internal fit plots show that all sensors did quite a good job at measuring
+the PM25 concentrations,
+and that only the Benson Creek sensor had multiple days with missing data.
+However, when compared to the monitor data (external fit), the plots show that Balky Hill was
+the one performing best, followed by Liberty Bell High School, and Beaver Creek
+(we are not considering Benson Creek due to the substantial missing data during the
+smokiest days). Given the thousands of observations included in
+each data set, we would expect external fits with an r-squared value ~ 0.99 and a slope ~ 1
+for sensors that functioned very well. Lastly, it's interesting to observe that,
+in the timeseries at the bottom of the graphic,
+the all sensors tend to overestimate PM25 concentrations (slope < 1) when levels
+get near and above 50 µg/m3.
 
+Now let's create new sensor objects by applying the QC algorithm AB_00 and replot
+the data.
+```{r sensors-objects-AB00, eval = TRUE, warning = FALSE, message = FALSE}
+#--- create sensors objects for all sensors using AB_00 ----
+BH_00 <- 
+  Balky_Hill %>%
+  pat_createAirSensor(
+    FUN = PurpleAirQC_hourly_AB_00
+  )
+
+BC_00 <- 
+  Benson_Creek %>%
+  pat_createAirSensor(
+    FUN = PurpleAirQC_hourly_AB_00
+  )
+
+LB_00 <- 
+  Liberty_Bell %>%
+  pat_createAirSensor(
+    FUN = PurpleAirQC_hourly_AB_00
+  )
+
+BeC_00 <- 
+  Beaver_Creek %>%
+  pat_createAirSensor(
+    FUN = PurpleAirQC_hourly_AB_00
+  )
+
+# combine all sensors objects into a list of sensors 
+sensorList <- c(BH_00, BC_00, LB_00, BeC_00)
+class(sensorList)
+
+sensorList <- list()
+sensorList[[1]] <- BH_00
+sensorList[[2]] <- BC_00
+sensorList[[3]] <- LB_00
+sensorList[[4]] <- BeC_00
+sensors_subset_00 <- monitor_combine(sensorList)
+```
+
+```{r dailyBarplot-sensors-AB00, eval = TRUE, warning = FALSE, message = FALSE}
+# create short name for the plot title 
+sensors_subset_00$meta$shortName <-
+  sensors_subset_00$meta$siteName %>%
+  stringr::str_replace("MV Clean Air Ambassador @", "") %>%
+  stringr::str_replace("MV Clean Air Ambassador-", "") %>%
+  stringr::str_trim()
+
+
+# create dailyBarplot for the 4 sensors 
+layout(matrix(seq(4)))
+opar <- par(mar = c(1,1,1,1))
+on.exit(par(opar))
+for (ID in sensorIDs) {
+  siteName <- sensors_subset_00$meta[ID, 'shortName']
+  monitor_dailyBarplot(
+    sensors_subset_00,
+    monitorID = ID,
+    main = siteName,
+    axes = TRUE
+  )
+  addAQILegend(cex = 0.7)
+}
+par(opar)
+layout(1)
+```
+This plot demostrate that, initially, the sensors's data was invalidated by the 
+QC algorithm AB_01 and that applying the QC algorithm AB_00 fixed the problem.
+However, it's your call to decide which sensor to include in your study based on 
+the overall sensor performance including internal and exernal fits. 
 
 ## Conclusion
