@@ -55,6 +55,7 @@ smokiest month during the Fall season as shown in the timeseries plots below.
 library(AirSensor)
 library(PWFSLSmoke)
 library(AirMonitorPlots)
+library(ggplot2)
 
 # Use the tutorial default archiveDir unless it is already defined
 if ( !exists("archiveDir") ) {
@@ -132,8 +133,7 @@ print(mv_monitors_meta$siteName) #"Winthrop-Chewuch Rd" "Twisp-Glover St"
 
 ```{r prep-sensor-data, eval = TRUE, warning = FALSE, message = FALSE}
 # load mvcaa pas file 
-list.files(file.path(archiveDir, "/pas/2021")) # to get the datestamp from the file name
-mvcaa <- pas_load(datestamp = 20210317)
+mvcaa <- get(load(file.path(archiveDir, "mvcaa.rda")))
 
 # find sensors close to the monitor "Twisp-Glover St"
 sensors <- pas_filterNear(pas = mvcaa, longitude = -120.1211, latitude = 48.3645, 
@@ -181,7 +181,6 @@ addAQILegend(cex = 0.7)
 ```
 
 ```{r dailyBarplot-sensors, eval = TRUE, warning = FALSE, message = FALSE}
-
 # create short name for dailyBarplot title 
 sensors_subset$meta$shortName <-
   sensors_subset$meta$siteName %>%
