@@ -14,7 +14,7 @@ knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
 ```
 
 ## Introduction
-This tutorial demostrates how to evaluate the functioning of PA sensors by applying 
+This tutorial demostrates how to assess the functioning of PA sensors by applying 
 some of the AirSensors fucntions explored in the previous turorials of this series.
 In order to run the code in this tutorial you must have 
 followed the instructions in Tutorial 5 and created a local multi-month archive 
@@ -35,8 +35,8 @@ Tutorials in this series include:
 The overarching goal is to show how to evaluate if PA sensors functioned well
 under extreme environmental conditions such us the high level of PM25 concentratons
 in the air caused by the wildfires that scorched the Pacific Northwest and California during 
-Fall 2020. In order to do so, we are going to do some data exploration and 
-compare measurments from an FRM monitor and a PA sensor for the Methow Valley. 
+Fall 2020. We are going to explore the data and then compare measurments between 
+PA sensors and the closest FRM monitor in the Methow Valley. 
 
 ## Intro
 On September 6 and 7 two wildfires were ignited not far from the Methow Valley – 
