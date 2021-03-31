@@ -141,7 +141,7 @@ This plot might suggest that wildfire smoke that entered the valley moved
 up and down the valley as part of typical, diurnal valley airflow patterns.
 
 ```{r sensor-polarPlot-Liberty_School-wm, eval = TRUE, warning = FALSE, message = FALSE}
-# Create a polar plot for Liberty School using the weighted mean
+# Create a polar plot for Pine Forest using the weighted mean
 polar_plot <- sensor_polarPlot(
   sensor = Pine_Forest,
   statistic = "weighted_mean"
@@ -164,7 +164,7 @@ pollution_rose <- sensor_pollutionRose(
 
 Highest PM25 concentrations are mostly associated with southerly winds. However 
 the largest proportion of PM25 concentrations is associated with northerly winds.
-By setting `statistic = "prop.mean"` in the plot below, we can see that northerly winds 
+By setting `statistic = "prop.mean"` , we can see that northerly winds 
 contribute the most to overall concentrations as shown in the plot below. 
 
 ```{r sensor_pollutionRose_2, eval = TRUE, warning = FALSE, message = FALSE}
