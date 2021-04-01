@@ -14,10 +14,11 @@ knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
 ```
 
 ## Introduction
-This tutorial demonstrates how to assess the functioning of PA sensors by applying 
-some of the AirSensor functions explored in the previous tutorials of this series.
+
+This tutorial demonstrates how to evaluate the performance of PA sensors by applying 
+functions from the **AirSensor** package explored in previous tutorials.
 In order to run the code in this tutorial you must have 
-followed the instructions in Tutorial 5 and created a local multi-month archive 
+followed the instructions in Tutorial 5 and created a local, multi-month archive 
 of PurpleAir timeseries data. Target audiences include grad students, 
 researchers and any member of the public concerned about air quality and 
 comfortable working with R and RStudio.
@@ -32,27 +33,30 @@ Tutorials in this series include:
 * [MVCAA Tutorial 6: Methow Vallely Smoke](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_6.html)
 
 ## Goal
-The overarching goal is to show how to evaluate if PA sensors functioned well
-under extreme environmental conditions such us the high level of PM25 concentrations
-in the air caused by the wildfires that scorched the Pacific Northwest and California during 
-Fall 2020. We are going to explore the data and then compare measurements between 
-PA sensors and the closest FRM monitor in the Methow Valley.
+
+The goal in this tutorial is to show how to evaluate the performance of PA sensors
+under extreme environmental conditions associated with high PM25 concentratons
+due to wildfire smoke. We will do some basic data exploration and evaluate several
+PA sensors comparing their data with data from a nearby regulatory monitor. 
 
 ## Intro
-On September 6 and 7 two wildfires were ignited not far from the Methow Valley – 
-Cold Springs and Pearl Hill, which burned over 410,000 acres throughout the month.
-Additionally, at the beginning of September several wildfires exploded in the 
-southern, central and northern Oregon, and a “super massive” plume was carried 
-to Washington State by the southerly winds. Eventually the smoke settled in the 
+
+On September 6 and 7, two wildfires were ignited not far from the Methow Valley –- 
+[Cold Springs](https://inciweb.nwcg.gov/incident/7161/) and 
+[Pearl Hill](https://inciweb.nwcg.gov/incident/7169/), 
+which together burned over 410,000 acres of grass and shrub throughout the month.
+Additionally, at the beginning of September, multiple wildfires exploded across 
+the Oregon Cascades, and a “super massive” plume of smoke was carried 
+to Washington State by southerly winds. Eventually the smoke settled in the 
 valleys and basins of Washington and air pollution reached unhealthy levels 
-across the state (https://wasmoke.blogspot.com/). September was definitely the 
-smokiest month during the Fall season as shown in the timeseries plots below.
- 
+across the state (See: https://wasmoke.blogspot.com/2020/09/). September was
+the smokiest month during the Fall season as shown in the timeseries 
+plots below. 
 
 ## Data and Graphics 
 
 Let's begin our journey by plotting and comparing the hourly values with daily 
-averages for all sensors and all monitors in the Methow Valley during September 2020.
+averages for all sensors in the Methow Valley during September 2020.
 
 ```{r directory-setup, eval = TRUE, warning = FALSE, message = FALSE}
 # libraries
@@ -61,30 +65,25 @@ library(PWFSLSmoke)
 library(AirMonitorPlots)
 library(ggplot2)
 
-# Use the tutorial default archiveDir unless it is already defined
+# Use the default archiveDir unless it is already defined
 if ( !exists("archiveDir") ) {
-  archiveDir <- file.path("C:/Users/astri/Mirror/Mazamascience/Projects/AirSensor/Data2/MVCAA/")}
+  archiveDir <- file.path("~/Data/MVCAA")
+}
 
+# Set the package archiveBaseDir so we can load pat objects with `pat_load()`
 setArchiveBaseDir(archiveDir)
 
-# Set your archive base directory and check that is correct
-setArchiveBaseDir(archiveDir)
-getArchiveBaseDir()
-
-```
-
-```{r fall-overview-sensors, eval = TRUE, warning = FALSE, message = FALSE}
-# load September sensors' data 
-all_sensors_fall <- 
+# Load snesor data from our archive 
+mvcaa_sensors_fall <- 
   sensor_load(
-    collection = "mvcaa",  
+    collection = "mvcaa",
     startdate = 20200901,
     enddate = 20201201,
     timezone = "America/Los_Angeles"
   )
 
 # Plot all hourly values with daily averages
-all_sensors_fall %>%
+mvcaa_sensors_fall %>%
   AirMonitorPlots::ggplot_pm25Timeseries() + 
   ggplot2::ggtitle("Methow Valley PA Sensors -- Fall, 2020") +
   AirMonitorPlots::geom_pm25Points(shape = "square", alpha = .1) + 
@@ -93,143 +92,135 @@ all_sensors_fall %>%
   AirMonitorPlots::custom_aqiStackedBar(width = 0.01) 
 ```
 
+Lets now find some official monitors in the Methow Valley for comparison. Data
+for FRM/FEM monitors is available using the PWFSLSmoke package.
+
+_NOTE:_ We refer to hourly aggregated PA data from the **AirSensor** as 'sensors' 
+and hourly FRM data from the **PWFSLSmoke** package as 'monitors' but the data
+structures are nearly identical and both can be used with `monitor_~()` functions 
+from the **PWFSLSmoke** package.
+
 ```{r r fall-overview-monitors, eval = TRUE, warning = FALSE, message = FALSE}
-# define longitude and latitude 
-xlim <- c(-120.093, -120.284)
-ylim <- c(48.313, 48.510)
+# Methow Valley region 
+xlim <- c(
+  min(mvcaa_sensors_fall$meta$longitude, na.rm = TRUE),
+  max(mvcaa_sensors_fall$meta$longitude, na.rm = TRUE)
+)
+ylim <- c(
+  min(mvcaa_sensors_fall$meta$latitude, na.rm = TRUE),
+  max(mvcaa_sensors_fall$meta$latitude, na.rm = TRUE)
+)
 
 # load September monitors' data 
-mv_monitors_fall <- PWFSLSmoke::monitor_load(startdate = 20200901, enddate = 20201201) %>%
+mv_monitors_fall <- 
+  PWFSLSmoke::monitor_load(startdate = 20200901, enddate = 20201201) %>%
   monitor_subset(xlim = xlim, ylim = ylim)
 
 # Plot all hourly values with daily averages
 mv_monitors_fall %>%
   AirMonitorPlots::ggplot_pm25Timeseries() + 
-  ggplot2::ggtitle("Methow Valley FRM Monitors -- Fall, 2020") +
+  ggplot2::ggtitle("Methow Valley FRM monitors -- Fall, 2020") +
   AirMonitorPlots::geom_pm25Points(shape = "square", alpha = .1) + 
   AirMonitorPlots::stat_dailyAQCategory(alpha = .5) + 
   ggplot2::scale_y_continuous(limits = c(0, 300)) +
   AirMonitorPlots::custom_aqiStackedBar(width = 0.01)
 ```
-Data from the FRM monitors and the PA sensors have similar trends.
-Let's see more closely how PA sensors performed compared to the Twisp monitor
-during September 2020.
 
-```{r prep-monitor-data, eval = TRUE, warning = FALSE, message = FALSE}
+Data from the PurpleAir sensors and the regulatory monitors tell a very similar story.
+Let's look more closely at how PA sensors performed compared to one of the FRM monitors
+in September, 2020. We use an interactive map to identify the monitorID associated
+with Twisp, Washington.
 
-# find federal monitors in the Methow Valley
+```{r twisp, eval = TRUE, warning = FALSE, message = FALSE}
+# Click on Twisp in the interactive map
+PWFSLSmoke::monitor_leaflet(mv_monitors_fall)
 
-# define longitude and latitude 
-xlim <- c(-120.093, -120.284)
-ylim <- c(48.313, 48.510)
+# Create a single-monitor object for Twisp
+# NOTE:  The older PWFSLSmoke package monitor_~() functions use a "subset" 
+# NOTE:  style syntax rather than the more modern "filter" style syntax.
+Twisp_monitor <- monitor_subset(
+  mv_monitors_fall, 
+  monitorIDs = "530470009_01",
+  tlim = c(20200901, 20201001),
+  timezone = "America/Los_Angeles"
+)
 
-# load Sep data
-mv_monitors <- PWFSLSmoke::monitor_load(startdate = 20200901, enddate = 20201001) %>%
-  monitor_subset(xlim = xlim, ylim = ylim)
-
-# select most useful meta data
-names(mv_monitors$meta)
-mv_monitors_meta <- as_tibble(mv_monitors$meta) %>%
-  select(monitorID, siteName, longitude, latitude)
-
-print(mv_monitors_meta$siteName) #"Winthrop-Chewuch Rd" "Twisp-Glover St" 
-
-
+dplyr::glimpse(Twisp_monitor$meta)
 ```
+
+We can use this spatial metadata for Twisp to find all sensors within 10km.
 
 ```{r prep-sensor-data, eval = TRUE, warning = FALSE, message = FALSE}
 # load mvcaa pas file 
 mvcaa <- get(load(file.path(archiveDir, "mvcaa.rda")))
 
 # find sensors close to the monitor "Twisp-Glover St"
-sensors <- pas_filterNear(pas = mvcaa, longitude = -120.1211, latitude = 48.3645, 
-                          radius = "10 km")
+Twisp_pas <- pas_filterNear(
+  pas = mvcaa, 
+  longitude = -120.1211, 
+  latitude = 48.3645, 
+  radius = "10 km"
+)
 
-# select most useful meta data
-names(sensors)
-sensors_meta <- as_tibble(sensors) %>%
-  select(label, deviceDeploymentID, latitude, longitude)
+Twisp_sensorIDs <- pas_getDeviceDeploymentIDs(Twisp_pas)
 
-# create sensor IDs object (must be as.character())
-sensorIDs <- as.character(unique(sensors_meta$deviceDeploymentID))
-print(sensorIDs) # 3 sensors 
-
-# subset airsensor file for September using sensorIDs
-sensors_subset <- 
-  sensor_load(
-    collection = "mvcaa",  
-    startdate = 20200901,
+# Create a multi-sensor object for Twisp
+# NOTE:  The AirSensor package sensor_~() functions use a "filter" style syntax.
+Twisp_sensors <- 
+  sensor_filterMeta(
+    mvcaa_sensors_fall,
+    deviceDeploymentID %in% Twisp_sensorIDs
+  ) %>%
+  sensor_filterDate(
+    startdate = 20200901, 
     enddate = 20201001,
-    timezone = "America/Los_Angeles") %>%
-  monitor_subset(monitorIDs = sensorIDs)
+    timezone = "America/Los_Angeles"
+  )
 
-# check if all 4 sensors are present
-print(sensors_subset$meta$deviceDeploymentID)
-# if we didn't have data for a sensor during September, 
-# that sensor would not be present although it would appear in the $meta.
+dplyr::glimpse(Twisp_sensors$meta)
 ```
 
-```{r dailyBarplot-Twisp-Glover, eval = TRUE, warning = FALSE, message = FALSE}
-# create a dailyBarplot for the Twisp-Glover monitor
-print(mv_monitors_meta) # find monitorID 
+It is important to understand that hourly aggregated _airsensor_ objects from 
+the **AirSensor** package are compatible with _monitor_ objects from the 
+**PWFSLSmoke** package. Because of this, we can combine both into a single 
+object for plotting.
 
-Twisp <- mv_monitors %>%
-  monitor_subset(monitorIDs = "530470009_01")
+```{r dailyBarplot, eval = TRUE, warning = FALSE, message = FALSE, fig.height = 10}
+# Combine "monitor" and PA-derived "airsensor" objects
+Twisp <- PWFSLSmoke::monitor_combine(list(Twisp_monitor, Twisp_sensors))
 
-monitor_dailyBarplot(
-  Twisp,
-  main = "Daily Average PM2.5 for Twisp -- Sep 2020",
-  axes = TRUE)
-addAQILegend(cex = 0.7)
+# Print out the the names
+Twisp$meta$siteName
 
-```
-
-```{r dailyBarplot-sensors, eval = TRUE, warning = FALSE, message = FALSE}
-# create short name for dailyBarplot title 
-sensors_subset$meta$shortName <-
-  sensors_subset$meta$siteName %>%
+# Help ggplot out by assigning short labels to be used as the facet label
+Twisp$meta$shortName <-
+  Twisp$meta$siteName %>%
   stringr::str_replace("MV Clean Air Ambassador @", "") %>%
   stringr::str_replace("MV Clean Air Ambassador-", "") %>%
   stringr::str_trim()
 
-# create dailyBarplot for the 4 sensors 
-layout(matrix(seq(4)))
-opar <- par(mar = c(1,1,1,1))
-on.exit(par(opar))
-for (ID in sensorIDs) {
-  siteName <- sensors_subset$meta[ID, 'shortName']
-  monitor_dailyBarplot(
-    sensors_subset,
-    monitorID = ID,
-    main = siteName,
-    axes = TRUE
-  )
-  addAQILegend(cex = 0.7)
-}
-par(opar)
-layout(1)
+ggplot_pm25Timeseries(Twisp) +
+  stat_dailyAQCategory(timezone = "America/Los_Angeles") + 
+  facet_grid(rows = vars(shortName))
 ```
- 
-We can see that the Twisp monitor recorded increasing PM2.5
+
+
+We can see that the Twisp-Glover St. monitor recorded increasing PM2.5
 concentrations up to very unhealthy levels between ~ Sep 10 and 19 and that three out of
 four sensors within a radius of 10 km from the monitor don't show data during the smokiest day.
-The [QC algorithm AB_01](https://mazamascience.github.io/AirSensor/reference/PurpleAirQC_hourly_AB_01.html), that we used into the function `pat_createAirSensor()` in
-Tutorial 5, is potentially invalidating many hourly values on those days, presumably
+
+The QC algorithm [AB_01](https://mazamascience.github.io/AirSensor/reference/PurpleAirQC_hourly_AB_01.html) 
+that we used into the function `pat_createAirSensor()` in
+Tutorial 5 appears to be invalidating many hourly values on those days, presumably
 because the A and B PM2.5 values differ by more than is allowed by the algorithm.
+
 We can demonstrate this and address the problem by creating a new sensor object
-for each sensor by applying the [QC algorithm AB_00](https://mazamascience.github.io/AirSensor/reference/PurpleAirQC_hourly_AB_00.html)
-and replot the data. But first, let's explore the raw data by running `pat_internalFit()`
-for a quick assessment.
-We'll then compare each sensor performance against the Twisp monitor by fitting
-a linear model (monitor ~ sensor) with the `pat_externalFit()` function.
+for each sensor by applying the QC algorithm 
+[AB_00](https://mazamascience.github.io/AirSensor/reference/PurpleAirQC_hourly_AB_00.html)
+and replotting the data. But first, let's explore the raw data by running 
+`pat_internalFit()` for a quick assessment.
 
-*NOTE*: By looking at the `$meta` of each `pat` objects, we can see that the current
-nearest monitor is different from the monitor that collected PM2.5 concentrations
-during September 2020. For this reason, we are going to edit the `$meta` of each `pat` object
-by replacing the current `pwfsl_closestMonitorID` with the one active in September 2020.
-
-
-```{r pat-exploration, eval = TRUE, warning = FALSE, message = FALSE}
+```{r pat_internalFit, eval = TRUE, warning = FALSE, message = FALSE}
 #--------------- pat internal fits----------------------------------------------
 Balky_Hill <- pat_loadMonth(
   id = "ab5dca99422f2c0d_13669",
@@ -246,24 +237,40 @@ Benson_Creek <- pat_loadMonth(
   
 pat_internalFit(Benson_Creek)
 
-Liberty_Bell <- pat_loadMonth(
+Liberty_Bell_HS <- pat_loadMonth(
   id = "db5d6b3b79f5830e_39237",
   datestamp = 202009,
   timezone = "America/Los_Angeles"
 )
 
-pat_internalFit(Liberty_Bell)
+pat_internalFit(Liberty_Bell_HS)
 
 
-Beaver_Creek <- pat_loadMonth(
+Upper_Beaver_Creek <- pat_loadMonth(
   id = "2e3b5ceea86a885b_10168",
   datestamp = 202009,
   timezone = "America/Los_Angeles"
 )
 
-pat_internalFit(Beaver_Creek)
+pat_internalFit(Upper_Beaver_Creek)
+```
 
-#--------------- pat external fits----------------------------------------------
+Given the thousands of observations included in each data set, we would expect 
+internal fits with an r-squared value of ~ 0.99 and a slope of ~ 1 for sensors 
+that functioned perfectly. 
+
+The internal fit plots show that all sensors did quite a good job at measuring
+the PM25 concentrations. Only the Benson Creek sensor had multiple days with missing data.
+
+Now we can compare each sensor performance against the Twisp monitor by fitting
+a linear model (monitor ~ sensor) with the `pat_externalFit()` function.
+
+*NOTE*: By looking at the `$meta` of each `pat` objects, we can see that the current
+nearest monitor is different from the monitor that collected PM2.5 concentrations
+during September 2020. For this reason, we are going to edit the `$meta` of each `pat` object
+by replacing the current `pwfsl_closestMonitorID` with the one active in September 2020.
+
+```{r pat_externalFit, eval = TRUE, warning = FALSE, message = FALSE}
 # First, substitute the current closest monitor with the 2020 Twisp
 # monitor ID. 
 
@@ -273,8 +280,8 @@ Balky_Hill$meta$pwfsl_closestMonitorID #"840530470016_01"
 # assign the Twisp monitor ID to pwfsl_closestMonitorID 
 Balky_Hill$meta$pwfsl_closestMonitorID <- "530470009_01"
 Benson_Creek$meta$pwfsl_closestMonitorID <- "530470009_01"
-Liberty_Bell$meta$pwfsl_closestMonitorID <- "530470009_01"
-Beaver_Creek$meta$pwfsl_closestMonitorID <- "530470009_01"
+Liberty_Bell_HS$meta$pwfsl_closestMonitorID <- "530470009_01"
+Upper_Beaver_Creek$meta$pwfsl_closestMonitorID <- "530470009_01"
 
 # Twisp ~ Balky_Hill
 lm_BH <- pat_externalFit(
@@ -288,41 +295,33 @@ lm_BC <- pat_externalFit(
   showPlot = TRUE
 )
 
-# Twisp ~ Liberty_Bell
-lm_LB <- pat_externalFit(
-  pat = Liberty_Bell,
+# Twisp ~ Liberty_Bell_HS
+lm_LBHS <- pat_externalFit(
+  pat = Liberty_Bell_HS,
   showPlot = TRUE
 )
 # distance: 4.2 km
 # fit: 0.901 (missing days)
 
-# Twisp ~ Beaver_Creek
-lm_BeC <- pat_externalFit(
-  pat = Beaver_Creek,
+# Twisp ~ Upper_Beaver_Creek
+lm_UBC <- pat_externalFit(
+  pat = Upper_Beaver_Creek,
   showPlot = TRUE
 )
 ```
 
-The internal fit plots show that all sensors did quite a good job at measuring
-the PM25 concentrations,
-and that only the Benson Creek sensor had multiple days with missing data.
 When compared to the Twisp monitor data, the external fit plots show that Balky 
 Hill was the one performing best, followed by Liberty Bell High School, and Upper Beaver Creek
 (we are not considering Benson Creek due to the substantial missing data during the
 smokiest days). 
-Given the thousands of observations included in
-each data set, we would expect internal and external fits with an r-squared value of
-~ 0.99 and a slope of ~ 1 for sensors that functioned very well.
-However, when it comes to external fits, it is important to consider geographic 
-features such as distance and topography. Indeed, topography affects air movement 
-and therefore PM25 concentrations, having an effect on the external fit results. And indeed, 
-shorter distance allows for similar measurements if topography in not interfering significantly.  
-For instance, by looking at the map
-below we notice that Balky Hill was the closest to Twisp, that there are mountains 
-dividing Upper Beaver Creek and Twisp, and that Liberty Bell High School is the farthest
-sensor but that the terrain between this and Twisp is flat.
 
- 
+Linear fits comparing sensor data with nearby monitor data will should at least 
+have an r-squared value > 0.9 to be considered reasonable.
+
+We will make the executive decision that all of these sensors are performing
+acceptably and will use the more lenient AB_00 QC algorithm to create 
+_airsensor_ objects that retain more data.
+
 ```{r sensors-objects-AB00-and-map, eval = TRUE, warning = FALSE, message = FALSE}
 #--- create sensor objects using AB_00 ----
 BH_00 <- 
@@ -337,58 +336,54 @@ BC_00 <-
     FUN = PurpleAirQC_hourly_AB_00
   )
 
-LB_00 <- 
-  Liberty_Bell %>%
+LBHS_00 <- 
+  Liberty_Bell_HS %>%
   pat_createAirSensor(
     FUN = PurpleAirQC_hourly_AB_00
   )
 
-BeC_00 <- 
-  Beaver_Creek %>%
+UBC_00 <- 
+  Upper_Beaver_Creek %>%
   pat_createAirSensor(
     FUN = PurpleAirQC_hourly_AB_00
   )
 
 # combine sensors and monitor 
-mapList <- list(BH_00, BC_00, LB_00, BeC_00, Twisp)
-mapMonitors <- monitor_combine(mapList)
-
-# create a leaflet map 
-monitor_leaflet(mapMonitors)
+Twisp_00 <- monitor_combine(list(BH_00, BC_00, LBHS_00, UBC_00, Twisp_monitor))
 ```
 
+However, when it comes to external fits, it is important to consider geographic 
+features such as distance and topography. Indeed, topography affects air movement 
+and therefore PM25 concentrations, having an effect on the external fit results.
+A shorter distance _should_ result in a better fit as long as both sensor and
+monitor are at a similar elevation. 
+
+```{r map-00, eval = TRUE, warning = FALSE, message = FALSE}
+# Create a leaflet map 
+monitor_leaflet(Twisp_00)
+```
+
+Looking at the map we notice that Balky Hill is the closest sensor to 
+monitor in Twisp. We can also see that there are some significant hills
+separating Upper Beaver Creek from Twisp. Finally, Liberty Bell High School is 
+the farthest sensor but the terrain between this and Twisp is flat.
+ 
 Now that we have created the new sensor objects by applying the QC algorithm AB_00, 
-we can replot the data. 
+we can replot the daily barplots. 
 
-```{r dailyBarplot-sensors-AB00, eval = TRUE, warning = FALSE, message = FALSE}
-# combine all sensors objects into a list of sensors 
-sensorList <- list(BH_00, BC_00, LB_00, BeC_00)
-sensors_subset_00 <- monitor_combine(sensorList)
+```{r dailyBarplot-sensors-AB00, eval = TRUE, warning = FALSE, message = FALSE, fig.height = 10}
 
-# create short name for the plot titles 
-sensors_subset_00$meta$shortName <-
-  sensors_subset_00$meta$siteName %>%
+# Help ggplot out by assigning short labels to be used as the facet label
+Twisp_00$meta$shortName <-
+  Twisp_00$meta$siteName %>%
   stringr::str_replace("MV Clean Air Ambassador @", "") %>%
   stringr::str_replace("MV Clean Air Ambassador-", "") %>%
   stringr::str_trim()
 
+ggplot_pm25Timeseries(Twisp_00) +
+  stat_dailyAQCategory(timezone = "America/Los_Angeles") + 
+  facet_grid(rows = vars(shortName))
 
-# create dailyBarplot for the 4 sensors 
-layout(matrix(seq(4)))
-opar <- par(mar = c(1,1,1,1))
-on.exit(par(opar))
-for (ID in sensorIDs) {
-  siteName <- sensors_subset_00$meta[ID, 'shortName']
-  monitor_dailyBarplot(
-    sensors_subset_00,
-    monitorID = ID,
-    main = siteName,
-    axes = TRUE
-  )
-  addAQILegend(cex = 0.7)
-}
-par(opar)
-layout(1)
 ```
 These plots confirm that, initially, the sensors' data was invalidated by the 
 QC algorithm AB_01. By applying the QC algorithm AB_00, it was possible to 
@@ -396,13 +391,21 @@ obtain a more inclusive graphic, which better represent the data collected by th
 sensors.  
 
 ## Conclusion
-PA sensors can be valuable tools to evaluate PM2.5 concentrations in the air but necessitate a close assessment to understand if they work properly. As we saw, the Airsensor package offers functions 
-to monitor the ongoing and past state of heath of sensors, including variables such as temperature and humidity, and functions to evaluate, manipulate, visualize and map the data. 
-In this tutorial, we wanted to show you how to quickly investigate the 
-performance of multiple sensors, how to trouble shoot and fix potential issues, and how to interpret and visualize the data in effective ways. 
-At the end of the day, it's your call to decide which algorithm to apply and which sensors to include in your study based on the overall sensor performance, 
-including potential days with missing data, internal and external fits, and the 
-geographic features surrounding the sensors.
+
+PA sensors can be valuable tools to evaluate PM2.5 concentrations in the air but 
+require a careful assessment to understand if they work properly. As we saw, the 
+**AirSensor** package offers functions to monitor the ongoing and past state of 
+heath of sensors, including variables such as temperature and humidity. The 
+package also includes functions to evaluate, manipulate, visualize and map the data. 
+
+In this tutorial, we demonstrated how to quickly investigate the 
+performance of multiple sensors, how to trouble shoot and fix potential issues, 
+and how to interpret and visualize the data in effective ways. 
+
+At the end of the day, it's up to the individual to decide which QC algorithm to 
+apply and which sensors to include in your study based on the overall sensor 
+performance, a review of days with missing data, internal and external fits, and 
+consideration of the eographic features surrounding the sensors.
 
 _Best of luck assessing air quality in your community!_
  
