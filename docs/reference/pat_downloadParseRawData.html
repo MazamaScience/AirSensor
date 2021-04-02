@@ -94,7 +94,7 @@ See the references." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9</span>
       </span>
     </div>
 
@@ -130,6 +130,27 @@ See the references." />
     </li>
     <li>
       <a href="../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
+    </li>
+    <li>
+      <a href="../articles/articles/MVCAA_Tutorial_1.html">MVCAA Tutorial 1: Creating PAT Data</a>
+    </li>
+    <li>
+      <a href="../articles/articles/MVCAA_Tutorial_1_Astrid_edits.html">MVCAA Tutorial 1: Creating PAT Data</a>
+    </li>
+    <li>
+      <a href="../articles/articles/MVCAA_Tutorial_2.html">MVCAA Tutorial 2: Exploring PAT Data</a>
+    </li>
+    <li>
+      <a href="../articles/articles/MVCAA_Tutorial_3.html">MVCAA Tutorial 3: Creating Airsensor Data</a>
+    </li>
+    <li>
+      <a href="../articles/articles/MVCAA_Tutorial_4.html">MVCAA Tutorial 4: Exploring Airsensor Data</a>
+    </li>
+    <li>
+      <a href="../articles/articles/MVCAA_Tutorial_5.html">MVCAA Tutorial 5: Building a Local Archive</a>
+    </li>
+    <li>
+      <a href="../articles/articles/MVCAA_Tutorial_6.html">MVCAA Tutorial 6: Methow Vallely Smoke</a>
     </li>
     <li>
       <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
@@ -288,24 +309,24 @@ specified sensor and time period.</p>
 #&gt; </span><span style='color: #555555;'># A tibble: 6 x 10</span><span>
 #&gt;   created_at          entry_id pm1.0_cf1 pm2.5_cf1 pm10.0_cf1 uptime  rssi
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> 2021-03-04 </span><span style='color: #555555;'>08:01:38</span><span> 332430        19.4      33.5       40.5  </span><span style='text-decoration: underline;'>35</span><span>213   -</span><span style='color: #BB0000;'>76</span><span>
-#&gt; </span><span style='color: #555555;'>2</span><span> 2021-03-04 </span><span style='color: #555555;'>08:03:38</span><span> 332431        19.5      33         38.3  </span><span style='text-decoration: underline;'>35</span><span>215   -</span><span style='color: #BB0000;'>76</span><span>
-#&gt; </span><span style='color: #555555;'>3</span><span> 2021-03-04 </span><span style='color: #555555;'>08:05:38</span><span> 332432        18.3      31.4       35.3  </span><span style='text-decoration: underline;'>35</span><span>217   -</span><span style='color: #BB0000;'>76</span><span>
-#&gt; </span><span style='color: #555555;'>4</span><span> 2021-03-04 </span><span style='color: #555555;'>08:07:38</span><span> 332433        19.0      31.4       36.0  </span><span style='text-decoration: underline;'>35</span><span>219   -</span><span style='color: #BB0000;'>74</span><span>
-#&gt; </span><span style='color: #555555;'>5</span><span> 2021-03-04 </span><span style='color: #555555;'>08:09:38</span><span> 332434        19.6      31.2       34.4  </span><span style='text-decoration: underline;'>35</span><span>221   -</span><span style='color: #BB0000;'>74</span><span>
-#&gt; </span><span style='color: #555555;'>6</span><span> 2021-03-04 </span><span style='color: #555555;'>08:11:38</span><span> 332435        18.5      29.0       31.2  </span><span style='text-decoration: underline;'>35</span><span>223   -</span><span style='color: #BB0000;'>74</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> 2021-03-25 </span><span style='color: #555555;'>07:00:57</span><span> 347492        0        0.43        0.59   </span><span style='text-decoration: underline;'>9</span><span>974   -</span><span style='color: #BB0000;'>72</span><span>
+#&gt; </span><span style='color: #555555;'>2</span><span> 2021-03-25 </span><span style='color: #555555;'>07:02:57</span><span> 347493        0.28     0.79        0.91   </span><span style='text-decoration: underline;'>9</span><span>976   -</span><span style='color: #BB0000;'>74</span><span>
+#&gt; </span><span style='color: #555555;'>3</span><span> 2021-03-25 </span><span style='color: #555555;'>07:04:58</span><span> 347494        0.18     0.8         1.59   </span><span style='text-decoration: underline;'>9</span><span>978   -</span><span style='color: #BB0000;'>74</span><span>
+#&gt; </span><span style='color: #555555;'>4</span><span> 2021-03-25 </span><span style='color: #555555;'>07:06:58</span><span> 347495        0.34     1.25        1.93   </span><span style='text-decoration: underline;'>9</span><span>980   -</span><span style='color: #BB0000;'>72</span><span>
+#&gt; </span><span style='color: #555555;'>5</span><span> 2021-03-25 </span><span style='color: #555555;'>07:08:58</span><span> 347496        0        0.580       2      </span><span style='text-decoration: underline;'>9</span><span>982   -</span><span style='color: #BB0000;'>74</span><span>
+#&gt; </span><span style='color: #555555;'>6</span><span> 2021-03-25 </span><span style='color: #555555;'>07:10:58</span><span> 347497        0.07     0.95        1.4    </span><span style='text-decoration: underline;'>9</span><span>984   -</span><span style='color: #BB0000;'>74</span><span>
 #&gt; </span><span style='color: #555555;'># … with 3 more variables: temperature </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, humidity </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, pm2.5_atm </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; 
 #&gt; $A_SECONDARY
 #&gt; </span><span style='color: #555555;'># A tibble: 6 x 10</span><span>
 #&gt;   created_at          entry_id counts_0.3 counts_0.5 counts_1.0 counts_2.5
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> 2021-03-04 </span><span style='color: #555555;'>08:01:39</span><span> 332445        </span><span style='text-decoration: underline;'>3</span><span>296.       931.       189.       23.5
-#&gt; </span><span style='color: #555555;'>2</span><span> 2021-03-04 </span><span style='color: #555555;'>08:03:39</span><span> 332446        </span><span style='text-decoration: underline;'>3</span><span>264.       919.       174.       20.9
-#&gt; </span><span style='color: #555555;'>3</span><span> 2021-03-04 </span><span style='color: #555555;'>08:05:39</span><span> 332447        </span><span style='text-decoration: underline;'>3</span><span>149.       872.       163.       21.8
-#&gt; </span><span style='color: #555555;'>4</span><span> 2021-03-04 </span><span style='color: #555555;'>08:07:39</span><span> 332448        </span><span style='text-decoration: underline;'>3</span><span>076.       870        171.       20.3
-#&gt; </span><span style='color: #555555;'>5</span><span> 2021-03-04 </span><span style='color: #555555;'>08:09:39</span><span> 332449        </span><span style='text-decoration: underline;'>3</span><span>266.       898.       152.       17.6
-#&gt; </span><span style='color: #555555;'>6</span><span> 2021-03-04 </span><span style='color: #555555;'>08:11:39</span><span> 332450        </span><span style='text-decoration: underline;'>3</span><span>166.       880.       137.       12.7
+#&gt; </span><span style='color: #555555;'>1</span><span> 2021-03-25 </span><span style='color: #555555;'>07:00:59</span><span> 347509         190.       50.9       7.34       0.93
+#&gt; </span><span style='color: #555555;'>2</span><span> 2021-03-25 </span><span style='color: #555555;'>07:02:59</span><span> 347510         228.       62.6       8.26       0.53
+#&gt; </span><span style='color: #555555;'>3</span><span> 2021-03-25 </span><span style='color: #555555;'>07:04:59</span><span> 347511         259.       66.2       9.34       1.95
+#&gt; </span><span style='color: #555555;'>4</span><span> 2021-03-25 </span><span style='color: #555555;'>07:06:59</span><span> 347512         247.       66.0      12.2        2.92
+#&gt; </span><span style='color: #555555;'>5</span><span> 2021-03-25 </span><span style='color: #555555;'>07:08:59</span><span> 347513         184.       50.1      11.9        3.65
+#&gt; </span><span style='color: #555555;'>6</span><span> 2021-03-25 </span><span style='color: #555555;'>07:10:59</span><span> 347514         222.       58.5      11.4        2.23
 #&gt; </span><span style='color: #555555;'># … with 4 more variables: counts_5.0 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, counts_10.0 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
 #&gt; </span><span style='color: #555555;'>#   pm1.0_atm </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, pm10.0_atm </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; 
@@ -313,24 +334,24 @@ specified sensor and time period.</p>
 #&gt; </span><span style='color: #555555;'># A tibble: 6 x 10</span><span>
 #&gt;   created_at          entry_id pm1.0_cf1 pm2.5_cf1 pm10.0_cf1 memory  adc0
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> 2021-03-04 </span><span style='color: #555555;'>08:01:41</span><span> 332474        20.7      38.1       44.9  </span><span style='text-decoration: underline;'>18</span><span>408     0
-#&gt; </span><span style='color: #555555;'>2</span><span> 2021-03-04 </span><span style='color: #555555;'>08:03:41</span><span> 332475        21.3      35.6       43.7  </span><span style='text-decoration: underline;'>18</span><span>240     0
-#&gt; </span><span style='color: #555555;'>3</span><span> 2021-03-04 </span><span style='color: #555555;'>08:05:41</span><span> 332476        19.5      32.9       38.5  </span><span style='text-decoration: underline;'>18</span><span>240     0
-#&gt; </span><span style='color: #555555;'>4</span><span> 2021-03-04 </span><span style='color: #555555;'>08:07:41</span><span> 332477        19.5      33.6       38.8  </span><span style='text-decoration: underline;'>18</span><span>240     0
-#&gt; </span><span style='color: #555555;'>5</span><span> 2021-03-04 </span><span style='color: #555555;'>08:09:41</span><span> 332478        21.5      35.2       40.4  </span><span style='text-decoration: underline;'>18</span><span>408     0
-#&gt; </span><span style='color: #555555;'>6</span><span> 2021-03-04 </span><span style='color: #555555;'>08:11:41</span><span> 332479        20.0      33.0       36.2  </span><span style='text-decoration: underline;'>18</span><span>240     0
+#&gt; </span><span style='color: #555555;'>1</span><span> 2021-03-25 </span><span style='color: #555555;'>07:01:00</span><span> 347545       0.3        1.19       2.88  </span><span style='text-decoration: underline;'>18</span><span>240     0
+#&gt; </span><span style='color: #555555;'>2</span><span> 2021-03-25 </span><span style='color: #555555;'>07:03:00</span><span> 347546       0.36       1.28       2.05  </span><span style='text-decoration: underline;'>18</span><span>240     0
+#&gt; </span><span style='color: #555555;'>3</span><span> 2021-03-25 </span><span style='color: #555555;'>07:05:00</span><span> 347547       0.65       1.44       2.12  </span><span style='text-decoration: underline;'>18</span><span>240     0
+#&gt; </span><span style='color: #555555;'>4</span><span> 2021-03-25 </span><span style='color: #555555;'>07:07:01</span><span> 347548       0.580      1.14       1.95  </span><span style='text-decoration: underline;'>18</span><span>408     0
+#&gt; </span><span style='color: #555555;'>5</span><span> 2021-03-25 </span><span style='color: #555555;'>07:09:01</span><span> 347549       0.04       1.11       2.43  </span><span style='text-decoration: underline;'>18</span><span>240     0
+#&gt; </span><span style='color: #555555;'>6</span><span> 2021-03-25 </span><span style='color: #555555;'>07:11:01</span><span> 347550       0.19       1.21       1.97  </span><span style='text-decoration: underline;'>18</span><span>240     0
 #&gt; </span><span style='color: #555555;'># … with 3 more variables: pressure </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, bsec_iaq </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, pm2.5_atm </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; 
 #&gt; $B_SECONDARY
 #&gt; </span><span style='color: #555555;'># A tibble: 6 x 10</span><span>
 #&gt;   created_at          entry_id counts_0.3 counts_0.5 counts_1.0 counts_2.5
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> 2021-03-04 </span><span style='color: #555555;'>08:01:42</span><span> 332429        </span><span style='text-decoration: underline;'>3</span><span>301.       963.       187.       38.1
-#&gt; </span><span style='color: #555555;'>2</span><span> 2021-03-04 </span><span style='color: #555555;'>08:03:42</span><span> 332430        </span><span style='text-decoration: underline;'>3</span><span>398.       981.       171.       31.3
-#&gt; </span><span style='color: #555555;'>3</span><span> 2021-03-04 </span><span style='color: #555555;'>08:05:42</span><span> 332431        </span><span style='text-decoration: underline;'>3</span><span>092.       896.       160.       28.5
-#&gt; </span><span style='color: #555555;'>4</span><span> 2021-03-04 </span><span style='color: #555555;'>08:07:42</span><span> 332432        </span><span style='text-decoration: underline;'>3</span><span>118.       912.       165.       27.2
-#&gt; </span><span style='color: #555555;'>5</span><span> 2021-03-04 </span><span style='color: #555555;'>08:09:42</span><span> 332433        </span><span style='text-decoration: underline;'>3</span><span>373.       979.       165.       27.1
-#&gt; </span><span style='color: #555555;'>6</span><span> 2021-03-04 </span><span style='color: #555555;'>08:11:42</span><span> 332434        </span><span style='text-decoration: underline;'>3</span><span>159.       921.       147.       24.0
+#&gt; </span><span style='color: #555555;'>1</span><span> 2021-03-25 </span><span style='color: #555555;'>07:01:01</span><span> 347501         247.       74.0       13.8       3.77
+#&gt; </span><span style='color: #555555;'>2</span><span> 2021-03-25 </span><span style='color: #555555;'>07:03:01</span><span> 347502         277.       79.1       14.0       2.16
+#&gt; </span><span style='color: #555555;'>3</span><span> 2021-03-25 </span><span style='color: #555555;'>07:05:02</span><span> 347503         257.       77.0       13.7       2.56
+#&gt; </span><span style='color: #555555;'>4</span><span> 2021-03-25 </span><span style='color: #555555;'>07:07:02</span><span> 347504         276.       79.4       12.0       1.53
+#&gt; </span><span style='color: #555555;'>5</span><span> 2021-03-25 </span><span style='color: #555555;'>07:09:02</span><span> 347505         194.       57.9       15.7       3.32
+#&gt; </span><span style='color: #555555;'>6</span><span> 2021-03-25 </span><span style='color: #555555;'>07:11:02</span><span> 347506         209.       60.2       11.9       2.67
 #&gt; </span><span style='color: #555555;'># … with 4 more variables: counts_5.0 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, counts_10.0 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
 #&gt; </span><span style='color: #555555;'>#   pm1.0_atm </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, pm10.0_atm </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </div><div class='input'><span class='co'># }</span>

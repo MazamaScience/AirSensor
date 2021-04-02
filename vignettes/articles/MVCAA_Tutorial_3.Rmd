@@ -1,0 +1,249 @@
+---
+title: "MVCAA Tutorial 3: Creating Airsensor Data"
+author: "Mazama Science"
+date: "2021-03-16"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{MVCAA Tutorial 3: Creating Airsensor Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
+```
+
+## Introduction
+
+This tutorial demonstrates how to convert previously generated 'pat' 
+timeseries data into hourly-aggregated 'airsensor' objects. 
+In order to run the code in this tutorial you must have 
+followed the instructions in Tutorial 1 and created a directory with 'pas' 
+and 'pat' data files for the Methow Valley. Target
+audiences include grad students, researchers and any member of the public
+concerned about air quality and comfortable working with R and RStudio.
+
+Tutorials in this series include:
+
+* [MVCAA Tutorial 1: Creating PAT Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_1.html)
+* [MVCAA Tutorial 2: Exploring PAT Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_2.html)
+* [MVCAA Tutorial 3: Creating Airsensor Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_3.html)
+* [MVCAA Tutorial 4: Exploring Airsensor Data](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_4.html)
+* [MVCAA Tutorial 5: Building a Local Archive](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_5.html)
+* [MVCAA Tutorial 6: Methow Vallely Smoke](https://mazamascience.github.io/AirSensor/articles/articles/MVCAA_Tutorial_6.html)
+
+## Goal
+
+The goal in this tutorial is to load previously generated 'pat' data and then
+create and save a multi-sensor 'airsensor' object. Aggregation of raw data to 
+quality controlled, hourly averages allows sensor
+data to be compared with meteorological and air quality data from other sources.
+Hourly aggregation is the _de facto_ standard for most air quality analysis.
+
+## Sensor Objects
+
+'airsensor' objects (sometimes also called 'sensor' objects) contain timeseries data
+derived from 'pat' objects. Where 'pat' objects contain "raw" data, 'airsensor'
+objects contain highly processed data:
+
+### 'pat' object
+
+* list containing `meta` and `data` dataframes
+* `meta` contains spatial metadata for a single sensor
+* `data` records have minute resolution raw data
+* `data` contains multiple parameters from a single sensor
+
+### 'airsensor' object
+
+* list containing `meta` and `data` dataframes
+* `meta` contains spatial metadata for one _or more_ sensors
+* `data` records have hourly resolution aggregated and QC'ed data
+* `data` contains a single parameter from one _or more_ sensors
+
+An 'airsensor' object is equivalent to and compatible with the 
+['ws_monitor' object](http://mazamascience.github.io/PWFSLSmoke/articles/Data_Model.html)
+defined in the 
+[PWFSLSmoke](http://mazamascience.github.io/PWFSLSmoke/index.html) 
+R package. This means that any functions from **PWFSLSmoke** or from 
+[AirMonitorPlots](https://mazamascience.github.io/AirMonitorPlots/index.html)
+designed to work with 'ws_monitor' objects can also be used with 'airsensor' objects.
+
+This opens up a wide suite of of functionality that can be used to analyze and plot
+sensor data after it has been converted into an 'airsensor' object.
+
+## R Script
+
+The following R script will take a few moments to run and will create an
+'airsensor' data file on your computer.
+
+After running the script, a final 
+section will demonstrate how to load and work with this local data file.
+
+This R script can be used as a starting point for those wishing to create 
+small collections of data for other communities and other dates.
+
+```{r create_archive, eval = FALSE, warning = FALSE, message = FALSE}
+# Methow Valley local data archive
+
+# ----- Setup ------------------------------------------------------------------
+
+library(AirSensor)
+
+# Use the default archiveDir unless it is already defined
+if ( !exists("archiveDir") ) {
+  archiveDir <- file.path("~/Data/MVCAA")
+}
+
+# Load previously generated 'pas' and 'pat' data
+mvcaa <- get(load(file.path(archiveDir, "mvcaa.rda")))
+patList <- get(load(file.path(archiveDir, "patList.rda")))
+
+# ----- Create 'airsensor' data ------------------------------------------------
+
+# Create an empty List to store things
+airsensorList <- list()
+
+# Initialize counters
+idCount <- length(patList)
+count <- 0
+successCount <- 0
+
+# Loop over ids and create 'airsensor' objects (might take a while).
+for ( id in names(patList) ) {
+
+  count <- count + 1
+  print(sprintf("Working on %s (%d/%d) ...", id, count, idCount))
+  
+  # Use a try-block in case you get "no data" errors
+  result <- try({
+    
+    # It's nice to copy-paste the full function signature so you can see all possible arguments
+    airsensorList[[id]] <- pat_createAirSensor(
+      pat = patList[[id]],
+      parameter <- "pm25",
+      FUN = PurpleAirQC_hourly_AB_01
+    )
+    successCount <- successCount + 1
+    
+  }, silent = FALSE)
+  
+  if ( "try-error" %in% class(result) ) {
+    print(geterrmessage())
+  }
+  
+}
+
+# How many did we get?
+print(sprintf("Successfully created %d/%d pat objects.", successCount, idCount))
+
+# Save it in our archive directory
+save(airsensorList, file = file.path(archiveDir, "airsensorList.rda"))
+
+```
+
+
+### Script Comments
+
+The above script is straightforward and easily reused but we should take a 
+moment to describe the arguments to `pat_createAirSensor()`:
+
+* `pat` -- This is just the 'pat' object we are using as input data.
+* `parameter` -- The 'airsensor' object will contain hourly averaged data for
+only a single parameter. This will almost always be `pm25` but it is also possible
+to create 'airsensor' objects for `temperature` or `humidity` or any other
+parameter available in `pat$data`.
+* `FUN` -- This is the quality control (QC) function that will be used when aggregating
+`pat` data to an hourly axis. Several functions are available in the **AirSensor**
+package and it is also possible to create 
+[custom QC algorithms](https://mazamascience.github.io/AirSensor/articles/articles/Custom_QC_Algorithms.html).
+
+
+## Loading Local Data
+
+Now that we have an `airsensorList` object with quality controlled data we can
+load it from our archive and briefly explore it.
+
+
+```{r load_local_data, eval = TRUE, warning = FALSE, message = FALSE}
+# AirSensor package
+library(AirSensor)
+
+# Use the default archiveDir unless it is already defined
+if ( !exists("archiveDir") ) {
+  archiveDir <- file.path("~/Data/MVCAA")
+}
+
+# Examine archive directory
+list.files(archiveDir) # you should see: "airsensorList.rda" "mvcaa.rda" "patList.rda" 
+
+# Load files
+mvcaa <- get(load(file.path(archiveDir, "mvcaa.rda")))
+patList <- get(load(file.path(archiveDir, "patList.rda")))
+airsensorList <- get(load(file.path(archiveDir,"airsensorList.rda")))
+
+# Examine a 'pat' object
+pat1 <- patList[[1]]
+class(pat1)
+dim(pat1$data)
+names(pat1$data)       # single sensor, multiple parameters
+names(pat1$meta)
+
+# Examine an 'airsensor' object
+airsensor1 <- airsensorList[[1]]
+class(airsensor1)
+dim(airsensor1$data)
+names(airsensor1$data) # single parameter, one or more sensors
+names(airsensor1$meta)
+```
+
+## Fancy Plot
+
+The following plot shows what is possible for someone highly
+experienced with R and the Mazama Science packages.
+
+```{r fancy plot, eval = TRUE, warning = FALSE, message = FALSE, fig.height = 12}
+# Combine single-sensor 'airsensor' objects into a multi-sensor 'monitor' object
+my_monitors <- PWFSLSmoke::monitor_combine(airsensorList)
+names(my_monitors$data) # datetime + deviceDeploymentIDs
+
+# Use MazamaCoreUtils::dateRange() to ensure we get POSIXct times in the local timezone
+dateRange <- MazamaCoreUtils::dateRange(
+  startdate = 20200903, 
+  enddate = 20200921, 
+  timezone = "America/Los_Angeles"
+)
+
+# Load AirMonitorPlots
+library(AirMonitorPlots)
+
+# Help ggplot out by assigning short labels to be used as the facet label
+my_monitors$meta$shortName <- 
+  my_monitors$meta$siteName %>%
+  stringr::str_replace("MV Clean Air Ambassador @", "") %>%
+  stringr::str_replace("MV Clean Air Ambassador-", "") %>%
+  stringr::str_trim()
+
+# Fancy plot with AQI bars
+gg <- 
+  ggplot_pm25Timeseries(
+    my_monitors,
+    dateRange[1],
+    dateRange[2],
+    timezone = "America/Los_Angeles"
+  ) +
+  ggtitle("Methow Valley PM2.5 values -- Sep 03 - 21, 2020") +
+  stat_AQCategory(color = NA) + 
+  facet_grid(rows = vars(shortName)) 
+
+print(gg)
+```
+
+_NOTE:_ It appears that our default QC algorithm has tossed out many of the 
+values during the smokiest hours. It might be time to go back and try out
+some of the other QC algorithms or create a new one. This demonstrates why it is 
+so important to work in a well documented, reproducible manner and how data 
+visualization can alert you to pitfalls in your analysis.
+
+----
+
+_Best of luck assessing air quality in your community!_
