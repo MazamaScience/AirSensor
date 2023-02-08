@@ -6,7 +6,7 @@
 \usage{
 pas_leaflet(
   pas = NULL,
-  parameter = "pm2.5_60minute",
+  parameter = "pm25",
   paletteName = NULL,
   radius = 10,
   opacity = 0.8,
@@ -16,7 +16,7 @@ pas_leaflet(
 \arguments{
 \item{pas}{PurpleAir Synoptic \emph{pas} object.}
 
-\item{parameter}{Value to plot, e.g. \code{pm25_1hr}.}
+\item{parameter}{Value to plot, e.g. \code{pm2.5_60minute}.}
 
 \item{paletteName}{\pkg{RColorBrewer} palette name to use when \code{parameter}
 is something other than:
@@ -40,12 +40,12 @@ Rstudio's 'Viewer' tab.
 This function creates interactive maps that will be displayed in
 RStudio's 'Viewer' tab.
 
-Typical usage would be to use the \code{parameter} argument to display pm25
+Typical usage would be to use the \code{parameter} argument to display PM2.5
 values from one of:
 \itemize{
 \item{"pm2.5_10minute"}
 \item{"pm2.5_30minute"}
-\item{"pm2.5_60minute"}
+\item{"pm2.5_60minute" (aka "pm25")} 
 \item{"pm2.5_6hour"}
 \item{"pm2.5_24hour"}
 \item{"pm2.5_1week"}
@@ -74,7 +74,7 @@ paeltte, \emph{e.g.} \code{"BuPu"} or \code{"Greens"}.
 library(AirSensor)
 
 if ( interactive() ) {
-  pas_leaflet(example_pas, parameter = "pm2.5_60minute")
+  pas_leaflet(example_pas, parameter = "pm25")
 
   pas_leaflet(example_pas, parameter = "temperature")
 

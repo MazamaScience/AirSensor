@@ -177,6 +177,7 @@ pas_enhanceRawData <- function(
       pm2.5_10minute = as.numeric(.data$pm2.5_10minute),
       pm2.5_30minute = as.numeric(.data$pm2.5_30minute),
       pm2.5_60minute = as.numeric(.data$pm2.5_60minute),
+      pm25 = as.numeric(.data$pm2.5_60minute), # For backwards compatibility
       pm2.5_6hour = as.numeric(.data$pm2.5_6hour),
       pm2.5_24hour = as.numeric(.data$pm2.5_24hour),
       pm2.5_1week = as.numeric(.data$pm2.5_1week)

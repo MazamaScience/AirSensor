@@ -3,7 +3,7 @@
 #' @title Leaflet interactive map of PurpleAir sensors
 #'
 #' @param pas PurpleAir Synoptic \emph{pas} object.
-#' @param parameter Value to plot, e.g. \code{pm25_1hr}.
+#' @param parameter Value to plot, e.g. \code{pm2.5_60minute}.
 #' @param paletteName \pkg{RColorBrewer} palette name to use when \code{parameter}
 #' is something other than:
 #' \itemize{
@@ -18,12 +18,12 @@
 #' @description This function creates interactive maps that will be displayed in
 #' RStudio's 'Viewer' tab.
 #'
-#' Typical usage would be to use the \code{parameter} argument to display pm25
+#' Typical usage would be to use the \code{parameter} argument to display PM2.5
 #' values from one of:
 #' \itemize{
 #' \item{"pm2.5_10minute"}
 #' \item{"pm2.5_30minute"}
-#' \item{"pm2.5_60minute"}
+#' \item{"pm2.5_60minute" (aka "pm25")} 
 #' \item{"pm2.5_6hour"}
 #' \item{"pm2.5_24hour"}
 #' \item{"pm2.5_1week"}
@@ -53,7 +53,7 @@
 #' library(AirSensor)
 #'
 #' if ( interactive() ) {
-#'   pas_leaflet(example_pas, parameter = "pm2.5_60minute")
+#'   pas_leaflet(example_pas, parameter = "pm25")
 #'
 #'   pas_leaflet(example_pas, parameter = "temperature")
 #'
@@ -62,7 +62,7 @@
 
 pas_leaflet <- function(
   pas = NULL,
-  parameter = "pm2.5_60minute",
+  parameter = "pm25",
   paletteName = NULL,
   radius = 10,
   opacity = 0.8,
@@ -73,7 +73,7 @@ pas_leaflet <- function(
 
   MazamaCoreUtils::stopIfNull(pas)
 
-  if ( !"purple_air_synoptic" %in% class(pas) )
+  if ( !"pa_synoptic" %in% class(pas) )
     stop("parameter 'pas' is not a valid 'purple_air_synoptic' object.")
 
   if ( nrow(pas) == 0 )
@@ -90,9 +90,10 @@ pas_leaflet <- function(
   # Ignore warnings from RColorBrewer as leaflet::colorBin() does the right thing
   suppressWarnings({
 
-    if ( stringr::str_detect(tolower(parameter), "^pm2\\.5_") ) { # AQI
+    if ( stringr::str_detect(tolower(parameter), "^pm2\\.5") ||
+         stringr::str_detect(tolower(parameter), "^pm25"))  { # AQI
 
-      colorInfo <- pas_palette(pas, parameter)
+      colorInfo <- pas_palette(pas, "aqi", parameter)
 
       cols <- colorInfo$colors
       labels <- colorInfo$key[,1]
@@ -153,18 +154,33 @@ pas_leaflet <- function(
 
   # * Create popupText -----
 
-  pas$popupText <- paste0(
-    "<b>", pas$locationName, "</b><br/>",
-    pas$deviceDeploymentID, "<br/>",
-    "location_type = ", pas$location_type, " <br/>",
-    "temperature = ", round(pas$temperature, 0), " \U2109<br/>",
-    "humidity = ", round(pas$humidity, 0), "%<br/>",
-    "pm2.5_60minute = ", round(pas$pm2.5_60minute, 1), " \U00B5g/m3<br/>",
-    "pm2.5_24hour = ", round(pas$pm2.5_24hour, 1), " \U00B5g/m3<br/>",
-    "<br/>",
-    "<b>", parameter, " = ", value, " ", unit, "</b>"
-  )
-
+  if ( "pm2.5_60_minute" %in% names(pas) ) {
+    # New pas created with version >= 1.1
+    pas$popupText <- paste0(
+      "<b>", pas$locationName, "</b><br/>",
+      pas$deviceDeploymentID, "<br/>",
+      "location_type = ", pas$location_type, " <br/>",
+      "temperature = ", round(pas$temperature, 0), " \U2109<br/>",
+      "humidity = ", round(pas$humidity, 0), "%<br/>",
+      "pm2.5_60minute = ", round(pas$pm2.5_60minute, 1), " \U00B5g/m3<br/>",
+      "pm2.5_24hour = ", round(pas$pm2.5_24hour, 1), " \U00B5g/m3<br/>",
+      "<br/>",
+      "<b>", parameter, " = ", value, " ", unit, "</b>"
+    )
+  } else {
+    # Old pas created with version < 1.1
+    pas$popupText <- paste0(
+      "<b>", pas$label, "</b><br/>",
+      "<b>deviceDeploymentID = ", pas$deviceDeploymentID, "</b><br/>",
+      "<b>", parameter, " = ", value, " ", unit, "</b><br/>",
+      "temperature = ", round(pas$temperature, 0), " F<br/>",
+      "humidity = ", round(pas$humidity, 0), "%<br/>",
+      "pm25_1hr = ", round(pas$pm25_1hr, 1), " \U00B5g/m3<br/>",
+      "pm25_1day = ", round(pas$pm25_1day, 1), " \U00B5g/m3<br/>",
+      "location_type = ", pas$DEVICE_LOCATIONTYPE, "<br/>"
+    )
+  }
+  
   # * Extract view information -----
 
   lonRange <- range(pas$longitude, na.rm = TRUE)
@@ -206,24 +222,46 @@ pas_leaflet <- function(
 
   # ----- Create leaflet map ---------------------------------------------------
 
-  m <-
-    leaflet::leaflet(dplyr::select(pas, c("longitude", "latitude"))) %>%
-    leaflet::setView(lng = mean(lonRange), lat = mean(latRange), zoom = zoom) %>%
-    leaflet::addProviderTiles(providerTiles) %>%
-    leaflet::addCircleMarkers(
-      radius = radius,
-      fillColor = cols,
-      fillOpacity = opacity,
-      stroke = FALSE,
-      popup = pas$popupText,
-      layerId = pas$locationName
-    ) %>%
-    leaflet::addLegend(
-      position = 'bottomright',
-      colors = rev(colors), # show low levels at the bottom
-      labels = rev(labels),  # show low levels at the bottom
-      opacity = 1,
-      title = legendTitle)
+  if ( "pm2.5_60_minute" %in% names(pas) ) {
+    # New pas created with version >= 1.1
+    m <-
+      leaflet::leaflet(dplyr::select(pas, c("longitude", "latitude"))) %>%
+      leaflet::setView(lng = mean(lonRange), lat = mean(latRange), zoom = zoom) %>%
+      leaflet::addProviderTiles(providerTiles) %>%
+      leaflet::addCircleMarkers(
+        radius = radius,
+        fillColor = cols,
+        fillOpacity = opacity,
+        stroke = FALSE,
+        popup = pas$popupText,
+        layerId = pas$locationName
+      ) %>%
+      leaflet::addLegend(
+        position = 'bottomright',
+        colors = rev(colors), # show low levels at the bottom
+        labels = rev(labels),  # show low levels at the bottom
+        opacity = 1,
+        title = legendTitle)
+  } else {
+    m <-
+      leaflet::leaflet(dplyr::select(pas, c("longitude", "latitude"))) %>%
+      leaflet::setView(lng = mean(lonRange), lat = mean(latRange), zoom = zoom) %>%
+      leaflet::addProviderTiles(providerTiles) %>%
+      leaflet::addCircleMarkers(
+        radius = radius,
+        fillColor = cols,
+        fillOpacity = opacity,
+        stroke = FALSE,
+        popup = pas$popupText,
+        layerId = pas$label
+      ) %>%
+      leaflet::addLegend(
+        position = 'bottomright',
+        colors = rev(colors), # show low levels at the bottom
+        labels = rev(labels),  # show low levels at the bottom
+        opacity = 1,
+        title = legendTitle)
+  }
 
   # ----- Return ---------------------------------------------------------------
 
