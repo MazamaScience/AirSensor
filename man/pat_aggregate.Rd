@@ -6,7 +6,9 @@
 \usage{
 pat_aggregate(
   pat,
-  FUN = function(x) {     mean(x, na.rm = TRUE) },
+  FUN = function(x) {
+     mean(x, na.rm = TRUE)
+ },
   unit = "minutes",
   count = 60
 )

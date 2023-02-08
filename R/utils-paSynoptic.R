@@ -28,7 +28,7 @@
 #'   \item{deviceDeploymentID -- unique time series identifier}
 #' }
 #' 
-#' @seealso \link{pas_enhanceData}
+#' @seealso \link{pas_enhanceRawData}
 #' 
 #' @examples
 #' pas_isPas(example_pas)

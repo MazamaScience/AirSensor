@@ -14,7 +14,7 @@
 #'
 #' @return A pa_synoptic dataframe
 #' 
-#' @seealso \link{pas_enhanceData}
+#' @seealso \link{pas_enhanceRawData}
 #'
 #' @examples
 #' \donttest{

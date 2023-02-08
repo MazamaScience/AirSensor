@@ -1,3 +1,20 @@
+# AirSensor 1.1.0
+
+Updates to accommodate data access through the PurpleAir API released in July of
+2022. This API requires an API_KEY. Users of the package are required to obtain
+their own credentials from PurpleAir.
+
+For information, see:
+
+* [PurpleAir AIP](https://api.purpleair.com)
+* [PurpleAir Terms of service](https://www2.purpleair.com/policies/terms-of-service)
+* [PurpleAir Data license](https://www2.purpleair.com/pages/license)
+* [PurpleAir Data Attribution](https://www2.purpleair.com/pages/attribution)
+
+* Updated Mazama package dependency versions.
+* Support for API keys.
+* Replace **sp** package dependency with **sf** package.
+
 # AirSensor 1.0.9
 
 * MVCAA Tutorial series.

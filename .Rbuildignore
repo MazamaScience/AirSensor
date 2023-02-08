@@ -26,3 +26,6 @@
 
 # NOTE:  TEMPORARY -- for development only
 ^AirShiny/
+
+# API keys and passwords
+global_vars.R

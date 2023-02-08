@@ -205,7 +205,7 @@ sensor_calendarPlot <- function(
   # Calculate Local Standard Time as it would appear if it were UTC
   
   UTC_offset <-
-    MazamaSpatialUtils::SimpleTimezones@data %>% 
+    MazamaSpatialUtils::SimpleTimezones %>% 
     dplyr::filter(.data$timezone == sensor$meta$timezone) %>% 
     dplyr::pull(UTC_offset)
   

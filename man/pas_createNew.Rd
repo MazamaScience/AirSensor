@@ -2,39 +2,49 @@
 % Please edit documentation in R/pas_createNew.R
 \name{pas_createNew}
 \alias{pas_createNew}
-\title{Load latest PurpleAir synoptic data}
+\title{Create a new PurpleAir synoptic dataset}
 \usage{
 pas_createNew(
+  apiReadKey = NULL,
   countryCodes = NULL,
-  includePWFSL = TRUE,
+  stateCodes = NULL,
+  counties = NULL,
   lookbackDays = 1,
-  baseUrl = "https://www.purpleair.com/json?all=true"
+  outsideOnly = TRUE,
+  baseUrl = "https://api.purpleair.com/v1/sensors"
 )
 }
 \arguments{
-\item{countryCodes}{ISO country codes used to subset the data.}
+\item{apiReadKey}{PurpleAir API Read Key.}
 
-\item{includePWFSL}{Logical specifying whether to calculate distances from 
-PWFSL monitors.}
+\item{countryCodes}{ISO 3166-1 alpha-2 country codes used to subset the data.
+At least one countryCode must be specified.}
+
+\item{stateCodes}{ISO-3166-2 alpha-2 state codes used to subset the data.
+Specifying stateCodes is optional.}
+
+\item{counties}{US county names or 5-digit FIPS codes used to subset the data.
+Specifying counties is optional.}
 
 \item{lookbackDays}{Number of days to "look back" for valid data. Data are
-filtered to only include sensors with data more recent than 
-\code{lookbackDays} ago.}
+filtered to only include sensors with data more recent than \code{lookbackDays} ago.}
 
-\item{baseUrl}{Base URL for synoptic data.}
+\item{outsideOnly}{Logical specifying whether to restrict requests to outside sensors only.}
+
+\item{baseUrl}{Base URL for the PurpleAir API.}
 }
 \value{
 A PurpleAir Synoptic \emph{pas} object.
 }
 \description{
 Download, parse and enhance synoptic data from PurpleAir and
-return the results as a useful tibble with class \code{pa_synoptic}.
+return the results as a useful tibble with class \code{purple_air_synoptic}.
 
 Steps include:
 
 1) Download and parse synoptic data
 
-2) Replace variable with more consistent, more human readable names.
+2) Replace variable names with more consistent, more human readable names.
 
 3) Add spatial metadata for each sensor including:
 \itemize{
@@ -45,28 +55,49 @@ Steps include:
 
 4) Convert data types from character to \code{POSIXct} and \code{numeric}.
 
-5) Add distance and monitorID for the closest PWFSL monitor
-
-Filtering by country may be performed by specifying the \code{countryCodes}
-argument.
+Data requests are made with a bounding box determined from the required
+\code{countryCodes} parameter. If a single country is specified and additional
+\code{stateCodes} are specified, the bounding box will be limited to those
+states. Withing a single state, \code{counties} may be used to further limit
+the data.
 }
 \examples{
 \donttest{
+# Fail gracefully if any resources are not available
+try({
+
 library(AirSensor)
 
 initializeMazamaSpatialUtils()
 
-pas <- pas_createNew("US")
+pas <-
+  pas_createNew(
+    apiReadKey = API_READ_KEY,
+    countryCodes = "US",
+    stateCodes = "WA",
+    counties = c("Okanogan", "Ferry"),
+    lookbackDays = 1,
+    outsideOnly = TRUE
+  )
 
-if ( interactive() ) {
-  pas \%>\% 
-    pas_filter(stateCode == "CA") \%>\%
-    pas_leaflet()
+pas \%>\% pas_leaflet()
+
+}, silent = FALSE)
 }
 }
+\references{
+\href{https://www2.purpleair.com}{PurpleAir}
+
+\href{https://api.purpleair.com/}{PurpleAir API}
+
+\href{https://www2.purpleair.com/policies/terms-of-service}{PurpleAir Terms of service}
+
+\href{https://www2.purpleair.com/pages/license}{PurpleAir Data license}
+
+\href{https://www2.purpleair.com/pages/attribution}{PurpleAir Data Attribution}
 }
 \seealso{
-\link{pas_load}
-
 \link{pas_downloadParseRawData}
+
+\link{pas_enhanceRawData}
 }

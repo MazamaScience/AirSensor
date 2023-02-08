@@ -6,7 +6,9 @@
 \usage{
 patData_aggregate(
   df,
-  FUN = function(df) {     mean(df$pm25_A + df$pm25_B, na.rm = TRUE) },
+  FUN = function(df) {
+     mean(df$pm25_A + df$pm25_B, na.rm = TRUE)
+ },
   unit = "minutes",
   count = 60
 )

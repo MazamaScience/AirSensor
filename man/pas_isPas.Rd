@@ -39,6 +39,6 @@ pas_isPas(example_pas)
 pas_isPas(1:10)
 }
 \seealso{
-\link{pas_enhanceData}
+\link{pas_enhanceRawData}
 }
 \keyword{pas}

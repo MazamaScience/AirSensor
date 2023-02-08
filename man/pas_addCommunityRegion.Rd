@@ -32,5 +32,5 @@ pas_enhanced <-
 }
 }
 \seealso{
-\link{pas_enhanceData}
+\link{pas_enhanceRawData}
 }

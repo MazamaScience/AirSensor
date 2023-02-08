@@ -58,3 +58,6 @@ local_animations/
 
 # R Markdown output
 local_examples/*.html
+
+# API keys and passwords
+global_vars.R
