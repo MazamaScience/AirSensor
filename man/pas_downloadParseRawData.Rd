@@ -55,7 +55,7 @@ library(AirSensor)
 
 pas_raw <-
   pas_downloadParseRawData(
-    apiReadKey = API_READ_KEY,
+    apiReadKey = PA_API_READ_KEY,
     maxAge = 3600 * 24,
     outsideOnly = TRUE,
     west = -125,

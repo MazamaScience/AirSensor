@@ -60,13 +60,24 @@ _**NOTE: This can take up to a minute to process.**_
 
 ```{r pas_createNew, eval = FALSE}
 library(AirSensor)
+library(dplyr)
+library(ggplot2)
+
+# Define PA_API_READ_KEY in a .gitignore protected file
+source("global_vars.R")
+setAPIKey("PurpleAir-read", PA_API_READ_KEY)
 
 # Initialize spatial data processing 
 library(MazamaSpatialUtils)
 initializeMazamaSpatialUtils()
 
 # Create a 'pas' object with current data
-pas <- pas_createNew(countryCodes = "US")
+pas <- 
+  pas_createNew(
+    countryCodes = "US", 
+    stateCodes = "CA", 
+    counties = "Los Angeles"
+  )
 ```
 
 ### Loading Pre-generated Synoptic Data (fast)
@@ -117,14 +128,14 @@ Let's take a quick peek at some of the PM2.5 data:
 # Extract and round just the PM2.5 data
 pm25_data <-
   pas %>% 
-  select(starts_with("pm25_")) %>% 
+  select(starts_with("pm2.5_")) %>% 
   round(1)
 
 # Combine sensor label and pm2.5 data 
-bind_cols(label = pas$label, pm25_data) %>%
+bind_cols(label = pas$locationName, pm25_data) %>%
   head(10) %>% 
   knitr::kable(
-    col.names = c("label", "current", "10 min", "30 min", "1 hr", "6 hr", "1 day", "1 wk"),
+    col.names = c("location name", "10 min", "30 min", "1 hr", "6 hr", "1 day", "1 wk"),
     caption = "PAS PM2.5 Values"
   )
 ``` 
@@ -138,18 +149,17 @@ and the hourly PM2.5 data. Clicking on a sensor will show sensor metadata.
 
 ```{r leaflet}
 pas %>% 
-  pas_leaflet()
+  pas_leaflet(parameter = "pm2.5_60minute")
 ```
 
 If we want to narrow our selection, for example to California, we can look at which 
 locations have a moderate to unhealthy 6-hour average air quality rating with
 the following short script that uses the `%>%` "pipe" operator:
 
-```{r leaflet_pm25_6hr}
+```{r leaflet_pm2.5_6hour}
 pas %>% 
-  pas_filter(stateCode == 'CA') %>% 
-  pas_filter(pm25_6hr >= 25.0) %>% 
-  pas_leaflet(parameter = "pm25_6hr")
+  pas_filter(pm2.5_6hour >= 15.0) %>% 
+  pas_leaflet(parameter = "pm2.5_6hour")
 ```
 
 This code pipes our `pas` data into `pas_filter()` where we can set our 
@@ -169,7 +179,6 @@ state of California.
 
 ```{r leaflet_humidity}
 pas %>% 
-  pas_filter(stateCode == "CA") %>% 
   pas_leaflet(parameter = "humidity")
 ```
 

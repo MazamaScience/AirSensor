@@ -4,7 +4,7 @@
 \alias{pas_palette}
 \title{Color palettes for PurpleAir}
 \usage{
-pas_palette(pas = NULL, paletteName = "AQI", parameter = "pm25_1hr", ...)
+pas_palette(pas = NULL, paletteName = "AQI", parameter = NULL, ...)
 }
 \arguments{
 \item{pas}{Enhanced data frame of PurpleAir synoptic data.}

@@ -432,7 +432,8 @@ pat_downloadParseRawData <- function(
       channel,
       status_code, 
       webserviceUrl,
-      httpcode::http_code(status_code)$explanation
+      ###httpcode::http_code(status_code)$explanation
+      http_status_codes[[as.character(status_code)]][[2]]
     )
     
     if ( logger.isInitialized() )

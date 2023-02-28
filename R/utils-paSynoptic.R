@@ -35,22 +35,35 @@
 #' pas_isPas(1:10)
 
 pas_isPas <- function(
-  pas = NULL
+    pas = NULL
 ) {
   
   # Test a variety of things that could go wrong
   if ( is.null(pas) ) return(FALSE)
   if ( !"pa_synoptic" %in% class(pas) ) return(FALSE)
   
-  # NOTE: Upgraded pa_synoptic data columns generated 2020-04-09
-  #       via `AirSensor::pas_createNew()`
-  parameters <- c(
-    "ID", "label", "sensorType",
-    "longitude", "latitude", 
-    "timezone", "countryCode", "stateCode",
-    "pm25_1hr", "pm25_1day", "temperature", "humidity", "pressure",
-    "deviceID", "locationID", "deviceDeploymentID"
-  )
+  if ( "pm2.5_60minute" %in% names(pas) ) {
+    # New pas created with version >= 1.1
+    parameters <- c(
+      "ID", # for backwards compatibility, same as deviceID
+      "label", # for backwards compatibility, same as locationName
+      "locationName",
+      "sensorType", # for backwards compatibility, same as model
+      "longitude", "latitude", 
+      "timezone", "countryCode", "stateCode",
+      "pm2.5_60minute", "pm2.5_24hour", "temperature", "humidity", "pressure",
+      "deviceID", "locationID", "deviceDeploymentID"
+    )
+  } else {
+    # Old pas created with version < 1.1
+    parameters <- c(
+      "ID", "label", "sensorType",
+      "longitude", "latitude", 
+      "timezone", "countryCode", "stateCode",
+      "pm25_1hr", "pm25_1day", "temperature", "humidity", "pressure",
+      "deviceID", "locationID", "deviceDeploymentID"
+    )
+  }
   
   if ( !all(parameters %in% names(pas)) ) {
     
@@ -59,10 +72,10 @@ pas_isPas <- function(
     return(FALSE)
     
   } else {
-   
+    
     # Nothing failed so return TRUE
     return(TRUE)
-     
+    
   }
   
 }
@@ -110,9 +123,6 @@ pas_isEmpty <- function(pas) {
 #'   \item{stateCode -- ISO 3166-2 alpha-2}
 #' }
 #' 
-#' If these columns are missing, they can be added by with
-#' \code{\link{pas_addSpatialMetadata}}.
-#' 
 #' @examples
 #' pas <- example_pas
 #' pas_hasSpatial(pas)
@@ -121,7 +131,7 @@ pas_hasSpatial <- function(pas) {
   
   if ( is.null(pas) ) return(FALSE)
   
-  # Test the following -- added via pas_addSpatialMetadata()
+  # Test the following
   parameters <- c(
     "longitude", "latitude", "timezone", "countryCode", "stateCode"
   )

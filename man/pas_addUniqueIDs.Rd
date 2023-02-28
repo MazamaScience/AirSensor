@@ -24,18 +24,10 @@ Adds the following vectors:
   \item{deviceDeploymentID -- A combination of device and location IDs}
 }
 }
-\examples{
-\donttest{
-library(AirSensor)
-
-initializeMazamaSpatialUtils()
-
-pas_enhanced <-
-  example_pas_raw \%>\% 
-  pas_addSpatialMetadata() \%>\% 
-  pas_addUniqueIDs()
-}
+\note{
+This function is only needed to add these IDs to archival \emph{pas}
+generated with very early verions of the \pkg{AirSensor} package.
 }
 \seealso{
-\link{pas_addSpatialMetadata}
+\link{pas_enhanceRawData}
 }

@@ -23,9 +23,9 @@
 #' 
 #' initializeMazamaSpatialUtils()
 #' 
-#' pas_enhanced <-
+#' pas_airDistrict <-
 #'   example_pas_raw %>% 
-#'   pas_addSpatialMetadata() %>%  
+#'   pas_enhanceRawData() %>%  
 #'   pas_addAirDistrict() 
 #' }
 
@@ -39,7 +39,7 @@ pas_addAirDistrict <- function(
   
   if ( !pas_hasSpatial(pas) ) {
     stop("Parameter 'pas' does not contain required spatial metadata.
-          See 'pas_addSpatialMetadata()' to add spatial meta data.")
+          See 'pas_enhanceRawData()' to add spatial meta data.")
   }
   
   # ----- CARB Air Districts ---------------------------------------------------

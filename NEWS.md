@@ -14,6 +14,11 @@ For information, see:
 * Updated Mazama package dependency versions.
 * Support for API keys.
 * Replace **sp** package dependency with **sf** package.
+* New versions of `pas_createNew()`, `pas_downloadParseData()`, `pas_enhanceRawData()`
+and `pas_leaflet()`.
+* Some column names in generated _pas_ dataframes have changed to be more 
+consistent with PurpleAir documentation.
+* Removed package dependencies: **httpcode**
 
 # AirSensor 1.0.9
 

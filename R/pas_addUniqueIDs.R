@@ -12,24 +12,16 @@
 #'   \item{locationID -- MazamaLocationUtils generated location ID }
 #'   \item{deviceDeploymentID -- A combination of device and location IDs}
 #' }
+#' 
+#' @note This function is only needed to add these IDs to archival \emph{pas}
+#' generated with very early verions of the \pkg{AirSensor} package.
 #'
 #' @param pas a pa_synoptic dataframe
 #'
 #' @return A dataframe with generated unique ID columns added.
 #' 
-#' @seealso \link{pas_addSpatialMetadata}
-#' 
-#' @examples
-#' \donttest{
-#' library(AirSensor)
-#' 
-#' initializeMazamaSpatialUtils()
-#' 
-#' pas_enhanced <-
-#'   example_pas_raw %>% 
-#'   pas_addSpatialMetadata() %>% 
-#'   pas_addUniqueIDs()
-#' }
+#' @seealso \link{pas_enhanceRawData}
+
 
 pas_addUniqueIDs <- function(
   pas = NULL

@@ -6,6 +6,7 @@
 #' @param spatialDataDir Directory where spatial datasets are created.
 #' @param stateCodeDataset MazamaSpatialUtils dataset returning ISO 3166-2 .
 #' alpha-2 stateCodes
+#' @param USCountiesDataset \pkg{MazamaSpatialUtils} dataset returning US county names.
 #' @param logLevel Logging level used if logging has not already been 
 #' initialized.
 #' 
@@ -14,8 +15,10 @@
 #' \preformatted{
 #'   data("SimpleCountriesEEZ", package = "MazamaSpatialUtils")
 #'   data("SimpleTimezones", package = "MazamaSpatialUtils")
-#'   MazamaSpatialUtils::setSpatialDataDir('~/Data/Spatial')
-#'   MazamaSpatialUtils::loadSpatialData('NaturalEarthAdm1')
+#'
+#'   MazamaSpatialUtils::setSpatialDataDir("~/Data/Spatial")
+#'   MazamaSpatialUtils::loadSpatialData("NaturalEarthAdm1.rda")
+#'   MazamaSpatialUtils::loadSpatialData("USCensusCounties.rda")
 #' }
 #' 
 #' This function should be run before using \code{pas_load()}, as 
@@ -29,9 +32,10 @@
 #' 
 
 initializeMazamaSpatialUtils <- function(
-  spatialDataDir = '~/Data/Spatial',
-  stateCodeDataset = 'NaturalEarthAdm1',
-  logLevel = WARN
+    spatialDataDir = "~/Data/Spatial",
+    stateCodeDataset = "NaturalEarthAdm1.rda",
+    USCountiesDataset = "USCensusCounties.rda",
+    logLevel = WARN
 ) {
   
   # ----- Validate Parameters --------------------------------------------------
@@ -44,13 +48,17 @@ initializeMazamaSpatialUtils <- function(
   
   # ----- Load spatial data ----------------------------------------------------
   
+  # Package internal data
   utils::data("SimpleCountriesEEZ", package = "MazamaSpatialUtils")
   utils::data("SimpleTimezones", package = "MazamaSpatialUtils")
+  
+  # Package external data
   MazamaSpatialUtils::setSpatialDataDir(spatialDataDir)
   MazamaSpatialUtils::loadSpatialData(stateCodeDataset)
+  MazamaSpatialUtils::loadSpatialData(USCountiesDataset)
   
   # Add env variable for initialization detection
-  Sys.setenv(SPATIAL_IS_INITIALIZED = "TRUE")
+  Sys.setenv(MAZAMA_SPATIAL_IS_INITIALIZED = "TRUE")
   
   return(invisible(NULL))
 }
@@ -64,7 +72,7 @@ initializeMazamaSpatialUtils <- function(
 #' @return Logical.  
 
 spatialIsInitialized <- function() {
-  con <- as.logical(Sys.getenv('SPATIAL_IS_INITIALIZED'))
+  con <- as.logical(Sys.getenv('MAZAMA_SPATIAL_IS_INITIALIZED'))
   if ( is.na(con) ) {
     return(FALSE) 
   } else {

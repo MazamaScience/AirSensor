@@ -144,13 +144,14 @@ multi_ggplot <- function(
 pas_palette <- function(
   pas = NULL,
   paletteName = "AQI",
-  parameter = "pm25_1hr",
+  parameter = NULL,
   ...
 ) {
   
   # ----- Validate parameters --------------------------------------------------
 
   MazamaCoreUtils::stopIfNull(pas)
+  MazamaCoreUtils::stopIfNull(paletteName)
   
   validPaletteNames <- c("aqi", "humidity", "temperature", "distance")
   

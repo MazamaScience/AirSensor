@@ -26,9 +26,9 @@ library(AirSensor)
 
 initializeMazamaSpatialUtils()
 
-pas_enhanced <-
+pas_airDistrict <-
   example_pas_raw \%>\% 
-  pas_addSpatialMetadata() \%>\%  
+  pas_enhanceRawData() \%>\%  
   pas_addAirDistrict() 
 }
 }

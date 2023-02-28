@@ -6,7 +6,8 @@
 \usage{
 initializeMazamaSpatialUtils(
   spatialDataDir = "~/Data/Spatial",
-  stateCodeDataset = "NaturalEarthAdm1",
+  stateCodeDataset = "NaturalEarthAdm1.rda",
+  USCountiesDataset = "USCensusCounties.rda",
   logLevel = WARN
 )
 }
@@ -15,6 +16,8 @@ initializeMazamaSpatialUtils(
 
 \item{stateCodeDataset}{MazamaSpatialUtils dataset returning ISO 3166-2 .
 alpha-2 stateCodes}
+
+\item{USCountiesDataset}{\pkg{MazamaSpatialUtils} dataset returning US county names.}
 
 \item{logLevel}{Logging level used if logging has not already been 
 initialized.}
@@ -25,8 +28,10 @@ Convenience function that wraps:
 \preformatted{
   data("SimpleCountriesEEZ", package = "MazamaSpatialUtils")
   data("SimpleTimezones", package = "MazamaSpatialUtils")
-  MazamaSpatialUtils::setSpatialDataDir('~/Data/Spatial')
-  MazamaSpatialUtils::loadSpatialData('NaturalEarthAdm1')
+
+  MazamaSpatialUtils::setSpatialDataDir("~/Data/Spatial")
+  MazamaSpatialUtils::loadSpatialData("NaturalEarthAdm1.rda")
+  MazamaSpatialUtils::loadSpatialData("USCensusCounties.rda")
 }
 
 This function should be run before using \code{pas_load()}, as 

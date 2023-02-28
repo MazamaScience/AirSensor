@@ -91,7 +91,7 @@ pas_leaflet <- function(
   suppressWarnings({
 
     if ( stringr::str_detect(tolower(parameter), "^pm2\\.5") ||
-         stringr::str_detect(tolower(parameter), "^pm25"))  { # AQI
+         stringr::str_detect(tolower(parameter), "^pm25") )  { # AQI
 
       colorInfo <- pas_palette(pas, "aqi", parameter)
 
@@ -154,7 +154,7 @@ pas_leaflet <- function(
 
   # * Create popupText -----
 
-  if ( "pm2.5_60_minute" %in% names(pas) ) {
+  if ( "pm2.5_60minute" %in% names(pas) ) {
     # New pas created with version >= 1.1
     pas$popupText <- paste0(
       "<b>", pas$locationName, "</b><br/>",
@@ -222,7 +222,7 @@ pas_leaflet <- function(
 
   # ----- Create leaflet map ---------------------------------------------------
 
-  if ( "pm2.5_60_minute" %in% names(pas) ) {
+  if ( "pm2.5_60minute" %in% names(pas) ) {
     # New pas created with version >= 1.1
     m <-
       leaflet::leaflet(dplyr::select(pas, c("longitude", "latitude"))) %>%

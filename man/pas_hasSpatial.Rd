@@ -24,9 +24,6 @@ columns:
   \item{countryCode -- ISO 3166-1 alpha-2}
   \item{stateCode -- ISO 3166-2 alpha-2}
 }
-
-If these columns are missing, they can be added by with
-\code{\link{pas_addSpatialMetadata}}.
 }
 \examples{
 pas <- example_pas

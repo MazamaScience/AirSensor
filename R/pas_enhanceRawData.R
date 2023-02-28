@@ -146,7 +146,9 @@ pas_enhanceRawData <- function(
     # * Modify columns -----
     dplyr::mutate(
       sensorManufacturer = "Purple Air",
+      ID = .data$sensor_index, # for backwards compatibility
       deviceID = paste0("pa.", .data$sensor_index),
+      sensorType = .data$model, # for backwards compatibility
       privacy = dplyr::if_else(.data$privacy == "0", "public", "private", as.character(NA)),
       location_type = dplyr::if_else(.data$location_type == "0", "outside", "inside", as.character(NA)),
 
@@ -195,7 +197,8 @@ pas_enhanceRawData <- function(
     # Fill in new columns where possible
     dplyr::mutate(
       deviceDeploymentID = paste0(.data$locationID, "_", .data$deviceID),
-      locationName = .data$name
+      locationName = .data$name,
+      label = .data$name # for backwards compatibility
     )
 
   # Put 'deviceDeploymentID' and 'deviceID' in front

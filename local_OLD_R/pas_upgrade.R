@@ -84,8 +84,8 @@ pas_upgrade <- function(
   MazamaCoreUtils::stopIfNull(verbose)
   
   # Check if Mazama Spatial Utilites has been initialized 
-  if ( !as.logical(Sys.getenv("SPATIAL_IS_INITIALIZED")) || 
-       Sys.getenv("SPATIAL_IS_INITIALIZED") == "" ) {
+  if ( !as.logical(Sys.getenv("MAZAMA_SPATIAL_IS_INITIALIZED")) || 
+       Sys.getenv("MAZAMA_SPATIAL_IS_INITIALIZED") == "" ) {
     stop("MazamaSpatialUtils is not initialized. 
          Please initialize with initializeMazamaSpatialUtils()")
   }

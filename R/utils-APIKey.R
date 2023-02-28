@@ -18,7 +18,7 @@
 #' Currently supported API keys and associated functions include:
 #'
 #' \itemize{
-#'   \item{\code{"PurpleAir-read"}} -- Purple Air \code{apiReadKey} used in
+#'   \item{\code{"PurpleAir-read"}} -- Purple Air \code{api_key} used in
 #'   \link{pas_downloadParseRawData}.
 #' }
 #'

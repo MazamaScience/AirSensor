@@ -1,6 +1,6 @@
 Type: Package
 Package: AirSensor
-Version: 1.0.9
+Version: 1.1.0
 Title: Process and Display Data from Air Quality Sensors
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")), 
@@ -35,7 +35,6 @@ Imports:
     ggmap,
     ggplot2,
     gridExtra,
-    httpcode,
     httr,
     jsonlite,
     leaflet,
