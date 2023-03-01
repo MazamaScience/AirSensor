@@ -21,12 +21,17 @@
 #' 
 #' @examples
 #' \donttest{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' library(AirSensor)
 #' 
 #' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 #' 
 #' sensor_loadLatest("scaqmd") %>%
 #'   PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')
+#' 
+#' }, silent = FALSE)
 #' }
 
 sensor_loadLatest <- function(

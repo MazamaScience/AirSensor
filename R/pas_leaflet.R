@@ -74,7 +74,7 @@ pas_leaflet <- function(
   MazamaCoreUtils::stopIfNull(pas)
 
   if ( !"pa_synoptic" %in% class(pas) )
-    stop("parameter 'pas' is not a valid 'purple_air_synoptic' object.")
+    stop("parameter 'pas' is not a valid 'pa_synoptic' object.")
 
   if ( nrow(pas) == 0 )
     stop("parameter 'pas' has no data")
@@ -159,6 +159,7 @@ pas_leaflet <- function(
     pas$popupText <- paste0(
       "<b>", pas$locationName, "</b><br/>",
       pas$deviceDeploymentID, "<br/>",
+      "sensor_index = ", pas$sensor_index, " <br/>",
       "location_type = ", pas$location_type, " <br/>",
       "temperature = ", round(pas$temperature, 0), " \U2109<br/>",
       "humidity = ", round(pas$humidity, 0), "%<br/>",

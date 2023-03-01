@@ -60,6 +60,9 @@
 #' 
 #' @examples
 #' \donttest{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' library(AirSensor)
 #' 
 #' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
@@ -99,6 +102,8 @@
 #'   title = "2020 -- Air Quality Stoplight"
 #' )
 #' 
+#' 
+#' }, silent = FALSE)
 #' }
 
 sensor_calendarPlot <- function(

@@ -83,6 +83,9 @@ Plots a traditional wind rose plot for wind direction and PM2.5.
 }
 \examples{
 \donttest{
+# Fail gracefully if any resources are not available
+try({
+
 library(AirSensor)
 
 # Set default location of pre-generated data files
@@ -101,6 +104,8 @@ windData <- dplyr::select(windData, c("date", "wd", "ws"))
 
 # Plot rose using mean binning
 sensor_pollutionRose(sensor, windData, statistic = "prop.mean")
+
+}, silent = FALSE)
 }
 }
 \seealso{

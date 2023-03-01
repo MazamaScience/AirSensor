@@ -76,6 +76,9 @@ averages calculated using local "clock time".
 }
 \examples{
 \donttest{
+# Fail gracefully if any resources are not available
+try({
+
 library(AirSensor)
 
 setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
@@ -115,6 +118,8 @@ sensor_calendarPlot(
   title = "2020 -- Air Quality Stoplight"
 )
 
+
+}, silent = FALSE)
 }
 }
 \references{

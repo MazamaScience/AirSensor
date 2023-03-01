@@ -23,6 +23,9 @@ Only two \code{airsensor} objects at a time may be joined.
 }
 \examples{
 \donttest{
+# Fail gracefully if any resources are not available
+try({
+
 library(AirSensor)
 setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 
@@ -37,5 +40,7 @@ PWFSLSmoke::monitor_timeseriesPlot(feb_mar, style = 'gnats')
 # Gaps in the time axis are filled with NA
 feb_apr <- sensor_join(feb, apr)
 PWFSLSmoke::monitor_timeseriesPlot(feb_apr, style = 'gnats')
+
+}, silent = FALSE)
 }
 }

@@ -5,17 +5,20 @@
 \title{Create a new PurpleAir synoptic dataset}
 \usage{
 pas_createNew(
-  apiReadKey = NULL,
+  api_key = NULL,
   countryCodes = NULL,
   stateCodes = NULL,
   counties = NULL,
   lookbackDays = 1,
-  outsideOnly = TRUE,
+  location_type = 0,
+  read_keys = NULL,
+  show_only = NULL,
+  includePWFSL = TRUE,
   baseUrl = "https://api.purpleair.com/v1/sensors"
 )
 }
 \arguments{
-\item{apiReadKey}{PurpleAir API Read Key.}
+\item{api_key}{PurpleAir API Read Key.}
 
 \item{countryCodes}{ISO 3166-1 alpha-2 country codes used to subset the data.
 At least one countryCode must be specified.}
@@ -29,7 +32,19 @@ Specifying counties is optional.}
 \item{lookbackDays}{Number of days to "look back" for valid data. Data are
 filtered to only include sensors with data more recent than \code{lookbackDays} ago.}
 
-\item{outsideOnly}{Logical specifying whether to restrict requests to outside sensors only.}
+\item{location_type}{The \code{location_type} of the sensors. Possible values
+are: 0 = Outside, 1 = Inside or \code{NULL} = both.}
+
+\item{read_keys}{Optional comma separated list of sensor read_keys is required
+for private devices. It is separate to the api_key and each sensor has its own
+read_key. Submit multiple keys by separating them with a comma (,) character
+for example: key-one,key-two,key-three.}
+
+\item{show_only}{Optional comma separated list of sensor_index values. When
+provided, the results are limited only to the sensors included in this list.}
+
+\item{includePWFSL}{Logical specifying whether to calculate distances from 
+PWFSL monitors.}
 
 \item{baseUrl}{Base URL for the PurpleAir API.}
 }
@@ -38,7 +53,7 @@ A PurpleAir Synoptic \emph{pas} object.
 }
 \description{
 Download, parse and enhance synoptic data from PurpleAir and
-return the results as a useful tibble with class \code{purple_air_synoptic}.
+return the results as a useful tibble with class \code{pa_synoptic}.
 
 Steps include:
 
@@ -72,12 +87,12 @@ initializeMazamaSpatialUtils()
 
 pas <-
   pas_createNew(
-    apiReadKey = API_READ_KEY,
+    api_key = MY_API_READ_KEY,
     countryCodes = "US",
     stateCodes = "WA",
     counties = c("Okanogan", "Ferry"),
     lookbackDays = 1,
-    outsideOnly = TRUE
+    location_type = 0
   )
 
 pas \%>\% pas_leaflet()

@@ -50,21 +50,6 @@ By default, the host computer's date is used.
 The \emph{pas} object for a specific hour may be loaded by specifying 
 \code{datestamp = "YYYYmmddHH"}.
 }
-\examples{
-\donttest{
-library(AirSensor)
-
-setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
-
-pas <- pas_load()
-
-if ( interactive() ) {
-  pas \%>\% 
-    pas_filter(stateCode == "CA") \%>\%
-    pas_leaflet()
-}
-} 
-}
 \seealso{
 \link{pas_createNew}
 }

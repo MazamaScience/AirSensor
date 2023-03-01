@@ -45,18 +45,6 @@
 #' \code{deviceDeploymentID} can be looked up.
 #' @seealso \link{pat_downloadParseRawData}
 #' 
-#' @examples
-#' \donttest{
-#' library(AirSensor)
-#' 
-#' pat <- pat_createNew(
-#'   label = "Seattle", 
-#'   pas = example_pas, 
-#'   startdate = 20180701, 
-#'   enddate = 20180901
-#' )
-#' pat_multiPlot(pat)
-#' }
 
 pat_createNew <- function(
   id = NULL,

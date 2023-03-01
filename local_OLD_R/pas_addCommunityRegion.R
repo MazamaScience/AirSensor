@@ -40,7 +40,7 @@ pas_addCommunityRegion <- function(
     stop('Invalid pa_synotpic data - does not contain required column: `label`')
   } 
   
-  # Extract labels with `labels` or `Labels` column vector
+  # Extract labels with `label` or `Label` column vector
   label <- tolower(pas[[stringr::str_which(names(pas), '^[lL]abel')]])
   
   # Create empty community region

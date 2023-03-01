@@ -38,6 +38,9 @@
 #' 
 #' @examples
 #' \donttest{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' library(AirSensor)
 #' 
 #' # Default FUN = PurpleAirQC_hourly_AB_00
@@ -82,8 +85,9 @@
 #' )
 #'
 #' PWFSLSmoke::monitor_timeseriesPlot(sensor, shadedNight = TRUE)
+#'
+#' }, silent = FALSE)
 #' }
-#' 
 
 pat_createAirSensor <- function(
   pat = NULL,

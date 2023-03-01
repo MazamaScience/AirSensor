@@ -5,7 +5,7 @@
 #' @title Create a new PurpleAir synoptic dataset
 #'
 #' @description Download, parse and enhance synoptic data from PurpleAir and
-#' return the results as a useful tibble with class \code{purple_air_synoptic}.
+#' return the results as a useful tibble with class \code{pa_synoptic}.
 #'
 #' Steps include:
 #'
@@ -28,7 +28,7 @@
 #' states. Withing a single state, \code{counties} may be used to further limit
 #' the data.
 #'
-#' @param apiReadKey PurpleAir API Read Key.
+#' @param api_key PurpleAir API Read Key.
 #' @param countryCodes ISO 3166-1 alpha-2 country codes used to subset the data.
 #' At least one countryCode must be specified.
 #' @param stateCodes ISO-3166-2 alpha-2 state codes used to subset the data.
@@ -37,7 +37,16 @@
 #' Specifying counties is optional.
 #' @param lookbackDays Number of days to "look back" for valid data. Data are
 #' filtered to only include sensors with data more recent than \code{lookbackDays} ago.
-#' @param outsideOnly Logical specifying whether to restrict requests to outside sensors only.
+#' @param location_type The \code{location_type} of the sensors. Possible values
+#' are: 0 = Outside, 1 = Inside or \code{NULL} = both.
+#' @param read_keys Optional comma separated list of sensor read_keys is required
+#' for private devices. It is separate to the api_key and each sensor has its own
+#' read_key. Submit multiple keys by separating them with a comma (,) character
+#' for example: key-one,key-two,key-three.
+#' @param show_only Optional comma separated list of sensor_index values. When
+#' provided, the results are limited only to the sensors included in this list.
+#' @param includePWFSL Logical specifying whether to calculate distances from 
+#' PWFSL monitors.
 #' @param baseUrl Base URL for the PurpleAir API.
 #'
 #' @return A PurpleAir Synoptic \emph{pas} object.
@@ -62,12 +71,12 @@
 #'
 #' pas <-
 #'   pas_createNew(
-#'     apiReadKey = API_READ_KEY,
+#'     api_key = MY_API_READ_KEY,
 #'     countryCodes = "US",
 #'     stateCodes = "WA",
 #'     counties = c("Okanogan", "Ferry"),
 #'     lookbackDays = 1,
-#'     outsideOnly = TRUE
+#'     location_type = 0
 #'   )
 #'
 #' pas %>% pas_leaflet()
@@ -76,12 +85,15 @@
 #' }
 
 pas_createNew <- function(
-  apiReadKey = NULL,
+  api_key = NULL,
   countryCodes = NULL,
   stateCodes = NULL,
   counties = NULL,
   lookbackDays = 1,
-  outsideOnly = TRUE,
+  location_type = 0,
+  read_keys = NULL,
+  show_only = NULL,
+  includePWFSL = TRUE,
   baseUrl = "https://api.purpleair.com/v1/sensors"
 ) {
 
@@ -90,7 +102,6 @@ pas_createNew <- function(
   MazamaCoreUtils::stopIfNull(countryCodes)
   # NOTE:  stateCodes are optional
   lookbackDays <- MazamaCoreUtils::setIfNull(lookbackDays, 1)
-  outsideOnly <- MazamaCoreUtils::setIfNull(outsideOnly, TRUE)
   MazamaCoreUtils::stopIfNull(baseUrl)
 
   # Guarantee uppercase codes
@@ -127,45 +138,50 @@ pas_createNew <- function(
 
   # ----- Get country/state bounding box ---------------------------------------
 
+  if ( logger.isInitialized() )
+    logger.debug("----- create bounding box -----")
+
   # NOTE:  Most PurpleAir sensors are in the the US (in California).
 
   if ( !is.null(stateCodes) && exists("NaturalEarthAdm1") ) {
 
-    SFDF <- get("NaturalEarthAdm1") # To pass R CMD check
-    mask <-
-      (SFDF$countryCode %in% countryCodes) &
-      (SFDF$stateCode %in% stateCodes)
-    SFDF <- subset(SFDF, mask)
-
     if ( !is.null(counties) && exists("USCensusCounties") ) {
 
-      SFDF <- get("USCensusCounties") # To pass R CMD check
       counties <- as.character(counties)
       isFIPS <- stringr::str_detect(counties[1], "[0-9]{5}")
 
       if ( isFIPS ) {
-        mask <-
-          (SFDF$stateCode %in% stateCodes) &
-          (SFDF$countyFIPS %in% counties)
+        SFDF <-
+          get("USCensusCounties") %>%  # To pass R CMD check
+          dplyr::filter(.data$stateCode %in% stateCodes) %>%
+          dplyr::filter(.data$countyFIPS %in% counties)
       } else {
         # Handle input inconsistencies
         counties <-
           stringr::str_to_title(counties) %>%
           stringr::str_replace(" County", "")
-        # Limit to valid counties
-        mask <-
-          (SFDF$stateCode %in% stateCodes) &
-          (SFDF$countyName %in% counties)
+        SFDF <-
+          get("USCensusCounties") %>%  # To pass R CMD check
+          dplyr::filter(.data$stateCode %in% stateCodes) %>%
+          dplyr::filter(.data$countyName %in% counties)
       }
-      SFDF <- subset(SFDF, mask)
+
+    } else {
+
+      # Use state but not counties
+      SFDF <-
+        get("NaturalEarthAdm1") %>% # To pass R CMD check
+        dplyr::filter(.data$countryCode %in% countryCodes) %>%
+        dplyr::filter(.data$stateCode %in% stateCodes)
 
     }
 
   } else {
 
-    mask <- MazamaSpatialUtils::SimpleCountriesEEZ$countryCode %in% countryCodes
+    # Neither state nor county is specified
     SFDF <-
-      subset(MazamaSpatialUtils::SimpleCountriesEEZ, mask)
+      MazamaSpatialUtils::SimpleCountriesEEZ %>%
+      dplyr::filter(.data$countryCode %in% countryCodes)
 
   }
 
@@ -184,9 +200,13 @@ pas_createNew <- function(
 
   pas_raw <-
     pas_downloadParseRawData(
-      apiReadKey = apiReadKey,
-      maxAge = lookbackDays * 24 * 3600,
-      outsideOnly = outsideOnly,
+      api_key = api_key,
+      fields = SENSOR_DATA_AVG_PM25_FIELDS,
+      location_type = location_type,
+      read_keys = read_keys,
+      show_only = show_only,
+      modified_since = NULL, # get all data more recent than max_age
+      max_age = lookbackDays * 24 * 3600,
       west = west,
       east = east,
       south = south,
@@ -200,10 +220,14 @@ pas_createNew <- function(
   pas <-
     pas_enhanceRawData(
       pas_raw,
-      countryCodes,
-      stateCodes,
-      counties
+      countryCodes = countryCodes,
+      stateCodes = stateCodes,
+      counties = counties,
+      includePWFSL = includePWFSL
     )
+
+  if ( logger.isInitialized() )
+    logger.debug("----- finished enhancing -----")
 
   # ----- Return ---------------------------------------------------------------
 
@@ -222,7 +246,6 @@ if ( FALSE ) {
   stateCodes = c("WA", "OR")
   counties <- NULL
   lookbackDays = 1
-  outsideOnly = TRUE
   baseUrl = "https://api.purpleair.com/v1/sensors"
 
 }

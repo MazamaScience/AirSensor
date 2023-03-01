@@ -38,6 +38,8 @@
 #' @param countryCodes ISO 3166-1 alpha-2 country codes used to subset the data.
 #' @param stateCodes ISO-3166-2 alpha-2 state codes used to subset the data.
 #' @param counties US county names or 5-digit FIPS codes used to subset the data.
+#' @param includePWFSL Logical specifying whether to calculate distances from 
+#' PWFSL monitors.
 #'
 #' @return Enhanced dataframe of synoptic PurpleAir data.
 #'
@@ -54,7 +56,8 @@ pas_enhanceRawData <- function(
   pas_raw = NULL,
   countryCodes = NULL,
   stateCodes = NULL,
-  counties = NULL
+  counties = NULL,
+  includePWFSL = TRUE
 ) {
 
   # ----- Validate Parameters --------------------------------------------------
@@ -87,53 +90,45 @@ pas_enhanceRawData <- function(
   # ----- Harmonize table ------------------------------------------------------
 
   # > dplyr::glimpse(pas_raw, width = 75)
-  # Rows: 958
-  # Columns: 45
-  # $ sensor_index         <chr> "131707", "896", "912", "920", "924", "928",…
-  # $ name                 <chr> "Havillah", "Chemainus Elementary", "The Hub…
-  # $ icon                 <chr> "0", "0", "0", "0", "0", "0", "0", "0", "0",…
-  # $ model                <chr> "PA-II-SD", "PA-II", "PA-II", "PA-II", "PA-I…
-  # $ hardware             <chr> "2.0+OPENLOG+31037 MB+DS3231+BME280+PMSX003-…
-  # $ location_type        <chr> "0", "0", "0", "0", "0", "0", "0", "0", "0",…
+  # Rows: 1,999
+  # Columns: 37
+  # $ sensor_index         <chr> "453", "131585", "131611", "131707", "896", …
+  # $ last_modified        <dttm> 2019-09-04 21:14:11, 2022-01-29 19:14:34, 2…
+  # $ date_created         <dttm> 2016-11-07 18:24:07, 2021-10-05 22:00:29, 2…
+  # $ last_seen            <dttm> 2023-02-18 00:47:35, 2023-02-18 00:47:48, 2…
   # $ private              <chr> "0", "0", "0", "0", "0", "0", "0", "0", "0",…
-  # $ latitude             <chr> "48.819916", "48.930725", "48.72967", "48.79…
-  # $ longitude            <chr> "-119.184746", "-123.73338", "-123.66412", "…
-  # $ altitude             <chr> "3650", "160", "185", "190", "215", "386", "…
-  # $ position_rating      <chr> "0", "5", "5", "5", "5", "5", "5", "5", "0",…
-  # $ led_brightness       <chr> "15", "15", "15", "15", "15", "15", "15", "1…
-  # $ firmware_version     <chr> "6.01", "6.01", "3.00", "6.01", "6.01", "6.0…
+  # $ name                 <chr> "LRAPA-Oakridge City Hall", "1907 ZE Outside…
+  # $ icon                 <chr> "0", "0", "0", "0", "0", "0", "0", "0", "0",…
+  # $ location_type        <chr> "0", "0", "0", "0", "0", "0", "0", "0", "0",…
+  # $ model                <chr> "PA-II", "PA-II-SD", "PA-II", "PA-II-SD", "P…
+  # $ hardware             <chr> "2.0+1M+BME280+PMSX003-B+PMSX003-A", "2.0+OP…
+  # $ led_brightness       <dbl> 25, 35, 35, 35, 35, 35, 15, 35, 35, 35, 35, …
+  # $ firmware_version     <chr> "6.06b", "7.02", "7.02", "7.02", "6.06b", "7…
   # $ firmware_upgrade     <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
-  # $ rssi                 <chr> "-75", "-66", "-81", "-81", "-60", "-72", "-…
-  # $ uptime               <chr> "11401", "36354", "70", "1270", "1730", "148…
-  # $ pa_latency           <chr> "382", "238", NA, "257", "224", "208", "249"…
-  # $ memory               <chr> "15192", "15088", "30184", "15136", "15424",…
-  # $ last_seen            <chr> "1651271770", "1651271714", "1651271741", "1…
-  # $ last_modified        <chr> "1645469408", "1506718153", "1648969388", "1…
-  # $ date_created         <chr> "1633552393", "1484435197", "1484454581", "1…
+  # $ rssi                 <dbl> -63, -66, -75, -47, -74, -90, -88, -73, -65,…
+  # $ uptime               <dbl> 3112, 68034, 6028, 10397, 3646, 11740, 25, 5…
+  # $ pa_latency           <dbl> 221, 256, 458, 514, 219, 308, NA, 250, 234, …
+  # $ memory               <dbl> 16136, 16064, 15768, 16320, 15872, 16120, 31…
+  # $ position_rating      <dbl> 5, 5, 5, 0, 5, 0, 5, 5, 5, 5, 5, 0, 5, 2, 5,…
+  # $ latitude             <dbl> 43.74751, 45.49798, 42.30729, 48.81992, 48.9…
+  # $ longitude            <dbl> -122.4567, -122.6099, -122.8396, -119.1847, …
+  # $ altitude             <dbl> 1229, 233, 1650, 3650, 160, 663, 185, 190, 2…
   # $ channel_state        <chr> "3", "3", "3", "3", "3", "3", "3", "3", "3",…
-  # $ channel_flags        <chr> "0", "0", "0", "0", "0", "0", "0", "0", "2",…
+  # $ channel_flags        <chr> "1", "0", "0", "0", "0", "0", "0", "0", "0",…
   # $ channel_flags_manual <chr> "0", "0", "0", "0", "0", "0", "0", "0", "0",…
-  # $ channel_flags_auto   <chr> "0", "0", "0", "0", "0", "0", "0", "0", "2",…
-  # $ confidence           <chr> "100", "100", "100", "100", "100", "100", "1…
-  # $ confidence_manual    <chr> "100", "100", "100", "100", "100", "100", "1…
-  # $ confidence_auto      <chr> "100", "100", "100", "100", "100", "100", "1…
-  # $ humidity             <chr> "26", "43", "38", "31", "32", "37", "43", "4…
-  # $ temperature          <chr> "62", "65", "69", "74", "74", "67", "61", "6…
-  # $ pressure             <chr> "892.4", "1014.7", "1013.8", "1014.2", "1013…
-  # $ pm2.5_10minute       <chr> "0.1", "3", "2.2", "1.8", "1", "2.3", "1.8",…
-  # $ pm2.5_30minute       <chr> "0.2", "3.6", "2.9", "2.4", "1.2", "3.2", "2…
-  # $ pm2.5_60minute       <chr> "0.4", "4", "3.6", "2.9", "1.8", "3.7", "2.2…
-  # $ pm2.5_6hour          <chr> "1", "4", "4.6", "3.4", "2.4", "3.8", "1.4",…
-  # $ pm2.5_24hour         <chr> "1.2", "3.2", "4.8", "3.8", "2.4", "3.2", "1…
-  # $ pm2.5_1week          <chr> "2.6", "4.5", "6.8", "4.8", "4.4", "3.9", "1…
-  # $ primary_id_a         <chr> "1528330", "214110", "214181", "214469", "21…
-  # $ primary_key_a        <chr> "9UCNK357N813BXAS", "U7OR5QH16KYA2MPE", "7WQ…
-  # $ secondary_id_a       <chr> "1528331", "214111", "214182", "214470", "21…
-  # $ secondary_key_a      <chr> "2U3LINBJK83JFXNE", "RA40WAKD0ZHVDH1K", "2M0…
-  # $ primary_id_b         <chr> "1528332", "214112", "214183", "214471", "21…
-  # $ primary_key_b        <chr> "9ZNIQQM2ZQKCRFYF", "5X8IIT6314C8SK3I", "0VQ…
-  # $ secondary_id_b       <chr> "1528333", "214113", "214184", "214472", "21…
-  # $ secondary_key_b      <chr> "ICJZ9D888O7TB21S", "26HVB5N9565P603J", "L9C…
+  # $ channel_flags_auto   <chr> "1", "0", "0", "0", "0", "0", "0", "0", "0",…
+  # $ confidence           <dbl> 0, 100, 100, 100, 100, 100, 100, 100, 100, 1…
+  # $ confidence_auto      <dbl> 0, 100, 100, 100, 100, 100, 100, 100, 100, 1…
+  # $ confidence_manual    <dbl> 0, 100, 100, 100, 100, 100, 100, 100, 100, 1…
+  # $ humidity             <dbl> 32, 37, 19, 31, 57, 69, 56, 49, 50, 57, 56, …
+  # $ temperature          <dbl> 56, 61, 62, 72, 52, 49, 53, 55, 54, 51, 52, …
+  # $ pressure             <dbl> 978.10, 1017.26, 961.68, 889.75, 1017.72, 10…
+  # $ pm2.5_10minute       <dbl> 0.0, 12.1, 0.0, 1.8, 5.0, 4.8, 6.3, 2.2, 5.4…
+  # $ pm2.5_30minute       <dbl> 0.0, 12.0, 0.0, 3.9, 6.0, 4.6, 4.8, 1.6, 3.8…
+  # $ pm2.5_60minute       <dbl> 0.0, 12.8, 0.4, 7.2, 6.7, 3.7, 5.8, 1.8, 3.8…
+  # $ pm2.5_6hour          <dbl> 0.0, 22.8, 5.4, 8.2, 10.0, 1.6, 9.2, 7.0, 9.…
+  # $ pm2.5_24hour         <dbl> 0.0, 25.2, 6.1, 5.9, 10.6, 1.6, 11.8, 10.9, …
+  # $ pm2.5_1week          <dbl> 0.0, 16.7, 5.4, 8.6, 10.6, 2.0, 14.9, 12.8, …
 
   pas <-
     pas_raw %>%
@@ -146,44 +141,20 @@ pas_enhanceRawData <- function(
     # * Modify columns -----
     dplyr::mutate(
       sensorManufacturer = "Purple Air",
-      ID = .data$sensor_index, # for backwards compatibility
-      deviceID = paste0("pa.", .data$sensor_index),
-      sensorType = .data$model, # for backwards compatibility
+      deviceID = paste0(.data$sensor_index),
       privacy = dplyr::if_else(.data$privacy == "0", "public", "private", as.character(NA)),
       location_type = dplyr::if_else(.data$location_type == "0", "outside", "inside", as.character(NA)),
-
-      longitude = as.numeric(.data$longitude),
-      latitude = as.numeric(.data$latitude),
-      altitude = as.numeric(.data$altitude),
-      elevation = round(as.numeric(.data$altitude) * 0.3048), # convert from feet to meters
-
-      position_rating = as.numeric(.data$position_rating),
-      led_brightness = as.numeric(.data$led_brightness),
-      rssi = as.numeric(.data$rssi),
-      uptime = as.numeric(.data$uptime),
-      pa_latency = as.numeric(.data$pa_latency),
-      memory = as.numeric(.data$memory),
-
-      last_seen = as.POSIXct(as.numeric(.data$last_seen), tz = "UTC", origin = lubridate::origin),
-      last_modified = as.POSIXct(as.numeric(.data$last_modified), tz = "UTC", origin = lubridate::origin),
-      date_created = as.POSIXct(as.numeric(.data$date_created), tz = "UTC", origin = lubridate::origin),
-
-      confidence = as.numeric(.data$confidence),
-      confidence_manual = as.numeric(.data$confidence_manual),
-      confidence_auto = as.numeric(.data$confidence_auto),
-
-      humidity = as.numeric(.data$humidity),
-      temperature = as.numeric(.data$temperature),
-      pressure = as.numeric(.data$pressure),
-
-      pm2.5_10minute = as.numeric(.data$pm2.5_10minute),
-      pm2.5_30minute = as.numeric(.data$pm2.5_30minute),
-      pm2.5_60minute = as.numeric(.data$pm2.5_60minute),
-      pm25 = as.numeric(.data$pm2.5_60minute), # For backwards compatibility
-      pm2.5_6hour = as.numeric(.data$pm2.5_6hour),
-      pm2.5_24hour = as.numeric(.data$pm2.5_24hour),
-      pm2.5_1week = as.numeric(.data$pm2.5_1week)
-
+      elevation = round(.data$altitude * 0.3048) # convert from feet to meters
+    ) %>%
+    
+    # * Backwards compatibility ----- 
+    dplyr::mutate(
+      ID = .data$sensor_index,
+      label = .data$name,
+      sensorType = .data$model,
+      pm25 = as.numeric(.data$pm2.5_60minute),
+      targetPollutant = "PM",
+      technologyType = "consumer-grade"
     ) %>%
 
     # * Remove unwanted columns -----
@@ -197,15 +168,14 @@ pas_enhanceRawData <- function(
     # Fill in new columns where possible
     dplyr::mutate(
       deviceDeploymentID = paste0(.data$locationID, "_", .data$deviceID),
-      locationName = .data$name,
-      label = .data$name # for backwards compatibility
+      locationName = .data$name
     )
 
   # Put 'deviceDeploymentID' and 'deviceID' in front
   startingIDs <- c("deviceDeploymentID", "deviceID", "locationID")
   otherColumns <- setdiff(names(pas), startingIDs)
   orderedColumns <- c(startingIDs, otherColumns)
-  pas <- pas %>% dplyr::select(orderedColumns)
+  pas <- pas %>% dplyr::select(dplyr::all_of(orderedColumns))
 
   # ----- Add spatial metadata -------------------------------------------------
 
@@ -299,10 +269,78 @@ pas_enhanceRawData <- function(
       )
   })
 
+  # ----- Find nearby PWFSL monitors -------------------------------------------
+  
+  # NOTE:  These columns need to exist even if they are all missing
+  pas$pwfsl_closestDistance <- as.numeric(NA)
+  pas$pwfsl_closestMonitorID <- as.character(NA)
+  
+  if ( includePWFSL ) {
+    
+    if ( logger.isInitialized() ) {
+      logger.trace("Adding PWFSL monitor metadata")
+    }
+    if ( !exists('pwfsl') ) {
+      pwfsl <- PWFSLSmoke::loadLatest()
+    }
+    for ( i in seq_len(nrow(pas)) ) {
+      distances <- PWFSLSmoke::monitor_distance(pwfsl,
+                                                pas$longitude[i],
+                                                pas$latitude[i])
+      minDistIndex <- which.min(distances)
+      pas$pwfsl_closestDistance[i] <- distances[minDistIndex] * 1000 # To meters
+      pas$pwfsl_closestMonitorID[i] <- names(distances[minDistIndex])
+    }
+    
+  }
+  
+  #  ----- SCAQMD communities --------------------------------------------------
+  
+  # Pull out the name and downcase it to handle accidental mixed casing
+  name <- tolower(pas$name)
+  
+  # Create empty community region
+  pas$communityRegion <- as.character(NA)
+  
+  # NOTE:  Need to match "sctv_15 (dawson canyon) b"
+  scah_mask <- stringr::str_detect(name, "^scah_[0-9]{1,2}( ?.*$)")
+  scan_mask <- stringr::str_detect(name, "^scan_[0-9]{1,2}( ?.*$)")
+  scap_mask <- stringr::str_detect(name, "^scap_[0-9]{1,2}( ?.*$)")
+  scbb_mask <- stringr::str_detect(name, "^scbb_[0-9]{1,2}( ?.*$)")
+  scem_mask <- stringr::str_detect(name, "^scem_[0-9]{1,2}( ?.*$)")
+  schs_mask <- stringr::str_detect(name, "^schs_[0-9]{1,2}( ?.*$)")
+  sciv_mask <- stringr::str_detect(name, "^sciv_[0-9]{1,2}( ?.*$)")
+  scnp_mask <- stringr::str_detect(name, "^scnp_[0-9]{1,2}( ?.*$)")
+  scpr_mask <- stringr::str_detect(name, "^scpr_[0-9]{1,2}( ?.*$)")
+  scsb_mask <- stringr::str_detect(name, "^scsb_[0-9]{1,2}( ?.*$)")
+  scsc_mask <- stringr::str_detect(name, "^scsc_[0-9]{1,2}( ?.*$)")
+  scsg_mask <- stringr::str_detect(name, "^scsg_[0-9]{1,2}( ?.*$)")
+  scsh_mask <- stringr::str_detect(name, "^scsh_[0-9]{1,2}( ?.*$)")
+  scsj_mask <- stringr::str_detect(name, "^scsj_[0-9]{1,2}( ?.*$)")
+  sctv_mask <- stringr::str_detect(name, "^sctv_[0-9]{1,2}( ?.*$)")
+  scuv_mask <- stringr::str_detect(name, "^scuv_[0-9]{1,2}( ?.*$)")
+  
+  pas$communityRegion[scah_mask] <- "SCAH"
+  pas$communityRegion[scan_mask] <- "SCAN"
+  pas$communityRegion[scap_mask] <- "Alhambra/Monterey Park"
+  pas$communityRegion[scbb_mask] <- "Big Bear Lake"
+  pas$communityRegion[scem_mask] <- "El Monte"
+  pas$communityRegion[schs_mask] <- "Sycamore Canyon"   # typo on someone's part
+  pas$communityRegion[sciv_mask] <- "Imperial Valley"
+  pas$communityRegion[scnp_mask] <- "Nipomo"
+  pas$communityRegion[scpr_mask] <- "Paso Robles"
+  pas$communityRegion[scsb_mask] <- "Seal Beach"
+  pas$communityRegion[scsc_mask] <- "Seal Beach"        # typo on someone's part
+  pas$communityRegion[scsg_mask] <- "South Gate"
+  pas$communityRegion[scsh_mask] <- "Sycamore Canyon"
+  pas$communityRegion[scsj_mask] <- "San Jacinto"
+  pas$communityRegion[sctv_mask] <- "Temescal Valley"
+  pas$communityRegion[scuv_mask] <- "SCUV"
+  
   # ----- Return ---------------------------------------------------------------
 
-  # Add the "purple_air_synoptic" class name
-  class(pas) <- union("purple_air_synoptic", class(pas))
+  # Add the "pa_synoptic" class name
+  class(pas) <- union("pa_synoptic", class(pas))
 
   return(pas)
 

@@ -40,6 +40,9 @@ Users may request a \emph{pat} object in one of two ways:
 }
 \examples{
 \donttest{
+# Fail gracefully if any resources are not available
+try({
+
 library(AirSensor)
 
 setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
@@ -47,6 +50,8 @@ setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 pas <- pas_load()
 pat <- pat_loadLatest(label = "SCSB_07", pas = pas)
 pat_multiPlot(pat)
+
+}, silent = FALSE)
 }
 }
 \seealso{

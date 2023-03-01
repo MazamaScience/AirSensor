@@ -28,8 +28,8 @@
 #' \emph{pas} object:
 #' 
 #' \code{"pm25" "temperature" "humidity" "pressure" 
-#'  "pm25_current" "pm25_10min" "pm25_30min" "pm25_1hr" "pm25_6hr" 
-#'  "pm25_1day" "pm25_1week" "pwfsl_closestDistance"}
+#'  "pm2.5_10minute" "pm2.5_30minute" "pm2.5_60minute" 
+#'  "pm2.5_6hour" "pm2.5_24hour" "pm2.5_1week"}
 #' 
 #' Available \code{paletteName} options include an \code{"AQI"} color palette, 
 #' as well as a suite of sequential and diverging palettes from the 
@@ -58,7 +58,7 @@
 
 pas_staticMap <- function(
   pas = NULL, 
-  parameter = "pm25_1hr",
+  parameter = "pm25",
   paletteName = "Purples", 
   mapTheme = "terrain",
   mapShape = "sq",
@@ -311,5 +311,30 @@ pas_staticMap <- function(
   # ----- Return ---------------------------------------------------------------
   
   return(staticMap)
+  
+}
+
+# ===== DEBUG ==================================================================
+
+if ( FALSE ) {
+  
+  pas <-
+    example_pas %>%
+    pas_filterArea(-118.5, -117.5, 33.5, 34.5)
+  
+  parameter = "pm25"
+  paletteName = "Purples"
+  mapTheme = "terrain"
+  mapShape = "sq"
+  direction = 1
+  minScale = 0
+  maxScale = 150
+  shape = 15
+  size = 2.0
+  alpha = 0.8
+  bbuff = 0.5
+  zoomAdjust = 0  
+  
+  
   
 }

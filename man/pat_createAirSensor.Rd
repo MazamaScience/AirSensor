@@ -49,6 +49,9 @@ Additional named parameters can be be passed to \code{FUN} through \code{...}.
 }
 \examples{
 \donttest{
+# Fail gracefully if any resources are not available
+try({
+
 library(AirSensor)
 
 # Default FUN = PurpleAirQC_hourly_AB_00
@@ -93,8 +96,9 @@ sensor <- pat_createAirSensor(
 )
 
 PWFSLSmoke::monitor_timeseriesPlot(sensor, shadedNight = TRUE)
-}
 
+}, silent = FALSE)
+}
 }
 \seealso{
 \link{PurpleAirQC_hourly_AB_01}

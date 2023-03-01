@@ -39,6 +39,9 @@ algorithm \code{CF_ATM}.
 }
 \examples{
 \donttest{
+# Fail gracefully if any resources are not available
+try({
+
 library(AirSensor)
 
 setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
@@ -53,6 +56,8 @@ pat_rawList <- pat_downloadParseRawData(
 pat <- pat_createPATimeseriesObject(pat_rawList)
 
 pat_multiPlot(pat)
+
+}, silent = FALSE)
 }
 }
 \references{

@@ -57,6 +57,9 @@
 #'
 #' @examples
 #' \donttest{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' library(AirSensor)
 #' 
 #' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
@@ -67,6 +70,8 @@
 #' 
 #' # Polar plot
 #' sensor_polarPlot(sensor, resolution = "normal")
+#' 
+#' }, silent = FALSE)
 #' }
 
 sensor_polarPlot <- function(

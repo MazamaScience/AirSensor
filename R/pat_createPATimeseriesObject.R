@@ -37,6 +37,9 @@
 #' 
 #' @examples
 #' \donttest{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' library(AirSensor)
 #' 
 #' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
@@ -51,6 +54,8 @@
 #' pat <- pat_createPATimeseriesObject(pat_rawList)
 #' 
 #' pat_multiPlot(pat)
+#'
+#' }, silent = FALSE)
 #' }
 
 pat_createPATimeseriesObject <- function(

@@ -5,9 +5,13 @@
 \title{Download synoptic data from PurpleAir}
 \usage{
 pas_downloadParseRawData(
-  apiReadKey = NULL,
-  maxAge = 3600 * 24 * 7,
-  outsideOnly = TRUE,
+  api_key = NULL,
+  fields = SENSOR_DATA_AVG_PM25_FIELDS,
+  location_type = 0,
+  read_keys = NULL,
+  show_only = NULL,
+  modified_since = NULL,
+  max_age = 3600 * 24 * 7,
   west = NULL,
   east = NULL,
   south = NULL,
@@ -16,14 +20,31 @@ pas_downloadParseRawData(
 )
 }
 \arguments{
-\item{apiReadKey}{PurpleAir API Read Key. If \code{apiReadKey = NULL}, it
+\item{api_key}{PurpleAir API READ Key. If \code{api_key = NULL}, it
 will be obtained using \code{getAPIKey("PurpleAir-read")}.
 See \code{MazamaCoreUtils::\link[MazamaCoreUtils:setAPIKey]{setAPIKey}}.}
 
-\item{maxAge}{Number of seconds used to filter results to only include sensors
-modified or updated within the \code{maxAge} seconds. Using a value of 0 will match all sensors.}
+\item{fields}{Character string with PurpleAir field names for the Get Sensor Data API.}
 
-\item{outsideOnly}{Logical specifying whether to restrict requests to outside sensors only.}
+\item{location_type}{The \code{location_type} of the sensors. Possible values
+are: 0 = Outside, 1 = Inside or \code{NULL} = both.}
+
+\item{read_keys}{Optional comma separated list of sensor read_keys is required
+for private devices. It is separate to the api_key and each sensor has its own
+read_key. Submit multiple keys by separating them with a comma (,) character
+for example: key-one,key-two,key-three.}
+
+\item{show_only}{Optional comma separated list of sensor_index values. When
+provided, the results are limited only to the sensors included in this list.}
+
+\item{modified_since}{The modified_since parameter causes only sensors modified
+after the provided time stamp to be included in the results. Using the
+time_stamp value from a previous call (recommended) will limit results to
+those with new values since the last request. Using a value of 0 will match
+sensors modified at any time.}
+
+\item{max_age}{Number of seconds used to filter results to only include sensors
+modified or updated within the \code{max_age} seconds. Using a value of 0 will match all sensors.}
 
 \item{west}{Longitude of the western edge of the bounding box in which to find sensors.}
 
@@ -53,11 +74,15 @@ try({
 
 library(AirSensor)
 
+initializeMazamaSpatialUtils()
+
 pas_raw <-
   pas_downloadParseRawData(
-    apiReadKey = PA_API_READ_KEY,
-    maxAge = 3600 * 24,
-    outsideOnly = TRUE,
+    api_key = MY_API_READ_KEY,
+    fields = SENSOR_DATA_AVG_PM25_FIELDS,
+    location_type = 0,
+    modified_since = NULL,
+    max_age = 3600 * 24,
     west = -125,
     east = -117,
     south = 42,

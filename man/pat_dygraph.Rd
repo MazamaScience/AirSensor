@@ -59,29 +59,4 @@ The list of available parameters include:
 \item{\code{pressure} -- pressure (hPa)}
 }
 }
-\examples{
-
-\donttest{
-library(AirSensor)
-
-# Create a new pat object for North Bend, WA
-North_Bend_Weather <- 
-  pat_createNew(
-    label = "North Bend Weather", 
-    pas = example_pas,
-    startdate = 20180801, 
-    enddate = 20180901,
-    verbose = TRUE
-  )
-
-if ( interactive() ) {
-  # Create interactive timeseries plot
-  #  - sample just 1000 points for more efficient plotting
-  #  - plot using a 6-hour rolling mean to fill in holes
-  North_Bend_Weather \%>\%
-    pat_sample(sampleSize = 1000, setSeed = 1) \%>\%
-    pat_dygraph(xlab = "2018", rollPeriod = 6)
-}
-}
-}
 \keyword{pa_timeseries}

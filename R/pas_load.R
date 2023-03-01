@@ -39,20 +39,6 @@
 #' 
 #' @seealso \link{pas_createNew}
 #' 
-#' @examples
-#' \donttest{
-#' library(AirSensor)
-#' 
-#' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
-#' 
-#' pas <- pas_load()
-#' 
-#' if ( interactive() ) {
-#'   pas %>% 
-#'     pas_filter(stateCode == "CA") %>%
-#'     pas_leaflet()
-#' }
-#' } 
 
 pas_load <- function(
   datestamp = NULL,

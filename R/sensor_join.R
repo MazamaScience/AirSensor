@@ -16,6 +16,9 @@
 #' 
 #' @examples
 #' \donttest{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' library(AirSensor)
 #' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
 #' 
@@ -30,6 +33,8 @@
 #' # Gaps in the time axis are filled with NA
 #' feb_apr <- sensor_join(feb, apr)
 #' PWFSLSmoke::monitor_timeseriesPlot(feb_apr, style = 'gnats')
+#' 
+#' }, silent = FALSE)
 #' }
 
 sensor_join <- function(

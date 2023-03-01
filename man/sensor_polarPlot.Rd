@@ -87,6 +87,9 @@ showing concentration by wind speed and direction. This function wraps the
 }
 \examples{
 \donttest{
+# Fail gracefully if any resources are not available
+try({
+
 library(AirSensor)
 
 setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
@@ -97,6 +100,8 @@ sensor <- pat_createAirSensor(pat)
 
 # Polar plot
 sensor_polarPlot(sensor, resolution = "normal")
+
+}, silent = FALSE)
 }
 }
 \seealso{

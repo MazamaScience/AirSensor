@@ -66,19 +66,6 @@ Users may request a \emph{pat} object in one of two ways:
 2) Pass in both \code{label} and \code{pas} so that the 
 \code{deviceDeploymentID} can be looked up.
 }
-\examples{
-\donttest{
-library(AirSensor)
-
-pat <- pat_createNew(
-  label = "Seattle", 
-  pas = example_pas, 
-  startdate = 20180701, 
-  enddate = 20180901
-)
-pat_multiPlot(pat)
-}
-}
 \seealso{
 \link{pat_downloadParseRawData}
 }

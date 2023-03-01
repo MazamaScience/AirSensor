@@ -49,6 +49,9 @@
 #' 
 #' @examples
 #' \donttest{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' library(AirSensor)
 #' 
 #' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
@@ -64,6 +67,8 @@
 #' )
 #' 
 #' pat_multiPlot(pat)
+#' 
+#' }, silent = FALSE)
 #' }
 
 pat_load <- function(

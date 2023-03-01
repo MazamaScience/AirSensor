@@ -44,6 +44,9 @@
 #' 
 #' @examples
 #' \donttest{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' library(AirSensor)
 #' 
 #' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
@@ -53,6 +56,8 @@
 #' 
 #' may <- pat_loadMonth(label = "SCNP_20", pas = pas, datestamp = 201905)
 #' pat_multiPlot(may)
+#' 
+#' }, silent = FALSE)
 #' }
 
 pat_loadMonth <- function(

@@ -8,7 +8,8 @@ pas_enhanceRawData(
   pas_raw = NULL,
   countryCodes = NULL,
   stateCodes = NULL,
-  counties = NULL
+  counties = NULL,
+  includePWFSL = TRUE
 )
 }
 \arguments{
@@ -19,6 +20,9 @@ pas_enhanceRawData(
 \item{stateCodes}{ISO-3166-2 alpha-2 state codes used to subset the data.}
 
 \item{counties}{US county names or 5-digit FIPS codes used to subset the data.}
+
+\item{includePWFSL}{Logical specifying whether to calculate distances from 
+PWFSL monitors.}
 }
 \value{
 Enhanced dataframe of synoptic PurpleAir data.

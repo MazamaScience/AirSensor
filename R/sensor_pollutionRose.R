@@ -51,6 +51,9 @@
 #'
 #' @examples
 #' \donttest{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
 #' library(AirSensor)
 #' 
 #' # Set default location of pre-generated data files
@@ -69,6 +72,8 @@
 #' 
 #' # Plot rose using mean binning
 #' sensor_pollutionRose(sensor, windData, statistic = "prop.mean")
+#' 
+#' }, silent = FALSE)
 #' }
 
 sensor_pollutionRose <- function(

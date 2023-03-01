@@ -37,22 +37,6 @@
 #' 
 #' @references \url{https://www2.purpleair.com/community/faq#!hc-sd-card-csv-file-header}
 #' 
-#' @examples
-#' \donttest{
-#' library(AirSensor)
-#' 
-#' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
-#' 
-#' pas <- pas_load()
-#' 
-#' pat_rawList <- 
-#'   pat_downloadParseRawData(
-#'     id = "78df3c292c8448f7_21257",
-#'     pas = pas
-#'   )
-#' 
-#' lapply(pat_rawList, head)
-#' }
 
 pat_downloadParseRawData <- function(
   id = NULL,
