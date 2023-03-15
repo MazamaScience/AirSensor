@@ -2,33 +2,42 @@
 % Please edit documentation in R/pat_createNew.R
 \name{pat_createNew}
 \alias{pat_createNew}
-\title{Load latest PurpleAir time series data}
+\title{Create a new PurpleAir timeseries dataset.}
 \usage{
 pat_createNew(
-  id = NULL,
-  label = NULL,
+  api_key = NULL,
   pas = NULL,
+  sensor_index = NULL,
   startdate = NULL,
   enddate = NULL,
-  timezone = NULL,
-  baseUrl = "https://api.thingspeak.com/channels/",
+  timezone = "UTC",
+  average = 0,
+  fields = SENSOR_HISTORY_PM25_FIELDS,
+  baseUrl = "https://api.purpleair.com/v1/sensors",
   verbose = FALSE
 )
 }
 \arguments{
-\item{id}{PurpleAir sensor 'deviceDeploymentID'.}
+\item{api_key}{PurpleAir API Read Key. If \code{api_key = NULL}, it
+will be obtained using \code{getAPIKey("PurpleAir-read")}.
+See \code{MazamaCoreUtils::\link[MazamaCoreUtils:setAPIKey]{setAPIKey}}.}
 
-\item{label}{PurpleAir sensor 'label'.}
+\item{pas}{Previously generated \emph{pas} object containing \code{sensor_index}.}
 
-\item{pas}{PurpleAir Synoptic \emph{pas} object.}
+\item{sensor_index}{PurpleAir sensor unique identifier.}
 
-\item{startdate}{Desired UTC start time (ISO 8601) or \code{POSIXct}.}
+\item{startdate}{Desired start time (ISO 8601) or \code{POSIXct}.}
 
-\item{enddate}{Desired UTC end time (ISO 8601) or \code{POSIXct}.}
+\item{enddate}{Desired end time (ISO 8601) or \code{POSIXct}.}
 
-\item{timezone}{Timezone used to interpret start and end dates.}
+\item{timezone}{Olson timezone used to interpret dates.}
 
-\item{baseUrl}{Base URL for Thingspeak API.}
+\item{average}{Temporal averaging in minutes performed by PurpleAir. One of:
+0 (raw), 10, 30, 60 (hour), 360, 1440 (day).}
+
+\item{fields}{Character string with PurpleAir field names for the Get Sensor Data API.}
+
+\item{baseUrl}{Base URL for the PurpleAir API.}
 
 \item{verbose}{Logical controlling the generation of warning and error messages.}
 }
@@ -36,36 +45,39 @@ pat_createNew(
 A PurpleAir Timeseries \emph{pat} object.
 }
 \description{
-Retrieve and parse timeseries data from the Thingspeak API for 
-specific PurpleAir sensors.
+Cerate a \code{pat} object for a specific \code{sensor_index}.
+}
+\examples{
+\donttest{
+# Fail gracefully if any resources are not available
+try({
 
-Dates can be anything that is understood by 
-\code{MazamaCoreUtils::parseDatetime()} including any of the following 
-recommended formats:
+library(AirSensor)
 
-\itemize{
-\item{\code{"YYYYmmdd"}}
-\item{\code{"YYYY-mm-dd"}}
-\item{\code{"YYYY-mm-dd HH:MM:SS"}}
+pat <-
+  pat_createNew(
+    api_key = MY_API_READ_KEY,
+    pas = MY_PAS,
+    sensor_index = "10168",
+    startdate = "2023-01-01",
+    enddate = "2023-01-08",
+    timezone = "UTC",
+    verbose = TRUE
+  )
+
+View(pat$meta[1:100,])
+
+}, silent = FALSE)
 }
 }
-\note{
-When \code{timezone = NULL}, the default, dates are interpreted to be 
-in the local timezone for the sensor of interest.
+\references{
+\href{https://www2.purpleair.com}{PurpleAir}
 
-Starting with \pkg{AirSensor} version 0.6, archive file names are 
-generated with a unique "device-deployment" identifier by combining a unique 
-location ID with a unique device ID. These "device-deployment" identifiers 
-guarantee that movement of a sensor will result in the creation of a new
-time series.
+\href{https://api.purpleair.com}{PurpleAir API}
 
-Users may request a \emph{pat} object in one of two ways:
+\href{https://www2.purpleair.com/policies/terms-of-service}{PurpleAir Terms of service}
 
-1) Pass in \code{id} with a valid a \code{deviceDeploymentID}
+\href{https://www2.purpleair.com/pages/license}{PurpleAir Data license}
 
-2) Pass in both \code{label} and \code{pas} so that the 
-\code{deviceDeploymentID} can be looked up.
-}
-\seealso{
-\link{pat_downloadParseRawData}
+\href{https://www2.purpleair.com/pages/attribution}{PurpleAir Data Attribution}
 }

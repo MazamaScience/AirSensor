@@ -89,8 +89,8 @@ pas <-
   pas_createNew(
     api_key = MY_API_READ_KEY,
     countryCodes = "US",
-    stateCodes = "WA",
-    counties = c("Okanogan", "Ferry"),
+    stateCodes = "CA",
+    show_only = SCAQMD_SENSOR_INDICES,
     lookbackDays = 1,
     location_type = 0
   )

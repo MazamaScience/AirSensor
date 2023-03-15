@@ -1,273 +1,289 @@
 #' @export
 #' @importFrom rlang .data
-#' @importFrom MazamaCoreUtils logger.debug
-#' 
-#' @title Load latest PurpleAir time series data
-#' 
-#' @param id PurpleAir sensor 'deviceDeploymentID'.
-#' @param label PurpleAir sensor 'label'.
-#' @param pas PurpleAir Synoptic \emph{pas} object.
-#' @param startdate Desired UTC start time (ISO 8601) or \code{POSIXct}.
-#' @param enddate Desired UTC end time (ISO 8601) or \code{POSIXct}.
-#' @param timezone Timezone used to interpret start and end dates.
-#' @param baseUrl Base URL for Thingspeak API.
-#' @param verbose Logical controlling the generation of warning and error messages.
-#' 
-#' @return A PurpleAir Timeseries \emph{pat} object.
-#' 
-#' @description Retrieve and parse timeseries data from the Thingspeak API for 
-#' specific PurpleAir sensors.
-#' 
-#' Dates can be anything that is understood by 
-#' \code{MazamaCoreUtils::parseDatetime()} including any of the following 
-#' recommended formats:
-#' 
-#' \itemize{
-#' \item{\code{"YYYYmmdd"}}
-#' \item{\code{"YYYY-mm-dd"}}
-#' \item{\code{"YYYY-mm-dd HH:MM:SS"}}
-#' }
-#' 
-#' @note When \code{timezone = NULL}, the default, dates are interpreted to be 
-#' in the local timezone for the sensor of interest.
+#' @importFrom MazamaCoreUtils logger.error logger.debug logger.isInitialized
+#' @importFrom MazamaCoreUtils getAPIKey
 #'
-#' @note Starting with \pkg{AirSensor} version 0.6, archive file names are 
-#' generated with a unique "device-deployment" identifier by combining a unique 
-#' location ID with a unique device ID. These "device-deployment" identifiers 
-#' guarantee that movement of a sensor will result in the creation of a new
-#' time series.
-#' 
-#' Users may request a \emph{pat} object in one of two ways:
-#' 
-#' 1) Pass in \code{id} with a valid a \code{deviceDeploymentID}
-#' 
-#' 2) Pass in both \code{label} and \code{pas} so that the 
-#' \code{deviceDeploymentID} can be looked up.
-#' @seealso \link{pat_downloadParseRawData}
-#' 
+#' @title Create a new PurpleAir timeseries dataset.
+#'
+#' @param api_key PurpleAir API Read Key. If \code{api_key = NULL}, it
+#' will be obtained using \code{getAPIKey("PurpleAir-read")}.
+#' See \code{MazamaCoreUtils::\link[MazamaCoreUtils:setAPIKey]{setAPIKey}}.
+#' @param pas Previously generated \emph{pas} object containing \code{sensor_index}.
+#' @param sensor_index PurpleAir sensor unique identifier.
+#' @param startdate Desired start time (ISO 8601) or \code{POSIXct}.
+#' @param enddate Desired end time (ISO 8601) or \code{POSIXct}.
+#' @param timezone Olson timezone used to interpret dates.
+#' @param average Temporal averaging in minutes performed by PurpleAir. One of:
+#' 0 (raw), 10, 30, 60 (hour), 360, 1440 (day).
+#' @param fields Character string with PurpleAir field names for the Get Sensor Data API.
+#' @param baseUrl Base URL for the PurpleAir API.
+#' @param verbose Logical controlling the generation of warning and error messages.
+#'
+#' @return A PurpleAir Timeseries \emph{pat} object.
+#'
+#' @description Cerate a \code{pat} object for a specific \code{sensor_index}.
+#'
+#' @references \href{https://www2.purpleair.com}{PurpleAir}
+#' @references \href{https://api.purpleair.com}{PurpleAir API}
+#' @references \href{https://www2.purpleair.com/policies/terms-of-service}{PurpleAir Terms of service}
+#' @references \href{https://www2.purpleair.com/pages/license}{PurpleAir Data license}
+#' @references \href{https://www2.purpleair.com/pages/attribution}{PurpleAir Data Attribution}
+#'
+#' @examples
+#' \donttest{
+#' # Fail gracefully if any resources are not available
+#' try({
+#'
+#' library(AirSensor)
+#'
+#' pat <-
+#'   pat_createNew(
+#'     api_key = MY_API_READ_KEY,
+#'     pas = MY_PAS,
+#'     sensor_index = "10168",
+#'     startdate = "2023-01-01",
+#'     enddate = "2023-01-08",
+#'     timezone = "UTC",
+#'     verbose = TRUE
+#'   )
+#'
+#' View(pat$meta[1:100,])
+#'
+#' }, silent = FALSE)
+#' }
 
 pat_createNew <- function(
-  id = NULL,
-  label = NULL,
-  pas = NULL,
-  startdate = NULL,
-  enddate = NULL,
-  timezone = NULL,
-  baseUrl = "https://api.thingspeak.com/channels/",
-  verbose = FALSE
+    api_key = NULL,
+    pas = NULL,
+    sensor_index = NULL,
+    startdate = NULL,
+    enddate = NULL,
+    timezone = "UTC",
+    average = 0,
+    fields = SENSOR_HISTORY_PM25_FIELDS,
+    baseUrl = "https://api.purpleair.com/v1/sensors",
+    verbose = FALSE
 ) {
-  
+
   # ----- Validate parameters --------------------------------------------------
-  
-  MazamaCoreUtils::stopIfNull(baseUrl)
+
+  if ( is.null(api_key) )
+    api_key <- MazamaCoreUtils::getAPIKey("PurpleAir-read")
+
+  MazamaCoreUtils::stopIfNull(api_key)
   MazamaCoreUtils::stopIfNull(pas)
-  
-  # Get the deviceDeploymentID
-  if ( is.null(id) && is.null(label) ) {
-    
-    stop(paste0("label or id must be provided"))
-    
-  } else if ( is.null(id) && !is.null(label) ) {
-    
-    if ( is.null(pas) )
-      stop(paste0("pas must be provided when loading by label"))
-    
-    if ( !label %in% pas$label )
-      stop(sprintf("label '%s' is not found in the 'pas' object", label))
-    
-    # Get the deviceDeploymentID from the label
-    pattern <- paste0("^", label, "$")
-    deviceDeploymentID <- pas_getDeviceDeploymentIDs(pas, pattern = pattern)
-    
-    if ( length(deviceDeploymentID) > 1 )
-      stop(sprintf("label '%s' matches more than one sensor", label))
-    
-  } else {
-    
-    # Use id whenever it is defined, potentially ignoring label
-    deviceDeploymentID <- id
-    
+  MazamaCoreUtils::stopIfNull(sensor_index)
+  MazamaCoreUtils::stopIfNull(timezone)
+  MazamaCoreUtils::stopIfNull(average)
+  MazamaCoreUtils::stopIfNull(fields)
+  MazamaCoreUtils::stopIfNull(baseUrl)
+  verbose <- MazamaCoreUtils::setIfNull(verbose, FALSE)
+
+  if ( !average %in% c(0, 10, 30, 60, 360, 1440, 10080, 44640, 53560) ) {
+    stop("'average' must be one of: 0, 10, 30, 60, 360, 1440, 10080, 44640, 53560")
   }
-  
+
   # ----- Determine date sequence ----------------------------------------------
-  
-  # NOTE:  In 2019, ThingSpeak had a download maximum of 8000 records so we limit
-  # NOTE:  time ranges to one week which keeps us under this limit.
-  
+
+  # NOTE:  In 2023, the PurpleAir API limits each request to two days of data so
+  # NOTE:  we break up the time range into separate requests.
+
   # Find a single, parent record
   pas_single <-
     pas %>%
-    dplyr::filter(is.na(.data$parentID)) %>%
-    dplyr::filter(.data$deviceDeploymentID == !!deviceDeploymentID)
-  
-  if ( nrow(pas_single) > 1 ) {
-    stop(paste0("Multiple sensors share deviceDeploymentID: ",
-                deviceDeploymentID, "'"))
-  } 
+    dplyr::filter(sensor_index == !!sensor_index)
+
+  if ( nrow(pas_single) == 0 ) {
+    stop(sprintf("'pas' has zero records with sensor_index: %s", sensor_index))
+  } else if ( nrow(pas_single) > 1 ) {
+    stop(sprintf("'pas' has multiple records with sensor_index: %s", sensor_index))
+  }
 
   # Get the timezone associated with this sensor
   if ( is.null(timezone) ) {
-    timezone <-
-      pas_single %>%
-      dplyr::pull(.data$timezone)
+    timezone <- pas_single$timezone
   }
-  
+
   # Create a valid dateRange
   if ( !is.null(startdate) && !is.null(enddate) ) {
     # Don't require day boundaries
     dateRange <- MazamaCoreUtils::timeRange(
-      starttime = startdate, 
-      endtime = enddate, 
-      timezone = timezone, 
-      unit = "min",
+      starttime = startdate,
+      endtime = enddate,
+      timezone = timezone,
+      unit = "sec",
       ceilingStart = FALSE,
       ceilingEnd = FALSE
     )
   } else {
-    # Default to 7 days with day boundaries
+    # Default to 2 days with day boundaries
     dateRange <- MazamaCoreUtils::dateRange(
-      startdate = startdate, 
-      enddate = enddate, 
-      timezone = timezone, 
-      unit = "min",
+      startdate = startdate,
+      enddate = enddate,
+      timezone = timezone,
+      unit = "sec",
       ceilingStart = FALSE,
       ceilingEnd = FALSE,
-      days = 7
+      days = 2
     )
-  }
-  
-  # Create a sequence of weekly POSIXct times
-  dateSeq <- seq(dateRange[1], dateRange[2], by = lubridate::ddays(7))
-  
-  # Tack on the final data if needed
-  if ( dateRange[2] > utils::tail(dateSeq, 1) ) {
-    dateSeq <- c(dateSeq, dateRange[2])
-  }
-  
-  # ----- Load data from URL ---------------------------------------------------
-  
-  if ( verbose ) {
-    message(sprintf("Requesting data for %s from %s to %s", 
-                    id, dateSeq[1], dateSeq[2]))
-  }
-  
-  # Use more specific ID rather than the label
-  pat_rawList <- pat_downloadParseRawData(
-    id = pas_single$deviceDeploymentID,
-    label = NULL,
-    pas = pas,
-    startdate = dateSeq[1],
-    enddate = dateSeq[2],
-    timezone = timezone,
-    baseUrl = baseUrl
-  )
-  
-  if ( length(dateSeq) > 2 ) {
-    
-    for ( i in 2:(length(dateSeq) - 1) ) {
-      
-      if ( verbose ) {
-        message(sprintf("Requesting data for %s from %s to %s", 
-                        id, dateSeq[i], dateSeq[i+1]))
-      }
-      
-      new_pat_rawList <- pat_downloadParseRawData(
-        id = pas_single$deviceDeploymentID,
-        label = NULL,
-        pas = pas,
-        startdate = dateSeq[i],
-        enddate = dateSeq[i + 1],
-        timezone = timezone,
-        baseUrl = baseUrl
-      )
-      
-      pat_rawList$A_PRIMARY <- 
-        dplyr::bind_rows(pat_rawList$A_PRIMARY, new_pat_rawList$A_PRIMARY) %>%
-        dplyr::distinct()
-      pat_rawList$A_SECONDARY <- 
-        dplyr::bind_rows(pat_rawList$A_SECONDARY, new_pat_rawList$A_SECONDARY) %>%
-        dplyr::distinct()
-      pat_rawList$B_PRIMARY <- 
-        dplyr::bind_rows(pat_rawList$B_PRIMARY, new_pat_rawList$B_PRIMARY) %>%
-        dplyr::distinct()
-      pat_rawList$B_SECONDARY <- 
-        dplyr::bind_rows(pat_rawList$B_SECONDARY, new_pat_rawList$B_SECONDARY) %>%
-        dplyr::distinct()
-      
-    }
-    
   }
 
-  # ----- Merge and harmonize --------------------------------------------------
-  
-  if ( verbose ) {
-    message(sprintf("Download completed, merging/harmonizing data ..."))
+  # Create a sequence of every-2-days POSIXct times
+  dateSequence <- seq(dateRange[1], dateRange[2], by = lubridate::ddays(2))
+
+  # Tack on the final data if needed
+  if ( dateRange[2] > utils::tail(dateSequence, 1) ) {
+    dateSequence <- c(dateSequence, dateRange[2])
   }
-  pat <- pat_createPATimeseriesObject(pat_rawList)
-  
-  # Guarantee we have no duplicates and only the requested time range
-  pat <- 
-    pat %>% 
-    pat_distinct() %>%
-    pat_filterDatetime(
-      startdate = dateRange[1],
-      enddate = dateRange[2],
-      timezone = timezone
+
+  # ----- Create data ----------------------------------------------------------
+
+  if ( verbose ) {
+    message(sprintf("Requesting data for sensor_index %s from %s to %s",
+                    sensor_index, dateSequence[1], dateSequence[2]))
+  }
+
+  dataList <- list()
+
+  # Use more specific ID rather than the label
+  dataList[[1]] <-
+    pat_downloadParseRawData(
+      api_key = api_key,
+      sensor_index = sensor_index,
+      startdate = dateSequence[1],
+      enddate = dateSequence[2],
+      timezone = timezone,
+      average = average,
+      fields = fields,
+      baseUrl = baseUrl
     )
-  
+
+  if ( length(dateSequence) > 2 ) {
+
+    for ( i in 2:(length(dateSequence) - 1) ) {
+
+      if ( verbose ) {
+        message(sprintf("Requesting data for sensor_index %s from %s to %s",
+                        sensor_index, dateSequence[i], dateSequence[i+1]))
+      }
+
+      dataList[[i]] <-
+        pat_downloadParseRawData(
+          api_key = api_key,
+          sensor_index = sensor_index,
+          startdate = dateSequence[i],
+          enddate = dateSequence[i + 1],
+          timezone = timezone,
+          average = average,
+          fields = fields,
+          baseUrl = baseUrl
+        )
+
+    }
+
+  }
+
+  data <-
+    dplyr::bind_rows(dataList) %>%
+    dplyr::rename(datetime = .data$time_stamp) %>%
+    dplyr::arrange(.data$datetime)
+
+  # ----- Create meta ----------------------------------------------------------
+
+  # Retain device-deployment columns from the pas object
+  pat_metaNames <-
+    c(
+      "deviceDeploymentID", 
+      "deviceID", 
+      "locationID", 
+      "locationName", 
+      "longitude", 
+      "latitude", 
+      "elevation", 
+      "countryCode", 
+      "stateCode", 
+      "countyName", 
+      "timezone", 
+      "houseNumber", 
+      "street", 
+      "city", 
+      "zip", 
+      "sensor_index", 
+      # "last_modified", 
+      # "date_created", 
+      # "last_seen", 
+      "privacy", 
+      "name", 
+      "location_type", 
+      "model", 
+      "hardware", 
+      # "led_brightness", 
+      "firmware_version", 
+      "firmware_upgrade", 
+      # "rssi", 
+      # "uptime", 
+      # "pa_latency", 
+      # "memory", 
+      # "position_rating", 
+      "altitude", 
+      # "channel_state", 
+      # "channel_flags", 
+      # "channel_flags_manual", 
+      # "channel_flags_auto", 
+      # "confidence", 
+      # "confidence_auto", 
+      # "confidence_manual", 
+      # "humidity", 
+      # "temperature", 
+      # "pressure", 
+      # "pm2.5_10minute", 
+      # "pm2.5_30minute", 
+      # "pm2.5_60minute", 
+      # "pm2.5_6hour", 
+      # "pm2.5_24hour", 
+      # "pm2.5_1week", 
+      "sensorManufacturer", 
+      "ID", 
+      "label", 
+      "sensorType", 
+      # "pm25", 
+      "targetPollutant", 
+      "technologyType", 
+      "pwfsl_closestDistance", 
+      "pwfsl_closestMonitorID",
+      "communityRegion"
+    )
+
+  meta <-
+    pas_single %>%
+    dplyr::select(dplyr::all_of(pat_metaNames))
+
+  # Remove "pa_synoptic" class
+  attributes(meta)$class <- setdiff(attributes(meta)$class, "pa_synoptic")
+
   # ----- Return ---------------------------------------------------------------
-  
+
+  # Combine meta and data dataframes into a list
+  pat <- list(meta = meta, data = data)
+  class(pat) <- c("pa_timeseries", class(pat))
+
   return(pat)
-  
+
 }
 
 # ===== DEBUGGING ==============================================================
 
 if ( FALSE ) {
-  
-  library(AirSensor)
-  
-  setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1") # SCAQMD sensors
-  
-  pas <- pas_load()
 
-  id <- "0bf2ba90b55e7ce6_2025" # 
-  label <- NULL
-  startdate <- 20170930
-  enddate <- 20171102
-  timezone <- NULL
-  baseUrl <- "https://api.thingspeak.com/channels/"
-  verbose <- TRUE
-  
-  
-  pat <- pat_createNew(
-    id,
-    label,
-    pas,
-    startdate,
-    enddate,
-    timezone,
-    baseUrl,
-    verbose
-  )
+  api_key = MY_API_READ_KEY
+  pas = example_pas
+  sensor_index = "10168"
+  startdate = "2023-01-01"
+  enddate = "2023-01-08"
+  timezone = "America/Los_Angeles"
+  average = 0
+  fields = SENSOR_HISTORY_PM25_FIELDS
+  baseUrl = "https://api.purpleair.com/v1/sensors"
+  verbose = TRUE
 
-  
-    
-  # Default settings
-  id = NULL
-  label = NULL
-  pas = example_pas
-  startdate = NULL
-  enddate = NULL
-  timezone = NULL
-  baseUrl = "https://api.thingspeak.com/channels/"
-  verbose = FALSE
-  
-  # Documentation example
-  label = "Seattle"
-  pas = example_pas
-  startdate = 20180701
-  enddate = 20180901
-  
-  
 }

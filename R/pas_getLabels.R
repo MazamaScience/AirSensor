@@ -7,14 +7,10 @@
 #' @param pattern Text pattern used to filter station labels.
 #' @param idPattern Text pattern used to filter \code{deviceDeploymentID}.
 #' @param isOutside Logical, is the sensor located outside?
-#' @param isParent Logical, is the record associated with a the A channel?
 #' 
 #' @description The incoming \code{pas} object is first filtered based on the 
-#' values of \code{stateCodes}, \code{pattern}, \code{isOutside} and \code{isParent}.
+#' values of \code{stateCodes}, \code{pattern} and \code{isOutside}.
 #' The values associated with the \code{"label"} column are then returned.
-#' 
-#' This function is useful for returning values associated with specific
-#' \emph{devices}, which are represented by records with \code{isParent = TRUE}.
 #' 
 #' @return Vector of values.
 #' 
@@ -34,8 +30,7 @@ pas_getLabels <- function(
   pas = NULL,
   pattern = ".*",
   idPattern = ".*",
-  isOutside = TRUE,
-  isParent = TRUE
+  isOutside = TRUE
 ) {
   
   # ----- Validate parameters --------------------------------------------------
@@ -49,8 +44,7 @@ pas_getLabels <- function(
     name = "label", 
     pattern = pattern, 
     idPattern = idPattern,
-    isOutside = isOutside, 
-    isParent = isParent
+    isOutside = isOutside
   )
   
   # ---- Return ----------------------------------------------------------------

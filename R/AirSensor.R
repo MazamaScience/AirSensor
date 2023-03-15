@@ -18,10 +18,6 @@
 #' retrieved with the \pkg{PWFSLSmoke} package.
 NULL
 
-# ----- Package Data -----------------------------------------------------------
-
-# Relocated to R/data.R
-
 # ----- Internal Package State -------------------------------------------------
 
 airsensorEnv <- new.env(parent = emptyenv())

@@ -1,5 +1,6 @@
 #' @export
 #' @importFrom rlang .data
+#' @importFrom MazamaCoreUtils logger.isInitialized logger.trace 
 #'
 #' @title Enhance synoptic data from PurpleAir
 #'

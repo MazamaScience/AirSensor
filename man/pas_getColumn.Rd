@@ -9,8 +9,7 @@ pas_getColumn(
   name = NULL,
   pattern = ".*",
   idPattern = ".*",
-  isOutside = TRUE,
-  isParent = TRUE
+  isOutside = TRUE
 )
 }
 \arguments{
@@ -23,19 +22,14 @@ pas_getColumn(
 \item{idPattern}{Text pattern used to filter \code{deviceDeploymentID}.}
 
 \item{isOutside}{Logical, is the sensor located outside?}
-
-\item{isParent}{Logical, is the record associated with a the A channel?}
 }
 \value{
 Vector of values.
 }
 \description{
 The incoming \code{pas} object is first filtered based on the 
-values of \code{states}, \code{pattern}, \code{isOutside} and \code{isParent}.
+values of \code{states}, \code{pattern} and \code{isOutside}.
 The values associated with the \code{name} column are then returned.
-
-This function is useful for returning values associated with specific
-\emph{devices}, which are represented by records with \code{isParent = TRUE}.
 }
 \examples{
 library(AirSensor)

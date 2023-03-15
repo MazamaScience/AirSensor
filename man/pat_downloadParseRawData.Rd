@@ -2,57 +2,77 @@
 % Please edit documentation in R/pat_downloadParseRawData.R
 \name{pat_downloadParseRawData}
 \alias{pat_downloadParseRawData}
-\title{Download PurpleAir timeseries data}
+\title{Download time series data from PurpleAir}
 \usage{
 pat_downloadParseRawData(
-  id = NULL,
-  label = NULL,
-  pas = NULL,
+  api_key = NULL,
+  sensor_index = NULL,
   startdate = NULL,
   enddate = NULL,
-  timezone = NULL,
-  baseUrl = "https://api.thingspeak.com/channels/"
+  timezone = "UTC",
+  average = 0,
+  fields = SENSOR_HISTORY_PM25_FIELDS,
+  baseUrl = "https://api.purpleair.com/v1/sensors"
 )
 }
 \arguments{
-\item{id}{PurpleAir sensor 'deviceDeploymentID'.}
+\item{api_key}{PurpleAir API Read Key. If \code{api_key = NULL}, it
+will be obtained using \code{getAPIKey("PurpleAir-read")}.
+See \code{MazamaCoreUtils::\link[MazamaCoreUtils:setAPIKey]{setAPIKey}}.}
 
-\item{label}{PurpleAir sensor 'label'.}
+\item{sensor_index}{PurpleAir sensor unique identifier.}
 
-\item{pas}{PurpleAir Synoptic \emph{pas} object.}
+\item{startdate}{Desired start datetime (ISO 8601).}
 
-\item{startdate}{Desired start time (ISO 8601).}
+\item{enddate}{Desired end datetime (ISO 8601).}
 
-\item{enddate}{Desired end time (ISO 8601).}
+\item{timezone}{Olson timezone used to interpret dates.}
 
-\item{timezone}{Timezone used to interpret start and end dates.}
+\item{average}{Temporal averaging in minutes performed by PurpleAir. One of:
+0 (raw), 10, 30, 60 (hour), 360, 1440 (day).}
 
-\item{baseUrl}{Base URL for Thingspeak API.}
+\item{fields}{Character string with PurpleAir field names for the Get Sensor Data API.}
+
+\item{baseUrl}{Base URL for the PurpleAir API.}
 }
 \value{
-List containing multiple timeseries dataframes.
+Dataframe of time series PurpleAir data.
 }
 \description{
-Downloads timeseries data for a specific PurpleAir sensor 
-from the ThingSpeak API and parses the content into individual dataframes. This 
-function will always return dataframes with the appropriate columns even if no 
-data are returned from ThingSpeak.
-
-The returned list contains the following dataframes:
-
-\itemize{
-\item{\code{meta} -- \code{pas} records for the specified sensor}
-\item{\code{A_PRIMARY} -- channel A primary dataset}
-\item{\code{A_SECONDARY} -- channel A secondary dataset}
-\item{\code{B_PRIMARY} -- channel B primary dataset}
-\item{\code{B_SECONDARY} -- channel B secondary dataset}
+Download and parse time series data for a specific \code{sensor_index}.
 }
+\examples{
+\donttest{
+# Fail gracefully if any resources are not available
+try({
 
-These dataframes contain \strong{ALL} data available from ThingSpeak for the
-specified sensor and time period.
+library(AirSensor)
 
-See the references.
+initializeMazamaSpatialUtils()
+
+pat_raw <-
+  pat_downloadParseRawData(
+    api_key = MY_API_READ_KEY,
+    sensor_index = "2323",
+    startdate = "2023-02-01",
+    enddate = "2023-02-02",
+    timezone = "UTC",
+    fields = SENSOR_HISTORY_PM25_FIELDS,
+  )
+
+View(pat_raw[1:100,])
+
+}, silent = FALSE)
+}
 }
 \references{
-\url{https://www2.purpleair.com/community/faq#!hc-sd-card-csv-file-header}
+\href{https://www2.purpleair.com}{PurpleAir}
+
+\href{https://api.purpleair.com}{PurpleAir API}
+
+\href{https://www2.purpleair.com/policies/terms-of-service}{PurpleAir Terms of service}
+
+\href{https://www2.purpleair.com/pages/license}{PurpleAir Data license}
+
+\href{https://www2.purpleair.com/pages/attribution}{PurpleAir Data Attribution}
 }

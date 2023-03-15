@@ -8,14 +8,10 @@
 #' @param pattern Text pattern used to filter sensor labels.
 #' @param idPattern Text pattern used to filter \code{deviceDeploymentID}.
 #' @param isOutside Logical, is the sensor located outside?
-#' @param isParent Logical, is the record associated with a the A channel?
 #' 
 #' @description The incoming \code{pas} object is first filtered based on the 
-#' values of \code{states}, \code{pattern}, \code{isOutside} and \code{isParent}.
+#' values of \code{states}, \code{pattern} and \code{isOutside}.
 #' The values associated with the \code{name} column are then returned.
-#' 
-#' This function is useful for returning values associated with specific
-#' \emph{devices}, which are represented by records with \code{isParent = TRUE}.
 #' 
 #' @return Vector of values.
 #' 
@@ -34,8 +30,7 @@ pas_getColumn <- function(
   name = NULL,
   pattern = ".*",
   idPattern = ".*",
-  isOutside = TRUE,
-  isParent = TRUE
+  isOutside = TRUE
 ) {
   
   # ----- Validate parameters --------------------------------------------------
@@ -43,7 +38,6 @@ pas_getColumn <- function(
   MazamaCoreUtils::stopIfNull(name)
   MazamaCoreUtils::stopIfNull(pattern)
   MazamaCoreUtils::stopIfNull(isOutside)
-  MazamaCoreUtils::stopIfNull(isParent)
   
   # A little involved to catch the case where the user forgets to pass in 'pas'
   
@@ -67,16 +61,9 @@ pas_getColumn <- function(
   
   # Filter by Outside/Inside
   if ( isOutside ) {
-    sub_pas <- pas %>% pas_filter(.data$DEVICE_LOCATIONTYPE == "outside")
+    sub_pas <- pas %>% pas_filter(.data$location_type == "outside")
   } else {
-    sub_pas <- pas %>% pas_filter(.data$DEVICE_LOCATIONTYPE != "outside")
-  }
-  
-  # Filter by Parent
-  if ( isParent ) {
-    sub_pas <- sub_pas %>% pas_filter(is.na(.data$parentID))
-  } else {
-    sub_pas <- sub_pas %>% pas_filter(!is.na(.data$parentID))
+    sub_pas <- pas %>% pas_filter(.data$location_type != "outside")
   }
   
   # Filter by pattern
@@ -89,7 +76,9 @@ pas_getColumn <- function(
   
   # ---- Return ----------------------------------------------------------------
   
-  column <- dplyr::pull(sub_pas, name)
+  # NOTE:  Use !! to get the external variable defined by name rather than the
+  # NOTE:  tibble column "name".
+  column <- dplyr::pull(sub_pas, !!name)
   
   return(column)
   

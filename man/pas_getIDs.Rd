@@ -4,13 +4,7 @@
 \alias{pas_getIDs}
 \title{Return IDs from filtered PurpleAir Synoptic objects}
 \usage{
-pas_getIDs(
-  pas = NULL,
-  pattern = ".*",
-  idPattern = ".*",
-  isOutside = TRUE,
-  isParent = TRUE
-)
+pas_getIDs(pas = NULL, pattern = ".*", idPattern = ".*", isOutside = TRUE)
 }
 \arguments{
 \item{pas}{PurpleAir Synoptic \emph{pas} object.}
@@ -20,19 +14,14 @@ pas_getIDs(
 \item{idPattern}{Text pattern used to filter \code{deviceDeploymentID}.}
 
 \item{isOutside}{Logical, is the sensor located outside?}
-
-\item{isParent}{Logical, is the record associated with a the A channel?}
 }
 \value{
 Vector of values.
 }
 \description{
 The incoming \code{pas} object is first filtered based on the 
-values of \code{stateCodes}, \code{patter}, \code{isOutside} and \code{isParent}.
+values of \code{stateCodes}, \code{patter} and \code{isOutside}.
 The values associated with the \code{"ID"} column are then returned.
-
-This function is useful for returning values associated with specific
-\emph{devices}, which are represented by records with \code{isParent = TRUE}.
 }
 \seealso{
 \code{\link{pas_getColumn}},  \code{\link{pas_getLabels}}

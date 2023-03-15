@@ -10,15 +10,7 @@
 #' 
 #' initializeMazamaSpatialUtils()
 #' 
-#' example_pas <- 
-#'   pas_createNew(
-#'     api_key = MY_API_READ_KEY,
-#'     countryCodes = "US",
-#'     stateCodes = "CA",
-#'     show_only = SCAQMD_SENSOR_INDICES,
-#'     lookbackDays = 1,
-#'     location_type = 0
-#'   )
+#' example_pas <- pas_createNew(countryCodes = "US")
 #' 
 #' save(example_pas, file = "data/example_pas.rda")
 #' }
