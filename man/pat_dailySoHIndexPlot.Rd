@@ -27,6 +27,13 @@ metrics calculated with \code{SoHIndex_FUN}.
 Both \code{minPctReporting} and \code{breaks} are passed to 
 \code{SoHIndex_FUN}.
 }
+\examples{
+\donttest{
+library(AirSensor)
+
+pat_dailySoHIndexPlot(example_pat)
+}
+}
 \seealso{
 \link{pat_dailySoHIndex_00}
 }

@@ -11,6 +11,20 @@
 #' returned in addition to the coefficients of the linear fit (slope and 
 #' intercept) 
 #' 
+#' @examples  
+#' library(AirSensor)
+#' 
+#' tbl <- 
+#'   example_pat %>%
+#'   PurpleAirSoH_dailyABFit() 
+#'   
+#' names(tbl)
+#'   
+#' timeseriesTbl_multiPlot(
+#'   tbl, 
+#'   parameters = c("pm25_A_pm25_B_rsquared", "pm25_A_pm25_B_slope"),
+#'   ylim = c(-1,1)
+#' )
 
 
 PurpleAirSoH_dailyABFit <- function(

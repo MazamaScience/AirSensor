@@ -17,6 +17,12 @@
 #' 
 #' @seealso \link{pat_dailySoHIndex_00}
 #' 
+#' @examples
+#' \donttest{
+#' library(AirSensor)
+#' 
+#' pat_dailySoHIndexPlot(example_pat)
+#' }
 
 pat_dailySoHIndexPlot <- function(
   pat = NULL,

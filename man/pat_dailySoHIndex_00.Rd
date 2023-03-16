@@ -38,3 +38,14 @@ The \code{index} is calculated in the following manner:
 The \code{breaks} are used to convert \code{index} into the \code{index_bin}
 poor-fair-good values.
 }
+\examples{
+\donttest{
+library(AirSensor)
+
+tbl <-
+  example_pat \%>\%
+  pat_dailySoHIndex_00()
+
+head(tbl)
+}
+}

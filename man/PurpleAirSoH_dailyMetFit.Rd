@@ -17,3 +17,21 @@ channels. One r-squared value for each channel pair except \code{pm25_A},
 each day. All returned values are expected to hover near 0 for a properly
 functioning sensor.
 }
+\examples{
+library(AirSensor)
+ 
+tbl <- 
+  example_pat \%>\%
+  PurpleAirSoH_dailyMetFit() 
+  
+timeseriesTbl_multiPlot(
+  tbl, 
+  ncol = 2,
+  ylim = c(0,1)
+)
+
+timeseriesTbl_multiPlot(
+  tbl, 
+  autoRange = TRUE
+)
+}

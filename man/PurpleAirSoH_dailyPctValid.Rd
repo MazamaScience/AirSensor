@@ -17,3 +17,12 @@ total number of measurements the sensor actually recorded during that day
 recorded measurements that are considered plausible. This metric utilizes the 
 same bounds as the \code{pat_qc()} function to identify out-of-spec values.
 }
+\examples{
+library(AirSensor)
+  
+tbl <- 
+  example_pat \%>\%
+  PurpleAirSoH_dailyPctValid() 
+
+timeseriesTbl_multiPlot(tbl, ylim = c(0,100))
+}

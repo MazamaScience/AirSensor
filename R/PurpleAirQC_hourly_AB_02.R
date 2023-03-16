@@ -29,6 +29,37 @@
 #' 
 #' @return Data frame with columns \code{datetime} and \code{pm25}.
 #' 
+#' @examples 
+#' \donttest{
+#' library(AirSensor)
+#' 
+#' df_00 <- 
+#'   example_pat %>%
+#'   pat_qc() %>%
+#'   PurpleAirQC_hourly_AB_00()
+#'   
+#' df_01 <- 
+#'   example_pat %>%
+#'   pat_qc() %>%
+#'   PurpleAirQC_hourly_AB_01()
+#'   
+#' df_02 <- 
+#'   example_pat %>%
+#'   pat_qc() %>%
+#'   PurpleAirQC_hourly_AB_02()
+#' 
+#' layout(matrix(seq(2)))
+#' 
+#' plot(df_00, pch = 16, cex = 0.8, col = "red")
+#' points(df_01, pch = 16, cex = 0.8, col = "black")
+#' title("example_pat_failure_A -- PurpleAirQC_hourly_AB_01")
+#' 
+#' plot(df_00, pch = 16, cex = 0.8, col = "red")
+#' points(df_02, pch = 16, cex = 0.8, col = "black")
+#' title("example_pat_failure_A -- PurpleAirQC_hourly_AB_02")
+#' 
+#' layout(1)
+#' }
 
 PurpleAirQC_hourly_AB_02 <- function(
    pat = NULL, 

@@ -13,6 +13,14 @@
 #' or not the \code{pm25_A} and \code{pm25_B} data are significantly different 
 #' based on a student’s t-test.
 #' 
+#' @examples  
+#' library(AirSensor)
+#' 
+#' tbl <- 
+#'   example_pat %>%
+#'   PurpleAirSoH_dailyABtTest() 
+#'   
+#' timeseriesTbl_multiPlot(tbl)
 
 PurpleAirSoH_dailyABtTest <- function(
   pat = NULL
