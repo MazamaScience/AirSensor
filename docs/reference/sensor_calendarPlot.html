@@ -176,58 +176,6 @@ averages calculated using local "clock time".</p>
     <div class="dont-index"><p><a href="https://davidcarslaw.github.io/openair/reference/calendarPlot.html" class="external-link">https://davidcarslaw.github.io/openair/reference/calendarPlot.html</a></p></div>
     </div>
 
-    <div id="ref-examples">
-    <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="co"># Fail gracefully if any resources are not available</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="op">{</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MazamaScience/AirSensor" class="external-link">AirSensor</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="setArchiveBaseUrl.html">setArchiveBaseUrl</a></span><span class="op">(</span><span class="st">"http://data.mazamascience.com/PurpleAir/v1"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Monthly plot</span></span></span>
-<span class="r-in"><span><span class="va">sensor</span> <span class="op">&lt;-</span> </span></span>
-<span class="r-in"><span>  <span class="fu"><a href="sensor_loadMonth.html">sensor_loadMonth</a></span><span class="op">(</span><span class="st">"scaqmd"</span>, <span class="fl">202007</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="sensor_filterMeta.html">sensor_filterMeta</a></span><span class="op">(</span><span class="va">label</span> <span class="op">==</span> <span class="st">"SCSC_33"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">sensor_calendarPlot</span><span class="op">(</span><span class="va">sensor</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Annual plot</span></span></span>
-<span class="r-in"><span><span class="va">sensor</span> <span class="op">&lt;-</span> </span></span>
-<span class="r-in"><span>  <span class="fu"><a href="sensor_loadYear.html">sensor_loadYear</a></span><span class="op">(</span><span class="st">"scaqmd"</span>, <span class="fl">2020</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="sensor_filterMeta.html">sensor_filterMeta</a></span><span class="op">(</span><span class="va">label</span> <span class="op">==</span> <span class="st">"SCSC_33"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">sensor_calendarPlot</span><span class="op">(</span><span class="va">sensor</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># SCAQMD colors</span></span></span>
-<span class="r-in"><span><span class="fu">sensor_calendarPlot</span><span class="op">(</span><span class="va">sensor</span>, <span class="st">"scaqmd"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Custom continuous color palette from RColorBrewer</span></span></span>
-<span class="r-in"><span><span class="fu">sensor_calendarPlot</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">sensor</span>,</span></span>
-<span class="r-in"><span>  colors <span class="op">=</span> <span class="st">"BuPu"</span>,</span></span>
-<span class="r-in"><span>  title <span class="op">=</span> <span class="st">"2020 Purple Scale"</span>,</span></span>
-<span class="r-in"><span>  limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">sensor</span><span class="op">$</span><span class="va">data</span><span class="op">[</span>,<span class="op">-</span><span class="fl">1</span><span class="op">]</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># don't use data$datetime</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Custom categorical colors</span></span></span>
-<span class="r-in"><span><span class="fu">sensor_calendarPlot</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">sensor</span>,</span></span>
-<span class="r-in"><span>  colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"springgreen2"</span>, <span class="st">"gold"</span>, <span class="st">"tomato3"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="cn">Inf</span>, <span class="fl">25</span>, <span class="fl">50</span>, <span class="cn">Inf</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Good"</span>, <span class="st">"Fair"</span>, <span class="st">"Poor"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  title <span class="op">=</span> <span class="st">"2020 -- Air Quality Stoplight"</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="op">}</span>, silent <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in vec_size() : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   `x` must be a vector, not a &lt;sfc_MULTIPOLYGON/sfc&gt; object.</span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
-</code></pre></div>
-    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

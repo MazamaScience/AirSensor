@@ -45,7 +45,7 @@ try({
 
 library(AirSensor)
 
-setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+setArchiveBaseUrl("https://airsensor.aqmd.gov/PurpleAir/v1")
 
 pas <- pas_load()
 pat <- pat_loadLatest(label = "SCSB_07", pas = pas)

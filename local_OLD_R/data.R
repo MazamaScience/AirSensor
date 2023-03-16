@@ -161,7 +161,7 @@
 #' \preformatted{
 #' library(AirSensor)
 #' 
-#' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+#' setArchiveBaseUrl("https://airsensor.aqmd.gov/PurpleAir/v1")
 #' 
 #' example_sensor_scaqmd <-
 #'   sensor_load("scaqmd", startdate = 20190701, enddate = 20190708)

@@ -34,11 +34,6 @@
 #'   range()
 #'   
 #' example_sensor %>% 
-#'   sensor_filterDate(
-#'     startdate = "2018-08-21", 
-#'     enddate = "2018-08-28",
-#'     timezone = "UTC"
-#'   ) %>%
 #'   sensor_extractData() %>%
 #'   dplyr::pull("datetime") %>%
 #'   range()

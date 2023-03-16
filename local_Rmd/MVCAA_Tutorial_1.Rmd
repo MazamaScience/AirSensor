@@ -100,7 +100,7 @@ and then zooming in on the Methow Valley.
 library(AirSensor)
 
 # Set the archiveBaseUrl so we can get a 'pas' object
-setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+setArchiveBaseUrl("https://airsensor.aqmd.gov/PurpleAir/v1")
 
 # Load the default 'pas' (today for the entire US)
 pas <- pas_load()
@@ -151,7 +151,7 @@ dir.create(archiveDir, recursive = TRUE)
 library(AirSensor)
 
 # Set the archiveBaseUrl so we can get a pre-generated 'pas' object
-setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+setArchiveBaseUrl("https://airsensor.aqmd.gov/PurpleAir/v1")
 
 # ----- Subset PAS object ------------------------------------------------------
 

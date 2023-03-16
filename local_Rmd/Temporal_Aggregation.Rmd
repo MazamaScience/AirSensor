@@ -27,7 +27,7 @@ compare the data to the aggregated data.
 ```{r load_data}
 # AirSensor setup
 library(AirSensor)
-setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+setArchiveBaseUrl("https://airsensor.aqmd.gov/PurpleAir/v1")
 
 # Load the PurpleAir sensor data
 pas <- pas_load(archival = TRUE)

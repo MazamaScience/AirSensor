@@ -28,7 +28,7 @@ try({
 
 library(AirSensor)
 
-setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+setArchiveBaseUrl("https://airsensor.aqmd.gov/PurpleAir/v1")
 
 sensor_loadLatest("scaqmd") \%>\%
   PWFSLSmoke::monitor_timeseriesPlot(style = 'gnats')

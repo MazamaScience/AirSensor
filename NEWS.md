@@ -304,7 +304,7 @@ interval.
 # AirSensor 0.7.1
 
 * Updated example `archiveBaseUrl` from `http://smoke.mazamascience.com/data/PurpleAir`
-to `http://data.mazamascience.com/PurpleAir/v1`.
+to `https://airsensor.aqmd.gov/PurpleAir/v1`.
 
 # AirSensor 0.7.0
 

@@ -24,7 +24,7 @@ id <- pas_getDeviceDeploymentIDs(pas_ex, "^Seattle$")
 
 # ----- STEP 1: pas_load MVCCA and save it locally
 setArchiveBaseDir(NULL)
-setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1/")
+setArchiveBaseUrl("https://airsensor.aqmd.gov/PurpleAir/v1/")
 mvcaa =
   pas_load() %>% # Load the most recent archived 'pas'(PurpleAir Synoptic)
   pas_filter(stringr::str_detect(label, "MV Clean Air Ambassador"))

@@ -58,53 +58,7 @@
 #'
 #' @references \href{https://aqs.epa.gov/aqsweb/documents/AQS_Data_Dictionary.html}{EPA AQS Data Dictionary}
 #' 
-#' @examples
-#' \donttest{
-#' # Fail gracefully if any resources are not available
-#' try({
-#'
-#' library(AirSensor)
-#' 
-#' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
-#'
-#' # Monthly plot
-#' sensor <- 
-#'   sensor_loadMonth("scaqmd", 202007) %>%
-#'   sensor_filterMeta(label == "SCSC_33")
-#' 
-#' sensor_calendarPlot(sensor)
-#' 
-#' # Annual plot
-#' sensor <- 
-#'   sensor_loadYear("scaqmd", 2020) %>%
-#'   sensor_filterMeta(label == "SCSC_33")
-#' 
-#' sensor_calendarPlot(sensor)
-#' 
-#' # SCAQMD colors
-#' sensor_calendarPlot(sensor, "scaqmd")
-#' 
-#' # Custom continuous color palette from RColorBrewer
-#' sensor_calendarPlot(
-#'   sensor,
-#'   colors = "BuPu",
-#'   title = "2020 Purple Scale",
-#'   limits = range(sensor$data[,-1], na.rm = TRUE) # don't use data$datetime
-#' )
-#' 
-#' 
-#' # Custom categorical colors
-#' sensor_calendarPlot(
-#'   sensor,
-#'   colors = c("springgreen2", "gold", "tomato3"),
-#'   breaks = c(-Inf, 25, 50, Inf),
-#'   labels = c("Good", "Fair", "Poor"),
-#'   title = "2020 -- Air Quality Stoplight"
-#' )
-#' 
-#' 
-#' }, silent = FALSE)
-#' }
+
 
 sensor_calendarPlot <- function(
   sensor = NULL,
@@ -327,7 +281,7 @@ sensor_calendarPlot <- function(
 if ( FALSE ) {
 
   library(AirSensor)
-  setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+  setArchiveBaseUrl("https://airsensor.aqmd.gov/PurpleAir/v1")
   
   sensor <- 
     sensor_loadYear("scaqmd", 2020) %>%

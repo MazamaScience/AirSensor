@@ -39,7 +39,7 @@ Sensor: “Downer”, startdate = 20191225, enddate = 20200110
 ```{r setup, include = TRUE}
 library(AirSensor)
 AirSensor::initializeMazamaSpatialUtils()
-setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1") # SCAQMD sensors 
+setArchiveBaseUrl("https://airsensor.aqmd.gov/PurpleAir/v1") # SCAQMD sensors 
 
 knitr::opts_chunk$set(fig.width = 10, fig.height = 5)
 

@@ -56,20 +56,25 @@
 #' @format An S3 object composed of "meta" and "data" data.
 #' @description The \code{example_sensor} dataset provides a quickly loadable version of
 #' an \emph{airsensor} object for practicing and code examples.
-#' This dataset was was generated on 2020-09-15 by running:
+#' This dataset was was generated on 2023-03-16 by running:
 #'
 #' \preformatted{
 #' library(AirSensor)
-#' 
-#' initializeMazamaSpatialUtils()
-#' 
-#' example_sensor <- pat_createNew(
-#'   label = "SCAN_14",
-#'   pas = example_pas,
-#'   startdate = "2018-08-14",
-#'   enddate = "2018-09-07"
-#' ) %>%
-#' pat_createAirSensor(parameter = 'pm25', FUN = AirSensor::PurpleAirQC_hourly_AB_01)
+#'
+#' example_sensor <-
+#'   pat_createNew(
+#'     api_key = MY_API_READ_KEY,
+#'     pas = example_pas,
+#'     sensor_index = "9392",
+#'     startdate = "2022-07-01",
+#'     enddate = "2022-07-08",
+#'     timezone = "UTC",
+#'     verbose = TRUE
+#'   ) %>%
+#'   pat_createAirSensor(
+#'     parameter = 'pm25',
+#'     FUN = AirSensor::PurpleAirQC_hourly_AB_01
+#'   )
 #' 
 #' save(example_sensor, file = "data/example_sensor.rda")
 #' }
@@ -85,7 +90,7 @@
 #' \preformatted{
 #' library(AirSensor)
 #' 
-#' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+#' setArchiveBaseUrl("https://airsensor.aqmd.gov/PurpleAir/v1")
 #' 
 #' example_sensor_scaqmd <-
 #'   sensor_load("scaqmd", startdate = 20190701, enddate = 20190708)

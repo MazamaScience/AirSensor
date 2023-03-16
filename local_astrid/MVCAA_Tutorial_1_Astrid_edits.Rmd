@@ -80,7 +80,7 @@ label containing "MV Clean Air Ambassador".
 library(AirSensor)
 
 # Set the archiveBaseUrl so we can get a 'pas' object
-setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+setArchiveBaseUrl("https://airsensor.aqmd.gov/PurpleAir/v1")
 
 # Load the default 'pas' (today for the entire US)
 pas <- pas_load()
@@ -124,7 +124,7 @@ archiveDir <- paste0(wd, "/", archiveDir)
 library(AirSensor)
 
 # Set the archiveBaseUrl so we can get a 'pas' object
-setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+setArchiveBaseUrl("https://airsensor.aqmd.gov/PurpleAir/v1")
 
 # ----- Create PAS object ------------------------------------------------------
 

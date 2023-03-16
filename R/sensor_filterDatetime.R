@@ -42,8 +42,8 @@
 #'   
 #' example_sensor %>% 
 #'   sensor_filterDatetime(
-#'     startdate = "2018-08-21 06:00:00", 
-#'     enddate = "2018-08-28 18:00:00",
+#'     startdate = "2022-07-02 06:00:00", 
+#'     enddate = "2022-07-03 18:00:00",
 #'     timezone = "UTC"
 #'   ) %>%
 #'   sensor_extractData() %>%

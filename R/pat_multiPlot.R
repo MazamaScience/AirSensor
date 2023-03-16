@@ -312,7 +312,7 @@ pat_multiplot <- pat_multiPlot
 
 if ( FALSE ) {
   
-  setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+  setArchiveBaseUrl("https://airsensor.aqmd.gov/PurpleAir/v1")
   
   pat <- 
     pat_load(

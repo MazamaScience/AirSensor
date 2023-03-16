@@ -202,7 +202,7 @@ that direction is low. A line showing the probability that the wind.</p></dd>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MazamaScience/AirSensor" class="external-link">AirSensor</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Set default location of pre-generated data files</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="setArchiveBaseUrl.html">setArchiveBaseUrl</a></span><span class="op">(</span><span class="st">"http://data.mazamascience.com/PurpleAir/v1"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="setArchiveBaseUrl.html">setArchiveBaseUrl</a></span><span class="op">(</span><span class="st">"https://airsensor.aqmd.gov/PurpleAir/v1"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">pas</span> <span class="op">&lt;-</span> <span class="fu"><a href="pas_load.html">pas_load</a></span><span class="op">(</span>archival <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">pat</span> <span class="op">&lt;-</span> <span class="fu"><a href="pat_loadMonth.html">pat_loadMonth</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"SCBB_02"</span>, pas <span class="op">=</span> <span class="va">pas</span>, datestamp <span class="op">=</span> <span class="fl">202005</span><span class="op">)</span></span></span>
@@ -219,36 +219,36 @@ that direction is low. A line showing the probability that the wind.</p></dd>
 <span class="r-in"><span><span class="fu">sensor_pollutionRose</span><span class="op">(</span><span class="va">sensor</span>, <span class="va">windData</span>, statistic <span class="op">=</span> <span class="st">"prop.mean"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="op">}</span>, silent <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 10:11:02] data file could not be loaded from: http://data.mazamascience.com/PurpleAir/v1/pas/2023/pas_20230316_archival.rda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 10:11:02] data file could not be loaded from: http://data.mazamascience.com/PurpleAir/v1/pas/2023/pas_20230315_archival.rda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 10:11:02] data file could not be loaded from: http://data.mazamascience.com/PurpleAir/v1/pas/2023/pas_20230314_archival.rda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 10:11:02] data file could not be loaded from: http://data.mazamascience.com/PurpleAir/v1/pas/2023/pas_20230313_archival.rda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 10:11:03] data file could not be loaded from: http://data.mazamascience.com/PurpleAir/v1/pas/2023/pas_20230312_archival.rda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 10:11:03] data file could not be loaded from: http://data.mazamascience.com/PurpleAir/v1/pas/2023/pas_20230311_archival.rda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 10:11:03] data file could not be loaded from: http://data.mazamascience.com/PurpleAir/v1/pas/2023/pas_20230310_archival.rda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 10:11:03] data file could not be loaded from: http://data.mazamascience.com/PurpleAir/v1/pas/2023/pas_20230309_archival.rda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 10:11:03] data file could not be loaded from: http://data.mazamascience.com/PurpleAir/v1/pas/2023/pas_20230308_archival.rda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 10:11:03] data file could not be loaded from: http://data.mazamascience.com/PurpleAir/v1/pas/2023/pas_20230307_archival.rda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 10:11:03] data file could not be loaded from: http://data.mazamascience.com/PurpleAir/v1/pas/2023/pas_20230306_archival.rda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 10:11:04] data file could not be loaded from: http://data.mazamascience.com/PurpleAir/v1/pas/2023/pas_20230305_archival.rda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 10:11:04] data file could not be loaded from: http://data.mazamascience.com/PurpleAir/v1/pas/2023/pas_20230304_archival.rda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 10:11:04] data file could not be loaded from: http://data.mazamascience.com/PurpleAir/v1/pas/2023/pas_20230303_archival.rda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 10:11:04] data file could not be loaded from: http://data.mazamascience.com/PurpleAir/v1/pas/2023/pas_20230302_archival.rda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 10:11:04] data file could not be loaded from: http://data.mazamascience.com/PurpleAir/v1/pas/2023/pas_20230301_archival.rda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 10:11:04] data file could not be loaded from: http://data.mazamascience.com/PurpleAir/v1/pas/2023/pas_20230228_archival.rda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 10:11:05] data file could not be loaded from: http://data.mazamascience.com/PurpleAir/v1/pas/2023/pas_20230227_archival.rda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 10:11:05] data file could not be loaded from: http://data.mazamascience.com/PurpleAir/v1/pas/2023/pas_20230226_archival.rda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 10:11:05] data file could not be loaded from: http://data.mazamascience.com/PurpleAir/v1/pas/2023/pas_20230225_archival.rda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 10:11:05] data file could not be loaded from: http://data.mazamascience.com/PurpleAir/v1/pas/2023/pas_20230224_archival.rda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 10:11:05] data file could not be loaded from: http://data.mazamascience.com/PurpleAir/v1/pas/2023/pas_20230223_archival.rda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 10:11:05] data file could not be loaded from: http://data.mazamascience.com/PurpleAir/v1/pas/2023/pas_20230222_archival.rda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 10:11:05] data file could not be loaded from: http://data.mazamascience.com/PurpleAir/v1/pas/2023/pas_20230221_archival.rda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 10:11:06] data file could not be loaded from: http://data.mazamascience.com/PurpleAir/v1/pas/2023/pas_20230220_archival.rda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 10:11:06] data file could not be loaded from: http://data.mazamascience.com/PurpleAir/v1/pas/2023/pas_20230219_archival.rda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 10:11:06] data file could not be loaded from: http://data.mazamascience.com/PurpleAir/v1/pas/2023/pas_20230218_archival.rda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 10:11:06] data file could not be loaded from: http://data.mazamascience.com/PurpleAir/v1/pas/2023/pas_20230217_archival.rda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 10:11:06] data file could not be loaded from: http://data.mazamascience.com/PurpleAir/v1/pas/2023/pas_20230216_archival.rda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 10:11:06] data file could not be loaded from: http://data.mazamascience.com/PurpleAir/v1/pas/2023/pas_20230215_archival.rda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 14:54:53] data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1/pas/2023/pas_20230316_archival.rda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 14:54:53] data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1/pas/2023/pas_20230315_archival.rda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 14:54:53] data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1/pas/2023/pas_20230314_archival.rda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 14:54:53] data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1/pas/2023/pas_20230313_archival.rda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 14:54:53] data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1/pas/2023/pas_20230312_archival.rda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 14:54:53] data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1/pas/2023/pas_20230311_archival.rda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 14:54:54] data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1/pas/2023/pas_20230310_archival.rda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 14:54:54] data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1/pas/2023/pas_20230309_archival.rda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 14:54:54] data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1/pas/2023/pas_20230308_archival.rda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 14:54:54] data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1/pas/2023/pas_20230307_archival.rda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 14:54:54] data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1/pas/2023/pas_20230306_archival.rda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 14:54:54] data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1/pas/2023/pas_20230305_archival.rda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 14:54:54] data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1/pas/2023/pas_20230304_archival.rda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 14:54:54] data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1/pas/2023/pas_20230303_archival.rda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 14:54:54] data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1/pas/2023/pas_20230302_archival.rda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 14:54:54] data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1/pas/2023/pas_20230301_archival.rda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 14:54:55] data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1/pas/2023/pas_20230228_archival.rda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 14:54:55] data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1/pas/2023/pas_20230227_archival.rda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 14:54:55] data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1/pas/2023/pas_20230226_archival.rda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 14:54:55] data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1/pas/2023/pas_20230225_archival.rda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 14:54:55] data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1/pas/2023/pas_20230224_archival.rda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 14:54:55] data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1/pas/2023/pas_20230223_archival.rda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 14:54:55] data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1/pas/2023/pas_20230222_archival.rda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 14:54:55] data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1/pas/2023/pas_20230221_archival.rda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 14:54:55] data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1/pas/2023/pas_20230220_archival.rda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 14:54:55] data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1/pas/2023/pas_20230219_archival.rda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 14:54:55] data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1/pas/2023/pas_20230218_archival.rda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 14:54:56] data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1/pas/2023/pas_20230217_archival.rda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 14:54:56] data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1/pas/2023/pas_20230216_archival.rda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 14:54:56] data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1/pas/2023/pas_20230215_archival.rda</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error : Data file could not be loaded after 30 tries</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>

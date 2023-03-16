@@ -18,7 +18,7 @@ pre-generated data files.
 
 Known base URLs include:
 \itemize{
-\item{http://data.mazamascience.com/PurpleAir/v1} 
+\item{https://airsensor.aqmd.gov/PurpleAir/v1} 
 }
 }
 \seealso{

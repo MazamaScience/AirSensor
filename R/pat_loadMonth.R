@@ -49,7 +49,7 @@
 #'
 #' library(AirSensor)
 #' 
-#' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+#' setArchiveBaseUrl("https://airsensor.aqmd.gov/PurpleAir/v1")
 #' 
 #' # Reference an older 'pas' before this sensor was dropped
 #' pas <- pas_load(20190901, archival = TRUE)
@@ -179,7 +179,7 @@ if ( FALSE ) {
   
   library(AirSensor)
 
-  setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+  setArchiveBaseUrl("https://airsensor.aqmd.gov/PurpleAir/v1")
 
   id <- NULL
   label <- "SCNP_20"

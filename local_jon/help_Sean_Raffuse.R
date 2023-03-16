@@ -1,7 +1,7 @@
 library(AirSensor)
 library(dplyr)
 
-setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+setArchiveBaseUrl("https://airsensor.aqmd.gov/PurpleAir/v1")
 
 pas <- 
   pas_load("20190406", archival = TRUE) %>%

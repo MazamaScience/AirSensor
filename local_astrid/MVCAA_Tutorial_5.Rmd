@@ -109,7 +109,7 @@ specified with `setArchiveBaseDir()`. If no local archive is found, a web based
 archive is searched at the URL specified with `setArchiveBaseUrl()`. Mazama
 Science maintains a small archive of data associated with the South Coast
 Air Quality Management District at:
-http://data.mazamascience.com/PurpleAir/v1/. 
+https://airsensor.aqmd.gov/PurpleAir/v1/. 
 
 Package functions that load pre-generated data files include:
 

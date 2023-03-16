@@ -17,7 +17,7 @@ This article illustrates how to create a local archive of pre-generated data
 files for PurpleAir sensors, in order to use the **[AirSensor](https://mazamascience.github.io/AirSensor/index.html)** package off-line. 
 For the purpuse of this tutorial, we are going to create a local archive
 for the Methow Valley's sensors by loading pre-generated 
-PurpleAir synoptic and time searies files from an [internal archive base url](http://data.mazamascience.com/PurpleAir/v1/) mantained by the AirSensor 
+PurpleAir synoptic and time searies files from an [internal archive base url](https://airsensor.aqmd.gov/PurpleAir/v1/) mantained by the AirSensor 
 package. This is the fastest way for obtaning sensors data but, alternatively, 
 you could download the data directly from the PurpleAir website. 
 More info on this alternative method is available in the [PurpleAir Synoptic Data](https://mazamascience.github.io/AirSensor/articles/articles/pas_introduction.html) and 
@@ -42,9 +42,9 @@ base url we are going to set in Step 3.
 setArchiveBaseDir(NULL)
 ```
 
-**Step 3** Set the archive base url to http://data.mazamascience.com/PurpleAir/v1/. 
+**Step 3** Set the archive base url to https://airsensor.aqmd.gov/PurpleAir/v1/. 
 ```{r, setArchiveBaseUrl, warning = FALSE, message=FALSE}
-setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1/")
+setArchiveBaseUrl("https://airsensor.aqmd.gov/PurpleAir/v1/")
 ```
 
 **Step 4** Create a `pas` (PurpleAir Synoptic) object for

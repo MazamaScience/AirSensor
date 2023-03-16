@@ -63,7 +63,7 @@
 #' @examples
 #' \donttest{
 #' library(AirSensor)
-#' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+#' setArchiveBaseUrl("https://airsensor.aqmd.gov/PurpleAir/v1")
 #' 
 #' # California
 #' ca <-

@@ -20,7 +20,7 @@
 #' try({
 #'
 #' library(AirSensor)
-#' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+#' setArchiveBaseUrl("https://airsensor.aqmd.gov/PurpleAir/v1")
 #' 
 #' jan <- sensor_loadMonth("scaqmd", 202001)
 #' feb <- sensor_loadMonth("scaqmd", 202002)

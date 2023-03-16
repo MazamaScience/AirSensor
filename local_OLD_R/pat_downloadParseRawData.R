@@ -484,7 +484,7 @@ if ( FALSE ) {
   
   library(AirSensor)
   
-  setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1") # SCAQMD sensors
+  setArchiveBaseUrl("https://airsensor.aqmd.gov/PurpleAir/v1") # SCAQMD sensors
   
   pas <- pas_load()
   

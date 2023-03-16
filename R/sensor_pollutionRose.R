@@ -57,7 +57,7 @@
 #' library(AirSensor)
 #' 
 #' # Set default location of pre-generated data files
-#' setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+#' setArchiveBaseUrl("https://airsensor.aqmd.gov/PurpleAir/v1")
 #' 
 #' pas <- pas_load(archival = TRUE)
 #' pat <- pat_loadMonth(label = "SCBB_02", pas = pas, datestamp = 202005)
@@ -199,7 +199,7 @@ sensor_pollutionRose <- function(
 if ( FALSE ) {
   
   library(AirSensor)
-  setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+  setArchiveBaseUrl("https://airsensor.aqmd.gov/PurpleAir/v1")
   
   sensor <- NULL 
   windData <- NULL

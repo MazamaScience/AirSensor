@@ -29,10 +29,10 @@ the \emph{sensor} object.
 \examples{
 library(AirSensor)
 
-twenties <- sensor_filter(example_sensor, 
-                          example_sensor$data$`392a12065eb9940d_5192` <  30, 
-                          example_sensor$data$`392a12065eb9940d_5192` >= 20)
-head(twenties$data)
+teens <- sensor_filter(example_sensor, 
+                          example_sensor$data$`6f71a0c5f076deda_9392` <  20, 
+                          example_sensor$data$`6f71a0c5f076deda_9392` >= 10)
+head(teens$data)
 
 }
 \seealso{

@@ -114,7 +114,7 @@ are extended for all sensors that appear in either <code>sensor1</code> and
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="op">{</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MazamaScience/AirSensor" class="external-link">AirSensor</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="setArchiveBaseUrl.html">setArchiveBaseUrl</a></span><span class="op">(</span><span class="st">"http://data.mazamascience.com/PurpleAir/v1"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="setArchiveBaseUrl.html">setArchiveBaseUrl</a></span><span class="op">(</span><span class="st">"https://airsensor.aqmd.gov/PurpleAir/v1"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">jan</span> <span class="op">&lt;-</span> <span class="fu"><a href="sensor_loadMonth.html">sensor_loadMonth</a></span><span class="op">(</span><span class="st">"scaqmd"</span>, <span class="fl">202001</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">feb</span> <span class="op">&lt;-</span> <span class="fu"><a href="sensor_loadMonth.html">sensor_loadMonth</a></span><span class="op">(</span><span class="st">"scaqmd"</span>, <span class="fl">202002</span><span class="op">)</span></span></span>
@@ -129,8 +129,8 @@ are extended for all sensors that appear in either <code>sensor1</code> and
 <span class="r-in"><span><span class="fu">PWFSLSmoke</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/PWFSLSmoke/man/monitor_timeseriesPlot.html" class="external-link">monitor_timeseriesPlot</a></span><span class="op">(</span><span class="va">feb_apr</span>, style <span class="op">=</span> <span class="st">'gnats'</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="op">}</span>, silent <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="sensor_join-1.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="sensor_join-2.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ERROR [2023-03-16 14:54:48] data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1/airsensor/2020/airsensor_scaqmd_202001.rda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error : Data file could not be loaded from: https://airsensor.aqmd.gov/PurpleAir/v1</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

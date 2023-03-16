@@ -48,7 +48,7 @@ pat_agg_00 <- function(pat, FUN, ...) {
 # --- Tests -----
 
 ###setArchiveBaseUrl("https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1")
-setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+setArchiveBaseUrl("https://airsensor.aqmd.gov/PurpleAir/v1")
 pas <- pas_load()
 pat <- pat_load(label = 'SCSC_33', pas = pas)
 

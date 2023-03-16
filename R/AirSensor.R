@@ -122,7 +122,7 @@ removeArchiveBaseDir <- function() {
 
 #' Known base URLs include:
 #' \itemize{
-#' \item{http://data.mazamascience.com/PurpleAir/v1}
+#' \item{https://airsensor.aqmd.gov/PurpleAir/v1}
 #' }
 #' 
 #' Package functions that load pre-generated data files download data from this
@@ -159,7 +159,7 @@ getArchiveBaseUrl <- function() {
       'No BASE_URL set. Please set one with setArchiveBaseUrl("BASE_URL").',
       "\n\nKnown options include:\n\n",
       "  setArchiveBaseUrl(\"https://airsensor.aqmd.gov/PurpleAir/v1/\")   # SCAQMD sensors\n\n",
-      "  setArchiveBaseUrl(\"http://data.mazamascience.com/PurpleAir/v1\") # SCAQMD sensors\n\n"
+      "  setArchiveBaseUrl(\"https://airsensor.aqmd.gov/PurpleAir/v1\") # SCAQMD sensors\n\n"
     )
   }
   return(airsensorEnv$archiveBaseUrl)    
@@ -175,7 +175,7 @@ getArchiveBaseUrl <- function() {
 #' 
 #' Known base URLs include:
 #' \itemize{
-#' \item{http://data.mazamascience.com/PurpleAir/v1} 
+#' \item{https://airsensor.aqmd.gov/PurpleAir/v1} 
 #  \item{https://airfire-data-exports.s3-us-west-2.amazonaws.com/PurpleAir/v1}
 #' }
 #' 

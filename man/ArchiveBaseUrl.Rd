@@ -17,7 +17,7 @@ To avoid internet latency, specification of BASE_DIR will always take
 precedence over specification of BASE_URL.
 Known base URLs include:
 \itemize{
-\item{http://data.mazamascience.com/PurpleAir/v1}
+\item{https://airsensor.aqmd.gov/PurpleAir/v1}
 }
 
 Package functions that load pre-generated data files download data from this

@@ -5,7 +5,7 @@ library(AirSensor)
 # ----- Get the PAS and then unset 'archiveBaseUrl' ----------------------------
 
 # Get the latest PAS from the URL archive
-setArchiveBaseUrl("http://data.mazamascience.com/PurpleAir/v1")
+setArchiveBaseUrl("https://airsensor.aqmd.gov/PurpleAir/v1")
 pas <- pas_load()
 
 # Look at and then remove the package-wide setting of the 'baseUrl'
