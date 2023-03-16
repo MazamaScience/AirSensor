@@ -25,6 +25,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -37,23 +39,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -66,52 +62,19 @@
       <a href="../articles/Developer_Style_Guide.html">Developer Style Guide</a>
     </li>
     <li>
-      <a href="../articles/articles/Australia_on_fire.html">Australia on Fire</a>
+      <a href="../articles/Custom_QC_Algorithms.html">Custom QC Algorithms</a>
     </li>
     <li>
-      <a href="../articles/articles/Custom_QC_Algorithms.html">Custom QC Algorithms</a>
+      <a href="../articles/DataFlowChart.html">Processing PurpleAir Data</a>
     </li>
     <li>
-      <a href="../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
+      <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
     </li>
     <li>
-      <a href="../articles/articles/MVCAA_Tutorial_1.html">MVCAA Tutorial 1: Creating PAT Data</a>
+      <a href="../articles/pas_introduction.html">PurpleAir Synoptic Data</a>
     </li>
     <li>
-      <a href="../articles/articles/MVCAA_Tutorial_1_Astrid_edits.html">MVCAA Tutorial 1: Creating PAT Data</a>
-    </li>
-    <li>
-      <a href="../articles/articles/MVCAA_Tutorial_2.html">MVCAA Tutorial 2: Exploring PAT Data</a>
-    </li>
-    <li>
-      <a href="../articles/articles/MVCAA_Tutorial_3.html">MVCAA Tutorial 3: Creating Airsensor Data</a>
-    </li>
-    <li>
-      <a href="../articles/articles/MVCAA_Tutorial_4.html">MVCAA Tutorial 4: Exploring Airsensor Data</a>
-    </li>
-    <li>
-      <a href="../articles/articles/MVCAA_Tutorial_5.html">MVCAA Tutorial 5: Building a Local Archive</a>
-    </li>
-    <li>
-      <a href="../articles/articles/MVCAA_Tutorial_6.html">MVCAA Tutorial 6: Methow Vallely Smoke</a>
-    </li>
-    <li>
-      <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
-    </li>
-    <li>
-      <a href="../articles/articles/Temporal_Aggregation.html">Temporally Aggregated Time Series</a>
-    </li>
-    <li>
-      <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
-    </li>
-    <li>
-      <a href="../articles/articles/pas_introduction.html">PurpleAir Synoptic Data</a>
-    </li>
-    <li>
-      <a href="../articles/articles/pat_introduction.html">PurpleAir Time Series Data</a>
-    </li>
-    <li>
-      <a href="../articles/articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
+      <a href="../articles/pat_introduction.html">PurpleAir Time Series Data</a>
     </li>
   </ul>
 </li>
@@ -121,8 +84,8 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/MazamaScience/AirSensor/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/MazamaScience/AirSensor/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -136,128 +99,173 @@
 
       
 
-      </header><script src="Developer_Style_Guide_files/header-attrs-2.5/header-attrs.js"></script><link href="Developer_Style_Guide_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="Developer_Style_Guide_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Developer Style Guide</h1>
-                        <h4 class="author">Mazama Science</h4>
+                        <h4 data-toc-skip class="author">Mazama
+Science</h4>
             
-            <h4 class="date">2020-04-06</h4>
+            <h4 data-toc-skip class="date">2020-04-06</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/MazamaScience/AirSensor/blob/master/vignettes/Developer_Style_Guide.Rmd"><code>vignettes/Developer_Style_Guide.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/MazamaScience/AirSensor/blob/HEAD/vignettes/Developer_Style_Guide.Rmd" class="external-link"><code>vignettes/Developer_Style_Guide.Rmd</code></a></small>
       <div class="hidden name"><code>Developer_Style_Guide.Rmd</code></div>
 
     </div>
 
     
     
-<div id="r-style-guide" class="section level1">
-<h1 class="hasAnchor">
-<a href="#r-style-guide" class="anchor"></a>R Style Guide</h1>
-<p>This document describes the coding style used within the package. Having a consistent style enhances the readability and “understandability” of the code and make it easier for users and developers to work with this package and with other, related packages from <a href="http://mazamascience.com">Mazama Science</a>.</p>
-<div id="naming-objects" class="section level2">
-<h2 class="hasAnchor">
-<a href="#naming-objects" class="anchor"></a>Naming Objects</h2>
-<p>Naming variables is one of the most important things to get right to make your code readable and understandable to future readers of the code <em>(perhaps even yourself!)</em>. Having a system for creating names also makes it easier to come up with new ones.</p>
-<p>Mazama Science embraces <strong><code>lowerCamelCase</code></strong> for object names.</p>
-<p>With the casing settled, we use an ornithologist’s sensibility for how to identify things:</p>
+<div class="section level2">
+<h2 id="r-style-guide">R Style Guide<a class="anchor" aria-label="anchor" href="#r-style-guide"></a>
+</h2>
+<p>This document describes the coding style used within the package.
+Having a consistent style enhances the readability and
+“understandability” of the code and make it easier for users and
+developers to work with this package and with other, related packages
+from <a href="http://mazamascience.com" class="external-link">Mazama Science</a>.</p>
+<div class="section level3">
+<h3 id="naming-objects">Naming Objects<a class="anchor" aria-label="anchor" href="#naming-objects"></a>
+</h3>
+<p>Naming variables is one of the most important things to get right to
+make your code readable and understandable to future readers of the code
+<em>(perhaps even yourself!)</em>. Having a system for creating names
+also makes it easier to come up with new ones.</p>
+<p>Mazama Science embraces <strong><code>lowerCamelCase</code></strong>
+for object names.</p>
+<p>With the casing settled, we use an ornithologist’s sensibility for
+how to identify things:</p>
 <ul>
 <li>What is it? — a <code>bird</code>
 </li>
 <li>What kind of bird is it? — a <code>blackBird</code>
 </li>
-<li>What kind of blackBird is it? — a <code>redwingedBlackBird</code>
+<li>What kind of blackBird is it? — a
+<code>redwingedBlackBird</code>
 </li>
 </ul>
-<p>It’s a simple system: start with a noun and prefix it with descriptors until it is uniquely identified.</p>
-<p>In this system we would never have a variable called: <code>num_hours</code>. Instead we go through our process:</p>
+<p>It’s a simple system: start with a noun and prefix it with
+descriptors until it is uniquely identified.</p>
+<p>In this system we would never have a variable called:
+<code>num_hours</code>. Instead we go through our process:</p>
 <ul>
-<li>What is it? — <em>(Hmm. What noun describes this? Ah yes!)</em> — a <code>count</code>
+<li>What is it? — <em>(Hmm. What noun describes this? Ah yes!)</em> — a
+<code>count</code>
 </li>
-<li>What kind of count is it? — <em>(It’s not a “head count” or a “body count”.)</em> It’s an <code>hourCount</code>.</li>
+<li>What kind of count is it? — <em>(It’s not a “head count” or a “body
+count”.)</em> It’s an <code>hourCount</code>.</li>
 </ul>
-<p>For complex objects it is often helpful to give readers of the code a hint as to what type of object it is so they will know how to work with it. We often use variable names like:</p>
+<p>For complex objects it is often helpful to give readers of the code a
+hint as to what type of object it is so they will know how to work with
+it. We often use variable names like:</p>
 <ul>
 <li>
-<code>patList</code> — a <code>list</code> of <code>pat</code> objects</li>
+<code>patList</code> — a <code>list</code> of <code>pat</code>
+objects</li>
 <li>
 <code>SPDF</code> — a <code>SpatialPolygonsDataFrame</code>
 </li>
 <li>
-<code>statsTbl</code> — a <code>tibble</code> of statistical results</li>
+<code>statsTbl</code> — a <code>tibble</code> of statistical
+results</li>
 </ul>
-<p>We occasionally use ‘_’ to create classes of similar variables that are otherwise hard to name, e.g.:</p>
-<pre><code>SoH_sub
-SoH_tbl
-SoH_tidy</code></pre>
+<p>We occasionally use ’_’ to create classes of similar variables that
+are otherwise hard to name, e.g.:</p>
+<pre><code><span><span class="va">SoH_sub</span></span>
+<span><span class="va">SoH_tbl</span></span>
+<span><span class="va">SoH_tidy</span></span></code></pre>
 </div>
-<div id="naming-functions" class="section level2">
-<h2 class="hasAnchor">
-<a href="#naming-functions" class="anchor"></a>Naming Functions</h2>
-<p>Most functions should strive to be atomic in nature and should do one thing really well. Think of them as individual <em>Lego</em> bricks that we click together to achieve more advanced functionality. Where objects are <em><strong>well described nouns</strong></em>, functions are <em><strong>well described verbs</strong></em> that describe what they do as in:</p>
-<pre><code><a href="../reference/pas_createNew.html">pas_createNew()
-pas_filter()
-pas_filterArea()
-pas_filterNear()
-pas_getColumn()
-pas_getDeviceDeploymentIDs()
-pas_getIDs()
-...</a></code></pre>
-<p>All of these functions begin with <code>pas_</code> because they are for creating or working with <code>pas</code> objects. Many of these functions accept a <code>pas</code> object as their first argument and return a modified <code>pas</code>. This means that they can be used with the “pipe” operator and chained together as in:</p>
-<pre><code>Nipomo_labels &lt;-
-  pas_load() %&gt;%
-  pas_filterNear(
-    longitude = -120.476,
-    latitude = 35.043,
-    radius = "10 km"
-  ) %&gt;%
-  pas_getLabels()</code></pre>
-<p>Sometimes functions are named after the object they return. The initial <code>create</code> in these function names is understood. This is especially true with plotting functions. Examples include:</p>
-<pre><code><a href="../reference/pat_dygraph.html">pat_dygraph()
-pat_leaflet()
-pat_multiPlot()
-pat_scatterPlotMatrix()</a></code></pre>
+<div class="section level3">
+<h3 id="naming-functions">Naming Functions<a class="anchor" aria-label="anchor" href="#naming-functions"></a>
+</h3>
+<p>Most functions should strive to be atomic in nature and should do one
+thing really well. Think of them as individual <em>Lego</em> bricks that
+we click together to achieve more advanced functionality. Where objects
+are <em><strong>well described nouns</strong></em>, functions are
+<em><strong>well described verbs</strong></em> that describe what they
+do as in:</p>
+<pre><code><span><span class="fu"><a href="../reference/pas_createNew.html">pas_createNew</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/pas_filter.html">pas_filter</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/pas_filterArea.html">pas_filterArea</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/pas_filterNear.html">pas_filterNear</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/pas_getColumn.html">pas_getColumn</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/pas_getDeviceDeploymentIDs.html">pas_getDeviceDeploymentIDs</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/pas_getIDs.html">pas_getIDs</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">...</span></span></code></pre>
+<p>All of these functions begin with <code>pas_</code> because they are
+for creating or working with <code>pas</code> objects. Many of these
+functions accept a <code>pas</code> object as their first argument and
+return a modified <code>pas</code>. This means that they can be used
+with the “pipe” operator and chained together as in:</p>
+<pre><code><span><span class="va">Nipomo_labels</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/pas_load.html">pas_load</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/pas_filterNear.html">pas_filterNear</a></span><span class="op">(</span></span>
+<span>    longitude <span class="op">=</span> <span class="op">-</span><span class="fl">120.476</span>,</span>
+<span>    latitude <span class="op">=</span> <span class="fl">35.043</span>,</span>
+<span>    radius <span class="op">=</span> <span class="st">"10 km"</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/pas_getLabels.html">pas_getLabels</a></span><span class="op">(</span><span class="op">)</span></span></code></pre>
+<p>Sometimes functions are named after the object they return. The
+initial <code>create</code> in these function names is understood. This
+is especially true with plotting functions. Examples include:</p>
+<pre><code><span><span class="fu"><a href="../reference/pat_dygraph.html">pat_dygraph</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">pat_leaflet</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/pat_multiPlot.html">pat_multiPlot</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/pat_scatterPlotMatrix.html">pat_scatterPlotMatrix</a></span><span class="op">(</span><span class="op">)</span></span></code></pre>
 </div>
-<div id="naming-files" class="section level2">
-<h2 class="hasAnchor">
-<a href="#naming-files" class="anchor"></a>Naming Files</h2>
-<p>Each file should contain a single function of the same name. Thus, the function named <code>createAPIList()</code> is defined in <code>createAPIList.R</code>. An exception is made for small, mostly internal functions used in conjunction with a particular type of object or activity. These can be stored together in a file named <code>utils-~</code>:</p>
-<pre><code>utils-outliers.R
-utils-paSynoptic.R
-utils-paTimeseries.R
-utils-pipe.R
-utils-plot.R
-utils-sampling.R
-utils-sensor.R</code></pre>
+<div class="section level3">
+<h3 id="naming-files">Naming Files<a class="anchor" aria-label="anchor" href="#naming-files"></a>
+</h3>
+<p>Each file should contain a single function of the same name. Thus,
+the function named <code>createAPIList()</code> is defined in
+<code>createAPIList.R</code>. An exception is made for small, mostly
+internal functions used in conjunction with a particular type of object
+or activity. These can be stored together in a file named
+<code>utils-~</code>:</p>
+<pre><code><span><span class="va">utils</span><span class="op">-</span><span class="va">outliers.R</span></span>
+<span><span class="va">utils</span><span class="op">-</span><span class="va">paSynoptic.R</span></span>
+<span><span class="va">utils</span><span class="op">-</span><span class="va">paTimeseries.R</span></span>
+<span><span class="va">utils</span><span class="op">-</span><span class="va">pipe.R</span></span>
+<span><span class="va">utils</span><span class="op">-</span><span class="va">plot.R</span></span>
+<span><span class="va">utils</span><span class="op">-</span><span class="va">sampling.R</span></span>
+<span><span class="va">utils</span><span class="op">-</span><span class="va">sensor.R</span></span></code></pre>
 </div>
-<div id="syntax" class="section level2">
-<h2 class="hasAnchor">
-<a href="#syntax" class="anchor"></a>Syntax</h2>
-<p>We generally adhere to the <a href="http://adv-r.had.co.nz/Style.html">Wickham Style Guide</a> for syntax with a few exceptions:</p>
-<div id="spacing" class="section level3">
-<h3 class="hasAnchor">
-<a href="#spacing" class="anchor"></a>Spacing</h3>
-<p><strong>Do</strong> place spaces around code in parentheses if it is an <code>if</code> test:</p>
+<div class="section level3">
+<h3 id="syntax">Syntax<a class="anchor" aria-label="anchor" href="#syntax"></a>
+</h3>
+<p>We generally adhere to the <a href="http://adv-r.had.co.nz/Style.html" class="external-link">Wickham Style Guide</a> for
+syntax with a few exceptions:</p>
+<div class="section level4">
+<h4 id="spacing">Spacing<a class="anchor" aria-label="anchor" href="#spacing"></a>
+</h4>
+<p><strong>Do</strong> place spaces around code in parentheses if it is
+an <code>if</code> test:</p>
 <pre><code>if ( &lt;logical expression part1&gt; &amp;&amp; &lt;logical expression part2&gt; ) {
   ...
 }</code></pre>
-<p>When debugging, this makes it much easier to select the logical test with a cursor and paste it into the RStudio console.</p>
+<p>When debugging, this makes it much easier to select the logical test
+with a cursor and paste it into the RStudio console.</p>
 </div>
-<div id="lists" class="section level3">
-<h3 class="hasAnchor">
-<a href="#lists" class="anchor"></a>Lists</h3>
-<p>We generally like to specify R lists with each <code>parameter = value</code> pair on a separate line. This goes for regular lists and for named argument lists passed to a function:</p>
-<pre><code>diamond_bar &lt;-
-  pas_load() %&gt;%
-  pas_filterNear(
-    longitude = -117.820833,
-    latitude = 34.001667, 
-    radius = "20 km"
-  )</code></pre>
-<p>Coding this way makes it easy to see which function arguments are being passed. It also eases future refactoring of the code when additional arguments need to be added or the order of arguments need to be changed.</p>
+<div class="section level4">
+<h4 id="lists">Lists<a class="anchor" aria-label="anchor" href="#lists"></a>
+</h4>
+<p>We generally like to specify R lists with each
+<code>parameter = value</code> pair on a separate line. This goes for
+regular lists and for named argument lists passed to a function:</p>
+<pre><code><span><span class="va">diamond_bar</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/pas_load.html">pas_load</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/pas_filterNear.html">pas_filterNear</a></span><span class="op">(</span></span>
+<span>    longitude <span class="op">=</span> <span class="op">-</span><span class="fl">117.820833</span>,</span>
+<span>    latitude <span class="op">=</span> <span class="fl">34.001667</span>, </span>
+<span>    radius <span class="op">=</span> <span class="st">"20 km"</span></span>
+<span>  <span class="op">)</span></span></code></pre>
+<p>Coding this way makes it easy to see which function arguments are
+being passed. It also eases future refactoring of the code when
+additional arguments need to be added or the order of arguments need to
+be changed.</p>
 <hr>
-<p>It is our belief that good code should be both readable and understandable and should inspire others to copy and innovate on their own.</p>
+<p>It is our belief that good code should be both readable and
+understandable and should inspire others to copy and innovate on their
+own.</p>
 <p><strong><em>Mazama Science</em></strong></p>
 </div>
 </div>
@@ -275,11 +283,13 @@ utils-sensor.R</code></pre>
 
 
       <footer><div class="copyright">
-  <p>Developed by Jonathan Callahan, Hans Martin, Kayleigh Wilson, Tate Brasel, Helen Miller.</p>
+  <p></p>
+<p>Developed by Jonathan Callahan, Hans Martin, Kayleigh Wilson, Tate Brasel, Helen Miller.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
@@ -287,6 +297,8 @@ utils-sensor.R</code></pre>
 
   
 
+
+  
 
   </body>
 </html>

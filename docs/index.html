@@ -27,6 +27,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -39,23 +41,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -68,52 +64,19 @@
       <a href="articles/Developer_Style_Guide.html">Developer Style Guide</a>
     </li>
     <li>
-      <a href="articles/articles/Australia_on_fire.html">Australia on Fire</a>
+      <a href="articles/Custom_QC_Algorithms.html">Custom QC Algorithms</a>
     </li>
     <li>
-      <a href="articles/articles/Custom_QC_Algorithms.html">Custom QC Algorithms</a>
+      <a href="articles/DataFlowChart.html">Processing PurpleAir Data</a>
     </li>
     <li>
-      <a href="articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
+      <a href="articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
     </li>
     <li>
-      <a href="articles/articles/MVCAA_Tutorial_1.html">MVCAA Tutorial 1: Creating PAT Data</a>
+      <a href="articles/pas_introduction.html">PurpleAir Synoptic Data</a>
     </li>
     <li>
-      <a href="articles/articles/MVCAA_Tutorial_1_Astrid_edits.html">MVCAA Tutorial 1: Creating PAT Data</a>
-    </li>
-    <li>
-      <a href="articles/articles/MVCAA_Tutorial_2.html">MVCAA Tutorial 2: Exploring PAT Data</a>
-    </li>
-    <li>
-      <a href="articles/articles/MVCAA_Tutorial_3.html">MVCAA Tutorial 3: Creating Airsensor Data</a>
-    </li>
-    <li>
-      <a href="articles/articles/MVCAA_Tutorial_4.html">MVCAA Tutorial 4: Exploring Airsensor Data</a>
-    </li>
-    <li>
-      <a href="articles/articles/MVCAA_Tutorial_5.html">MVCAA Tutorial 5: Building a Local Archive</a>
-    </li>
-    <li>
-      <a href="articles/articles/MVCAA_Tutorial_6.html">MVCAA Tutorial 6: Methow Vallely Smoke</a>
-    </li>
-    <li>
-      <a href="articles/articles/SoH_functions.html">SoH Functions</a>
-    </li>
-    <li>
-      <a href="articles/articles/Temporal_Aggregation.html">Temporally Aggregated Time Series</a>
-    </li>
-    <li>
-      <a href="articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
-    </li>
-    <li>
-      <a href="articles/articles/pas_introduction.html">PurpleAir Synoptic Data</a>
-    </li>
-    <li>
-      <a href="articles/articles/pat_introduction.html">PurpleAir Time Series Data</a>
-    </li>
-    <li>
-      <a href="articles/articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
+      <a href="articles/pat_introduction.html">PurpleAir Time Series Data</a>
     </li>
   </ul>
 </li>
@@ -123,8 +86,8 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/MazamaScience/AirSensor/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/MazamaScience/AirSensor/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -142,14 +105,14 @@
   <div class="contents col-md-9">
 
 
-<div id="airsensor-r-package" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#airsensor-r-package" class="anchor"></a>AirSensor R Package</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="airsensor-r-package">AirSensor R Package<a class="anchor" aria-label="anchor" href="#airsensor-r-package"></a>
+</h1></div>
 <p><code>Process and display PM2.5 data from PurpleAir</code></p>
-<div id="background" class="section level2">
-<h2 class="hasAnchor">
-<a href="#background" class="anchor"></a>Background</h2>
-<p>The AirSensor R package is being developed to help air quality analysts, scientists and interested members of the public more easily work with air quality data from consumer-grade air quality sensors. Initial focus is on PM2.5 measurements from sensors produced by <a href="https://www2.purpleair.com">PurpleAir</a>.</p>
+<div class="section level2">
+<h2 id="background">Background<a class="anchor" aria-label="anchor" href="#background"></a>
+</h2>
+<p>The AirSensor R package is being developed to help air quality analysts, scientists and interested members of the public more easily work with air quality data from consumer-grade air quality sensors. Initial focus is on PM2.5 measurements from sensors produced by <a href="https://www2.purpleair.com" class="external-link">PurpleAir</a>.</p>
 <p>The package makes it easier to obtain data, perform analyses and create visualizations. It includes functionality to:</p>
 <ul>
 <li>download and easily work with PM2.5 data from PurpleAir</li>
@@ -160,25 +123,25 @@
 <li>convert aggregated PurpleAir data into <code>ws_monitor</code> objects appropriate for use with the <strong>PWFSLSmoke</strong> package</li>
 </ul>
 </div>
-<div id="institutional-support" class="section level2">
-<h2 class="hasAnchor">
-<a href="#institutional-support" class="anchor"></a>Institutional Support</h2>
+<div class="section level2">
+<h2 id="institutional-support">Institutional Support<a class="anchor" aria-label="anchor" href="#institutional-support"></a>
+</h2>
 <p>The initial development of this package was funded by the South Coast Air Quality Management District with funds from an EPA STAR grant. The following disclaimer applies:</p>
 <blockquote>
 <p>This package was prepared as part of a project funded through a Science to Achieve Results (STAR) grant award (RD83618401) from the U.S. Environmental Protection Agency to the South Coast Air Quality Management District (South Coast AQMD). The opinions, findings, conclusions, and recommendations are those of the author and do not necessarily represent the views of the U.S. EPA or the South Coast AQMD, nor does mention of trade names or commercial products constitute endorsement or recommendation for use. The U.S. EPA, the South Coast AQMD, their officers, employees, contractors, and subcontractors make no warranty, expressed or implied, and assume no legal liability for the information in this package. The U.S. EPA and South Coast AQMD have not approved or disapproved this package, and neither have passed upon the accuracy or adequacy of the information contained herein.</p>
 </blockquote>
 <p>Additional funding was provided by the US Forest Service in support of the Interagency Wildland Fire Air Quality Response Program.</p>
-<p><a href="https://mazamascience.com">Mazama Science</a> develops and maintains the package as part of its ongoing relationships with federal, state and local air quality agencies.</p>
+<p><a href="https://mazamascience.com" class="external-link">Mazama Science</a> develops and maintains the package as part of its ongoing relationships with federal, state and local air quality agencies.</p>
 </div>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p>This package is designed to be used with <a href="https://cran.r-project.org">R</a> (&gt;= 3.5) and <a href="https://rstudio.com/">RStudio</a> so make sure you have those installed first.</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>This package is designed to be used with <a href="https://cran.r-project.org" class="external-link">R</a> (&gt;= 3.5) and <a href="https://rstudio.com/" class="external-link">RStudio</a> so make sure you have those installed first.</p>
 <p>The package is available on CRAN or you get the latest development version from GitHub. To install the latest development version, users will want to install the <strong>devtools</strong> package and then type the following at the RStudio console:</p>
-<pre><code><a href="https://rdrr.io/r/utils/install.packages.html"># Note that vignettes require knitr and rmarkdown
-install.packages('knitr')
-install.packages('rmarkdown')
-devtools::install_github("MazamaScience/AirSensor")</a></code></pre>
+<pre><code><span><span class="co"># Note that vignettes require knitr and rmarkdown</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'knitr'</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'rmarkdown'</span><span class="op">)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"MazamaScience/AirSensor"</span><span class="op">)</span></span></code></pre>
 <p>Any work with spatial data, <em>e.g.</em> assigning countries, states and timezones, will require installation of required spatial datasets. To get these datasets you should type the following at the RStudio console:</p>
 <pre><code>library(MazamaSpatialUtils)
 dir.create('~/Data/Spatial', recursive=TRUE)
@@ -193,52 +156,62 @@ installSpatialData("CA_AirBasins_01")</code></pre>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=AirSensor">https://​cloud.r-project.org/​package=AirSensor</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/MazamaScience/AirSensor/">https://​github.com/​MazamaScience/​AirSensor/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/MazamaScience/AirSensor/issues">https://​github.com/​MazamaScience/​AirSensor/​issues</a>
-</li>
+<li><a href="https://cloud.r-project.org/package=AirSensor" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/MazamaScience/AirSensor/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/MazamaScience/AirSensor/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></li>
+<li><a href="https://www.r-project.org/Licenses/GPL-3" class="external-link">GPL-3</a></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing AirSensor</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Jonathan Callahan <br><small class="roles"> Author, maintainer </small>  </li>
 <li>Hans Martin <br><small class="roles"> Author </small>  </li>
 <li>Kayleigh Wilson <br><small class="roles"> Author </small>  </li>
 <li>Tate Brasel <br><small class="roles"> Author </small>  </li>
 <li>Helen Miller <br><small class="roles"> Author </small>  </li>
-<li><a href="authors.html">All authors...</a></li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://cran.r-project.org/package=AirSensor"><img src="http://www.r-pkg.org/badges/version/AirSensor" alt="CRAN_Status_Badge"></a></li>
-<li><a href="https://cran.r-project.org/package=AirSensor"><img src="http://cranlogs.r-pkg.org/badges/AirSensor" alt="Downloads"></a></li>
-<li><a href="https://travis-ci.org/MazamaScience/AirSensor"><img src="https://travis-ci.org/MazamaScience/AirSensor.svg?branch=master" alt="Build Status"></a></li>
+<li><a href="https://cran.r-project.org/package=AirSensor" class="external-link"><img src="http://www.r-pkg.org/badges/version/AirSensor" alt="CRAN_Status_Badge"></a></li>
+<li><a href="https://cran.r-project.org/package=AirSensor" class="external-link"><img src="http://cranlogs.r-pkg.org/badges/AirSensor" alt="Downloads"></a></li>
+<li><a href="https://travis-ci.org/MazamaScience/AirSensor" class="external-link"><img src="https://travis-ci.org/MazamaScience/AirSensor.svg?branch=master" alt="Build Status"></a></li>
 </ul>
 </div>
-</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Jonathan Callahan, Hans Martin, Kayleigh Wilson, Tate Brasel, Helen Miller.</p>
+  <p></p>
+<p>Developed by Jonathan Callahan, Hans Martin, Kayleigh Wilson, Tate Brasel, Helen Miller.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
@@ -246,6 +219,8 @@ installSpatialData("CA_AirBasins_01")</code></pre>
 
   
 
+
+  
 
   </body>
 </html>

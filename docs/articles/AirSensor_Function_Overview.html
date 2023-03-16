@@ -25,6 +25,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -37,23 +39,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">AirSensor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -66,52 +62,19 @@
       <a href="../articles/Developer_Style_Guide.html">Developer Style Guide</a>
     </li>
     <li>
-      <a href="../articles/articles/Australia_on_fire.html">Australia on Fire</a>
+      <a href="../articles/Custom_QC_Algorithms.html">Custom QC Algorithms</a>
     </li>
     <li>
-      <a href="../articles/articles/Custom_QC_Algorithms.html">Custom QC Algorithms</a>
+      <a href="../articles/DataFlowChart.html">Processing PurpleAir Data</a>
     </li>
     <li>
-      <a href="../articles/articles/DataFlowChart.html">Processing PurpleAir Data</a>
+      <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
     </li>
     <li>
-      <a href="../articles/articles/MVCAA_Tutorial_1.html">MVCAA Tutorial 1: Creating PAT Data</a>
+      <a href="../articles/pas_introduction.html">PurpleAir Synoptic Data</a>
     </li>
     <li>
-      <a href="../articles/articles/MVCAA_Tutorial_1_Astrid_edits.html">MVCAA Tutorial 1: Creating PAT Data</a>
-    </li>
-    <li>
-      <a href="../articles/articles/MVCAA_Tutorial_2.html">MVCAA Tutorial 2: Exploring PAT Data</a>
-    </li>
-    <li>
-      <a href="../articles/articles/MVCAA_Tutorial_3.html">MVCAA Tutorial 3: Creating Airsensor Data</a>
-    </li>
-    <li>
-      <a href="../articles/articles/MVCAA_Tutorial_4.html">MVCAA Tutorial 4: Exploring Airsensor Data</a>
-    </li>
-    <li>
-      <a href="../articles/articles/MVCAA_Tutorial_5.html">MVCAA Tutorial 5: Building a Local Archive</a>
-    </li>
-    <li>
-      <a href="../articles/articles/MVCAA_Tutorial_6.html">MVCAA Tutorial 6: Methow Vallely Smoke</a>
-    </li>
-    <li>
-      <a href="../articles/articles/SoH_functions.html">SoH Functions</a>
-    </li>
-    <li>
-      <a href="../articles/articles/Temporal_Aggregation.html">Temporally Aggregated Time Series</a>
-    </li>
-    <li>
-      <a href="../articles/articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
-    </li>
-    <li>
-      <a href="../articles/articles/pas_introduction.html">PurpleAir Synoptic Data</a>
-    </li>
-    <li>
-      <a href="../articles/articles/pat_introduction.html">PurpleAir Time Series Data</a>
-    </li>
-    <li>
-      <a href="../articles/articles/purpleair_failure_modes.html">PurpleAir Failure Modes</a>
+      <a href="../articles/pat_introduction.html">PurpleAir Time Series Data</a>
     </li>
   </ul>
 </li>
@@ -121,8 +84,8 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/MazamaScience/AirSensor/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/MazamaScience/AirSensor/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -136,31 +99,41 @@
 
       
 
-      </header><script src="AirSensor_Function_Overview_files/header-attrs-2.5/header-attrs.js"></script><link href="AirSensor_Function_Overview_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="AirSensor_Function_Overview_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>AirSensor Function Overview</h1>
-                        <h4 class="author">Mazama Science</h4>
+                        <h4 data-toc-skip class="author">Mazama
+Science</h4>
             
-            <h4 class="date">2020-01-04</h4>
+            <h4 data-toc-skip class="date">2020-01-04</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/MazamaScience/AirSensor/blob/master/vignettes/AirSensor_Function_Overview.Rmd"><code>vignettes/AirSensor_Function_Overview.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/MazamaScience/AirSensor/blob/HEAD/vignettes/AirSensor_Function_Overview.Rmd" class="external-link"><code>vignettes/AirSensor_Function_Overview.Rmd</code></a></small>
       <div class="hidden name"><code>AirSensor_Function_Overview.Rmd</code></div>
 
     </div>
 
     
     
-<div id="function-overview" class="section level1">
-<h1 class="hasAnchor">
-<a href="#function-overview" class="anchor"></a>Function Overview</h1>
-<p>This document has been updated to reflect functions in AirSensor version 0.6.x.</p>
-<div id="synoptic-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#synoptic-data" class="anchor"></a>Synoptic Data</h2>
-<p>Purple Air Synoptic (PAS) data provides a view of their sensor network with location metadata and an instantaneous view of measured values. Within the <strong>AirSensor</strong> package, this data is available as a <code>pas</code> object. All functions beginning with <code>pas_</code> are designed for creating or working with this data. The following functions are the most common end-user functions:</p>
+<div class="section level2">
+<h2 id="function-overview">Function Overview<a class="anchor" aria-label="anchor" href="#function-overview"></a>
+</h2>
+<p>This document has been updated to reflect functions in AirSensor
+version 0.6.x.</p>
+<div class="section level3">
+<h3 id="synoptic-data">Synoptic Data<a class="anchor" aria-label="anchor" href="#synoptic-data"></a>
+</h3>
+<p>Purple Air Synoptic (PAS) data provides a view of their sensor
+network with location metadata and an instantaneous view of measured
+values. Within the <strong>AirSensor</strong> package, this data is
+available as a <code>pas</code> object. All functions beginning with
+<code>pas_</code> are designed for creating or working with this data.
+The following functions are the most common end-user functions:</p>
 <table class="table">
+<colgroup>
+<col width="53%">
+<col width="46%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">function</th>
 <th align="left">params</th>
@@ -183,7 +156,8 @@
 <td align="left"><code>datestamp, retries, timezone, archival</code></td>
 </tr>
 <tr class="odd">
-<td align="left"><strong>Obtaining information from a <code>pas</code></strong></td>
+<td align="left"><strong>Obtaining information from a
+<code>pas</code></strong></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
@@ -227,17 +201,25 @@
 <td align="left"><code>pas, parameter, paletteName, ...</code></td>
 </tr>
 <tr class="even">
-<td align="left"><code><a href="../reference/pas_staticMap.html">pas_staticMap()</a></code></td>
+<td align="left"><code>pas_staticMap()</code></td>
 <td align="left"><code>pas, parameter, paletteName, ...</code></td>
 </tr>
 </tbody>
 </table>
 </div>
-<div id="timeseries-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#timeseries-data" class="anchor"></a>Timeseries Data</h2>
-<p>PurpleAir Timeseries (PAT) data is available on a per-sensor basis. Within the <strong>AirSensor</strong> package, this data is available as a <code>pat</code> object. All functions beginning with <code>pat_</code> are designed for creating or working with this data. The following functions are the most common end-user functions:</p>
+<div class="section level3">
+<h3 id="timeseries-data">Timeseries Data<a class="anchor" aria-label="anchor" href="#timeseries-data"></a>
+</h3>
+<p>PurpleAir Timeseries (PAT) data is available on a per-sensor basis.
+Within the <strong>AirSensor</strong> package, this data is available as
+a <code>pat</code> object. All functions beginning with
+<code>pat_</code> are designed for creating or working with this data.
+The following functions are the most common end-user functions:</p>
 <table class="table">
+<colgroup>
+<col width="53%">
+<col width="46%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">function</th>
 <th align="left">params</th>
@@ -362,10 +344,16 @@
 </tbody>
 </table>
 </div>
-<div id="hourly-aggregated-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#hourly-aggregated-data" class="anchor"></a>Hourly Aggregated Data</h2>
-<p>Hourly Aggregated data can be generated from <code>pat</code> objects with the <code><a href="../reference/pat_createAirSensor.html">pat_createAirSensor()</a></code> function. Within the <strong>AirSensor</strong> package, this data is available as an <code>airsensor</code> object. All functions beginning with <code>sensor_</code> are designed for obtaining or working with this data. The following functions are the most common end-user functions:</p>
+<div class="section level3">
+<h3 id="hourly-aggregated-data">Hourly Aggregated Data<a class="anchor" aria-label="anchor" href="#hourly-aggregated-data"></a>
+</h3>
+<p>Hourly Aggregated data can be generated from <code>pat</code> objects
+with the <code><a href="../reference/pat_createAirSensor.html">pat_createAirSensor()</a></code> function. Within the
+<strong>AirSensor</strong> package, this data is available as an
+<code>airsensor</code> object. All functions beginning with
+<code>sensor_</code> are designed for obtaining or working with this
+data. The following functions are the most common end-user
+functions:</p>
 <table class="table">
 <thead><tr class="header">
 <th align="left">function</th>
@@ -373,7 +361,8 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left"><strong>Creating an <code>airsensor</code></strong></td>
+<td align="left"><strong>Creating an
+<code>airsensor</code></strong></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
@@ -401,7 +390,8 @@
 <td align="left"><code>collection, datestamp, timezone</code></td>
 </tr>
 <tr class="even">
-<td align="left"><strong>Manipulating an <code>airsensor</code></strong></td>
+<td align="left"><strong>Manipulating an
+<code>airsensor</code></strong></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
@@ -421,7 +411,8 @@
 <td align="left"><code>sensor, startdate, enddate, timezone</code></td>
 </tr>
 <tr class="odd">
-<td align="left"><strong>Plotting an <code>airsensor</code></strong></td>
+<td align="left"><strong>Plotting an
+<code>airsensor</code></strong></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
@@ -438,7 +429,9 @@
 </tr>
 </tbody>
 </table>
-<p>Note that each <code>airsensor</code> object is also a <code>ws_monitor</code> object and can be manipulated and plotted with functions from the <strong>PWFSLSmoke</strong> package.</p>
+<p>Note that each <code>airsensor</code> object is also a
+<code>ws_monitor</code> object and can be manipulated and plotted with
+functions from the <strong>PWFSLSmoke</strong> package.</p>
 </div>
 </div>
   </div>
@@ -454,11 +447,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Jonathan Callahan, Hans Martin, Kayleigh Wilson, Tate Brasel, Helen Miller.</p>
+  <p></p>
+<p>Developed by Jonathan Callahan, Hans Martin, Kayleigh Wilson, Tate Brasel, Helen Miller.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
@@ -466,6 +461,8 @@
 
   
 
+
+  
 
   </body>
 </html>

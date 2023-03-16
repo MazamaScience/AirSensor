@@ -1,24 +1,13 @@
-pandoc: 2.10.1
-pkgdown: 1.6.1
+pandoc: 2.19.2
+pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   AirSensor_Function_Overview: AirSensor_Function_Overview.html
   Developer_Style_Guide: Developer_Style_Guide.html
-  articles/Australia_on_fire: Australia_on_fire.html
-  articles/Custom_QC_Algorithms: Custom_QC_Algorithms.html
-  articles/DataFlowChart: DataFlowChart.html
-  articles/MVCAA_Tutorial_1: MVCAA_Tutorial_1.html
-  articles/MVCAA_Tutorial_1_Astrid_edits: MVCAA_Tutorial_1_Astrid_edits.html
-  articles/MVCAA_Tutorial_2: MVCAA_Tutorial_2.html
-  articles/MVCAA_Tutorial_3: MVCAA_Tutorial_3.html
-  articles/MVCAA_Tutorial_4: MVCAA_Tutorial_4.html
-  articles/MVCAA_Tutorial_5: MVCAA_Tutorial_5.html
-  articles/MVCAA_Tutorial_6: MVCAA_Tutorial_6.html
-  articles/SoH_functions: SoH_functions.html
-  articles/Temporal_Aggregation: Temporal_Aggregation.html
-  articles/outlier_detection: outlier_detection.html
-  articles/pas_introduction: pas_introduction.html
-  articles/pat_introduction: pat_introduction.html
-  articles/purpleair_failure_modes: purpleair_failure_modes.html
-last_built: 2021-04-02T00:06Z
+  Custom_QC_Algorithms: Custom_QC_Algorithms.html
+  DataFlowChart: DataFlowChart.html
+  outlier_detection: outlier_detection.html
+  pas_introduction: pas_introduction.html
+  pat_introduction: pat_introduction.html
+last_built: 2023-03-16T17:09Z
 

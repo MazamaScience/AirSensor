@@ -33,9 +33,7 @@ that might leave out some outliers.
 *(We're willing to wait for the plot so we can see everything!)*
 
 ```{r quick_example}
-pat <- 
-  AirSensor::example_pat %>%
-  pat_filterDate("2018-08-01","2018-08-07")
+pat <- AirSensor::example_pat
 
 pat_multiPlot(pat, plottype = "pm25", sampleSize = 1e6)
 ```
@@ -50,8 +48,6 @@ flagging the more believable measurements:
 ```{r pat_outliers}
 pat_outliers(pat, showPlot = TRUE)
 ```
-
-An excellent result!
 
 ## The Hampel Filter
 
@@ -109,12 +105,12 @@ with a visual inspection of the data:
 ```{r visual_inspection}
 oneDayData <- 
   pat %>% 
-  pat_filterDate("2018-08-03", days = 1) %>%
+  pat_filterDate("2022-07-02", days = 1) %>%
   pat_extractData()
 
 # Visually inspect for outliers
 plot(oneDayData$datetime, oneDayData$pm25_A, 
-     xlab = "Aug 1, 21018", ylab = "ug/m3", las = 1)
+     xlab = "Jul 02, 2022", ylab = "ug/m3", las = 1)
 title("A channel PM2.5")
 ```
 
@@ -133,7 +129,7 @@ a single window centered on the outlier at index `872`:
 # Set example point, neighbors, median, and window
 windowWidth <- 23
 halfWidth <- round(23/2)
-exampleIndex <- 872
+exampleIndex <- 240
 windowStart <- as.integer(exampleIndex - halfWidth)
 windowEnd <- as.integer(exampleIndex + halfWidth)
 exampleNeighbors <- c(windowStart:(exampleIndex - 1), (exampleIndex + 1):windowEnd)
@@ -186,7 +182,7 @@ glitches removed. The following plots demonstrate replacement of outliers.
 ### No outlier replacement
 ```{r hampel_smoothing_0}
 pat2Day <-
-  pat_filterDate(pat, "2018-08-02", days = 2)
+  pat_filterDate(pat, "2022-07-02", days = 2)
 
 # No outlier replacement
 pat2Day %>% pat_multiPlot("pm25", sampleSize = 1e6)

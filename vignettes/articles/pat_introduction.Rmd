@@ -1,7 +1,7 @@
 ---
 title: "PurpleAir Time Series Data"
 author: "Mazama Science"
-date: "2019-04-19"
+date: "2023-03-16"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{PurpleAir Time Series Data}
@@ -39,44 +39,33 @@ access the ThingSpeak channel API we must first load the synoptic database, but
 for the purposes of this example, we are going to use the `example_pas` associated
 with the *AirSensor* package.
 
-```{r load_pat, message = FALSE, warning = FALSE}
+```{r load_pat, eval = FALSE}
 library(MazamaCoreUtils)
 library(AirSensor)
 
+# Define MY_API_READ_KEY in a .gitignore protected file
+source("global_vars.R")
+
+# Use an existing 'pas' object
 pas <- AirSensor::example_pas
 
-id <- pas_getDeviceDeploymentIDs(pas, "^Seattle$")
-
-pat <- pat_createNew(id = id, 
-                     pas = pas, 
-                     startdate = 20180701, 
-                     enddate = 20180901)
+# Create a new 'pat' object
+pat <-
+  pat_createNew(
+    api_key = MY_API_READ_KEY,
+    pas = pas,
+    sensor_index = "3515",
+    startdate = "2022-07-01",
+    enddate = "2022-07-08",
+    timezone = "UTC",
+    verbose = TRUE
+)
 ```
 
 Notice that when passing our synoptic dataframe "`pas`" to `pat_createNew()`, 
-we also supply unique identification and a date-interval. In this case, our 
-monitor-of-interest (MOI) is a sensor named "Seattle" and our dates-of-interest
-are 2018-07-01 to 2018-09-01. In order to uniquely identify each sensor we have 
-created the `deviceDeploymentID` (called `id` in the `pat_createNew()` function), 
-which is used to associate each sensor with it's location. This identifier is a 
-better way to access individual "pat" objects than the `label` which is not 
-guaranteed to be unique. For example, if we were looking for a sensor called 
-"home" in the `pas` we would find more than one "pat" object.
-
-
-```{r non_unique_pat}
-
-id_home <- pas_getDeviceDeploymentIDs(pas, "^Home$")
-
-length(id_home)
-
-```
-
-**Note:** You must provide either a "label" or "id" to `pat_createNew()` in 
-addition to the `pas` object in order to supply ThingSpeak with the necessary 
-metadata to access the sensors database. A time range on the other hand is 
-optional; by default not providing `pat_createNew()` with a start and end date 
-will return the most recent week of time series data.
+we also supply a `senor_index` and a date-interval. In this case, our 
+monitor-of-interest (MOI) has sensor_index "3515" and our dates-of-interest
+are 2022-07-01 to 2022-07-08.
 
 ## The PurpleAirTimeseries ("pat") Data Model
 Let's begin by exploring the attributes of the dataframe returned by the 
@@ -108,12 +97,12 @@ pat %>%
 Our `pat` dataframe spans two months. While this provides a great overview of
 PM2.5, it is unwieldy to analyze if we are only interested in anomalous air 
 quality. We can use `pat_filterDate()` to subset our `pat` dates. In this case,
-we'll reduce our time range to 2018-08-01 - 2018-09-01.
+we'll reduce our time range to 2022-07-02 - 2022-07-05.
 
 ```{r augustPlot}
 pat_august <- 
   pat %>% 
-  pat_filterDate(startdate = 20180801, enddate = 20180901)
+  pat_filterDate(startdate = 20220702, enddate = 20220705)
 
 pat_august %>%
   pat_multiPlot(plottype = "pm25_over")
@@ -151,12 +140,12 @@ data from the A and B channels to verify that the sensor is functioning
 properly.
 
 ```{r internalFit, message = FALSE, warning = FALSE}
-one_week <- 
+three_days <- 
   pat_august %>% 
-  pat_filterDate(startdate = 20180813, days = 7)
+  pat_filterDate(startdate = 20220704, days = 3)
 
 # Channel A/B comparison
-one_week %>% 
+three_days %>% 
   pat_internalFit()
 ```
 
@@ -172,7 +161,7 @@ compare the sensor data with hourly data from a federal monitor
 
 ```{r externalFit, message = FALSE, warning = FALSE}
 # Sensor/Monitor comparison
-one_week %>% 
+three_days %>% 
   pat_externalFit()
 ```
 
