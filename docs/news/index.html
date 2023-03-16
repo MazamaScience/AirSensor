@@ -88,6 +88,8 @@
 <li><p>Replace <strong>sp</strong> package dependency with <strong>sf</strong> package.</p></li>
 <li><p>New versions of <code><a href="../reference/pas_createNew.html">pas_createNew()</a></code>, <code>pas_downloadParseData()</code>, <code><a href="../reference/pas_enhanceRawData.html">pas_enhanceRawData()</a></code> and <code><a href="../reference/pas_leaflet.html">pas_leaflet()</a></code>.</p></li>
 <li><p>Some column names in generated <em>pas</em> dataframes have changed to be more consistent with PurpleAir documentation.</p></li>
+<li><p>New versions of <code><a href="../reference/pat_downloadParseRawData.html">pat_downloadParseRawData()</a></code>, <code><a href="../reference/pat_createNew.html">pat_createNew()</a></code>.</p></li>
+<li><p>Updated package data and function reference examples.</p></li>
 <li><p>Removed package dependencies: <strong>httpcode</strong></p></li>
 </ul></div>
     <div class="section level2">
@@ -514,8 +516,8 @@
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.5.10" id="airsensor-0510">AirSensor 0.5.10<a class="anchor" aria-label="anchor" href="#airsensor-0510"></a></h2>
-<p>Removed <code><a href="https://rdrr.io/pkg/MazamaCoreUtils/man/logger.error.html" class="external-link">logger.error()</a></code> statements from the following low-level functions as they couldn’t be turned off and ended up cluttering the log files:</p>
-<ul><li><code><a href="https://rdrr.io/pkg/MazamaCoreUtils/man/loadDataFile.html" class="external-link">loadDataFile()</a></code></li>
+<p>Removed <code>logger.error()</code> statements from the following low-level functions as they couldn’t be turned off and ended up cluttering the log files:</p>
+<ul><li><code>loadDataFile()</code></li>
 <li><code><a href="../reference/pas_load.html">pas_load()</a></code></li>
 <li><code><a href="../reference/pat_createNew.html">pat_createNew()</a></code></li>
 <li><code><a href="../reference/pat_loadLatest.html">pat_loadLatest()</a></code></li>
@@ -578,8 +580,8 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.5.1" id="airsensor-051">AirSensor 0.5.1<a class="anchor" aria-label="anchor" href="#airsensor-051"></a></h2>
-<ul><li>Upudated data loding to allow for loading data from a local archive. New functions include: <code><a href="https://rdrr.io/pkg/MazamaCoreUtils/man/loadDataFile.html" class="external-link">loadDataFile()</a></code>, <code><a href="../reference/getArchiveBaseDir.html">getArchiveBaseDir()</a></code>, <code><a href="../reference/setArchiveBaseDir.html">setArchiveBaseDir()</a></code>.</li>
-<li>All <code>~_load()</code> and <code>~_loadLatest()</code> functions now call <code><a href="https://rdrr.io/pkg/MazamaCoreUtils/man/loadDataFile.html" class="external-link">loadDataFile()</a></code>
+<ul><li>Upudated data loding to allow for loading data from a local archive. New functions include: <code>loadDataFile()</code>, <code><a href="../reference/getArchiveBaseDir.html">getArchiveBaseDir()</a></code>, <code><a href="../reference/setArchiveBaseDir.html">setArchiveBaseDir()</a></code>.</li>
+<li>All <code>~_load()</code> and <code>~_loadLatest()</code> functions now call <code>loadDataFile()</code>
 </li>
 <li>
 <code><a href="../reference/pat_load.html">pat_load()</a></code> now continues working in the face of missing data files. under the hood and will work with data archives found at <code>archiveBaseDir</code>.</li>

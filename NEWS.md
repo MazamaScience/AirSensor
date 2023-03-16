@@ -18,6 +18,8 @@ For information, see:
 and `pas_leaflet()`.
 * Some column names in generated _pas_ dataframes have changed to be more 
 consistent with PurpleAir documentation.
+* New versions of `pat_downloadParseRawData()`, `pat_createNew()`.
+* Updated package data and function reference examples.
 * Removed package dependencies: **httpcode**
 
 # AirSensor 1.0.9
