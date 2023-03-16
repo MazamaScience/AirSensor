@@ -27,16 +27,6 @@ metrics calculated with \code{SoHIndex_FUN}.
 Both \code{minPctReporting} and \code{breaks} are passed to 
 \code{SoHIndex_FUN}.
 }
-\examples{
-\donttest{
-library(AirSensor)
-
-gg_A <- pat_dailySoHIndexPlot(example_pat_failure_A)
-gg_B <- pat_dailySoHIndexPlot(example_pat_failure_B)
-
-multi_ggplot(gg_A, gg_B)
-}
-}
 \seealso{
 \link{pat_dailySoHIndex_00}
 }

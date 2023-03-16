@@ -42,8 +42,7 @@
 #'     sensor_index = "2323",
 #'     startdate = "2023-02-01",
 #'     enddate = "2023-02-02",
-#'     timezone = "UTC",
-#'     fields = SENSOR_HISTORY_PM25_FIELDS,
+#'     timezone = "UTC"
 #'   )
 #'
 #' View(pat_raw[1:100,])
@@ -58,7 +57,7 @@ pat_downloadParseRawData <- function(
   enddate = NULL,
   timezone = "UTC",
   average = 0,
-  fields = SENSOR_HISTORY_PM25_FIELDS,
+  fields = AIRSENSOR_1_PAT_FIELDS,
   baseUrl = "https://api.purpleair.com/v1/sensors"
 ) {
 
@@ -112,32 +111,13 @@ if ( FALSE ) {
   pat_raw <-
     pat_downloadParseRawData(
       api_key,
-      sensor_index = "131611",
-      startdate = "2023-01-01",
-      enddate = "2023-01-01",
+      sensor_index = "2323",
+      startdate = "2023-02-01",
+      enddate = "2023-02-01",
       timezone = "UTC",
       average = 0,
-      fields = SENSOR_HISTORY_PM25_FIELDS,
+      fields = AIRSENSOR_1_PAT_FIELDS,
       baseUrl = baseUrl
     )
-
-    # NOTE:  in AirSensor 1.0, the following columns of data were available:
-    # patData_columnNames <- c(
-    #   "datetime", 
-    #   "pm25_A", "pm25_B", 
-    #   "temperature", "humidity", "pressure",
-    #   "pm1_atm_A", "pm25_atm_A", "pm10_atm_A",
-    #   "pm1_atm_B", "pm25_atm_B", "pm10_atm_B",
-    #   "uptime", "rssi", "memory", "adc0", "bsec_iaq",
-    #   "datetime_A", "datetime_B"
-    # )
-
-    # NOTE:  In AirSensor 1.1, we have the following:
-    # stringr::str_split(SENSOR_HISTORY_PM25_FIELDS, pattern=",") %>% 
-    #   unlist() %>% print(width = 75)
-    #  [1] "rssi"         "uptime"       "pa_latency"   "memory"      
-    #  [5] "humidity"     "temperature"  "pressure"     "pm2.5_alt"   
-    #  [9] "pm2.5_alt_a"  "pm2.5_alt_b"  "pm2.5_atm"    "pm2.5_atm_a" 
-    # [13] "pm2.5_atm_b"  "pm2.5_cf_1"   "pm2.5_cf_1_a" "pm2.5_cf_1_b"
 
 }

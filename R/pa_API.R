@@ -1335,7 +1335,6 @@ SENSOR_DATA_PM25_FIELDS <-
 # available when using averages. It is a comma separated list with one or more of the following:
 #
 
-
 SENSOR_HISTORY_PM25_FIELDS <-
   paste(
     # Station information and status fields:
@@ -1357,6 +1356,96 @@ SENSOR_HISTORY_PM25_FIELDS <-
     #
     # PM10.0 fields:
     #   "pm10.0_atm, pm10.0_atm_a, pm10.0_atm_b, pm10.0_cf_1, pm10.0_cf_1_a, pm10.0_cf_1_b",
+    #
+    # Visibility fields:
+    #   "scattering_coefficient, scattering_coefficient_a, scattering_coefficient_b, deciviews, deciviews_a, deciviews_b, visual_range, visual_range_a, visual_range_b",
+    #
+    # Particle count fields:
+    #   "0.3_um_count, 0.3_um_count_a, 0.3_um_count_b, 0.5_um_count, 0.5_um_count_a, 0.5_um_count_b, 1.0_um_count, 1.0_um_count_a, 1.0_um_count_b, 2.5_um_count, 2.5_um_count_a, 2.5_um_count_b, 5.0_um_count, 5.0_um_count_a, 5.0_um_count_b, 10.0_um_count, 10.0_um_count_a, 10.0_um_count_b"
+    sep = ",",
+    collapse = ","
+  ) %>%
+  stringr::str_replace_all(" ", "") %>%
+  stringr::str_replace_all(",$", "")
+
+#' @export
+#' @docType data
+#' @name AIRSENSOR_1_PAT_FIELDS
+#' @title Comma-separated list of fields needed to create AirSensor pat objects.
+#' @format String with comma-separated field names
+#' @description Character string with default PurpleAir field names used in
+#' \code{pat_createNew()}. These fields are sufficient for most
+#' QC algorithms and include most of the "information and status" fields,
+#' "humidity", "temperature", "pressure" and various PM "pseudo average" fields.
+#'
+#' @references \href{https://api.purpleair.com/#api-sensors-get-sensor-history-csv}{Get Sensor History API}
+
+# From: https://api.purpleair.com/#api-sensors-get-sensor-history-csv
+#
+# The 'Fields' parameter specifies which 'sensor data fields' to include in the
+# response. Not all fields are available as history fields and we will be working
+# to add more as time goes on.
+#
+# NOTE:  in AirSensor 1.0, the following columns of data were available:
+# patData_columnNames <- c(
+#   "datetime", 
+#   "pm25_A", "pm25_B", 
+#   "temperature", "humidity", "pressure",
+#   "pm1_atm_A", "pm25_atm_A", "pm10_atm_A",
+#   "pm1_atm_B", "pm25_atm_B", "pm10_atm_B",
+#   "uptime", "rssi", "memory", "adc0", "bsec_iaq",
+#   "datetime_A", "datetime_B"
+# )
+#
+# From the old pat_createPATimeseriesObjec.R
+#
+# dplyr::mutate(
+#   datetime = lubridate::floor_date(.data$created_at, unit = "min"),
+#   datetime_A = .data$created_at,
+#   pm25_atm_A = .data$pm2.5_atm, 
+#   pm25_A = .data$pm2.5_atm
+# )
+# dplyr::mutate(
+#   datetime = lubridate::floor_date(.data$created_at, unit = "min"),
+#   pm1_atm_A = .data$pm1.0_atm, 
+#   pm10_atm_A = .data$pm10.0_atm
+# )
+# dplyr::mutate(
+#   datetime = lubridate::floor_date(.data$created_at, unit = "min"),
+#   datetime_B = .data$created_at,
+#   pm25_atm_B = .data$pm2.5_atm, 
+#   pm25_B = .data$pm2.5_atm
+# )
+# dplyr::mutate(
+#   datetime = lubridate::floor_date(.data$created_at, unit = "min"),
+#   pm1_atm_B = .data$pm1.0_atm, 
+#   pm10_atm_B = .data$pm10.0_atm
+# )
+
+AIRSENSOR_1_PAT_FIELDS <-
+  paste(
+    # Station information and status fields:
+    #"hardware, latitude, longitude, altitude, firmware_version",
+    "rssi, uptime, pa_latency, memory",
+    #
+    # Environmental fields:
+    ###"humidity, humidity_a, humidity_b, temperature, temperature_a, temperature_b, pressure, pressure_a, pressure_b",
+    "humidity, temperature, pressure",
+    #
+    # Miscellaneous fields:
+    #   "voc, voc_a, voc_b, analog_input",
+    #
+    # PM1.0 fields:
+    # "pm1.0_atm, pm1.0_atm_a, pm1.0_atm_b, pm1.0_cf_1, pm1.0_cf_1_a, pm1.0_cf_1_b",
+    "pm1.0_atm_a, pm1.0_atm_b",
+    #
+    # PM2.5 fields:
+    # "pm2.5_alt, pm2.5_alt_a, pm2.5_alt_b, pm2.5_atm, pm2.5_atm_a, pm2.5_atm_b, pm2.5_cf_1, pm2.5_cf_1_a, pm2.5_cf_1_b",
+    "pm2.5_atm_a, pm2.5_atm_b",
+    #
+    # PM10.0 fields:
+    # "pm10.0_atm, pm10.0_atm_a, pm10.0_atm_b, pm10.0_cf_1, pm10.0_cf_1_a, pm10.0_cf_1_b",
+    "pm10.0_atm_a, pm10.0_atm_b",
     #
     # Visibility fields:
     #   "scattering_coefficient, scattering_coefficient_a, scattering_coefficient_b, deciviews, deciviews_a, deciviews_b, visual_range, visual_range_a, visual_range_b",
@@ -1506,13 +1595,16 @@ PurpleAir_API_csvGET <- function(
   )
 
   # Convert to proper class
-  for ( name in names(tbl) ) {
-    if ( name %in% PurpleAir_Numeric_Fields ) {
-      tbl[[name]] <- as.numeric(tbl[[name]])
-    } else if ( name %in% PurpleAir_POSIXct_Fields ) {
-      tbl[[name]] <- lubridate::as_datetime(as.numeric(tbl[[name]]))
+  # NOTE:  Ignore 'NAs introduced by coercion' 
+  suppressWarnings({
+    for ( name in names(tbl) ) {
+      if ( name %in% PurpleAir_Numeric_Fields ) {
+        tbl[[name]] <- as.numeric(tbl[[name]])
+      } else if ( name %in% PurpleAir_POSIXct_Fields ) {
+        tbl[[name]] <- lubridate::as_datetime(as.numeric(tbl[[name]]))
+      }
     }
-  }
+  })
 
   return(tbl)
 

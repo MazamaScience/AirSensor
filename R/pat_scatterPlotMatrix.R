@@ -32,12 +32,8 @@
 #' \donttest{
 #' library(AirSensor)
 #' 
-#' pat <- 
-#'   example_pat %>% 
-#'   pat_filterDate(20180811,20180818)
-#'   
 #' # NOTE:  Warnings are generated when the pat contains NA values
-#' pat_scatterPlotMatrix(pat, sampleSize = 1000)
+#' pat_scatterPlotMatrix(example_pat, sampleSize = 1000)
 #' }
 
 pat_scatterPlotMatrix <- function(

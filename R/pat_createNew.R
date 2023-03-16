@@ -15,7 +15,6 @@
 #' @param timezone Olson timezone used to interpret dates.
 #' @param average Temporal averaging in minutes performed by PurpleAir. One of:
 #' 0 (raw), 10, 30, 60 (hour), 360, 1440 (day).
-#' @param fields Character string with PurpleAir field names for the Get Sensor Data API.
 #' @param baseUrl Base URL for the PurpleAir API.
 #' @param verbose Logical controlling the generation of warning and error messages.
 #'
@@ -39,10 +38,10 @@
 #' pat <-
 #'   pat_createNew(
 #'     api_key = MY_API_READ_KEY,
-#'     pas = MY_PAS,
-#'     sensor_index = "10168",
-#'     startdate = "2023-01-01",
-#'     enddate = "2023-01-08",
+#'     pas = example_pas,
+#'     sensor_index = "3515",
+#'     startdate = "2022-07-01",
+#'     enddate = "2022-07-08",
 #'     timezone = "UTC",
 #'     verbose = TRUE
 #'   )
@@ -60,7 +59,6 @@ pat_createNew <- function(
     enddate = NULL,
     timezone = "UTC",
     average = 0,
-    fields = SENSOR_HISTORY_PM25_FIELDS,
     baseUrl = "https://api.purpleair.com/v1/sensors",
     verbose = FALSE
 ) {
@@ -75,7 +73,6 @@ pat_createNew <- function(
   MazamaCoreUtils::stopIfNull(sensor_index)
   MazamaCoreUtils::stopIfNull(timezone)
   MazamaCoreUtils::stopIfNull(average)
-  MazamaCoreUtils::stopIfNull(fields)
   MazamaCoreUtils::stopIfNull(baseUrl)
   verbose <- MazamaCoreUtils::setIfNull(verbose, FALSE)
 
@@ -154,7 +151,7 @@ pat_createNew <- function(
       enddate = dateSequence[2],
       timezone = timezone,
       average = average,
-      fields = fields,
+      fields = AIRSENSOR_1_PAT_FIELDS,
       baseUrl = baseUrl
     )
 
@@ -175,7 +172,7 @@ pat_createNew <- function(
           enddate = dateSequence[i + 1],
           timezone = timezone,
           average = average,
-          fields = fields,
+          fields = AIRSENSOR_1_PAT_FIELDS,
           baseUrl = baseUrl
         )
 
@@ -183,11 +180,46 @@ pat_createNew <- function(
 
   }
 
+  # NOTE:  In AirSensor 1.1, we have the following from pat_raw:
+  # > print(names(data), width = 75)
+  # [1] "time_stamp"   "sensor_index" "rssi"         "uptime"      
+  # [5] "pa_latency"   "memory"       "humidity"     "temperature" 
+  # [9] "pressure"     "pm1.0_atm_a"  "pm1.0_atm_b"  "pm2.5_atm_a" 
+  # [13] "pm2.5_atm_b"  "pm10.0_atm_a" "pm10.0_atm_b"
+  
+  # NOTE:  in AirSensor 1.0, the following columns of pat data were available:
+  # patData_columnNames <- c(
+  #   "datetime", 
+  #   "pm25_A", "pm25_B", 
+  #   "temperature", "humidity", "pressure",
+  #   "pm1_atm_A", "pm25_atm_A", "pm10_atm_A",
+  #   "pm1_atm_B", "pm25_atm_B", "pm10_atm_B",
+  #   "uptime", "rssi", "memory", "adc0", "bsec_iaq",
+  #   "datetime_A", "datetime_B"
+  # )
+  
   data <-
+    # Combine separate data requests
     dplyr::bind_rows(dataList) %>%
-    dplyr::rename(datetime = .data$time_stamp) %>%
-    dplyr::arrange(.data$datetime)
-
+    # Rename to AirSensor 1.0 names
+    dplyr::mutate(
+      pm25_A = .data$pm2.5_atm_a,
+      pm25_B = .data$pm2.5_atm_b,
+    ) %>%
+    dplyr::rename(
+      datetime = .data$time_stamp,
+      pm1_atm_A = .data$pm1.0_atm_a,
+      pm1_atm_B = .data$pm1.0_atm_b,
+      pm25_atm_A = .data$pm2.5_atm_a,
+      pm25_atm_B = .data$pm2.5_atm_b,
+      pm10_atm_A = .data$pm10.0_atm_a,
+      pm10_atm_B = .data$pm10.0_atm_b
+    ) %>%
+    # Arrange by datetime
+    dplyr::arrange(.data$datetime) %>%
+    # No duplicate datetimes
+    dplyr::distinct(.data$datetime, .keep_all = TRUE)
+  
   # ----- Create meta ----------------------------------------------------------
 
   # Retain device-deployment columns from the pas object
@@ -277,12 +309,12 @@ if ( FALSE ) {
 
   api_key = MY_API_READ_KEY
   pas = example_pas
-  sensor_index = "10168"
-  startdate = "2023-01-01"
-  enddate = "2023-01-08"
+  sensor_index = "3515"
+  startdate = "2022-07-01"
+  enddate = "2022-07-08"
   timezone = "America/Los_Angeles"
   average = 0
-  fields = SENSOR_HISTORY_PM25_FIELDS
+  fields = AIRSENSOR_1_PAT_FIELDS
   baseUrl = "https://api.purpleair.com/v1/sensors"
   verbose = TRUE
 

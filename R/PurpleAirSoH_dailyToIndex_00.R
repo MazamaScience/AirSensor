@@ -28,17 +28,6 @@
 #' The \code{breaks} are used to convert \code{index} into the \code{indenx_bin}
 #' poor-fair-good values.
 #' 
-#' @examples  
-#' \donttest{
-#' library(AirSensor)
-#' 
-#' tbl <- 
-#'   example_pat_failure_A %>%
-#'   pat_dailySoH() %>%
-#'   PurpleAirSoH_dailyToIndex_00() 
-#'   
-#' head(tbl)
-#' }
 
 PurpleAirSoH_dailyToIndex_00 <- function(
   SoH = NULL,

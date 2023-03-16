@@ -32,7 +32,7 @@
 #' # Single day subset
 #' pat <-
 #'   example_pat %>%
-#'   pat_filterDate(20180813, 20180814)
+#'   pat_filterDate(20220702, 20220703)
 #'
 #' # Two Sample Student T-Test (advanced users only - see details.)
 #' FUN_ttest <- function(x) {

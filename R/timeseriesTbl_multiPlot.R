@@ -25,7 +25,7 @@
 #' \donttest{
 #' library(AirSensor)
 #' 
-#' tbl <- pat_aggregateOutlierCounts(example_pat_failure_A)
+#' tbl <- pat_aggregateOutlierCounts(example_pat)
 #' 
 #' timeseriesTbl_multiPlot(
 #'   tbl,

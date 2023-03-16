@@ -22,17 +22,6 @@ period of time.}
 This function combines the output of the State of Health (SoH) 
 function arguments into a single tibble.
 }
-\examples{
-\donttest{
-library(AirSensor)
-
-SoH <- 
-  example_pat_failure_B \%>\%
-  pat_dailySoH() 
-  
-timeseriesTbl_multiPlot(SoH, ncol = 4)
-}
-}
 \seealso{
 \link{pat_dailySoHPlot}
 }

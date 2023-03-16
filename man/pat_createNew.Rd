@@ -12,7 +12,6 @@ pat_createNew(
   enddate = NULL,
   timezone = "UTC",
   average = 0,
-  fields = SENSOR_HISTORY_PM25_FIELDS,
   baseUrl = "https://api.purpleair.com/v1/sensors",
   verbose = FALSE
 )
@@ -35,8 +34,6 @@ See \code{MazamaCoreUtils::\link[MazamaCoreUtils:setAPIKey]{setAPIKey}}.}
 \item{average}{Temporal averaging in minutes performed by PurpleAir. One of:
 0 (raw), 10, 30, 60 (hour), 360, 1440 (day).}
 
-\item{fields}{Character string with PurpleAir field names for the Get Sensor Data API.}
-
 \item{baseUrl}{Base URL for the PurpleAir API.}
 
 \item{verbose}{Logical controlling the generation of warning and error messages.}
@@ -57,10 +54,10 @@ library(AirSensor)
 pat <-
   pat_createNew(
     api_key = MY_API_READ_KEY,
-    pas = MY_PAS,
-    sensor_index = "10168",
-    startdate = "2023-01-01",
-    enddate = "2023-01-08",
+    pas = example_pas,
+    sensor_index = "3515",
+    startdate = "2022-07-01",
+    enddate = "2022-07-08",
     timezone = "UTC",
     verbose = TRUE
   )

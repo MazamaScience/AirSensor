@@ -14,24 +14,6 @@
 #' functioning sensor.
 #' 
 #' 
-#' @examples 
-#' library(AirSensor)
-#'  
-#' tbl <- 
-#'   example_pat_failure_A %>%
-#'   PurpleAirSoH_dailyMetFit() 
-#'   
-#' timeseriesTbl_multiPlot(
-#'   tbl, 
-#'   ncol = 2,
-#'   ylim = c(0,1)
-#' )
-#' 
-#' timeseriesTbl_multiPlot(
-#'   tbl, 
-#'   autoRange = TRUE
-#' )
-#' 
 
 PurpleAirSoH_dailyMetFit <- function(
   pat = NULL

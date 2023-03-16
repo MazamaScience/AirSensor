@@ -18,14 +18,6 @@
 #' likely occurrence of a “sticky value”, and a zero or low percent DC indicates 
 #' that the sensor is recording dynamic data.
 #' 
-#' @examples  
-#' library(AirSensor)
-#' 
-#' tbl <- 
-#'   example_pat_failure_A %>%
-#'   PurpleAirSoH_dailyPctDC() 
-#' 
-#' timeseriesTbl_multiPlot(tbl, ylim = c(0,100))
 
 PurpleAirSoH_dailyPctDC <- function(
   pat = NULL

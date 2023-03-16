@@ -8,9 +8,6 @@
 \format{
 A tibble with 16584 rows and 44 columns of data.
 }
-\source{
-https://www.purpleair.com/json?all=true
-}
 \usage{
 example_pas
 }
@@ -36,8 +33,5 @@ example_pas <-
 
 save(example_pas, file = "data/example_pas.rda")
 }
-}
-\seealso{
-example_pas_raw
 }
 \keyword{datasets}

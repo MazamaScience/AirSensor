@@ -17,15 +17,15 @@
 #' @examples 
 #' library(AirSensor)
 #' 
-#' aug01_08 <- 
+#' jul02_03 <- 
 #'   example_pat %>%
-#'   pat_filterDate(20180801, 20180808)
+#'   pat_filterDate(20220702, 22020703)
 #' 
-#' aug15_22 <- 
+#' jul05_06 <- 
 #'   example_pat %>% 
-#'   pat_filterDate(20180815, 20180822)
+#'   pat_filterDate(20220705, 22020706)
 #'   
-#' pat_join(aug01_08, aug15_22) %>%
+#' pat_join(jul02_03, jul05_06) %>%
 #'   pat_multiPlot(plottype = "pm25")
 #' 
 

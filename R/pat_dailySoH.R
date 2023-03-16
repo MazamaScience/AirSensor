@@ -14,16 +14,6 @@
 #' 
 #' @seealso \link{pat_dailySoHPlot}
 #' 
-#' @examples
-#' \donttest{
-#' library(AirSensor)
-#' 
-#' SoH <- 
-#'   example_pat_failure_B %>%
-#'   pat_dailySoH() 
-#'   
-#' timeseriesTbl_multiPlot(SoH, ncol = 4)
-#' }
 
 pat_dailySoH <- function(
   pat = NULL,
@@ -102,7 +92,7 @@ if ( FALSE ) {
   
   library(AirSensor)
 
-  pat <- example_pat_failure_B
+  pat <- example_pat
     
   SoH_functions = c("PurpleAirSoH_dailyPctDC", 
                     "PurpleAirSoH_dailyPctReporting", 

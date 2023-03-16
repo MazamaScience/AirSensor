@@ -29,29 +29,6 @@ pat_aggregateOutlierCounts(
 \description{
 Aggregate data with count of outliers in each bin
 }
-\examples{
-\donttest{
-library(AirSensor)
-library(ggplot2)
-
-df <- 
-  pat_aggregateOutlierCounts(example_pat_failure_A)
-
-# Plot the counts 
-multi_ggplot(
-  # A Channel
-  ggplot(df, aes(x = datetime, y = pm25_A_outlierCount)) + geom_point(),
-  # B Channel
-  ggplot(df, aes(x = datetime, y = pm25_B_outlierCount)) + geom_point(),
-  # Humidity
-  ggplot(df, aes(x = datetime, y = humidity_outlierCount)) + geom_point(),
-  # Temperature 
-  ggplot(df, aes(x = datetime, y = temperature_outlierCount)) + geom_point()
-)
-
-}
-
-}
 \seealso{
 pat_aggregateData
 }

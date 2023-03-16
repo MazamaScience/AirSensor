@@ -14,27 +14,25 @@ example_pat
 \description{
 The \code{example_pat} dataset provides a quickly loadable version of
 a \emph{pa_timeseries} object for practicing and code examples.
-This dataset was was generated on 2020-09-15 by running:
+This dataset was was generated on 2023-03-15 by running:
 
 \preformatted{
 library(AirSensor)
 
 initializeMazamaSpatialUtils()
 
-example_pat <- pat_createNew(
-  id = "ebcb53584e44bb6f_3218",
-  pas = example_pas,
-  startdate = "2018-08-01",
-  enddate = "2018-08-28",
-  verbose = TRUE
-)
+example_pat <-
+  pat_createNew(
+    api_key = MY_API_READ_KEY,
+    pas = example_pas,
+    sensor_index = "3515",
+    startdate = "2022-07-01",
+    enddate = "2022-07-08",
+    timezone = "UTC",
+    verbose = TRUE
+  )
 
 save(example_pat, file = "data/example_pat.rda")
 }
-}
-\seealso{
-example_pat_failure_A
-
-example_pat_failure_B
 }
 \keyword{datasets}

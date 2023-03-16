@@ -68,23 +68,23 @@ pat_isPat <- function(
   if ( !all(metaParameters %in% names(pat$meta)) ) return(FALSE)
   
   # NOTE:  This set of columns must match those defined in
-  # NOTE:    pat_createPATimeseriesObject.R
+  # NOTE:    pat_createNew.R
   
   patData_columnNames <- c(
-    "datetime", 
-    "pm25_A", "pm25_B", 
-    "temperature", "humidity", "pressure",
-    "pm1_atm_A", "pm25_atm_A", "pm10_atm_A",
-    "pm1_atm_B", "pm25_atm_B", "pm10_atm_B",
-    "uptime", "rssi", "memory", "adc0", "bsec_iaq",
-    "datetime_A", "datetime_B"
+    "datetime", "sensor_index",
+    "rssi", "uptime", "pa_latency", "memory",
+    "humidity", "temperature", "pressure", 
+    "pm1_atm_A", "pm1_atm_B",
+    "pm25_atm_A", "pm25_atm_B",
+    "pm10_atm_A", "pm10_atm_B",
+    "pm25_A", "pm25_B" 
   )
   
   if ( !all(patData_columnNames %in% names(pat$data)) ) return(FALSE)
   
   if ( any(duplicated(pat$data$datetime)) )
     warning("Duplicate timesteps found in 'pat' object.")
-  
+
   # Nothing failed so return TRUE
   return(TRUE)
   

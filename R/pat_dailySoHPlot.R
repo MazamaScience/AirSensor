@@ -15,12 +15,6 @@
 #' 
 #' @seealso \link{pat_dailySoH}
 #' 
-#' @examples
-#' \donttest{
-#' library(AirSensor)
-#' 
-#' pat_dailySoHPlot(example_pat_failure_B)
-#' }
 
 pat_dailySoHPlot <- function(
   pat = NULL,
