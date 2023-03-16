@@ -32,13 +32,6 @@
 #' 
 #' @seealso \link{pat_filter}
 #' @seealso \link{pat_filterDatetime}
-#' @examples
-#' library(AirSensor)
-#' 
-#' example_pat %>%
-#'   pat_filterDate(startdate = 20180808, enddate = 20180815) %>%
-#'   pat_multiPlot()
-#'
 
 pat_filterDate <- function(
   pat = NULL, 

@@ -45,7 +45,7 @@ library(AirSensor)
 # Single day subset
 pat <- 
   example_pat \%>\% 
-  pat_filterDate(20180813, 20180814)
+  pat_filterDate(20220702, 22020703)
 
 # Create aggregation functions
 FUN_mean <- function(x) mean(x, na.rm = TRUE)

@@ -54,7 +54,6 @@
 #' library(AirSensor) 
 #' 
 #' example_pat %>%
-#'   pat_filterDate(20180801, 20180815) %>%
 #'   pat_outliers(replace = TRUE, showPlot = TRUE)
 
 
@@ -268,9 +267,7 @@ if ( FALSE ) {
   
   library(AirSensor) 
   
-  pat <- 
-    example_pat %>%
-    pat_filterDate(20180801, 20180815)
+  pat <- example_pat
   
   windowSize <- 23
   thresholdMin <- 8

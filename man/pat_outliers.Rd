@@ -85,6 +85,5 @@ Additional documentation on the algorithm is available in
 library(AirSensor) 
 
 example_pat \%>\%
-  pat_filterDate(20180801, 20180815) \%>\%
   pat_outliers(replace = TRUE, showPlot = TRUE)
 }

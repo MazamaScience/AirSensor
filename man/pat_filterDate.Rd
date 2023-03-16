@@ -49,14 +49,6 @@ with \code{enddate} will be returned. The exception being when
 \code{enddate} is less than 24 hours after \code{startdate}. In that case, a
 single day is returned.
 }
-\examples{
-library(AirSensor)
-
-example_pat \%>\%
-  pat_filterDate(startdate = 20180808, enddate = 20180815) \%>\%
-  pat_multiPlot()
-
-}
 \seealso{
 \link{pat_filter}
 

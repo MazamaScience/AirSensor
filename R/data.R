@@ -1,9 +1,9 @@
 #' @encoding UTF-8
 #' @title Example Purple Air Synoptic dataset
-#' @format A tibble with 16584 rows and 44 columns of data.
+#' @format A tibble with 71 rows and 59 columns of data.
 #' @description The \code{example_pas} dataset provides a quickly loadable
 #' version of a \emph{pa_synoptic} object for practicing and code examples.
-#' This dataset was generated on 2020-09-15 by running:
+#' This dataset was generated on 2023-03-15 by running:
 #'
 #' \preformatted{
 #' library(AirSensor)
@@ -29,7 +29,7 @@
 #' @format An S3 object composed of "meta" and "data" data.
 #' @description The \code{example_pat} dataset provides a quickly loadable version of
 #' a \emph{pa_timeseries} object for practicing and code examples.
-#' This dataset was was generated on 2023-03-15 by running:
+#' This dataset was was generated on 2023-03-16 by running:
 #'
 #' \preformatted{
 #' library(AirSensor)

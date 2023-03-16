@@ -202,10 +202,6 @@ pat_createNew <- function(
     # Combine separate data requests
     dplyr::bind_rows(dataList) %>%
     # Rename to AirSensor 1.0 names
-    dplyr::mutate(
-      pm25_A = .data$pm2.5_atm_a,
-      pm25_B = .data$pm2.5_atm_b,
-    ) %>%
     dplyr::rename(
       datetime = .data$time_stamp,
       pm1_atm_A = .data$pm1.0_atm_a,
@@ -214,6 +210,15 @@ pat_createNew <- function(
       pm25_atm_B = .data$pm2.5_atm_b,
       pm10_atm_A = .data$pm10.0_atm_a,
       pm10_atm_B = .data$pm10.0_atm_b
+    ) %>%
+    # Additional variables for backwards compatibility
+    dplyr::mutate(
+      pm25_A = .data$pm25_atm_A,
+      pm25_B = .data$pm25_atm_B,
+      adc0 = as.numeric(NA),
+      bsec_iaq = as.numeric(NA),
+      datetime_A = .data$datetime,
+      datetime_B = .data$datetime
     ) %>%
     # Arrange by datetime
     dplyr::arrange(.data$datetime) %>%

@@ -71,13 +71,13 @@ pat_isPat <- function(
   # NOTE:    pat_createNew.R
   
   patData_columnNames <- c(
-    "datetime", "sensor_index",
-    "rssi", "uptime", "pa_latency", "memory",
-    "humidity", "temperature", "pressure", 
-    "pm1_atm_A", "pm1_atm_B",
-    "pm25_atm_A", "pm25_atm_B",
-    "pm10_atm_A", "pm10_atm_B",
-    "pm25_A", "pm25_B" 
+    "datetime", 
+    "pm25_A", "pm25_B", 
+    "temperature", "humidity", "pressure",
+    "pm1_atm_A", "pm25_atm_A", "pm10_atm_A",
+    "pm1_atm_B", "pm25_atm_B", "pm10_atm_B",
+    "uptime", "rssi", "memory", "adc0", "bsec_iaq",
+    "datetime_A", "datetime_B"
   )
   
   if ( !all(patData_columnNames %in% names(pat$data)) ) return(FALSE)

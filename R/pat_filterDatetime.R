@@ -35,8 +35,8 @@
 #' 
 #' example_pat %>%
 #'   pat_filterDatetime(
-#'     startdate = "2018-08-08 06:00:00", 
-#'     enddate = "2018-08-14 18:00:00"
+#'     startdate = "2022-07-02 06:00:00", 
+#'     enddate = "2022-07-05 18:00:00"
 #'   ) %>%
 #'   pat_multiPlot()
 #'

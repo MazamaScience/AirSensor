@@ -21,16 +21,17 @@ full-day statistics.
 \examples{
 library(AirSensor)
 
-UTC_week <- pat_filterDate(
-  example_pat, 
-  startdate = 20180808, 
-  enddate = 20180815,
-  timezone = "UTC"
-)
+UTC_days <- 
+  pat_filterDate(
+    example_pat, 
+    startdate = 20220702, 
+    enddate = 20220705,
+    timezone = "UTC"
+  )
 
-pat_multiPlot(UTC_week)
+pat_multiPlot(UTC_days)
 
-local_week <- pat_trimDate(UTC_week)
-pat_multiPlot(local_week)
+local_days <- pat_trimDate(UTC_days)
+pat_multiPlot(local_days)
 
 }
