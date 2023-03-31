@@ -43,7 +43,7 @@ Retrieves data for all sensors in the specified group."><!-- mathjax --><script 
       <a href="../articles/Custom_QC_Algorithms.html">Custom QC Algorithms</a>
     </li>
     <li>
-      <a href="../articles/DataFlowChart.html">Processing PurpleAir Data</a>
+      <a href="../articles/Working_with_PurpleAir_API_Keys.html">Working with PurpleAir API Keys</a>
     </li>
     <li>
       <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
@@ -140,13 +140,13 @@ within the last <code>max_age</code> seconds. Using a value of 0 will match sens
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MazamaScience/AirSensor" class="external-link">AirSensor</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="fu">pa_getMembersData</span><span class="op">(</span></span></span>
-<span class="r-in"><span>    api_key <span class="op">=</span> <span class="va">MY_API_READ_KEY</span>,</span></span>
+<span class="r-in"><span>    api_key <span class="op">=</span> <span class="va">PURPLE_AIR_API_READ_KEY</span>,</span></span>
 <span class="r-in"><span>    group_id <span class="op">=</span> <span class="va">MY_GROUP_ID</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="op">}</span>, silent <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error in MazamaCoreUtils::stopIfNull(api_key) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   object 'MY_API_READ_KEY' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   object 'PURPLE_AIR_API_READ_KEY' not found</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
@@ -162,7 +162,7 @@ within the last <code>max_age</code> seconds. Using a value of 0 will match sens
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

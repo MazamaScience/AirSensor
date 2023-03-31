@@ -60,6 +60,9 @@ List containing latest data for multiple sensors.
 \description{
 Sends a request to the PurpleAir API endpoint described at:
 \url{https://api.purpleair.com/#api-sensors-get-sensors-data}
+
+If \code{show_only} is used to request specific sensors, the bounding box
+information is ignored.
 }
 \examples{
 \donttest{
@@ -69,7 +72,7 @@ try({
 library(AirSensor)
 
   pa_getSensorsData(
-    api_key = MY_API_READ_KEY,
+    api_key = PURPLE_AIR_API_READ_KEY,
     fields = SENSOR_DATA_PM25_FIELDS
   )
 

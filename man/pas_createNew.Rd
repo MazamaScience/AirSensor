@@ -75,6 +75,10 @@ Data requests are made with a bounding box determined from the required
 \code{stateCodes} are specified, the bounding box will be limited to those
 states. Withing a single state, \code{counties} may be used to further limit
 the data.
+
+If \code{show_only} is used to request specific sensors, the \code{countryCodes}
+and \code{stateCodes} information is ignored when requesting data. But these 
+are still used to help speed up the assignment of enhanced metadata..
 }
 \examples{
 \donttest{
@@ -87,7 +91,7 @@ initializeMazamaSpatialUtils()
 
 pas <-
   pas_createNew(
-    api_key = MY_API_READ_KEY,
+    api_key = PURPLE_AIR_API_READ_KEY,
     countryCodes = "US",
     stateCodes = "CA",
     show_only = SCAQMD_SENSOR_INDICES,

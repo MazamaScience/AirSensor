@@ -38,7 +38,7 @@
 #'
 #' pat_raw <-
 #'   pat_downloadParseRawData(
-#'     api_key = MY_API_READ_KEY,
+#'     api_key = PURPLE_AIR_API_READ_KEY,
 #'     sensor_index = "2323",
 #'     startdate = "2023-02-01",
 #'     enddate = "2023-02-02",
@@ -104,7 +104,7 @@ pat_downloadParseRawData <- function(
 
 if ( FALSE ) {
 
-  api_key = MY_API_READ_KEY
+  api_key = PURPLE_AIR_API_READ_KEY
 
   baseUrl = "https://api.purpleair.com/v1/sensors"
 

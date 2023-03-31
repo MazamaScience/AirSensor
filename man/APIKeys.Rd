@@ -24,7 +24,9 @@ Currently supported API keys and associated functions include:
 
 \itemize{
   \item{\code{"PurpleAir-read"}} -- Purple Air \code{api_key} used in
-  \link{pas_downloadParseRawData}.
+  \link{pas_downloadParseRawData},
+  \link{pat_downloadParseRawData},
+  \link{pat_createNew}.
 }
 }
 \details{
@@ -44,8 +46,8 @@ showAPIKeys()
 getAPIKey("PurpleAir-read")
 
 # Set specific keys
-setAPIKey("PurpleAir-read", "MY_API_READ_KEY")
-setAPIKey("PurpleAir-write", "MY_API_WRITE_KEY")
+setAPIKey("PurpleAir-read", "PURPLE_AIR_API_READ_KEY")
+setAPIKey("PurpleAir-write", "PURPLE_AIR_API_WRITE_KEY")
 showAPIKeys()
 getAPIKey("PurpleAir-read")
 

@@ -32,7 +32,7 @@ try({
 library(AirSensor)
 
   pa_createGroup(
-    api_key = MY_API_WRITE_KEY,
+    api_key = PURPLE_AIR_API_WRITE_KEY,
     name = "My new group"
   )
 

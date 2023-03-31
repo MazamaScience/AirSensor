@@ -66,6 +66,9 @@ specified region.
 The synoptic data provides access to data from many PurpleAir sensors at
 a moment in time and includes both metadata and recent PM2.5 averages for
 each sensor.
+
+If \code{show_only} is used to request specific sensors, the bounding box
+information is ignored.
 }
 \examples{
 \donttest{
@@ -78,7 +81,7 @@ initializeMazamaSpatialUtils()
 
 pas_raw <-
   pas_downloadParseRawData(
-    api_key = MY_API_READ_KEY,
+    api_key = PURPLE_AIR_API_READ_KEY,
     fields = SENSOR_DATA_AVG_PM25_FIELDS,
     location_type = 0,
     modified_since = NULL,

@@ -37,7 +37,7 @@
 #'
 #' pat <-
 #'   pat_createNew(
-#'     api_key = MY_API_READ_KEY,
+#'     api_key = PURPLE_AIR_API_READ_KEY,
 #'     pas = example_pas,
 #'     sensor_index = "3515",
 #'     startdate = "2022-07-01",
@@ -312,7 +312,7 @@ pat_createNew <- function(
 
 if ( FALSE ) {
 
-  api_key = MY_API_READ_KEY
+  api_key = PURPLE_AIR_API_READ_KEY
   pas = example_pas
   sensor_index = "3515"
   startdate = "2022-07-01"

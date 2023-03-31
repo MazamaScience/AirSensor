@@ -43,7 +43,7 @@ with the *AirSensor* package.
 library(MazamaCoreUtils)
 library(AirSensor)
 
-# Define MY_API_READ_KEY in a .gitignore protected file
+# Define PURPLE_AIR_API_READ_KEY in a .gitignore protected file
 source("global_vars.R")
 
 # Use an existing 'pas' object
@@ -52,7 +52,7 @@ pas <- AirSensor::example_pas
 # Create a new 'pat' object
 pat <-
   pat_createNew(
-    api_key = MY_API_READ_KEY,
+    api_key = PURPLE_AIR_API_READ_KEY,
     pas = pas,
     sensor_index = "3515",
     startdate = "2022-07-01",

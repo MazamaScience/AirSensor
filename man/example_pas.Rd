@@ -23,7 +23,7 @@ initializeMazamaSpatialUtils()
 
 example_pas <- 
   pas_createNew(
-    api_key = MY_API_READ_KEY,
+    api_key = PURPLE_AIR_API_READ_KEY,
     countryCodes = "US",
     stateCodes = "CA",
     show_only = SCAQMD_SENSOR_INDICES,

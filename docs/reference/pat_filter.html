@@ -45,7 +45,7 @@ are dropped."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/lib
       <a href="../articles/Custom_QC_Algorithms.html">Custom QC Algorithms</a>
     </li>
     <li>
-      <a href="../articles/DataFlowChart.html">Processing PurpleAir Data</a>
+      <a href="../articles/Working_with_PurpleAir_API_Keys.html">Working with PurpleAir API Keys</a>
     </li>
     <li>
       <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
@@ -123,19 +123,18 @@ are dropped.</p>
 <span class="r-in"><span><span class="va">unhealthy</span> <span class="op">&lt;-</span> <span class="fu">pat_filter</span><span class="op">(</span><span class="va">example_pat</span>, <span class="va">pm25_A</span> <span class="op">&gt;</span> <span class="fl">55.5</span>, <span class="va">pm25_B</span> <span class="op">&gt;</span> <span class="fl">55.5</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">unhealthy</span><span class="op">$</span><span class="va">data</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 21</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   datetime            sensor_index  rssi uptime pa_late…¹ memory humid…² tempe…³</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 2022-07-05 <span style="color: #949494;">03:45:46</span>         <span style="text-decoration: underline;">3</span>515   -<span style="color: #BB0000;">78</span>   <span style="text-decoration: underline;">9</span>019       653  <span style="text-decoration: underline;">15</span>168      77      78</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 2022-07-05 <span style="color: #949494;">03:49:46</span>         <span style="text-decoration: underline;">3</span>515   -<span style="color: #BB0000;">79</span>   <span style="text-decoration: underline;">9</span>259       576  <span style="text-decoration: underline;">15</span>872      78      79</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 2022-07-05 <span style="color: #949494;">04:07:59</span>         <span style="text-decoration: underline;">3</span>515   -<span style="color: #BB0000;">78</span>  <span style="text-decoration: underline;">10</span>342       368  <span style="text-decoration: underline;">14</span>872      80      79</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> 2022-07-05 <span style="color: #949494;">04:09:46</span>         <span style="text-decoration: underline;">3</span>515   -<span style="color: #BB0000;">77</span>  <span style="text-decoration: underline;">10</span>459      <span style="text-decoration: underline;">3</span>203  <span style="text-decoration: underline;">15</span>168      80      79</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> 2022-07-05 <span style="color: #949494;">04:11:47</span>         <span style="text-decoration: underline;">3</span>515   -<span style="color: #BB0000;">78</span>  <span style="text-decoration: underline;">10</span>579       331  <span style="text-decoration: underline;">15</span>168      80      79</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> 2022-07-05 <span style="color: #949494;">04:13:48</span>         <span style="text-decoration: underline;">3</span>515   -<span style="color: #BB0000;">79</span>  <span style="text-decoration: underline;">10</span>699       311  <span style="text-decoration: underline;">15</span>168      81      78</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 13 more variables: pressure &lt;dbl&gt;, pm1_atm_A &lt;dbl&gt;, pm1_atm_B &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pm25_atm_A &lt;dbl&gt;, pm25_atm_B &lt;dbl&gt;, pm10_atm_A &lt;dbl&gt;, pm10_atm_B &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pm25_A &lt;dbl&gt;, pm25_B &lt;dbl&gt;, adc0 &lt;dbl&gt;, bsec_iaq &lt;dbl&gt;, datetime_A &lt;dttm&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   datetime_B &lt;dttm&gt;, and abbreviated variable names ¹​pa_latency, ²​humidity,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ³​temperature</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   datetime            sensor_index  rssi uptime pa_latency memory humidity</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 2022-07-05 <span style="color: #949494;">03:45:46</span>         <span style="text-decoration: underline;">3</span>515   -<span style="color: #BB0000;">78</span>   <span style="text-decoration: underline;">9</span>019        653  <span style="text-decoration: underline;">15</span>168       77</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 2022-07-05 <span style="color: #949494;">03:49:46</span>         <span style="text-decoration: underline;">3</span>515   -<span style="color: #BB0000;">79</span>   <span style="text-decoration: underline;">9</span>259        576  <span style="text-decoration: underline;">15</span>872       78</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 2022-07-05 <span style="color: #949494;">04:07:59</span>         <span style="text-decoration: underline;">3</span>515   -<span style="color: #BB0000;">78</span>  <span style="text-decoration: underline;">10</span>342        368  <span style="text-decoration: underline;">14</span>872       80</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> 2022-07-05 <span style="color: #949494;">04:09:46</span>         <span style="text-decoration: underline;">3</span>515   -<span style="color: #BB0000;">77</span>  <span style="text-decoration: underline;">10</span>459       <span style="text-decoration: underline;">3</span>203  <span style="text-decoration: underline;">15</span>168       80</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> 2022-07-05 <span style="color: #949494;">04:11:47</span>         <span style="text-decoration: underline;">3</span>515   -<span style="color: #BB0000;">78</span>  <span style="text-decoration: underline;">10</span>579        331  <span style="text-decoration: underline;">15</span>168       80</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> 2022-07-05 <span style="color: #949494;">04:13:48</span>         <span style="text-decoration: underline;">3</span>515   -<span style="color: #BB0000;">79</span>  <span style="text-decoration: underline;">10</span>699        311  <span style="text-decoration: underline;">15</span>168       81</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 14 more variables: temperature &lt;dbl&gt;, pressure &lt;dbl&gt;, pm1_atm_A &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pm1_atm_B &lt;dbl&gt;, pm25_atm_A &lt;dbl&gt;, pm25_atm_B &lt;dbl&gt;, pm10_atm_A &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pm10_atm_B &lt;dbl&gt;, pm25_A &lt;dbl&gt;, pm25_B &lt;dbl&gt;, adc0 &lt;dbl&gt;, bsec_iaq &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   datetime_A &lt;dttm&gt;, datetime_B &lt;dttm&gt;</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
@@ -151,7 +150,7 @@ are dropped.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

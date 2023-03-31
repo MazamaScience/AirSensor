@@ -41,7 +41,7 @@
       <a href="../articles/Custom_QC_Algorithms.html">Custom QC Algorithms</a>
     </li>
     <li>
-      <a href="../articles/DataFlowChart.html">Processing PurpleAir Data</a>
+      <a href="../articles/Working_with_PurpleAir_API_Keys.html">Working with PurpleAir API Keys</a>
     </li>
     <li>
       <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
@@ -157,7 +157,7 @@ See <code>MazamaCoreUtils::<a href="https://rdrr.io/pkg/MazamaCoreUtils/man/setA
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">pat_raw</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu">pat_downloadParseRawData</span><span class="op">(</span></span></span>
-<span class="r-in"><span>    api_key <span class="op">=</span> <span class="va">MY_API_READ_KEY</span>,</span></span>
+<span class="r-in"><span>    api_key <span class="op">=</span> <span class="va">PURPLE_AIR_API_READ_KEY</span>,</span></span>
 <span class="r-in"><span>    sensor_index <span class="op">=</span> <span class="st">"2323"</span>,</span></span>
 <span class="r-in"><span>    startdate <span class="op">=</span> <span class="st">"2023-02-01"</span>,</span></span>
 <span class="r-in"><span>    enddate <span class="op">=</span> <span class="st">"2023-02-02"</span>,</span></span>
@@ -167,8 +167,8 @@ See <code>MazamaCoreUtils::<a href="https://rdrr.io/pkg/MazamaCoreUtils/man/setA
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/View.html" class="external-link">View</a></span><span class="op">(</span><span class="va">pat_raw</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>,<span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="op">}</span>, silent <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in pat_downloadParseRawData(api_key = MY_API_READ_KEY, sensor_index = "2323",  : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   object 'MY_API_READ_KEY' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in pat_downloadParseRawData(api_key = PURPLE_AIR_API_READ_KEY, sensor_index = "2323",  : </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   object 'PURPLE_AIR_API_READ_KEY' not found</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
@@ -184,7 +184,7 @@ See <code>MazamaCoreUtils::<a href="https://rdrr.io/pkg/MazamaCoreUtils/man/setA
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

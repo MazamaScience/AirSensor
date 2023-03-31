@@ -63,9 +63,9 @@ library(AirSensor)
 library(dplyr)
 library(ggplot2)
 
-# Define MY_API_READ_KEY in a .gitignore protected file
+# Define PURPLE_AIR_API_READ_KEY in a .gitignore protected file
 source("global_vars.R")
-setAPIKey("PurpleAir-read", MY_API_READ_KEY)
+setAPIKey("PurpleAir-read", PURPLE_AIR_API_READ_KEY)
 
 # Initialize spatial data processing 
 library(MazamaSpatialUtils)

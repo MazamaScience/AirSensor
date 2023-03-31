@@ -49,7 +49,7 @@ try({
 library(AirSensor)
 
   pa_getMemberData(
-    api_key = MY_API_READ_KEY,
+    api_key = PURPLE_AIR_API_READ_KEY,
     group_id = MY_GROUP_ID,
     member_id = MY_MEMBER_ID
   )

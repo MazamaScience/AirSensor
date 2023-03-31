@@ -29,7 +29,7 @@ try({
 library(AirSensor)
 
   pa_getGroupsList(
-    api_key = MY_API_READ_KEY
+    api_key = PURPLE_AIR_API_READ_KEY
   )
 
 }, silent = FALSE)

@@ -38,6 +38,9 @@
 #' The synoptic data provides access to data from many PurpleAir sensors at
 #' a moment in time and includes both metadata and recent PM2.5 averages for
 #' each sensor.
+#' 
+#' If \code{show_only} is used to request specific sensors, the bounding box
+#' information is ignored.
 #'
 #' @references \href{https://www2.purpleair.com}{PurpleAir}
 #' @references \href{https://api.purpleair.com}{PurpleAir API}
@@ -56,7 +59,7 @@
 #'
 #' pas_raw <-
 #'   pas_downloadParseRawData(
-#'     api_key = MY_API_READ_KEY,
+#'     api_key = PURPLE_AIR_API_READ_KEY,
 #'     fields = SENSOR_DATA_AVG_PM25_FIELDS,
 #'     location_type = 0,
 #'     modified_since = NULL,
@@ -95,10 +98,6 @@ pas_downloadParseRawData <- function(
   MazamaCoreUtils::stopIfNull(api_key)
   MazamaCoreUtils::stopIfNull(fields)
   max_age <- MazamaCoreUtils::setIfNull(max_age, 3600 * 7 * 24) # 1 day
-  MazamaCoreUtils::stopIfNull(west)
-  MazamaCoreUtils::stopIfNull(east)
-  MazamaCoreUtils::stopIfNull(south)
-  MazamaCoreUtils::stopIfNull(north)
   MazamaCoreUtils::stopIfNull(baseUrl)
 
   if ( !is.null(location_type) ) {
@@ -108,20 +107,36 @@ pas_downloadParseRawData <- function(
     }
   }
 
-  # Ensure correct order of longitudes
-  if ( west > east ) {
-    a <- east
-    east <- west
-    west <- a
+  if ( !is.null(show_only) ) {
+    
+    west <- NULL
+    north <- NULL
+    east <- NULL
+    south <- NULL
+    
+  } else {
+    
+    MazamaCoreUtils::stopIfNull(west)
+    MazamaCoreUtils::stopIfNull(east)
+    MazamaCoreUtils::stopIfNull(south)
+    MazamaCoreUtils::stopIfNull(north)
+    
+    # Ensure correct order of longitudes
+    if ( west > east ) {
+      a <- east
+      east <- west
+      west <- a
+    }
+    
+    # Ensure correct order of latitudes
+    if ( south > north) {
+      a <- north
+      north <- south
+      south <- a
+    }
+    
   }
-
-  # Ensure correct order of latitudes
-  if ( south > north) {
-    a <- north
-    north <- south
-    south <- a
-  }
-
+  
   # ----- Request data ---------------------------------------------------------
 
   PAList <-
@@ -166,15 +181,21 @@ pas_downloadParseRawData <- function(
 
 if ( FALSE ) {
 
-  api_key = MY_API_READ_KEY
+  api_key = PURPLE_AIR_API_READ_KEY
   fields = SENSOR_DATA_AVG_PM25_FIELDS
   location_type = 0
+  read_keys = NULL
+  show_only = "1748,1860,1914,1922"
   modified_since = NULL
   max_age = 3600 * 24
-  west = -125
-  east = -117
-  south = 42
-  north = 49
+  # west = -125
+  # east = -117
+  # south = 42
+  # north = 49
+  west = NULL
+  east = NULL
+  south = NULL
+  north = NULL
   baseUrl = "https://api.purpleair.com/v1/sensors"
 
   pas_raw <-

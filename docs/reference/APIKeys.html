@@ -8,7 +8,9 @@ convenience that simplifies the scripts written by end users.
 Currently supported API keys and associated functions include:
 
 "PurpleAir-read" -- Purple Air api_key used in
-  pas_downloadParseRawData.
+  pas_downloadParseRawData,
+  pat_downloadParseRawData,
+  pat_createNew.
 
 '><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -52,7 +54,7 @@ Currently supported API keys and associated functions include:
       <a href="../articles/Custom_QC_Algorithms.html">Custom QC Algorithms</a>
     </li>
     <li>
-      <a href="../articles/DataFlowChart.html">Processing PurpleAir Data</a>
+      <a href="../articles/Working_with_PurpleAir_API_Keys.html">Working with PurpleAir API Keys</a>
     </li>
     <li>
       <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
@@ -96,7 +98,9 @@ key to see if that key has been set globally. Setting keys globally is a
 convenience that simplifies the scripts written by end users.</p>
 <p>Currently supported API keys and associated functions include:</p>
 <ul><li><p><code>"PurpleAir-read"</code> -- Purple Air <code>api_key</code> used in
-  <a href="pas_downloadParseRawData.html">pas_downloadParseRawData</a>.</p></li>
+  <a href="pas_downloadParseRawData.html">pas_downloadParseRawData</a>,
+  <a href="pat_downloadParseRawData.html">pat_downloadParseRawData</a>,
+  <a href="pat_createNew.html">pat_createNew</a>.</p></li>
 </ul></div>
 
 
@@ -144,20 +148,20 @@ package where they are described in more detail:</p><ul><li><p><code>MazamaCoreU
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Set specific keys</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/MazamaCoreUtils/man/setAPIKey.html" class="external-link">setAPIKey</a></span><span class="op">(</span><span class="st">"PurpleAir-read"</span>, <span class="st">"MY_API_READ_KEY"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/MazamaCoreUtils/man/setAPIKey.html" class="external-link">setAPIKey</a></span><span class="op">(</span><span class="st">"PurpleAir-write"</span>, <span class="st">"MY_API_WRITE_KEY"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/MazamaCoreUtils/man/setAPIKey.html" class="external-link">setAPIKey</a></span><span class="op">(</span><span class="st">"PurpleAir-read"</span>, <span class="st">"PURPLE_AIR_API_READ_KEY"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/MazamaCoreUtils/man/setAPIKey.html" class="external-link">setAPIKey</a></span><span class="op">(</span><span class="st">"PurpleAir-write"</span>, <span class="st">"PURPLE_AIR_API_WRITE_KEY"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/MazamaCoreUtils/man/showAPIKeys.html" class="external-link">showAPIKeys</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> List of 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ PurpleAir-read : chr "MY_API_READ_KEY"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ PurpleAir-write: chr "MY_API_WRITE_KEY"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ PurpleAir-read : chr "PURPLE_AIR_API_READ_KEY"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ PurpleAir-write: chr "PURPLE_AIR_API_WRITE_KEY"</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/MazamaCoreUtils/man/getAPIKey.html" class="external-link">getAPIKey</a></span><span class="op">(</span><span class="st">"PurpleAir-read"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "MY_API_READ_KEY"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "PURPLE_AIR_API_READ_KEY"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Reset the read key</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/MazamaCoreUtils/man/setAPIKey.html" class="external-link">setAPIKey</a></span><span class="op">(</span><span class="st">"PurpleAir-read"</span>, <span class="cn">NULL</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/MazamaCoreUtils/man/showAPIKeys.html" class="external-link">showAPIKeys</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> List of 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ PurpleAir-write: chr "MY_API_WRITE_KEY"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ PurpleAir-write: chr "PURPLE_AIR_API_WRITE_KEY"</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/MazamaCoreUtils/man/getAPIKey.html" class="external-link">getAPIKey</a></span><span class="op">(</span><span class="st">"PurpleAir-read"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span></span></span>
@@ -180,7 +184,7 @@ package where they are described in more detail:</p><ul><li><p><code>MazamaCoreU
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

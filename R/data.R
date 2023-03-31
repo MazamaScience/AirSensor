@@ -12,7 +12,7 @@
 #' 
 #' example_pas <- 
 #'   pas_createNew(
-#'     api_key = MY_API_READ_KEY,
+#'     api_key = PURPLE_AIR_API_READ_KEY,
 #'     countryCodes = "US",
 #'     stateCodes = "CA",
 #'     show_only = SCAQMD_SENSOR_INDICES,
@@ -38,7 +38,7 @@
 #' 
 #' example_pat <-
 #'   pat_createNew(
-#'     api_key = MY_API_READ_KEY,
+#'     api_key = PURPLE_AIR_API_READ_KEY,
 #'     pas = example_pas,
 #'     sensor_index = "3515",
 #'     startdate = "2022-07-01",
@@ -63,7 +63,7 @@
 #'
 #' example_sensor <-
 #'   pat_createNew(
-#'     api_key = MY_API_READ_KEY,
+#'     api_key = PURPLE_AIR_API_READ_KEY,
 #'     pas = example_pas,
 #'     sensor_index = "9392",
 #'     startdate = "2022-07-01",

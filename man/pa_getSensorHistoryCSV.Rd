@@ -54,7 +54,7 @@ end <-
   as.numeric()
 
 pa_getSensorHistoryCSV(
-  api_key = MY_API_READ_KEY,
+  api_key = PURPLE_AIR_API_READ_KEY,
   sensor_index = 896,
   start_timestamp = start,
   end_timestamp = end,

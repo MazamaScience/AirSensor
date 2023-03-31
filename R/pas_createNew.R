@@ -28,6 +28,10 @@
 #' states. Withing a single state, \code{counties} may be used to further limit
 #' the data.
 #'
+#' If \code{show_only} is used to request specific sensors, the \code{countryCodes}
+#' and \code{stateCodes} information is ignored when requesting data. But these 
+#' are still used to help speed up the assignment of enhanced metadata..
+#'
 #' @param api_key PurpleAir API Read Key.
 #' @param countryCodes ISO 3166-1 alpha-2 country codes used to subset the data.
 #' At least one countryCode must be specified.
@@ -71,7 +75,7 @@
 #'
 #' pas <-
 #'   pas_createNew(
-#'     api_key = MY_API_READ_KEY,
+#'     api_key = PURPLE_AIR_API_READ_KEY,
 #'     countryCodes = "US",
 #'     stateCodes = "CA",
 #'     show_only = SCAQMD_SENSOR_INDICES,
@@ -85,119 +89,141 @@
 #' }
 
 pas_createNew <- function(
-  api_key = NULL,
-  countryCodes = NULL,
-  stateCodes = NULL,
-  counties = NULL,
-  lookbackDays = 1,
-  location_type = 0,
-  read_keys = NULL,
-  show_only = NULL,
-  includePWFSL = TRUE,
-  baseUrl = "https://api.purpleair.com/v1/sensors"
+    api_key = NULL,
+    countryCodes = NULL,
+    stateCodes = NULL,
+    counties = NULL,
+    lookbackDays = 1,
+    location_type = 0,
+    read_keys = NULL,
+    show_only = NULL,
+    includePWFSL = TRUE,
+    baseUrl = "https://api.purpleair.com/v1/sensors"
 ) {
-
+  
   # ----- Validate parameters --------------------------------------------------
-
-  MazamaCoreUtils::stopIfNull(countryCodes)
-  # NOTE:  stateCodes are optional
+  
   lookbackDays <- MazamaCoreUtils::setIfNull(lookbackDays, 1)
   MazamaCoreUtils::stopIfNull(baseUrl)
-
-  # Guarantee uppercase codes
-  countryCodes <- toupper(countryCodes)
-
-  # Validate countryCodes
-  if ( any(!(countryCodes %in% countrycode::codelist$iso2c)) )
-    stop("parameter 'countryCodes' has values that are not recognized as ISO-2 country codes")
-
-  if ( !is.null(stateCodes) ) {
-    if ( is.null(countryCodes) ) {
-      stop("'stateCodes' can only be used when also specifying a single country with 'countryCodes'")
-    } else if ( length(countryCodes) != 1 ) {
-      stop("please limit 'countryCodes' to a single country when using 'stateCodes'")
-    }
-    if ( !is.null(counties) ) {
-      if ( length(stateCodes) != 1 ) {
-        stop("please limit 'stateCodes' to a single state when using 'counties'")
-      }
-
-    }
+  
+  # NOTE:  if show_only is used, countryCodes are optional and only used to speed
+  # NOTE:  up assignment of spatial metadata.
+  
+  if ( is.null(show_only) ) {
+    MazamaCoreUtils::stopIfNull(countryCodes)
   }
+  
+  if ( !is.null(countryCodes) ) {
+    
+    # Guarantee uppercase codes
+    MazamaCoreUtils::stopIfNull(countryCodes)
+    countryCodes <- toupper(countryCodes)
+    
+    # NOTE:  stateCodes are optional
+    
+    # Validate countryCodes
+    if ( any(!(countryCodes %in% countrycode::codelist$iso2c)) )
+      stop("parameter 'countryCodes' has values that are not recognized as ISO-2 country codes")
+    
+    if ( !is.null(stateCodes) ) {
+      if ( is.null(countryCodes) ) {
+        stop("'stateCodes' can only be used when also specifying a single country with 'countryCodes'")
+      } else if ( length(countryCodes) != 1 ) {
+        stop("please limit 'countryCodes' to a single country when using 'stateCodes'")
+      }
+      if ( !is.null(counties) ) {
+        if ( length(stateCodes) != 1 ) {
+          stop("please limit 'stateCodes' to a single state when using 'counties'")
+        }
+        
+      }
+    }
+    
+    # Check if MazamaSpatialUtils package has been initialized
+    # via initializeMazamaSpatialUtils()
+    if ( !spatialIsInitialized() ) {
+      stop('`pas_createNew` requires MazamaSpatialUtils to be initialized:
 
-  # Check if MazamaSpatialUtils package has been initialized
-  # via initializeMazamaSpatialUtils()
-  if ( !spatialIsInitialized() ) {
-    stop('`pas_createNew` requires MazamaSpatialUtils to be initialized:
-
-            library(MazamaSpatialUtils)
             initializeMazamaSpatialUtils()
 
          Please see `?initializeMazamaSpatialUtils for more details.')
-  }
-
-  # ----- Get country/state bounding box ---------------------------------------
-
-  if ( logger.isInitialized() )
-    logger.debug("----- create bounding box -----")
-
-  # NOTE:  Most PurpleAir sensors are in the the US (in California).
-
-  if ( !is.null(stateCodes) && exists("NaturalEarthAdm1") ) {
-
-    if ( !is.null(counties) && exists("USCensusCounties") ) {
-
-      counties <- as.character(counties)
-      isFIPS <- stringr::str_detect(counties[1], "[0-9]{5}")
-
-      if ( isFIPS ) {
-        SFDF <-
-          get("USCensusCounties") %>%  # To pass R CMD check
-          dplyr::filter(.data$stateCode %in% stateCodes) %>%
-          dplyr::filter(.data$countyFIPS %in% counties)
-      } else {
-        # Handle input inconsistencies
-        counties <-
-          stringr::str_to_title(counties) %>%
-          stringr::str_replace(" County", "")
-        SFDF <-
-          get("USCensusCounties") %>%  # To pass R CMD check
-          dplyr::filter(.data$stateCode %in% stateCodes) %>%
-          dplyr::filter(.data$countyName %in% counties)
-      }
-
-    } else {
-
-      # Use state but not counties
-      SFDF <-
-        get("NaturalEarthAdm1") %>% # To pass R CMD check
-        dplyr::filter(.data$countryCode %in% countryCodes) %>%
-        dplyr::filter(.data$stateCode %in% stateCodes)
-
     }
-
-  } else {
-
-    # Neither state nor county is specified
-    SFDF <-
-      MazamaSpatialUtils::SimpleCountriesEEZ %>%
-      dplyr::filter(.data$countryCode %in% countryCodes)
-
+    
   }
-
-  bbox <- sf::st_bbox(SFDF)
-
-  west <- bbox$xmin
-  east <- bbox$xmax
-  south <- bbox$ymin
-  north <- bbox$ymax
-
+  
+  # ----- Get country/state bounding box ---------------------------------------
+  
+  if ( !is.null(show_only) ) {
+    
+    west <- NULL
+    north <- NULL
+    east <- NULL
+    south <- NULL
+    
+  } else {
+    
+    if ( logger.isInitialized() )
+      logger.debug("----- create bounding box -----")
+    
+    # NOTE:  Most PurpleAir sensors are in the the US (in California).
+    
+    if ( !is.null(stateCodes) && exists("NaturalEarthAdm1") ) {
+      
+      if ( !is.null(counties) && exists("USCensusCounties") ) {
+        
+        counties <- as.character(counties)
+        isFIPS <- stringr::str_detect(counties[1], "[0-9]{5}")
+        
+        if ( isFIPS ) {
+          SFDF <-
+            get("USCensusCounties") %>%  # To pass R CMD check
+            dplyr::filter(.data$stateCode %in% stateCodes) %>%
+            dplyr::filter(.data$countyFIPS %in% counties)
+        } else {
+          # Handle input inconsistencies
+          counties <-
+            stringr::str_to_title(counties) %>%
+            stringr::str_replace(" County", "")
+          SFDF <-
+            get("USCensusCounties") %>%  # To pass R CMD check
+            dplyr::filter(.data$stateCode %in% stateCodes) %>%
+            dplyr::filter(.data$countyName %in% counties)
+        }
+        
+      } else {
+        
+        # Use state but not counties
+        SFDF <-
+          get("NaturalEarthAdm1") %>% # To pass R CMD check
+          dplyr::filter(.data$countryCode %in% countryCodes) %>%
+          dplyr::filter(.data$stateCode %in% stateCodes)
+        
+      }
+      
+    } else {
+      
+      # Neither state nor county is specified
+      SFDF <-
+        MazamaSpatialUtils::SimpleCountriesEEZ %>%
+        dplyr::filter(.data$countryCode %in% countryCodes)
+      
+    }
+    
+    bbox <- sf::st_bbox(SFDF)
+    
+    west <- bbox$xmin
+    east <- bbox$xmax
+    south <- bbox$ymin
+    north <- bbox$ymax
+    
+  }
+  
   # ----- Load data ------------------------------------------------------------
-
+  
   # Download, parse and enhance synoptic data
   if ( logger.isInitialized() )
     logger.debug("----- pas_downloadParseRawData() -----")
-
+  
   pas_raw <-
     pas_downloadParseRawData(
       api_key = api_key,
@@ -213,10 +239,10 @@ pas_createNew <- function(
       north = north,
       baseUrl = baseUrl
     )
-
+  
   if ( logger.isInitialized() )
     logger.debug("----- pas_enhanceRawData() -----")
-
+  
   pas <-
     pas_enhanceRawData(
       pas_raw,
@@ -225,27 +251,36 @@ pas_createNew <- function(
       counties = counties,
       includePWFSL = includePWFSL
     )
-
+  
   if ( logger.isInitialized() )
     logger.debug("----- finished enhancing -----")
-
+  
   # ----- Return ---------------------------------------------------------------
-
+  
   # Add a class name
   class(pas) <- union("pa_synoptic", class(pas))
-
+  
   return(pas)
-
+  
 }
 
 # ===== DEBUGGING ==============================================================
 
 if ( FALSE ) {
-
+  
+  library(AirSensor)
+  
+  source("global_vars.R")
+  
+  api_key = NULL # PURPLE_AIR_API_READ_KEY
   countryCodes = "US"
-  stateCodes = c("WA", "OR")
-  counties <- NULL
+  stateCodes = "CA"
+  counties = NULL
   lookbackDays = 1
+  location_type = 0
+  read_keys = NULL
+  show_only = SCAQMD_SENSOR_INDICES
+  includePWFSL = TRUE
   baseUrl = "https://api.purpleair.com/v1/sensors"
-
+  
 }

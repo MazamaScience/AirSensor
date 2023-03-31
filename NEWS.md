@@ -1,3 +1,10 @@
+# AirSensor 1.1.1
+
+* Changed examples to use `PURPLE_AIR_API_READY_KEY` instead of `MY_API_READ_KEY`.
+* Added "Working with PurpleAir API Keys" article.
+* When `show_only` is used, spatial bounding information is ignored in: 
+`pa_getSensorsData()`, `pas_downloadParseRawData()` and `pas_createNew()`.
+
 # AirSensor 1.1.0
 
 Updates to accommodate data access through the PurpleAir API released in July of

@@ -7,7 +7,7 @@ library(AirSensor)
 
 example_sensor &amp;lt;-
   pat_createNew(
-    api_key = MY_API_READ_KEY,
+    api_key = PURPLE_AIR_API_READ_KEY,
     pas = example_pas,
     sensor_index = &quot;9392&quot;,
     startdate = &quot;2022-07-01&quot;,
@@ -64,7 +64,7 @@ save(example_sensor, file = &quot;data/example_sensor.rda&quot;)
       <a href="../articles/Custom_QC_Algorithms.html">Custom QC Algorithms</a>
     </li>
     <li>
-      <a href="../articles/DataFlowChart.html">Processing PurpleAir Data</a>
+      <a href="../articles/Working_with_PurpleAir_API_Keys.html">Working with PurpleAir API Keys</a>
     </li>
     <li>
       <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
@@ -108,7 +108,7 @@ This dataset was was generated on 2023-03-16 by running:</p>
 <span></span>
 <span><span class="va">example_sensor</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/pat_createNew.html">pat_createNew</a></span><span class="op">(</span></span>
-<span>    api_key <span class="op">=</span> <span class="va">MY_API_READ_KEY</span>,</span>
+<span>    api_key <span class="op">=</span> <span class="va">PURPLE_AIR_API_READ_KEY</span>,</span>
 <span>    pas <span class="op">=</span> <span class="va">example_pas</span>,</span>
 <span>    sensor_index <span class="op">=</span> <span class="st">"9392"</span>,</span>
 <span>    startdate <span class="op">=</span> <span class="st">"2022-07-01"</span>,</span>
@@ -146,7 +146,7 @@ This dataset was was generated on 2023-03-16 by running:</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

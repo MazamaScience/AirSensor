@@ -42,7 +42,7 @@ https://api.purpleair.com/#api-sensors-get-sensor-history"><!-- mathjax --><scri
       <a href="../articles/Custom_QC_Algorithms.html">Custom QC Algorithms</a>
     </li>
     <li>
-      <a href="../articles/DataFlowChart.html">Processing PurpleAir Data</a>
+      <a href="../articles/Working_with_PurpleAir_API_Keys.html">Working with PurpleAir API Keys</a>
     </li>
     <li>
       <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
@@ -150,7 +150,7 @@ specific sensor.</p></dd>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">pa_getSensorHistory</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  api_key <span class="op">=</span> <span class="va">MY_API_READ_KEY</span>,</span></span>
+<span class="r-in"><span>  api_key <span class="op">=</span> <span class="va">PURPLE_AIR_API_READ_KEY</span>,</span></span>
 <span class="r-in"><span>  sensor_index <span class="op">=</span> <span class="fl">896</span>,</span></span>
 <span class="r-in"><span>  start_timestamp <span class="op">=</span> <span class="va">start</span>,</span></span>
 <span class="r-in"><span>  end_timestamp <span class="op">=</span> <span class="va">end</span>,</span></span>
@@ -160,7 +160,7 @@ specific sensor.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="op">}</span>, silent <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error in MazamaCoreUtils::stopIfNull(api_key) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   object 'MY_API_READ_KEY' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   object 'PURPLE_AIR_API_READ_KEY' not found</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
@@ -176,7 +176,7 @@ specific sensor.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

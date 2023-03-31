@@ -25,7 +25,7 @@
 #' library(AirSensor)
 #'
 #'   pa_checkAPIKey(
-#'     api_key = MY_API_READ_KEY
+#'     api_key = PURPLE_AIR_API_READ_KEY
 #'   )
 #'
 #' }, silent = FALSE)
@@ -90,7 +90,7 @@ pa_checkAPIKey <- function(
 #' library(AirSensor)
 #'
 #'   pa_getSensorData(
-#'     api_key = MY_API_READ_KEY,
+#'     api_key = PURPLE_AIR_API_READ_KEY,
 #'     sensor_index = MY_SENSOR_INDEX,
 #'     fields = SENSOR_DATA_PM25_FIELDS
 #'   )
@@ -192,7 +192,7 @@ pa_getSensorData <- function(
 #'   as.numeric()
 #'
 #' pa_getSensorHistoryCSV(
-#'   api_key = MY_API_READ_KEY,
+#'   api_key = PURPLE_AIR_API_READ_KEY,
 #'   sensor_index = 896,
 #'   start_timestamp = start,
 #'   end_timestamp = end,
@@ -295,7 +295,7 @@ pa_getSensorHistoryCSV <- function(
 #'   as.numeric()
 #'
 #' pa_getSensorHistory(
-#'   api_key = MY_API_READ_KEY,
+#'   api_key = PURPLE_AIR_API_READ_KEY,
 #'   sensor_index = 896,
 #'   start_timestamp = start,
 #'   end_timestamp = end,
@@ -410,6 +410,9 @@ pa_getSensorHistory <- function(
 #'
 #' @description Sends a request to the PurpleAir API endpoint described at:
 #' \url{https://api.purpleair.com/#api-sensors-get-sensors-data}
+#' 
+#' If \code{show_only} is used to request specific sensors, the bounding box
+#' information is ignored.
 #'
 #' @examples
 #' \donttest{
@@ -419,7 +422,7 @@ pa_getSensorHistory <- function(
 #' library(AirSensor)
 #'
 #'   pa_getSensorsData(
-#'     api_key = MY_API_READ_KEY,
+#'     api_key = PURPLE_AIR_API_READ_KEY,
 #'     fields = SENSOR_DATA_PM25_FIELDS
 #'   )
 #'
@@ -446,10 +449,6 @@ pa_getSensorsData <- function(
   MazamaCoreUtils::stopIfNull(api_key)
   MazamaCoreUtils::stopIfNull(fields)
   MazamaCoreUtils::stopIfNull(max_age)
-  MazamaCoreUtils::stopIfNull(nwlng)
-  MazamaCoreUtils::stopIfNull(nwlat)
-  MazamaCoreUtils::stopIfNull(selng)
-  MazamaCoreUtils::stopIfNull(selat)
   MazamaCoreUtils::stopIfNull(baseUrl)
 
   if ( !is.null(location_type) ) {
@@ -457,6 +456,13 @@ pa_getSensorsData <- function(
     if ( !location_type %in% c(0, 1) ) {
       stop("'location_type' must be one of 0 (outside) or 1 (inside).")
     }
+  }
+  
+  if ( !is.null(show_only) ) {
+    nwlng <- NULL
+    nwlat <- NULL
+    selng <- NULL
+    selat <- NULL
   }
 
   # ----- Request data ---------------------------------------------------------
@@ -545,7 +551,7 @@ pa_getSensorsData <- function(
 #' library(AirSensor)
 #'
 #'   pa_createGroup(
-#'     api_key = MY_API_WRITE_KEY,
+#'     api_key = PURPLE_AIR_API_WRITE_KEY,
 #'     name = "My new group"
 #'   )
 #'
@@ -611,7 +617,7 @@ pa_createGroup <- function(
 #' library(AirSensor)
 #'
 #'   pa_getGroupDetail(
-#'     api_key = MY_API_READ_KEY,
+#'     api_key = PURPLE_AIR_API_READ_KEY,
 #'     group_id = MY_GROUP_ID,
 #'     sensor_index = MY_SENSOR_INDEX
 #'   )
@@ -679,7 +685,7 @@ pa_createMember <- function(
 #' library(AirSensor)
 #'
 #'   pa_deleteGroup(
-#'     api_key = MY_API_READ_KEY,
+#'     api_key = PURPLE_AIR_API_READ_KEY,
 #'     group_id = MY_GROUP_ID
 #'   )
 #'
@@ -743,7 +749,7 @@ pa_deleteGroup <- function(
 #' library(AirSensor)
 #'
 #'   pa_getGroupDetail(
-#'     api_key = MY_API_READ_KEY,
+#'     api_key = PURPLE_AIR_API_READ_KEY,
 #'     group_id = MY_GROUP_ID
 #'   )
 #'
@@ -809,7 +815,7 @@ pa_deleteMember <- function(
 #' library(AirSensor)
 #'
 #'   pa_getGroupDetail(
-#'     api_key = MY_API_READ_KEY,
+#'     api_key = PURPLE_AIR_API_READ_KEY,
 #'     group_id = MY_GROUP_ID
 #'   )
 #'
@@ -878,7 +884,7 @@ pa_getGroupDetail <- function(
 #' library(AirSensor)
 #'
 #'   pa_getGroupsList(
-#'     api_key = MY_API_READ_KEY
+#'     api_key = PURPLE_AIR_API_READ_KEY
 #'   )
 #'
 #' }, silent = FALSE)
@@ -948,7 +954,7 @@ pa_getGroupsList <- function(
 #' library(AirSensor)
 #'
 #'   pa_getMemberData(
-#'     api_key = MY_API_READ_KEY,
+#'     api_key = PURPLE_AIR_API_READ_KEY,
 #'     group_id = MY_GROUP_ID,
 #'     member_id = MY_MEMBER_ID
 #'   )
@@ -1044,7 +1050,7 @@ pa_getMemberData <- function(
 #' library(AirSensor)
 #'
 #'   pa_getMemberData(
-#'     api_key = MY_API_READ_KEY,
+#'     api_key = PURPLE_AIR_API_READ_KEY,
 #'     group_id = MY_GROUP_ID,
 #'     member_id = MY_MEMBER_ID
 #'   )
@@ -1140,7 +1146,7 @@ pa_getMemberHistory <- function(
 #' library(AirSensor)
 #'
 #'   pa_getMembersData(
-#'     api_key = MY_API_READ_KEY,
+#'     api_key = PURPLE_AIR_API_READ_KEY,
 #'     group_id = MY_GROUP_ID
 #'   )
 #'

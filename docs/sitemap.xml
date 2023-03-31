@@ -7,79 +7,16 @@
     <loc>/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>/articles/AirSensorOverview.html</loc>
-  </url>
-  <url>
     <loc>/articles/AirSensor_Function_Overview.html</loc>
   </url>
   <url>
     <loc>/articles/Custom_QC_Algorithms.html</loc>
   </url>
   <url>
-    <loc>/articles/DataFlowChart.html</loc>
-  </url>
-  <url>
     <loc>/articles/Developer_Style_Guide.html</loc>
   </url>
   <url>
-    <loc>/articles/SoH_functions.html</loc>
-  </url>
-  <url>
-    <loc>/articles/articles/AirSensorOverview.html</loc>
-  </url>
-  <url>
-    <loc>/articles/articles/Australia_on_fire.html</loc>
-  </url>
-  <url>
-    <loc>/articles/articles/Custom_QC_Algorithms.html</loc>
-  </url>
-  <url>
-    <loc>/articles/articles/DataFlowChart.html</loc>
-  </url>
-  <url>
-    <loc>/articles/articles/MVCAA_Tutorial_1.html</loc>
-  </url>
-  <url>
-    <loc>/articles/articles/MVCAA_Tutorial_2.html</loc>
-  </url>
-  <url>
-    <loc>/articles/articles/MVCAA_Tutorial_3.html</loc>
-  </url>
-  <url>
-    <loc>/articles/articles/MVCAA_Tutorial_4.html</loc>
-  </url>
-  <url>
-    <loc>/articles/articles/MVCAA_Tutorial_5.html</loc>
-  </url>
-  <url>
-    <loc>/articles/articles/MVCAA_Tutorial_6.html</loc>
-  </url>
-  <url>
-    <loc>/articles/articles/SoH_functions.html</loc>
-  </url>
-  <url>
-    <loc>/articles/articles/Temporal_Aggregation.html</loc>
-  </url>
-  <url>
-    <loc>/articles/articles/outlier_detection.html</loc>
-  </url>
-  <url>
-    <loc>/articles/articles/pas_introduction.html</loc>
-  </url>
-  <url>
-    <loc>/articles/articles/pat_introduction.html</loc>
-  </url>
-  <url>
-    <loc>/articles/articles/purpleair_failure_modes.html</loc>
-  </url>
-  <url>
-    <loc>/articles/articles/purpleair_qc.html</loc>
-  </url>
-  <url>
-    <loc>/articles/articles/purpleair_sensors.html</loc>
-  </url>
-  <url>
-    <loc>/articles/articles/working_with_wind_data.html</loc>
+    <loc>/articles/Working_with_PurpleAir_API_Keys.html</loc>
   </url>
   <url>
     <loc>/articles/index.html</loc>
@@ -92,18 +29,6 @@
   </url>
   <url>
     <loc>/articles/pat_introduction.html</loc>
-  </url>
-  <url>
-    <loc>/articles/purpleair_failure_modes.html</loc>
-  </url>
-  <url>
-    <loc>/articles/purpleair_qc.html</loc>
-  </url>
-  <url>
-    <loc>/articles/purpleair_sensors.html</loc>
-  </url>
-  <url>
-    <loc>/articles/working_with_wind_data.html</loc>
   </url>
   <url>
     <loc>/authors.html</loc>
@@ -142,49 +67,22 @@
     <loc>/reference/PurpleAirQC_hourly_AB_03.html</loc>
   </url>
   <url>
-    <loc>/reference/PurpleAirQC_validationPlot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PurpleAirQC_validationPlot_old.html</loc>
-  </url>
-  <url>
     <loc>/reference/PurpleAirSoH_dailyABFit.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PurpleAirSoH_dailyABFit_OLD.html</loc>
   </url>
   <url>
     <loc>/reference/PurpleAirSoH_dailyABtTest.html</loc>
   </url>
   <url>
-    <loc>/reference/PurpleAirSoH_dailyCorrelation.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PurpleAirSoH_dailyCorrelation_OLD.html</loc>
-  </url>
-  <url>
     <loc>/reference/PurpleAirSoH_dailyMetFit.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PurpleAirSoH_dailyOtherFit.html</loc>
   </url>
   <url>
     <loc>/reference/PurpleAirSoH_dailyPctDC.html</loc>
   </url>
   <url>
-    <loc>/reference/PurpleAirSoH_dailyPctDC_OLD.html</loc>
-  </url>
-  <url>
     <loc>/reference/PurpleAirSoH_dailyPctReporting.html</loc>
   </url>
   <url>
-    <loc>/reference/PurpleAirSoH_dailyPctReporting_OLD.html</loc>
-  </url>
-  <url>
     <loc>/reference/PurpleAirSoH_dailyPctValid.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PurpleAirSoH_dailyPctValid_OLD.html</loc>
   </url>
   <url>
     <loc>/reference/PurpleAirSoH_dailyToIndex_00.html</loc>
@@ -202,33 +100,6 @@
     <loc>/reference/SENSOR_HISTORY_PM25_FIELDS.html</loc>
   </url>
   <url>
-    <loc>/reference/SoH_correlation.html</loc>
-  </url>
-  <url>
-    <loc>/reference/SoH_dailyCorrelation.html</loc>
-  </url>
-  <url>
-    <loc>/reference/SoH_dailyPctDC.html</loc>
-  </url>
-  <url>
-    <loc>/reference/SoH_dailyPctReporting.html</loc>
-  </url>
-  <url>
-    <loc>/reference/SoH_dailyPctValid.html</loc>
-  </url>
-  <url>
-    <loc>/reference/SoH_pctDC.html</loc>
-  </url>
-  <url>
-    <loc>/reference/SoH_pctReporting.html</loc>
-  </url>
-  <url>
-    <loc>/reference/SoH_pctValid.html</loc>
-  </url>
-  <url>
-    <loc>/reference/createPATimeseriesObject.html</loc>
-  </url>
-  <url>
     <loc>/reference/dot-flagOutliers.html</loc>
   </url>
   <url>
@@ -241,28 +112,10 @@
     <loc>/reference/dot-sample.html</loc>
   </url>
   <url>
-    <loc>/reference/downloadParseSynopticData.html</loc>
-  </url>
-  <url>
-    <loc>/reference/downloadParseTimeseriesData.html</loc>
-  </url>
-  <url>
-    <loc>/reference/enhanceSynopticData.html</loc>
-  </url>
-  <url>
     <loc>/reference/example_pas.html</loc>
   </url>
   <url>
-    <loc>/reference/example_pas_raw.html</loc>
-  </url>
-  <url>
     <loc>/reference/example_pat.html</loc>
-  </url>
-  <url>
-    <loc>/reference/example_pat_failure_A.html</loc>
-  </url>
-  <url>
-    <loc>/reference/example_pat_failure_B.html</loc>
   </url>
   <url>
     <loc>/reference/example_sensor.html</loc>
@@ -281,9 +134,6 @@
   </url>
   <url>
     <loc>/reference/initializeMazamaSpatialUtils.html</loc>
-  </url>
-  <url>
-    <loc>/reference/loadDataFile.html</loc>
   </url>
   <url>
     <loc>/reference/multi_ggplot.html</loc>
@@ -331,31 +181,13 @@
     <loc>/reference/pa_getSensorsData.html</loc>
   </url>
   <url>
-    <loc>/reference/pas_addAirDistrict.html</loc>
-  </url>
-  <url>
-    <loc>/reference/pas_addCommunityRegion.html</loc>
-  </url>
-  <url>
-    <loc>/reference/pas_addSpatialMetadata.html</loc>
-  </url>
-  <url>
     <loc>/reference/pas_addUniqueIDs.html</loc>
   </url>
   <url>
     <loc>/reference/pas_createNew.html</loc>
   </url>
   <url>
-    <loc>/reference/pas_deviceDeploymentID.html</loc>
-  </url>
-  <url>
-    <loc>/reference/pas_downloadParseData.html</loc>
-  </url>
-  <url>
     <loc>/reference/pas_downloadParseRawData.html</loc>
-  </url>
-  <url>
-    <loc>/reference/pas_enhanceData.html</loc>
   </url>
   <url>
     <loc>/reference/pas_enhanceRawData.html</loc>
@@ -400,12 +232,6 @@
     <loc>/reference/pas_palette.html</loc>
   </url>
   <url>
-    <loc>/reference/pas_staticMap.html</loc>
-  </url>
-  <url>
-    <loc>/reference/pas_upgrade.html</loc>
-  </url>
-  <url>
     <loc>/reference/patData_aggregate.html</loc>
   </url>
   <url>
@@ -415,19 +241,10 @@
     <loc>/reference/pat_aggregateOutlierCounts.html</loc>
   </url>
   <url>
-    <loc>/reference/pat_aggregate_old.html</loc>
-  </url>
-  <url>
     <loc>/reference/pat_createAirSensor.html</loc>
   </url>
   <url>
-    <loc>/reference/pat_createAirSensor_old.html</loc>
-  </url>
-  <url>
     <loc>/reference/pat_createNew.html</loc>
-  </url>
-  <url>
-    <loc>/reference/pat_createPATimeseriesObject.html</loc>
   </url>
   <url>
     <loc>/reference/pat_dailySoH.html</loc>
@@ -442,13 +259,7 @@
     <loc>/reference/pat_dailySoHPlot.html</loc>
   </url>
   <url>
-    <loc>/reference/pat_dailyStateOfHealth.html</loc>
-  </url>
-  <url>
     <loc>/reference/pat_distinct.html</loc>
-  </url>
-  <url>
-    <loc>/reference/pat_downloadParseData.html</loc>
   </url>
   <url>
     <loc>/reference/pat_downloadParseRawData.html</loc>
@@ -496,7 +307,7 @@
     <loc>/reference/pat_monitorComparison.html</loc>
   </url>
   <url>
-    <loc>/reference/pat_multiplot.html</loc>
+    <loc>/reference/pat_multiPlot.html</loc>
   </url>
   <url>
     <loc>/reference/pat_outliers.html</loc>
@@ -508,13 +319,7 @@
     <loc>/reference/pat_sample.html</loc>
   </url>
   <url>
-    <loc>/reference/pat_scatterMatrixPlot.html</loc>
-  </url>
-  <url>
     <loc>/reference/pat_scatterPlotMatrix.html</loc>
-  </url>
-  <url>
-    <loc>/reference/pat_scatterplot.html</loc>
   </url>
   <url>
     <loc>/reference/pat_trimDate.html</loc>
@@ -586,9 +391,6 @@
     <loc>/reference/sensor_pollutionRose.html</loc>
   </url>
   <url>
-    <loc>/reference/sensor_videoFrame.html</loc>
-  </url>
-  <url>
     <loc>/reference/setArchiveBaseDir.html</loc>
   </url>
   <url>
@@ -598,6 +400,6 @@
     <loc>/reference/spatialIsInitialized.html</loc>
   </url>
   <url>
-    <loc>/reference/timeseriesTbl_multiplot.html</loc>
+    <loc>/reference/timeseriesTbl_multiPlot.html</loc>
   </url>
 </urlset>

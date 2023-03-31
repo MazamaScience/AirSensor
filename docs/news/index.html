@@ -41,7 +41,7 @@
       <a href="../articles/Custom_QC_Algorithms.html">Custom QC Algorithms</a>
     </li>
     <li>
-      <a href="../articles/DataFlowChart.html">Processing PurpleAir Data</a>
+      <a href="../articles/Working_with_PurpleAir_API_Keys.html">Working with PurpleAir API Keys</a>
     </li>
     <li>
       <a href="../articles/outlier_detection.html">Outlier Detection with the Hampel Filter</a>
@@ -75,6 +75,12 @@
       <small>Source: <a href="https://github.com/MazamaScience/AirSensor/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.1.1" id="airsensor-111">AirSensor 1.1.1<a class="anchor" aria-label="anchor" href="#airsensor-111"></a></h2>
+<ul><li>Changed examples to use <code>PURPLE_AIR_API_READY_KEY</code> instead of <code>MY_API_READ_KEY</code>.</li>
+<li>Added “Working with PurpleAir API Keys” article.</li>
+<li>When <code>show_only</code> is used, spatial bounding information is ignored in: <code><a href="../reference/pa_getSensorsData.html">pa_getSensorsData()</a></code>, <code><a href="../reference/pas_downloadParseRawData.html">pas_downloadParseRawData()</a></code> and <code><a href="../reference/pas_createNew.html">pas_createNew()</a></code>.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.1.0" id="airsensor-110">AirSensor 1.1.0<a class="anchor" aria-label="anchor" href="#airsensor-110"></a></h2>
 <p>Updates to accommodate data access through the PurpleAir API released in July of 2022. This API requires an API_KEY. Users of the package are required to obtain their own credentials from PurpleAir.</p>
@@ -516,8 +522,8 @@
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.5.10" id="airsensor-0510">AirSensor 0.5.10<a class="anchor" aria-label="anchor" href="#airsensor-0510"></a></h2>
-<p>Removed <code>logger.error()</code> statements from the following low-level functions as they couldn’t be turned off and ended up cluttering the log files:</p>
-<ul><li><code>loadDataFile()</code></li>
+<p>Removed <code><a href="https://rdrr.io/pkg/MazamaCoreUtils/man/logger.error.html" class="external-link">logger.error()</a></code> statements from the following low-level functions as they couldn’t be turned off and ended up cluttering the log files:</p>
+<ul><li><code><a href="https://rdrr.io/pkg/MazamaCoreUtils/man/loadDataFile.html" class="external-link">loadDataFile()</a></code></li>
 <li><code><a href="../reference/pas_load.html">pas_load()</a></code></li>
 <li><code><a href="../reference/pat_createNew.html">pat_createNew()</a></code></li>
 <li><code><a href="../reference/pat_loadLatest.html">pat_loadLatest()</a></code></li>
@@ -580,8 +586,8 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.5.1" id="airsensor-051">AirSensor 0.5.1<a class="anchor" aria-label="anchor" href="#airsensor-051"></a></h2>
-<ul><li>Upudated data loding to allow for loading data from a local archive. New functions include: <code>loadDataFile()</code>, <code><a href="../reference/getArchiveBaseDir.html">getArchiveBaseDir()</a></code>, <code><a href="../reference/setArchiveBaseDir.html">setArchiveBaseDir()</a></code>.</li>
-<li>All <code>~_load()</code> and <code>~_loadLatest()</code> functions now call <code>loadDataFile()</code>
+<ul><li>Upudated data loding to allow for loading data from a local archive. New functions include: <code><a href="https://rdrr.io/pkg/MazamaCoreUtils/man/loadDataFile.html" class="external-link">loadDataFile()</a></code>, <code><a href="../reference/getArchiveBaseDir.html">getArchiveBaseDir()</a></code>, <code><a href="../reference/setArchiveBaseDir.html">setArchiveBaseDir()</a></code>.</li>
+<li>All <code>~_load()</code> and <code>~_loadLatest()</code> functions now call <code><a href="https://rdrr.io/pkg/MazamaCoreUtils/man/loadDataFile.html" class="external-link">loadDataFile()</a></code>
 </li>
 <li>
 <code><a href="../reference/pat_load.html">pat_load()</a></code> now continues working in the face of missing data files. under the hood and will work with data archives found at <code>archiveBaseDir</code>.</li>
@@ -1050,7 +1056,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
