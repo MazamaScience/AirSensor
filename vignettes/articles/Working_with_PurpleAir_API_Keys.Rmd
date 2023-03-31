@@ -1,0 +1,133 @@
+---
+title: "Working with PurpleAir API Keys"
+author: "Jonathan Callahan"
+date: "2023-03-30"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Version 1.1.x of the **AirSensor** package allows users to work with the PurpleAir
+API which requires API keys. This document describes how to automate work with
+private API keys without including them in a code reposotory where they might
+be seen by others.
+
+The PurpleAir API is described at: https://api.purpleair.com/
+
+When working with PurpleAir data, you should be aware of the following:
+
+* [PurpleAir Terms of service](https://www2.purpleair.com/policies/terms-of-service)
+* [PurpleAir Data license](https://www2.purpleair.com/pages/license)
+* [PurpleAir Data Attribution](https://www2.purpleair.com/pages/attribution)
+
+## Obtain an API key
+
+PurpleAir maintains a community forum with a page dedicated to obtaining an API
+Key:  https://community.purpleair.com/t/how-to-obtain-an-api-key
+
+## Create a `global_vars.R` file
+
+It is useful to create a file where all API keys and passwords are kept.
+I recommend keeping this information in a file named `global_vars.R` which can
+be sourced at the RStudio prompt or at the beginning of a script. Here is an
+example:
+
+```
+# global_vars.R file
+
+# ----- PurpleAir API keys ----------------------------------------------------
+
+PURPLE_AIR_API_READ_KEY <- "********-2A00-11EB-A8CD-42010A800126"     # associated.email@gmail.com
+PURPLE_AIR_API_WRITE_KEY <- "********-2A00-11EB-A8CD-42010A800126"    # associated.email@gmail.com
+```
+
+## Update the `.gitignore` file
+
+To avoid uploading your private API keys to GitHub where they might be seen by
+others, you should create/modify the repository `.gitignore` file so that it
+looks something like this:
+
+```
+# .gitignore file
+
+# History files
+.Rhistory
+.Rapp.history
+
+# Session Data files
+.RData
+
+# User-specific files
+.Ruserdata
+
+# Example code in package build process
+*-Ex.R
+
+# Output files from R CMD build
+/*.tar.gz
+
+# Output files from R CMD check
+/*.Rcheck/
+
+# RStudio files
+.Rproj.user/
+
+# produced vignettes
+vignettes/*.html
+vignettes/*.pdf
+
+# OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
+.httr-oauth
+
+# knitr and R markdown default cache directories
+*_cache/
+/cache/
+
+# Temporary files created by R markdown
+*.utf8.md
+*.knit.md
+
+# R Environment Variables
+.Renviron
+
+# ----- Local customization -----
+
+# API Keys
+global_vars.R
+```
+
+## Use API keys in your scripts
+
+The **AirSensor** package maintains an internal set of API keys which users can 
+set using `setAPIKey()`. These keys will be remembered for the duration of an R 
+session. In functions that accept an API key argument, if the passed in API key 
+is `NULL`, code will look up a specific named API key to see if that key has 
+been set globally. Setting keys globally is a convenience that simplifies the 
+scripts written by end users.
+
+Currently supported API keys and associated functions include:
+
+* `"PurpleAir-read"` – Purple Air api_key used in `pas_downloadParseRawData()`
+`pat_downloadParseRawData()`, `pat_createNew()`.
+
+Scripts can take advantage of this as seen below:
+
+```
+# Script to create new pas or pat objectss
+
+library(AirSensor)
+
+source("./global_vars.R")
+setAPIKey("PurpleAir-read", "PURPLE_AIR_API_READ_KEY")
+
+...
+```
+
+From this point on in the R session, all **AirSensor** functions that need to pull data from
+the PurpleAir API will send the appropriate API key and everything should work.
+
+----
+
+_Best of luck working with new PurpleAir API!_
