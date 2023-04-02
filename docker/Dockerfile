@@ -1,4 +1,4 @@
-FROM mazamascience/pwfslsmoke:1.2.113
+FROM mazamascience/pwfslsmoke:1.2.117
 MAINTAINER "Jonathan Callahan" jonathan@mazamascience.com
 
 #######################################################################
@@ -15,6 +15,7 @@ RUN apt-get update \
   && install2.r --error -r "https://cran.rstudio.com" \
     cowplot \
     GGally \
+    MazamaCoreUtils \
     MazamaLocationUtils \
     seismicRoll \
     worldmet
@@ -23,8 +24,8 @@ RUN apt-get update \
 # For MazamaSpatialUtils
 
 # Add CARB spatial data required by AirSensor
-RUN wget -nv http://mazamascience.com/RData/Spatial/CA_AirBasins_01.RData \
-  -O /home/mazama/data/Spatial/CA_AirBasins_01.RData
+RUN wget -nv http://data.mazamascience.com/MazamaSpatialUtils/Spatial_0.7/CA_AirBasins_01.rda \
+  -O /home/mazama/data/Spatial/CA_AirBasins_01.rda
 
 
 #######################################################################
@@ -32,7 +33,7 @@ RUN wget -nv http://mazamascience.com/RData/Spatial/CA_AirBasins_01.RData \
 
 WORKDIR /
 
-COPY AirSensor_1.0.7.tar.gz /
+COPY AirSensor_1.1.1.tar.gz /
 
-RUN R CMD INSTALL AirSensor_1.0.7.tar.gz
+RUN R CMD INSTALL AirSensor_1.1.1.tar.gz
 

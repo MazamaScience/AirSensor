@@ -14,10 +14,10 @@ You should then be able to see something like the following:
 
 ```
 $ docker images
-REPOSITORY                    TAG         IMAGE ID            CREATED             SIZE
+REPOSITORY                   TAG       IMAGE ID       CREATED          SIZE
 ...
-mazamascience/airsensor       1.0.7       796ae3ba57e5        2 minutes ago       3.74GB
-mazamascience/airsensor       latest      796ae3ba57e5        2 minutes ago       3.74GB
+mazamascience/airsensor      1.1.1     1518d7aa223e   44 seconds ago   5.39GB
+mazamascience/airsensor      latest    1518d7aa223e   44 seconds ago   5.39GB
 ...
 ```
 
@@ -66,7 +66,7 @@ pas <- example_pas
 
 pas %>% 
   pas_filter(stateCode == 'CA') %>% 
-  pas_filter(pwfsl_closestDistance < 100) %>% 
+  pas_filter(pwfsl_closestDistance < 7000) %>% 
   dplyr::pull(pwfsl_closestDistance) %>% 
   round() %>% 
   table()
