@@ -4,10 +4,11 @@ pkgdown_sha: ~
 articles:
   AirSensor_Function_Overview: AirSensor_Function_Overview.html
   Developer_Style_Guide: Developer_Style_Guide.html
+  Creating_Data_Archives: Creating_Data_Archives.html
   Custom_QC_Algorithms: Custom_QC_Algorithms.html
   Working_with_PurpleAir_API_Keys: Working_with_PurpleAir_API_Keys.html
   outlier_detection: outlier_detection.html
   pas_introduction: pas_introduction.html
   pat_introduction: pat_introduction.html
-last_built: 2023-04-03T00:22Z
+last_built: 2023-04-03T23:30Z
 

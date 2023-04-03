@@ -1,0 +1,410 @@
+---
+title: "Creating Data Archives"
+author: "Jonathan Callahan"
+date: "2023-04-03"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Creating Data Archives}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(fig.width = 7, fig.height = 5)
+```
+
+## Introduction
+
+This tutorial demonstrates how to create a multi-month archive of PurpleAir
+timeseries data that can be loaded from a local `archiveBaseDir`. Target
+audiences include grad students, researchers and any member of the public
+concerned about air quality and comfortable working with R and RStudio.
+
+## Goal
+
+The goal in this tutorial is to explain the file naming protocol
+and directory structure required for data to be loaded using the `pas_load()`,
+pat_load()` and `sensor_load()` functions. We will build a multi-month archive 
+for SCAQMD and demonstrate accessing that data.
+
+## Directory Structure
+
+The *AirSensor* package has a variety of "load" functions, all of which assume
+that pre-generated data files will be found in specific locations underneath
+an archive directory. The base of this directory is specified by 
+`setArchiveBaseUrl()` if the archive is web based or `setArchiveBaseDir()` if
+the archive is local.
+
+For a multi-year archive, the overall structure beneath the `archiveBaseDir` 
+will look something like this, depending on how many years of data you have:
+
+```
+├── airsensor
+│   ├── 2022
+│   ├── 2023
+│   └── latest
+├── pas
+│   ├── 2022
+│   └── 2023
+├── pat
+│   ├── 2022
+│   │   ├── 01
+│   │   ├── ...
+│   │   └── 12
+│   ├── 2023
+│   │   ├── 01
+│   │   ├── 02
+│   │   └── 03
+│   └── latest
+```
+
+## File Naming Protocol
+
+The protocol for creating pre-generatededata files depends on the type of object
+being created.
+
+### airsensor
+
+* Directory: `<archiveBaseDir>/airsensor/<YYYY>/`
+* File name: `airsensor_<collectionName>_<YYYYMM>.rda`
+* Example: `~/Data/SCAQMD/airsensor/2023/airsensor_scaqmd_202304.rda`
+
+_NOTE:_ `<collectionName>` is an arbitrary character string defined by the user.  
+
+### pas
+
+* Directory: `<archiveBaseDir>/pas/<YYYY>/`
+* File name: `pas_<YYYYMMDD>.rda`
+* Example: `~/Data/SCAQMD/pas/2023/pas_20230403.rda`
+
+### pat
+
+* Directory: `<archiveBaseDir>/pas/<YYYY>/<MM>/`
+* File name: `pat_<deviceDeploymentID>_<YYYYMM>.rda`
+* Example: `~/Data/SCAQMD/pat/2023/04/pat_ab5dca99422f2c0d_13669_202304.rda`
+
+## _load() Functions
+
+When loading data, package `~_load()` functions look for any local archive 
+specified with `setArchiveBaseDir()`. If no local archive is found, a web based
+archive is searched at the URL specified with `setArchiveBaseUrl()`.
+
+Package functions that load pre-generated data files include:
+
+* `pas_load()`
+* `pat_load()`
+* `pat_loadLatest()`
+* `pat_loadMonth()`
+* `sensor_load()`
+* `sensor_loadLatest()`
+* `sensor_loadMonth()`
+
+To avoid internet latency, specification of `archiveBaseDir` will always take precedence 
+over specification of `archiveBaseUrl`. For this reason, if you previously set `archiveBaseDir`
+and you then want to load data from some `archiveBaseUrl`, you will have to 
+first: `setArchiveBaseDir(NULL)`.
+
+## R script
+
+The following R script will take several minutes to run and will create an
+archive of 'pat' and 'airsensor' data files on your computer. Once these 
+files have been created, loading them will be very fast.
+
+After running the script, a final 
+section will demonstrate how to load and work with these local data files.
+
+This R script can be used as a starting point for anyone interested in creating 
+small collections of data for other communities and other dates.
+
+```{r create-archive, eval = FALSE, warning = FALSE, message = FALSE}
+# SCAQMD local data archive: Setup
+
+library(sf)                 # Helper for spatial data
+library(MazamaCoreUtils)    # Logging and time handling
+library(MazamaSpatialUtils) # Spatial metadata assignment
+library(AirSensor)
+
+# Set API keys
+source("./global_vars.R") # See "Working with PurpleAir API Keys"
+
+# ----- Setup ------------------------------------------------------------------
+
+# Have log messages sent to the console
+MazamaCoreUtils::logger.setLevel(TRACE)
+
+# Use the default archiveDir unless it is already defined
+if ( !exists("archiveDir") ) {
+  archiveDir <- file.path("~/Data/SCAQMD")
+}
+
+# Set the package archiveBaseDir so we can load pat objects with `pat_load()`
+setArchiveBaseDir(archiveDir)
+
+# Create datestamps
+timezone <- "UTC"
+datestamp <- strftime(lubridate::now(tzone = timezone), "%Y%m%d", tz = timezone)
+monthstamp <- stringr::str_sub(datestamp, 1, 6)
+yearstamp <- stringr::str_sub(datestamp, 1, 4)
+
+# ----- Create PAS object ------------------------------------------------------
+
+# Set up MazamaSpatialUtils
+AirSensor::initializeMazamaSpatialUtils()
+
+# Create the archiveDir/pas/YYYY directory
+dir.create(
+  file.path(archiveDir, "pas", yearstamp), 
+  showWarnings = FALSE,
+  recursive = TRUE
+)
+
+pas <-
+  pas_createNew(
+    api_key = PURPLE_AIR_API_READ_KEY,
+    countryCode = "US",
+    stateCode = "CA",
+    show_only = "143602,22727,23241",       # Change to your list of sensor indices
+    lookbackDays = 1,
+    location_type = 0
+  )
+
+# Save the "latest" version
+filename <- paste0("scaqmd_", datestamp, ".rda")
+filepath <- file.path(archiveDir, "pas", yearstamp, filename)
+logger.info("Writing PAS data to %s", filename)
+save(list = "pas", file = filepath)
+
+# ----- Prepare PAT info -------------------------------------------------------
+
+# Get the sensor index values
+scaqmd_ids <- pas_getDeviceDeploymentIDs(pas)
+
+# Set up months
+timezone <- "America/Los_Angeles"
+monthStamps <- c(202301, 202302, 202303)
+
+# Loop over months
+for ( monthStamp in monthStamps ) {
+  
+  logger.debug("Working on monthStamp %s ---------- ...", monthStamp) 
+  
+  # Get POSXct startdate
+  startdate <- MazamaCoreUtils::parseDatetime(monthStamp, timezone = timezone)
+  
+  # Guarantee that the enddate is the first of the next month
+  enddate <- lubridate::floor_date(
+    startdate + lubridate::ddays(40),
+    unit = "month"
+  )
+  
+  # Get YYYY and MM strings
+  YYYY <- strftime(startdate, "%Y")
+  MM <- strftime(startdate, "%m")
+  
+  # Initialize counters
+  idCount <- length(scaqmd_ids)
+  count <- 0 
+  successCount <- 0
+  
+  # ----- Create PAT objects ---------------------------------------------------
+  
+  # Create the archiveDir/pat/YYYY/MM/ directory
+  dir.create(
+    file.path(archiveDir, "pat", YYYY, MM), 
+    showWarnings = FALSE,
+    recursive = TRUE
+  )
+  
+  # Loop over all deviceDeploymentIDs
+  for ( id in scaqmd_ids ) {
+    
+    sensor_index <- 
+      pas %>% 
+      dplyr::filter(deviceDeploymentID == id) %>%
+      dplyr::pull(sensor_index)
+    
+    # Create PAT canonical file name
+    fileName <- paste0("pat_", id, "_", YYYY, MM, ".rda")
+    
+    # Create PAT canonical file path
+    filePath <- file.path(archiveDir, "pat", YYYY, MM, fileName)
+    
+    count <- count + 1
+    logger.debug("Working on %s (%d/%d) ...", id, count, idCount)
+    
+    # Use a try-block in case you get "no data" errors
+    result <- try({
+      
+      # Create PAT
+      pat <- pat_createNew(
+        api_key = PURPLE_AIR_API_READ_KEY,
+        pas = pas,
+        sensor_index = sensor_index,
+        startdate = startdate,
+        enddate = enddate,
+        timezone = "UTC",
+        average = 0,
+        verbose = FALSE
+      )
+      
+      successCount <- successCount + 1
+      save(pat, file = filePath)
+      
+    }, silent = FALSE)
+    
+    if ( "try-error" %in% class(result) ) {
+      logger.error(geterrmessage())
+    }
+    
+  }
+  
+  # ------ Create AirSensor objects --------------------------------------------
+  
+  # Create the archiveDir/airsensor/YYYY/ directory
+  dir.create(
+    file.path(archiveDir, "airsensor", YYYY), 
+    showWarnings = FALSE,
+    recursive = TRUE
+  )
+  
+  # Assign a collection name that makes sense
+  collectionName <- "scaqmd"
+  
+  # Init counts
+  successCount <- 0
+  count <- 0
+  
+  dataList <- list()
+  
+  # Loop over all ids and aggregate to hourly
+  for ( id in scaqmd_ids ) {
+    
+    count <- count + 1
+    
+    # Debug info
+    logger.debug(
+      "%4d/%d Calling pat_createAirSensor('%s')",
+      count,
+      length(scaqmd_ids),
+      id
+    )
+    
+    # Load the pat data, convert to an airsensor and add to dataList
+    dataList[[id]] <- tryCatch(
+      expr = {
+        airsensor <- pat_load(
+          id = id,
+          label = NULL,
+          pas = scaqmd,
+          startdate = startdate,
+          enddate = enddate,
+          timezone = "America/Los_Angeles"
+        ) %>%
+          pat_createAirSensor(
+            FUN = AirSensor::PurpleAirQC_hourly_AB_01
+          )
+      }, 
+      error = function(e) {
+        logger.warn('Unable to load PAT data for %s ', id)
+        NULL
+      }
+      
+      # Keep going in the face of errors
+    )
+    
+  } # END of deviceDeploymentIDs loop
+  
+  # Combine the airsensors into a single airsensor object and save
+  tryCatch(
+    expr = {
+      logger.info('Combining airsensors...')
+      
+      airsensor <- PWFSLSmoke::monitor_combine(dataList)
+      class(airsensor) <- c("airsensor", "ws_monitor", "list")
+      
+      logger.info('Combined successfully...')
+      
+      # Create Airsensor canonical file name
+      fileName <- paste0("airsensor_", collectionName, "_", YYYY, MM, ".rda")
+      
+      # Create Airsensor canonical file path
+      filePath <- file.path(archiveDir, "airsensor", YYYY, fileName)
+      
+      save(list = "airsensor", file = filePath)
+    }, 
+    error = function(e) {
+      msg <- paste("Error creating monthly AirSensor file: ", e)
+      logger.error(msg)
+    }
+  )
+  
+  # Now proceed to the next month
+}
+```
+
+## Loading Local Data
+
+Our local archive of data was created following the directory and file
+naming protocol. We can now work with this archive by running
+`setArchiveBaseDir()`.
+
+```{r load-local-data, eval = FALSE, warning = FALSE, message = FALSE}
+library(AirSensor)
+library(AirMonitorPlots)
+
+# Use the tutorial default archiveDir unless it is already defined
+if ( !exists("archiveDir") ) {
+  archiveDir <- file.path("~/Data/SCAQMD")
+}
+
+# Set your archive base directory and check that is correct
+setArchiveBaseDir(archiveDir)
+getArchiveBaseDir()
+
+# Load the custom pas file directly
+pas <- pas_loadLatest()
+
+# Use the interactive map to quickly get the "deviceDeploymentID" of the sensors
+# you want to explore further based on their location. 
+pas_leaflet(pas)
+
+# However, data for a specific sensor might not be available for a given month.
+# You can make sure to have the expected pat file in your month directory by 
+# looking for that file.
+list.files(file.path(archiveDir, "pat/2023/04"))
+
+# Load specific days of pat data for Pine Forest
+Pine_Forest  <- 
+  pat_load(
+    id = "0cbfeb2ce4c1553c_13661",
+    pas = pas, 
+    startdate = 20230201,
+    enddate = 20230208, 
+    timezone = "America/Los_Angeles"
+  )
+
+# Basic plot for Pine_Forest 
+pat_multiplot(Pine_Forest)
+
+# Load the all-hourly-data-combined sensor object
+all_sensors <- 
+  sensor_load(
+    collection = "scaqmd", # collectionName defined by user 
+    startdate = 20230201,
+    enddate = 20230308,
+    timezone = "America/Los_Angeles"
+  )
+
+# Plot all hourly values with daily averages
+all_sensors %>%
+  AirMonitorPlots::ggplot_pm25Timeseries() + 
+  ggplot2::ggtitle("SCAQMD Smoke -- March, 2023") +
+  AirMonitorPlots::geom_pm25Points(shape = "square", alpha = .1) + 
+  AirMonitorPlots::stat_dailyAQCategory(alpha = .5) + 
+  ggplot2::scale_y_continuous(limits = c(0, 300)) +
+  AirMonitorPlots::custom_aqiStackedBar(width = 0.01) 
+```
+
+----
+
+_Best of luck assessing air quality in your community!_
