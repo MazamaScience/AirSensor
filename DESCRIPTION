@@ -39,7 +39,7 @@ Imports:
     lubridate,
     magrittr,
     MazamaLocationUtils (>= 0.3.8),
-    MazamaSpatialUtils (>= 0.8.1),
+    MazamaSpatialUtils (>= 0.7.6),
     openair,
     PWFSLSmoke (>= 1.2.117),
     readr,
@@ -60,7 +60,8 @@ Suggests:
     markdown,
     testthat (>= 2.1.0),
     rmarkdown,
-    roxygen2
+    roxygen2,
+    sp
 Description: Process and display data from air quality sensors.
     Initial focus is on PM2.5 measurements from sensors produced by 'PurpleAir'
     <https://www2.purpleair.com>.

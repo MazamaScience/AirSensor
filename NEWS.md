@@ -4,6 +4,8 @@
 * Added "Working with PurpleAir API Keys" article.
 * When `show_only` is used, spatial bounding information is ignored in: 
 `pa_getSensorsData()`, `pas_downloadParseRawData()` and `pas_createNew()`.
+* Updated `pas_createNew()` to be backwards compatible with **MazamaSpatialUtils** 
+version 0.7.6.
 
 # AirSensor 1.1.0
 

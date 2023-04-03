@@ -135,7 +135,6 @@ pas_createNew <- function(
         if ( length(stateCodes) != 1 ) {
           stop("please limit 'stateCodes' to a single state when using 'counties'")
         }
-        
       }
     }
     
@@ -150,6 +149,8 @@ pas_createNew <- function(
     }
     
   }
+  
+  MSU_version <- utils::packageVersion("MazamaSpatialUtils")
   
   # ----- Get country/state bounding box ---------------------------------------
   
@@ -175,46 +176,85 @@ pas_createNew <- function(
         isFIPS <- stringr::str_detect(counties[1], "[0-9]{5}")
         
         if ( isFIPS ) {
-          SFDF <-
-            get("USCensusCounties") %>%  # To pass R CMD check
-            dplyr::filter(.data$stateCode %in% stateCodes) %>%
-            dplyr::filter(.data$countyFIPS %in% counties)
-        } else {
+          
+          if ( grepl("^0.7", MSU_version) ) {
+            SPDF <-
+              get("USCensusCounties") %>%
+              subset(stateCode %in% stateCodes) %>%
+              subset(countyFIPS %in% counties)
+          } else {
+            SFDF <-
+              get("USCensusCounties") %>%  # To pass R CMD check
+              dplyr::filter(.data$stateCode %in% stateCodes) %>%
+              dplyr::filter(.data$countyFIPS %in% counties)
+          }
+          
+        } else{
+          
           # Handle input inconsistencies
           counties <-
             stringr::str_to_title(counties) %>%
             stringr::str_replace(" County", "")
-          SFDF <-
-            get("USCensusCounties") %>%  # To pass R CMD check
-            dplyr::filter(.data$stateCode %in% stateCodes) %>%
-            dplyr::filter(.data$countyName %in% counties)
+          
+          if ( grepl("^0.7", MSU_version) ) {
+            SPDF <-
+              get("USCensusCounties") %>%
+              subset(stateCode %in% stateCodes) %>%
+              subset(countyName %in% counties)
+          } else {
+            SFDF <-
+              get("USCensusCounties") %>%  # To pass R CMD check
+              dplyr::filter(.data$stateCode %in% stateCodes) %>%
+              dplyr::filter(.data$countyName %in% counties)
+          }
+          
         }
         
       } else {
         
         # Use state but not counties
-        SFDF <-
-          get("NaturalEarthAdm1") %>% # To pass R CMD check
-          dplyr::filter(.data$countryCode %in% countryCodes) %>%
-          dplyr::filter(.data$stateCode %in% stateCodes)
+        if ( grepl("^0.7", MSU_version) ) { 
+          SPDF <-
+            get("NaturalEarthAdm1") %>% # To pass R CMD check
+            subset(countryCode %in% countryCodes) %>%
+            subset(stateCode %in% stateCodes)
+        } else {
+          SFDF <-
+            get("NaturalEarthAdm1") %>% # To pass R CMD check
+            dplyr::filter(.data$countryCode %in% countryCodes) %>%
+            dplyr::filter(.data$stateCode %in% stateCodes)
+        }
         
       }
       
     } else {
       
       # Neither state nor county is specified
-      SFDF <-
-        MazamaSpatialUtils::SimpleCountriesEEZ %>%
-        dplyr::filter(.data$countryCode %in% countryCodes)
+      if ( grepl("^0.7", MSU_version) ) {
+        SPDF <-
+          MazamaSpatialUtils::SimpleCountriesEEZ %>%
+          subset(countryCode %in% countryCodes)
+      } else {
+        SFDF <-
+          MazamaSpatialUtils::SimpleCountriesEEZ %>%
+          dplyr::filter(.data$countryCode %in% countryCodes)
+      }
       
     }
     
-    bbox <- sf::st_bbox(SFDF)
-    
-    west <- bbox$xmin
-    east <- bbox$xmax
-    south <- bbox$ymin
-    north <- bbox$ymax
+    if ( grepl("^0.7", MSU_version) ) {
+      bbox <- sp::bbox(SPDF)
+      west <- bbox[1,1]
+      east <- bbox[1,2]
+      south <- bbox[2,1]
+      north <- bbox[2,2]
+    } else {
+      bbox <- sf::st_bbox(SFDF)
+      west <- bbox$xmin
+      east <- bbox$xmax
+      south <- bbox$ymin
+      north <- bbox$ymax
+    }
     
   }
   
